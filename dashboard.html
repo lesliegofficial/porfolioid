@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — PorfolioID</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #C9A84C; --gold-light: #E8C97A; --black: #080808; --dark: #0E0E0E;
+    --dark-2: #141414; --dark-3: #1C1C1C; --dark-4: #242424; --gray: #888;
+    --gray-light: #BBBBBB; --white: #F5F3EE;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif; --font-mono: 'DM Mono', monospace;
+    --sidebar-w: 240px;
+  }
+  html, body { height: 100%; }
+  body { background: var(--black); color: var(--white); font-family: var(--font-body); font-weight: 300; display: flex; flex-direction: column; }
+
+  /* TOPBAR */
+  .topbar {
+    height: 56px; background: var(--dark-2); border-bottom: 1px solid rgba(201,168,76,0.1);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 1.5rem; position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  }
+  .topbar-logo { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--white); text-decoration: none; }
+  .topbar-logo span { color: var(--gold); }
+  .topbar-actions { display: flex; align-items: center; gap: 1rem; }
+  .topbar-user { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); }
+  .btn-sm {
+    font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 0.45rem 1rem; cursor: pointer;
+    text-decoration: none; transition: all 0.3s; border: none;
+  }
+  .btn-sm-gold { background: var(--gold); color: var(--black); }
+  .btn-sm-gold:hover { background: var(--gold-light); }
+  .btn-sm-outline { background: transparent; color: var(--gray); border: 1px solid rgba(255,255,255,0.1); }
+  .btn-sm-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* LAYOUT */
+  .app-layout { display: flex; height: calc(100vh - 56px); margin-top: 56px; overflow: hidden; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: var(--sidebar-w); background: var(--dark-2);
+    border-right: 1px solid rgba(201,168,76,0.08);
+    display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0;
+  }
+  .sidebar-section { padding: 1.25rem 1rem 0.5rem; }
+  .sidebar-section-label {
+    font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--gray); padding: 0 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 0.65rem; padding: 0.6rem 0.75rem;
+    border-radius: 2px; cursor: pointer; transition: all 0.2s;
+    font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gray); border: none; background: none;
+    width: 100%; text-align: left;
+  }
+  .nav-item:hover { background: rgba(201,168,76,0.05); color: var(--gray-light); }
+  .nav-item.active { background: rgba(201,168,76,0.08); color: var(--gold); }
+  .nav-item-icon { font-size: 0.85rem; width: 18px; text-align: center; }
+
+  .epk-url-box {
+    margin: 1rem; padding: 0.75rem; background: var(--dark-3);
+    border: 1px solid rgba(201,168,76,0.15);
+  }
+  .epk-url-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.3rem; }
+  .epk-url-link { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gold); text-decoration: none; word-break: break-all; }
+  .epk-url-link:hover { text-decoration: underline; }
+
+  /* MAIN */
+  .main-content { flex: 1; overflow-y: auto; background: var(--black); }
+  .panel { display: none; padding: 2.5rem; max-width: 900px; }
+  .panel.active { display: block; }
+
+  .panel-title {
+    font-family: var(--font-display); font-size: 1.8rem; font-weight: 700;
+    margin-bottom: 0.4rem; line-height: 1.2;
+  }
+  .panel-title em { font-style: italic; color: var(--gold-light); }
+  .panel-sub { font-size: 0.9rem; color: var(--gray); margin-bottom: 2.5rem; line-height: 1.6; }
+
+  /* FORM STYLES */
+  .field-group { margin-bottom: 1.75rem; }
+  .field-label {
+    display: block; font-family: var(--font-mono); font-size: 0.6rem;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray);
+    margin-bottom: 0.5rem;
+  }
+  .field-hint { font-size: 0.78rem; color: var(--gray); margin-top: 0.35rem; line-height: 1.5; }
+  input[type="text"], input[type="email"], input[type="tel"], input[type="url"],
+  input[type="number"], textarea, select {
+    width: 100%; background: var(--dark-3); border: 1px solid rgba(201,168,76,0.12);
+    color: var(--white); padding: 0.8rem 1rem; font-family: var(--font-body);
+    font-size: 0.9rem; font-weight: 300; transition: border-color 0.3s;
+    outline: none; resize: vertical;
+  }
+  input:focus, textarea:focus, select:focus { border-color: rgba(201,168,76,0.4); }
+  input::placeholder, textarea::placeholder { color: var(--gray); }
+  textarea { min-height: 120px; }
+  select { appearance: none; cursor: pointer; }
+  select option { background: var(--dark-3); }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+
+  .section-divider {
+    border: none; border-top: 1px solid rgba(201,168,76,0.08);
+    margin: 2.5rem 0;
+  }
+
+  /* TAGS / BADGES */
+  .tag-input-row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .tag {
+    font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em;
+    text-transform: uppercase; border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold); padding: 0.3rem 0.75rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .tag-remove { cursor: pointer; opacity: 0.6; transition: opacity 0.2s; background: none; border: none; color: var(--gold); font-size: 0.8rem; padding: 0; }
+  .tag-remove:hover { opacity: 1; }
+  .tag-add-row { display: flex; gap: 0.5rem; }
+  .tag-add-row input { flex: 1; }
+  .btn-add {
+    background: var(--dark-4); border: 1px solid rgba(201,168,76,0.2);
+    color: var(--gray-light); padding: 0.8rem 1.25rem;
+    font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em;
+    text-transform: uppercase; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  }
+  .btn-add:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* CARDS (credits, tracks, videos) */
+  .cards-list { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+  .editable-card {
+    background: var(--dark-2); border: 1px solid rgba(201,168,76,0.1);
+    padding: 1.5rem; position: relative;
+  }
+  .editable-card-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+  .editable-card-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; }
+  .editable-card-subtitle { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-top: 0.2rem; }
+  .card-actions { display: flex; gap: 0.5rem; }
+  .btn-card-action {
+    font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 0.35rem 0.75rem; cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.1); background: none; color: var(--gray);
+    transition: all 0.2s;
+  }
+  .btn-card-action:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-card-delete:hover { border-color: #ff6b6b; color: #ff6b6b; }
+
+  /* ADD FORM */
+  .add-form {
+    background: var(--dark-2); border: 1px solid rgba(201,168,76,0.15);
+    padding: 1.5rem; margin-top: 1rem; display: none;
+  }
+  .add-form.open { display: block; }
+  .add-form-title {
+    font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem;
+  }
+  .btn-add-new {
+    background: transparent; border: 1px dashed rgba(201,168,76,0.3);
+    color: var(--gold); padding: 0.9rem 1.5rem;
+    font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em;
+    text-transform: uppercase; cursor: pointer; transition: all 0.3s;
+    display: flex; align-items: center; gap: 0.5rem; width: 100%; justify-content: center;
+  }
+  .btn-add-new:hover { background: rgba(201,168,76,0.05); border-color: rgba(201,168,76,0.6); }
+
+  .form-actions { display: flex; gap: 0.75rem; margin-top: 1.25rem; }
+  .btn-save {
+    background: var(--gold); color: var(--black); border: none;
+    padding: 0.8rem 2rem; font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; font-weight: 500;
+    transition: all 0.3s;
+  }
+  .btn-save:hover { background: var(--gold-light); }
+  .btn-cancel {
+    background: none; border: 1px solid rgba(255,255,255,0.1); color: var(--gray);
+    padding: 0.8rem 1.5rem; font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.3s;
+  }
+  .btn-cancel:hover { border-color: var(--gray); color: var(--white); }
+
+  .save-banner {
+    position: fixed; bottom: 2rem; right: 2rem;
+    background: var(--gold); color: var(--black);
+    padding: 0.9rem 2rem; font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    z-index: 999;
+  }
+  .save-banner.show { opacity: 1; }
+
+  /* STATS GRID */
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .stat-input-group { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  @media (max-width: 900px) {
+    .sidebar { width: 60px; }
+    .nav-item span { display: none; }
+    .sidebar-section-label { display: none; }
+    .epk-url-box { display: none; }
+    .field-row, .field-row-3 { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="/index.html" class="topbar-logo">Porfolio<span>ID</span></a>
+  <div class="topbar-actions">
+    <span class="topbar-user" id="topbarUser"></span>
+    <a href="#" class="btn-sm btn-sm-gold" id="viewEPKBtn" target="_blank">View My EPK →</a>
+    <button class="btn-sm btn-sm-outline" onclick="logout()">Sign Out</button>
+  </div>
+</div>
+
+<div class="app-layout">
+  <aside class="sidebar">
+    <div class="epk-url-box">
+      <div class="epk-url-label">Your EPK Link</div>
+      <a href="#" class="epk-url-link" id="epkUrlDisplay">—</a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Profile</div>
+      <button class="nav-item active" onclick="showPanel('hero')">
+        <span class="nav-item-icon">✦</span><span>Hero & Identity</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('bio')">
+        <span class="nav-item-icon">👤</span><span>Biography</span>
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Content</div>
+      <button class="nav-item" onclick="showPanel('credits')">
+        <span class="nav-item-icon">🏆</span><span>Credits</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('music')">
+        <span class="nav-item-icon">🎵</span><span>Music</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('videos')">
+        <span class="nav-item-icon">🎬</span><span>Video</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('photos')">
+        <span class="nav-item-icon">📸</span><span>Photos</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('assets')">
+        <span class="nav-item-icon">📦</span><span>Assets</span>
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Business</div>
+      <button class="nav-item" onclick="showPanel('booking')">
+        <span class="nav-item-icon">📅</span><span>Booking</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('socials')">
+        <span class="nav-item-icon">🔗</span><span>Social Links</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('awards')">
+        <span class="nav-item-icon">🏅</span><span>Awards & Degrees</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <!-- HERO PANEL -->
+    <div class="panel active" id="panel-hero">
+      <h1 class="panel-title">Hero & <em>Identity</em></h1>
+      <p class="panel-sub">This is the first thing people see on your EPK. Make it count.</p>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">First Name</label>
+          <input type="text" id="heroFirstName" placeholder="Leslie">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Last Name</label>
+          <input type="text" id="heroLastName" placeholder="Guerra">
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Taglines (what you do)</label>
+        <p class="field-hint">These appear below your name. Add up to 4 lines describing your role(s).</p>
+        <div class="tag-input-row" id="taglinesList"></div>
+        <div class="tag-add-row">
+          <input type="text" id="newTagline" placeholder="e.g. International Vocalist">
+          <button class="btn-add" onclick="addTagline()">+ Add</button>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+      <h3 style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 1.5rem;">Career Stats</h3>
+
+      <div class="stats-grid">
+        <div class="stat-input-group">
+          <input type="text" id="stat1num" placeholder="25+">
+          <input type="text" id="stat1label" placeholder="Years Active">
+        </div>
+        <div class="stat-input-group">
+          <input type="text" id="stat2num" placeholder="500+">
+          <input type="text" id="stat2label" placeholder="Live Shows">
+        </div>
+        <div class="stat-input-group">
+          <input type="text" id="stat3num" placeholder="5">
+          <input type="text" id="stat3label" placeholder="Continents">
+        </div>
+      </div>
+
+      <hr class="section-divider">
+      <div class="field-group">
+        <label class="field-label">Hero Image</label>
+        <input type="url" id="heroImage" placeholder="https://... or upload below">
+        <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+          <button class="btn-add" onclick="triggerUpload('heroImageFile', 'heroImage')">↑ Upload Photo</button>
+          <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
+        </div>
+        <input type="file" id="heroImageFile" accept="image/*" style="display:none">
+        <p class="field-hint">This is the large background image on the left side of your EPK hero.</p>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-save" onclick="saveAll()">Save Changes</button>
+      </div>
+    </div>
+
+    <!-- BIO PANEL -->
+    <div class="panel" id="panel-bio">
+      <h1 class="panel-title">Biography</h1>
+      <p class="panel-sub">Your professional story. Write it the way the industry reads it — not a social media bio.</p>
+
+      <div class="field-group">
+        <label class="field-label">Full Biography</label>
+        <p class="field-hint">Write in paragraphs. The first paragraph should be your strongest — labels and bookers often only read the first one.</p>
+        <textarea id="bioText" rows="10" placeholder="Write your professional biography here..."></textarea>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">Location</label>
+          <input type="text" id="bioLocation" placeholder="e.g. Florida, USA">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Availability</label>
+          <select id="availabilitySelect" onchange="epk.availability=this.value">
+            <option value="">— Select —</option>
+            <option value="Available for tours & studio sessions">Available for tours & studio sessions</option>
+            <option value="Available for studio sessions only">Available for studio sessions only</option>
+            <option value="Available for live performances">Available for live performances</option>
+            <option value="Available for select projects">Available for select projects</option>
+            <option value="Currently on tour">Currently on tour</option>
+            <option value="Not currently available">Not currently available</option>
+            <option value="Open to all opportunities">Open to all opportunities</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Bio Portrait Image</label>
+        <input type="url" id="bioImage" placeholder="https://... or upload below">
+        <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+          <button class="btn-add" onclick="triggerUpload('bioImageFile', 'bioImage')">↑ Upload Photo</button>
+          <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
+        </div>
+        <input type="file" id="bioImageFile" accept="image/*" style="display:none">
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Industry Credentials / Memberships</label>
+        <p class="field-hint">Add your industry affiliations (ASCAP, SAG-AFTRA, SoundExchange, NARAS, etc.)</p>
+        <div class="tag-input-row" id="credentialsList"></div>
+        <div class="tag-add-row">
+          <input type="text" id="newCredential" placeholder="e.g. ASCAP">
+          <button class="btn-add" onclick="addCredential()">+ Add</button>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-save" onclick="saveAll()">Save Changes</button>
+      </div>
+    </div>
+
+    <!-- CREDITS PANEL -->
+    <div class="panel" id="panel-credits">
+      <h1 class="panel-title">Credits & <em>Collaborations</em></h1>
+      <p class="panel-sub">Document every significant credit — tours, recordings, label work, productions.</p>
+
+      <div class="cards-list" id="creditsList"></div>
+
+      <button class="btn-add-new" onclick="toggleAddForm('addCreditForm')">+ Add Credit</button>
+
+      <div class="add-form" id="addCreditForm">
+        <div class="add-form-title">New Credit</div>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Artist / Company</label>
+            <input type="text" id="newCreditArtist" placeholder="e.g. Don Omar">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Years</label>
+            <input type="text" id="newCreditYears" placeholder="e.g. 2006–2015">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Your Role</label>
+          <input type="text" id="newCreditRole" placeholder="e.g. Exclusive Touring Vocalist">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Description</label>
+          <textarea id="newCreditDesc" rows="4" placeholder="Describe your work, venues, notable moments, recordings..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn-save" onclick="addCredit()">Add Credit</button>
+          <button class="btn-cancel" onclick="toggleAddForm('addCreditForm')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MUSIC PANEL -->
+    <div class="panel" id="panel-music">
+      <h1 class="panel-title">Music</h1>
+      <p class="panel-sub">Add the tracks you've recorded or performed on. Link to Spotify, Apple Music, YouTube, or SoundCloud.</p>
+
+      <div class="cards-list" id="tracksList"></div>
+
+      <button class="btn-add-new" onclick="toggleAddForm('addTrackForm')">+ Add Track</button>
+
+      <div class="add-form" id="addTrackForm">
+        <div class="add-form-title">New Track</div>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Track Title</label>
+            <input type="text" id="newTrackTitle" placeholder="e.g. Nadie Como Tu">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Artist(s)</label>
+            <input type="text" id="newTrackArtist" placeholder="e.g. Wisin, Yandel, Don Omar">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Your Role</label>
+            <input type="text" id="newTrackRole" placeholder="e.g. Touring Vocalist">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Tag</label>
+            <select id="newTrackTag">
+              <option value="">None</option>
+              <option value="TOP TRACK">Top Track</option>
+              <option value="RECORDING CREDIT">Recording Credit</option>
+              <option value="LIVE CREDIT">Live Credit</option>
+              <option value="SINGLE">Single</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Link or MP3</label>
+          <input type="url" id="newTrackLink" placeholder="Spotify / Apple Music / YouTube / SoundCloud URL">
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+            <button class="btn-add" onclick="triggerMp3Upload('newTrackMp3File')">↑ Upload MP3</button>
+            <span style="font-size:0.75rem;color:var(--gray)">or paste a streaming link above</span>
+          </div>
+          <input type="file" id="newTrackMp3File" accept="audio/*" style="display:none">
+        </div>
+        <div class="form-actions">
+          <button class="btn-save" onclick="addTrack()">Add Track</button>
+          <button class="btn-cancel" onclick="toggleAddForm('addTrackForm')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEOS PANEL -->
+    <div class="panel" id="panel-videos">
+      <h1 class="panel-title">Video</h1>
+      <p class="panel-sub">Link to YouTube or Vimeo videos. Live performances, music videos, acoustic sessions.</p>
+
+      <div class="cards-list" id="videosList"></div>
+
+      <button class="btn-add-new" onclick="toggleAddForm('addVideoForm')">+ Add Video</button>
+
+      <div class="add-form" id="addVideoForm">
+        <div class="add-form-title">New Video</div>
+        <div class="field-group">
+          <label class="field-label">Video Title</label>
+          <input type="text" id="newVideoTitle" placeholder="e.g. J Álvarez — Te Necesito (Live)">
+        </div>
+        <div class="field-group">
+          <label class="field-label">YouTube / Vimeo URL or MP4</label>
+          <input type="url" id="newVideoUrl" placeholder="https://youtube.com/watch?v=...">
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+            <button class="btn-add" onclick="triggerMp4Upload('newVideoMp4File')">↑ Upload MP4</button>
+            <span style="font-size:0.75rem;color:var(--gray)">or paste a YouTube/Vimeo link above</span>
+          </div>
+          <input type="file" id="newVideoMp4File" accept="video/*" style="display:none">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Custom Thumbnail (optional)</label>
+          <input type="url" id="newVideoThumb" placeholder="https://... or upload below">
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+            <button class="btn-add" onclick="triggerThumbUpload('newVideoThumbFile')">↑ Upload Thumbnail</button>
+            <span style="font-size:0.75rem;color:var(--gray)">or paste image URL above</span>
+          </div>
+          <input type="file" id="newVideoThumbFile" accept="image/*" style="display:none">
+        </div>
+        <div class="form-actions">
+          <button class="btn-save" onclick="addVideo()">Add Video</button>
+          <button class="btn-cancel" onclick="toggleAddForm('addVideoForm')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHOTOS PANEL -->
+    <div class="panel" id="panel-photos">
+      <h1 class="panel-title">Photos</h1>
+      <p class="panel-sub">Add photo URLs to your gallery. Organize them into groups (Live, Studio, Press, etc.).</p>
+
+      <div class="cards-list" id="photosList"></div>
+
+      <button class="btn-add-new" onclick="toggleAddForm('addPhotoForm')">+ Add Photo</button>
+
+      <div class="add-form" id="addPhotoForm">
+        <div class="add-form-title">New Photo</div>
+        <div class="field-group">
+          <label class="field-label">Caption</label>
+          <input type="text" id="newPhotoCaption" placeholder="e.g. w/Don Omar — Viña del Mar, Chile">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Image</label>
+          <input type="url" id="newPhotoUrl" placeholder="https://... or upload below">
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+            <button class="btn-add" onclick="triggerPhotoUpload('newPhotoFile')">↑ Upload Photo</button>
+            <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
+          </div>
+          <input type="file" id="newPhotoFile" accept="image/*" style="display:none">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Gallery Group</label>
+          <input type="text" id="newPhotoGroup" placeholder="e.g. Live Performance (leave blank for default)">
+        </div>
+        <div class="form-actions">
+          <button class="btn-save" onclick="addPhoto()">Add Photo</button>
+          <button class="btn-cancel" onclick="toggleAddForm('addPhotoForm')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ASSETS PANEL -->
+    <div class="panel" id="panel-assets">
+      <h1 class="panel-title">Assets</h1>
+      <p class="panel-sub">Downloadable and linkable resources — resume, press kit, portfolio, etc.</p>
+
+      <div class="cards-list" id="assetsList"></div>
+
+      <button class="btn-add-new" onclick="toggleAddForm('addAssetForm')">+ Add Asset</button>
+
+      <div class="add-form" id="addAssetForm">
+        <div class="add-form-title">New Asset</div>
+        <div class="field-group">
+          <label class="field-label">Asset Title</label>
+          <input type="text" id="newAssetTitle" placeholder="e.g. Resume">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Description</label>
+          <textarea id="newAssetDesc" rows="2" placeholder="Brief description of what this asset contains..."></textarea>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Button Label</label>
+            <input type="text" id="newAssetBtn" placeholder="e.g. Download PDF →">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Link / URL</label>
+            <input type="url" id="newAssetUrl" placeholder="https://...">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-save" onclick="addAsset()">Add Asset</button>
+          <button class="btn-cancel" onclick="toggleAddForm('addAssetForm')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOOKING PANEL -->
+    <div class="panel" id="panel-booking">
+      <h1 class="panel-title">Booking</h1>
+      <p class="panel-sub">Control how people reach you — or turn this section off entirely.</p>
+
+      <div class="field-group" style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);padding:1rem 1.25rem;border:1px solid rgba(201,168,76,0.15)">
+        <label class="field-label" style="margin:0;flex:1">Show Booking Section on My EPK</label>
+        <label style="position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0">
+          <input type="checkbox" id="bookingToggle" onchange="toggleBooking()" style="opacity:0;width:0;height:0">
+          <span style="position:absolute;cursor:pointer;inset:0;background:var(--dark-4);border:1px solid rgba(201,168,76,0.2);transition:0.3s;border-radius:24px" id="toggleSlider"></span>
+        </label>
+      </div>
+
+      <style>
+        #bookingToggle:checked + span { background: var(--gold); border-color: var(--gold); }
+        #bookingToggle:checked + span::before { transform: translateX(20px); }
+        #toggleSlider::before { content:''; position:absolute; height:16px; width:16px; left:3px; bottom:3px; background:white; transition:0.3s; border-radius:50%; }
+      </style>
+
+      <hr class="section-divider">
+
+      <div class="field-group">
+        <label class="field-label">Booking Email</label>
+        <input type="email" id="bookingEmail" placeholder="booking@youremail.com">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Phone Number (optional)</label>
+        <input type="tel" id="bookingPhone" placeholder="+1 305 000 0000">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Booking Tagline</label>
+        <input type="text" id="bookingTagline" placeholder="Now booking live performances, studio sessions, and creative collaborations.">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Availability Note</label>
+        <input type="text" id="bookingNote" placeholder="Serious inquiries only">
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-save" onclick="saveAll()">Save Changes</button>
+      </div>
+    </div>
+
+    <!-- SOCIAL LINKS PANEL -->
+    <div class="panel" id="panel-socials">
+      <h1 class="panel-title">Social <em>Links</em></h1>
+      <p class="panel-sub">Add your social media profiles and website. These appear as clickable icons on your EPK.</p>
+
+      <div class="field-group">
+        <label class="field-label">Instagram</label>
+        <input type="url" id="socialInstagram" placeholder="https://instagram.com/yourhandle">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Facebook</label>
+        <input type="url" id="socialFacebook" placeholder="https://facebook.com/yourpage">
+      </div>
+      <div class="field-group">
+        <label class="field-label">YouTube</label>
+        <input type="url" id="socialYoutube" placeholder="https://youtube.com/@yourchannel">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Spotify</label>
+        <input type="url" id="socialSpotify" placeholder="https://open.spotify.com/artist/...">
+      </div>
+      <div class="field-group">
+        <label class="field-label">TikTok</label>
+        <input type="url" id="socialTiktok" placeholder="https://tiktok.com/@yourhandle">
+      </div>
+      <div class="field-group">
+        <label class="field-label">LinkedIn</label>
+        <input type="url" id="socialLinkedin" placeholder="https://linkedin.com/in/yourprofile">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Personal Website</label>
+        <input type="url" id="socialWebsite" placeholder="https://yourwebsite.com">
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-save" onclick="saveSocials()">Save Links</button>
+      </div>
+    </div>
+
+    <!-- AWARDS PANEL -->
+    <div class="panel" id="panel-awards">
+      <h1 class="panel-title">Awards, Degrees <em>& Nominations</em></h1>
+      <p class="panel-sub">Document your academic credentials, industry awards, nominations, and certifications. This is one of the most powerful sections on your EPK.</p>
+
+      <div class="cards-list" id="awardsList"></div>
+
+      <button class="btn-add-new" onclick="toggleAddForm('addAwardForm')">+ Add Entry</button>
+
+      <div class="add-form" id="addAwardForm">
+        <div class="add-form-title">New Entry</div>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Type</label>
+            <select id="newAwardType">
+              <option value="award">Award</option>
+              <option value="nomination">Nomination</option>
+              <option value="degree">Degree / Education</option>
+              <option value="certification">Certification</option>
+              <option value="recognition">Industry Recognition</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Year</label>
+            <input type="text" id="newAwardYear" placeholder="e.g. 2024">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Title</label>
+          <input type="text" id="newAwardTitle" placeholder="e.g. BAS in Supervision and Management">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Organization / Institution</label>
+          <input type="text" id="newAwardOrg" placeholder="e.g. Polk State College">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Description (optional)</label>
+          <textarea id="newAwardDesc" rows="2" placeholder="Any additional context..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn-save" onclick="addAward()">Save Entry</button>
+          <button class="btn-cancel" onclick="toggleAddForm('addAwardForm')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="save-banner" id="saveBanner">✓ Saved</div>
+
+<script>
+const CLOUDINARY_CLOUD = 'djj8xe3gx';
+const CLOUDINARY_PRESET = 'dj8fqdhj';
+
+async function uploadToCloudinary(file, onSuccess) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_PRESET);
+
+  const btn = event.currentTarget;
+  const originalText = btn.textContent;
+  btn.textContent = 'Uploading...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+    if (data.secure_url) {
+      onSuccess(data.secure_url);
+      btn.textContent = '✓ Uploaded';
+      btn.style.background = 'rgba(100,200,100,0.15)';
+      btn.style.borderColor = 'rgba(100,200,100,0.4)';
+      btn.style.color = '#7ec97e';
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.background = '';
+        btn.style.borderColor = '';
+        btn.style.color = '';
+        btn.disabled = false;
+      }, 2000);
+    }
+  } catch (err) {
+    btn.textContent = 'Upload failed';
+    btn.disabled = false;
+    setTimeout(() => { btn.textContent = originalText; btn.disabled = false; }, 2000);
+  }
+}
+
+function triggerUpload(inputId, targetFieldId) {
+  const input = document.getElementById(inputId);
+  input.click();
+  input.onchange = function() {
+    const file = input.files[0];
+    if (!file) return;
+    uploadToCloudinary(file, (url) => {
+      document.getElementById(targetFieldId).value = url;
+      saveAll();
+    });
+  };
+}
+
+function triggerMp4Upload(inputId) {
+  const input = document.getElementById(inputId);
+  input.click();
+  input.onchange = async function() {
+    const file = input.files[0];
+    if (!file) return;
+    const btn = document.querySelector(`[onclick="triggerMp4Upload('${inputId}')"]`);
+    if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`, { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.secure_url) {
+        document.getElementById('newVideoUrl').value = data.secure_url;
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload MP4'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      }
+    } catch(e) {
+      if (btn) { btn.textContent = 'Failed'; btn.disabled = false; }
+    }
+  };
+}
+
+function triggerThumbUpload(inputId) {
+  const input = document.getElementById(inputId);
+  input.click();
+  input.onchange = async function() {
+    const file = input.files[0];
+    if (!file) return;
+    const btn = document.querySelector(`[onclick="triggerThumbUpload('${inputId}')"]`);
+    if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.secure_url) {
+        document.getElementById('newVideoThumb').value = data.secure_url;
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload Thumbnail'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      }
+    } catch(e) {
+      if (btn) { btn.textContent = 'Failed'; btn.disabled = false; }
+    }
+  };
+}
+
+function triggerMp3Upload(inputId) {
+  const input = document.getElementById(inputId);
+  input.click();
+  input.onchange = async function() {
+    const file = input.files[0];
+    if (!file) return;
+    const btn = document.querySelector(`[onclick="triggerMp3Upload('${inputId}')"]`);
+    if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    formData.append('resource_type', 'video'); // Cloudinary uses 'video' for audio files
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`, { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.secure_url) {
+        document.getElementById('newTrackLink').value = data.secure_url;
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload MP3'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      }
+    } catch(e) {
+      if (btn) { btn.textContent = 'Failed'; btn.disabled = false; }
+    }
+  };
+}
+
+function triggerPhotoUpload(inputId) {
+  const input = document.getElementById(inputId);
+  input.click();
+  input.onchange = async function() {
+    const file = input.files[0];
+    if (!file) return;
+    const btn = document.querySelector(`[onclick="triggerPhotoUpload('${inputId}')"]`);
+    if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.secure_url) {
+        document.getElementById('newPhotoUrl').value = data.secure_url;
+        if (btn) { btn.textContent = '✓ Done'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload Photo'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      }
+    } catch(e) {
+      if (btn) { btn.textContent = 'Failed'; btn.disabled = false; }
+    }
+  };
+}
+
+let currentUser = null;
+let epk = null;
+
+async function init() {
+  // Check session
+  const sessionStr = localStorage.getItem('porfolioid_session');
+  if (!sessionStr) { window.location.href = '/login.html'; return; }
+
+  let session;
+  try { session = JSON.parse(sessionStr); } catch { window.location.href = '/login.html'; return; }
+
+  // Show loading state
+  document.getElementById('topbarUser').textContent = 'Loading...';
+
+  // Load EPK data from API
+  try {
+    const res = await fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'load', slug: session.slug })
+    });
+    const data = await res.json();
+
+    if (data.success && data.epk) {
+      epk = data.epk;
+      currentUser = { firstName: session.name.split(' ')[0], lastName: session.name.split(' ').slice(1).join(' '), email: session.email, slug: session.slug, epk };
+    } else {
+      // EPK not found - redirect to setup
+      console.warn('EPK not found for slug:', session.slug, data);
+      epk = createEmptyEPK(session.slug, session.name);
+      currentUser = { firstName: session.name.split(' ')[0], lastName: session.name.split(' ').slice(1).join(' '), email: session.email, slug: session.slug, epk };
+    }
+  } catch(err) {
+    console.error('Failed to load EPK:', err);
+    // Fall back to empty EPK
+    epk = createEmptyEPK(session.slug, session.name);
+    currentUser = { firstName: session.name.split(' ')[0], lastName: session.name.split(' ').slice(1).join(' '), email: session.email, slug: session.slug, epk };
+  }
+
+  document.getElementById('topbarUser').textContent = session.name;
+  document.getElementById('epkUrlDisplay').textContent = `porfolioid.com/epk.html?slug=${session.slug}`;
+  document.getElementById('epkUrlDisplay').href = `/epk.html?slug=${session.slug}`;
+  document.getElementById('viewEPKBtn').href = `/epk.html?slug=${session.slug}`;
+
+  loadAllFields();
+}
+
+function createEmptyEPK(slug, name) {
+  return {
+    name, slug,
+    taglines: [], stats: [{number:'',label:'Years Active'},{number:'',label:'Live Shows'},{number:'',label:'Credits'}],
+    bio: '', location: '', availability: '', credentials: [],
+    credits: [], tracks: [], videos: [], photos: [], assets: [],
+    bookingEmail: '', bookingPhone: '', bookingTagline: '', bookingNote: '',
+    bookingEnabled: true, heroImage: '', bioImage: '', socials: {}, awards: []
+  };
+}
+
+function loadAllFields() {
+  // Hero
+  const nameParts = (epk.name || '').split(' ');
+  document.getElementById('heroFirstName').value = nameParts[0] || '';
+  document.getElementById('heroLastName').value = nameParts.slice(1).join(' ') || '';
+  document.getElementById('heroImage').value = epk.heroImage || '';
+
+  const stats = epk.stats || [];
+  if (stats[0]) { document.getElementById('stat1num').value = stats[0].number || ''; document.getElementById('stat1label').value = stats[0].label || ''; }
+  if (stats[1]) { document.getElementById('stat2num').value = stats[1].number || ''; document.getElementById('stat2label').value = stats[1].label || ''; }
+  if (stats[2]) { document.getElementById('stat3num').value = stats[2].number || ''; document.getElementById('stat3label').value = stats[2].label || ''; }
+
+  renderTaglines();
+
+  // Bio
+  document.getElementById('bioText').value = epk.bio || '';
+  document.getElementById('bioLocation').value = epk.location || '';
+  document.getElementById('bioAvailability').value = epk.availability || '';
+  document.getElementById('bioImage').value = epk.bioImage || '';
+  renderCredentials();
+
+  // Credits
+  renderCredits();
+  // Music
+  renderTracks();
+  // Videos
+  renderVideos();
+  // Photos
+  renderPhotos();
+  // Assets
+  renderAssets();
+  // Booking
+  document.getElementById('bookingEmail').value = epk.bookingEmail || '';
+  document.getElementById('bookingPhone').value = epk.bookingPhone || '';
+  document.getElementById('bookingTagline').value = epk.bookingTagline || '';
+  document.getElementById('bookingNote').value = epk.bookingNote || '';
+  loadBookingToggle();
+
+  // Availability dropdown
+  const availSel = document.getElementById('availabilitySelect');
+  if (availSel) availSel.value = epk.availability || '';
+
+  // Socials
+  loadSocials();
+
+  // Awards
+  renderAwards();
+}
+
+function saveAll() {
+  epk.name = `${document.getElementById('heroFirstName').value.trim()} ${document.getElementById('heroLastName').value.trim()}`.trim();
+  epk.heroImage = document.getElementById('heroImage').value.trim();
+  epk.stats = [
+    { number: document.getElementById('stat1num').value, label: document.getElementById('stat1label').value },
+    { number: document.getElementById('stat2num').value, label: document.getElementById('stat2label').value },
+    { number: document.getElementById('stat3num').value, label: document.getElementById('stat3label').value },
+  ];
+  epk.bio = document.getElementById('bioText').value.trim();
+  epk.location = document.getElementById('bioLocation').value.trim();
+  epk.availability = document.getElementById('availabilitySelect').value;
+  epk.bioImage = document.getElementById('bioImage').value.trim();
+  epk.bookingEmail = document.getElementById('bookingEmail').value.trim();
+  epk.bookingPhone = document.getElementById('bookingPhone').value.trim();
+  epk.bookingTagline = document.getElementById('bookingTagline').value.trim();
+  epk.bookingNote = document.getElementById('bookingNote').value.trim();
+
+  persistUser();
+  showSaveBanner();
+}
+
+async function persistUser() {
+  currentUser.epk = epk;
+  try {
+    const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
+    await fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'save', slug: session.slug || epk.slug, data: epk })
+    });
+  } catch(err) {
+    console.error('Save failed:', err);
+  }
+}
+
+function showSaveBanner() {
+  const banner = document.getElementById('saveBanner');
+  banner.classList.add('show');
+  setTimeout(() => banner.classList.remove('show'), 2000);
+}
+
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`panel-${name}`).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function toggleAddForm(id) {
+  const form = document.getElementById(id);
+  form.classList.toggle('open');
+}
+
+// TAGLINES
+function renderTaglines() {
+  const container = document.getElementById('taglinesList');
+  container.innerHTML = '';
+  (epk.taglines || []).forEach((t, i) => {
+    const tag = document.createElement('div');
+    tag.className = 'tag';
+    tag.innerHTML = `${t} <button class="tag-remove" onclick="removeTagline(${i})">×</button>`;
+    container.appendChild(tag);
+  });
+}
+function addTagline() {
+  const val = document.getElementById('newTagline').value.trim();
+  if (!val) return;
+  epk.taglines = epk.taglines || [];
+  epk.taglines.push(val);
+  document.getElementById('newTagline').value = '';
+  renderTaglines(); persistUser(); showSaveBanner();
+}
+function removeTagline(i) { epk.taglines.splice(i, 1); renderTaglines(); persistUser(); showSaveBanner(); }
+document.getElementById('newTagline').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addTagline(); } });
+
+// CREDENTIALS
+function renderCredentials() {
+  const container = document.getElementById('credentialsList');
+  container.innerHTML = '';
+  (epk.credentials || []).forEach((c, i) => {
+    const tag = document.createElement('div');
+    tag.className = 'tag';
+    tag.innerHTML = `${c} <button class="tag-remove" onclick="removeCredential(${i})">×</button>`;
+    container.appendChild(tag);
+  });
+}
+function addCredential() {
+  const val = document.getElementById('newCredential').value.trim();
+  if (!val) return;
+  epk.credentials = epk.credentials || [];
+  epk.credentials.push(val);
+  document.getElementById('newCredential').value = '';
+  renderCredentials(); persistUser(); showSaveBanner();
+}
+function removeCredential(i) { epk.credentials.splice(i, 1); renderCredentials(); persistUser(); showSaveBanner(); }
+document.getElementById('newCredential').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addCredential(); } });
+
+
+// CREDITS
+let editingCreditIdx = -1;
+function renderCredits() {
+  const container = document.getElementById('creditsList');
+  container.innerHTML = '';
+  (epk.credits || []).forEach((c, i) => {
+    container.innerHTML += `
+      <div class="editable-card">
+        <div class="editable-card-header">
+          <div>
+            <div class="editable-card-title">${c.artist}</div>
+            <div class="editable-card-subtitle">${c.role}${c.years ? ' · ' + c.years : ''}</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-card-action" onclick="editCredit(${i})">Edit</button>
+            <button class="btn-card-action btn-card-delete" onclick="removeCredit(${i})">Delete</button>
+          </div>
+        </div>
+        <p style="font-size:0.85rem;color:var(--gray);line-height:1.6">${c.desc || ''}</p>
+        ${c.photo ? `<img src="${c.photo}" style="width:80px;height:60px;object-fit:cover;margin-top:0.75rem;border:1px solid rgba(201,168,76,0.2)" onerror="this.style.display='none'">` : ''}
+      </div>`;
+  });
+}
+function editCredit(i) {
+  editingCreditIdx = i;
+  const c = epk.credits[i];
+  document.getElementById('newCreditArtist').value = c.artist || '';
+  document.getElementById('newCreditYears').value = c.years || '';
+  document.getElementById('newCreditRole').value = c.role || '';
+  document.getElementById('newCreditDesc').value = c.desc || '';
+  document.getElementById('addCreditForm').classList.add('open');
+  document.getElementById('addCreditForm').scrollIntoView({ behavior: 'smooth' });
+  document.querySelector('#addCreditForm .add-form-title').textContent = 'Edit Credit';
+}
+function addCredit() {
+  const artist = document.getElementById('newCreditArtist').value.trim();
+  const years = document.getElementById('newCreditYears').value.trim();
+  const role = document.getElementById('newCreditRole').value.trim();
+  const desc = document.getElementById('newCreditDesc').value.trim();
+  if (!artist || !role) return;
+  epk.credits = epk.credits || [];
+  if (editingCreditIdx >= 0) {
+    epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], artist, years, role, desc };
+    editingCreditIdx = -1;
+    document.querySelector('#addCreditForm .add-form-title').textContent = 'New Credit';
+  } else {
+    epk.credits.push({ artist, years, role, desc });
+  }
+  ['newCreditArtist','newCreditYears','newCreditRole','newCreditDesc'].forEach(id => document.getElementById(id).value = '');
+  toggleAddForm('addCreditForm');
+  renderCredits(); persistUser(); showSaveBanner();
+}
+function removeCredit(i) { epk.credits.splice(i, 1); renderCredits(); persistUser(); showSaveBanner(); }
+
+// TRACKS
+let editingTrackIdx = -1;
+function renderTracks() {
+  const container = document.getElementById('tracksList');
+  container.innerHTML = '';
+  (epk.tracks || []).forEach((t, i) => {
+    container.innerHTML += `
+      <div class="editable-card">
+        <div class="editable-card-header">
+          <div style="flex:1">
+            <div class="editable-card-title">${t.title} ${t.tag ? `<span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.2rem 0.5rem;margin-left:0.5rem">${t.tag}</span>` : ''}</div>
+            <div class="editable-card-subtitle">${t.artist || ''} ${t.role ? '· ' + t.role : ''}</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-card-action" onclick="editTrack(${i})">Edit</button>
+            <button class="btn-card-action btn-card-delete" onclick="removeTrack(${i})">Delete</button>
+          </div>
+        </div>
+        ${t.link ? `<a href="${t.link}" target="_blank" style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold);letter-spacing:0.1em">Listen →</a>` : ''}
+      </div>`;
+  });
+}
+function editTrack(i) {
+  editingTrackIdx = i;
+  const t = epk.tracks[i];
+  document.getElementById('newTrackTitle').value = t.title || '';
+  document.getElementById('newTrackArtist').value = t.artist || '';
+  document.getElementById('newTrackRole').value = t.role || '';
+  document.getElementById('newTrackTag').value = t.tag || '';
+  document.getElementById('newTrackLink').value = t.link || '';
+  document.getElementById('addTrackForm').classList.add('open');
+  document.getElementById('addTrackForm').scrollIntoView({ behavior: 'smooth' });
+  document.querySelector('#addTrackForm .add-form-title').textContent = 'Edit Track';
+}
+function addTrack() {
+  const title = document.getElementById('newTrackTitle').value.trim();
+  const artist = document.getElementById('newTrackArtist').value.trim();
+  const role = document.getElementById('newTrackRole').value.trim();
+  const tag = document.getElementById('newTrackTag').value;
+  const link = document.getElementById('newTrackLink').value.trim();
+  if (!title) return;
+  epk.tracks = epk.tracks || [];
+  if (editingTrackIdx >= 0) {
+    epk.tracks[editingTrackIdx] = { title, artist, role, tag, link };
+    editingTrackIdx = -1;
+    document.querySelector('#addTrackForm .add-form-title').textContent = 'New Track';
+  } else {
+    epk.tracks.push({ title, artist, role, tag, link });
+  }
+  ['newTrackTitle','newTrackArtist','newTrackRole','newTrackLink'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('newTrackTag').value = '';
+  toggleAddForm('addTrackForm');
+  renderTracks(); persistUser(); showSaveBanner();
+}
+function removeTrack(i) { epk.tracks.splice(i, 1); renderTracks(); persistUser(); showSaveBanner(); }
+
+// VIDEOS
+let editingVideoIdx = -1;
+function renderVideos() {
+  const container = document.getElementById('videosList');
+  container.innerHTML = '';
+  (epk.videos || []).forEach((v, i) => {
+    container.innerHTML += `
+      <div class="editable-card">
+        <div class="editable-card-header">
+          <div style="flex:1">
+            <div class="editable-card-title">${v.title}</div>
+            <div class="editable-card-subtitle" style="word-break:break-all"><a href="${v.url}" target="_blank" style="color:var(--gold)">${v.url}</a></div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-card-action" onclick="editVideo(${i})">Edit</button>
+            <button class="btn-card-action btn-card-delete" onclick="removeVideo(${i})">Delete</button>
+          </div>
+        </div>
+      </div>`;
+  });
+}
+function editVideo(i) {
+  editingVideoIdx = i;
+  const v = epk.videos[i];
+  document.getElementById('newVideoTitle').value = v.title || '';
+  document.getElementById('newVideoUrl').value = v.url || '';
+  document.getElementById('newVideoThumb').value = v.thumb || '';
+  document.getElementById('addVideoForm').classList.add('open');
+  document.getElementById('addVideoForm').scrollIntoView({ behavior: 'smooth' });
+  document.querySelector('#addVideoForm .add-form-title').textContent = 'Edit Video';
+}
+
+function addVideo() {
+  const title = document.getElementById('newVideoTitle').value.trim();
+  const url = document.getElementById('newVideoUrl').value.trim();
+  const thumb = document.getElementById('newVideoThumb').value.trim();
+  if (!title || !url) return;
+  epk.videos = epk.videos || [];
+  if (editingVideoIdx >= 0) {
+    epk.videos[editingVideoIdx] = { title, url, thumb };
+    editingVideoIdx = -1;
+    document.querySelector('#addVideoForm .add-form-title').textContent = 'New Video';
+  } else {
+    epk.videos.push({ title, url, thumb });
+  }
+  document.getElementById('newVideoTitle').value = '';
+  document.getElementById('newVideoUrl').value = '';
+  document.getElementById('newVideoThumb').value = '';
+  toggleAddForm('addVideoForm');
+  renderVideos(); persistUser(); showSaveBanner();
+}
+function removeVideo(i) { epk.videos.splice(i, 1); renderVideos(); persistUser(); showSaveBanner(); }
+
+// PHOTOS
+let editingPhotoIdx = -1;
+function renderPhotos() {
+  const container = document.getElementById('photosList');
+  container.innerHTML = '';
+  (epk.photos || []).forEach((p, i) => {
+    container.innerHTML += `
+      <div class="editable-card" style="display:flex;gap:1rem;align-items:center">
+        <img src="${p.url}" style="width:80px;height:60px;object-fit:cover;flex-shrink:0;border:1px solid rgba(201,168,76,0.15)" onerror="this.style.display='none'">
+        <div style="flex:1">
+          <div class="editable-card-title" style="font-size:0.95rem">${p.caption || '(no caption)'}</div>
+          ${p.group ? `<div class="editable-card-subtitle">${p.group}</div>` : ''}
+        </div>
+        <div class="card-actions">
+          <button class="btn-card-action" onclick="editPhoto(${i})">Edit</button>
+          <button class="btn-card-action btn-card-delete" onclick="removePhoto(${i})">Delete</button>
+        </div>
+      </div>`;
+  });
+}
+function editPhoto(i) {
+  editingPhotoIdx = i;
+  const p = epk.photos[i];
+  document.getElementById('newPhotoCaption').value = p.caption || '';
+  document.getElementById('newPhotoUrl').value = p.url || '';
+  document.getElementById('newPhotoGroup').value = p.group || '';
+  document.getElementById('addPhotoForm').classList.add('open');
+  document.getElementById('addPhotoForm').scrollIntoView({ behavior: 'smooth' });
+  document.querySelector('#addPhotoForm .add-form-title').textContent = 'Edit Photo';
+}
+function addPhoto() {
+  const caption = document.getElementById('newPhotoCaption').value.trim();
+  const url = document.getElementById('newPhotoUrl').value.trim();
+  const group = document.getElementById('newPhotoGroup').value.trim();
+  if (!url) return;
+  epk.photos = epk.photos || [];
+  if (editingPhotoIdx >= 0) {
+    epk.photos[editingPhotoIdx] = { caption, url, group };
+    editingPhotoIdx = -1;
+    document.querySelector('#addPhotoForm .add-form-title').textContent = 'New Photo';
+  } else {
+    epk.photos.push({ caption, url, group });
+  }
+  document.getElementById('newPhotoCaption').value = '';
+  document.getElementById('newPhotoUrl').value = '';
+  document.getElementById('newPhotoGroup').value = '';
+  toggleAddForm('addPhotoForm');
+  renderPhotos(); persistUser(); showSaveBanner();
+}
+function removePhoto(i) { epk.photos.splice(i, 1); renderPhotos(); persistUser(); showSaveBanner(); }
+
+// ASSETS
+let editingAssetIdx = -1;
+function renderAssets() {
+  const container = document.getElementById('assetsList');
+  container.innerHTML = '';
+  (epk.assets || []).forEach((a, i) => {
+    container.innerHTML += `
+      <div class="editable-card">
+        <div class="editable-card-header">
+          <div>
+            <div class="editable-card-title">${a.title}</div>
+            <div class="editable-card-subtitle">${a.btnLabel || ''}</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-card-action" onclick="editAsset(${i})">Edit</button>
+            <button class="btn-card-action btn-card-delete" onclick="removeAsset(${i})">Delete</button>
+          </div>
+        </div>
+        <p style="font-size:0.85rem;color:var(--gray)">${a.desc || ''}</p>
+      </div>`;
+  });
+}
+function editAsset(i) {
+  editingAssetIdx = i;
+  const a = epk.assets[i];
+  document.getElementById('newAssetTitle').value = a.title || '';
+  document.getElementById('newAssetDesc').value = a.desc || '';
+  document.getElementById('newAssetBtn').value = a.btnLabel || '';
+  document.getElementById('newAssetUrl').value = a.url || '';
+  document.getElementById('addAssetForm').classList.add('open');
+  document.getElementById('addAssetForm').scrollIntoView({ behavior: 'smooth' });
+  document.querySelector('#addAssetForm .add-form-title').textContent = 'Edit Asset';
+}
+function addAsset() {
+  const title = document.getElementById('newAssetTitle').value.trim();
+  const desc = document.getElementById('newAssetDesc').value.trim();
+  const btnLabel = document.getElementById('newAssetBtn').value.trim();
+  const url = document.getElementById('newAssetUrl').value.trim();
+  if (!title) return;
+  epk.assets = epk.assets || [];
+  if (editingAssetIdx >= 0) {
+    epk.assets[editingAssetIdx] = { title, desc, btnLabel, url };
+    editingAssetIdx = -1;
+    document.querySelector('#addAssetForm .add-form-title').textContent = 'New Asset';
+  } else {
+    epk.assets.push({ title, desc, btnLabel, url });
+  }
+  ['newAssetTitle','newAssetDesc','newAssetBtn','newAssetUrl'].forEach(id => document.getElementById(id).value = '');
+  toggleAddForm('addAssetForm');
+  renderAssets(); persistUser(); showSaveBanner();
+}
+function removeAsset(i) { epk.assets.splice(i, 1); renderAssets(); persistUser(); showSaveBanner(); }
+
+// AWARDS
+function renderAwards() {
+  const container = document.getElementById('awardsList');
+  if (!container) return;
+  container.innerHTML = '';
+  (epk.awards || []).forEach((a, i) => {
+    container.innerHTML += `
+      <div class="editable-card">
+        <div class="editable-card-header">
+          <div>
+            <div class="editable-card-title">${a.title}</div>
+            <div class="editable-card-subtitle">${a.org || ''} ${a.year ? '· ' + a.year : ''}</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-card-action" onclick="editAward(${i})">Edit</button>
+            <button class="btn-card-action btn-card-delete" onclick="removeAward(${i})">Delete</button>
+          </div>
+        </div>
+        ${a.desc ? `<p style="font-size:0.85rem;color:var(--gray);margin-top:0.5rem">${a.desc}</p>` : ''}
+      </div>`;
+  });
+}
+let editingAwardIdx = -1;
+function editAward(i) {
+  editingAwardIdx = i;
+  const a = epk.awards[i];
+  document.getElementById('newAwardTitle').value = a.title || '';
+  document.getElementById('newAwardOrg').value = a.org || '';
+  document.getElementById('newAwardYear').value = a.year || '';
+  document.getElementById('newAwardType').value = a.type || 'award';
+  document.getElementById('newAwardDesc').value = a.desc || '';
+  document.getElementById('addAwardForm').classList.add('open');
+  document.querySelector('#addAwardForm .add-form-title').textContent = 'Edit Entry';
+}
+function addAward() {
+  const title = document.getElementById('newAwardTitle').value.trim();
+  const org = document.getElementById('newAwardOrg').value.trim();
+  const year = document.getElementById('newAwardYear').value.trim();
+  const type = document.getElementById('newAwardType').value;
+  const desc = document.getElementById('newAwardDesc').value.trim();
+  if (!title) return;
+  epk.awards = epk.awards || [];
+  if (editingAwardIdx >= 0) {
+    epk.awards[editingAwardIdx] = { title, org, year, type, desc };
+    editingAwardIdx = -1;
+    document.querySelector('#addAwardForm .add-form-title').textContent = 'New Entry';
+  } else {
+    epk.awards.push({ title, org, year, type, desc });
+  }
+  ['newAwardTitle','newAwardOrg','newAwardYear','newAwardDesc'].forEach(id => document.getElementById(id).value = '');
+  toggleAddForm('addAwardForm');
+  renderAwards(); persistUser(); showSaveBanner();
+}
+function removeAward(i) { epk.awards.splice(i, 1); renderAwards(); persistUser(); showSaveBanner(); }
+
+// SOCIAL LINKS
+function saveSocials() {
+  epk.socials = {
+    instagram: document.getElementById('socialInstagram').value.trim(),
+    facebook: document.getElementById('socialFacebook').value.trim(),
+    youtube: document.getElementById('socialYoutube').value.trim(),
+    spotify: document.getElementById('socialSpotify').value.trim(),
+    tiktok: document.getElementById('socialTiktok').value.trim(),
+    website: document.getElementById('socialWebsite').value.trim(),
+    linkedin: document.getElementById('socialLinkedin').value.trim(),
+  };
+  persistUser(); showSaveBanner();
+}
+
+function loadSocials() {
+  const s = epk.socials || {};
+  ['instagram','facebook','youtube','spotify','tiktok','website','linkedin'].forEach(k => {
+    const el = document.getElementById(`social${k.charAt(0).toUpperCase() + k.slice(1)}`);
+    if (el) el.value = s[k] || '';
+  });
+}
+
+// BOOKING TOGGLE
+function toggleBooking() {
+  epk.bookingEnabled = document.getElementById('bookingToggle').checked;
+  persistUser(); showSaveBanner();
+}
+
+function loadBookingToggle() {
+  const toggle = document.getElementById('bookingToggle');
+  if (toggle) toggle.checked = epk.bookingEnabled !== false;
+}
+
+function logout() {
+  localStorage.removeItem('porfolioid_session');
+  window.location.href = '/login.html';
+}
+
+init();
+</script>
+</body>
+</html>

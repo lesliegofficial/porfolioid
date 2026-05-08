@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PorfolioID — Your Industry Identity, Documented</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dark: #8B6914;
+    --black: #080808;
+    --dark: #0E0E0E;
+    --dark-2: #141414;
+    --dark-3: #1C1C1C;
+    --gray: #888;
+    --gray-light: #BBBBBB;
+    --white: #F5F3EE;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.98) 0%, transparent 100%);
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-logo span { color: var(--gold); }
+
+  .nav-actions { display: flex; gap: 1rem; align-items: center; }
+
+  .nav-link {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-link:hover { color: var(--gold); }
+
+  .btn-gold {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 0.7rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(201,168,76,0.4);
+    padding: 0.7rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 8rem 3rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 8vw, 8rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.4s;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold-light);
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--gray-light);
+    max-width: 560px;
+    margin: 0 auto 3rem;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.6s;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.8s;
+  }
+
+  .hero-ctas .btn-gold { padding: 1rem 2.5rem; font-size: 0.7rem; }
+  .hero-ctas .btn-outline { padding: 1rem 2.5rem; font-size: 0.7rem; }
+
+  .hero-proof {
+    display: flex;
+    gap: 4rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 1s;
+  }
+
+  .proof-item { text-align: center; }
+  .proof-number {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+  }
+  .proof-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-top: 0.4rem;
+    display: block;
+  }
+
+  /* DIVIDER LINE */
+  .line-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,168,76,0.2), transparent);
+  }
+
+  /* FEATURES */
+  .features {
+    padding: 8rem 3rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-eyebrow::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(201,168,76,0.3), transparent);
+    max-width: 200px;
+  }
+
+  .section-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    color: var(--gray-light);
+    font-size: 1rem;
+    max-width: 500px;
+    margin-bottom: 4rem;
+    line-height: 1.8;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.08);
+  }
+
+  .feature-card {
+    background: var(--dark-2);
+    padding: 2.5rem;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,168,76,0.45), transparent);
+  }
+  .feature-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(201,168,76,0.04), transparent);
+    pointer-events: none;
+  }
+  .feature-card:hover { background: var(--dark-3); }
+
+  .feature-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: block;
+    filter: drop-shadow(0 0 6px rgba(201,168,76,0.25));
+  }
+
+  .feature-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--white);
+  }
+
+  .feature-desc {
+    font-size: 0.9rem;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+
+  /* WHO IT'S FOR */
+  .who-section {
+    background: var(--dark-2);
+    padding: 8rem 3rem;
+  }
+  .who-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+  .who-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .who-card {
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 1.75rem;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .who-card:hover { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.03); }
+  .who-card-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .who-card-desc {
+    font-size: 0.85rem;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* EPK PREVIEW */
+  .preview-section {
+    padding: 8rem 3rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+  .preview-frame {
+    border: 1px solid rgba(201,168,76,0.15);
+    overflow: hidden;
+    position: relative;
+    margin-top: 3rem;
+  }
+  .preview-bar {
+    background: var(--dark-3);
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+  .preview-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+  .preview-url {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--gray);
+    margin-left: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+  .preview-content {
+    background: var(--dark-2);
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .preview-card {
+    background: var(--dark-3);
+    padding: 1.5rem;
+    border: 1px solid rgba(201,168,76,0.08);
+  }
+  .preview-card-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .preview-card-name {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+  .preview-card-name em { font-style: italic; color: var(--gold-light); }
+  .preview-card-role {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 1rem;
+  }
+  .preview-badge-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .preview-badge {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold);
+    padding: 0.35rem 0.75rem;
+  }
+  .preview-sections { display: flex; flex-direction: column; gap: 1rem; }
+  .preview-section-row {
+    background: var(--dark-3);
+    padding: 1.1rem 1.5rem;
+    border: 1px solid rgba(201,168,76,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .preview-section-name {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-light);
+  }
+  .preview-section-status {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* CTA BAND */
+  .cta-band {
+    text-align: center;
+    padding: 8rem 3rem;
+    position: relative;
+  }
+  .cta-band::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(201,168,76,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-band h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+  .cta-band h2 em { font-style: italic; color: var(--gold-light); }
+  .cta-band p {
+    color: var(--gray-light);
+    font-size: 1rem;
+    max-width: 480px;
+    margin: 0 auto 3rem;
+    line-height: 1.8;
+  }
+  .cta-band-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .cta-band-btns .btn-gold { padding: 1.1rem 3rem; font-size: 0.7rem; }
+  .cta-band-btns .btn-outline { padding: 1.1rem 3rem; font-size: 0.7rem; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(201,168,76,0.1);
+    padding: 2.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--gray);
+    letter-spacing: 0.1em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .features-grid { grid-template-columns: 1fr; }
+    .preview-content { grid-template-columns: 1fr; }
+    .hero-proof { gap: 2rem; }
+    footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Porfolio<span>ID</span></a>
+  <div class="nav-actions">
+    <a href="/login.html" class="nav-link">Sign In</a>
+    <a href="/signup.html" class="btn-gold">Get Started →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">El artista detrás del artista</p>
+  <h1 class="hero-title">
+    Your Career.<br>
+    <em>Documented.</em>
+  </h1>
+  <p class="hero-sub">The platform for the artist behind the artist. Your credits, your story, your industry identity — documented and ready to share.</p>
+  <div class="hero-ctas">
+    <a href="/signup.html" class="btn-gold">Create Your EPK — Free →</a>
+    <a href="/leslie-guerra.html" class="btn-outline">See a Live Example</a>
+  </div>
+  <div class="hero-proof">
+    <div class="proof-item">
+      <span class="proof-number">EPK</span>
+      <span class="proof-label">Electronic Press Kit</span>
+    </div>
+    <div class="proof-item">
+      <span class="proof-number">∞</span>
+      <span class="proof-label">Sections & Credits</span>
+    </div>
+    <div class="proof-item">
+      <span class="proof-number">1</span>
+      <span class="proof-label">Link to Share</span>
+    </div>
+  </div>
+</section>
+
+<div class="line-divider"></div>
+
+<!-- FEATURES -->
+<div class="features">
+  <div class="section-eyebrow">What you get</div>
+  <h2 class="section-heading">Everything a label wants to see.<br>Nothing they don't.</h2>
+  <p class="section-sub">Built from the inside — by someone who has been the artist behind the artist for 25 years.</p>
+  <div style="position:relative">
+    <div style="position:absolute;inset:-60px;background:radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 70%);pointer-events:none;z-index:0"></div>
+    <div style="position:absolute;inset:-1px;background:linear-gradient(135deg,rgba(201,168,76,0.35) 0%,transparent 35%,transparent 65%,rgba(201,168,76,0.15) 100%);pointer-events:none;z-index:0;border-radius:1px"></div>
+    <div class="features-grid" style="position:relative;z-index:1;box-shadow:0 0 80px rgba(201,168,76,0.08),0 0 160px rgba(201,168,76,0.04)">
+      <div class="feature-card">
+        <span class="feature-icon">🎤</span>
+        <div class="feature-title">Performance Credits</div>
+        <p class="feature-desc">Document every tour, every stage, every collaboration. Structured fields that read like a real industry resume.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎵</span>
+        <div class="feature-title">Music & Video</div>
+        <p class="feature-desc">Link your recordings, live sessions, and video appearances. Showcase the work that defines your career.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📸</span>
+        <div class="feature-title">Photo Gallery</div>
+        <p class="feature-desc">Slideshow galleries for live performance shots, behind-the-scenes, press photos, and more.</p>
+      </div>
+      <div class="feature-card" style="position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,0.4),transparent)"></div>
+        <span class="feature-icon">📋</span>
+        <div class="feature-title">Industry Bio</div>
+        <p class="feature-desc">A professional biography that reads the way the industry expects — not a social media caption.</p>
+      </div>
+      <div class="feature-card" style="position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,0.4),transparent)"></div>
+        <span class="feature-icon">📦</span>
+        <div class="feature-title">Downloadable Assets</div>
+        <p class="feature-desc">Resume, press kit, portfolio — all in one place, ready to share or download instantly.</p>
+      </div>
+      <div class="feature-card" style="position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,0.4),transparent)"></div>
+        <span class="feature-icon">📅</span>
+        <div class="feature-title">Booking Section</div>
+        <p class="feature-desc">A clean, direct booking page for live performances, studio sessions, and creative collaborations.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="line-divider"></div>
+
+<!-- WHO IT'S FOR -->
+<div class="who-section">
+  <div class="who-inner">
+    <div class="section-eyebrow">Who it's for</div>
+    <h2 class="section-heading">The artist behind the artist<br>deserves their own record.</h2>
+    <div class="who-grid">
+      <div class="who-card">
+        <div class="who-card-title">Vocalists</div>
+        <p class="who-card-desc">Background singers, touring vocalists, session artists — document every stage and studio credit.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-card-title">Recording Artists</div>
+        <p class="who-card-desc">Solo artists and group members — your discography, your story, your EPK.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-card-title">Music Directors</div>
+        <p class="who-card-desc">Showcase the tours you've led, the artists you've directed, the productions you've shaped.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-card-title">A&R / Label Staff</div>
+        <p class="who-card-desc">Industry-side professionals with credits that deserve proper documentation.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-card-title">Producers</div>
+        <p class="who-card-desc">Credits, catalog, and client history — presented with the weight your work deserves.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-card-title">Booking Agents</div>
+        <p class="who-card-desc">Send one link. Your clients' EPKs, always current, always professional.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EPK PREVIEW -->
+<div class="preview-section">
+  <div class="section-eyebrow">Live example</div>
+  <h2 class="section-heading">See what your EPK looks like.</h2>
+  <p class="section-sub" style="margin-bottom:0">Real artist. Real credits. Built on PorfolioID.</p>
+  <div class="preview-frame">
+    <div class="preview-bar">
+      <div class="preview-dot" style="background:#FF5F57"></div>
+      <div class="preview-dot" style="background:#FEBC2E"></div>
+      <div class="preview-dot" style="background:#28C840"></div>
+      <span class="preview-url">porfolioid.com/leslie-guerra</span>
+    </div>
+    <div class="preview-content">
+      <div>
+        <div class="preview-card">
+          <div class="preview-card-label">Electronic Press Kit</div>
+          <div class="preview-card-name">Leslie<br><em>Guerra</em></div>
+          <div class="preview-card-role">International Vocalist · Recording Artist</div>
+          <div class="preview-badge-row">
+            <span class="preview-badge">ASCAP</span>
+            <span class="preview-badge">SAG-AFTRA</span>
+            <span class="preview-badge">SoundExchange</span>
+          </div>
+        </div>
+      </div>
+      <div class="preview-sections">
+        <div class="preview-section-row">
+          <span class="preview-section-name">Biography</span>
+          <span class="preview-section-status">25+ Years · Florida, USA</span>
+        </div>
+        <div class="preview-section-row">
+          <span class="preview-section-name">Credits</span>
+          <span class="preview-section-status">Don Omar · J Álvarez · Sony Music Latin</span>
+        </div>
+        <div class="preview-section-row">
+          <span class="preview-section-name">Music</span>
+          <span class="preview-section-status">Live tracks · Recording credits</span>
+        </div>
+        <div class="preview-section-row">
+          <span class="preview-section-name">Video</span>
+          <span class="preview-section-status">Live performance footage</span>
+        </div>
+        <div class="preview-section-row">
+          <span class="preview-section-name">Booking</span>
+          <span class="preview-section-status">Now accepting inquiries</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:2rem;">
+    <a href="/leslie-guerra.html" class="btn-outline">View Full EPK →</a>
+  </div>
+</div>
+
+<div class="line-divider"></div>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <h2>The artist behind the artist<br><em>has a name.</em></h2>
+  <p>Stop sending PDFs. Stop linking to outdated bios. Build your EPK on PorfolioID and send one link that says everything.</p>
+  <div class="cta-band-btns">
+    <a href="/signup.html" class="btn-gold">Create Your Free EPK →</a>
+    <a href="/login.html" class="btn-outline">Sign In</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Porfolio<span>ID</span></div>
+  <div class="footer-links">
+    <a href="/leslie-guerra.html">Example EPK</a>
+    <a href="/login.html">Sign In</a>
+    <a href="/signup.html">Get Started</a>
+  </div>
+  <div class="footer-copy">© 2025 PorfolioID. All rights reserved.</div>
+</footer>
+
+</body>
+</html>

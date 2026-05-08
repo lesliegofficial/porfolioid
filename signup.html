@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account — PorfolioID</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --gold: #C9A84C; --gold-light: #E8C97A; --black: #080808; --dark: #0E0E0E; --dark-2: #141414; --dark-3: #1C1C1C; --gray: #888; --gray-light: #BBBBBB; --white: #F5F3EE; --font-display: 'Playfair Display', Georgia, serif; --font-body: 'DM Sans', sans-serif; --font-mono: 'DM Mono', monospace; }
+  body { background: var(--black); color: var(--white); font-family: var(--font-body); min-height: 100vh; display: flex; flex-direction: column; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.4; }
+  nav { padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(201,168,76,0.08); }
+  .nav-logo { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--gold); }
+  .nav-link { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); text-decoration: none; }
+  .auth-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; padding: 4rem 2rem; }
+  .auth-box { width: 100%; max-width: 480px; border: 1px solid rgba(201,168,76,0.15); background: var(--dark-2); padding: 3rem; animation: fadeUp 0.6s ease forwards; }
+  .auth-eyebrow { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .auth-title { font-family: var(--font-display); font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.2; }
+  .auth-title em { font-style: italic; color: var(--gold-light); }
+  .auth-sub { font-size: 0.9rem; color: var(--gray); margin-bottom: 2.5rem; line-height: 1.6; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { margin-bottom: 1.5rem; }
+  label { display: block; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.5rem; }
+  input { width: 100%; background: var(--dark-3); border: 1px solid rgba(201,168,76,0.15); color: var(--white); padding: 0.85rem 1rem; font-family: var(--font-body); font-size: 0.95rem; font-weight: 300; transition: border-color 0.3s; outline: none; }
+  input:focus { border-color: rgba(201,168,76,0.5); }
+  input::placeholder { color: var(--gray); }
+  .slug-preview { font-family: var(--font-mono); font-size: 0.65rem; color: var(--gray); margin-top: 0.4rem; }
+  .slug-preview span { color: var(--gold); }
+  .btn-submit { width: 100%; background: var(--gold); color: var(--black); border: none; padding: 1rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; font-weight: 500; transition: all 0.3s; margin-top: 0.5rem; }
+  .btn-submit:hover { background: var(--gold-light); }
+  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  .terms-note { font-size: 0.78rem; color: var(--gray); text-align: center; margin-top: 1rem; }
+  .auth-footer { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--gray); }
+  .auth-footer a { color: var(--gold); text-decoration: none; }
+  .error-msg { background: rgba(220,50,50,0.1); border: 1px solid rgba(220,50,50,0.3); color: #ff6b6b; padding: 0.75rem 1rem; font-size: 0.85rem; margin-bottom: 1.5rem; display: none; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<nav>
+  <a href="/index.html" class="nav-logo">Porfolio<span>ID</span></a>
+  <a href="/login.html" class="nav-link">Sign In</a>
+</nav>
+<div class="auth-wrapper">
+  <div class="auth-box">
+    <div class="auth-eyebrow">Free to start</div>
+    <h1 class="auth-title">Create your<br><em>EPK</em></h1>
+    <p class="auth-sub">Your professional identity, documented. Build your Electronic Press Kit in minutes.</p>
+    <div class="error-msg" id="errorMsg"></div>
+    <form id="signupForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" id="firstName" placeholder="Leslie" required>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" id="lastName" placeholder="Guerra" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label>Your EPK URL</label>
+        <input type="text" id="slug" placeholder="leslie-guerra" required>
+        <div class="slug-preview">porfolioid.com/epk.html?slug=<span id="slugPreview">your-name</span></div>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Choose a strong password" required minlength="6">
+      </div>
+      <button type="submit" class="btn-submit" id="submitBtn">Create My EPK →</button>
+    </form>
+    <p class="terms-note">Free to create. No credit card required.</p>
+    <div class="auth-footer">Already have an account? <a href="/login.html">Sign in →</a></div>
+  </div>
+</div>
+<script>
+const slugInput = document.getElementById('slug');
+const slugPreview = document.getElementById('slugPreview');
+const firstNameInput = document.getElementById('firstName');
+const lastNameInput = document.getElementById('lastName');
+
+function updateSlug() {
+  const first = firstNameInput.value.trim().toLowerCase();
+  const last = lastNameInput.value.trim().toLowerCase();
+  if (first || last) {
+    const suggested = [first, last].filter(Boolean).join('-').replace(/[^a-z0-9-]/g, '-');
+    slugInput.value = suggested;
+    slugPreview.textContent = suggested || 'your-name';
+  }
+}
+
+firstNameInput.addEventListener('blur', updateSlug);
+lastNameInput.addEventListener('blur', updateSlug);
+slugInput.addEventListener('input', function() {
+  const clean = this.value.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+  this.value = clean;
+  slugPreview.textContent = clean || 'your-name';
+});
+
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const errorMsg = document.getElementById('errorMsg');
+  
+  const firstName = firstNameInput.value.trim();
+  const lastName = lastNameInput.value.trim();
+  const email = document.getElementById('email').value.trim();
+  const slug = slugInput.value.trim();
+  const password = document.getElementById('password').value;
+
+  btn.textContent = 'Creating...';
+  btn.disabled = true;
+  errorMsg.style.display = 'none';
+
+  const epk = {
+    name: `${firstName} ${lastName}`,
+    slug,
+    taglines: [],
+    stats: [
+      { number: '', label: 'Years Active' },
+      { number: '', label: 'Live Shows' },
+      { number: '', label: 'Credits' }
+    ],
+    bio: '', location: '', availability: '',
+    credentials: [], credits: [], tracks: [],
+    videos: [], photos: [], assets: [],
+    bookingEmail: email, bookingPhone: '',
+    bookingTagline: '', bookingNote: '',
+    bookingEnabled: true, heroImage: '', bioImage: '',
+    socials: {}, awards: []
+  };
+
+  try {
+    const res = await fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'signup', firstName, lastName, email, slug, password, epk })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      localStorage.setItem('porfolioid_session', JSON.stringify({
+        slug: data.user.slug,
+        name: `${firstName} ${lastName}`,
+        email,
+        ts: Date.now()
+      }));
+      window.location.href = '/dashboard.html';
+    } else {
+      errorMsg.textContent = data.error || 'Signup failed. Please try again.';
+      errorMsg.style.display = 'block';
+      btn.textContent = 'Create My EPK →';
+      btn.disabled = false;
+    }
+  } catch(err) {
+    errorMsg.textContent = 'Connection error. Please try again.';
+    errorMsg.style.display = 'block';
+    btn.textContent = 'Create My EPK →';
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

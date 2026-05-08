@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electronic Press Kit — PorfolioID</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #C9A84C; --gold-light: #E8C97A; --gold-dark: #8B6914;
+    --black: #080808; --dark: #0E0E0E; --dark-2: #141414; --dark-3: #1C1C1C; --dark-4: #242424;
+    --gray: #888; --gray-light: #BBBBBB; --white: #F5F3EE;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif; --font-mono: 'DM Mono', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: var(--font-body); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.4;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.25rem 3rem; display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(8px);
+  }
+  .nav-logo { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); opacity: 0.8; text-decoration: none; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-edit-btn { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); text-decoration: none; border: 1px solid rgba(201,168,76,0.3); padding: 0.4rem 0.9rem; transition: all 0.3s; display: none; }
+  .nav-edit-btn:hover { background: rgba(201,168,76,0.08); }
+  .nav-edit-btn.visible { display: inline; }
+
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
+  .hero-image-panel { position: relative; overflow: hidden; }
+  .hero-image-panel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, transparent 60%, var(--black) 100%), linear-gradient(to bottom, transparent 70%, var(--black) 100%); }
+  .hero-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; filter: grayscale(15%) contrast(1.05); }
+  .hero-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, var(--dark-2) 0%, var(--dark-3) 100%); display: flex; align-items: center; justify-content: center; }
+  .hero-placeholder-icon { font-size: 5rem; opacity: 0.2; }
+  .hero-content { display: flex; flex-direction: column; justify-content: center; padding: 8rem 4rem 4rem 3rem; position: relative; }
+  .hero-eyebrow { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; opacity: 0.9; }
+  .hero-name { font-family: var(--font-display); font-size: clamp(4rem, 7vw, 7.5rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.02em; color: var(--white); margin-bottom: 1.5rem; }
+  .hero-name em { font-style: italic; color: var(--gold-light); }
+  .hero-tagline { font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); margin-bottom: 3rem; line-height: 2; border-left: 2px solid var(--gold); padding-left: 1rem; }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 4rem; }
+  .btn-primary { background: var(--gold); color: var(--black); border: none; padding: 0.85rem 2rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s; font-weight: 500; }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn-secondary { background: transparent; color: var(--white); border: 1px solid rgba(201,168,76,0.4); padding: 0.85rem 2rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s; }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+  .hero-stats { display: flex; gap: 2.5rem; }
+  .hero-stat-number { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--gold); display: block; line-height: 1; }
+  .hero-stat-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); display: block; margin-top: 0.25rem; }
+
+  section { padding: 6rem 3rem; max-width: 1400px; margin: 0 auto; }
+  .section-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 1rem; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.3), transparent); max-width: 200px; }
+  .section-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 3rem; }
+  .divider { width: 100%; height: 1px; background: linear-gradient(to right, transparent, rgba(201,168,76,0.2), transparent); margin: 0 3rem; max-width: 1400px; }
+
+  /* BIO */
+  .bio-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 5rem; align-items: start; }
+  .bio-sidebar { position: sticky; top: 6rem; }
+  .bio-portrait { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: top; filter: grayscale(20%) contrast(1.05); margin-bottom: 2rem; }
+  .bio-contact-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.8rem; color: var(--gray-light); }
+  .bio-contact-dot { width: 4px; height: 4px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+  .bio-text p { font-size: 1rem; color: var(--gray-light); margin-bottom: 1.5em; line-height: 1.85; }
+  .bio-text p:first-child { font-size: 1.15rem; color: var(--white); font-weight: 400; }
+  .credentials-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
+  .credential-badge { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid rgba(201,168,76,0.4); color: var(--gold); padding: 0.4rem 0.85rem; }
+
+  /* CREDITS */
+  .credits-section { background: var(--dark-2); padding: 6rem 0; margin: 0; max-width: 100%; }
+  .credits-inner { max-width: 1400px; margin: 0 auto; padding: 0 3rem; }
+  .credits-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1px; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.1); }
+  .credit-card { background: var(--dark-2); padding: 2rem; transition: background 0.3s; }
+  .credit-card:hover { background: var(--dark-3); }
+  .credit-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; gap: 1rem; }
+  .credit-artist { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; }
+  .credit-years { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 0.25rem 0.6rem; white-space: nowrap; }
+  .credit-role { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+  .credit-desc { font-size: 0.85rem; color: var(--gray); line-height: 1.7; }
+
+  /* MUSIC */
+  .music-tracks { border-top: 1px solid rgba(201,168,76,0.1); }
+  .track-item { display: flex; align-items: center; gap: 2rem; padding: 1.25rem 0; border-bottom: 1px solid rgba(201,168,76,0.06); transition: background 0.2s; }
+  .track-item:hover { background: rgba(201,168,76,0.02); }
+  .track-num { font-family: var(--font-mono); font-size: 0.7rem; color: var(--gray); width: 2rem; text-align: right; flex-shrink: 0; }
+  .track-info { flex: 1; }
+  .track-title { font-size: 0.95rem; color: var(--white); font-weight: 400; margin-bottom: 0.2rem; display: flex; align-items: center; gap: 0.75rem; }
+  .track-tag { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; background: rgba(201,168,76,0.12); color: var(--gold); padding: 0.2rem 0.5rem; }
+  .track-artist { font-size: 0.8rem; color: var(--gray); }
+  .track-role { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); text-align: right; flex-shrink: 0; }
+
+  /* VIDEOS */
+  .videos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+  .video-card { background: var(--dark-3); overflow: hidden; cursor: pointer; position: relative; }
+  .video-thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: var(--dark-4); }
+  .video-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1rem; background: rgba(0,0,0,0.5); transition: all 0.3s; }
+  .video-card:hover .video-play { background: var(--gold); color: var(--black); }
+  .video-caption { padding: 0.75rem 1rem; font-size: 0.8rem; color: var(--gray-light); }
+
+  /* PHOTOS */
+  .gallery-section { background: var(--dark-2); padding: 6rem 0; max-width: 100%; }
+  .gallery-inner { max-width: 1400px; margin: 0 auto; padding: 0 3rem; }
+  .gallery-slideshows { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; height: 500px; margin-top: 2rem; }
+  .gallery-col { position: relative; overflow: hidden; background: var(--dark-3); }
+  .gallery-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease; }
+  .gallery-slide.active { opacity: 1; }
+  .gallery-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .gallery-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem 1rem 0.75rem; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.7); }
+  .gallery-nav { position: absolute; bottom: 0.5rem; right: 0.75rem; display: flex; gap: 4px; z-index: 2; }
+  .gallery-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: background 0.3s; }
+  .gallery-dot.active { background: var(--gold); }
+  .gallery-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); border: 1px solid rgba(201,168,76,0.2); color: var(--gold); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; font-size: 1rem; transition: all 0.3s; }
+  .gallery-arrow:hover { background: rgba(201,168,76,0.2); }
+  .gallery-arrow.prev { left: 0.5rem; }
+  .gallery-arrow.next { right: 0.5rem; }
+
+  /* ASSETS */
+  .assets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+  .asset-card { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.08); padding: 2rem; transition: border-color 0.3s; }
+  .asset-card:hover { border-color: rgba(201,168,76,0.25); }
+  .asset-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+  .asset-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .asset-desc { font-size: 0.85rem; color: var(--gray); line-height: 1.6; margin-bottom: 1.5rem; }
+  .asset-btn { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); text-decoration: none; transition: opacity 0.3s; }
+  .asset-btn:hover { opacity: 0.7; }
+
+  /* BOOKING */
+  .booking-section { background: linear-gradient(to bottom, var(--dark-2), var(--black)); padding: 8rem 3rem; text-align: center; }
+  .booking-inner { max-width: 700px; margin: 0 auto; }
+  .booking-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; }
+  .booking-title em { font-style: italic; color: var(--gold-light); }
+  .booking-sub { font-size: 1rem; color: var(--gray-light); margin-bottom: 0.75rem; }
+  .booking-note { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 3rem; }
+  .booking-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  footer { border-top: 1px solid rgba(201,168,76,0.08); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; }
+  .footer-logo { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; color: var(--gray); }
+  .footer-copy { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gray); letter-spacing: 0.1em; }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-image-panel { height: 50vh; }
+    .bio-grid { grid-template-columns: 1fr; }
+    .gallery-slideshows { grid-template-columns: 1fr; height: auto; }
+    .gallery-col { height: 300px; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/index.html" class="nav-logo">Electronic Press Kit</a>
+  <ul class="nav-links" id="navLinks"></ul>
+  <a href="/dashboard.html" class="nav-edit-btn" id="editBtn">Edit EPK</a>
+</nav>
+
+<div id="epkContent"></div>
+
+<footer>
+  <div class="footer-logo" id="footerLogo"></div>
+  <div class="footer-copy">All rights reserved</div>
+</footer>
+
+<script>
+function getSlugFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('slug');
+}
+
+function getEPKData(slug) {
+  const users = JSON.parse(localStorage.getItem('porfolioid_users') || '[]');
+  const user = users.find(u => u.slug === slug || u.epk?.slug === slug);
+  return user ? user.epk : null;
+}
+
+function getYouTubeThumb(url) {
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+  return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
+}
+
+function buildEPK(epk) {
+  const nameParts = (epk.name || 'Artist Name').split(' ');
+  const firstName = nameParts[0];
+  const lastName = nameParts.slice(1).join(' ');
+
+  // Build nav
+  const navLinks = document.getElementById('navLinks');
+  const sections = [
+    { id: 'bio', label: 'Biography' },
+    { id: 'credits', label: 'Credits' },
+    { id: 'music', label: 'Music' },
+    { id: 'videos', label: 'Video' },
+    { id: 'photos', label: 'Photos' },
+    { id: 'assets', label: 'Assets' },
+    { id: 'booking', label: 'Booking' },
+  ];
+  sections.forEach(s => {
+    navLinks.innerHTML += `<li><a href="#${s.id}">${s.label}</a></li>`;
+  });
+
+  document.getElementById('footerLogo').textContent = `${epk.name} — EPK 2025`;
+  document.title = `${epk.name} — Electronic Press Kit`;
+
+  // Show edit button if logged in as this artist
+  try {
+    const session = JSON.parse(localStorage.getItem('porfolioid_session') || 'null');
+    if (session && session.slug === epk.slug) {
+      document.getElementById('editBtn').classList.add('visible');
+    }
+  } catch(e) {}
+
+  const statsHTML = (epk.stats || []).filter(s => s.number).map(s => `
+    <div>
+      <span class="hero-stat-number">${s.number}</span>
+      <span class="hero-stat-label">${s.label}</span>
+    </div>`).join('');
+
+  const taglinesHTML = (epk.taglines || []).join('<br>');
+
+  const heroImgHTML = epk.heroImage
+    ? `<img class="hero-img" src="${epk.heroImage}" alt="${epk.name}" onerror="this.parentElement.innerHTML='<div class=hero-placeholder><div class=hero-placeholder-icon>🎤</div></div>'">`
+    : `<div class="hero-placeholder"><div class="hero-placeholder-icon">🎤</div></div>`;
+
+  const bioImgHTML = epk.bioImage
+    ? `<img class="bio-portrait" src="${epk.bioImage}" alt="${epk.name}" onerror="this.style.display='none'">`
+    : '';
+
+  const contactHTML = [
+    epk.location ? `<div class="bio-contact-item"><span class="bio-contact-dot"></span><span>Based in ${epk.location}</span></div>` : '',
+    epk.availability ? `<div class="bio-contact-item"><span class="bio-contact-dot"></span><span>${epk.availability}</span></div>` : '',
+    `<div class="bio-contact-item"><span class="bio-contact-dot"></span><span>Contact available upon request</span></div>`,
+  ].join('');
+
+  const credentialsHTML = (epk.credentials || []).length
+    ? `<div class="credentials-row">${epk.credentials.map(c => `<span class="credential-badge">${c}</span>`).join('')}</div>`
+    : '';
+
+  const bioParagraphs = (epk.bio || '').split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('');
+
+  const creditsHTML = (epk.credits || []).map(c => `
+    <div class="credit-card">
+      <div class="credit-header">
+        <div class="credit-artist">${c.artist}</div>
+        ${c.years ? `<span class="credit-years">${c.years}</span>` : ''}
+      </div>
+      <div class="credit-role">${c.role}</div>
+      <p class="credit-desc">${c.desc}</p>
+    </div>`).join('');
+
+  const tracksHTML = (epk.tracks || []).map((t, i) => {
+    const isMP3 = t.link && (t.link.includes('.mp3') || t.link.includes('cloudinary') || t.link.includes('.wav') || t.link.includes('.ogg'));
+    const linkHTML = t.link ? (isMP3 
+      ? `<audio controls style="width:100%;height:32px;margin-top:0.5rem;opacity:0.8;accent-color:var(--gold)" src="${t.link}"></audio>`
+      : `<a href="${t.link}" target="_blank" style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold);letter-spacing:0.1em">Listen →</a>`)
+      : '';
+    return `
+    <div class="track-item">
+      <span class="track-num">0${i+1}</span>
+      <div class="track-info">
+        <div class="track-title">${t.title} ${t.tag ? `<span class="track-tag">${t.tag}</span>` : ''}</div>
+        <div class="track-artist">${t.artist}</div>
+        ${linkHTML}
+      </div>
+      <div class="track-role">${t.role}</div>
+    </div>`;
+  }).join('');
+
+  const videosHTML = (epk.videos || []).map(v => {
+    const isMP4 = v.url && (v.url.includes('.mp4') || v.url.includes('.mov') || v.url.includes('.webm') || (v.url.includes('cloudinary') && !v.url.includes('youtube')));
+    const thumb = v.thumb || getYouTubeThumb(v.url);
+
+    if (isMP4) {
+      return `
+      <div class="video-card">
+        <video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain" ${v.thumb ? `poster="${v.thumb}"` : ''}>
+          <source src="${v.url}" type="video/mp4">
+        </video>
+        <div class="video-caption">${v.title}</div>
+      </div>`;
+    }
+    return `
+    <div class="video-card" onclick="window.open('${v.url}','_blank')">
+      ${thumb ? `<img class="video-thumb" src="${thumb}" alt="${v.title}" loading="lazy">` : `<div class="video-thumb" style="background:var(--dark-4);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:2rem">▶</div>`}
+      <div class="video-play">▶</div>
+      <div class="video-caption">${v.title}</div>
+    </div>`;
+  }).join('');
+
+  const assetsHTML = (epk.assets || []).map(a => `
+    <div class="asset-card">
+      <div class="asset-icon">📄</div>
+      <div class="asset-title">${a.title}</div>
+      <p class="asset-desc">${a.desc}</p>
+      ${a.url ? `<a href="${a.url}" class="asset-btn" target="_blank">${a.btnLabel || 'Download →'}</a>` : `<span class="asset-btn" style="opacity:0.4">${a.btnLabel || 'Coming Soon'}</span>`}
+    </div>`).join('');
+
+  const bookingEmail = epk.bookingEmail || '';
+  const bookingPhone = epk.bookingPhone || '';
+  const bookingTagline = epk.bookingTagline || 'Now booking live performances, studio sessions, and creative collaborations.';
+  const bookingNote = epk.bookingNote || 'Serious inquiries only';
+
+  document.getElementById('epkContent').innerHTML = `
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-image-panel">${heroImgHTML}</div>
+      <div class="hero-content">
+        <p class="hero-eyebrow">Electronic Press Kit</p>
+        <h1 class="hero-name">${firstName}<br><em>${lastName}</em></h1>
+        ${taglinesHTML ? `<p class="hero-tagline">${taglinesHTML}</p>` : ''}
+        <div class="hero-ctas">
+          <a href="#booking" class="btn-secondary">Book Now →</a>
+        </div>
+        ${statsHTML ? `<div class="hero-stats">${statsHTML}</div>` : ''}
+      </div>
+    </div>
+
+    <!-- BIO -->
+    ${epk.bio ? `
+    <section id="bio">
+      <div class="section-label">Biography</div>
+      <div class="bio-grid">
+        <div class="bio-sidebar">
+          ${bioImgHTML}
+          ${contactHTML}
+          ${credentialsHTML}
+        </div>
+        <div class="bio-text">${bioParagraphs}</div>
+      </div>
+    </section>
+    <div class="divider"></div>` : ''}
+
+    <!-- CREDITS -->
+    ${epk.credits?.length ? `
+    <div class="credits-section" id="credits">
+      <div class="credits-inner">
+        <div class="section-label">Credits & Collaborations</div>
+        <h2 class="section-title">The Record</h2>
+        <div class="credits-grid">${creditsHTML}</div>
+      </div>
+    </div>` : ''}
+
+    <!-- MUSIC -->
+    ${epk.tracks?.length ? `
+    <section id="music">
+      <div class="section-label">Live Music Tracks</div>
+      <h2 class="section-title">On Record</h2>
+      <div class="music-tracks">${tracksHTML}</div>
+    </section>
+    <div class="divider"></div>` : ''}
+
+    <!-- VIDEOS -->
+    ${epk.videos?.length ? `
+    <section id="videos">
+      <div class="section-label">Video</div>
+      <h2 class="section-title">Live & On Camera</h2>
+      <div class="videos-grid">${videosHTML}</div>
+    </section>
+    <div class="divider"></div>` : ''}
+
+    <!-- PHOTOS -->
+    ${epk.photos?.length ? `
+    <div class="gallery-section" id="photos">
+      <div class="gallery-inner">
+        <div class="section-label">Photos</div>
+        <h2 class="section-title">On Stage & Behind the Scenes</h2>
+        <div class="gallery-slideshows" id="gallerySlideshows"></div>
+      </div>
+    </div>` : ''}
+
+    <!-- ASSETS -->
+    ${epk.assets?.length ? `
+    <section id="assets">
+      <div class="section-label">Professional Assets</div>
+      <h2 class="section-title">Resources</h2>
+      <div class="assets-grid">${assetsHTML}</div>
+    </section>` : ''}
+
+    <!-- BOOKING -->
+    <div class="booking-section" id="booking">
+      <div class="booking-inner">
+        <h2 class="booking-title">Let's Create Something <em>Unforgettable</em></h2>
+        <p class="booking-sub">${bookingTagline}</p>
+        <p class="booking-note">${bookingNote}</p>
+        <div class="booking-ctas">
+          ${bookingEmail ? `<a href="mailto:${bookingEmail}" class="btn-primary">✉ Send Booking Inquiry</a>` : ''}
+          ${bookingPhone ? `<a href="tel:${bookingPhone}" class="btn-secondary">☎ Call to Discuss</a>` : ''}
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Build photo gallery if photos exist
+  if (epk.photos?.length) buildGallery(epk.photos);
+}
+
+function buildGallery(photos) {
+  // Group photos
+  const groups = {};
+  photos.forEach(p => {
+    const group = p.group || 'Gallery';
+    if (!groups[group]) groups[group] = [];
+    groups[group].push(p);
+  });
+
+  const groupArrays = Object.values(groups).slice(0, 3);
+  while (groupArrays.length < 3 && groupArrays.length > 0) {
+    groupArrays.push([...groupArrays[0]]);
+  }
+
+  const container = document.getElementById('gallerySlideshows');
+  if (!container) return;
+
+  const colStates = groupArrays.map(() => ({ current: 0 }));
+
+  groupArrays.forEach((photos, colIdx) => {
+    const col = document.createElement('div');
+    col.className = 'gallery-col';
+
+    photos.forEach((photo, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'gallery-slide' + (i === 0 ? ' active' : '');
+      slide.innerHTML = `<img src="${photo.url}" alt="${photo.caption}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1501386761578-eaa54b1abe08?w=600&q=80'"><div class="gallery-caption">${photo.caption}</div>`;
+      col.appendChild(slide);
+    });
+
+    const nav = document.createElement('div');
+    nav.className = 'gallery-nav';
+    photos.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => goToSlide(col, colStates[colIdx], i);
+      nav.appendChild(dot);
+    });
+    col.appendChild(nav);
+
+    const prev = document.createElement('div');
+    prev.className = 'gallery-arrow prev';
+    prev.innerHTML = '‹';
+    prev.onclick = (e) => { e.stopPropagation(); navigate(col, colStates[colIdx], photos.length, -1); };
+
+    const next = document.createElement('div');
+    next.className = 'gallery-arrow next';
+    next.innerHTML = '›';
+    next.onclick = (e) => { e.stopPropagation(); navigate(col, colStates[colIdx], photos.length, 1); };
+
+    col.appendChild(prev);
+    col.appendChild(next);
+    container.appendChild(col);
+
+    setInterval(() => navigate(col, colStates[colIdx], photos.length, 1), 4000 + colIdx * 1200);
+  });
+}
+
+function goToSlide(col, state, idx) {
+  col.querySelectorAll('.gallery-slide')[state.current].classList.remove('active');
+  col.querySelectorAll('.gallery-dot')[state.current].classList.remove('active');
+  state.current = idx;
+  col.querySelectorAll('.gallery-slide')[state.current].classList.add('active');
+  col.querySelectorAll('.gallery-dot')[state.current].classList.add('active');
+}
+
+function navigate(col, state, total, dir) {
+  const next = (state.current + dir + total) % total;
+  goToSlide(col, state, next);
+}
+
+// Init
+const slug = getSlugFromURL();
+if (slug) {
+  // Try API first
+  fetch('/api/epk', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'load', slug })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success && data.epk) {
+      buildEPK(data.epk);
+    } else {
+      // Fallback to localStorage for backwards compatibility
+      const epk = getEPKData(slug);
+      if (epk) {
+        buildEPK(epk);
+      } else {
+        document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">EPK not found. <a href="/index.html" style="color:var(--gold)">Return home →</a></div>';
+      }
+    }
+  })
+  .catch(() => {
+    // Fallback to localStorage
+    const epk = getEPKData(slug);
+    if (epk) {
+      buildEPK(epk);
+    } else {
+      document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">EPK not found. <a href="/index.html" style="color:var(--gold)">Return home →</a></div>';
+    }
+  });
+} else {
+  window.location.href = '/index.html';
+}
+</script>
+</body>
+</html>
