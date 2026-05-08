@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setting up PorfolioID...</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #080808; color: #F5F3EE; font-family: 'DM Mono', monospace; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; }
+  .logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; }
+  .logo span { color: #C9A84C; }
+  .status { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: #888; }
+  .status.done { color: #C9A84C; }
+  .status.error { color: #ff6b6b; }
+  .spinner { width: 32px; height: 32px; border: 2px solid rgba(201,168,76,0.2); border-top-color: #C9A84C; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .log { font-size: 0.6rem; color: #555; max-width: 400px; text-align: center; line-height: 2; }
+</style>
+</head>
+<body>
+<div class="logo">Porfolio<span>ID</span></div>
+<div class="spinner" id="spinner"></div>
+<div class="status" id="status">Connecting to database...</div>
+<div class="log" id="log"></div>
+
+<script>
+function log(msg) {
+  document.getElementById('log').innerHTML += msg + '<br>';
+}
+
+async function seed() {
+  const status = document.getElementById('status');
+
+  const leslieEPK = {
+    name: "Leslie Ann Guerra",
+    slug: "leslie-guerra",
+    taglines: ["International Vocalist", "Recording Artist", "Creative Professional"],
+    stats: [
+      { number: "25+", label: "Years Active" },
+      { number: "500+", label: "Live Shows" },
+      { number: "5", label: "Continents" }
+    ],
+    bio: `Leslie Guerra is a career vocalist, recording artist, and music industry professional with over 25 years of documented experience across performance, label operations, A&R, and artist development.
+
+Her performance credits include exclusive touring vocalist roles with reggaeton icons Don Omar (2006–2015) and J Álvarez (2015–2020), performing across major markets in Latin America, the United States, and Europe. She appears on King of Kings (En Directo), released October 13, 2007 on Machete Music — a live recording from Don Omar's King of Kings World Tour, released on DVD and nominated for Urban Album of the Year at the 2009 Premios Lo Nuestro.
+
+Guerra began her recording career as a member of Las Nenas del Swing, appearing on the album Rompe Corazones (1998), with credits on the singles "Chicle Bomba," "Desearía," and "Me Faltas Tu." She has also served as a backup vocalist for Melina León and performed alongside Wisin & Yandel, Arcangel, Daddy Yankee, and Natti Natasha on major stage productions during her tenure with Don Omar (2006–2015).
+
+On the industry side, Guerra served as A&R Coordinator at Sony Music Latin (2017–2018), working directly under Alex Gallardo, President of Sony Music Latin. She coordinated label and artist operations at Orfanato Music Group/Arrow Management (2013–2015), and served as Artist Logistics Coordinator at Adam Torres Concerts (2017–2020). She led marketing and PR work through NV Marketing (2019–2022).`,
+    location: "Florida, USA",
+    availability: "Available for tours & studio sessions",
+    credentials: ["ASCAP", "SAG-AFTRA", "SoundExchange"],
+    heroImage: "",
+    bioImage: "",
+    credits: [
+      { artist: "Don Omar", years: "2006–2015", role: "Exclusive Touring Vocalist", desc: "Exclusive touring vocalist for Don Omar's global productions for nearly a decade. Appears on King of Kings (En Directo) (Machete Music, 2007), nominated for Urban Album of the Year at the 2009 Premios Lo Nuestro. Hundreds of shows across five continents including Madison Square Garden, Radio City Music Hall, Luna Park (Buenos Aires), Festival de Viña del Mar (Chile), El Choliseo (Puerto Rico), American Airlines Arena, and MTV3 appearances." },
+      { artist: "J Álvarez", years: "2015–2020", role: "Exclusive Touring Vocalist", desc: "Exclusive touring vocalist across all major J Álvarez live productions. Visible on acoustic sessions including Te Necesito and Le Llegare. Venues include Luna Park (Buenos Aires), Festival de Viña del Mar, Movistar Arena, Hard Rock Live, Kia Center, Crypto.com Arena, Prudential Center, American Airlines Arena, and Stage 48 NYC." },
+      { artist: "Don Omar World Tour", years: "2006–2015", role: "Stage Vocalist", desc: "Performed hundreds of shows across five continents alongside Wisin & Yandel, Daddy Yankee, Arcangel, and Natti Natasha. Productions include King of Kings World Tour and Hecho en Puerto Rico (El Choliseo, 2013)." },
+      { artist: "Sony Music Latin", years: "2017–2018", role: "A&R Coordinator", desc: "A&R Coordinator reporting directly to Alex Gallardo, President of Sony Music Latin. Supported artist development, catalog management, and label operations." },
+      { artist: "Las Nenas del Swing", years: "1998", role: "Recording Artist", desc: 'Original recording artist on the album Rompe Corazones (1998), with credits on singles "Chicle Bomba," "Desearía," and "Me Faltas Tu."' },
+      { artist: "NV Marketing & PR", years: "2019–2022", role: "Marketing & Content Coordinator", desc: "Executed digital content and campaign rollouts for Manuel Turizo, Nicky Jam, Anuel AA, Lenny Tavarez, Nio Garcia, Chocquibtown, Casper Magico, and others." },
+      { artist: "Melina León", years: "2000–2005", role: "Backup Vocalist", desc: "Backup vocalist for Melina León across live performances and productions during a five-year tenure." },
+      { artist: "Arrow Management / Orfanato Music Group", years: "2013–2015", role: "Label Operations Coordinator", desc: "Coordinated label and artist operations at Orfanato Music Group and Arrow Management." }
+    ],
+    tracks: [
+      { title: "Nadie Como Tu", artist: "Wisin, Yandel, Don Omar", role: "Touring Vocalist", tag: "TOP TRACK", link: "" },
+      { title: "Hasta Abajo", artist: "Don Omar, Yankee, Yandel", role: "Touring Vocalist", tag: "", link: "" },
+      { title: "Yo Soy de Aqui", artist: "Don Omar, Yankee, Yandel, Arcangel", role: "Touring Vocalist", tag: "", link: "" },
+      { title: "Le Llegare — Unplugged", artist: "J Álvarez", role: "Visible — Background Vocals", tag: "", link: "https://www.youtube.com/watch?v=6Gu7QsOJWDk" },
+      { title: "Te Necesito — Unplugged", artist: "J Álvarez", role: "Visible — Background Vocals", tag: "", link: "https://www.youtube.com/watch?v=TeFSADFsPOc" },
+      { title: "Desearía", artist: "Las Nenas del Swing — Rompe Corazones", role: "Lead Vocalist", tag: "RECORDING CREDIT", link: "" },
+      { title: "Chicle Bomba", artist: "Las Nenas del Swing — Rompe Corazones", role: "Lead Vocalist", tag: "RECORDING CREDIT", link: "" },
+      { title: "Me Faltas Tu", artist: "Las Nenas del Swing — Rompe Corazones", role: "Lead Vocalist", tag: "RECORDING CREDIT", link: "" }
+    ],
+    videos: [
+      { title: "J Álvarez — Te Necesito (Unplugged)", url: "https://www.youtube.com/watch?v=TeFSADFsPOc", thumb: "" },
+      { title: "J Álvarez — Le Llegare (Unplugged)", url: "https://www.youtube.com/watch?v=6Gu7QsOJWDk", thumb: "" },
+      { title: "Don Omar — King of Kings En Directo", url: "https://www.youtube.com/watch?v=fJ9rUzIMcZQ", thumb: "" }
+    ],
+    photos: [],
+    assets: [
+      { title: "Resume", desc: "Professional background, 25+ years of touring history, label experience, and industry credentials.", btnLabel: "Download PDF →", url: "" },
+      { title: "Press Kit", desc: "Press materials, high-resolution photos, bio, and all media resources in one downloadable package.", btnLabel: "Download Press Kit →", url: "" }
+    ],
+    bookingEmail: "leslie@porfolioid.com",
+    bookingPhone: "+13057424013",
+    bookingTagline: "Now booking live performances, studio sessions, and creative collaborations.",
+    bookingNote: "Serious inquiries only",
+    bookingEnabled: true,
+    socials: {},
+    awards: [
+      { type: "degree", title: "BAS in Supervision and Management", org: "Polk State College", year: "In Progress", desc: "" },
+      { type: "certification", title: "Computer Support Technician Certificate", org: "Florida Technical College", year: "2025", desc: "Graduated with 4.0 GPA" }
+    ]
+  };
+
+  const leslieUser = {
+    firstName: "Leslie Ann",
+    lastName: "Guerra",
+    email: "leslie@porfolioid.com",
+    slug: "leslie-guerra",
+    password: "leslie2025",
+    epk: leslieEPK
+  };
+
+  // Step 1: Create the account via API
+  status.textContent = 'Creating account...';
+  log('Connecting to Netlify database...');
+
+  try {
+    const signupRes = await fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'signup', ...leslieUser })
+    });
+    const signupData = await signupRes.json();
+
+    if (signupData.success || signupData.error === 'Slug already taken' || signupData.error === 'Email already registered') {
+      log('Account ready ✓');
+      
+      // Step 2: Save EPK data
+      status.textContent = 'Saving EPK data...';
+      log('Writing career data to database...');
+
+      const saveRes = await fetch('/api/epk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save', slug: 'leslie-guerra', data: leslieEPK })
+      });
+      const saveData = await saveRes.json();
+
+      if (saveData.success) {
+        log('EPK data saved ✓');
+        
+        // Set session
+        localStorage.setItem('porfolioid_session', JSON.stringify({
+          slug: 'leslie-guerra',
+          name: 'Leslie Ann Guerra',
+          email: 'leslie@porfolioid.com',
+          ts: Date.now()
+        }));
+
+        status.textContent = 'Platform ready.';
+        status.classList.add('done');
+        document.getElementById('spinner').style.display = 'none';
+        log('Redirecting to homepage...');
+
+        await new Promise(r => setTimeout(r, 1500));
+        window.location.href = '/index.html';
+      } else {
+        throw new Error(saveData.error || 'Save failed');
+      }
+    } else {
+      throw new Error(signupData.error || 'Signup failed');
+    }
+  } catch(err) {
+    status.textContent = 'Setup failed: ' + err.message;
+    status.classList.add('error');
+    document.getElementById('spinner').style.display = 'none';
+    log('Error: ' + err.message);
+    log('Please check that the Netlify function is deployed correctly.');
+  }
+}
+
+seed();
+</script>
+</body>
+</html>
