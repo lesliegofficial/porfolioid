@@ -1,4 +1,4 @@
-const { getStore } = require('@netlify/blobs');
+const { getDeployStore } = require('@netlify/blobs');
 
 exports.handler = async (event) => {
   const headers = {
@@ -12,7 +12,7 @@ exports.handler = async (event) => {
     return { statusCode: 200, headers, body: '' };
   }
 
-  const store = getStore('epk-data');
+  const store = getDeployStore('epk-data');
 
   try {
     // GET - load EPK data by slug
