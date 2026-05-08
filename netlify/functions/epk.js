@@ -33,7 +33,6 @@ exports.handler = async (event, context) => {
     if (event.httpMethod === 'POST') {
       const body = JSON.parse(event.body);
       const { slug, data, action } = body;
-      if (!slug) return { statusCode: 400, headers, body: JSON.stringify({ error: 'slug required' }) };
 
       if (action === 'login') {
         const existing = await store.get(`user:${body.email}`, { type: 'json' });
@@ -42,6 +41,8 @@ exports.handler = async (event, context) => {
         const { password, ...safeUser } = existing;
         return { statusCode: 200, headers, body: JSON.stringify({ success: true, user: safeUser }) };
       }
+
+      if (!slug && action !== 'login') return { statusCode: 400, headers, body: JSON.stringify({ error: 'slug required' }) };
 
       if (action === 'signup') {
         const existingSlug = await store.get(`user:${slug}`, { type: 'json' });
