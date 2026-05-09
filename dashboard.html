@@ -730,6 +730,7 @@
 <script>
 const CLOUDINARY_CLOUD = 'djj8xe3gx';
 const CLOUDINARY_PRESET = 'dj8fqdhj';
+const CLOUDINARY_VIDEO_PRESET = 'mgjdexrj';
 
 async function uploadToCloudinary(file, onSuccess) {
   const formData = new FormData();
@@ -791,7 +792,7 @@ function triggerMp4Upload(inputId) {
     if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_PRESET);
+    formData.append('upload_preset', CLOUDINARY_VIDEO_PRESET);
     try {
       const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`, { method: 'POST', body: formData });
       const data = await res.json();
@@ -839,7 +840,7 @@ function triggerMp3Upload(inputId) {
     if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_PRESET);
+    formData.append('upload_preset', CLOUDINARY_VIDEO_PRESET);
     formData.append('resource_type', 'video'); // Cloudinary uses 'video' for audio files
     try {
       const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`, { method: 'POST', body: formData });
