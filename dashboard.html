@@ -1269,7 +1269,7 @@ function renderVideos() {
             <div class="editable-card-title">${v.title} ${v.year ? '(' + v.year + ')' : ''}</div>
             ${v.album ? `<div class="editable-card-subtitle">${v.album}</div>` : ''}
             ${v.desc ? `<div style="font-size:0.85rem;color:var(--gray);margin-top:0.3rem">${v.desc}</div>` : ''}
-            <div class="editable-card-subtitle" style="word-break:break-all;margin-top:0.3rem"><a href="${v.url}" target="_blank" style="color:var(--gold);font-size:0.7rem">${v.url}</a></div>
+            <div style="margin-top:0.4rem"><a href="${v.url}" target="_blank" style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.08em;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.2rem 0.6rem;">▶ WATCH</a></div>
           </div>
           <div class="card-actions">
             <button class="btn-card-action" onclick="editVideo(${i})">Edit</button>
