@@ -476,6 +476,20 @@
           </div>
           <input type="file" id="newTrackMp3File" accept="audio/*" style="display:none">
         </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Album Name</label>
+            <input type="text" id="newTrackAlbum" placeholder="e.g. King of Kings">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Year</label>
+            <input type="text" id="newTrackYear" placeholder="e.g. 2007">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Description</label>
+          <textarea id="newTrackDesc" placeholder="Brief description of your role or contribution..." rows="3" style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.15);color:var(--white);padding:0.85rem 1rem;font-family:var(--font-body);font-size:0.95rem;resize:vertical;outline:none;"></textarea>
+        </div>
         <div class="form-actions">
           <button class="btn-save" onclick="addTrack()">Add Track</button>
           <button class="btn-cancel" onclick="toggleAddForm('addTrackForm')">Cancel</button>
@@ -515,6 +529,20 @@
             <span style="font-size:0.75rem;color:var(--gray)">or paste image URL above</span>
           </div>
           <input type="file" id="newVideoThumbFile" accept="image/*" style="display:none">
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Album / Project Name</label>
+            <input type="text" id="newVideoAlbum" placeholder="e.g. King of Kings En Directo">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Year</label>
+            <input type="text" id="newVideoYear" placeholder="e.g. 2007">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Description</label>
+          <textarea id="newVideoDesc" placeholder="Brief description of this video..." rows="3" style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.15);color:var(--white);padding:0.85rem 1rem;font-family:var(--font-body);font-size:0.95rem;resize:vertical;outline:none;"></textarea>
         </div>
         <div class="form-actions">
           <button class="btn-save" onclick="addVideo()">Add Video</button>
@@ -1086,6 +1114,21 @@ document.getElementById('newCredential').addEventListener('keydown', e => { if (
 
 // CREDITS
 let editingCreditIdx = -1;
+
+function moveItem(section, idx, direction) {
+  const arr = epk[section] || [];
+  const newIdx = idx + direction;
+  if (newIdx < 0 || newIdx >= arr.length) return;
+  const temp = arr[idx];
+  arr[idx] = arr[newIdx];
+  arr[newIdx] = temp;
+  epk[section] = arr;
+  if (section === 'credits') renderCredits();
+  else if (section === 'tracks') renderTracks();
+  else if (section === 'videos') renderVideos();
+  persistUser(); showSaveBanner();
+}
+
 function renderCredits() {
   const container = document.getElementById('creditsList');
   container.innerHTML = '';
@@ -1093,16 +1136,20 @@ function renderCredits() {
     container.innerHTML += `
       <div class="editable-card">
         <div class="editable-card-header">
-          <div>
+          <div style="display:flex;flex-direction:column;gap:0.2rem;margin-right:0.75rem">
+            <button class="btn-card-action" onclick="moveItem('credits',${i},-1)" ${i===0?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▲</button>
+            <button class="btn-card-action" onclick="moveItem('credits',${i},1)" ${i===(epk.credits.length-1)?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▼</button>
+          </div>
+          <div style="flex:1">
             <div class="editable-card-title">${c.artist}</div>
             <div class="editable-card-subtitle">${c.role}${c.years ? ' · ' + c.years : ''}</div>
+            <p style="font-size:0.85rem;color:var(--gray);line-height:1.6;margin:0.3rem 0 0">${c.desc || ''}</p>
           </div>
           <div class="card-actions">
             <button class="btn-card-action" onclick="editCredit(${i})">Edit</button>
             <button class="btn-card-action btn-card-delete" onclick="removeCredit(${i})">Delete</button>
           </div>
         </div>
-        <p style="font-size:0.85rem;color:var(--gray);line-height:1.6">${c.desc || ''}</p>
         ${c.photo ? `<img src="${c.photo}" style="width:80px;height:60px;object-fit:cover;margin-top:0.75rem;border:1px solid rgba(201,168,76,0.2)" onerror="this.style.display='none'">` : ''}
       </div>`;
   });
@@ -1147,9 +1194,14 @@ function renderTracks() {
     container.innerHTML += `
       <div class="editable-card">
         <div class="editable-card-header">
+          <div style="display:flex;flex-direction:column;gap:0.2rem;margin-right:0.75rem">
+            <button class="btn-card-action" onclick="moveItem('tracks',${i},-1)" ${i===0?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▲</button>
+            <button class="btn-card-action" onclick="moveItem('tracks',${i},1)" ${i===(epk.tracks.length-1)?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▼</button>
+          </div>
           <div style="flex:1">
             <div class="editable-card-title">${t.title} ${t.tag ? `<span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.2rem 0.5rem;margin-left:0.5rem">${t.tag}</span>` : ''}</div>
-            <div class="editable-card-subtitle">${t.artist || ''} ${t.role ? '· ' + t.role : ''}</div>
+            <div class="editable-card-subtitle">${t.artist || ''} ${t.role ? '· ' + t.role : ''} ${t.album ? '· ' + t.album : ''} ${t.year ? '(' + t.year + ')' : ''}</div>
+            ${t.desc ? `<div style="font-size:0.85rem;color:var(--gray);margin-top:0.3rem">${t.desc}</div>` : ''}
           </div>
           <div class="card-actions">
             <button class="btn-card-action" onclick="editTrack(${i})">Edit</button>
@@ -1168,6 +1220,9 @@ function editTrack(i) {
   document.getElementById('newTrackRole').value = t.role || '';
   document.getElementById('newTrackTag').value = t.tag || '';
   document.getElementById('newTrackLink').value = t.link || '';
+  document.getElementById('newTrackAlbum').value = t.album || '';
+  document.getElementById('newTrackYear').value = t.year || '';
+  document.getElementById('newTrackDesc').value = t.desc || '';
   document.getElementById('addTrackForm').classList.add('open');
   document.getElementById('addTrackForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addTrackForm .add-form-title').textContent = 'Edit Track';
@@ -1178,16 +1233,19 @@ function addTrack() {
   const role = document.getElementById('newTrackRole').value.trim();
   const tag = document.getElementById('newTrackTag').value;
   const link = document.getElementById('newTrackLink').value.trim();
+  const album = document.getElementById('newTrackAlbum').value.trim();
+  const year = document.getElementById('newTrackYear').value.trim();
+  const desc = document.getElementById('newTrackDesc').value.trim();
   if (!title) return;
   epk.tracks = epk.tracks || [];
   if (editingTrackIdx >= 0) {
-    epk.tracks[editingTrackIdx] = { title, artist, role, tag, link };
+    epk.tracks[editingTrackIdx] = { title, artist, role, tag, link, album, year, desc };
     editingTrackIdx = -1;
     document.querySelector('#addTrackForm .add-form-title').textContent = 'New Track';
   } else {
-    epk.tracks.push({ title, artist, role, tag, link });
+    epk.tracks.push({ title, artist, role, tag, link, album, year, desc });
   }
-  ['newTrackTitle','newTrackArtist','newTrackRole','newTrackLink'].forEach(id => document.getElementById(id).value = '');
+  ['newTrackTitle','newTrackArtist','newTrackRole','newTrackLink','newTrackAlbum','newTrackYear','newTrackDesc'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('newTrackTag').value = '';
   toggleAddForm('addTrackForm');
   renderTracks(); persistUser(); showSaveBanner();
@@ -1203,9 +1261,15 @@ function renderVideos() {
     container.innerHTML += `
       <div class="editable-card">
         <div class="editable-card-header">
+          <div style="display:flex;flex-direction:column;gap:0.2rem;margin-right:0.75rem">
+            <button class="btn-card-action" onclick="moveItem('videos',${i},-1)" ${i===0?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▲</button>
+            <button class="btn-card-action" onclick="moveItem('videos',${i},1)" ${i===(epk.videos.length-1)?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▼</button>
+          </div>
           <div style="flex:1">
-            <div class="editable-card-title">${v.title}</div>
-            <div class="editable-card-subtitle" style="word-break:break-all"><a href="${v.url}" target="_blank" style="color:var(--gold)">${v.url}</a></div>
+            <div class="editable-card-title">${v.title} ${v.year ? '(' + v.year + ')' : ''}</div>
+            ${v.album ? `<div class="editable-card-subtitle">${v.album}</div>` : ''}
+            ${v.desc ? `<div style="font-size:0.85rem;color:var(--gray);margin-top:0.3rem">${v.desc}</div>` : ''}
+            <div class="editable-card-subtitle" style="word-break:break-all;margin-top:0.3rem"><a href="${v.url}" target="_blank" style="color:var(--gold);font-size:0.7rem">${v.url}</a></div>
           </div>
           <div class="card-actions">
             <button class="btn-card-action" onclick="editVideo(${i})">Edit</button>
@@ -1221,6 +1285,9 @@ function editVideo(i) {
   document.getElementById('newVideoTitle').value = v.title || '';
   document.getElementById('newVideoUrl').value = v.url || '';
   document.getElementById('newVideoThumb').value = v.thumb || '';
+  document.getElementById('newVideoAlbum').value = v.album || '';
+  document.getElementById('newVideoYear').value = v.year || '';
+  document.getElementById('newVideoDesc').value = v.desc || '';
   document.getElementById('addVideoForm').classList.add('open');
   document.getElementById('addVideoForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addVideoForm .add-form-title').textContent = 'Edit Video';
@@ -1230,18 +1297,19 @@ function addVideo() {
   const title = document.getElementById('newVideoTitle').value.trim();
   const url = document.getElementById('newVideoUrl').value.trim();
   const thumb = document.getElementById('newVideoThumb').value.trim();
+  const album = document.getElementById('newVideoAlbum').value.trim();
+  const year = document.getElementById('newVideoYear').value.trim();
+  const desc = document.getElementById('newVideoDesc').value.trim();
   if (!title || !url) return;
   epk.videos = epk.videos || [];
   if (editingVideoIdx >= 0) {
-    epk.videos[editingVideoIdx] = { title, url, thumb };
+    epk.videos[editingVideoIdx] = { title, url, thumb, album, year, desc };
     editingVideoIdx = -1;
     document.querySelector('#addVideoForm .add-form-title').textContent = 'New Video';
   } else {
-    epk.videos.push({ title, url, thumb });
+    epk.videos.push({ title, url, thumb, album, year, desc });
   }
-  document.getElementById('newVideoTitle').value = '';
-  document.getElementById('newVideoUrl').value = '';
-  document.getElementById('newVideoThumb').value = '';
+  ['newVideoTitle','newVideoUrl','newVideoThumb','newVideoAlbum','newVideoYear','newVideoDesc'].forEach(id => document.getElementById(id).value = '');
   toggleAddForm('addVideoForm');
   renderVideos(); persistUser(); showSaveBanner();
 }
