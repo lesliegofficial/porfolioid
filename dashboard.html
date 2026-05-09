@@ -948,8 +948,9 @@ async function init() {
 
   document.getElementById('topbarUser').textContent = session.name;
   document.getElementById('epkUrlDisplay').textContent = `porfolioid.com/epk.html?slug=${session.slug}`;
-  document.getElementById('epkUrlDisplay').href = `/epk.html?slug=${session.slug}`;
-  document.getElementById('viewEPKBtn').href = `/epk.html?slug=${session.slug}`;
+  document.getElementById('epkUrlDisplay').href = `/epk/${session.slug}`;
+  document.getElementById('epkUrlDisplay').textContent = `porfolioid.com/epk/${session.slug}`;
+  document.getElementById('viewEPKBtn').href = `/epk/${session.slug}`;
 
   loadAllFields();
 }
