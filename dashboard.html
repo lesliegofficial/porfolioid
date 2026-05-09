@@ -153,6 +153,11 @@
     border: 1px solid rgba(255,255,255,0.1); background: none; color: var(--gray);
     transition: all 0.2s;
   }
+  /* Credit photo gallery in dashboard */
+  .credit-photos-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+  .credit-photo-thumb { width: 80px; height: 60px; object-fit: cover; border: 1px solid rgba(201,168,76,0.2); cursor: pointer; }
+  .credit-photo-add-btn { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.35rem 0.75rem; cursor: pointer; border: 1px dashed rgba(201,168,76,0.3); background: none; color: var(--gold); transition: all 0.2s; margin-top: 0.5rem; }
+  .credit-photo-add-btn:hover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
   .btn-card-action:hover { border-color: var(--gold); color: var(--gold); }
   .btn-card-delete:hover { border-color: #ff6b6b; color: #ff6b6b; }
 
@@ -422,6 +427,12 @@
         <div class="field-group">
           <label class="field-label">Description</label>
           <textarea id="newCreditDesc" rows="4" placeholder="Describe your work, venues, notable moments, recordings..."></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Photos <span style="color:var(--gray);font-weight:400">(upload images for this credit)</span></label>
+          <div id="creditPhotosPreview" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;min-height:20px"></div>
+          <input type="file" id="creditPhotoInput" accept="image/*" style="display:none" multiple>
+          <button class="credit-photo-add-btn" onclick="triggerCreditPhotoUpload()">+ Add Photos</button>
         </div>
         <div class="form-actions">
           <button class="btn-save" onclick="addCredit()">Add Credit</button>
@@ -1134,6 +1145,15 @@ function renderCredits() {
   const container = document.getElementById('creditsList');
   container.innerHTML = '';
   (epk.credits || []).forEach((c, i) => {
+    const photos = c.photos || [];
+    const photosHTML = photos.length ? `
+      <div class="credit-photos-grid">
+        ${photos.map((url, pi) => `
+          <div style="position:relative;display:inline-block">
+            <img class="credit-photo-thumb" src="${url}" alt="Credit photo" onerror="this.style.display='none'">
+            <button onclick="removeCreditPhoto(${i},${pi})" style="position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.7);border:none;color:#fff;font-size:0.6rem;cursor:pointer;padding:1px 4px;line-height:1">✕</button>
+          </div>`).join('')}
+      </div>` : '';
     container.innerHTML += `
       <div class="editable-card">
         <div class="editable-card-header">
@@ -1144,14 +1164,19 @@ function renderCredits() {
           <div style="flex:1">
             <div class="editable-card-title">${c.artist}</div>
             <div class="editable-card-subtitle">${c.role}${c.years ? ' · ' + c.years : ''}</div>
-            <p style="font-size:0.85rem;color:var(--gray);line-height:1.6;margin:0.3rem 0 0">${c.desc || ''}</p>
+            <p style="font-size:0.85rem;color:var(--gray);line-height:1.6;margin:0.3rem 0 0;white-space:pre-line">${c.desc || ''}</p>
+            ${photosHTML}
+            ${photos.length < 20 ? `
+            <div style="margin-top:0.5rem">
+              <input type="file" id="creditPhotoInput_${i}" accept="image/*" multiple style="display:none">
+              <button class="credit-photo-add-btn" onclick="addPhotosToCredit(${i})">+ Add Photos</button>
+            </div>` : ''}
           </div>
           <div class="card-actions">
             <button class="btn-card-action" onclick="editCredit(${i})">Edit</button>
             <button class="btn-card-action btn-card-delete" onclick="removeCredit(${i})">Delete</button>
           </div>
         </div>
-        ${c.photo ? `<img src="${c.photo}" style="width:80px;height:60px;object-fit:cover;margin-top:0.75rem;border:1px solid rgba(201,168,76,0.2)" onerror="this.style.display='none'">` : ''}
       </div>`;
   });
 }
@@ -1162,9 +1187,66 @@ function editCredit(i) {
   document.getElementById('newCreditYears').value = c.years || '';
   document.getElementById('newCreditRole').value = c.role || '';
   document.getElementById('newCreditDesc').value = c.desc || '';
+  // Restore photos preview
+  pendingCreditPhotos = [...(c.photos || [])];
+  renderCreditPhotosPreview();
   document.getElementById('addCreditForm').classList.add('open');
   document.getElementById('addCreditForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addCreditForm .add-form-title').textContent = 'Edit Credit';
+}
+let pendingCreditPhotos = [];
+function renderCreditPhotosPreview() {
+  const preview = document.getElementById('creditPhotosPreview');
+  if (!preview) return;
+  preview.innerHTML = pendingCreditPhotos.map((url, i) => `
+    <div style="position:relative;display:inline-block">
+      <img src="${url}" style="width:70px;height:52px;object-fit:cover;border:1px solid rgba(201,168,76,0.3)" onerror="this.style.display='none'">
+      <button onclick="pendingCreditPhotos.splice(${i},1);renderCreditPhotosPreview()" style="position:absolute;top:1px;right:1px;background:rgba(0,0,0,0.75);border:none;color:#fff;font-size:0.55rem;cursor:pointer;padding:1px 3px;line-height:1">✕</button>
+    </div>`).join('');
+}
+function triggerCreditPhotoUpload() {
+  const input = document.getElementById('creditPhotoInput');
+  input.value = '';
+  input.click();
+  input.onchange = async function() {
+    const files = Array.from(input.files);
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_PRESET);
+      try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.secure_url) { pendingCreditPhotos.push(data.secure_url); renderCreditPhotosPreview(); }
+      } catch(e) { console.error('Upload failed', e); }
+    }
+  };
+}
+async function addPhotosToCredit(i) {
+  const input = document.getElementById(`creditPhotoInput_${i}`);
+  input.value = '';
+  input.click();
+  input.onchange = async function() {
+    const files = Array.from(input.files);
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_PRESET);
+      try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.secure_url) {
+          epk.credits[i].photos = epk.credits[i].photos || [];
+          epk.credits[i].photos.push(data.secure_url);
+          renderCredits(); persistUser(); showSaveBanner();
+        }
+      } catch(e) { console.error('Upload failed', e); }
+    }
+  };
+}
+function removeCreditPhoto(creditIdx, photoIdx) {
+  epk.credits[creditIdx].photos.splice(photoIdx, 1);
+  renderCredits(); persistUser(); showSaveBanner();
 }
 function addCredit() {
   const artist = document.getElementById('newCreditArtist').value.trim();
@@ -1174,12 +1256,14 @@ function addCredit() {
   if (!artist || !role) return;
   epk.credits = epk.credits || [];
   if (editingCreditIdx >= 0) {
-    epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], artist, years, role, desc };
+    epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], artist, years, role, desc, photos: [...pendingCreditPhotos] };
     editingCreditIdx = -1;
     document.querySelector('#addCreditForm .add-form-title').textContent = 'New Credit';
   } else {
-    epk.credits.push({ artist, years, role, desc });
+    epk.credits.push({ artist, years, role, desc, photos: [...pendingCreditPhotos] });
   }
+  pendingCreditPhotos = [];
+  renderCreditPhotosPreview();
   ['newCreditArtist','newCreditYears','newCreditRole','newCreditDesc'].forEach(id => document.getElementById(id).value = '');
   toggleAddForm('addCreditForm');
   renderCredits(); persistUser(); showSaveBanner();
