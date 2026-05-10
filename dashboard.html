@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- v2.1.0 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -425,8 +426,12 @@
           <input type="text" id="newCreditRole" placeholder="e.g. Exclusive Touring Vocalist">
         </div>
         <div class="field-group">
-          <label class="field-label">Description</label>
-          <textarea id="newCreditDesc" rows="4" placeholder="Describe your work, venues, notable moments, recordings..."></textarea>
+          <label class="field-label">Short Description <span style="color:var(--gray);font-weight:400">(displayed on card)</span></label>
+          <textarea id="newCreditDesc" rows="3" placeholder="Brief summary shown on the credit card..."></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Full Job Description <span style="color:var(--gray);font-weight:400">(shown when expanded)</span></label>
+          <textarea id="newCreditFullDesc" rows="8" placeholder="Detailed description of your role, responsibilities, and achievements..."></textarea>
         </div>
         <div class="field-group">
           <label class="field-label">Photos <span style="color:var(--gray);font-weight:400">(upload images for this credit)</span></label>
@@ -1187,6 +1192,7 @@ function editCredit(i) {
   document.getElementById('newCreditYears').value = c.years || '';
   document.getElementById('newCreditRole').value = c.role || '';
   document.getElementById('newCreditDesc').value = c.desc || '';
+  document.getElementById('newCreditFullDesc').value = c.fullDesc || '';
   // Restore photos preview
   pendingCreditPhotos = [...(c.photos || [])];
   renderCreditPhotosPreview();
@@ -1253,18 +1259,19 @@ function addCredit() {
   const years = document.getElementById('newCreditYears').value.trim();
   const role = document.getElementById('newCreditRole').value.trim();
   const desc = document.getElementById('newCreditDesc').value.trim();
+  const fullDesc = document.getElementById('newCreditFullDesc').value.trim();
   if (!artist || !role) return;
   epk.credits = epk.credits || [];
   if (editingCreditIdx >= 0) {
-    epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], artist, years, role, desc, photos: [...pendingCreditPhotos] };
+    epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], artist, years, role, desc, fullDesc, photos: [...pendingCreditPhotos] };
     editingCreditIdx = -1;
     document.querySelector('#addCreditForm .add-form-title').textContent = 'New Credit';
   } else {
-    epk.credits.push({ artist, years, role, desc, photos: [...pendingCreditPhotos] });
+    epk.credits.push({ artist, years, role, desc, fullDesc, photos: [...pendingCreditPhotos] });
   }
   pendingCreditPhotos = [];
   renderCreditPhotosPreview();
-  ['newCreditArtist','newCreditYears','newCreditRole','newCreditDesc'].forEach(id => document.getElementById(id).value = '');
+  ['newCreditArtist','newCreditYears','newCreditRole','newCreditDesc','newCreditFullDesc'].forEach(id => document.getElementById(id).value = '');
   toggleAddForm('addCreditForm');
   renderCredits(); persistUser(); showSaveBanner();
 }
