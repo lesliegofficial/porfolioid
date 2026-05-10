@@ -1154,7 +1154,7 @@ function renderCredits() {
     const photosHTML = photos.length ? `
       <div class="credit-photos-grid">
         ${photos.map((url, pi) => `
-          <div style="position:relative;display:inline-block">
+          <div draggable="true" ondragstart="dragSavedPhoto(event,${i},${pi})" ondragover="event.preventDefault()" ondrop="dropSavedPhoto(event,${i},${pi})" style="position:relative;display:inline-block;cursor:grab">
             <img class="credit-photo-thumb" src="${url}" alt="Credit photo" onerror="this.style.display='none'">
             <button onclick="removeCreditPhoto(${i},${pi})" style="position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.7);border:none;color:#fff;font-size:0.6rem;cursor:pointer;padding:1px 4px;line-height:1">✕</button>
           </div>`).join('')}
@@ -1205,10 +1205,24 @@ function renderCreditPhotosPreview() {
   const preview = document.getElementById('creditPhotosPreview');
   if (!preview) return;
   preview.innerHTML = pendingCreditPhotos.map((url, i) => `
-    <div style="position:relative;display:inline-block">
-      <img src="${url}" style="width:70px;height:52px;object-fit:cover;border:1px solid rgba(201,168,76,0.3)" onerror="this.style.display='none'">
+    <div draggable="true" data-index="${i}" ondragstart="dragCreditPhoto(event,${i})" ondragover="event.preventDefault()" ondrop="dropCreditPhoto(event,${i})" style="position:relative;display:inline-block;cursor:grab;opacity:1;transition:opacity 0.2s">
+      <img src="${url}" style="width:70px;height:52px;object-fit:cover;border:1px solid rgba(201,168,76,0.3);display:block" onerror="this.style.display='none'">
       <button onclick="pendingCreditPhotos.splice(${i},1);renderCreditPhotosPreview()" style="position:absolute;top:1px;right:1px;background:rgba(0,0,0,0.75);border:none;color:#fff;font-size:0.55rem;cursor:pointer;padding:1px 3px;line-height:1">✕</button>
+      <div style="text-align:center;font-size:0.5rem;color:var(--gray);font-family:var(--font-mono);margin-top:2px">⠿ drag</div>
     </div>`).join('');
+}
+let draggedCreditPhotoIdx = null;
+function dragCreditPhoto(e, i) {
+  draggedCreditPhotoIdx = i;
+  e.dataTransfer.effectAllowed = 'move';
+}
+function dropCreditPhoto(e, i) {
+  e.preventDefault();
+  if (draggedCreditPhotoIdx === null || draggedCreditPhotoIdx === i) return;
+  const moved = pendingCreditPhotos.splice(draggedCreditPhotoIdx, 1)[0];
+  pendingCreditPhotos.splice(i, 0, moved);
+  draggedCreditPhotoIdx = null;
+  renderCreditPhotosPreview();
 }
 function triggerCreditPhotoUpload() {
   const input = document.getElementById('creditPhotoInput');
@@ -1252,6 +1266,20 @@ async function addPhotosToCredit(i) {
 }
 function removeCreditPhoto(creditIdx, photoIdx) {
   epk.credits[creditIdx].photos.splice(photoIdx, 1);
+  renderCredits(); persistUser(); showSaveBanner();
+}
+let draggedSavedPhoto = null;
+function dragSavedPhoto(e, creditIdx, photoIdx) {
+  draggedSavedPhoto = { creditIdx, photoIdx };
+  e.dataTransfer.effectAllowed = 'move';
+}
+function dropSavedPhoto(e, creditIdx, photoIdx) {
+  e.preventDefault();
+  if (!draggedSavedPhoto || draggedSavedPhoto.creditIdx !== creditIdx || draggedSavedPhoto.photoIdx === photoIdx) return;
+  const photos = epk.credits[creditIdx].photos;
+  const moved = photos.splice(draggedSavedPhoto.photoIdx, 1)[0];
+  photos.splice(photoIdx, 0, moved);
+  draggedSavedPhoto = null;
   renderCredits(); persistUser(); showSaveBanner();
 }
 function addCredit() {
