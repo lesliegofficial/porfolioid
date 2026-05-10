@@ -96,7 +96,7 @@
   .credit-modal-meta { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
   .credit-modal-desc { font-size: 0.9rem; color: var(--gray); line-height: 1.85; white-space: pre-line; margin-bottom: 1.5rem; }
   .credit-modal-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.5rem; margin-top: 1.5rem; padding-bottom: 1rem; }
-  .credit-modal-photo { width: 100%; aspect-ratio: 4/3; object-fit: cover; cursor: pointer; border: 1px solid rgba(201,168,76,0.1); transition: opacity 0.2s; }
+  .credit-modal-photo { width: 100%; object-fit: contain; background: var(--dark-3); cursor: pointer; border: 1px solid rgba(201,168,76,0.1); transition: opacity 0.2s; max-height: 280px; }
   .credit-modal-photo:hover { opacity: 0.85; }
 
   /* MUSIC */
