@@ -95,7 +95,7 @@
   .credit-modal-artist { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem; }
   .credit-modal-meta { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
   .credit-modal-desc { font-size: 0.9rem; color: var(--gray); line-height: 1.85; white-space: pre-line; margin-bottom: 1.5rem; }
-  .credit-modal-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem; margin-top: 1.5rem; }
+  .credit-modal-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.5rem; margin-top: 1.5rem; padding-bottom: 1rem; }
   .credit-modal-photo { width: 100%; aspect-ratio: 4/3; object-fit: cover; cursor: pointer; border: 1px solid rgba(201,168,76,0.1); transition: opacity 0.2s; }
   .credit-modal-photo:hover { opacity: 0.85; }
 
@@ -275,7 +275,7 @@ function buildEPK(epk) {
 
   const creditsHTML = (epk.credits || []).map((c, i) => {
     const hasPhotos = c.photos && c.photos.length > 0;
-    const hasDetail = c.desc || hasPhotos;
+    const hasDetail = c.fullDesc || hasPhotos;
     return `
     <div class="credit-card" ${hasDetail ? `onclick="openCreditModal(${i})"` : ''}>
       <div class="credit-header">
@@ -556,7 +556,7 @@ function openCreditModal(i) {
   const photos = c.photos || [];
   document.getElementById('creditModalArtist').textContent = c.artist;
   document.getElementById('creditModalMeta').textContent = [c.role, c.years].filter(Boolean).join(' · ');
-  document.getElementById('creditModalDesc').textContent = c.desc || '';
+  document.getElementById('creditModalDesc').textContent = c.fullDesc || c.desc || '';
   document.getElementById('creditModalPhotos').innerHTML = photos.map(url =>
     `<img class="credit-modal-photo" src="${url}" alt="${c.artist}" loading="lazy" onclick="openLightbox('${url}')" onerror="this.style.display='none'">`
   ).join('');
