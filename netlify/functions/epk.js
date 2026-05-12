@@ -18,7 +18,7 @@ exports.handler = async (event, context) => {
     if (event.httpMethod === 'GET') {
       const slug = event.queryStringParameters?.slug;
       if (!slug) return { statusCode: 400, headers, body: JSON.stringify({ error: 'slug required' }) };
-      const data = await `epk:${slug}`, { type: 'json' });
+      const data = await store.get('epk:' + slug, { type: 'json' });
       if (!data) return { statusCode: 404, headers, body: JSON.stringify({ error: 'not found' }) };
       return { statusCode: 200, headers, body: JSON.stringify(data) };
     }
@@ -47,18 +47,18 @@ exports.handler = async (event, context) => {
         const newUser = { id: `user_${Date.now()}`, firstName: body.firstName, lastName: body.lastName, email: body.email, slug };
         await store.set(`user:${slug}`, JSON.stringify(newUser));
         await store.set(`email:${body.email}`, JSON.stringify({ slug }));
-        await store.set(`epk:${slug}`, JSON.stringify(body.epk));
+        await store.set('epk:' + slug, JSON.stringify(body.epk));
         const { password, ...safeUser } = newUser;
         return { statusCode: 200, headers, body: JSON.stringify({ success: true, user: safeUser }) };
       }
 
       if (action === 'save') {
-        await store.set(`epk:${slug}`, JSON.stringify(data));
+        await store.set('epk:' + slug, JSON.stringify(data));
         return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
       }
 
       if (action === 'load') {
-        const epk = await store.get(`epk:${slug}`, { type: 'json' });
+        const epk = await store.get('epk:' + slug, { type: 'json' });
         if (!epk) return { statusCode: 404, headers, body: JSON.stringify({ error: 'EPK not found' }) };
         return { statusCode: 200, headers, body: JSON.stringify({ success: true, epk }) };
       }
