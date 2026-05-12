@@ -652,7 +652,7 @@ function buildGallery(photos) {
     colPhotos.forEach((photo, i) => {
       const slide = document.createElement('div');
       slide.className = 'gallery-slide' + (i === 0 ? ' active' : '');
-      const pos = photo.position || 'top center';
+      const pos = photo.position || 'center 0%';
       slide.innerHTML = `<img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onclick="openLightbox('${photo.url}')" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;object-position:${pos};display:block"><div class="gallery-caption">${photo.caption || ''}</div>`;
       col.appendChild(slide);
     });
