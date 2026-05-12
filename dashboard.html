@@ -892,12 +892,15 @@
         </div>
         <div class="field-group">
           <label class="field-label">Image</label>
-          <input type="url" id="newPhotoUrl" placeholder="https://... or upload below">
+          <input type="url" id="newPhotoUrl" placeholder="https://... or upload below" oninput="updatePhotoPreview(this.value)">
           <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
             <button class="btn-add" onclick="triggerPhotoUpload('newPhotoFile')">↑ Upload Photo</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
           </div>
           <input type="file" id="newPhotoFile" accept="image/*" style="display:none">
+          <div id="photoPreviewBox" style="display:none;margin-top:0.75rem;position:relative;overflow:hidden;height:220px;background:var(--dark-3);border:1px solid rgba(201,168,76,0.15)">
+            <img id="photoPreviewImg" src="" style="width:100%;height:100%;object-fit:cover;object-position:top center" onerror="this.parentElement.style.display='none'">
+          </div>
         </div>
         <div class="field-row">
           <div class="field-group">
@@ -922,13 +925,13 @@
           <label class="field-label">Vertical Position <span style="color:var(--gray);font-weight:400">(adjust if heads are cut off)</span></label>
           <div style="display:flex;gap:0.5rem;margin-top:0.25rem">
             <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray)">
-              <input type="radio" name="photoPosition" id="photoPosTop" value="top center" style="accent-color:var(--gold)"> Top
+              <input type="radio" name="photoPosition" id="photoPosTop" value="top center" style="accent-color:var(--gold)" onchange="updatePreviewPosition(this.value)" checked> Top
             </label>
             <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray)">
-              <input type="radio" name="photoPosition" id="photoPosCenter" value="center center" style="accent-color:var(--gold)"> Center
+              <input type="radio" name="photoPosition" id="photoPosCenter" value="center center" style="accent-color:var(--gold)" onchange="updatePreviewPosition(this.value)"> Center
             </label>
             <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray)">
-              <input type="radio" name="photoPosition" id="photoPosBottom" value="bottom center" style="accent-color:var(--gold)"> Bottom
+              <input type="radio" name="photoPosition" id="photoPosBottom" value="bottom center" style="accent-color:var(--gold)" onchange="updatePreviewPosition(this.value)"> Bottom
             </label>
           </div>
         </div>
@@ -1985,7 +1988,7 @@ function renderPhotos() {
           <button class="btn-card-action" onclick="moveItem('photos',${i},-1)" ${i===0?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▲</button>
           <button class="btn-card-action" onclick="moveItem('photos',${i},1)" ${i===(epk.photos.length-1)?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▼</button>
         </div>
-        <img src="${p.url}" style="width:80px;height:60px;object-fit:cover;object-position:top center;flex-shrink:0;border:1px solid rgba(201,168,76,0.15)" onerror="this.style.display='none'">
+        <img src="${p.url}" style="width:100px;height:80px;object-fit:cover;object-position:${p.position||'top center'};flex-shrink:0;border:1px solid rgba(201,168,76,0.15)" onerror="this.style.display='none'">
         <div style="flex:1">
           ${badges ? `<div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.3rem">${badges}</div>` : ''}
           <div class="editable-card-title" style="font-size:0.95rem">${p.caption || '(no caption)'}</div>
@@ -2007,6 +2010,8 @@ function editPhoto(i) {
   document.getElementById('newPhotoFeatured').checked = p.featured || false;
   const pos = p.position || 'top center';
   document.querySelectorAll('input[name="photoPosition"]').forEach(r => r.checked = r.value === pos);
+  updatePhotoPreview(p.url || '');
+  if (document.getElementById('photoPreviewImg')) document.getElementById('photoPreviewImg').style.objectPosition = pos;
   document.getElementById('addPhotoForm').classList.add('open');
   document.getElementById('addPhotoForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addPhotoForm .add-form-title').textContent = 'Edit Photo';
@@ -2035,6 +2040,22 @@ function addPhoto() {
   toggleAddForm('addPhotoForm');
   renderPhotos(); persistUser(); showSaveBanner();
 }
+function updatePhotoPreview(url) {
+  const box = document.getElementById('photoPreviewBox');
+  const img = document.getElementById('photoPreviewImg');
+  if (url) {
+    box.style.display = 'block';
+    img.src = url;
+  } else {
+    box.style.display = 'none';
+  }
+}
+
+function updatePreviewPosition(value) {
+  const img = document.getElementById('photoPreviewImg');
+  if (img) img.style.objectPosition = value;
+}
+
 function removePhoto(i) { epk.photos.splice(i, 1); renderPhotos(); persistUser(); showSaveBanner(); }
 
 // ASSETS
