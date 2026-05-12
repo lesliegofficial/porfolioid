@@ -943,24 +943,57 @@
 
       <div class="add-form" id="addAssetForm">
         <div class="add-form-title">New Asset</div>
-        <div class="field-group">
-          <label class="field-label">Asset Title</label>
-          <input type="text" id="newAssetTitle" placeholder="e.g. Resume">
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Asset Title</label>
+            <input type="text" id="newAssetTitle" placeholder="e.g. Resume">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Category</label>
+            <select id="newAssetCategory">
+              <option value="">— Select Category —</option>
+              <option value="Resume">Resume</option>
+              <option value="Press Kit">Press Kit</option>
+              <option value="Tech Rider">Tech Rider</option>
+              <option value="Stage Plot">Stage Plot</option>
+              <option value="Bio">Bio</option>
+              <option value="Photo Pack">Photo Pack</option>
+              <option value="Contract Template">Contract Template</option>
+              <option value="Certificate">Certificate</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
         </div>
+
         <div class="field-group">
           <label class="field-label">Description</label>
           <textarea id="newAssetDesc" rows="2" placeholder="Brief description of what this asset contains..."></textarea>
         </div>
-        <div class="field-row">
-          <div class="field-group">
-            <label class="field-label">Button Label</label>
-            <input type="text" id="newAssetBtn" placeholder="e.g. Download PDF →">
+
+        <div class="field-group">
+          <label class="field-label">File</label>
+          <input type="url" id="newAssetUrl" placeholder="https://... or upload below">
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+            <button class="btn-add" onclick="triggerAssetUpload()">↑ Upload File</button>
+            <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
           </div>
-          <div class="field-group">
-            <label class="field-label">Link / URL</label>
-            <input type="url" id="newAssetUrl" placeholder="https://...">
-          </div>
+          <input type="file" id="assetFileInput" accept=".pdf,.doc,.docx,.zip,.jpg,.png,.mp3,.wav" style="display:none">
         </div>
+
+        <div class="field-group">
+          <label class="field-label">Button Label</label>
+          <input type="text" id="newAssetBtn" placeholder="e.g. Download PDF →">
+        </div>
+
+        <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-3);padding:0.85rem 1rem;border:1px solid rgba(201,168,76,0.1);margin-bottom:1.25rem">
+          <label style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);flex:1">Visibility</label>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="newAssetVisible" checked style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Visible on EPK</span>
+          </label>
+        </div>
+
         <div class="form-actions">
           <button class="btn-save" onclick="addAsset()">Add Asset</button>
           <button class="btn-cancel" onclick="toggleAddForm('addAssetForm')">Cancel</button>
@@ -1988,12 +2021,19 @@ function renderAssets() {
   const container = document.getElementById('assetsList');
   container.innerHTML = '';
   (epk.assets || []).forEach((a, i) => {
+    const badges = [
+      a.visible === false ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,100,100,0.1);color:#ff6b6b;padding:0.15rem 0.5rem">HIDDEN</span>' : '',
+      a.category ? `<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.08);color:var(--gray);padding:0.15rem 0.5rem">${a.category}</span>` : '',
+    ].filter(Boolean).join(' ');
+    const downloads = a.downloads || 0;
     container.innerHTML += `
-      <div class="editable-card">
+      <div class="editable-card" style="${a.visible===false?'opacity:0.5':''}">
         <div class="editable-card-header">
-          <div>
+          <div style="flex:1">
+            ${badges ? `<div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.3rem">${badges}</div>` : ''}
             <div class="editable-card-title">${a.title}</div>
             <div class="editable-card-subtitle">${a.btnLabel || ''}</div>
+            ${downloads > 0 ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gold);margin-top:0.3rem">↓ ${downloads} download${downloads !== 1 ? 's' : ''}</div>` : ''}
           </div>
           <div class="card-actions">
             <button class="btn-card-action" onclick="editAsset(${i})">Edit</button>
@@ -2008,28 +2048,64 @@ function editAsset(i) {
   editingAssetIdx = i;
   const a = epk.assets[i];
   document.getElementById('newAssetTitle').value = a.title || '';
+  document.getElementById('newAssetCategory').value = a.category || '';
   document.getElementById('newAssetDesc').value = a.desc || '';
   document.getElementById('newAssetBtn').value = a.btnLabel || '';
   document.getElementById('newAssetUrl').value = a.url || '';
+  document.getElementById('newAssetVisible').checked = a.visible !== false;
   document.getElementById('addAssetForm').classList.add('open');
   document.getElementById('addAssetForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addAssetForm .add-form-title').textContent = 'Edit Asset';
 }
+function triggerAssetUpload() {
+  const input = document.getElementById('assetFileInput');
+  input.value = '';
+  input.click();
+  input.onchange = async function() {
+    const file = input.files[0];
+    if (!file) return;
+    const btn = document.querySelector('[onclick="triggerAssetUpload()"]');
+    if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/raw/upload`, { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.secure_url) {
+        document.getElementById('newAssetUrl').value = data.secure_url;
+        if (!document.getElementById('newAssetBtn').value) {
+          document.getElementById('newAssetBtn').value = 'Download ' + file.name.split('.').pop().toUpperCase() + ' →';
+        }
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload File'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      }
+    } catch(e) {
+      if (btn) { btn.textContent = 'Failed'; btn.disabled = false; }
+    }
+  };
+}
+
 function addAsset() {
   const title = document.getElementById('newAssetTitle').value.trim();
+  const category = document.getElementById('newAssetCategory').value;
   const desc = document.getElementById('newAssetDesc').value.trim();
   const btnLabel = document.getElementById('newAssetBtn').value.trim();
   const url = document.getElementById('newAssetUrl').value.trim();
+  const visible = document.getElementById('newAssetVisible').checked;
   if (!title) return;
   epk.assets = epk.assets || [];
+  const assetData = { title, category, desc, btnLabel, url, visible, downloads: 0 };
   if (editingAssetIdx >= 0) {
-    epk.assets[editingAssetIdx] = { title, desc, btnLabel, url };
+    assetData.downloads = epk.assets[editingAssetIdx].downloads || 0;
+    epk.assets[editingAssetIdx] = { ...epk.assets[editingAssetIdx], ...assetData };
     editingAssetIdx = -1;
     document.querySelector('#addAssetForm .add-form-title').textContent = 'New Asset';
   } else {
-    epk.assets.push({ title, desc, btnLabel, url });
+    epk.assets.push(assetData);
   }
   ['newAssetTitle','newAssetDesc','newAssetBtn','newAssetUrl'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('newAssetCategory').value = '';
+  document.getElementById('newAssetVisible').checked = true;
   toggleAddForm('addAssetForm');
   renderAssets(); persistUser(); showSaveBanner();
 }

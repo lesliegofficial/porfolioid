@@ -58,6 +58,14 @@ exports.handler = async (event, context) => {
         if (!epk) return { statusCode: 404, headers, body: JSON.stringify({ error: 'EPK not found' }) };
         return { statusCode: 200, headers, body: JSON.stringify({ success: true, epk }) };
       }
+      if (action === 'trackDownload') {
+        const epk = await store.get(`epk:${slug}`, { type: 'json' });
+        if (epk && epk.assets && epk.assets[body.assetIdx] !== undefined) {
+          epk.assets[body.assetIdx].downloads = (epk.assets[body.assetIdx].downloads || 0) + 1;
+          await store.set(`epk:${slug}`, JSON.stringify(epk));
+        }
+        return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
+      }
       return { statusCode: 400, headers, body: JSON.stringify({ error: 'Unknown action' }) };
     }
     return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };

@@ -475,13 +475,23 @@ function buildEPK(epk) {
     videosHTML = `<div class="videos-grid">${visibleVideos.map(buildVideoCard).join('')}</div>`;
   }
 
-  const assetsHTML = (epk.assets || []).map(a => `
+  const categoryIcons = { 'Resume':'📋', 'Press Kit':'📦', 'Tech Rider':'🎛', 'Stage Plot':'🎭', 'Bio':'📝', 'Photo Pack':'📸', 'Contract Template':'📜', 'Certificate':'🏅', 'Other':'📄' };
+
+  const assetsHTML = (epk.assets || [])
+    .filter(a => a.visible !== false)
+    .map((a, i) => {
+      const icon = categoryIcons[a.category] || '📄';
+      const categoryTag = a.category ? `<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.75rem">${a.category}</div>` : '';
+      const downloadAttr = a.url ? `onclick="trackAssetDownload(${epk.assets.indexOf(a)})"` : '';
+      return `
     <div class="asset-card">
-      <div class="asset-icon">📄</div>
+      <div class="asset-icon">${icon}</div>
+      ${categoryTag}
       <div class="asset-title">${a.title}</div>
-      <p class="asset-desc">${a.desc}</p>
-      ${a.url ? `<a href="${a.url}" class="asset-btn" target="_blank">${a.btnLabel || 'Download →'}</a>` : `<span class="asset-btn" style="opacity:0.4">${a.btnLabel || 'Coming Soon'}</span>`}
-    </div>`).join('');
+      <p class="asset-desc">${a.desc || ''}</p>
+      ${a.url ? `<a href="${a.url}" class="asset-btn" target="_blank" ${downloadAttr}>${a.btnLabel || 'Download →'}</a>` : `<span class="asset-btn" style="opacity:0.4">${a.btnLabel || 'Coming Soon'}</span>`}
+    </div>`;
+    }).join('');
 
   const bookingEmail = epk.bookingEmail || '';
   const bookingPhone = epk.bookingPhone || '';
@@ -724,6 +734,17 @@ document.addEventListener('click', function(e) {
     if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
   }
 });
+
+// Asset download tracking
+function trackAssetDownload(idx) {
+  try {
+    fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'trackDownload', slug: getSlugFromURL(), assetIdx: idx })
+    });
+  } catch(e) {}
+}
 
 // Credit modal
 let epkCreditsData = [];
