@@ -535,6 +535,7 @@
 
       <div class="add-form" id="addCreditForm">
         <div class="add-form-title">New Credit</div>
+
         <div class="field-row">
           <div class="field-group">
             <label class="field-label">Artist / Company</label>
@@ -545,10 +546,54 @@
             <input type="text" id="newCreditYears" placeholder="e.g. 2006–2015">
           </div>
         </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Category</label>
+            <select id="newCreditCategory">
+              <option value="">— Select Category —</option>
+              <option value="Touring">Touring</option>
+              <option value="Recording">Recording</option>
+              <option value="Production">Production</option>
+              <option value="Label Work">Label Work</option>
+              <option value="Media / TV">Media / TV</option>
+              <option value="Live Event">Live Event</option>
+              <option value="A&R">A&R</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Contract Type</label>
+            <select id="newCreditContractType">
+              <option value="">— Select —</option>
+              <option value="Full-Time">Full-Time</option>
+              <option value="Contract">Contract</option>
+              <option value="Session">Session</option>
+              <option value="Freelance">Freelance</option>
+              <option value="Volunteer">Volunteer</option>
+            </select>
+          </div>
+        </div>
+
         <div class="field-group">
           <label class="field-label">Your Role</label>
           <input type="text" id="newCreditRole" placeholder="e.g. Exclusive Touring Vocalist">
         </div>
+
+        <div class="field-group">
+          <label class="field-label">Project Type <span style="color:var(--gray);font-weight:400">(optional)</span></label>
+          <input type="text" id="newCreditProjectType" placeholder="e.g. World Tour · Studio Album · TV Appearance">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Collaborators <span style="color:var(--gray);font-weight:400">(other artists or people on this credit)</span></label>
+          <div class="tag-input-row" id="creditCollaboratorsList"></div>
+          <div class="tag-add-row">
+            <input type="text" id="newCreditCollaborator" placeholder="e.g. Wisin & Yandel">
+            <button class="btn-add" onclick="addCreditCollaborator()">+ Add</button>
+          </div>
+        </div>
+
         <div class="field-group">
           <label class="field-label">Short Description <span style="color:var(--gray);font-weight:400">(displayed on card)</span></label>
           <textarea id="newCreditDesc" rows="3" placeholder="Brief summary shown on the credit card..."></textarea>
@@ -557,10 +602,11 @@
           <label class="field-label">Full Job Description <span style="color:var(--gray);font-weight:400">(shown when expanded)</span></label>
           <textarea id="newCreditFullDesc" rows="8" placeholder="Detailed description of your role, responsibilities, and achievements..."></textarea>
         </div>
+
         <div class="field-group">
           <label class="field-label">Media Link <span style="color:var(--gray);font-weight:400">(YouTube, Spotify, etc.)</span></label>
           <input type="url" id="newCreditMediaLink" placeholder="https://youtube.com/watch?v=...">
-          <p class="field-hint">Optional. A link to a video, song, or performance associated with this credit.</p>
+          <p class="field-hint">Optional. Paste a YouTube link to embed the video player directly in the credit modal.</p>
         </div>
         <div class="field-group">
           <label class="field-label">Media Label <span style="color:var(--gray);font-weight:400">(button text)</span></label>
@@ -575,6 +621,29 @@
           </div>
           <input type="file" id="creditVideoInput" accept="video/*" style="display:none">
         </div>
+
+        <div class="field-group">
+          <label class="field-label">Verification / Proof <span style="color:var(--gray);font-weight:400">(optional)</span></label>
+          <input type="url" id="newCreditProofLink" placeholder="https://... link to proof (article, contract, etc.)">
+          <p class="field-hint">A URL that verifies this credit — press coverage, official site, IMDb, etc.</p>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-3);padding:0.85rem 1rem;border:1px solid rgba(201,168,76,0.1);margin-bottom:1.25rem">
+          <label style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);flex:1">Show on Public EPK</label>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="newCreditVisible" checked style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Visible</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-left:1rem">
+            <input type="checkbox" id="newCreditVerified" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gold)">✦ Mark as Verified</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-left:1rem">
+            <input type="checkbox" id="newCreditPinned" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">📌 Pin to Top</span>
+          </label>
+        </div>
+
         <div class="field-group">
           <label class="field-label">Photos <span style="color:var(--gray);font-weight:400">(upload images for this credit)</span></label>
           <div id="creditPhotosPreview" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;min-height:20px"></div>
@@ -1322,7 +1391,11 @@ function moveItem(section, idx, direction) {
 function renderCredits() {
   const container = document.getElementById('creditsList');
   container.innerHTML = '';
-  (epk.credits || []).forEach((c, i) => {
+  const credits = epk.credits || [];
+  // Sort: pinned first
+  const sorted = [...credits.map((c,i) => ({...c, _origIdx: i}))].sort((a,b) => (b.pinned?1:0)-(a.pinned?1:0));
+  sorted.forEach((c) => {
+    const i = c._origIdx;
     const photos = c.photos || [];
     const photosHTML = photos.length ? `
       <div class="credit-photos-grid">
@@ -1332,16 +1405,24 @@ function renderCredits() {
             <button onclick="removeCreditPhoto(${i},${pi})" style="position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.7);border:none;color:#fff;font-size:0.6rem;cursor:pointer;padding:1px 4px;line-height:1">✕</button>
           </div>`).join('')}
       </div>` : '';
+    const badges = [
+      c.pinned ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.15rem 0.5rem;letter-spacing:0.1em">📌 PINNED</span>' : '',
+      c.verified ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(100,200,100,0.12);color:#7ec97e;padding:0.15rem 0.5rem;letter-spacing:0.1em">✦ VERIFIED</span>' : '',
+      c.visible === false ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,100,100,0.1);color:#ff6b6b;padding:0.15rem 0.5rem;letter-spacing:0.1em">HIDDEN</span>' : '',
+      c.category ? `<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.08);color:var(--gray);padding:0.15rem 0.5rem;letter-spacing:0.1em">${c.category}</span>` : '',
+    ].filter(Boolean).join(' ');
     container.innerHTML += `
-      <div class="editable-card">
+      <div class="editable-card" style="${c.visible===false?'opacity:0.5':''}">
         <div class="editable-card-header">
           <div style="display:flex;flex-direction:column;gap:0.2rem;margin-right:0.75rem">
             <button class="btn-card-action" onclick="moveItem('credits',${i},-1)" ${i===0?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▲</button>
-            <button class="btn-card-action" onclick="moveItem('credits',${i},1)" ${i===(epk.credits.length-1)?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▼</button>
+            <button class="btn-card-action" onclick="moveItem('credits',${i},1)" ${i===(credits.length-1)?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▼</button>
           </div>
           <div style="flex:1">
+            <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.3rem">${badges}</div>
             <div class="editable-card-title">${c.artist}</div>
-            <div class="editable-card-subtitle">${c.role}${c.years ? ' · ' + c.years : ''}</div>
+            <div class="editable-card-subtitle">${c.role}${c.years ? ' · ' + c.years : ''}${c.contractType ? ' · ' + c.contractType : ''}</div>
+            ${c.collaborators?.length ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.2rem;letter-spacing:0.08em">w/ ${c.collaborators.join(', ')}</div>` : ''}
             <p style="font-size:0.85rem;color:var(--gray);line-height:1.6;margin:0.3rem 0 0;white-space:pre-line">${c.desc || ''}</p>
             ${photosHTML}
             ${photos.length < 20 ? `
@@ -1363,12 +1444,21 @@ function editCredit(i) {
   const c = epk.credits[i];
   document.getElementById('newCreditArtist').value = c.artist || '';
   document.getElementById('newCreditYears').value = c.years || '';
+  document.getElementById('newCreditCategory').value = c.category || '';
+  document.getElementById('newCreditContractType').value = c.contractType || '';
   document.getElementById('newCreditRole').value = c.role || '';
+  document.getElementById('newCreditProjectType').value = c.projectType || '';
   document.getElementById('newCreditDesc').value = c.desc || '';
   document.getElementById('newCreditFullDesc').value = c.fullDesc || '';
   document.getElementById('newCreditMediaLink').value = c.mediaLink || '';
   document.getElementById('newCreditMediaLabel').value = c.mediaLabel || '';
   document.getElementById('newCreditVideoUrl').value = c.videoUrl || '';
+  document.getElementById('newCreditProofLink').value = c.proofLink || '';
+  document.getElementById('newCreditVisible').checked = c.visible !== false;
+  document.getElementById('newCreditVerified').checked = c.verified || false;
+  document.getElementById('newCreditPinned').checked = c.pinned || false;
+  pendingCreditCollaborators = [...(c.collaborators || [])];
+  renderCreditCollaborators();
   // Restore photos preview
   pendingCreditPhotos = [...(c.photos || [])];
   renderCreditPhotosPreview();
@@ -1461,27 +1551,60 @@ function dropSavedPhoto(e, creditIdx, photoIdx) {
 function addCredit() {
   const artist = document.getElementById('newCreditArtist').value.trim();
   const years = document.getElementById('newCreditYears').value.trim();
+  const category = document.getElementById('newCreditCategory').value;
+  const contractType = document.getElementById('newCreditContractType').value;
   const role = document.getElementById('newCreditRole').value.trim();
+  const projectType = document.getElementById('newCreditProjectType').value.trim();
   const desc = document.getElementById('newCreditDesc').value.trim();
   const fullDesc = document.getElementById('newCreditFullDesc').value.trim();
   const mediaLink = document.getElementById('newCreditMediaLink').value.trim();
   const mediaLabel = document.getElementById('newCreditMediaLabel').value.trim();
   const videoUrl = document.getElementById('newCreditVideoUrl').value.trim();
+  const proofLink = document.getElementById('newCreditProofLink').value.trim();
+  const visible = document.getElementById('newCreditVisible').checked;
+  const verified = document.getElementById('newCreditVerified').checked;
+  const pinned = document.getElementById('newCreditPinned').checked;
   if (!artist || !role) return;
   epk.credits = epk.credits || [];
+  const creditData = { artist, years, category, contractType, role, projectType, desc, fullDesc, mediaLink, mediaLabel, videoUrl, proofLink, visible, verified, pinned, collaborators: [...pendingCreditCollaborators], photos: [...pendingCreditPhotos] };
   if (editingCreditIdx >= 0) {
-    epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], artist, years, role, desc, fullDesc, mediaLink, mediaLabel, videoUrl, photos: [...pendingCreditPhotos] };
+    epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], ...creditData };
     editingCreditIdx = -1;
     document.querySelector('#addCreditForm .add-form-title').textContent = 'New Credit';
   } else {
-    epk.credits.push({ artist, years, role, desc, fullDesc, mediaLink, mediaLabel, videoUrl, photos: [...pendingCreditPhotos] });
+    epk.credits.push(creditData);
   }
   pendingCreditPhotos = [];
+  pendingCreditCollaborators = [];
   renderCreditPhotosPreview();
-  ['newCreditArtist','newCreditYears','newCreditRole','newCreditDesc','newCreditFullDesc','newCreditMediaLink','newCreditMediaLabel','newCreditVideoUrl'].forEach(id => document.getElementById(id).value = '');
+  renderCreditCollaborators();
+  ['newCreditArtist','newCreditYears','newCreditRole','newCreditProjectType','newCreditDesc','newCreditFullDesc','newCreditMediaLink','newCreditMediaLabel','newCreditVideoUrl','newCreditProofLink'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('newCreditCategory').value = '';
+  document.getElementById('newCreditContractType').value = '';
+  document.getElementById('newCreditVisible').checked = true;
+  document.getElementById('newCreditVerified').checked = false;
+  document.getElementById('newCreditPinned').checked = false;
   toggleAddForm('addCreditForm');
   renderCredits(); persistUser(); showSaveBanner();
 }
+// CREDIT COLLABORATORS
+let pendingCreditCollaborators = [];
+function renderCreditCollaborators() {
+  const container = document.getElementById('creditCollaboratorsList');
+  if (!container) return;
+  container.innerHTML = pendingCreditCollaborators.map((c, i) => `
+    <div class="tag">${c}
+      <button class="tag-remove" onclick="pendingCreditCollaborators.splice(${i},1);renderCreditCollaborators()">×</button>
+    </div>`).join('');
+}
+function addCreditCollaborator() {
+  const val = document.getElementById('newCreditCollaborator').value.trim();
+  if (!val) return;
+  pendingCreditCollaborators.push(val);
+  document.getElementById('newCreditCollaborator').value = '';
+  renderCreditCollaborators();
+}
+
 function triggerCreditVideoUpload() {
   const input = document.getElementById('creditVideoInput');
   input.value = '';

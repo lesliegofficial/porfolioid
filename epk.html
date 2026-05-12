@@ -281,6 +281,7 @@ function buildEPK(epk) {
 
   // Store credits for modal access
   epkCreditsData = epk.credits || [];
+  epkVisibleCredits = visibleCredits;
 
   // Build connect section
   const svgIcons = {
@@ -366,18 +367,32 @@ function buildEPK(epk) {
 
   const bioParagraphs = (epk.bio || '').split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('');
 
-  const creditsHTML = (epk.credits || []).map((c, i) => {
+  // Sort: pinned first, filter hidden
+  const visibleCredits = (epk.credits || [])
+    .map((c, i) => ({...c, _origIdx: i}))
+    .filter(c => c.visible !== false)
+    .sort((a, b) => (b.pinned?1:0) - (a.pinned?1:0));
+
+  const creditsHTML = visibleCredits.map((c, i) => {
+    const origI = c._origIdx;
     const hasPhotos = c.photos && c.photos.length > 0;
-    const hasDetail = c.fullDesc || hasPhotos;
+    const hasDetail = c.fullDesc || hasPhotos || c.mediaLink || c.videoUrl;
+    const categoryBadge = c.category ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.08);color:var(--gray);padding:0.15rem 0.5rem;margin-right:0.4rem">${c.category}</span>` : '';
+    const verifiedBadge = c.verified ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(100,200,100,0.1);color:#7ec97e;padding:0.15rem 0.5rem">✦ VERIFIED</span>` : '';
+    const pinnedBadge = c.pinned ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.12);color:var(--gold);padding:0.15rem 0.5rem">📌 FEATURED</span>` : '';
+    const badgesRow = (categoryBadge || verifiedBadge || pinnedBadge) ? `<div style="margin-bottom:0.5rem;display:flex;gap:0.3rem;flex-wrap:wrap">${pinnedBadge}${verifiedBadge}${categoryBadge}</div>` : '';
+    const collaboratorsRow = c.collaborators?.length ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.3rem;letter-spacing:0.08em">w/ ${c.collaborators.join(', ')}</div>` : '';
     return `
     <div class="credit-card" ${hasDetail ? `onclick="openCreditModal(${i})"` : ''}>
+      ${badgesRow}
       <div class="credit-header">
         <div class="credit-artist">${c.artist}</div>
         ${c.years ? `<span class="credit-years">${c.years}</span>` : ''}
       </div>
-      <div class="credit-role">${c.role}</div>
+      <div class="credit-role">${c.role}${c.contractType ? ` · <span style="opacity:0.7">${c.contractType}</span>` : ''}</div>
+      ${collaboratorsRow}
       ${c.desc ? `<p class="credit-desc" style="-webkit-line-clamp:3;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden">${c.desc}</p>` : ''}
-      ${hasDetail ? `<div class="credit-expand-hint">Read More →</div>` : ''}
+      ${hasDetail ? `<div class="credit-expand-hint">View Details →</div>` : ''}
     </div>`;
   }).join('');
 
@@ -682,22 +697,39 @@ if (slug) {
 
 // Credit modal
 let epkCreditsData = [];
+let epkVisibleCredits = [];
 function openCreditModal(i) {
-  const c = epkCreditsData[i];
+  const c = epkVisibleCredits[i];
   if (!c) return;
   const photos = c.photos || [];
   document.getElementById('creditModalArtist').textContent = c.artist;
-  document.getElementById('creditModalMeta').textContent = [c.role, c.years].filter(Boolean).join(' · ');
+  document.getElementById('creditModalMeta').textContent = [c.role, c.contractType, c.years].filter(Boolean).join(' · ');
   document.getElementById('creditModalDesc').textContent = c.fullDesc || c.desc || '';
-  // Media: video upload or external link
+
+  // Collaborators
+  const collabEl = document.getElementById('creditModalCollaborators');
+  collabEl.innerHTML = c.collaborators?.length ? `<div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;color:var(--gray);margin-bottom:1rem">w/ ${c.collaborators.join(', ')}</div>` : '';
+
+  // Media
   const mediaHTML = (() => {
     let html = '';
     if (c.videoUrl) {
       html += `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain;margin-bottom:1rem" src="${c.videoUrl}"></video>`;
     }
+    // YouTube embed
     if (c.mediaLink) {
-      const label = c.mediaLabel || 'View Media →';
-      html += `<a href="${c.mediaLink}" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;margin-bottom:1rem;transition:all 0.3s" onmouseover="this.style.background='rgba(201,168,76,0.08)'" onmouseout="this.style.background=''">${label}</a>`;
+      const ytMatch = c.mediaLink.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&
+?#]+)/);
+      if (ytMatch) {
+        html += `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-bottom:1rem"><iframe src="https://www.youtube.com/embed/${ytMatch[1]}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>`;
+      } else {
+        const label = c.mediaLabel || 'View Media →';
+        html += `<a href="${c.mediaLink}" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;margin-bottom:1rem;transition:all 0.3s" onmouseover="this.style.background='rgba(201,168,76,0.08)'" onmouseout="this.style.background=''">${label}</a>`;
+      }
+    }
+    // Proof link
+    if (c.proofLink) {
+      html += `<div style="margin-top:0.5rem"><a href="${c.proofLink}" target="_blank" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1px">✦ View Verification Source →</a></div>`;
     }
     return html;
   })();
@@ -732,6 +764,7 @@ document.addEventListener('keydown', e => {
     <div class="credit-modal-artist" id="creditModalArtist"></div>
     <div class="credit-modal-meta" id="creditModalMeta"></div>
     <div class="credit-modal-desc" id="creditModalDesc"></div>
+    <div id="creditModalCollaborators"></div>
     <div id="creditModalMedia" style="margin-top:1.25rem"></div>
     <div class="credit-modal-photos" id="creditModalPhotos"></div>
   </div>
