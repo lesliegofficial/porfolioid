@@ -328,6 +328,130 @@
       </div>
 
       <hr class="section-divider">
+
+      <!-- IDENTITY BLOCK -->
+      <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:0.5rem;">Identity Block</h3>
+      <p class="field-hint" style="margin-bottom:1.5rem">Toggle on the blocks you want to display below your Career Stats on your EPK. Only enabled blocks are shown.</p>
+
+      <!-- AVAILABILITY BADGES -->
+      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Availability Badges</span>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="identityAvailabilityEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on EPK</span>
+          </label>
+        </div>
+        <div class="tag-input-row" id="availabilityBadgesList"></div>
+        <div class="tag-add-row">
+          <input type="text" id="newAvailabilityBadge" placeholder="e.g. Available for Touring">
+          <button class="btn-add" onclick="addIdentityTag('availabilityBadges','newAvailabilityBadge','availabilityBadgesList')">+ Add</button>
+        </div>
+      </div>
+
+      <!-- INDUSTRY ROLES -->
+      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Industry Roles</span>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="identityRolesEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on EPK</span>
+          </label>
+        </div>
+        <div class="tag-input-row" id="industryRolesList"></div>
+        <div class="tag-add-row">
+          <input type="text" id="newIndustryRole" placeholder="e.g. Vocalist">
+          <button class="btn-add" onclick="addIdentityTag('industryRoles','newIndustryRole','industryRolesList')">+ Add</button>
+        </div>
+      </div>
+
+      <!-- FEATURED CREDIT -->
+      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Featured Credit</span>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="identityFeaturedEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on EPK</span>
+          </label>
+        </div>
+        <select id="featuredCreditSelect" onchange="saveIdentityBlock()" style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.8rem 1rem;font-family:var(--font-body);font-size:0.9rem;outline:none">
+          <option value="">— Select a credit to feature —</option>
+        </select>
+      </div>
+
+      <!-- VERIFICATION STATUS -->
+      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Verification Status</span>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="identityVerifiedEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on EPK</span>
+          </label>
+        </div>
+        <input type="text" id="verificationStatus" placeholder="e.g. Verified Artist · ASCAP Member" onchange="saveIdentityBlock()">
+      </div>
+
+      <!-- LANGUAGES SPOKEN -->
+      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Languages Spoken</span>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="identityLanguagesEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on EPK</span>
+          </label>
+        </div>
+        <div class="tag-input-row" id="languagesList"></div>
+        <div class="tag-add-row">
+          <input type="text" id="newLanguage" placeholder="e.g. English">
+          <button class="btn-add" onclick="addIdentityTag('languages','newLanguage','languagesList')">+ Add</button>
+        </div>
+      </div>
+
+      <!-- REPRESENTATION -->
+      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Representation</span>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="identityRepEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on EPK</span>
+          </label>
+        </div>
+        <div class="field-row" style="margin-bottom:0.75rem">
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label">Name</label>
+            <input type="text" id="repName" placeholder="e.g. John Smith" onchange="saveIdentityBlock()">
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label">Role</label>
+            <input type="text" id="repRole" placeholder="e.g. Manager" onchange="saveIdentityBlock()">
+          </div>
+        </div>
+        <div class="field-group" style="margin-bottom:0">
+          <label class="field-label">Contact</label>
+          <input type="text" id="repContact" placeholder="e.g. email@agency.com" onchange="saveIdentityBlock()">
+        </div>
+      </div>
+
+      <!-- CAREER TIMELINE -->
+      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Career Timeline Preview</span>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="identityTimelineEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on EPK</span>
+          </label>
+        </div>
+        <div id="timelineList" style="margin-bottom:0.75rem"></div>
+        <div style="display:grid;grid-template-columns:80px 1fr;gap:0.5rem;align-items:start">
+          <input type="text" id="newTimelineYear" placeholder="Year" style="background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.8rem;font-family:var(--font-body);font-size:0.9rem;outline:none">
+          <div style="display:flex;gap:0.5rem">
+            <input type="text" id="newTimelineMilestone" placeholder="e.g. Joined Don Omar Tour" style="flex:1;background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.8rem;font-family:var(--font-body);font-size:0.9rem;outline:none">
+            <button class="btn-add" onclick="addTimelineMilestone()">+ Add</button>
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-divider">
       <div class="field-group">
         <label class="field-label">Hero Image</label>
         <input type="url" id="heroImage" placeholder="https://... or upload below">
@@ -1075,6 +1199,9 @@ function loadAllFields() {
 
   // Awards
   renderAwards();
+
+  // Identity Block
+  loadIdentityBlock();
 }
 
 function saveAll() {
@@ -1760,6 +1887,129 @@ function toggleBooking() {
 function loadBookingToggle() {
   const toggle = document.getElementById('bookingToggle');
   if (toggle) toggle.checked = epk.bookingEnabled !== false;
+}
+
+// IDENTITY BLOCK
+function saveIdentityBlock() {
+  epk.identityBlock = epk.identityBlock || {};
+  const ib = epk.identityBlock;
+  ib.availabilityEnabled = document.getElementById('identityAvailabilityEnabled').checked;
+  ib.rolesEnabled = document.getElementById('identityRolesEnabled').checked;
+  ib.featuredEnabled = document.getElementById('identityFeaturedEnabled').checked;
+  ib.featuredCreditIdx = document.getElementById('featuredCreditSelect').value;
+  ib.verifiedEnabled = document.getElementById('identityVerifiedEnabled').checked;
+  ib.verificationStatus = document.getElementById('verificationStatus').value.trim();
+  ib.languagesEnabled = document.getElementById('identityLanguagesEnabled').checked;
+  ib.repEnabled = document.getElementById('identityRepEnabled').checked;
+  ib.repName = document.getElementById('repName').value.trim();
+  ib.repRole = document.getElementById('repRole').value.trim();
+  ib.repContact = document.getElementById('repContact').value.trim();
+  ib.timelineEnabled = document.getElementById('identityTimelineEnabled').checked;
+  persistUser(); showSaveBanner();
+}
+
+function loadIdentityBlock() {
+  const ib = epk.identityBlock || {};
+  epk.identityBlock = ib;
+
+  // Checkboxes
+  document.getElementById('identityAvailabilityEnabled').checked = ib.availabilityEnabled || false;
+  document.getElementById('identityRolesEnabled').checked = ib.rolesEnabled || false;
+  document.getElementById('identityFeaturedEnabled').checked = ib.featuredEnabled || false;
+  document.getElementById('identityVerifiedEnabled').checked = ib.verifiedEnabled || false;
+  document.getElementById('identityLanguagesEnabled').checked = ib.languagesEnabled || false;
+  document.getElementById('identityRepEnabled').checked = ib.repEnabled || false;
+  document.getElementById('identityTimelineEnabled').checked = ib.timelineEnabled || false;
+
+  // Single fields
+  document.getElementById('verificationStatus').value = ib.verificationStatus || '';
+  document.getElementById('repName').value = ib.repName || '';
+  document.getElementById('repRole').value = ib.repRole || '';
+  document.getElementById('repContact').value = ib.repContact || '';
+
+  // Tag lists
+  ib.availabilityBadges = ib.availabilityBadges || [];
+  ib.industryRoles = ib.industryRoles || [];
+  ib.languages = ib.languages || [];
+  ib.timeline = ib.timeline || [];
+  renderIdentityTags('availabilityBadges', 'availabilityBadgesList');
+  renderIdentityTags('industryRoles', 'industryRolesList');
+  renderIdentityTags('languages', 'languagesList');
+  renderTimeline();
+
+  // Featured credit dropdown
+  populateFeaturedCreditSelect(ib.featuredCreditIdx || '');
+}
+
+function populateFeaturedCreditSelect(selectedVal) {
+  const sel = document.getElementById('featuredCreditSelect');
+  sel.innerHTML = '<option value="">— Select a credit to feature —</option>';
+  (epk.credits || []).forEach((c, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${c.artist} · ${c.role}${c.years ? ' · ' + c.years : ''}`;
+    if (String(i) === String(selectedVal)) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+function renderIdentityTags(key, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const arr = epk.identityBlock[key] || [];
+  container.innerHTML = arr.map((t, i) => `
+    <div class="tag">${t}
+      <button class="tag-remove" onclick="removeIdentityTag('${key}','${containerId}',${i})">×</button>
+    </div>`).join('');
+}
+
+function addIdentityTag(key, inputId, containerId) {
+  const val = document.getElementById(inputId).value.trim();
+  if (!val) return;
+  epk.identityBlock = epk.identityBlock || {};
+  epk.identityBlock[key] = epk.identityBlock[key] || [];
+  epk.identityBlock[key].push(val);
+  document.getElementById(inputId).value = '';
+  renderIdentityTags(key, containerId);
+  saveIdentityBlock();
+}
+
+function removeIdentityTag(key, containerId, idx) {
+  epk.identityBlock[key].splice(idx, 1);
+  renderIdentityTags(key, containerId);
+  saveIdentityBlock();
+}
+
+function renderTimeline() {
+  const container = document.getElementById('timelineList');
+  if (!container) return;
+  const arr = epk.identityBlock.timeline || [];
+  container.innerHTML = arr.map((m, i) => `
+    <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid rgba(201,168,76,0.06)">
+      <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--gold);min-width:40px">${m.year}</span>
+      <span style="font-size:0.85rem;color:var(--gray-light);flex:1">${m.milestone}</span>
+      <button class="tag-remove" onclick="removeTimelineMilestone(${i})">×</button>
+    </div>`).join('');
+}
+
+function addTimelineMilestone() {
+  const year = document.getElementById('newTimelineYear').value.trim();
+  const milestone = document.getElementById('newTimelineMilestone').value.trim();
+  if (!year || !milestone) return;
+  epk.identityBlock = epk.identityBlock || {};
+  epk.identityBlock.timeline = epk.identityBlock.timeline || [];
+  epk.identityBlock.timeline.push({ year, milestone });
+  epk.identityBlock.timeline.sort((a, b) => a.year - b.year);
+  document.getElementById('newTimelineYear').value = '';
+  document.getElementById('newTimelineMilestone').value = '';
+  renderTimeline();
+  saveIdentityBlock();
+}
+
+function removeTimelineMilestone(i) {
+  epk.identityBlock.timeline.splice(i, 1);
+  renderTimeline();
+  saveIdentityBlock();
 }
 
 function logout() {

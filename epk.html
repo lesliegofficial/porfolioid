@@ -161,6 +161,26 @@
   .booking-note { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 3rem; }
   .booking-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
+  /* IDENTITY BLOCKS */
+  .identity-blocks { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .identity-block { border-left: 2px solid rgba(201,168,76,0.3); padding-left: 1rem; }
+  .identity-block-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; opacity: 0.8; }
+  .identity-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .identity-tag { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(201,168,76,0.3); color: var(--gray-light); padding: 0.3rem 0.75rem; }
+  .identity-featured-credit { display: flex; flex-direction: column; gap: 0.15rem; }
+  .identity-featured-artist { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--white); }
+  .identity-featured-role { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+  .identity-verified { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; color: var(--gold); }
+  .identity-langs { font-size: 0.85rem; color: var(--gray-light); letter-spacing: 0.05em; }
+  .identity-rep { display: flex; flex-direction: column; gap: 0.15rem; }
+  .identity-rep-name { font-size: 0.9rem; color: var(--white); font-weight: 400; }
+  .identity-rep-role { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+  .identity-rep-contact { font-size: 0.8rem; color: var(--gray); }
+  .identity-timeline { display: flex; flex-direction: column; gap: 0.5rem; }
+  .timeline-item { display: flex; gap: 1rem; align-items: baseline; }
+  .timeline-year { font-family: var(--font-mono); font-size: 0.65rem; color: var(--gold); min-width: 36px; }
+  .timeline-milestone { font-size: 0.85rem; color: var(--gray-light); }
+
   /* CONNECT SECTION */
   .connect-section { padding: 6rem 3rem; max-width: 1400px; margin: 0 auto; }
   .connect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
@@ -432,6 +452,42 @@ function buildEPK(epk) {
           <a href="#booking" class="btn-secondary">Book Now →</a>
         </div>
         ${statsHTML ? `<div class="hero-stats">${statsHTML}</div>` : ''}
+        ${(() => {
+          const ib = epk.identityBlock || {};
+          let blocks = '';
+
+          // Availability Badges
+          if (ib.availabilityEnabled && ib.availabilityBadges?.length) {
+            blocks += `<div class="identity-block"><div class="identity-block-label">Availability</div><div class="identity-tags">${ib.availabilityBadges.map(b=>`<span class="identity-tag">${b}</span>`).join('')}</div></div>`;
+          }
+          // Industry Roles
+          if (ib.rolesEnabled && ib.industryRoles?.length) {
+            blocks += `<div class="identity-block"><div class="identity-block-label">Industry Roles</div><div class="identity-tags">${ib.industryRoles.map(r=>`<span class="identity-tag">${r}</span>`).join('')}</div></div>`;
+          }
+          // Featured Credit
+          if (ib.featuredEnabled && ib.featuredCreditIdx !== '' && epk.credits?.[ib.featuredCreditIdx]) {
+            const fc = epk.credits[ib.featuredCreditIdx];
+            blocks += `<div class="identity-block"><div class="identity-block-label">Featured Credit</div><div class="identity-featured-credit"><span class="identity-featured-artist">${fc.artist}</span><span class="identity-featured-role">${fc.role}${fc.years ? ' · ' + fc.years : ''}</span></div></div>`;
+          }
+          // Verification
+          if (ib.verifiedEnabled && ib.verificationStatus) {
+            blocks += `<div class="identity-block"><div class="identity-block-label">Verification</div><div class="identity-verified">✦ ${ib.verificationStatus}</div></div>`;
+          }
+          // Languages
+          if (ib.languagesEnabled && ib.languages?.length) {
+            blocks += `<div class="identity-block"><div class="identity-block-label">Languages</div><div class="identity-langs">${ib.languages.join(' · ')}</div></div>`;
+          }
+          // Representation
+          if (ib.repEnabled && ib.repName) {
+            blocks += `<div class="identity-block"><div class="identity-block-label">Representation</div><div class="identity-rep"><span class="identity-rep-name">${ib.repName}</span>${ib.repRole ? `<span class="identity-rep-role">${ib.repRole}</span>` : ''}${ib.repContact ? `<span class="identity-rep-contact">${ib.repContact}</span>` : ''}</div></div>`;
+          }
+          // Timeline
+          if (ib.timelineEnabled && ib.timeline?.length) {
+            const items = ib.timeline.map(m=>`<div class="timeline-item"><span class="timeline-year">${m.year}</span><span class="timeline-milestone">${m.milestone}</span></div>`).join('');
+            blocks += `<div class="identity-block"><div class="identity-block-label">Career Timeline</div><div class="identity-timeline">${items}</div></div>`;
+          }
+          return blocks ? `<div class="identity-blocks">${blocks}</div>` : '';
+        })()}
       </div>
     </div>
 
