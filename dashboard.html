@@ -918,6 +918,20 @@
             </select>
           </div>
         </div>
+        <div class="field-group">
+          <label class="field-label">Vertical Position <span style="color:var(--gray);font-weight:400">(adjust if heads are cut off)</span></label>
+          <div style="display:flex;gap:0.5rem;margin-top:0.25rem">
+            <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray)">
+              <input type="radio" name="photoPosition" id="photoPosTop" value="top center" style="accent-color:var(--gold)"> Top
+            </label>
+            <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray)">
+              <input type="radio" name="photoPosition" id="photoPosCenter" value="center center" style="accent-color:var(--gold)"> Center
+            </label>
+            <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray)">
+              <input type="radio" name="photoPosition" id="photoPosBottom" value="bottom center" style="accent-color:var(--gold)"> Bottom
+            </label>
+          </div>
+        </div>
         <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-3);padding:0.85rem 1rem;border:1px solid rgba(201,168,76,0.1);margin-bottom:1.25rem">
           <label style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);flex:1">Options</label>
           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
@@ -1991,6 +2005,8 @@ function editPhoto(i) {
   document.getElementById('newPhotoGroup').value = p.group || '';
   document.getElementById('newPhotoCategory').value = p.category || '';
   document.getElementById('newPhotoFeatured').checked = p.featured || false;
+  const pos = p.position || 'top center';
+  document.querySelectorAll('input[name="photoPosition"]').forEach(r => r.checked = r.value === pos);
   document.getElementById('addPhotoForm').classList.add('open');
   document.getElementById('addPhotoForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addPhotoForm .add-form-title').textContent = 'Edit Photo';
@@ -2001,9 +2017,10 @@ function addPhoto() {
   const group = document.getElementById('newPhotoGroup').value.trim();
   const category = document.getElementById('newPhotoCategory').value;
   const featured = document.getElementById('newPhotoFeatured').checked;
+  const position = document.querySelector('input[name="photoPosition"]:checked')?.value || 'top center';
   if (!url) return;
   epk.photos = epk.photos || [];
-  const photoData = { caption, url, group, category, featured };
+  const photoData = { caption, url, group, category, featured, position };
   if (editingPhotoIdx >= 0) {
     epk.photos[editingPhotoIdx] = { ...epk.photos[editingPhotoIdx], ...photoData };
     editingPhotoIdx = -1;
@@ -2014,6 +2031,7 @@ function addPhoto() {
   ['newPhotoCaption','newPhotoUrl','newPhotoGroup'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('newPhotoCategory').value = '';
   document.getElementById('newPhotoFeatured').checked = false;
+  document.getElementById('photoPosTop').checked = true;
   toggleAddForm('addPhotoForm');
   renderPhotos(); persistUser(); showSaveBanner();
 }

@@ -147,7 +147,7 @@
   .gallery-col { position: relative; overflow: hidden; background: var(--dark-3); height: 360px; }
   .gallery-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; }
   .gallery-slide.active { opacity: 1; }
-  .gallery-slide img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; cursor: pointer; }
+  .gallery-slide img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer; }
   .gallery-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem 0.75rem 0.5rem; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.7); }
   @media (max-width: 768px) { .gallery-4col { grid-template-columns: repeat(2, 1fr); } .gallery-col { height: 260px; } }
 
@@ -652,7 +652,8 @@ function buildGallery(photos) {
     colPhotos.forEach((photo, i) => {
       const slide = document.createElement('div');
       slide.className = 'gallery-slide' + (i === 0 ? ' active' : '');
-      slide.innerHTML = `<img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onclick="openLightbox('${photo.url}')" onerror="this.style.display='none'"><div class="gallery-caption">${photo.caption || ''}</div>`;
+      const pos = photo.position || 'top center';
+      slide.innerHTML = `<img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onclick="openLightbox('${photo.url}')" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;object-position:${pos};display:block"><div class="gallery-caption">${photo.caption || ''}</div>`;
       col.appendChild(slide);
     });
 
