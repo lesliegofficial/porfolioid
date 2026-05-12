@@ -695,9 +695,12 @@ if (slug) {
   .then(res => res.json())
   .then(data => {
     if (data.success && data.epk) {
-      buildEPK(data.epk);
+      try {
+        buildEPK(data.epk);
+      } catch(err) {
+        document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray);font-size:0.8rem">Error: ' + err.message + '<br><br><a href="/index.html" style="color:var(--gold)">Return home →</a></div>';
+      }
     } else {
-      // Fallback to localStorage for backwards compatibility
       const epk = getEPKData(slug);
       if (epk) {
         buildEPK(epk);
@@ -706,13 +709,12 @@ if (slug) {
       }
     }
   })
-  .catch(() => {
-    // Fallback to localStorage
+  .catch((err) => {
     const epk = getEPKData(slug);
     if (epk) {
       buildEPK(epk);
     } else {
-      document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">EPK not found. <a href="/index.html" style="color:var(--gold)">Return home →</a></div>';
+      document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">Fetch error: ' + err.message + '<br><a href="/index.html" style="color:var(--gold)">Return home →</a></div>';
     }
   });
 } else {
