@@ -791,10 +791,39 @@
 
       <div class="add-form" id="addVideoForm">
         <div class="add-form-title">New Video</div>
+
         <div class="field-group">
           <label class="field-label">Video Title</label>
           <input type="text" id="newVideoTitle" placeholder="e.g. J Álvarez — Te Necesito (Live)">
         </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Category</label>
+            <select id="newVideoCategory">
+              <option value="">— Select Category —</option>
+              <option value="Live Performance">Live Performance</option>
+              <option value="Music Video">Music Video</option>
+              <option value="Acoustic / Unplugged">Acoustic / Unplugged</option>
+              <option value="Reel">Reel</option>
+              <option value="Interview">Interview</option>
+              <option value="Podcast">Podcast</option>
+              <option value="Behind the Scenes">Behind the Scenes</option>
+              <option value="TV Appearance">TV Appearance</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Featured</label>
+            <div style="display:flex;align-items:center;gap:0.75rem;height:100%;padding-top:0.5rem">
+              <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+                <input type="checkbox" id="newVideoFeatured" style="accent-color:var(--gold)">
+                <span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold)">⭐ Feature this video</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
         <div class="field-group">
           <label class="field-label">YouTube / Vimeo URL or MP4</label>
           <input type="url" id="newVideoUrl" placeholder="https://youtube.com/watch?v=...">
@@ -804,6 +833,7 @@
           </div>
           <input type="file" id="newVideoMp4File" accept="video/*" style="display:none">
         </div>
+
         <div class="field-group">
           <label class="field-label">Custom Thumbnail (optional)</label>
           <input type="url" id="newVideoThumb" placeholder="https://... or upload below">
@@ -813,6 +843,7 @@
           </div>
           <input type="file" id="newVideoThumbFile" accept="image/*" style="display:none">
         </div>
+
         <div class="field-row">
           <div class="field-group">
             <label class="field-label">Album / Project Name</label>
@@ -823,10 +854,20 @@
             <input type="text" id="newVideoYear" placeholder="e.g. 2007">
           </div>
         </div>
+
         <div class="field-group">
           <label class="field-label">Description</label>
-          <textarea id="newVideoDesc" placeholder="Brief description of this video..." rows="3" style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.15);color:var(--white);padding:0.85rem 1rem;font-family:var(--font-body);font-size:0.95rem;resize:vertical;outline:none;"></textarea>
+          <textarea id="newVideoDesc" placeholder="Brief description of this video..." rows="3"></textarea>
         </div>
+
+        <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-3);padding:0.85rem 1rem;border:1px solid rgba(201,168,76,0.1);margin-bottom:1.25rem">
+          <label style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);flex:1">Visibility</label>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="newVideoVisible" checked style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Visible on EPK</span>
+          </label>
+        </div>
+
         <div class="form-actions">
           <button class="btn-save" onclick="addVideo()">Add Video</button>
           <button class="btn-cancel" onclick="toggleAddForm('addVideoForm')">Cancel</button>
@@ -1785,14 +1826,20 @@ function renderVideos() {
   const container = document.getElementById('videosList');
   container.innerHTML = '';
   (epk.videos || []).forEach((v, i) => {
+    const badges = [
+      v.featured ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.15rem 0.5rem;letter-spacing:0.1em">⭐ FEATURED</span>' : '',
+      v.visible === false ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,100,100,0.1);color:#ff6b6b;padding:0.15rem 0.5rem;letter-spacing:0.1em">HIDDEN</span>' : '',
+      v.category ? `<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.08);color:var(--gray);padding:0.15rem 0.5rem;letter-spacing:0.1em">${v.category}</span>` : '',
+    ].filter(Boolean).join(' ');
     container.innerHTML += `
-      <div class="editable-card">
+      <div class="editable-card" style="${v.visible===false?'opacity:0.5':''}">
         <div class="editable-card-header">
           <div style="display:flex;flex-direction:column;gap:0.2rem;margin-right:0.75rem">
             <button class="btn-card-action" onclick="moveItem('videos',${i},-1)" ${i===0?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▲</button>
             <button class="btn-card-action" onclick="moveItem('videos',${i},1)" ${i===(epk.videos.length-1)?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▼</button>
           </div>
           <div style="flex:1">
+            ${badges ? `<div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.3rem">${badges}</div>` : ''}
             <div class="editable-card-title">${v.title} ${v.year ? '(' + v.year + ')' : ''}</div>
             ${v.album ? `<div class="editable-card-subtitle">${v.album}</div>` : ''}
             ${v.desc ? `<div style="font-size:0.85rem;color:var(--gray);margin-top:0.3rem">${v.desc}</div>` : ''}
@@ -1810,11 +1857,14 @@ function editVideo(i) {
   editingVideoIdx = i;
   const v = epk.videos[i];
   document.getElementById('newVideoTitle').value = v.title || '';
+  document.getElementById('newVideoCategory').value = v.category || '';
+  document.getElementById('newVideoFeatured').checked = v.featured || false;
   document.getElementById('newVideoUrl').value = v.url || '';
   document.getElementById('newVideoThumb').value = v.thumb || '';
   document.getElementById('newVideoAlbum').value = v.album || '';
   document.getElementById('newVideoYear').value = v.year || '';
   document.getElementById('newVideoDesc').value = v.desc || '';
+  document.getElementById('newVideoVisible').checked = v.visible !== false;
   document.getElementById('addVideoForm').classList.add('open');
   document.getElementById('addVideoForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addVideoForm .add-form-title').textContent = 'Edit Video';
@@ -1822,21 +1872,28 @@ function editVideo(i) {
 
 function addVideo() {
   const title = document.getElementById('newVideoTitle').value.trim();
+  const category = document.getElementById('newVideoCategory').value;
+  const featured = document.getElementById('newVideoFeatured').checked;
   const url = document.getElementById('newVideoUrl').value.trim();
   const thumb = document.getElementById('newVideoThumb').value.trim();
   const album = document.getElementById('newVideoAlbum').value.trim();
   const year = document.getElementById('newVideoYear').value.trim();
   const desc = document.getElementById('newVideoDesc').value.trim();
+  const visible = document.getElementById('newVideoVisible').checked;
   if (!title || !url) return;
   epk.videos = epk.videos || [];
+  const videoData = { title, category, featured, url, thumb, album, year, desc, visible };
   if (editingVideoIdx >= 0) {
-    epk.videos[editingVideoIdx] = { title, url, thumb, album, year, desc };
+    epk.videos[editingVideoIdx] = { ...epk.videos[editingVideoIdx], ...videoData };
     editingVideoIdx = -1;
     document.querySelector('#addVideoForm .add-form-title').textContent = 'New Video';
   } else {
-    epk.videos.push({ title, url, thumb, album, year, desc });
+    epk.videos.push(videoData);
   }
   ['newVideoTitle','newVideoUrl','newVideoThumb','newVideoAlbum','newVideoYear','newVideoDesc'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('newVideoCategory').value = '';
+  document.getElementById('newVideoFeatured').checked = false;
+  document.getElementById('newVideoVisible').checked = true;
   toggleAddForm('addVideoForm');
   renderVideos(); persistUser(); showSaveBanner();
 }

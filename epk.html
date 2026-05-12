@@ -420,31 +420,51 @@ function buildEPK(epk) {
   }).join('');
 
 
-  const videosHTML = (epk.videos || []).map(v => {
+  // Filter hidden videos, sort featured first
+  const visibleVideos = (epk.videos || [])
+    .filter(v => v.visible !== false)
+    .sort((a, b) => (b.featured?1:0) - (a.featured?1:0));
+
+  const buildVideoCard = (v) => {
     const isMP4 = v.url && (v.url.includes('.mp4') || v.url.includes('.mov') || v.url.includes('.webm') || (v.url.includes('cloudinary') && !v.url.includes('youtube')));
     const thumb = v.thumb || getYouTubeThumb(v.url);
-
     const videoMeta = (v.album || v.year) ? `<div class="video-meta">${v.album ? `<span>${v.album}</span>` : ''}${v.album && v.year ? ' · ' : ''}${v.year || ''}</div>` : '';
     const videoDesc = v.desc ? `<div class="video-desc">${v.desc}</div>` : '';
-
+    const categoryBadge = v.category ? `<div style="position:absolute;top:0.5rem;left:0.5rem;font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(0,0,0,0.7);color:var(--gold);padding:0.15rem 0.5rem;z-index:2">${v.category}</div>` : '';
+    const featuredBadge = v.featured ? `<div style="position:absolute;top:0.5rem;right:0.5rem;font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.9);color:var(--black);padding:0.15rem 0.5rem;z-index:2">⭐ Featured</div>` : '';
     if (isMP4) {
-      return `
-      <div class="video-card">
-        <video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain" ${v.thumb ? `poster="${v.thumb}"` : ''}>
-          <source src="${v.url}" type="video/mp4">
-        </video>
-        <div class="video-caption">${v.title}</div>
-        ${videoMeta}${videoDesc}
-      </div>`;
+      return `<div class="video-card" style="position:relative">${categoryBadge}${featuredBadge}<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain" ${v.thumb ? `poster="${v.thumb}"` : ''}><source src="${v.url}" type="video/mp4"></video><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}</div>`;
     }
-    return `
-    <div class="video-card" onclick="window.open('${v.url}','_blank')">
-      ${thumb ? `<img class="video-thumb" src="${thumb}" alt="${v.title}" loading="lazy">` : `<div class="video-thumb" style="background:var(--dark-4);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:2rem">▶</div>`}
-      <div class="video-play">▶</div>
-      <div class="video-caption">${v.title}</div>
-      ${videoMeta}${videoDesc}
-    </div>`;
-  }).join('');
+    return `<div class="video-card" style="position:relative" onclick="window.open('${v.url}','_blank')">${categoryBadge}${featuredBadge}${thumb ? `<img class="video-thumb" src="${thumb}" alt="${v.title}" loading="lazy">` : `<div class="video-thumb" style="background:var(--dark-4);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:2rem">▶</div>`}<div class="video-play">▶</div><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}</div>`;
+  };
+
+  // Group by category
+  const videoCategories = ['Reel', 'Live Performance', 'Music Video', 'Acoustic / Unplugged', 'Interview', 'Podcast', 'Behind the Scenes', 'TV Appearance', 'Other'];
+  const groupedVideos = {};
+  const uncategorized = [];
+  visibleVideos.forEach(v => {
+    if (v.category) {
+      if (!groupedVideos[v.category]) groupedVideos[v.category] = [];
+      groupedVideos[v.category].push(v);
+    } else {
+      uncategorized.push(v);
+    }
+  });
+
+  const hasCategories = Object.keys(groupedVideos).length > 0;
+
+  let videosHTML = '';
+  if (hasCategories) {
+    // Render grouped by category
+    Object.entries(groupedVideos).forEach(([cat, vids]) => {
+      videosHTML += `<div style="margin-bottom:3rem"><div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem">${cat}<span style="flex:1;height:1px;background:linear-gradient(to right,rgba(201,168,76,0.2),transparent);max-width:200px;display:inline-block"></span></div><div class="videos-grid">${vids.map(buildVideoCard).join('')}</div></div>`;
+    });
+    if (uncategorized.length) {
+      videosHTML += `<div class="videos-grid">${uncategorized.map(buildVideoCard).join('')}</div>`;
+    }
+  } else {
+    videosHTML = `<div class="videos-grid">${visibleVideos.map(buildVideoCard).join('')}</div>`;
+  }
 
   const assetsHTML = (epk.assets || []).map(a => `
     <div class="asset-card">
@@ -545,11 +565,11 @@ function buildEPK(epk) {
     <div class="divider"></div>` : ''}
 
     <!-- VIDEOS -->
-    ${epk.videos?.length ? `
+    ${visibleVideos.length ? `
     <section id="videos">
       <div class="section-label">Video</div>
       <h2 class="section-title">Live & On Camera</h2>
-      <div class="videos-grid">${videosHTML}</div>
+      ${videosHTML}
     </section>
     <div class="divider"></div>` : ''}
 
