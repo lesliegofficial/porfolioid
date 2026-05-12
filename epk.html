@@ -142,17 +142,23 @@
   .gallery-arrow.prev { left: 0.5rem; }
   .gallery-arrow.next { right: 0.5rem; }
 
-  /* GALLERY IMPROVEMENTS */
+  /* GALLERY */
   .gallery-group-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin: 2rem 0 1.25rem; display: flex; align-items: center; gap: 1rem; }
   .gallery-group-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.2), transparent); max-width: 200px; }
-  .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 1.5rem; }
-  .gallery-grid-item { position: relative; cursor: pointer; overflow: hidden; aspect-ratio: 1/1; background: var(--dark-3); }
-  .gallery-grid-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
-  .gallery-grid-item:hover img { transform: scale(1.05); }
-  .gallery-grid-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem 0.75rem 0.5rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.9); opacity: 0; transition: opacity 0.3s; }
-  .gallery-grid-item:hover .gallery-grid-caption { opacity: 1; }
-  .gallery-grid-item.featured { grid-column: span 2; grid-row: span 2; }
-  @media (max-width: 768px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+  .gallery-slideshow-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; height: 420px; margin-bottom: 1rem; }
+  .gallery-col { position: relative; overflow: hidden; background: var(--dark-3); }
+  .gallery-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease; }
+  .gallery-slide.active { opacity: 1; }
+  .gallery-slide img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; cursor: pointer; }
+  .gallery-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem 1rem 0.75rem; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.7); }
+  .gallery-nav { position: absolute; bottom: 0.5rem; right: 0.75rem; display: flex; gap: 4px; z-index: 2; }
+  .gallery-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: background 0.3s; }
+  .gallery-dot.active { background: var(--gold); }
+  .gallery-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); border: 1px solid rgba(201,168,76,0.2); color: var(--gold); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; font-size: 1rem; transition: all 0.3s; }
+  .gallery-arrow:hover { background: rgba(201,168,76,0.2); }
+  .gallery-arrow.prev { left: 0.5rem; }
+  .gallery-arrow.next { right: 0.5rem; }
+  @media (max-width: 768px) { .gallery-slideshow-row { grid-template-columns: 1fr; height: auto; } .gallery-col { height: 300px; } }
 
   /* ASSETS */
   .assets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
@@ -628,14 +634,10 @@ function buildGallery(photos) {
   const container = document.getElementById('galleryContent');
   if (!container) return;
 
-  // Separate featured photos
-  const featured = photos.filter(p => p.featured);
-  const regular = photos.filter(p => !p.featured);
-
-  // Group regular photos by album/group
+  // Group photos by album/group
   const groups = {};
   const ungrouped = [];
-  regular.forEach(p => {
+  photos.forEach(p => {
     if (p.group) {
       if (!groups[p.group]) groups[p.group] = [];
       groups[p.group].push(p);
@@ -644,40 +646,94 @@ function buildGallery(photos) {
     }
   });
 
-  const buildPhotoItem = (p, isFeatured) => {
-    const catBadge = p.category ? `<span style="position:absolute;top:0.4rem;left:0.4rem;font-family:var(--font-mono);font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(0,0,0,0.7);color:var(--gold);padding:0.1rem 0.4rem;z-index:2">${p.category}</span>` : '';
-    return `<div class="gallery-grid-item${isFeatured ? ' featured' : ''}" onclick="openLightbox('${p.url}')">${catBadge}<img src="${p.url}" alt="${p.caption || ''}" loading="lazy" onerror="this.style.display='none'"><div class="gallery-grid-caption">${p.caption || ''}</div></div>`;
-  };
+  // Build all photo sets — each set becomes a 3-column slideshow row
+  const photoSets = [];
+  Object.entries(groups).forEach(([name, arr]) => photoSets.push({ name, photos: arr }));
+  if (ungrouped.length) photoSets.push({ name: null, photos: ungrouped });
 
-  let html = '';
+  container.innerHTML = '';
 
-  // Featured photos first
-  if (featured.length) {
-    html += '<div class="gallery-group-label">Featured</div>';
-    html += '<div class="gallery-grid">';
-    featured.forEach(p => { html += buildPhotoItem(p, true); });
-    html += '</div>';
-  }
-
-  // Grouped albums
-  Object.entries(groups).forEach(([groupName, groupPhotos]) => {
-    html += `<div class="gallery-group-label">${groupName}</div>`;
-    html += '<div class="gallery-grid">';
-    groupPhotos.forEach(p => { html += buildPhotoItem(p, false); });
-    html += '</div>';
-  });
-
-  // Ungrouped photos
-  if (ungrouped.length) {
-    if (Object.keys(groups).length > 0 || featured.length > 0) {
-      html += '<div class="gallery-group-label">Gallery</div>';
+  photoSets.forEach(({ name, photos: setPhotos }) => {
+    if (name) {
+      const label = document.createElement('div');
+      label.className = 'gallery-group-label';
+      label.textContent = name;
+      container.appendChild(label);
     }
-    html += '<div class="gallery-grid">';
-    ungrouped.forEach(p => { html += buildPhotoItem(p, false); });
-    html += '</div>';
-  }
 
-  container.innerHTML = html;
+    // Split into groups of 3 columns, each column gets its own photos to slide through
+    const row = document.createElement('div');
+    row.className = 'gallery-slideshow-row';
+
+    // Distribute photos across 3 columns
+    const cols = [[], [], []];
+    setPhotos.forEach((p, i) => cols[i % 3].push(p));
+
+    // Fill empty columns with photos from other columns
+    for (let c = 0; c < 3; c++) {
+      if (cols[c].length === 0) cols[c] = [...cols[(c + 1) % 3]];
+    }
+
+    const colStates = [{ current: 0 }, { current: 0 }, { current: 0 }];
+
+    cols.forEach((colPhotos, colIdx) => {
+      if (!colPhotos.length) return;
+      const col = document.createElement('div');
+      col.className = 'gallery-col';
+
+      colPhotos.forEach((photo, i) => {
+        const slide = document.createElement('div');
+        slide.className = 'gallery-slide' + (i === 0 ? ' active' : '');
+        slide.innerHTML = `<img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onclick="openLightbox('${photo.url}')" onerror="this.style.display='none'"><div class="gallery-caption">${photo.caption || ''}</div>`;
+        col.appendChild(slide);
+      });
+
+      if (colPhotos.length > 1) {
+        const nav = document.createElement('div');
+        nav.className = 'gallery-nav';
+        colPhotos.forEach((_, i) => {
+          const dot = document.createElement('div');
+          dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+          dot.onclick = () => goToSlide(col, colStates[colIdx], i);
+          nav.appendChild(dot);
+        });
+        col.appendChild(nav);
+
+        const prev = document.createElement('div');
+        prev.className = 'gallery-arrow prev';
+        prev.innerHTML = '&#8249;';
+        prev.onclick = (e) => { e.stopPropagation(); navigateSlide(col, colStates[colIdx], colPhotos.length, -1); };
+
+        const next = document.createElement('div');
+        next.className = 'gallery-arrow next';
+        next.innerHTML = '&#8250;';
+        next.onclick = (e) => { e.stopPropagation(); navigateSlide(col, colStates[colIdx], colPhotos.length, 1); };
+
+        col.appendChild(prev);
+        col.appendChild(next);
+        setInterval(() => navigateSlide(col, colStates[colIdx], colPhotos.length, 1), 4000 + colIdx * 1200);
+      }
+
+      row.appendChild(col);
+    });
+
+    container.appendChild(row);
+  });
+}
+
+function goToSlide(col, state, idx) {
+  const slides = col.querySelectorAll('.gallery-slide');
+  const dots = col.querySelectorAll('.gallery-dot');
+  if (slides[state.current]) slides[state.current].classList.remove('active');
+  if (dots[state.current]) dots[state.current].classList.remove('active');
+  state.current = idx;
+  if (slides[state.current]) slides[state.current].classList.add('active');
+  if (dots[state.current]) dots[state.current].classList.add('active');
+}
+
+function navigateSlide(col, state, total, dir) {
+  const next = (state.current + dir + total) % total;
+  goToSlide(col, state, next);
 }
 
 // Init
