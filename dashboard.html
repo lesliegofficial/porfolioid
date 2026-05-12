@@ -668,6 +668,7 @@
 
       <div class="add-form" id="addTrackForm">
         <div class="add-form-title">New Track</div>
+
         <div class="field-row">
           <div class="field-group">
             <label class="field-label">Track Title</label>
@@ -678,10 +679,22 @@
             <input type="text" id="newTrackArtist" placeholder="e.g. Wisin, Yandel, Don Omar">
           </div>
         </div>
+
         <div class="field-row">
           <div class="field-group">
-            <label class="field-label">Your Role</label>
-            <input type="text" id="newTrackRole" placeholder="e.g. Touring Vocalist">
+            <label class="field-label">Music Type / Category</label>
+            <select id="newTrackType">
+              <option value="">— Select Type —</option>
+              <option value="Single">Single</option>
+              <option value="Album Track">Album Track</option>
+              <option value="EP Track">EP Track</option>
+              <option value="Feature">Feature</option>
+              <option value="Live Performance">Live Performance</option>
+              <option value="Session Recording">Session Recording</option>
+              <option value="Soundtrack">Soundtrack</option>
+              <option value="Remix">Remix</option>
+              <option value="Demo">Demo</option>
+            </select>
           </div>
           <div class="field-group">
             <label class="field-label">Tag</label>
@@ -694,6 +707,18 @@
             </select>
           </div>
         </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Your Role</label>
+            <input type="text" id="newTrackRole" placeholder="e.g. Touring Vocalist">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Release Date</label>
+            <input type="text" id="newTrackReleaseDate" placeholder="e.g. March 15, 2007">
+          </div>
+        </div>
+
         <div class="field-group">
           <label class="field-label">Link or MP3</label>
           <input type="url" id="newTrackLink" placeholder="Spotify / Apple Music / YouTube / SoundCloud URL">
@@ -703,6 +728,7 @@
           </div>
           <input type="file" id="newTrackMp3File" accept="audio/*" style="display:none">
         </div>
+
         <div class="field-row">
           <div class="field-group">
             <label class="field-label">Album Name</label>
@@ -713,10 +739,40 @@
             <input type="text" id="newTrackYear" placeholder="e.g. 2007">
           </div>
         </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">ISRC Code <span style="color:var(--gray);font-weight:400">(optional)</span></label>
+            <input type="text" id="newTrackISRC" placeholder="e.g. USRC17607839">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Rights Ownership <span style="color:var(--gray);font-weight:400">(optional)</span></label>
+            <input type="text" id="newTrackRights" placeholder="e.g. © 2007 Machete Music">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Lyrics <span style="color:var(--gray);font-weight:400">(optional — shown on EPK when expanded)</span></label>
+          <textarea id="newTrackLyrics" rows="6" placeholder="Paste lyrics here..."></textarea>
+        </div>
+
         <div class="field-group">
           <label class="field-label">Description</label>
-          <textarea id="newTrackDesc" placeholder="Brief description of your role or contribution..." rows="3" style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.15);color:var(--white);padding:0.85rem 1rem;font-family:var(--font-body);font-size:0.95rem;resize:vertical;outline:none;"></textarea>
+          <textarea id="newTrackDesc" rows="3" placeholder="Brief description of your role or contribution..."></textarea>
         </div>
+
+        <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-3);padding:0.85rem 1rem;border:1px solid rgba(201,168,76,0.1);margin-bottom:1.25rem">
+          <label style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);flex:1">Visibility</label>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="newTrackVisible" checked style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Visible on EPK</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-left:1rem">
+            <input type="checkbox" id="newTrackUnreleased" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gold)">Unreleased / Private</span>
+          </label>
+        </div>
+
         <div class="form-actions">
           <button class="btn-save" onclick="addTrack()">Add Track</button>
           <button class="btn-cancel" onclick="toggleAddForm('addTrackForm')">Cancel</button>
@@ -1637,16 +1693,23 @@ function renderTracks() {
   const container = document.getElementById('tracksList');
   container.innerHTML = '';
   (epk.tracks || []).forEach((t, i) => {
+    const badges = [
+      t.unreleased ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.12);color:var(--gold);padding:0.15rem 0.5rem;letter-spacing:0.1em">UNRELEASED</span>' : '',
+      t.visible === false ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,100,100,0.1);color:#ff6b6b;padding:0.15rem 0.5rem;letter-spacing:0.1em">HIDDEN</span>' : '',
+      t.type ? `<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.08);color:var(--gray);padding:0.15rem 0.5rem;letter-spacing:0.1em">${t.type}</span>` : '',
+    ].filter(Boolean).join(' ');
     container.innerHTML += `
-      <div class="editable-card">
+      <div class="editable-card" style="${t.visible===false?'opacity:0.5':''}">
         <div class="editable-card-header">
           <div style="display:flex;flex-direction:column;gap:0.2rem;margin-right:0.75rem">
             <button class="btn-card-action" onclick="moveItem('tracks',${i},-1)" ${i===0?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▲</button>
             <button class="btn-card-action" onclick="moveItem('tracks',${i},1)" ${i===(epk.tracks.length-1)?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▼</button>
           </div>
           <div style="flex:1">
+            ${badges ? `<div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.3rem">${badges}</div>` : ''}
             <div class="editable-card-title">${t.title} ${t.tag ? `<span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.2rem 0.5rem;margin-left:0.5rem">${t.tag}</span>` : ''}</div>
-            <div class="editable-card-subtitle">${t.artist || ''} ${t.role ? '· ' + t.role : ''} ${t.album ? '· ' + t.album : ''} ${t.year ? '(' + t.year + ')' : ''}</div>
+            <div class="editable-card-subtitle">${t.artist || ''} ${t.role ? '· ' + t.role : ''} ${t.album ? '· ' + t.album : ''} ${t.year ? '(' + t.year + ')' : ''}${t.releaseDate ? ' · ' + t.releaseDate : ''}</div>
+            ${t.isrc ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.2rem">ISRC: ${t.isrc}</div>` : ''}
             ${t.desc ? `<div style="font-size:0.85rem;color:var(--gray);margin-top:0.3rem">${t.desc}</div>` : ''}
           </div>
           <div class="card-actions">
@@ -1663,12 +1726,19 @@ function editTrack(i) {
   const t = epk.tracks[i];
   document.getElementById('newTrackTitle').value = t.title || '';
   document.getElementById('newTrackArtist').value = t.artist || '';
+  document.getElementById('newTrackType').value = t.type || '';
   document.getElementById('newTrackRole').value = t.role || '';
   document.getElementById('newTrackTag').value = t.tag || '';
+  document.getElementById('newTrackReleaseDate').value = t.releaseDate || '';
   document.getElementById('newTrackLink').value = t.link || '';
   document.getElementById('newTrackAlbum').value = t.album || '';
   document.getElementById('newTrackYear').value = t.year || '';
+  document.getElementById('newTrackISRC').value = t.isrc || '';
+  document.getElementById('newTrackRights').value = t.rights || '';
+  document.getElementById('newTrackLyrics').value = t.lyrics || '';
   document.getElementById('newTrackDesc').value = t.desc || '';
+  document.getElementById('newTrackVisible').checked = t.visible !== false;
+  document.getElementById('newTrackUnreleased').checked = t.unreleased || false;
   document.getElementById('addTrackForm').classList.add('open');
   document.getElementById('addTrackForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addTrackForm .add-form-title').textContent = 'Edit Track';
@@ -1676,23 +1746,34 @@ function editTrack(i) {
 function addTrack() {
   const title = document.getElementById('newTrackTitle').value.trim();
   const artist = document.getElementById('newTrackArtist').value.trim();
+  const type = document.getElementById('newTrackType').value;
   const role = document.getElementById('newTrackRole').value.trim();
   const tag = document.getElementById('newTrackTag').value;
+  const releaseDate = document.getElementById('newTrackReleaseDate').value.trim();
   const link = document.getElementById('newTrackLink').value.trim();
   const album = document.getElementById('newTrackAlbum').value.trim();
   const year = document.getElementById('newTrackYear').value.trim();
+  const isrc = document.getElementById('newTrackISRC').value.trim();
+  const rights = document.getElementById('newTrackRights').value.trim();
+  const lyrics = document.getElementById('newTrackLyrics').value.trim();
   const desc = document.getElementById('newTrackDesc').value.trim();
+  const visible = document.getElementById('newTrackVisible').checked;
+  const unreleased = document.getElementById('newTrackUnreleased').checked;
   if (!title) return;
   epk.tracks = epk.tracks || [];
+  const trackData = { title, artist, type, role, tag, releaseDate, link, album, year, isrc, rights, lyrics, desc, visible, unreleased };
   if (editingTrackIdx >= 0) {
-    epk.tracks[editingTrackIdx] = { title, artist, role, tag, link, album, year, desc };
+    epk.tracks[editingTrackIdx] = { ...epk.tracks[editingTrackIdx], ...trackData };
     editingTrackIdx = -1;
     document.querySelector('#addTrackForm .add-form-title').textContent = 'New Track';
   } else {
-    epk.tracks.push({ title, artist, role, tag, link, album, year, desc });
+    epk.tracks.push(trackData);
   }
-  ['newTrackTitle','newTrackArtist','newTrackRole','newTrackLink','newTrackAlbum','newTrackYear','newTrackDesc'].forEach(id => document.getElementById(id).value = '');
+  ['newTrackTitle','newTrackArtist','newTrackRole','newTrackLink','newTrackAlbum','newTrackYear','newTrackReleaseDate','newTrackISRC','newTrackRights','newTrackLyrics','newTrackDesc'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('newTrackTag').value = '';
+  document.getElementById('newTrackType').value = '';
+  document.getElementById('newTrackVisible').checked = true;
+  document.getElementById('newTrackUnreleased').checked = false;
   toggleAddForm('addTrackForm');
   renderTracks(); persistUser(); showSaveBanner();
 }
