@@ -434,6 +434,24 @@
           <textarea id="newCreditFullDesc" rows="8" placeholder="Detailed description of your role, responsibilities, and achievements..."></textarea>
         </div>
         <div class="field-group">
+          <label class="field-label">Media Link <span style="color:var(--gray);font-weight:400">(YouTube, Spotify, etc.)</span></label>
+          <input type="url" id="newCreditMediaLink" placeholder="https://youtube.com/watch?v=...">
+          <p class="field-hint">Optional. A link to a video, song, or performance associated with this credit.</p>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Media Label <span style="color:var(--gray);font-weight:400">(button text)</span></label>
+          <input type="text" id="newCreditMediaLabel" placeholder="e.g. Watch Performance · Listen on Spotify">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Video File <span style="color:var(--gray);font-weight:400">(upload MP4)</span></label>
+          <input type="url" id="newCreditVideoUrl" placeholder="Paste video URL or upload below">
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+            <button class="btn-add" onclick="triggerCreditVideoUpload()">↑ Upload MP4</button>
+            <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
+          </div>
+          <input type="file" id="creditVideoInput" accept="video/*" style="display:none">
+        </div>
+        <div class="field-group">
           <label class="field-label">Photos <span style="color:var(--gray);font-weight:400">(upload images for this credit)</span></label>
           <div id="creditPhotosPreview" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;min-height:20px"></div>
           <input type="file" id="creditPhotoInput" accept="image/*" style="display:none" multiple>
@@ -1221,6 +1239,9 @@ function editCredit(i) {
   document.getElementById('newCreditRole').value = c.role || '';
   document.getElementById('newCreditDesc').value = c.desc || '';
   document.getElementById('newCreditFullDesc').value = c.fullDesc || '';
+  document.getElementById('newCreditMediaLink').value = c.mediaLink || '';
+  document.getElementById('newCreditMediaLabel').value = c.mediaLabel || '';
+  document.getElementById('newCreditVideoUrl').value = c.videoUrl || '';
   // Restore photos preview
   pendingCreditPhotos = [...(c.photos || [])];
   renderCreditPhotosPreview();
@@ -1316,20 +1337,47 @@ function addCredit() {
   const role = document.getElementById('newCreditRole').value.trim();
   const desc = document.getElementById('newCreditDesc').value.trim();
   const fullDesc = document.getElementById('newCreditFullDesc').value.trim();
+  const mediaLink = document.getElementById('newCreditMediaLink').value.trim();
+  const mediaLabel = document.getElementById('newCreditMediaLabel').value.trim();
+  const videoUrl = document.getElementById('newCreditVideoUrl').value.trim();
   if (!artist || !role) return;
   epk.credits = epk.credits || [];
   if (editingCreditIdx >= 0) {
-    epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], artist, years, role, desc, fullDesc, photos: [...pendingCreditPhotos] };
+    epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], artist, years, role, desc, fullDesc, mediaLink, mediaLabel, videoUrl, photos: [...pendingCreditPhotos] };
     editingCreditIdx = -1;
     document.querySelector('#addCreditForm .add-form-title').textContent = 'New Credit';
   } else {
-    epk.credits.push({ artist, years, role, desc, fullDesc, photos: [...pendingCreditPhotos] });
+    epk.credits.push({ artist, years, role, desc, fullDesc, mediaLink, mediaLabel, videoUrl, photos: [...pendingCreditPhotos] });
   }
   pendingCreditPhotos = [];
   renderCreditPhotosPreview();
-  ['newCreditArtist','newCreditYears','newCreditRole','newCreditDesc','newCreditFullDesc'].forEach(id => document.getElementById(id).value = '');
+  ['newCreditArtist','newCreditYears','newCreditRole','newCreditDesc','newCreditFullDesc','newCreditMediaLink','newCreditMediaLabel','newCreditVideoUrl'].forEach(id => document.getElementById(id).value = '');
   toggleAddForm('addCreditForm');
   renderCredits(); persistUser(); showSaveBanner();
+}
+function triggerCreditVideoUpload() {
+  const input = document.getElementById('creditVideoInput');
+  input.value = '';
+  input.click();
+  input.onchange = async function() {
+    const file = input.files[0];
+    if (!file) return;
+    const btn = document.querySelector('[onclick="triggerCreditVideoUpload()"]');
+    if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_VIDEO_PRESET);
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`, { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.secure_url) {
+        document.getElementById('newCreditVideoUrl').value = data.secure_url;
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload MP4'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      }
+    } catch(e) {
+      if (btn) { btn.textContent = 'Failed'; btn.disabled = false; }
+    }
+  };
 }
 function removeCredit(i) { epk.credits.splice(i, 1); renderCredits(); persistUser(); showSaveBanner(); }
 

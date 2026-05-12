@@ -633,6 +633,19 @@ function openCreditModal(i) {
   document.getElementById('creditModalArtist').textContent = c.artist;
   document.getElementById('creditModalMeta').textContent = [c.role, c.years].filter(Boolean).join(' · ');
   document.getElementById('creditModalDesc').textContent = c.fullDesc || c.desc || '';
+  // Media: video upload or external link
+  const mediaHTML = (() => {
+    let html = '';
+    if (c.videoUrl) {
+      html += `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain;margin-bottom:1rem" src="${c.videoUrl}"></video>`;
+    }
+    if (c.mediaLink) {
+      const label = c.mediaLabel || 'View Media →';
+      html += `<a href="${c.mediaLink}" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;margin-bottom:1rem;transition:all 0.3s" onmouseover="this.style.background='rgba(201,168,76,0.08)'" onmouseout="this.style.background=''">${label}</a>`;
+    }
+    return html;
+  })();
+  document.getElementById('creditModalMedia').innerHTML = mediaHTML;
   document.getElementById('creditModalPhotos').innerHTML = photos.map(url =>
     `<img class="credit-modal-photo" src="${url}" alt="${c.artist}" loading="lazy" onclick="openLightbox('${url}')" onerror="this.style.display='none'">`
   ).join('');
@@ -663,6 +676,7 @@ document.addEventListener('keydown', e => {
     <div class="credit-modal-artist" id="creditModalArtist"></div>
     <div class="credit-modal-meta" id="creditModalMeta"></div>
     <div class="credit-modal-desc" id="creditModalDesc"></div>
+    <div id="creditModalMedia" style="margin-top:1.25rem"></div>
     <div class="credit-modal-photos" id="creditModalPhotos"></div>
   </div>
 </div>
