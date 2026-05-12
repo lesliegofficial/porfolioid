@@ -423,7 +423,7 @@ function buildEPK(epk) {
     const lyricsId = `lyrics_${i}`;
 
     return `
-    <div class="track-item" style="flex-direction:column;align-items:flex-start;gap:0.75rem">
+    <div class="track-item">
       <div style="display:flex;align-items:flex-start;gap:2rem;width:100%">
         <span class="track-num">${trackNum}</span>
         <div class="track-info" style="flex:1">
@@ -433,8 +433,8 @@ function buildEPK(epk) {
           ${t.rights ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.15rem;letter-spacing:0.05em">${t.rights}</div>` : ''}
           ${t.desc ? `<div class="track-desc">${t.desc}</div>` : ''}
           ${linkHTML}
-          ${linkHTML}
           ${t.lyrics ? `<div style="margin-top:0.5rem"><button class="lyrics-toggle" data-id="${lyricsId}" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);background:none;border:none;cursor:pointer;padding:0">&#9834; View Lyrics</button><div id="${lyricsId}" style="display:none;margin-top:0.75rem;padding:1rem;background:var(--dark-2);border-left:2px solid rgba(201,168,76,0.3);font-size:0.85rem;color:var(--gray-light);line-height:1.8;white-space:pre-line">${t.lyrics}</div></div>` : ""}
+        </div>
         <div class="track-role">${t.role}</div>
       </div>
     </div>`;
