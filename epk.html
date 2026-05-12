@@ -142,6 +142,19 @@
   .gallery-arrow.prev { left: 0.5rem; }
   .gallery-arrow.next { right: 0.5rem; }
 
+  /* GALLERY IMPROVEMENTS */
+  .gallery-group-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin: 2rem 0 1.25rem; display: flex; align-items: center; gap: 1rem; }
+  .gallery-group-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.2), transparent); max-width: 200px; }
+  .gallery-masonry { columns: 3; gap: 0.75rem; margin-top: 1.5rem; }
+  .gallery-masonry-item { break-inside: avoid; margin-bottom: 0.75rem; position: relative; cursor: pointer; overflow: hidden; }
+  .gallery-masonry-item img { width: 100%; display: block; transition: transform 0.3s; }
+  .gallery-masonry-item:hover img { transform: scale(1.03); }
+  .gallery-masonry-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem 0.75rem 0.5rem; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.8); opacity: 0; transition: opacity 0.3s; }
+  .gallery-masonry-item:hover .gallery-masonry-caption { opacity: 1; }
+  .gallery-featured-photo { width: 100%; aspect-ratio: 16/9; object-fit: cover; margin-bottom: 1rem; cursor: pointer; transition: opacity 0.3s; }
+  .gallery-featured-photo:hover { opacity: 0.9; }
+  @media (max-width: 768px) { .gallery-masonry { columns: 2; } }
+
   /* ASSETS */
   .assets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
   .asset-card { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.08); padding: 2rem; transition: border-color 0.3s; }
@@ -579,7 +592,7 @@ function buildEPK(epk) {
       <div class="gallery-inner">
         <div class="section-label">Photos</div>
         <h2 class="section-title">On Stage & Behind the Scenes</h2>
-        <div class="gallery-slideshows" id="gallerySlideshows"></div>
+        <div id="galleryContent"></div>
       </div>
     </div>` : ''}
 
@@ -613,74 +626,63 @@ function buildEPK(epk) {
 }
 
 function buildGallery(photos) {
-  // Group photos
-  const groups = {};
-  photos.forEach(p => {
-    const group = p.group || 'Gallery';
-    if (!groups[group]) groups[group] = [];
-    groups[group].push(p);
-  });
-
-  const groupArrays = Object.values(groups).slice(0, 3);
-  while (groupArrays.length < 3 && groupArrays.length > 0) {
-    groupArrays.push([...groupArrays[0]]);
-  }
-
-  const container = document.getElementById('gallerySlideshows');
+  const container = document.getElementById('galleryContent');
   if (!container) return;
 
-  const colStates = groupArrays.map(() => ({ current: 0 }));
+  // Separate featured photos
+  const featured = photos.filter(p => p.featured);
+  const regular = photos.filter(p => !p.featured);
 
-  groupArrays.forEach((photos, colIdx) => {
-    const col = document.createElement('div');
-    col.className = 'gallery-col';
-
-    photos.forEach((photo, i) => {
-      const slide = document.createElement('div');
-      slide.className = 'gallery-slide' + (i === 0 ? ' active' : '');
-      slide.innerHTML = `<img src="${photo.url}" alt="${photo.caption}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1501386761578-eaa54b1abe08?w=600&q=80'"><div class="gallery-caption">${photo.caption}</div>`;
-      col.appendChild(slide);
-    });
-
-    const nav = document.createElement('div');
-    nav.className = 'gallery-nav';
-    photos.forEach((_, i) => {
-      const dot = document.createElement('div');
-      dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
-      dot.onclick = () => goToSlide(col, colStates[colIdx], i);
-      nav.appendChild(dot);
-    });
-    col.appendChild(nav);
-
-    const prev = document.createElement('div');
-    prev.className = 'gallery-arrow prev';
-    prev.innerHTML = '‹';
-    prev.onclick = (e) => { e.stopPropagation(); navigate(col, colStates[colIdx], photos.length, -1); };
-
-    const next = document.createElement('div');
-    next.className = 'gallery-arrow next';
-    next.innerHTML = '›';
-    next.onclick = (e) => { e.stopPropagation(); navigate(col, colStates[colIdx], photos.length, 1); };
-
-    col.appendChild(prev);
-    col.appendChild(next);
-    container.appendChild(col);
-
-    setInterval(() => navigate(col, colStates[colIdx], photos.length, 1), 4000 + colIdx * 1200);
+  // Group regular photos by album/group
+  const groups = {};
+  const ungrouped = [];
+  regular.forEach(p => {
+    if (p.group) {
+      if (!groups[p.group]) groups[p.group] = [];
+      groups[p.group].push(p);
+    } else {
+      ungrouped.push(p);
+    }
   });
-}
 
-function goToSlide(col, state, idx) {
-  col.querySelectorAll('.gallery-slide')[state.current].classList.remove('active');
-  col.querySelectorAll('.gallery-dot')[state.current].classList.remove('active');
-  state.current = idx;
-  col.querySelectorAll('.gallery-slide')[state.current].classList.add('active');
-  col.querySelectorAll('.gallery-dot')[state.current].classList.add('active');
-}
+  let html = '';
 
-function navigate(col, state, total, dir) {
-  const next = (state.current + dir + total) % total;
-  goToSlide(col, state, next);
+  // Featured photos row
+  if (featured.length) {
+    html += '<div style="margin-bottom:2rem">';
+    html += '<div class="gallery-group-label">Featured</div>';
+    html += '<div class="gallery-masonry">';
+    featured.forEach((p, i) => {
+      html += `<div class="gallery-masonry-item" onclick="openLightbox('${p.url}')"><img src="${p.url}" alt="${p.caption || ''}" loading="lazy" onerror="this.style.display='none'"><div class="gallery-masonry-caption">${p.caption || ''}</div></div>`;
+    });
+    html += '</div></div>';
+  }
+
+  // Grouped albums
+  Object.entries(groups).forEach(([groupName, groupPhotos]) => {
+    html += `<div class="gallery-group-label">${groupName}</div>`;
+    html += '<div class="gallery-masonry">';
+    groupPhotos.forEach(p => {
+      const catBadge = p.category ? `<span style="position:absolute;top:0.4rem;left:0.4rem;font-family:var(--font-mono);font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(0,0,0,0.7);color:var(--gold);padding:0.1rem 0.4rem;z-index:2">${p.category}</span>` : '';
+      html += `<div class="gallery-masonry-item" onclick="openLightbox('${p.url}')" style="position:relative">${catBadge}<img src="${p.url}" alt="${p.caption || ''}" loading="lazy" onerror="this.style.display='none'"><div class="gallery-masonry-caption">${p.caption || ''}</div></div>`;
+    });
+    html += '</div>';
+  });
+
+  // Ungrouped photos
+  if (ungrouped.length) {
+    if (Object.keys(groups).length > 0) {
+      html += '<div class="gallery-group-label">Gallery</div>';
+    }
+    html += '<div class="gallery-masonry">';
+    ungrouped.forEach(p => {
+      const catBadge = p.category ? `<span style="position:absolute;top:0.4rem;left:0.4rem;font-family:var(--font-mono);font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(0,0,0,0.7);color:var(--gold);padding:0.1rem 0.4rem;z-index:2">${p.category}</span>` : '';
+      html += `<div class="gallery-masonry-item" onclick="openLightbox('${p.url}')" style="position:relative">${catBadge}<img src="${p.url}" alt="${p.caption || ''}" loading="lazy" onerror="this.style.display='none'"><div class="gallery-masonry-caption">${p.caption || ''}</div></div>`;
+    });
+    html += '</div>';
+  }
+
+  container.innerHTML = html;
 }
 
 // Init

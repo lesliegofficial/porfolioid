@@ -899,9 +899,31 @@
           </div>
           <input type="file" id="newPhotoFile" accept="image/*" style="display:none">
         </div>
-        <div class="field-group">
-          <label class="field-label">Gallery Group</label>
-          <input type="text" id="newPhotoGroup" placeholder="e.g. Live Performance (leave blank for default)">
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Album / Group</label>
+            <input type="text" id="newPhotoGroup" placeholder="e.g. Live Performance">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Category Tag</label>
+            <select id="newPhotoCategory">
+              <option value="">— Select Category —</option>
+              <option value="Press">Press</option>
+              <option value="Live">Live</option>
+              <option value="Studio">Studio</option>
+              <option value="Behind the Scenes">Behind the Scenes</option>
+              <option value="Editorial">Editorial</option>
+              <option value="Event">Event</option>
+              <option value="Personal">Personal</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-3);padding:0.85rem 1rem;border:1px solid rgba(201,168,76,0.1);margin-bottom:1.25rem">
+          <label style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);flex:1">Options</label>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="newPhotoFeatured" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gold)">⭐ Featured</span>
+          </label>
         </div>
         <div class="form-actions">
           <button class="btn-save" onclick="addPhoto()">Add Photo</button>
@@ -1905,12 +1927,17 @@ function renderPhotos() {
   const container = document.getElementById('photosList');
   container.innerHTML = '';
   (epk.photos || []).forEach((p, i) => {
+    const badges = [
+      p.featured ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.15rem 0.5rem">⭐ FEATURED</span>' : '',
+      p.category ? `<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.08);color:var(--gray);padding:0.15rem 0.5rem">${p.category}</span>` : '',
+      p.group ? `<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,255,255,0.05);color:var(--gray);padding:0.15rem 0.5rem">${p.group}</span>` : '',
+    ].filter(Boolean).join(' ');
     container.innerHTML += `
       <div class="editable-card" style="display:flex;gap:1rem;align-items:center">
         <img src="${p.url}" style="width:80px;height:60px;object-fit:cover;flex-shrink:0;border:1px solid rgba(201,168,76,0.15)" onerror="this.style.display='none'">
         <div style="flex:1">
+          ${badges ? `<div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.3rem">${badges}</div>` : ''}
           <div class="editable-card-title" style="font-size:0.95rem">${p.caption || '(no caption)'}</div>
-          ${p.group ? `<div class="editable-card-subtitle">${p.group}</div>` : ''}
         </div>
         <div class="card-actions">
           <button class="btn-card-action" onclick="editPhoto(${i})">Edit</button>
@@ -1925,6 +1952,8 @@ function editPhoto(i) {
   document.getElementById('newPhotoCaption').value = p.caption || '';
   document.getElementById('newPhotoUrl').value = p.url || '';
   document.getElementById('newPhotoGroup').value = p.group || '';
+  document.getElementById('newPhotoCategory').value = p.category || '';
+  document.getElementById('newPhotoFeatured').checked = p.featured || false;
   document.getElementById('addPhotoForm').classList.add('open');
   document.getElementById('addPhotoForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addPhotoForm .add-form-title').textContent = 'Edit Photo';
@@ -1933,18 +1962,21 @@ function addPhoto() {
   const caption = document.getElementById('newPhotoCaption').value.trim();
   const url = document.getElementById('newPhotoUrl').value.trim();
   const group = document.getElementById('newPhotoGroup').value.trim();
+  const category = document.getElementById('newPhotoCategory').value;
+  const featured = document.getElementById('newPhotoFeatured').checked;
   if (!url) return;
   epk.photos = epk.photos || [];
+  const photoData = { caption, url, group, category, featured };
   if (editingPhotoIdx >= 0) {
-    epk.photos[editingPhotoIdx] = { caption, url, group };
+    epk.photos[editingPhotoIdx] = { ...epk.photos[editingPhotoIdx], ...photoData };
     editingPhotoIdx = -1;
     document.querySelector('#addPhotoForm .add-form-title').textContent = 'New Photo';
   } else {
-    epk.photos.push({ caption, url, group });
+    epk.photos.push(photoData);
   }
-  document.getElementById('newPhotoCaption').value = '';
-  document.getElementById('newPhotoUrl').value = '';
-  document.getElementById('newPhotoGroup').value = '';
+  ['newPhotoCaption','newPhotoUrl','newPhotoGroup'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('newPhotoCategory').value = '';
+  document.getElementById('newPhotoFeatured').checked = false;
   toggleAddForm('addPhotoForm');
   renderPhotos(); persistUser(); showSaveBanner();
 }
