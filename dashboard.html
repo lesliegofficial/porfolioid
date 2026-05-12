@@ -684,24 +684,22 @@
     <!-- SOCIAL LINKS PANEL -->
     <div class="panel" id="panel-socials">
       <h1 class="panel-title">Social <em>Links</em></h1>
-      <p class="panel-sub">Add your social media profiles and website. These appear as clickable icons on your EPK.</p>
+      <p class="panel-sub">Add your platforms and profiles. These appear in a dedicated Connect section on your EPK.</p>
+
+      <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:1.5rem;">Social Platforms</h3>
 
       <div class="field-group">
-        <label class="field-label">Instagram</label>
-        <input type="url" id="socialInstagram" placeholder="https://instagram.com/yourhandle">
+        <label class="field-label">Instagram <span style="color:var(--gray);font-weight:400">(add multiple)</span></label>
+        <div id="instagramList"></div>
+        <button class="btn-add-new" style="margin-top:0.5rem;padding:0.6rem 1rem;font-size:0.6rem" onclick="addSocialField('instagram','https://instagram.com/yourhandle')">+ Add Instagram</button>
       </div>
+
       <div class="field-group">
-        <label class="field-label">Facebook</label>
-        <input type="url" id="socialFacebook" placeholder="https://facebook.com/yourpage">
+        <label class="field-label">Facebook <span style="color:var(--gray);font-weight:400">(add multiple)</span></label>
+        <div id="facebookList"></div>
+        <button class="btn-add-new" style="margin-top:0.5rem;padding:0.6rem 1rem;font-size:0.6rem" onclick="addSocialField('facebook','https://facebook.com/yourpage')">+ Add Facebook</button>
       </div>
-      <div class="field-group">
-        <label class="field-label">YouTube</label>
-        <input type="url" id="socialYoutube" placeholder="https://youtube.com/@yourchannel">
-      </div>
-      <div class="field-group">
-        <label class="field-label">Spotify</label>
-        <input type="url" id="socialSpotify" placeholder="https://open.spotify.com/artist/...">
-      </div>
+
       <div class="field-group">
         <label class="field-label">TikTok</label>
         <input type="url" id="socialTiktok" placeholder="https://tiktok.com/@yourhandle">
@@ -710,9 +708,39 @@
         <label class="field-label">LinkedIn</label>
         <input type="url" id="socialLinkedin" placeholder="https://linkedin.com/in/yourprofile">
       </div>
+
       <div class="field-group">
-        <label class="field-label">Personal Website</label>
-        <input type="url" id="socialWebsite" placeholder="https://yourwebsite.com">
+        <label class="field-label">Website(s) <span style="color:var(--gray);font-weight:400">(add multiple)</span></label>
+        <div id="websiteList"></div>
+        <button class="btn-add-new" style="margin-top:0.5rem;padding:0.6rem 1rem;font-size:0.6rem" onclick="addSocialField('website','https://yourwebsite.com')">+ Add Website</button>
+      </div>
+
+      <hr class="section-divider">
+      <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:1.5rem;">Music Platforms</h3>
+
+      <div class="field-group">
+        <label class="field-label">Spotify</label>
+        <input type="url" id="socialSpotify" placeholder="https://open.spotify.com/artist/...">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Apple Music</label>
+        <input type="url" id="socialAppleMusic" placeholder="https://music.apple.com/artist/...">
+      </div>
+      <div class="field-group">
+        <label class="field-label">YouTube Music / Channel</label>
+        <input type="url" id="socialYoutube" placeholder="https://youtube.com/@yourchannel">
+      </div>
+      <div class="field-group">
+        <label class="field-label">SoundCloud</label>
+        <input type="url" id="socialSoundcloud" placeholder="https://soundcloud.com/yourprofile">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Tidal</label>
+        <input type="url" id="socialTidal" placeholder="https://tidal.com/browse/artist/...">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Bandcamp</label>
+        <input type="url" id="socialBandcamp" placeholder="https://yourname.bandcamp.com">
       </div>
 
       <div class="form-actions">
@@ -1594,25 +1622,84 @@ function addAward() {
 }
 function removeAward(i) { epk.awards.splice(i, 1); renderAwards(); persistUser(); showSaveBanner(); }
 
-// SOCIAL LINKS
+// SOCIAL LINKS — multi-field support for instagram, facebook, website
+function renderSocialList(platform, placeholder) {
+  const container = document.getElementById(platform + 'List');
+  if (!container) return;
+  const values = (epk.socials && epk.socials[platform]) || [];
+  const arr = Array.isArray(values) ? values : (values ? [values] : []);
+  container.innerHTML = arr.map((url, i) => `
+    <div style="display:flex;gap:0.5rem;margin-bottom:0.5rem;align-items:center">
+      <input type="url" value="${url}" placeholder="${placeholder}"
+        style="flex:1;background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.8rem 1rem;font-family:var(--font-body);font-size:0.9rem;outline:none"
+        oninput="updateSocialField('${platform}',${i},this.value)">
+      <button onclick="removeSocialField('${platform}',${i})"
+        style="background:none;border:1px solid rgba(255,100,100,0.3);color:#ff6b6b;padding:0.6rem 0.75rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;white-space:nowrap;transition:all 0.2s"
+        onmouseover="this.style.borderColor='#ff6b6b'" onmouseout="this.style.borderColor='rgba(255,100,100,0.3)'">✕ Remove</button>
+    </div>`).join('');
+}
+
+function addSocialField(platform, placeholder) {
+  epk.socials = epk.socials || {};
+  const existing = epk.socials[platform];
+  const arr = Array.isArray(existing) ? existing : (existing ? [existing] : []);
+  arr.push('');
+  epk.socials[platform] = arr;
+  renderSocialList(platform, placeholder);
+}
+
+function removeSocialField(platform, idx) {
+  const arr = epk.socials[platform] || [];
+  arr.splice(idx, 1);
+  epk.socials[platform] = arr;
+  const placeholders = { instagram:'https://instagram.com/yourhandle', facebook:'https://facebook.com/yourpage', website:'https://yourwebsite.com' };
+  renderSocialList(platform, placeholders[platform]);
+  persistUser(); showSaveBanner();
+}
+
+function updateSocialField(platform, idx, value) {
+  if (!epk.socials) epk.socials = {};
+  const arr = Array.isArray(epk.socials[platform]) ? epk.socials[platform] : [];
+  arr[idx] = value;
+  epk.socials[platform] = arr;
+}
+
 function saveSocials() {
-  epk.socials = {
-    instagram: document.getElementById('socialInstagram').value.trim(),
-    facebook: document.getElementById('socialFacebook').value.trim(),
-    youtube: document.getElementById('socialYoutube').value.trim(),
-    spotify: document.getElementById('socialSpotify').value.trim(),
-    tiktok: document.getElementById('socialTiktok').value.trim(),
-    website: document.getElementById('socialWebsite').value.trim(),
-    linkedin: document.getElementById('socialLinkedin').value.trim(),
-  };
+  epk.socials = epk.socials || {};
+  // Save multi fields (already kept in sync via updateSocialField)
+  // Save single fields
+  epk.socials.tiktok = document.getElementById('socialTiktok').value.trim();
+  epk.socials.linkedin = document.getElementById('socialLinkedin').value.trim();
+  epk.socials.spotify = document.getElementById('socialSpotify').value.trim();
+  epk.socials.appleMusic = document.getElementById('socialAppleMusic').value.trim();
+  epk.socials.youtube = document.getElementById('socialYoutube').value.trim();
+  epk.socials.soundcloud = document.getElementById('socialSoundcloud').value.trim();
+  epk.socials.tidal = document.getElementById('socialTidal').value.trim();
+  epk.socials.bandcamp = document.getElementById('socialBandcamp').value.trim();
+  // Clean empty entries from multi fields
+  ['instagram','facebook','website'].forEach(p => {
+    if (Array.isArray(epk.socials[p])) {
+      epk.socials[p] = epk.socials[p].filter(v => v.trim());
+    }
+  });
   persistUser(); showSaveBanner();
 }
 
 function loadSocials() {
   const s = epk.socials || {};
-  ['instagram','facebook','youtube','spotify','tiktok','website','linkedin'].forEach(k => {
-    const el = document.getElementById(`social${k.charAt(0).toUpperCase() + k.slice(1)}`);
-    if (el) el.value = s[k] || '';
+  // Load multi fields
+  ['instagram','facebook','website'].forEach(p => {
+    const placeholders = { instagram:'https://instagram.com/yourhandle', facebook:'https://facebook.com/yourpage', website:'https://yourwebsite.com' };
+    const val = s[p];
+    epk.socials = epk.socials || {};
+    epk.socials[p] = Array.isArray(val) ? val : (val ? [val] : []);
+    renderSocialList(p, placeholders[p]);
+  });
+  // Load single fields
+  const singles = { tiktok:'socialTiktok', linkedin:'socialLinkedin', spotify:'socialSpotify', appleMusic:'socialAppleMusic', youtube:'socialYoutube', soundcloud:'socialSoundcloud', tidal:'socialTidal', bandcamp:'socialBandcamp' };
+  Object.entries(singles).forEach(([key, elId]) => {
+    const el = document.getElementById(elId);
+    if (el) el.value = s[key] || '';
   });
 }
 
