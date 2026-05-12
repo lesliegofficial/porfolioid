@@ -281,7 +281,6 @@ function buildEPK(epk) {
 
   // Store credits for modal access
   epkCreditsData = epk.credits || [];
-  epkVisibleCredits = visibleCredits;
 
   // Build connect section
   const svgIcons = {
@@ -372,6 +371,7 @@ function buildEPK(epk) {
     .map((c, i) => ({...c, _origIdx: i}))
     .filter(c => c.visible !== false)
     .sort((a, b) => (b.pinned?1:0) - (a.pinned?1:0));
+  epkVisibleCredits = visibleCredits;
 
   const creditsHTML = visibleCredits.map((c, i) => {
     const origI = c._origIdx;
@@ -698,14 +698,14 @@ if (slug) {
       try {
         buildEPK(data.epk);
       } catch(err) {
-        document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray);font-size:0.8rem">Error: ' + err.message + '<br><br><a href="/index.html" style="color:var(--gold)">Return home →</a></div>';
+        document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray);font-size:0.8rem">Error: ' + err.message + '<br><br><a href="/" style="color:var(--gold)">Return home →</a></div>';
       }
     } else {
       const epk = getEPKData(slug);
       if (epk) {
         buildEPK(epk);
       } else {
-        document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">EPK not found. <a href="/index.html" style="color:var(--gold)">Return home →</a></div>';
+        document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">EPK not found. <a href="/" style="color:var(--gold)">Return home →</a></div>';
       }
     }
   })
@@ -714,7 +714,7 @@ if (slug) {
     if (epk) {
       buildEPK(epk);
     } else {
-      document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">Fetch error: ' + err.message + '<br><a href="/index.html" style="color:var(--gold)">Return home →</a></div>';
+      document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">Fetch error: ' + err.message + '<br><a href="/" style="color:var(--gold)">Return home →</a></div>';
     }
   });
 } else {
