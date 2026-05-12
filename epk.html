@@ -401,44 +401,24 @@ function buildEPK(epk) {
 
   const tracksHTML = visibleTracks.map((t, i) => {
     const isMP3 = t.link && (t.link.includes('.mp3') || t.link.includes('cloudinary') || t.link.includes('.wav') || t.link.includes('.ogg'));
-    const isYouTube = t.link && (t.link.includes('youtube.com') || t.link.includes('youtu.be'));
-    const isSpotify = t.link && t.link.includes('spotify.com');
-
-    let linkHTML = '';
-    if (t.link) {
-      if (isMP3) {
-        linkHTML = `<audio controls style="width:100%;height:32px;margin-top:0.5rem;opacity:0.8;accent-color:var(--gold)" src="${t.link}"></audio>`;
-        const ytId = t.link.split('v=')[1]?.split('&')[0] || t.link.split('youtu.be/')[1]?.split('?')[0] || '';
-        linkHTML = ytId
-          ? `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-top:0.75rem"><iframe src="https://www.youtube.com/embed/${ytId}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>`
-          : `<a href="${t.link}" target="_blank" style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold);letter-spacing:0.1em">Watch →</a>`;
-      } else {
-        linkHTML = `<a href="${t.link}" target="_blank" style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold);letter-spacing:0.1em">${isSpotify ? 'Listen on Spotify →' : 'Listen →'}</a>`;
-      }
-    }
-
-    const trackNum = String(i+1).padStart(2,'0');
-    const typeBadge = t.type ? `<span class="track-tag">${t.type}</span>` : '';
-    const metaParts = [t.album, t.year, t.releaseDate].filter(Boolean);
-    const lyricsId = `lyrics_${i}`;
-
+    const linkHTML = t.link ? (isMP3
+      ? `<audio controls style="width:100%;height:32px;margin-top:0.5rem;opacity:0.8;accent-color:var(--gold)" src="${t.link}"></audio>`
+      : `<a href="${t.link}" target="_blank" style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold);letter-spacing:0.1em">Listen →</a>`)
+      : '';
     return `
     <div class="track-item">
-      <div style="display:flex;align-items:flex-start;gap:2rem;width:100%">
-        <span class="track-num">${trackNum}</span>
-        <div class="track-info" style="flex:1">
-          <div class="track-title">${t.title} ${t.tag ? `<span class="track-tag">${t.tag}</span>` : ''} ${typeBadge}</div>
-          <div class="track-artist">${t.artist}</div>
-          ${metaParts.length ? `<div class="track-meta">${metaParts.map(p => `<span>${p}</span>`).join(' · ')}</div>` : ''}
-          ${t.rights ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.15rem;letter-spacing:0.05em">${t.rights}</div>` : ''}
-          ${t.desc ? `<div class="track-desc">${t.desc}</div>` : ''}
-          ${linkHTML}
-          ${t.lyrics ? `<div style="margin-top:0.5rem"><button class="lyrics-toggle" data-id="${lyricsId}" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);background:none;border:none;cursor:pointer;padding:0">&#9834; View Lyrics</button><div id="${lyricsId}" style="display:none;margin-top:0.75rem;padding:1rem;background:var(--dark-2);border-left:2px solid rgba(201,168,76,0.3);font-size:0.85rem;color:var(--gray-light);line-height:1.8;white-space:pre-line">${t.lyrics}</div></div>` : ""}
-        </div>
-        <div class="track-role">${t.role}</div>
+      <span class="track-num">0${i+1}</span>
+      <div class="track-info">
+        <div class="track-title">${t.title} ${t.tag ? `<span class="track-tag">${t.tag}</span>` : ''}</div>
+        <div class="track-artist">${t.artist}</div>
+        ${(t.album || t.year) ? `<div class="track-meta">${t.album ? `<span>${t.album}</span>` : ''}${t.album && t.year ? ' · ' : ''}${t.year || ''}</div>` : ''}
+        ${t.desc ? `<div class="track-desc">${t.desc}</div>` : ''}
+        ${linkHTML}
       </div>
+      <div class="track-role">${t.role}</div>
     </div>`;
   }).join('');
+
 
   const videosHTML = (epk.videos || []).map(v => {
     const isMP4 = v.url && (v.url.includes('.mp4') || v.url.includes('.mov') || v.url.includes('.webm') || (v.url.includes('cloudinary') && !v.url.includes('youtube')));
