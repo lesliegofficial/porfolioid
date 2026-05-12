@@ -18,7 +18,7 @@ exports.handler = async (event, context) => {
     if (event.httpMethod === 'GET') {
       const slug = event.queryStringParameters?.slug;
       if (!slug) return { statusCode: 400, headers, body: JSON.stringify({ error: 'slug required' }) };
-      const data = await store.get(slug, { type: 'json' });
+      const data = await `epk:${slug}`, { type: 'json' });
       if (!data) return { statusCode: 404, headers, body: JSON.stringify({ error: 'not found' }) };
       return { statusCode: 200, headers, body: JSON.stringify(data) };
     }
