@@ -713,14 +713,7 @@ function buildEPK(epk) {
     <div class="gallery-section" id="photos">
       <div class="gallery-inner">
         <div class="section-label">Photos</div>
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:0.5rem">
-          <h2 class="section-title" style="margin-bottom:0">On Stage & Behind the Scenes</h2>
-          <div style="display:flex;gap:0.5rem">
-            <button onclick="setGalleryLayout('marquee')" id="btnMarquee" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(201,168,76,0.4);background:rgba(201,168,76,0.1);color:var(--gold);cursor:pointer;transition:all 0.2s">▶ Auto</button>
-            <button onclick="setGalleryLayout('scroll')" id="btnScroll" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(255,255,255,0.1);background:none;color:var(--gray);cursor:pointer;transition:all 0.2s">⟷ Scroll</button>
-            <button onclick="setGalleryLayout('grid')" id="btnGrid" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(255,255,255,0.1);background:none;color:var(--gray);cursor:pointer;transition:all 0.2s">⊞ Grid</button>
-          </div>
-        </div>
+        <h2 class="section-title">On Stage & Behind the Scenes</h2>
         <div id="galleryContent"></div>
       </div>
     </div>` : ''}
@@ -754,7 +747,7 @@ function buildEPK(epk) {
   if (epk.photos?.length) buildGallery(epk.photos);
 }
 
-let currentGalleryLayout = 'marquee';
+let currentGalleryLayout = 'marquee'; // overridden by epk.galleryLayout
 let galleryPhotos = [];
 
 function setGalleryLayout(layout) {
@@ -820,6 +813,10 @@ function buildScrollGallery(photos, container) {
 
 function buildGallery(photos) {
   galleryPhotos = photos;
+  // Use saved layout preference from dashboard
+  if (typeof epk !== 'undefined' && epk.galleryLayout) {
+    currentGalleryLayout = epk.galleryLayout;
+  }
   const container = document.getElementById('galleryContent');
   if (!container) return;
   container.innerHTML = '';
