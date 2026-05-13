@@ -403,6 +403,7 @@ function getYouTubeThumb(url) {
 }
 
 function buildEPK(epk) {
+  window._epkData = epk;
   const nameParts = (epk.name || 'Artist Name').split(' ');
   const firstName = nameParts[0];
   const lastName = nameParts.slice(1).join(' ');
@@ -988,28 +989,22 @@ document.addEventListener('click', function(e) {
 async function ownerMoveItem(section, idx, dir) {
   if (!window._isOwner || !window._ownerSlug) return;
   try {
-    const res = await fetch('/api/epk', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'load', slug: window._ownerSlug })
-    });
-    const data = await res.json();
-    if (!data.success) return;
-    const epkData = data.epk;
-    const arr = epkData[section] || [];
+    const arr = window._epkData[section] || [];
     const newIdx = idx + dir;
     if (newIdx < 0 || newIdx >= arr.length) return;
+    // Swap in local data
     const temp = arr[idx];
     arr[idx] = arr[newIdx];
     arr[newIdx] = temp;
-    epkData[section] = arr;
-    await fetch('/api/epk', {
+    window._epkData[section] = arr;
+    // Save to backend
+    fetch('/api/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'save', slug: window._ownerSlug, data: epkData })
+      body: JSON.stringify({ action: 'save', slug: window._ownerSlug, data: window._epkData })
     });
-    // Reload page to reflect new order
-    location.reload();
+    // Re-render just that section without page reload
+    buildEPK(window._epkData);
   } catch(e) { console.error('Reorder failed:', e); }
 }
 
