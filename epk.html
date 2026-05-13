@@ -180,6 +180,25 @@
   }
   @media (max-width: 768px) { .gallery-4col { grid-template-columns: repeat(2, 1fr); } .gallery-col { height: 260px; } }
 
+  /* VIDEO LAYOUTS */
+  /* Cinematic — first video large, rest below */
+  .video-cinematic-featured { margin-bottom: 1.5rem; position: relative; }
+  .video-cinematic-featured video, .video-cinematic-featured iframe { width: 100%; aspect-ratio: 16/9; display: block; background: #000; border: 1px solid rgba(201,168,76,0.15); }
+  .video-cinematic-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin: 0.75rem 0 0.25rem; }
+  .video-cinematic-meta { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .video-cinematic-desc { font-size: 0.85rem; color: var(--gray); font-style: italic; }
+  .video-cinematic-rest { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  /* List layout */
+  .video-list-item { display: flex; gap: 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid rgba(201,168,76,0.06); align-items: flex-start; }
+  .video-list-thumb { width: 160px; flex-shrink: 0; position: relative; cursor: pointer; }
+  .video-list-thumb img, .video-list-thumb video { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; border: 1px solid rgba(201,168,76,0.15); }
+  .video-list-thumb .video-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold); background: rgba(0,0,0,0.5); font-size: 0.8rem; }
+  .video-list-info { flex: 1; }
+  .video-list-title { font-size: 1rem; font-weight: 400; color: var(--white); margin-bottom: 0.3rem; }
+  .video-list-meta { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gold); letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+  .video-list-desc { font-size: 0.82rem; color: var(--gray); font-style: italic; line-height: 1.6; }
+  @media (max-width: 768px) { .video-list-item { flex-direction: column; } .video-list-thumb { width: 100%; } }
+
   /* GALLERY MARQUEE */
   .gallery-marquee-wrap {
     overflow: hidden; margin-top: 1.5rem; position: relative;
@@ -612,17 +631,54 @@ function buildEPK(epk) {
   });
 
   const hasCategories = Object.keys(groupedVideos).length > 0;
+  const videoLayout = epk.videoLayout || 'grid';
 
   let videosHTML = '';
-  if (hasCategories) {
-    Object.entries(groupedVideos).forEach(([cat, vids]) => {
-      videosHTML += `<div style="margin-bottom:3rem"><div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem">${cat}<span style="flex:1;height:1px;background:linear-gradient(to right,rgba(201,168,76,0.2),transparent);max-width:200px;display:inline-block"></span></div><div class="videos-grid">${vids.map(v => buildVideoCard(v, v._origIdx)).join('')}</div></div>`;
-    });
-    if (uncategorized.length) {
-      videosHTML += `<div class="videos-grid">${uncategorized.map(v => buildVideoCard(v, v._origIdx)).join('')}</div>`;
+
+  if (videoLayout === 'cinematic') {
+    // First video large, rest in grid below
+    const [first, ...rest] = visibleVideos;
+    const isMP4First = first && first.url && (first.url.includes('.mp4') || first.url.includes('cloudinary'));
+    const firstThumb = first && (first.thumb || getYouTubeThumb(first.url));
+    const firstMedia = first ? (isMP4First
+      ? `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000" ${first.thumb?`poster="${first.thumb}"`:''}><source src="${first.url}" type="video/mp4"></video>`
+      : `<div onclick="window.open('${first.url}','_blank')" style="position:relative;cursor:pointer">${firstThumb?`<img src="${firstThumb}" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block">`:''}<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.2rem;background:rgba(0,0,0,0.5)">▶</div></div>`) : '';
+    if (first) {
+      videosHTML = `<div class="video-cinematic-featured">${firstMedia}<div class="video-cinematic-title">${first.title}</div><div class="video-cinematic-meta">${[first.album, first.year].filter(Boolean).join(' · ')}</div>${first.desc?`<div class="video-cinematic-desc">${first.desc}</div>`:''}</div>`;
     }
+    if (rest.length) {
+      videosHTML += `<div class="video-cinematic-rest">${rest.map(v => buildVideoCard(v, v._origIdx || visibleVideos.indexOf(v))).join('')}</div>`;
+    }
+  } else if (videoLayout === 'list') {
+    videosHTML = '<div>';
+    visibleVideos.forEach((v, i) => {
+      const isMP4 = v.url && (v.url.includes('.mp4') || v.url.includes('cloudinary'));
+      const thumb = v.thumb || getYouTubeThumb(v.url);
+      const thumbHTML = isMP4
+        ? `<video style="width:100%;aspect-ratio:16/9;display:block" src="${v.url}" ${v.thumb?`poster="${v.thumb}"`:''}></video>`
+        : `${thumb?`<img src="${thumb}" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block" alt="${v.title}">`:''}<div class="video-play">▶</div>`;
+      videosHTML += `<div class="video-list-item">
+        <div class="video-list-thumb owner-item-wrap" onclick="window.open('${v.url}','_blank')">${thumbHTML}<div class="owner-overlay"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('videos',${i},-1)">▲</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('videos',${i},1)">▼</button></div></div>
+        <div class="video-list-info">
+          <div class="video-list-title">${v.title}</div>
+          <div class="video-list-meta">${[v.album, v.year].filter(Boolean).join(' · ')}</div>
+          ${v.desc?`<div class="video-list-desc">${v.desc}</div>`:''}
+        </div>
+      </div>`;
+    });
+    videosHTML += '</div>';
   } else {
-    videosHTML = `<div class="videos-grid">${visibleVideos.map((v,i) => buildVideoCard(v, i)).join('')}</div>`;
+    // Default grid
+    if (hasCategories) {
+      Object.entries(groupedVideos).forEach(([cat, vids]) => {
+        videosHTML += `<div style="margin-bottom:3rem"><div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem">${cat}<span style="flex:1;height:1px;background:linear-gradient(to right,rgba(201,168,76,0.2),transparent);max-width:200px;display:inline-block"></span></div><div class="videos-grid">${vids.map(v => buildVideoCard(v, v._origIdx)).join('')}</div></div>`;
+      });
+      if (uncategorized.length) {
+        videosHTML += `<div class="videos-grid">${uncategorized.map(v => buildVideoCard(v, v._origIdx)).join('')}</div>`;
+      }
+    } else {
+      videosHTML = `<div class="videos-grid">${visibleVideos.map((v,i) => buildVideoCard(v, i)).join('')}</div>`;
+    }
   }
 
   const categoryIcons = { 'Resume':'📋', 'Press Kit':'📦', 'Tech Rider':'🎛', 'Stage Plot':'🎭', 'Bio':'📝', 'Photo Pack':'📸', 'Contract Template':'📜', 'Certificate':'🏅', 'Other':'📄' };
