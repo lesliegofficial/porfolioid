@@ -460,7 +460,7 @@ function buildEPK(epk) {
   // Store credits for modal access
   epkCreditsData = epk.credits || [];
 
-  // Build featured videos (first 3)
+  // Build featured videos (first 3) — must be after buildVideoCard is defined
   if (visibleVideos.length <= 3) {
     videosHTMLFeatured = videosHTML;
   } else {
