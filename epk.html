@@ -1108,20 +1108,39 @@ function openCreditModal(i) {
   const collabEl = document.getElementById('creditModalCollaborators');
   collabEl.innerHTML = c.collaborators?.length ? `<div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;color:var(--gray);margin-bottom:1rem">w/ ${c.collaborators.join(', ')}</div>` : '';
 
-  // Media
+  // Media — support multiple items
   const mediaHTML = (() => {
     let html = '';
-    if (c.videoUrl) {
-      html += `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain;margin-bottom:1rem" src="${c.videoUrl}"></video>`;
-    }
-    // YouTube embed
-    if (c.mediaLink) {
-      const ytId2 = c.mediaLink.split('v=')[1]?.split('&')[0] || c.mediaLink.split('youtu.be/')[1]?.split('?')[0];
-      if (ytId2) {
-        html += `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-bottom:1rem"><iframe src="https://www.youtube.com/embed/${ytId2}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>`;
-      } else {
-        const label = c.mediaLabel || 'View Media →';
-        html += `<a href="${c.mediaLink}" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;margin-bottom:1rem;transition:all 0.3s" onmouseover="this.style.background='rgba(201,168,76,0.08)'" onmouseout="this.style.background=''">${label}</a>`;
+    // New multi-media system
+    const mediaItems = c.mediaItems || [];
+    if (mediaItems.length > 0) {
+      mediaItems.forEach(m => {
+        if (!m.url) return;
+        if (m.type === 'video' || m.url.includes('.mp4') || m.url.includes('.mov')) {
+          html += `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain;margin-bottom:1rem" src="${m.url}"></video>`;
+        } else {
+          const ytId2 = m.url.split('v=')[1]?.split('&')[0] || m.url.split('youtu.be/')[1]?.split('?')[0];
+          if (ytId2) {
+            html += `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-bottom:1rem"><iframe src="https://www.youtube.com/embed/${ytId2}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>`;
+          } else {
+            const label = m.label || 'Watch / Listen →';
+            html += `<a href="${m.url}" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;margin-bottom:0.75rem;margin-right:0.5rem;transition:all 0.3s" onmouseover="this.style.background='rgba(201,168,76,0.08)'" onmouseout="this.style.background=''">${label}</a>`;
+          }
+        }
+      });
+    } else {
+      // Legacy single media support
+      if (c.videoUrl) {
+        html += `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain;margin-bottom:1rem" src="${c.videoUrl}"></video>`;
+      }
+      if (c.mediaLink) {
+        const ytId2 = c.mediaLink.split('v=')[1]?.split('&')[0] || c.mediaLink.split('youtu.be/')[1]?.split('?')[0];
+        if (ytId2) {
+          html += `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-bottom:1rem"><iframe src="https://www.youtube.com/embed/${ytId2}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>`;
+        } else {
+          const label = c.mediaLabel || 'View Media →';
+          html += `<a href="${c.mediaLink}" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;margin-bottom:1rem;transition:all 0.3s" onmouseover="this.style.background='rgba(201,168,76,0.08)'" onmouseout="this.style.background=''">${label}</a>`;
+        }
       }
     }
     // Proof link
