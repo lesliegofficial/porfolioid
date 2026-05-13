@@ -460,6 +460,14 @@ function buildEPK(epk) {
   // Store credits for modal access
   epkCreditsData = epk.credits || [];
 
+  // Build featured videos (first 3)
+  if (visibleVideos.length <= 3) {
+    videosHTMLFeatured = videosHTML;
+  } else {
+    const first3 = visibleVideos.slice(0, 3);
+    videosHTMLFeatured = `<div class="videos-grid">${first3.map((v, i) => buildVideoCard(v, i)).join('')}</div>`;
+  }
+
   // Build connect section
   const svgIcons = {
     instagram: '<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
@@ -634,6 +642,7 @@ function buildEPK(epk) {
   const videoLayout = epk.videoLayout || 'grid';
 
   let videosHTML = '';
+  let videosHTMLFeatured = '';
 
   if (videoLayout === 'cinematic') {
     // First video large, rest in grid below
@@ -807,7 +816,7 @@ function buildEPK(epk) {
         <h2 class="section-title" style="margin-bottom:0">Live & On Camera</h2>
         ${visibleVideos.length > 3 ? `<button onclick="toggleAllVideos()" id="videoToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-bottom:1.5rem;transition:all 0.2s">View All Videos +</button>` : ''}
       </div>
-      <div id="videosFeatured">${buildVideosFeatured(visibleVideos, videosHTML)}</div>
+      <div id="videosFeatured">${videosHTMLFeatured}</div>
       ${visibleVideos.length > 3 ? `<div id="videosAll" style="display:none">${videosHTML}</div>` : ''}
     </section>
     <div class="divider"></div>` : ''}
@@ -1046,13 +1055,6 @@ document.addEventListener('click', function(e) {
 });
 
 // Video collapse/expand
-function buildVideosFeatured(videos, fullHTML) {
-  // Show first 3 videos only
-  if (videos.length <= 3) return fullHTML;
-  const first3 = videos.slice(0, 3);
-  return `<div class="videos-grid">${first3.map((v, i) => buildVideoCard(v, i)).join('')}</div>`;
-}
-
 function toggleAllVideos() {
   const allDiv = document.getElementById('videosAll');
   const featDiv = document.getElementById('videosFeatured');
