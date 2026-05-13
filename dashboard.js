@@ -392,13 +392,19 @@ function renderCredits() {
   sorted.forEach((c) => {
     const i = c._origIdx;
     const photos = c.photos || [];
+    // Show count only — clicking expands to show photos (prevents lag with many photos)
     const photosHTML = photos.length ? `
-      <div class="credit-photos-grid">
-        ${photos.map((url, pi) => `
+      <div>
+        <button onclick="toggleCreditPhotos(${i})" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.2);padding:0.25rem 0.6rem;cursor:pointer;margin-top:0.5rem">
+          📷 ${photos.length} Photo${photos.length>1?'s':''} — Click to View
+        </button>
+        <div id="creditPhotos_${i}" style="display:none;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem">
+          ${photos.map((url, pi) => `
           <div draggable="true" ondragstart="dragSavedPhoto(event,${i},${pi})" ondragover="event.preventDefault()" ondrop="dropSavedPhoto(event,${i},${pi})" style="position:relative;display:inline-block;cursor:grab">
-            <img class="credit-photo-thumb" src="${url}" alt="Credit photo" onerror="this.style.display='none'">
+            <img class="credit-photo-thumb" src="${url}" alt="Credit photo" loading="lazy" onerror="this.style.display='none'">
             <button onclick="removeCreditPhoto(${i},${pi})" style="position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.7);border:none;color:#fff;font-size:0.6rem;cursor:pointer;padding:1px 4px;line-height:1">✕</button>
           </div>`).join('')}
+        </div>
       </div>` : '';
     const badges = [
       c.pinned ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.15rem 0.5rem;letter-spacing:0.1em">📌 PINNED</span>' : '',
@@ -434,6 +440,12 @@ function renderCredits() {
       </div>`;
   });
 }
+function toggleCreditPhotos(i) {
+  const el = document.getElementById('creditPhotos_' + i);
+  if (!el) return;
+  el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+}
+
 function editCredit(i) {
   editingCreditIdx = i;
   const c = epk.credits[i];
