@@ -584,7 +584,7 @@ function buildEPK(epk) {
 
   const buildVideoCard = (v, vidIdx) => {
     const totalVisible = visibleVideos.length;
-    const ownerOverlay = `<div class="owner-overlay"><button class="owner-action-btn owner-up" onclick="ownerMoveItem('videos',${vidIdx},-1)" title="Move Up">▲ Up</button><button class="owner-action-btn owner-down" onclick="ownerMoveItem('videos',${vidIdx},1)" title="Move Down">▼ Down</button></div>`;
+    const ownerOverlay = `<div class="owner-overlay"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('videos',${vidIdx},-1)" title="Move Up">▲ Up</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('videos',${vidIdx},1)" title="Move Down">▼ Down</button></div>`;
     const isMP4 = v.url && (v.url.includes('.mp4') || v.url.includes('.mov') || v.url.includes('.webm') || (v.url.includes('cloudinary') && !v.url.includes('youtube')));
     const thumb = v.thumb || getYouTubeThumb(v.url);
     const videoMeta = (v.album || v.year) ? `<div class="video-meta">${v.album ? `<span>${v.album}</span>` : ''}${v.album && v.year ? ' · ' : ''}${v.year || ''}</div>` : '';
@@ -597,11 +597,11 @@ function buildEPK(epk) {
     return `<div class="video-card owner-item-wrap" style="position:relative" onclick="window.open('${v.url}','_blank')">${ownerOverlay}${categoryBadge}${featuredBadge}${thumb ? `<img class="video-thumb" src="${thumb}" alt="${v.title}" loading="lazy">` : `<div class="video-thumb" style="background:var(--dark-4);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:2rem">▶</div>`}<div class="video-play">▶</div><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}</div>`;
   };
 
-  // Group by category
-  const videoCategories = ['Reel', 'Live Performance', 'Music Video', 'Acoustic / Unplugged', 'Interview', 'Podcast', 'Behind the Scenes', 'TV Appearance', 'Other'];
+  // Group by category — but keep original indices for reordering
   const groupedVideos = {};
   const uncategorized = [];
-  visibleVideos.forEach(v => {
+  visibleVideos.forEach((v, origIdx) => {
+    v._origIdx = origIdx;
     if (v.category) {
       if (!groupedVideos[v.category]) groupedVideos[v.category] = [];
       groupedVideos[v.category].push(v);
@@ -614,12 +614,11 @@ function buildEPK(epk) {
 
   let videosHTML = '';
   if (hasCategories) {
-    // Render grouped by category
     Object.entries(groupedVideos).forEach(([cat, vids]) => {
-      videosHTML += `<div style="margin-bottom:3rem"><div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem">${cat}<span style="flex:1;height:1px;background:linear-gradient(to right,rgba(201,168,76,0.2),transparent);max-width:200px;display:inline-block"></span></div><div class="videos-grid">${vids.map((v,i) => buildVideoCard(v, i)).join('')}</div></div>`;
+      videosHTML += `<div style="margin-bottom:3rem"><div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem">${cat}<span style="flex:1;height:1px;background:linear-gradient(to right,rgba(201,168,76,0.2),transparent);max-width:200px;display:inline-block"></span></div><div class="videos-grid">${vids.map(v => buildVideoCard(v, v._origIdx)).join('')}</div></div>`;
     });
     if (uncategorized.length) {
-      videosHTML += `<div class="videos-grid">${uncategorized.map((v,i) => buildVideoCard(v, i)).join('')}</div>`;
+      videosHTML += `<div class="videos-grid">${uncategorized.map(v => buildVideoCard(v, v._origIdx)).join('')}</div>`;
     }
   } else {
     videosHTML = `<div class="videos-grid">${visibleVideos.map((v,i) => buildVideoCard(v, i)).join('')}</div>`;
