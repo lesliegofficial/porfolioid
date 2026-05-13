@@ -366,7 +366,7 @@
   .owner-move-btn:hover { background: rgba(201,168,76,0.2); }
   .owner-move-btn:disabled { opacity: 0.3; cursor: default; }
   .owner-item-wrap { position: relative; }
-  .owner-item-wrap .owner-overlay { position: absolute; top: 0.5rem; right: 0.5rem; display: none; gap: 0.25rem; z-index: 10; flex-direction: column; }
+  .owner-item-wrap .owner-overlay { position: absolute; top: 0.5rem; right: 0.5rem; display: none; gap: 0.25rem; z-index: 10; flex-direction: row; }
   .is-owner .owner-item-wrap:hover .owner-overlay { display: flex; }
   .owner-action-btn { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.6rem; cursor: pointer; border: none; transition: all 0.2s; white-space: nowrap; }
   .owner-up { background: rgba(201,168,76,0.8); color: var(--black); }
@@ -604,7 +604,7 @@ function buildEPK(epk) {
 
   const buildVideoCard = (v, vidIdx) => {
     const totalVisible = visibleVideos.length;
-    const ownerOverlay = `<div class="owner-overlay"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('videos',${vidIdx},-1)" title="Move Up">▲ Up</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('videos',${vidIdx},1)" title="Move Down">▼ Down</button></div>`;
+    const ownerOverlay = `<div class="owner-overlay" style="flex-direction:row;gap:0.2rem"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('videos',${vidIdx},-1)" title="Move Left">◀</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('videos',${vidIdx},1)" title="Move Right">▶</button></div>`;
     const isMP4 = v.url && (v.url.includes('.mp4') || v.url.includes('.mov') || v.url.includes('.webm') || (v.url.includes('cloudinary') && !v.url.includes('youtube')));
     const thumb = v.thumb || getYouTubeThumb(v.url);
     const videoMeta = (v.album || v.year) ? `<div class="video-meta">${v.album ? `<span>${v.album}</span>` : ''}${v.album && v.year ? ' · ' : ''}${v.year || ''}</div>` : '';
