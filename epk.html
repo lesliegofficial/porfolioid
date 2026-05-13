@@ -337,6 +337,24 @@
   .footer-logo { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; color: var(--gray); }
   .footer-copy { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gray); letter-spacing: 0.1em; }
 
+  /* OWNER CONTROLS */
+  .owner-controls { display: none; }
+  .is-owner .owner-controls { display: flex; }
+  .owner-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(8,8,8,0.95); border-top: 1px solid rgba(201,168,76,0.2); padding: 0.6rem 2rem; display: none; align-items: center; justify-content: space-between; z-index: 500; backdrop-filter: blur(8px); }
+  .is-owner .owner-bar { display: flex; }
+  .owner-bar-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); opacity: 0.8; }
+  .owner-move-btn { font-family: var(--font-mono); font-size: 0.6rem; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); padding: 0.25rem 0.5rem; cursor: pointer; transition: all 0.2s; margin: 0 1px; }
+  .owner-move-btn:hover { background: rgba(201,168,76,0.2); }
+  .owner-move-btn:disabled { opacity: 0.3; cursor: default; }
+  .owner-item-wrap { position: relative; }
+  .owner-item-wrap .owner-overlay { position: absolute; top: 0.5rem; right: 0.5rem; display: none; gap: 0.25rem; z-index: 10; flex-direction: column; }
+  .is-owner .owner-item-wrap:hover .owner-overlay { display: flex; }
+  .owner-action-btn { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.6rem; cursor: pointer; border: none; transition: all 0.2s; white-space: nowrap; }
+  .owner-up { background: rgba(201,168,76,0.8); color: var(--black); }
+  .owner-down { background: rgba(201,168,76,0.6); color: var(--black); }
+  .owner-up:hover { background: var(--gold); }
+  .owner-down:hover { background: var(--gold); }
+
   @media (max-width: 768px) {
     .hero { grid-template-columns: 1fr; }
     .hero-image-panel { height: 50vh; }
@@ -412,6 +430,9 @@ function buildEPK(epk) {
     const session = JSON.parse(localStorage.getItem('porfolioid_session') || 'null');
     if (session && session.slug === epk.slug) {
       document.getElementById('editBtn').classList.add('visible');
+      document.body.classList.add('is-owner');
+      window._isOwner = true;
+      window._ownerSlug = epk.slug;
     }
   } catch(e) {}
 
@@ -560,7 +581,9 @@ function buildEPK(epk) {
   const visibleVideos = (epk.videos || [])
     .filter(v => v.visible !== false);
 
-  const buildVideoCard = (v) => {
+  const buildVideoCard = (v, vidIdx) => {
+    const totalVisible = visibleVideos.length;
+    const ownerOverlay = `<div class="owner-overlay"><button class="owner-action-btn owner-up" onclick="ownerMoveItem('videos',${vidIdx},-1)" title="Move Up">▲ Up</button><button class="owner-action-btn owner-down" onclick="ownerMoveItem('videos',${vidIdx},1)" title="Move Down">▼ Down</button></div>`;
     const isMP4 = v.url && (v.url.includes('.mp4') || v.url.includes('.mov') || v.url.includes('.webm') || (v.url.includes('cloudinary') && !v.url.includes('youtube')));
     const thumb = v.thumb || getYouTubeThumb(v.url);
     const videoMeta = (v.album || v.year) ? `<div class="video-meta">${v.album ? `<span>${v.album}</span>` : ''}${v.album && v.year ? ' · ' : ''}${v.year || ''}</div>` : '';
@@ -568,9 +591,9 @@ function buildEPK(epk) {
     const categoryBadge = v.category ? `<div style="position:absolute;top:0.5rem;left:0.5rem;font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(0,0,0,0.7);color:var(--gold);padding:0.15rem 0.5rem;z-index:2">${v.category}</div>` : '';
     const featuredBadge = v.featured ? `<div style="position:absolute;top:0.5rem;right:0.5rem;font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.9);color:var(--black);padding:0.15rem 0.5rem;z-index:2">⭐ Featured</div>` : '';
     if (isMP4) {
-      return `<div class="video-card" style="position:relative">${categoryBadge}${featuredBadge}<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain" ${v.thumb ? `poster="${v.thumb}"` : ''}><source src="${v.url}" type="video/mp4"></video><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}</div>`;
+      return `<div class="video-card owner-item-wrap" style="position:relative">${ownerOverlay}${categoryBadge}${featuredBadge}<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain" ${v.thumb ? `poster="${v.thumb}"` : ''}><source src="${v.url}" type="video/mp4"></video><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}</div>`;
     }
-    return `<div class="video-card" style="position:relative" onclick="window.open('${v.url}','_blank')">${categoryBadge}${featuredBadge}${thumb ? `<img class="video-thumb" src="${thumb}" alt="${v.title}" loading="lazy">` : `<div class="video-thumb" style="background:var(--dark-4);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:2rem">▶</div>`}<div class="video-play">▶</div><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}</div>`;
+    return `<div class="video-card owner-item-wrap" style="position:relative" onclick="window.open('${v.url}','_blank')">${ownerOverlay}${categoryBadge}${featuredBadge}${thumb ? `<img class="video-thumb" src="${thumb}" alt="${v.title}" loading="lazy">` : `<div class="video-thumb" style="background:var(--dark-4);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:2rem">▶</div>`}<div class="video-play">▶</div><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}</div>`;
   };
 
   // Group by category
@@ -592,13 +615,13 @@ function buildEPK(epk) {
   if (hasCategories) {
     // Render grouped by category
     Object.entries(groupedVideos).forEach(([cat, vids]) => {
-      videosHTML += `<div style="margin-bottom:3rem"><div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem">${cat}<span style="flex:1;height:1px;background:linear-gradient(to right,rgba(201,168,76,0.2),transparent);max-width:200px;display:inline-block"></span></div><div class="videos-grid">${vids.map(buildVideoCard).join('')}</div></div>`;
+      videosHTML += `<div style="margin-bottom:3rem"><div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem">${cat}<span style="flex:1;height:1px;background:linear-gradient(to right,rgba(201,168,76,0.2),transparent);max-width:200px;display:inline-block"></span></div><div class="videos-grid">${vids.map((v,i) => buildVideoCard(v, i)).join('')}</div></div>`;
     });
     if (uncategorized.length) {
-      videosHTML += `<div class="videos-grid">${uncategorized.map(buildVideoCard).join('')}</div>`;
+      videosHTML += `<div class="videos-grid">${uncategorized.map((v,i) => buildVideoCard(v, i)).join('')}</div>`;
     }
   } else {
-    videosHTML = `<div class="videos-grid">${visibleVideos.map(buildVideoCard).join('')}</div>`;
+    videosHTML = `<div class="videos-grid">${visibleVideos.map((v,i) => buildVideoCard(v, i)).join('')}</div>`;
   }
 
   const categoryIcons = { 'Resume':'📋', 'Press Kit':'📦', 'Tech Rider':'🎛', 'Stage Plot':'🎭', 'Bio':'📝', 'Photo Pack':'📸', 'Contract Template':'📜', 'Certificate':'🏅', 'Other':'📄' };
@@ -785,6 +808,8 @@ function buildMarqueeGallery(photos, container) {
     const item = document.createElement('div');
     item.className = 'gallery-marquee-item';
     item.innerHTML = `<img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onerror="this.style.display='none'" style="object-position:${pos}"><div class="gallery-marquee-caption">${photo.caption || ''}</div>`;
+    const photoIdx = photos.indexOf(photo) % (photos.length / 2);
+    item.innerHTML += `<div class="owner-overlay"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('photos',${photoIdx},-1)">▲</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('photos',${photoIdx},1)">▼</button></div>`;
     item.onclick = () => openLightbox(photo.url);
     track.appendChild(item);
   });
@@ -959,6 +984,35 @@ document.addEventListener('click', function(e) {
   }
 });
 
+// Owner inline reorder
+async function ownerMoveItem(section, idx, dir) {
+  if (!window._isOwner || !window._ownerSlug) return;
+  try {
+    const res = await fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'load', slug: window._ownerSlug })
+    });
+    const data = await res.json();
+    if (!data.success) return;
+    const epkData = data.epk;
+    const arr = epkData[section] || [];
+    const newIdx = idx + dir;
+    if (newIdx < 0 || newIdx >= arr.length) return;
+    const temp = arr[idx];
+    arr[idx] = arr[newIdx];
+    arr[newIdx] = temp;
+    epkData[section] = arr;
+    await fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'save', slug: window._ownerSlug, data: epkData })
+    });
+    // Reload page to reflect new order
+    location.reload();
+  } catch(e) { console.error('Reorder failed:', e); }
+}
+
 // Asset download tracking
 function trackAssetDownload(idx) {
   try {
@@ -1047,6 +1101,12 @@ document.addEventListener('keydown', e => {
 <!-- Lightbox -->
 <div id="lightboxOverlay" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out">
   <img id="lightboxImg" src="" style="max-width:92vw;max-height:92vh;object-fit:contain">
+</div>
+
+<!-- Owner Bar -->
+<div class="owner-bar">
+  <span class="owner-bar-label">✦ Owner Mode — Hover items to reorder</span>
+  <a href="/dashboard.html" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;transition:all 0.2s">Dashboard →</a>
 </div>
 
 </body>
