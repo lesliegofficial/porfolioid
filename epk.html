@@ -556,10 +556,9 @@ function buildEPK(epk) {
   }).join('');
 
 
-  // Filter hidden videos, sort featured first
+  // Filter hidden videos — respect manual order set in dashboard
   const visibleVideos = (epk.videos || [])
-    .filter(v => v.visible !== false)
-    .sort((a, b) => (b.featured?1:0) - (a.featured?1:0));
+    .filter(v => v.visible !== false);
 
   const buildVideoCard = (v) => {
     const isMP4 = v.url && (v.url.includes('.mp4') || v.url.includes('.mov') || v.url.includes('.webm') || (v.url.includes('cloudinary') && !v.url.includes('youtube')));
