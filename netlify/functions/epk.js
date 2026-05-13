@@ -54,6 +54,13 @@ exports.handler = async (event, context) => {
         return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
       }
       if (action === 'load') {
+        const raw = await store.get(`epk:${slug}`);
+        if (!raw) return { statusCode: 404, headers, body: JSON.stringify({ error: 'EPK not found' }) };
+        let epk;
+        try { epk = typeof raw === 'string' ? JSON.parse(raw) : raw; } catch(e) { epk = raw; }
+        return { statusCode: 200, headers, body: JSON.stringify({ success: true, epk }) };
+      }
+      if (action === 'load_old_unused') {
         const epk = await store.get(`epk:${slug}`, { type: 'json' });
         if (!epk) return { statusCode: 404, headers, body: JSON.stringify({ error: 'EPK not found' }) };
         return { statusCode: 200, headers, body: JSON.stringify({ success: true, epk }) };
