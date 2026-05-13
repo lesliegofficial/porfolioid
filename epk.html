@@ -85,7 +85,7 @@
   .credit-artist { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; }
   .credit-years { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 0.25rem 0.6rem; white-space: nowrap; }
   .credit-role { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
-  .credit-desc { font-size: 0.85rem; color: var(--gray); line-height: 1.7; white-space: pre-line; }
+  .credit-desc { font-size: 0.82rem; color: var(--gray); line-height: 1.65; white-space: pre-line; }
   .credit-expand-hint { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; color: var(--gold); margin-top: 0.75rem; text-decoration: underline; text-underline-offset: 3px; }
   /* Credit detail modal */
   .credit-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9000; display: flex; align-items: center; justify-content: center; padding: 2rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
@@ -433,9 +433,9 @@ function buildEPK(epk) {
   const sections = [
     { id: 'bio', label: 'Biography' },
     { id: 'credits', label: 'Credits' },
+    { id: 'photos', label: 'Photos' },
     { id: 'music', label: 'Music' },
     { id: 'videos', label: 'Video' },
-    { id: 'photos', label: 'Photos' },
     { id: 'assets', label: 'Assets' },
     { id: 'booking', label: 'Booking' },
   ];
@@ -542,7 +542,7 @@ function buildEPK(epk) {
     ? `<div class="credentials-row">${epk.credentials.map(c => `<span class="credential-badge">${c}</span>`).join('')}</div>`
     : '';
 
-  const bioParagraphs = (epk.bio || '').split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('');
+  const bioParagraphs = (epk.bio || '').split('\n').filter(p => p.trim()).map(p => `<p style="margin-bottom:1.5em">${p}</p>`).join('');
 
   // Sort: pinned first, filter hidden
   const visibleCredits = (epk.credits || [])
@@ -569,7 +569,7 @@ function buildEPK(epk) {
       </div>
       <div class="credit-role">${c.role}${c.contractType ? ` · <span style="opacity:0.7">${c.contractType}</span>` : ''}</div>
       ${collaboratorsRow}
-      ${c.desc ? `<p class="credit-desc" style="-webkit-line-clamp:3;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden">${c.desc}</p>` : ''}
+      ${c.desc ? `<p class="credit-desc" style="-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden">${c.desc}</p>` : ''}
       ${hasDetail ? `<div class="credit-expand-hint">View Details →</div>` : ''}
     </div>`;
   }).join('');
@@ -780,6 +780,16 @@ function buildEPK(epk) {
       </div>
     </div>` : ''}
 
+    <!-- PHOTOS — moved before music for claim→proof sequence — Credits=Claim, Photos=Proof -->
+    ${epk.photos?.length ? `
+    <div class="gallery-section" id="photos">
+      <div class="gallery-inner">
+        <div class="section-label">Photos</div>
+        <h2 class="section-title">On Stage & Behind the Scenes</h2>
+        <div id="galleryContent"></div>
+      </div>
+    </div>` : ''}
+
     <!-- MUSIC -->
     ${epk.tracks?.length ? `
     <section id="music">
@@ -793,20 +803,14 @@ function buildEPK(epk) {
     ${visibleVideos.length ? `
     <section id="videos">
       <div class="section-label">Video</div>
-      <h2 class="section-title">Live & On Camera</h2>
-      ${videosHTML}
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:0">
+        <h2 class="section-title" style="margin-bottom:0">Live & On Camera</h2>
+        ${visibleVideos.length > 3 ? `<button onclick="toggleAllVideos()" id="videoToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-bottom:1.5rem;transition:all 0.2s">View All Videos +</button>` : ''}
+      </div>
+      <div id="videosFeatured">${buildVideosFeatured(visibleVideos, videosHTML)}</div>
+      ${visibleVideos.length > 3 ? `<div id="videosAll" style="display:none">${videosHTML}</div>` : ''}
     </section>
     <div class="divider"></div>` : ''}
-
-    <!-- PHOTOS -->
-    ${epk.photos?.length ? `
-    <div class="gallery-section" id="photos">
-      <div class="gallery-inner">
-        <div class="section-label">Photos</div>
-        <h2 class="section-title">On Stage & Behind the Scenes</h2>
-        <div id="galleryContent"></div>
-      </div>
-    </div>` : ''}
 
     <!-- ASSETS -->
     ${epk.assets?.length ? `
@@ -1040,6 +1044,25 @@ document.addEventListener('click', function(e) {
     if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
   }
 });
+
+// Video collapse/expand
+function buildVideosFeatured(videos, fullHTML) {
+  // Show first 3 videos only
+  if (videos.length <= 3) return fullHTML;
+  const first3 = videos.slice(0, 3);
+  return `<div class="videos-grid">${first3.map((v, i) => buildVideoCard(v, i)).join('')}</div>`;
+}
+
+function toggleAllVideos() {
+  const allDiv = document.getElementById('videosAll');
+  const featDiv = document.getElementById('videosFeatured');
+  const btn = document.getElementById('videoToggleBtn');
+  if (!allDiv) return;
+  const isHidden = allDiv.style.display === 'none';
+  allDiv.style.display = isHidden ? 'block' : 'none';
+  featDiv.style.display = isHidden ? 'none' : 'block';
+  btn.textContent = isHidden ? 'Show Less –' : 'View All Videos +';
+}
 
 // Owner inline reorder
 async function ownerMoveItem(section, idx, dir) {
