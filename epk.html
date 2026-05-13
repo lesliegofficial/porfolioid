@@ -657,7 +657,7 @@ function buildEPK(epk) {
         <h1 class="hero-name">${firstName}<br><em>${lastName}</em></h1>
         ${taglinesHTML ? `<p class="hero-tagline">${taglinesHTML}</p>` : ''}
         <div class="hero-ctas">
-          <a href="#booking" class="btn-secondary">Book Now →</a>
+          ${epk.bookingEnabled !== false ? `<a href="#booking" class="btn-secondary">Book Now →</a>` : ""}
         </div>
         ${statsHTML ? `<div class="hero-stats">${statsHTML}</div>` : ''}
         ${(() => {
@@ -764,7 +764,7 @@ function buildEPK(epk) {
     ${connectSectionHTML}
 
     <!-- BOOKING -->
-    <div class="booking-section" id="booking">
+    ${epk.bookingEnabled !== false ? `<div class="booking-section" id="booking">` : '<div id="booking" style="display:none">'}
       <div class="booking-inner">
         <h2 class="booking-title">Let's Create Something <em>Unforgettable</em></h2>
         <p class="booking-sub">${bookingTagline}</p>
