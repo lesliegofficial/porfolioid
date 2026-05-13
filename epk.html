@@ -180,6 +180,44 @@
   }
   @media (max-width: 768px) { .gallery-4col { grid-template-columns: repeat(2, 1fr); } .gallery-col { height: 260px; } }
 
+  /* GALLERY MARQUEE */
+  .gallery-marquee-wrap { overflow: hidden; margin-top: 1.5rem; position: relative; }
+  .gallery-marquee-wrap::before, .gallery-marquee-wrap::after {
+    content: ''; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2; pointer-events: none;
+  }
+  .gallery-marquee-wrap::before { left: 0; background: linear-gradient(to right, var(--black), transparent); }
+  .gallery-marquee-wrap::after { right: 0; background: linear-gradient(to left, var(--black), transparent); }
+  .gallery-marquee { display: flex; gap: 0.75rem; width: max-content; animation: marqueeScroll 40s linear infinite; }
+  .gallery-marquee:hover { animation-play-state: paused; }
+  @keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .gallery-marquee-item {
+    flex-shrink: 0; width: 260px; height: 380px; position: relative; overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.2);
+    box-shadow: 0 0 0 1px rgba(201,168,76,0.05), 0 4px 24px rgba(0,0,0,0.4);
+    transition: border-color 0.3s, transform 0.3s;
+    cursor: pointer;
+  }
+  .gallery-marquee-item::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(to right, transparent, rgba(201,168,76,0.6), transparent);
+    z-index: 3;
+  }
+  .gallery-marquee-item::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, transparent 25%, transparent 70%, rgba(0,0,0,0.5) 100%);
+    z-index: 2; pointer-events: none;
+  }
+  .gallery-marquee-item:hover { border-color: rgba(201,168,76,0.5); transform: scale(1.02); }
+  .gallery-marquee-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
+  .gallery-marquee-item:hover img { transform: scale(1.05); }
+  .gallery-marquee-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 2.5rem 0.85rem 0.65rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.75); z-index: 4; line-height: 1.5;
+  }
+
   /* GALLERY SCROLL STRIP */
   .gallery-scroll-wrap { position: relative; margin-top: 1.5rem; }
   .gallery-scroll { display: flex; gap: 0.75rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1rem; cursor: grab; }
@@ -672,7 +710,8 @@ function buildEPK(epk) {
         <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:0.5rem">
           <h2 class="section-title" style="margin-bottom:0">On Stage & Behind the Scenes</h2>
           <div style="display:flex;gap:0.5rem">
-            <button onclick="setGalleryLayout('scroll')" id="btnScroll" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(201,168,76,0.4);background:rgba(201,168,76,0.1);color:var(--gold);cursor:pointer;transition:all 0.2s">⟷ Scroll</button>
+            <button onclick="setGalleryLayout('marquee')" id="btnMarquee" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(201,168,76,0.4);background:rgba(201,168,76,0.1);color:var(--gold);cursor:pointer;transition:all 0.2s">▶ Auto</button>
+            <button onclick="setGalleryLayout('scroll')" id="btnScroll" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(255,255,255,0.1);background:none;color:var(--gray);cursor:pointer;transition:all 0.2s">⟷ Scroll</button>
             <button onclick="setGalleryLayout('grid')" id="btnGrid" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(255,255,255,0.1);background:none;color:var(--gray);cursor:pointer;transition:all 0.2s">⊞ Grid</button>
           </div>
         </div>
@@ -709,23 +748,39 @@ function buildEPK(epk) {
   if (epk.photos?.length) buildGallery(epk.photos);
 }
 
-let currentGalleryLayout = 'scroll';
+let currentGalleryLayout = 'marquee';
 let galleryPhotos = [];
 
 function setGalleryLayout(layout) {
   currentGalleryLayout = layout;
-  const btnScroll = document.getElementById('btnScroll');
-  const btnGrid = document.getElementById('btnGrid');
-  if (btnScroll && btnGrid) {
-    if (layout === 'scroll') {
-      btnScroll.style.cssText = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(201,168,76,0.4);background:rgba(201,168,76,0.1);color:var(--gold);cursor:pointer;transition:all 0.2s';
-      btnGrid.style.cssText = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(255,255,255,0.1);background:none;color:var(--gray);cursor:pointer;transition:all 0.2s';
-    } else {
-      btnGrid.style.cssText = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(201,168,76,0.4);background:rgba(201,168,76,0.1);color:var(--gold);cursor:pointer;transition:all 0.2s';
-      btnScroll.style.cssText = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(255,255,255,0.1);background:none;color:var(--gray);cursor:pointer;transition:all 0.2s';
-    }
-  }
+  const activeStyle = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(201,168,76,0.4);background:rgba(201,168,76,0.1);color:var(--gold);cursor:pointer;transition:all 0.2s';
+  const inactiveStyle = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(255,255,255,0.1);background:none;color:var(--gray);cursor:pointer;transition:all 0.2s';
+  ['btnMarquee','btnScroll','btnGrid'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.style.cssText = inactiveStyle;
+  });
+  const active = document.getElementById('btn' + layout.charAt(0).toUpperCase() + layout.slice(1));
+  if (active) active.style.cssText = activeStyle;
   buildGallery(galleryPhotos);
+}
+
+function buildMarqueeGallery(photos, container) {
+  const wrap = document.createElement('div');
+  wrap.className = 'gallery-marquee-wrap';
+  const track = document.createElement('div');
+  track.className = 'gallery-marquee';
+  // Double the photos for seamless infinite loop
+  const allPhotos = [...photos, ...photos];
+  allPhotos.forEach(photo => {
+    const pos = photo.position || 'center 0%';
+    const item = document.createElement('div');
+    item.className = 'gallery-marquee-item';
+    item.innerHTML = `<img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onerror="this.style.display='none'" style="object-position:${pos}"><div class="gallery-marquee-caption">${photo.caption || ''}</div>`;
+    item.onclick = () => openLightbox(photo.url);
+    track.appendChild(item);
+  });
+  wrap.appendChild(track);
+  container.appendChild(wrap);
 }
 
 function buildScrollGallery(photos, container) {
@@ -763,6 +818,10 @@ function buildGallery(photos) {
   if (!container) return;
   container.innerHTML = '';
 
+  if (currentGalleryLayout === 'marquee') {
+    buildMarqueeGallery(photos, container);
+    return;
+  }
   if (currentGalleryLayout === 'scroll') {
     buildScrollGallery(photos, container);
     return;
