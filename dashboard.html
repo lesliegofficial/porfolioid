@@ -1828,12 +1828,9 @@ function addCreditMedia(type) {
   if (type === 'upload') {
     const input = document.getElementById('creditVideoInput');
     input.value = '';
-    input.click();
     input.onchange = async function() {
       const file = input.files[0];
       if (!file) return;
-      const btn = document.querySelector('[onclick="addCreditMedia('upload')"]');
-      if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
       const formData = new FormData();
       formData.append('file', file);
       formData.append('upload_preset', CLOUDINARY_VIDEO_PRESET);
@@ -1841,18 +1838,15 @@ function addCreditMedia(type) {
         const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`, { method: 'POST', body: formData });
         const data = await res.json();
         if (data.secure_url) {
-          pendingCreditMedia.push({ type: 'video', url: data.secure_url, label: file.name.replace(/\..*$/, '') });
+          pendingCreditMedia.push({ type: 'video', url: data.secure_url, label: file.name.replace(/\.[^.]+$/, '') });
           renderCreditMediaList();
-          if (btn) { btn.textContent = '↑ Upload MP4'; btn.disabled = false; }
         }
-      } catch(e) {
-        if (btn) { btn.textContent = '↑ Upload MP4'; btn.disabled = false; }
-      }
+      } catch(e) { console.error('Upload failed', e); }
     };
+    input.click();
   } else {
     pendingCreditMedia.push({ type: 'link', url: '', label: '' });
     renderCreditMediaList();
-    // Focus the new input
     setTimeout(() => {
       const inputs = document.querySelectorAll('#creditMediaList input[type="url"]');
       if (inputs.length) inputs[inputs.length-1].focus();
