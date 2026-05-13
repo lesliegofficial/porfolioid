@@ -224,6 +224,17 @@
     color: rgba(255,255,255,0.75); z-index: 4; line-height: 1.5;
   }
 
+  /* GALLERY WALL */
+  .gallery-wall { columns: 4; gap: 0.6rem; margin-top: 1.5rem; }
+  .gallery-wall-item { break-inside: avoid; margin-bottom: 0.6rem; position: relative; overflow: hidden; cursor: pointer; border: 1px solid rgba(201,168,76,0.15); transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; }
+  .gallery-wall-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, transparent, rgba(201,168,76,0.5), transparent); z-index: 2; }
+  .gallery-wall-item img { width: 100%; display: block; transition: transform 0.4s; }
+  .gallery-wall-item:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,168,76,0.2); }
+  .gallery-wall-item:hover img { transform: scale(1.03); }
+  .gallery-wall-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem 0.75rem 0.5rem; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.75); z-index: 3; opacity: 0; transition: opacity 0.3s; }
+  .gallery-wall-item:hover .gallery-wall-caption { opacity: 1; }
+  @media (max-width: 768px) { .gallery-wall { columns: 2; } }
+
   /* GALLERY SCROLL STRIP */
   .gallery-scroll-wrap { position: relative; margin-top: 1.5rem; }
   .gallery-scroll { display: flex; gap: 0.75rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1rem; cursor: grab; }
@@ -782,6 +793,20 @@ function buildMarqueeGallery(photos, container) {
   container.appendChild(wrap);
 }
 
+function buildWallGallery(photos, container) {
+  const wall = document.createElement('div');
+  wall.className = 'gallery-wall';
+  photos.forEach(photo => {
+    const pos = photo.position || 'center 0%';
+    const item = document.createElement('div');
+    item.className = 'gallery-wall-item';
+    item.innerHTML = `<img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onerror="this.style.display='none'" style="object-position:${pos}"><div class="gallery-wall-caption">${photo.caption || ''}</div>`;
+    item.onclick = () => openLightbox(photo.url);
+    wall.appendChild(item);
+  });
+  container.appendChild(wall);
+}
+
 function buildScrollGallery(photos, container) {
   const wrap = document.createElement('div');
   wrap.className = 'gallery-scroll-wrap';
@@ -823,6 +848,10 @@ function buildGallery(photos) {
 
   if (currentGalleryLayout === 'marquee') {
     buildMarqueeGallery(photos, container);
+    return;
+  }
+  if (currentGalleryLayout === 'wall') {
+    buildWallGallery(photos, container);
     return;
   }
   if (currentGalleryLayout === 'scroll') {
