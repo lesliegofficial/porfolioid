@@ -50,11 +50,11 @@
   .hero-stat-number { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--gold); display: block; line-height: 1; }
   .hero-stat-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); display: block; margin-top: 0.25rem; }
 
-  section { padding: 6rem 3rem; max-width: 1400px; margin: 0 auto; }
+  section { padding: 3rem 3rem; max-width: 1400px; margin: 0 auto; }
   .section-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 1rem; }
   .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.3), transparent); max-width: 200px; }
   .section-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 3rem; }
-  .divider { width: 100%; height: 1px; background: linear-gradient(to right, transparent, rgba(201,168,76,0.2), transparent); margin: 0 3rem; max-width: 1400px; }
+  .divider { display: none; }
 
   /* BIO */
   .bio-grid { display: grid; grid-template-columns: 280px 1fr; gap: 3rem; align-items: center; }
@@ -68,7 +68,7 @@
   .credential-badge { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid rgba(201,168,76,0.4); color: var(--gold); padding: 0.4rem 0.85rem; }
 
   /* CREDITS */
-  .credits-section { background: var(--dark-2); padding: 6rem 0; margin: 0; max-width: 100%; }
+  .credits-section { background: var(--dark-2); padding: 3rem 0; margin: 0; max-width: 100%; }
   .credits-inner { max-width: 1400px; margin: 0 auto; padding: 0 3rem; }
   .credits-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1px; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.1); }
   .credit-card { background: var(--dark-2); padding: 2rem; transition: background 0.3s; cursor: pointer; }
@@ -118,7 +118,7 @@
   .video-desc { padding: 0 1rem 0.75rem; font-size: 0.78rem; color: var(--gray); line-height: 1.6; font-style: italic; }
 
   /* PHOTOS */
-  .gallery-section { background: var(--dark-2); padding: 6rem 0; max-width: 100%; }
+  .gallery-section { background: var(--dark-2); padding: 3rem 0; max-width: 100%; }
   .gallery-inner { max-width: 1400px; margin: 0 auto; padding: 0 3rem; }
   .gallery-slideshows { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; height: 500px; margin-top: 2rem; }
   .gallery-col { position: relative; overflow: hidden; background: var(--dark-3); }
@@ -290,7 +290,7 @@
   @media (max-width: 768px) { .gallery-scroll-item { width: 220px; height: 300px; } }
 
   /* CAREER PROFILE SECTION */
-  .career-profile-section { padding: 5rem 0; }
+  .career-profile-section { padding: 3rem 0; }
   .career-profile-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
 
   /* Stacked layout */
@@ -320,7 +320,7 @@
   }
 
   /* RESUME SECTION */
-  .resume-section { padding: 5rem 0; }
+  .resume-section { padding: 3rem 0; }
   .resume-inner { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
   .resume-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
   .resume-card { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.15); padding: 2rem; position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
@@ -337,7 +337,7 @@
   @media (max-width: 768px) { .resume-cards { grid-template-columns: 1fr; } }
 
   /* AWARDS */
-  .awards-section { padding: 5rem 0; background: var(--dark-2); }
+  .awards-section { padding: 3rem 0; background: var(--dark-2); }
   .awards-inner { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
   .awards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
   .award-card { background: var(--dark-3); border: 1px solid rgba(201,168,76,0.1); padding: 1.5rem; position: relative; transition: border-color 0.3s; }
@@ -370,7 +370,7 @@
 
   /* COLLAPSIBLE SECTIONS */
   .collapsible-section { border-top: 1px solid rgba(255,255,255,0.06); }
-  .collapsible-header { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; cursor: pointer; user-select: none; max-width: 1100px; margin: 0 auto; transition: background 0.2s; }
+  .collapsible-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 2rem; cursor: pointer; user-select: none; max-width: 1100px; margin: 0 auto; transition: background 0.2s; }
   .collapsible-header:hover { background: rgba(255,255,255,0.02); }
   .collapsible-header-left { display: flex; align-items: center; gap: 1.25rem; }
   .collapsible-header-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
@@ -382,7 +382,7 @@
   .collapsible-header:hover .collapsible-toggle { opacity: 1; }
   .collapsible-body { overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease; max-height: 0; opacity: 0; }
   .collapsible-body.open { max-height: 2000px; opacity: 1; }
-  .collapsible-body-inner { padding: 0 0 3rem; }
+  .collapsible-body-inner { padding: 0 0 2rem; }
 
   /* BOOKING */
   .booking-section { background: linear-gradient(to bottom, var(--dark-2), var(--black)); padding: 8rem 3rem; text-align: center; }
