@@ -344,6 +344,7 @@ function buildEPK(epk) {
         ${taglinesHTML ? `<p class="hero-tagline">${taglinesHTML}</p>` : ''}
         <div class="hero-ctas">
           ${epk.bookingEnabled !== false ? `<a href="#booking" class="btn-secondary">Book Now →</a>` : ""}
+          <button onclick="openShareModal()" class="btn-secondary" style="display:inline-flex;align-items:center;gap:0.5rem">⬛ Share Portfolio</button>
         </div>
         ${statsHTML ? `<div class="hero-stats">${statsHTML}</div>` : ''}
         ${(() => {
@@ -814,6 +815,34 @@ async function ownerMoveItem(section, idx, dir) {
     // Re-render just that section without page reload
     buildEPK(window._epkData);
   } catch(e) { console.error('Reorder failed:', e); }
+}
+
+// Share Modal
+function openShareModal() {
+  const url = window.location.href.split('#')[0];
+  document.getElementById('modalQRUrl').textContent = url;
+  document.getElementById('modalQRCode').innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(url)}&color=000000&bgcolor=ffffff&margin=8" style="width:180px;height:180px;display:block">`;
+  const modal = document.getElementById('shareModal');
+  modal.style.display = 'flex';
+}
+
+function closeShareModal() {
+  document.getElementById('shareModal').style.display = 'none';
+}
+
+function copyEPKLink() {
+  const url = window.location.href.split('#')[0];
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('modalCopyBtn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.textContent = '⎘ Copy Link'; }, 2000);
+  });
+}
+
+function downloadEPKQR() {
+  const url = window.location.href.split('#')[0];
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(url)}&color=000000&bgcolor=ffffff&margin=20`;
+  window.open(qrUrl, '_blank');
 }
 
 // Bio toggle

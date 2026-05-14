@@ -331,6 +331,7 @@ function showSaveBanner() {
 }
 
 function showPanel(name) {
+  if (name === 'qr') setTimeout(initQRPanel, 100);
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById(`panel-${name}`).classList.add('active');
@@ -1094,6 +1095,71 @@ function addAsset() {
 function removeAsset(i) { epk.assets.splice(i, 1); renderAssets(); persistUser(); showSaveBanner(); }
 
 // AWARDS
+// QR CODE / SMART SHARE
+function initQRPanel() {
+  const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
+  const slug = session.slug || epk.slug || '';
+  if (!slug) return;
+
+  const portfolioUrl = `https://porfolioid.com/epk.html?slug=${slug}`;
+
+  // Update URL display
+  const urlDisplay = document.getElementById('qrUrlDisplay');
+  if (urlDisplay) urlDisplay.textContent = portfolioUrl;
+
+  // Generate QR using free QR API
+  const qrDisplay = document.getElementById('qrCodeDisplay');
+  if (qrDisplay) {
+    qrDisplay.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(portfolioUrl)}&color=000000&bgcolor=ffffff&margin=10" alt="Portfolio QR Code" style="width:200px;height:200px;display:block">`;
+  }
+}
+
+function downloadQR() {
+  const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
+  const slug = session.slug || epk.slug || '';
+  const portfolioUrl = `https://porfolioid.com/epk.html?slug=${slug}`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(portfolioUrl)}&color=000000&bgcolor=ffffff&margin=20`;
+  const a = document.createElement('a');
+  a.href = qrUrl;
+  a.download = `porfolioid-qr-${slug}.png`;
+  a.target = '_blank';
+  a.click();
+}
+
+function copyPortfolioLink() {
+  const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
+  const slug = session.slug || epk.slug || '';
+  const portfolioUrl = `https://porfolioid.com/epk.html?slug=${slug}`;
+  navigator.clipboard.writeText(portfolioUrl).then(() => {
+    const btn = document.getElementById('copyLinkBtn');
+    if (btn) {
+      btn.textContent = '✓ Copied!';
+      btn.style.color = '#7ec97e';
+      setTimeout(() => { btn.textContent = '⎘ Copy Link'; btn.style.color = ''; }, 2000);
+    }
+  });
+}
+
+function shareVia(method) {
+  const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
+  const slug = session.slug || epk.slug || '';
+  const portfolioUrl = `https://porfolioid.com/epk.html?slug=${slug}`;
+  const name = epk.name || 'My Portfolio';
+  const text = `Check out my PorfolioID — ${name}'s professional portfolio`;
+
+  if (method === 'email') {
+    window.location.href = `mailto:?subject=${encodeURIComponent(name + ' — PorfolioID Portfolio')}&body=${encodeURIComponent(text + '\n\n' + portfolioUrl)}`;
+  } else if (method === 'sms') {
+    window.location.href = `sms:?body=${encodeURIComponent(text + ' ' + portfolioUrl)}`;
+  } else if (method === 'native') {
+    if (navigator.share) {
+      navigator.share({ title: name + ' — PorfolioID', text, url: portfolioUrl });
+    } else {
+      copyPortfolioLink();
+    }
+  }
+}
+
 // RESUME CARDS
 let editingResumeIdx = -1;
 

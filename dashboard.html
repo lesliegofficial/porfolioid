@@ -58,6 +58,9 @@
 
     <div class="sidebar-section">
       <div class="sidebar-section-label">Business</div>
+      <button class="nav-item" onclick="showPanel('qr')">
+        <span class="nav-item-icon">⬛</span><span>Share Card / QR</span>
+      </button>
       <button class="nav-item" onclick="showPanel('booking')">
         <span class="nav-item-icon">📅</span><span>Booking</span>
       </button>
@@ -836,6 +839,84 @@
           <button class="btn-cancel" onclick="toggleAddForm('addAssetForm')">Cancel</button>
         </div>
       </div>
+    </div>
+
+    <!-- QR SHARE PANEL -->
+    <div class="panel" id="panel-qr">
+      <h1 class="panel-title">Share Card & <em>QR Code</em></h1>
+      <p class="panel-sub">Your portfolio. One scan away. Share it anywhere — events, meetings, networking, studio sessions.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem">
+
+        <!-- QR Preview -->
+        <div style="display:flex;flex-direction:column;align-items:center;background:var(--dark-2);border:1px solid rgba(201,168,76,0.15);padding:2rem">
+          <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Your QR Code</div>
+          <div id="qrCodeDisplay" style="background:white;padding:1rem;margin-bottom:1.5rem"></div>
+          <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);text-align:center;margin-bottom:1.5rem" id="qrUrlDisplay">—</div>
+          <div style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center">
+            <button class="btn-save" onclick="downloadQR()" style="font-size:0.6rem;padding:0.6rem 1.25rem">↓ Download QR</button>
+            <button class="btn-add" onclick="copyPortfolioLink()" id="copyLinkBtn" style="font-size:0.6rem;padding:0.6rem 1.25rem">⎘ Copy Link</button>
+          </div>
+        </div>
+
+        <!-- Share Options -->
+        <div style="display:flex;flex-direction:column;gap:1rem">
+          <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">Share Options</div>
+
+          <button onclick="shareVia('email')" style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1rem 1.25rem;cursor:pointer;text-align:left;transition:border-color 0.3s;width:100%" onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.1)'">
+            <span style="font-size:1.25rem">✉</span>
+            <div>
+              <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white)">Share by Email</div>
+              <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);margin-top:0.2rem">Opens your email with portfolio link</div>
+            </div>
+          </button>
+
+          <button onclick="shareVia('sms')" style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1rem 1.25rem;cursor:pointer;text-align:left;transition:border-color 0.3s;width:100%" onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.1)'">
+            <span style="font-size:1.25rem">💬</span>
+            <div>
+              <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white)">Share by Text</div>
+              <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);margin-top:0.2rem">Send your portfolio link via SMS</div>
+            </div>
+          </button>
+
+          <button onclick="shareVia('native')" style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1rem 1.25rem;cursor:pointer;text-align:left;transition:border-color 0.3s;width:100%" onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.1)'">
+            <span style="font-size:1.25rem">↗</span>
+            <div>
+              <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white)">Share Portfolio</div>
+              <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);margin-top:0.2rem">Share via any app on your device</div>
+            </div>
+          </button>
+
+          <div style="margin-top:1rem;padding:1rem;background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.1)">
+            <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">💡 Pro Tip</div>
+            <p style="font-family:var(--font-mono);font-size:0.58rem;color:var(--gray);line-height:1.7">Download your QR code and save it to your phone. At any event, meeting, or studio session — show it and say <em style="color:var(--white)">"Here, scan this."</em></p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Coming Soon -->
+      <div style="margin-top:2rem;padding:1.5rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.1)">
+        <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Coming Soon — Smart Share Modes</div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap">
+          <div style="flex:1;min-width:160px;padding:1rem;background:var(--dark-3);border:1px solid rgba(255,255,255,0.05)">
+            <div style="font-size:1.2rem;margin-bottom:0.5rem">🎨</div>
+            <div style="font-family:var(--font-mono);font-size:0.58rem;color:var(--white);margin-bottom:0.25rem">Artist QR</div>
+            <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray)">EPK, credits, music, socials</div>
+          </div>
+          <div style="flex:1;min-width:160px;padding:1rem;background:var(--dark-3);border:1px solid rgba(255,255,255,0.05)">
+            <div style="font-size:1.2rem;margin-bottom:0.5rem">💼</div>
+            <div style="font-family:var(--font-mono);font-size:0.58rem;color:var(--white);margin-bottom:0.25rem">Career QR</div>
+            <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray)">Resume, certifications, experience</div>
+          </div>
+          <div style="flex:1;min-width:160px;padding:1rem;background:var(--dark-3);border:1px solid rgba(255,255,255,0.05)">
+            <div style="font-size:1.2rem;margin-bottom:0.5rem">⚡</div>
+            <div style="font-family:var(--font-mono);font-size:0.58rem;color:var(--white);margin-bottom:0.25rem">Event QR</div>
+            <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray)">Temporary, expirable, trackable</div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- BOOKING PANEL -->

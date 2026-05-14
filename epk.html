@@ -44,6 +44,23 @@
   <img id="lightboxImg" src="" style="max-width:92vw;max-height:92vh;object-fit:contain">
 </div>
 
+<!-- Share Modal -->
+<div id="shareModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:#111;border:1px solid rgba(201,168,76,0.2);padding:2.5rem;max-width:420px;width:90%;position:relative">
+    <button onclick="closeShareModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:#888;font-size:1.2rem;cursor:pointer">✕</button>
+    <div style="font-family:monospace;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:0.5rem">Share Portfolio</div>
+    <h3 style="font-size:1.2rem;color:#fff;margin-bottom:1.5rem;font-weight:400">Scan to view my PorfolioID</h3>
+    <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:1.5rem">
+      <div style="background:white;padding:0.75rem;margin-bottom:1rem" id="modalQRCode"></div>
+      <div style="font-family:monospace;font-size:0.55rem;color:#888;text-align:center;word-break:break-all" id="modalQRUrl"></div>
+    </div>
+    <div style="display:flex;gap:0.75rem">
+      <button onclick="copyEPKLink()" id="modalCopyBtn" style="flex:1;font-family:monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:#C9A84C;padding:0.75rem;cursor:pointer">⎘ Copy Link</button>
+      <button onclick="downloadEPKQR()" style="flex:1;font-family:monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;background:#C9A84C;border:none;color:#000;padding:0.75rem;cursor:pointer">↓ Download QR</button>
+    </div>
+  </div>
+</div>
+
 <!-- Owner Bar -->
 <div class="owner-bar">
   <span class="owner-bar-label">✦ Owner Mode — Hover items to reorder</span>
