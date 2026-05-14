@@ -20,6 +20,7 @@ function getYouTubeThumb(url) {
 
 function buildEPK(epk) {
   window._epkData = epk;
+  window._epkData.awards = epk.awards || [];
   const nameParts = (epk.name || 'Artist Name').split(' ');
   const firstName = nameParts[0];
   const lastName = nameParts.slice(1).join(' ');
@@ -521,7 +522,8 @@ function buildEPK(epk) {
             const typeLabels = { award:'Award', nomination:'Nomination', degree:'Education', certification:'Certification', recognition:'Recognition', honor:'Honor' };
             const icon = icons[a.type] || '🏆';
             const typeLabel = typeLabels[a.type] || 'Award';
-            return `<div class="award-card">
+            const hasDetails = a.desc || a.proofLink || a.certUrl || (a.photos||[]).length;
+            return `<div class="award-card ${hasDetails ? 'award-card-clickable' : ''}" ${hasDetails ? `onclick="openAwardModal(${idx})"` : ''}>
               <span class="award-card-icon">${icon}</span>
               <div class="award-card-type">${typeLabel} ${a.year ? '· ' + a.year : ''}</div>
               <div class="award-card-badges">
@@ -530,10 +532,7 @@ function buildEPK(epk) {
               </div>
               <div class="award-card-title">${a.title}</div>
               ${a.org ? `<div class="award-card-org">${a.org}</div>` : ''}
-              ${a.desc ? `<div class="award-card-desc">${a.desc}</div>` : ''}
-              ${a.proofLink ? `<a href="${a.proofLink}" target="_blank" class="award-proof-link">✦ View Verification →</a>` : ''}
-              ${a.certUrl ? `<a href="${a.certUrl}" target="_blank" class="award-cert-link">📄 View Certificate →</a>` : ''}
-              ${(a.photos||[]).length ? `<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.75rem">${(a.photos||[]).map(p=>`<img src="${p}" onclick="openLightbox('${p}')" style="width:72px;height:54px;object-fit:cover;cursor:pointer;border:1px solid rgba(201,168,76,0.2);transition:opacity 0.2s" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" onerror="this.style.display='none'">`).join('')}</div>` : ''}
+              ${hasDetails ? `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-top:0.75rem;opacity:0.7">View Details →</div>` : ''}
             </div>`;
           }).join('')}
         </div>
@@ -855,6 +854,47 @@ async function ownerMoveItem(section, idx, dir) {
     // Re-render just that section without page reload
     buildEPK(window._epkData);
   } catch(e) { console.error('Reorder failed:', e); }
+}
+
+// Award Modal
+function openAwardModal(idx) {
+  const awards = window._epkData?.awards || [];
+  const a = awards[idx];
+  if (!a) return;
+  const icons = { award:'🏆', nomination:'🎯', degree:'🎓', certification:'📜', recognition:'⭐', honor:'🏅' };
+  const typeLabels = { award:'Award', nomination:'Nomination', degree:'Education', certification:'Certification', recognition:'Recognition', honor:'Honor' };
+  const icon = icons[a.type] || '🏆';
+  const typeLabel = typeLabels[a.type] || 'Award';
+
+  document.getElementById('awardModalContent').innerHTML = `
+    <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">${typeLabel} ${a.year ? '· ' + a.year : ''}</div>
+    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+      <span style="font-size:2rem">${icon}</span>
+      <div>
+        ${a.verified ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.15rem 0.5rem;letter-spacing:0.1em;text-transform:uppercase">✓ VERIFIED</span>' : ''}
+        <h2 style="font-family:var(--font-display);font-size:1.4rem;color:var(--white);margin:0.25rem 0 0">${a.title}</h2>
+      </div>
+    </div>
+    ${a.org ? `<div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--gray);letter-spacing:0.1em;margin-bottom:1rem">${a.org}</div>` : ''}
+    ${a.category ? `<div style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,255,255,0.05);color:var(--gray);padding:0.2rem 0.6rem;display:inline-block;margin-bottom:1rem">${a.category}</div>` : ''}
+    ${a.desc ? `<p style="font-size:0.9rem;color:var(--gray-light);line-height:1.75;margin-bottom:1.25rem">${a.desc}</p>` : ''}
+    ${(a.photos||[]).length ? `
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.25rem">
+        ${(a.photos||[]).map(p=>`<img src="${p}" onclick="openLightbox('${p}')" style="width:calc(50% - 0.25rem);aspect-ratio:4/3;object-fit:cover;cursor:pointer;border:1px solid rgba(201,168,76,0.15);transition:opacity 0.2s" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" onerror="this.style.display='none'">`).join('')}
+      </div>` : ''}
+    <div style="display:flex;flex-direction:column;gap:0.5rem">
+      ${a.certUrl ? `<a href="${a.certUrl}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;background:rgba(201,168,76,0.05);transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='rgba(201,168,76,0.05)'">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--gold)">→</span></a>` : ''}
+      ${a.proofLink ? `<a href="${a.proofLink}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.15);padding:0.75rem 1rem;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.05)'" onmouseout="this.style.background=''">✦ <span>View Verification</span> <span style="margin-left:auto">→</span></a>` : ''}
+    </div>`;
+
+  const overlay = document.getElementById('awardModalOverlay');
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAwardModal() {
+  document.getElementById('awardModalOverlay').style.display = 'none';
+  document.body.style.overflow = '';
 }
 
 // Share Modal
