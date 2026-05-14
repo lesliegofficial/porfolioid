@@ -245,6 +245,14 @@ function loadAllFields() {
   document.getElementById('bookingPhone').value = epk.bookingPhone || '';
   document.getElementById('bookingTagline').value = epk.bookingTagline || '';
   document.getElementById('bookingNote').value = epk.bookingNote || '';
+  document.getElementById('bookingAvailability').value = epk.bookingAvailability || '';
+  document.getElementById('bookingRegion').value = epk.bookingRegion || '';
+  document.getElementById('bookingAutoResponse').value = epk.bookingAutoResponse || '';
+  const bcats = epk.bookingCategories || [];
+  ['live','studio','features','touring','hosting','ar','creative','media'].forEach(cat => {
+    const el = document.getElementById('bcat_' + cat);
+    if (el) el.checked = bcats.includes(cat);
+  });
   loadBookingToggle();
 
   // Availability dropdown
@@ -283,6 +291,13 @@ function saveAll() {
   epk.bookingPhone = document.getElementById('bookingPhone').value.trim();
   epk.bookingTagline = document.getElementById('bookingTagline').value.trim();
   epk.bookingNote = document.getElementById('bookingNote').value.trim();
+  epk.bookingAvailability = document.getElementById('bookingAvailability').value;
+  epk.bookingRegion = document.getElementById('bookingRegion').value.trim();
+  epk.bookingAutoResponse = document.getElementById('bookingAutoResponse').value.trim();
+  epk.bookingCategories = ['live','studio','features','touring','hosting','ar','creative','media'].filter(cat => {
+    const el = document.getElementById('bcat_' + cat);
+    return el && el.checked;
+  });
 
   persistUser();
   showSaveBanner();

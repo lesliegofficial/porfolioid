@@ -301,7 +301,15 @@ function buildEPK(epk) {
   const bookingEmail = epk.bookingEmail || '';
   const bookingPhone = epk.bookingPhone || '';
   const bookingTagline = epk.bookingTagline || 'Now booking live performances, studio sessions, and creative collaborations.';
-  const bookingNote = epk.bookingNote || 'Serious inquiries only';
+  const bookingNote = epk.bookingNote || '';
+  const bookingAvailability = epk.bookingAvailability || '';
+  const bookingRegion = epk.bookingRegion || '';
+  const bookingCategories = epk.bookingCategories || [];
+  const availabilityLabels = { available:'✅ Available for Bookings', limited:'⚡ Limited Availability', touring:'🎤 Currently on Tour', selective:'🎯 Selective Projects Only', unavailable:'❌ Not Currently Available' };
+  const categoryLabels = { live:'Live Performances', studio:'Studio Sessions', features:'Features / Collabs', touring:'Touring', hosting:'Hosting / MC', ar:'A&R Consulting', creative:'Creative Direction', media:'Media / Press' };
+  const availBadge = bookingAvailability ? `<div style="display:inline-block;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);color:var(--gold);padding:0.4rem 1rem;margin-bottom:1.5rem">${availabilityLabels[bookingAvailability]||''}</div>` : '';
+  const regionBadge = bookingRegion ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;margin-bottom:1rem">📍 ${bookingRegion}</div>` : '';
+  const catBadges = bookingCategories.length ? `<div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:2rem">${bookingCategories.map(c => `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(201,168,76,0.2);color:var(--gray);padding:0.25rem 0.6rem">${categoryLabels[c]||c}</span>`).join('')}</div>` : '';
 
   document.getElementById('epkContent').innerHTML = `
     <!-- HERO -->
@@ -423,17 +431,65 @@ function buildEPK(epk) {
     ${connectSectionHTML}
 
     <!-- BOOKING -->
-    ${epk.bookingEnabled !== false ? `<div class="booking-section" id="booking">` : '<div id="booking" style="display:none">'}
+    ${epk.bookingEnabled !== false ? `<div class="booking-section" id="booking">
       <div class="booking-inner">
+        <div class="section-label">Booking</div>
         <h2 class="booking-title">Let's Create Something <em>Unforgettable</em></h2>
         <p class="booking-sub">${bookingTagline}</p>
-        <p class="booking-note">${bookingNote}</p>
-        <div class="booking-ctas">
-          ${bookingEmail ? `<a href="mailto:${bookingEmail}" class="btn-primary">✉ Send Booking Inquiry</a>` : ''}
-          ${bookingPhone ? `<a href="tel:${bookingPhone}" class="btn-secondary">☎ Call to Discuss</a>` : ''}
-        </div>
+        ${availBadge}
+        ${regionBadge}
+        ${catBadges}
+        ${bookingNote ? `<p class="booking-note">${bookingNote}</p>` : ''}
+        <form name="booking-inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field"
+          onsubmit="handleBookingSubmit(event)"
+          style="max-width:560px;margin-top:2rem">
+          <input type="hidden" name="form-name" value="booking-inquiry">
+          <input type="hidden" name="recipient" value="${bookingEmail}">
+          <p style="display:none"><input name="bot-field"></p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+            <div>
+              <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Your Name</label>
+              <input type="text" name="name" required placeholder="Full Name"
+                style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box"
+                onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'">
+            </div>
+            <div>
+              <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Your Email</label>
+              <input type="email" name="email" required placeholder="email@example.com"
+                style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box"
+                onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'">
+            </div>
+          </div>
+          <div style="margin-bottom:1rem">
+            <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Booking Type</label>
+            <select name="booking-type"
+              style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;appearance:none">
+              <option value="">— Select Type —</option>
+              <option value="Live Performance">Live Performance</option>
+              <option value="Studio Session">Studio Session</option>
+              <option value="Feature / Collab">Feature / Collab</option>
+              <option value="Touring">Touring</option>
+              <option value="Hosting / MC">Hosting / MC</option>
+              <option value="A&R Consulting">A&R Consulting</option>
+              <option value="Creative Direction">Creative Direction</option>
+              <option value="Media / Press">Media / Press</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div style="margin-bottom:1.5rem">
+            <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Message</label>
+            <textarea name="message" required rows="4" placeholder="Tell me about your project, event date, and any other details..."
+              style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;resize:vertical;box-sizing:border-box"
+              onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'"></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%;justify-content:center">✉ Send Booking Inquiry</button>
+          <div id="bookingSuccess" style="display:none;margin-top:1rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--gold);text-align:center;padding:1rem;border:1px solid rgba(201,168,76,0.2)">
+            ✓ Your inquiry has been sent. We'll be in touch soon.
+          </div>
+        </form>
+        ${bookingPhone ? `<p style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);margin-top:1.5rem">Prefer to call? <a href="tel:${bookingPhone}" style="color:var(--gold)">${bookingPhone}</a></p>` : ''}
       </div>
-    </div>
+    </div>` : '<div id="booking" style="display:none"></div>'}
   `;
 
   // Build photo gallery if photos exist
@@ -677,6 +733,27 @@ async function ownerMoveItem(section, idx, dir) {
     // Re-render just that section without page reload
     buildEPK(window._epkData);
   } catch(e) { console.error('Reorder failed:', e); }
+}
+
+// Booking form submission
+async function handleBookingSubmit(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('button[type="submit"]');
+  const success = document.getElementById('bookingSuccess');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  try {
+    const formData = new FormData(form);
+    await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(formData).toString() });
+    form.reset();
+    success.style.display = 'block';
+    btn.style.display = 'none';
+  } catch(err) {
+    btn.textContent = '✉ Send Booking Inquiry';
+    btn.disabled = false;
+    alert('Something went wrong. Please try again.');
+  }
 }
 
 // Asset download tracking

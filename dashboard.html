@@ -845,7 +845,7 @@
       <style>
         #bookingToggle:checked + span { background: var(--gold); border-color: var(--gold); }
         #bookingToggle:checked + span::before { transform: translateX(20px); }
-        #toggleSlider::before { content:''; position:absolute; height:16px; width:16px; left:3px; bottom:3px; background:white; transition:0.3s; border-radius:50%; }
+        #toggleSlider::before { content:''  ; position:absolute; height:16px; width:16px; left:3px; bottom:3px; background:white; transition:0.3s; border-radius:50%; }
       </style>
 
       <hr class="section-divider">
@@ -853,11 +853,52 @@
       <div class="field-group">
         <label class="field-label">Booking Email</label>
         <input type="email" id="bookingEmail" placeholder="booking@youremail.com">
+        <p class="field-hint">Booking inquiries from your EPK will be sent to this address.</p>
       </div>
       <div class="field-group">
         <label class="field-label">Phone Number (optional)</label>
         <input type="tel" id="bookingPhone" placeholder="+1 305 000 0000">
       </div>
+
+      <hr class="section-divider">
+      <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:1.5rem;">Availability</h3>
+
+      <div class="field-group">
+        <label class="field-label">Availability Status</label>
+        <select id="bookingAvailability">
+          <option value="">— Select Status —</option>
+          <option value="available">✅ Available for Bookings</option>
+          <option value="limited">⚡ Limited Availability</option>
+          <option value="touring">🎤 Currently on Tour</option>
+          <option value="selective">🎯 Selective Projects Only</option>
+          <option value="unavailable">❌ Not Currently Available</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Region Availability</label>
+        <input type="text" id="bookingRegion" placeholder="e.g. Worldwide · USA · Latin America · Europe">
+        <p class="field-hint">Where are you available to book?</p>
+      </div>
+
+      <hr class="section-divider">
+      <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:1rem;">What You're Available For</h3>
+      <p class="field-hint" style="margin-bottom:1rem">Select all that apply — these appear as tags on your EPK.</p>
+
+      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1.5rem">
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_live" style="accent-color:var(--gold)"> Live Performances</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_studio" style="accent-color:var(--gold)"> Studio Sessions</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_features" style="accent-color:var(--gold)"> Features / Collabs</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_touring" style="accent-color:var(--gold)"> Touring</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_hosting" style="accent-color:var(--gold)"> Hosting / MC</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_ar" style="accent-color:var(--gold)"> A&R Consulting</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_creative" style="accent-color:var(--gold)"> Creative Direction</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_media" style="accent-color:var(--gold)"> Media / Press</label>
+      </div>
+
+      <hr class="section-divider">
+      <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:1.5rem;">Messaging</h3>
+
       <div class="field-group">
         <label class="field-label">Booking Tagline</label>
         <input type="text" id="bookingTagline" placeholder="Now booking live performances, studio sessions, and creative collaborations.">
@@ -865,6 +906,10 @@
       <div class="field-group">
         <label class="field-label">Availability Note</label>
         <input type="text" id="bookingNote" placeholder="Serious inquiries only">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Auto-Response Message <span style="color:var(--gray);font-weight:400">(sent to visitor after they submit)</span></label>
+        <textarea id="bookingAutoResponse" rows="3" placeholder="Thank you for your inquiry. I will review your message and respond within 48 hours."></textarea>
       </div>
 
       <div class="form-actions">
