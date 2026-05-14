@@ -356,6 +356,10 @@
         </div>
 
         <div id="bioPositionWrap" style="display:none;margin-top:0.75rem">
+          <div style="display:flex;gap:0.75rem;margin-bottom:1rem">
+            <button onclick="resetBioImageFit()" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold);padding:0.4rem 0.85rem;cursor:pointer">⊞ Fill Frame</button>
+            <button onclick="fitFullBioImage()" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--gray);padding:0.4rem 0.85rem;cursor:pointer">⬜ Fit Full Image</button>
+          </div>
           <label class="field-label" style="margin-bottom:0.5rem;display:block">Crop from Top <span style="color:var(--gray);font-weight:400">(removes empty space at top)</span></label>
           <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem">
             <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">None</span>

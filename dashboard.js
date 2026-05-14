@@ -1046,15 +1046,45 @@ function updateBioPreview(url) {
   }
 }
 
-function updateBioCropTop(val) {
-  const preview = document.getElementById('bioImagePreview');
+function fitFullBioImage() {
+  // Sets object-fit to contain so entire image fits
   const img = document.getElementById('bioPreviewImg');
-  if (preview && img) {
-    // Crop by reducing preview height from top using negative margin
-    preview.style.paddingTop = '0';
-    img.style.marginTop = `-${val}%`;
+  if (img) {
+    img.style.objectFit = 'contain';
+    img.style.transform = 'none';
+    img.style.background = 'transparent';
+  }
+  // Reset sliders
+  document.getElementById('bioPositionSlider').value = 0;
+  document.getElementById('bioPositionValue').value = 0;
+  document.getElementById('bioZoomSlider').value = 100;
+  document.getElementById('bioZoomValue').value = 100;
+  document.getElementById('bioCropTopSlider').value = 0;
+  document.getElementById('bioCropTopValue').value = 0;
+  epk.bioImageFit = 'contain';
+  persistUser(); showSaveBanner();
+}
+
+function resetBioImageFit() {
+  const img = document.getElementById('bioPreviewImg');
+  if (img) {
+    img.style.objectFit = 'cover';
+  }
+  epk.bioImageFit = 'cover';
+  persistUser(); showSaveBanner();
+}
+
+function updateBioCropTop(val) {
+  const img = document.getElementById('bioPreviewImg');
+  if (img) {
+    // Use object-position to shift image up — effectively cropping empty top space
+    const posVal = document.getElementById('bioPositionValue').value || 0;
+    img.style.objectPosition = `center ${val}%`;
   }
   document.getElementById('bioCropTopValue').value = val;
+  // Also sync with position slider
+  document.getElementById('bioPositionSlider').value = val;
+  document.getElementById('bioPositionValue').value = val;
 }
 
 function updateBioPosition(val) {

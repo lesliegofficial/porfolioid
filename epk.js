@@ -188,7 +188,8 @@ function buildEPK(epk) {
   const bioCropTop = epk.bioImageCropTop || 0;
   const bioZoomStyle = bioZoom !== 100 ? `transform:scale(${bioZoom/100});transform-origin:center top;` : '';
   const bioCropStyle = bioCropTop > 0 ? `margin-top:-${bioCropTop}%;height:calc(100% + ${bioCropTop}%);` : '';
-  const bioPortrait = epk.bioImage ? `<div style="position:relative;overflow:hidden;width:100%;height:100%"><img src="${epk.bioImage}" class="career-portrait" alt="${epk.name}" style="object-position:${bioImgPos};${bioZoomStyle}${bioCropStyle}"></div>` : '';
+  const bioFit = epk.bioImageFit || 'cover';
+  const bioPortrait = epk.bioImage ? `<div style="position:relative;overflow:hidden;width:100%;height:100%"><img src="${epk.bioImage}" class="career-portrait" alt="${epk.name}" style="object-fit:${bioFit};object-position:${bioImgPos};${bioZoomStyle}${bioCropStyle}"></div>` : '';
 
   const bioContent = `
     <div class="career-bio-text">
