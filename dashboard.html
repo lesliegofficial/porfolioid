@@ -356,6 +356,14 @@
         </div>
 
         <div id="bioPositionWrap" style="display:none;margin-top:0.75rem">
+          <label class="field-label" style="margin-bottom:0.5rem;display:block">Crop from Top <span style="color:var(--gray);font-weight:400">(removes empty space at top)</span></label>
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">None</span>
+            <input type="range" id="bioCropTopSlider" min="0" max="60" value="0"
+              oninput="updateBioCropTop(this.value)"
+              style="flex:1;accent-color:var(--gold);cursor:pointer;height:4px">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Crop</span>
+          </div>
           <label class="field-label" style="margin-bottom:0.5rem;display:block">Vertical Position <span style="color:var(--gray);font-weight:400">(drag to reframe)</span></label>
           <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem">
             <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Top</span>
@@ -373,6 +381,7 @@
             <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Larger</span>
           </div>
           <input type="hidden" id="bioPositionValue" value="0">
+          <input type="hidden" id="bioCropTopValue" value="0">
           <input type="hidden" id="bioZoomValue" value="100">
         </div>
       </div>

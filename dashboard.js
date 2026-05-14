@@ -244,6 +244,10 @@ function loadAllFields() {
   if (epk.bioImage) {
     updateBioPreview(epk.bioImage);
     const posVal = epk.bioImagePosition || 0;
+    const cropVal = epk.bioImageCropTop || 0;
+    document.getElementById('bioCropTopSlider').value = cropVal;
+    document.getElementById('bioCropTopValue').value = cropVal;
+    if (cropVal > 0) updateBioCropTop(cropVal);
     document.getElementById('bioPositionSlider').value = posVal;
     document.getElementById('bioPositionValue').value = posVal;
     const zoomVal = epk.bioImageZoom || 100;
@@ -326,6 +330,7 @@ function saveAll() {
   epk.availability = document.getElementById('availabilitySelect').value;
   epk.bioImage = document.getElementById('bioImage').value.trim();
   epk.bioImagePosition = parseInt(document.getElementById('bioPositionValue').value || 0);
+  epk.bioImageCropTop = parseInt(document.getElementById('bioCropTopValue').value || 0);
   epk.bioImageZoom = parseInt(document.getElementById('bioZoomValue').value || 100);
   epk.bookingEmail = document.getElementById('bookingEmail').value.trim();
   epk.bookingPhone = document.getElementById('bookingPhone').value.trim();
@@ -1039,6 +1044,17 @@ function updateBioPreview(url) {
     preview.style.display = 'none';
     posWrap.style.display = 'none';
   }
+}
+
+function updateBioCropTop(val) {
+  const preview = document.getElementById('bioImagePreview');
+  const img = document.getElementById('bioPreviewImg');
+  if (preview && img) {
+    // Crop by reducing preview height from top using negative margin
+    preview.style.paddingTop = '0';
+    img.style.marginTop = `-${val}%`;
+  }
+  document.getElementById('bioCropTopValue').value = val;
 }
 
 function updateBioPosition(val) {
