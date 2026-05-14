@@ -143,7 +143,7 @@ function buildEPK(epk) {
 
   const heroImgPos = epk.heroImagePosition !== undefined ? `center ${epk.heroImagePosition}%` : 'center 0%';
   const heroZoom = epk.heroImageZoom || 100;
-  const heroZoomStyle = heroZoom !== 100 ? `transform:scale(${heroZoom/100});transform-origin:center center;` : '';
+  const heroZoomStyle = heroZoom !== 100 ? `transform:scale(${heroZoom/100});transform-origin:center top;` : '';
   const heroImgHTML = epk.heroImage
     ? `<img class="hero-img" src="${epk.heroImage}" alt="${epk.name}" style="object-position:${heroImgPos};${heroZoomStyle}" onerror="this.parentElement.innerHTML='<div class=hero-placeholder><div class=hero-placeholder-icon>🎤</div></div>'">`
     : `<div class="hero-placeholder"><div class="hero-placeholder-icon">🎤</div></div>`;
@@ -185,7 +185,7 @@ function buildEPK(epk) {
   const resumeCards = epk.resumeCards || [];
   const bioImgPos = epk.bioImagePosition !== undefined ? `center ${epk.bioImagePosition}%` : 'center 0%';
   const bioZoom = epk.bioImageZoom || 100;
-  const bioZoomStyle = bioZoom !== 100 ? `transform:scale(${bioZoom/100});transform-origin:center center;` : '';
+  const bioZoomStyle = bioZoom !== 100 ? `transform:scale(${bioZoom/100});transform-origin:center top;` : '';
   const bioPortrait = epk.bioImage ? `<div style="position:relative;overflow:hidden;width:100%;height:100%"><img src="${epk.bioImage}" class="career-portrait" alt="${epk.name}" style="object-position:${bioImgPos};${bioZoomStyle}"></div>` : '';
 
   const bioContent = `
