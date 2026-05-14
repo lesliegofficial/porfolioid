@@ -268,6 +268,18 @@
       <h1 class="panel-title">Biography</h1>
       <p class="panel-sub">Your professional story. Write it the way the industry reads it — not a social media bio.</p>
 
+      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:1.5rem">
+        <label class="field-label" style="margin-bottom:0.75rem;display:block">Career Profile Layout</label>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)">
+            <input type="radio" name="careerLayout" value="stacked" onchange="saveCareerLayout(this.value)" style="accent-color:var(--gold)"> ☰ Stacked — Bio on top, resumes below
+          </label>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)">
+            <input type="radio" name="careerLayout" value="sidebyside" onchange="saveCareerLayout(this.value)" style="accent-color:var(--gold)"> ⊞ Side by Side — Bio left, resumes right
+          </label>
+        </div>
+      </div>
+
       <div class="field-group">
         <label class="field-label">Short Bio <span style="color:var(--gray);font-weight:400">(1-2 sentences — shown by default)</span></label>
         <p class="field-hint">This is what visitors see first. Make it punch hard. The full bio expands below it.</p>

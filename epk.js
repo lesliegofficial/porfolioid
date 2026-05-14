@@ -28,8 +28,7 @@ function buildEPK(epk) {
   const navLinks = document.getElementById('navLinks');
   navLinks.innerHTML = '';
   const sections = [
-    { id: 'bio', label: 'Biography' },
-    { id: 'resume', label: 'Resume' },
+    { id: 'bio', label: 'Career Profile' },
     { id: 'credits', label: 'Credits' },
     { id: 'photos', label: 'Photos' },
     { id: 'music', label: 'Music' },
@@ -60,6 +59,55 @@ function buildEPK(epk) {
   epkCreditsData = epk.credits || [];
 
   // Build featured videos (first 3)
+
+  // Build career profile resume card
+  const buildResumeCard = (r) => `
+    <div class="resume-card">
+      <div class="resume-card-label">${r.label || 'Resume'}</div>
+      <div class="resume-card-title">${r.title}</div>
+      <div class="resume-card-subtitle">${r.subtitle || ''}</div>
+      ${r.skills?.length ? `<div class="resume-card-skills">${r.skills.map(s => `<span class="resume-skill-tag">${s}</span>`).join('')}</div>` : ''}
+      ${r.desc ? `<div class="resume-card-desc">${r.desc}</div>` : ''}
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:auto">
+        ${r.url ? `<a href="${r.url}" target="_blank" class="resume-card-btn">↓ Download Resume →</a>` : '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;opacity:0.5">PDF coming soon</span>'}
+      </div>
+    </div>`;
+
+  const careerLayout = epk.careerLayout || 'stacked';
+  const resumeCards = epk.resumeCards || [];
+  const bioPortrait = epk.bioImage ? `<img src="${epk.bioImage}" class="career-portrait" alt="${epk.name}">` : '';
+
+  const bioContent = `
+    <div class="career-bio-text">
+      <div id="bioShort">${shortBioHTML}</div>
+      ${hasMoreBio ? `
+      <div id="bioFull" style="display:none">${bioParagraphs}</div>
+      <button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:0.5rem;transition:all 0.2s">Read Full Bio +</button>
+      ` : ''}
+    </div>`;
+
+  // Build career profile HTML based on layout
+  let careerProfileHTML = '';
+  if (careerLayout === 'sidebyside') {
+    careerProfileHTML = `
+      <div class="career-sidebyside">
+        <div class="career-sidebyside-left">
+          ${bioPortrait}
+          ${bioContent}
+        </div>
+        <div class="career-sidebyside-right">
+          ${resumeCards.map(buildResumeCard).join('')}
+        </div>
+      </div>`;
+  } else {
+    // Stacked (default)
+    careerProfileHTML = `
+      <div class="career-stacked-bio">
+        ${bioPortrait ? `<div>${bioPortrait}</div>` : ''}
+        ${bioContent}
+      </div>
+      ${resumeCards.length ? `<div class="career-stacked-cards">${resumeCards.map(buildResumeCard).join('')}</div>` : ''}`;
+  }
 
   // Build connect section
   const svgIcons = {
@@ -386,49 +434,16 @@ function buildEPK(epk) {
       </div>
     </div>
 
-    <!-- BIO -->
-    ${epk.bio ? `
-    <section id="bio">
-      <div class="section-label">Biography</div>
-      <div class="bio-grid">
-        <div class="bio-sidebar">
-          ${bioImgHTML}
-          ${contactHTML}
-          ${credentialsHTML}
-        </div>
-        <div class="bio-text">
-          <div id="bioShort">${shortBioHTML}</div>
-          ${hasMoreBio ? `
-          <div id="bioFull" style="display:none">${bioParagraphs}</div>
-          <button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:0.5rem;transition:all 0.2s">Read Full Bio +</button>
-          ` : ''}
-        </div>
+    <!-- CAREER PROFILE (Bio + Resume unified) -->
+    <section class="career-profile-section" id="bio">
+      <div class="career-profile-inner">
+        <div class="section-label">Career Profile</div>
+        <h2 class="section-title">Professional <em>Identity</em></h2>
+        ${careerProfileHTML}
       </div>
     </section>
-    <div class="divider"></div>` : ''}
+    <div class="divider"></div>
 
-    <!-- RESUME -->
-    ${epk.resumeEnabled !== false && (epk.resumeCards || []).length ? `
-    <section class="resume-section" id="resume">
-      <div class="resume-inner">
-        <div class="section-label">Professional Resume</div>
-        <h2 class="section-title">Career <em>Profile</em></h2>
-        <div class="resume-cards">
-          ${(epk.resumeCards || []).map(r => `
-          <div class="resume-card">
-            <div class="resume-card-label">${r.label || 'Resume'}</div>
-            <div class="resume-card-title">${r.title}</div>
-            <div class="resume-card-subtitle">${r.subtitle || ''}</div>
-            ${r.skills?.length ? `<div class="resume-card-skills">${r.skills.map(s => `<span class="resume-skill-tag">${s}</span>`).join('')}</div>` : ''}
-            ${r.desc ? `<div class="resume-card-desc">${r.desc}</div>` : ''}
-            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:auto">
-              ${r.url ? `<a href="${r.url}" target="_blank" class="resume-card-btn">↓ Download Resume →</a>` : '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;opacity:0.5">PDF coming soon</span>'}
-            </div>
-          </div>`).join('')}
-        </div>
-      </div>
-    </section>
-    <div class="divider"></div>` : ''}
 
     <!-- CREDITS -->
     ${epk.credits?.length ? `

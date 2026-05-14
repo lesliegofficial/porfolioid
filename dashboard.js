@@ -275,6 +275,9 @@ function loadAllFields() {
   // Video Layout
   loadVideoLayout();
 
+  // Career Layout
+  loadCareerLayout();
+
   // Resume
   renderResumeCards();
   const resumeToggle = document.getElementById('resumeToggle');
@@ -958,6 +961,16 @@ function addPhoto() {
   toggleAddForm('addPhotoForm');
   renderPhotos(); persistUser(); showSaveBanner();
 }
+function saveCareerLayout(val) {
+  epk.careerLayout = val;
+  persistUser(); showSaveBanner();
+}
+
+function loadCareerLayout() {
+  const val = epk.careerLayout || 'stacked';
+  document.querySelectorAll('input[name="careerLayout"]').forEach(r => r.checked = r.value === val);
+}
+
 function saveVideoLayout(val) {
   epk.videoLayout = val;
   persistUser(); showSaveBanner();
