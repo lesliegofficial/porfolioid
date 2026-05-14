@@ -533,6 +533,7 @@ function buildEPK(epk) {
               ${a.desc ? `<div class="award-card-desc">${a.desc}</div>` : ''}
               ${a.proofLink ? `<a href="${a.proofLink}" target="_blank" class="award-proof-link">✦ View Verification →</a>` : ''}
               ${a.certUrl ? `<a href="${a.certUrl}" target="_blank" class="award-cert-link">📄 View Certificate →</a>` : ''}
+              ${(a.photos||[]).length ? `<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.75rem">${(a.photos||[]).map(p=>`<img src="${p}" onclick="openLightbox('${p}')" style="width:72px;height:54px;object-fit:cover;cursor:pointer;border:1px solid rgba(201,168,76,0.2);transition:opacity 0.2s" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" onerror="this.style.display='none'">`).join('')}</div>` : ''}
             </div>`;
           }).join('')}
         </div>

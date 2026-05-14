@@ -1589,6 +1589,41 @@ function renderAwards() {
   });
 }
 let editingAwardIdx = -1;
+// AWARD PHOTOS
+let pendingAwardPhotos = [];
+
+function triggerAwardPhotoUpload() {
+  const input = document.getElementById('awardPhotoInput');
+  input.value = '';
+  input.onchange = async function() {
+    const files = Array.from(input.files);
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_PRESET);
+      try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.secure_url) {
+          pendingAwardPhotos.push(data.secure_url);
+          renderAwardPhotosPreview();
+        }
+      } catch(e) { console.error('Upload failed', e); }
+    }
+  };
+  input.click();
+}
+
+function renderAwardPhotosPreview() {
+  const preview = document.getElementById('awardPhotosPreview');
+  if (!preview) return;
+  preview.innerHTML = pendingAwardPhotos.map((url, i) => `
+    <div style="position:relative;display:inline-block">
+      <img src="${url}" style="width:80px;height:60px;object-fit:cover;border:1px solid rgba(201,168,76,0.3);display:block" onerror="this.style.display='none'">
+      <button onclick="pendingAwardPhotos.splice(${i},1);renderAwardPhotosPreview()" style="position:absolute;top:1px;right:1px;background:rgba(0,0,0,0.75);border:none;color:#fff;font-size:0.55rem;cursor:pointer;padding:1px 3px;line-height:1">✕</button>
+    </div>`).join('');
+}
+
 function triggerAwardCertUpload() {
   const input = document.getElementById('awardCertInput');
   input.value = '';
@@ -1625,6 +1660,8 @@ function editAward(i) {
   document.getElementById('newAwardCertUrl').value = a.certUrl || '';
   document.getElementById('newAwardVerified').checked = a.verified || false;
   document.getElementById('newAwardFeatured').checked = a.featured || false;
+  pendingAwardPhotos = [...(a.photos || [])];
+  renderAwardPhotosPreview();
   document.getElementById('addAwardForm').classList.add('open');
   document.getElementById('addAwardForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addAwardForm .add-form-title').textContent = 'Edit Entry';
@@ -1642,7 +1679,7 @@ function addAward() {
   const featured = document.getElementById('newAwardFeatured').checked;
   if (!title) return;
   epk.awards = epk.awards || [];
-  const awardData = { title, org, year, type, desc, category, proofLink, certUrl, verified, featured };
+  const awardData = { title, org, year, type, desc, category, proofLink, certUrl, verified, featured, photos: [...pendingAwardPhotos] };
   if (editingAwardIdx >= 0) {
     epk.awards[editingAwardIdx] = { ...epk.awards[editingAwardIdx], ...awardData };
     editingAwardIdx = -1;
@@ -1653,6 +1690,8 @@ function addAward() {
   ['newAwardTitle','newAwardOrg','newAwardYear','newAwardDesc','newAwardCategory','newAwardProof','newAwardCertUrl'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('newAwardVerified').checked = false;
   document.getElementById('newAwardFeatured').checked = false;
+  pendingAwardPhotos = [];
+  renderAwardPhotosPreview();
   toggleAddForm('addAwardForm');
   renderAwards(); persistUser(); showSaveBanner();
 }
