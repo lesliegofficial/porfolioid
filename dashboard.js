@@ -738,8 +738,8 @@ function addCreditMedia(type) {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('upload_preset', CLOUDINARY_PRESET);
-      const isImage = file.type.startsWith('image/');
-      const endpoint = isImage ? 'image' : 'raw';
+      // Always use image endpoint for public access (raw requires auth)
+      const endpoint = 'image';
       try {
         const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${endpoint}/upload`, { method: 'POST', body: formData });
         const data = await res.json();
