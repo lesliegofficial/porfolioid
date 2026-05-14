@@ -204,6 +204,16 @@ function buildEPK(epk) {
           ${resumeCards.map(buildResumeCard).join('')}
         </div>
       </div>`;
+  } else if (careerLayout === 'threecol') {
+    careerProfileHTML = `
+      <div class="career-threecol">
+        <div class="career-threecol-bio">
+          ${bioPortrait}
+          ${bioContent}
+        </div>
+        ${resumeCards[0] ? buildResumeCard(resumeCards[0]) : ''}
+        ${resumeCards[1] ? buildResumeCard(resumeCards[1]) : ''}
+      </div>`;
   } else {
     // Stacked (default)
     careerProfileHTML = `
