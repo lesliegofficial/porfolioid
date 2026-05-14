@@ -517,7 +517,7 @@ function buildEPK(epk) {
         <div class="section-label">Recognition</div>
         <h2 class="section-title">Awards, Degrees <em>& Credentials</em></h2>
         <div class="awards-grid">
-          ${(epk.awards || []).map(a => {
+          ${(epk.awards || []).map((a, idx) => {
             const icons = { award:'🏆', nomination:'🎯', degree:'🎓', certification:'📜', recognition:'⭐', honor:'🏅' };
             const typeLabels = { award:'Award', nomination:'Nomination', degree:'Education', certification:'Certification', recognition:'Recognition', honor:'Honor' };
             const icon = icons[a.type] || '🏆';
