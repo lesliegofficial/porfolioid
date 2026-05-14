@@ -503,53 +503,101 @@ function buildEPK(epk) {
 
     <!-- MUSIC -->
     ${epk.tracks?.length ? `
-    <section id="music">
-      <div class="section-label">Live Music Tracks</div>
-      <h2 class="section-title">On Record</h2>
-      <div class="music-tracks">${tracksHTML}</div>
-    </section>
-    <div class="divider"></div>` : ''}
+    <div class="collapsible-section" id="music">
+      <div class="collapsible-header" onclick="toggleSection('musicBody', this)">
+        <div class="collapsible-header-left">
+          <div>
+            <div class="collapsible-header-label">Music</div>
+            <div class="collapsible-header-title">Live Tracks & Recordings</div>
+            <div class="collapsible-header-meta">${epk.tracks.length} track${epk.tracks.length !== 1 ? 's' : ''}</div>
+          </div>
+        </div>
+        <div class="collapsible-toggle"><span class="toggle-label">Expand</span> ＋</div>
+      </div>
+      <div class="collapsible-body" id="musicBody">
+        <div class="collapsible-body-inner" style="max-width:1100px;margin:0 auto;padding:0 2rem 3rem">
+          <div class="music-tracks">${tracksHTML}</div>
+        </div>
+      </div>
+    </div>` : ''}
 
     <!-- AWARDS -->
     ${(epk.awards || []).length ? `
-    <div class="awards-section" id="awards">
-      <div class="awards-inner">
-        <div class="section-label">Recognition</div>
-        <h2 class="section-title">Awards, Degrees <em>& Credentials</em></h2>
-        <div class="awards-grid">
-          ${(epk.awards || []).map((a, idx) => {
-            const icons = { award:'🏆', nomination:'🎯', degree:'🎓', certification:'📜', recognition:'⭐', honor:'🏅' };
-            const typeLabels = { award:'Award', nomination:'Nomination', degree:'Education', certification:'Certification', recognition:'Recognition', honor:'Honor' };
-            const icon = icons[a.type] || '🏆';
-            const typeLabel = typeLabels[a.type] || 'Award';
-            const hasDetails = a.desc || a.proofLink || a.certUrl || (a.photos||[]).length;
-            return `<div class="award-card ${hasDetails ? 'award-card-clickable' : ''}" ${hasDetails ? `onclick="openAwardModal(${idx})"` : ''}>
-              <span class="award-card-icon">${icon}</span>
-              <div class="award-card-type">${typeLabel} ${a.year ? '· ' + a.year : ''}</div>
-              <div class="award-card-badges">
-                ${a.verified ? '<span class="award-badge award-badge-verified">✓ Verified</span>' : ''}
-                ${a.category ? `<span class="award-badge award-badge-category">${a.category}</span>` : ''}
-              </div>
-              <div class="award-card-title">${a.title}</div>
-              ${a.org ? `<div class="award-card-org">${a.org}</div>` : ''}
-              ${hasDetails ? `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-top:0.75rem;opacity:0.7">View Details →</div>` : ''}
-            </div>`;
-          }).join('')}
+    <div class="collapsible-section" id="awards">
+      <div class="collapsible-header" onclick="toggleSection('awardsBody', this)">
+        <div class="collapsible-header-left">
+          <div>
+            <div class="collapsible-header-label">Recognition</div>
+            <div class="collapsible-header-title">Awards, Degrees & Credentials</div>
+            <div class="collapsible-header-meta">${(epk.awards||[]).length} entr${(epk.awards||[]).length !== 1 ? 'ies' : 'y'} · ${(epk.awards||[]).filter(a=>a.verified).length} verified</div>
+          </div>
+        </div>
+        <div class="collapsible-toggle"><span class="toggle-label">Expand</span> ＋</div>
+      </div>
+      <div class="collapsible-body" id="awardsBody">
+        <div class="collapsible-body-inner awards-inner">
+          <div class="awards-grid">
+            ${(epk.awards || []).map((a, idx) => {
+              const icons = { award:'🏆', nomination:'🎯', degree:'🎓', certification:'📜', recognition:'⭐', honor:'🏅' };
+              const typeLabels = { award:'Award', nomination:'Nomination', degree:'Education', certification:'Certification', recognition:'Recognition', honor:'Honor' };
+              const icon = icons[a.type] || '🏆';
+              const typeLabel = typeLabels[a.type] || 'Award';
+              const hasDetails = a.desc || a.proofLink || a.certUrl || (a.photos||[]).length;
+              return `<div class="award-card ${hasDetails ? 'award-card-clickable' : ''}" ${hasDetails ? `onclick="openAwardModal(${idx})"` : ''}>
+                <span class="award-card-icon">${icon}</span>
+                <div class="award-card-type">${typeLabel} ${a.year ? '· ' + a.year : ''}</div>
+                <div class="award-card-badges">
+                  ${a.verified ? '<span class="award-badge award-badge-verified">✓ Verified</span>' : ''}
+                  ${a.category ? `<span class="award-badge award-badge-category">${a.category}</span>` : ''}
+                </div>
+                <div class="award-card-title">${a.title}</div>
+                ${a.org ? `<div class="award-card-org">${a.org}</div>` : ''}
+                ${hasDetails ? `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-top:0.75rem;opacity:0.7">View Details →</div>` : ''}
+              </div>`;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+    </div>` : ''}
+
+    <!-- ASSETS -->
+    ${epk.assets?.filter(a => a.visible !== false && a.category !== 'Resume').length ? `
+    <div class="collapsible-section" id="assets">
+      <div class="collapsible-header" onclick="toggleSection('assetsBody', this)">
+        <div class="collapsible-header-left">
+          <div>
+            <div class="collapsible-header-label">Professional Assets</div>
+            <div class="collapsible-header-title">Resources & Downloads</div>
+            <div class="collapsible-header-meta">${epk.assets.filter(a=>a.visible!==false && a.category!=='Resume').length} available</div>
+          </div>
+        </div>
+        <div class="collapsible-toggle"><span class="toggle-label">Expand</span> ＋</div>
+      </div>
+      <div class="collapsible-body" id="assetsBody">
+        <div class="collapsible-body-inner" style="max-width:1100px;margin:0 auto;padding:0 2rem 3rem">
+          <div class="assets-grid">${assetsHTML}</div>
+        </div>
+      </div>
+    </div>` : ''}
+
+    <!-- CONNECT -->
+    <div class="collapsible-section" id="connect">
+      <div class="collapsible-header" onclick="toggleSection('connectBody', this)">
+        <div class="collapsible-header-left">
+          <div>
+            <div class="collapsible-header-label">Connect</div>
+            <div class="collapsible-header-title">Find Me Online</div>
+            <div class="collapsible-header-meta">Social & music platforms</div>
+          </div>
+        </div>
+        <div class="collapsible-toggle"><span class="toggle-label">Expand</span> ＋</div>
+      </div>
+      <div class="collapsible-body" id="connectBody">
+        <div class="collapsible-body-inner">
+          ${connectSectionHTML}
         </div>
       </div>
     </div>
-    <div class="divider"></div>` : ''}
-
-    <!-- ASSETS -->
-    ${epk.assets?.length ? `
-    <section id="assets">
-      <div class="section-label">Professional Assets</div>
-      <h2 class="section-title">Resources</h2>
-      <div class="assets-grid">${assetsHTML}</div>
-    </section>` : ''}
-
-    <!-- CONNECT -->
-    ${connectSectionHTML}
 
     <!-- BOOKING -->
     ${epk.bookingEnabled !== false ? `<div class="booking-section" id="booking">
@@ -854,6 +902,17 @@ async function ownerMoveItem(section, idx, dir) {
     // Re-render just that section without page reload
     buildEPK(window._epkData);
   } catch(e) { console.error('Reorder failed:', e); }
+}
+
+// Collapsible sections
+function toggleSection(bodyId, header) {
+  const body = document.getElementById(bodyId);
+  if (!body) return;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  const toggle = header.querySelector('.collapsible-toggle');
+  const label = header.querySelector('.toggle-label');
+  if (toggle) toggle.innerHTML = isOpen ? '<span class="toggle-label">Expand</span> ＋' : '<span class="toggle-label">Collapse</span> －';
 }
 
 // Award Modal

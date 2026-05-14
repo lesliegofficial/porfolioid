@@ -368,6 +368,20 @@
   .asset-btn { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); text-decoration: none; transition: opacity 0.3s; }
   .asset-btn:hover { opacity: 0.7; }
 
+  /* COLLAPSIBLE SECTIONS */
+  .collapsible-section { border-top: 1px solid rgba(255,255,255,0.06); }
+  .collapsible-header { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; cursor: pointer; user-select: none; max-width: 1100px; margin: 0 auto; transition: background 0.2s; }
+  .collapsible-header:hover { background: rgba(255,255,255,0.02); }
+  .collapsible-header-left { display: flex; align-items: center; gap: 1.25rem; }
+  .collapsible-header-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+  .collapsible-header-title { font-family: var(--font-display); font-size: 1.1rem; color: var(--white); font-weight: 400; }
+  .collapsible-header-meta { font-family: var(--font-mono); font-size: 0.55rem; color: var(--gray); letter-spacing: 0.08em; }
+  .collapsible-toggle { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; color: var(--gold); opacity: 0.6; transition: all 0.3s; display: flex; align-items: center; gap: 0.5rem; }
+  .collapsible-header:hover .collapsible-toggle { opacity: 1; }
+  .collapsible-body { overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease; max-height: 0; opacity: 0; }
+  .collapsible-body.open { max-height: 2000px; opacity: 1; }
+  .collapsible-body-inner { padding: 0 0 3rem; }
+
   /* BOOKING */
   .booking-section { background: linear-gradient(to bottom, var(--dark-2), var(--black)); padding: 8rem 3rem; text-align: center; }
   .booking-inner { max-width: 700px; margin: 0 auto; }
