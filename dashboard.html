@@ -536,6 +536,15 @@
           <input type="file" id="creditPhotoInput" accept="image/*" style="display:none" multiple>
           <button class="credit-photo-add-btn" onclick="triggerCreditPhotoUpload()">+ Add Photos</button>
         </div>
+
+        <!-- PRESS & ARCHIVE -->
+        <div style="border-top:1px solid rgba(201,168,76,0.15);padding-top:1.5rem;margin-top:0.5rem">
+          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.25rem">Press & Archive</div>
+          <p class="field-hint" style="margin-bottom:1rem">Add newspaper articles, magazine mentions, or archived press coverage. Keep descriptions factual — "featured," "mentioned," "listed among artists."</p>
+          <div id="pressItemsList" style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:0.75rem"></div>
+          <button class="btn-add" onclick="addPressItem()" style="width:100%;justify-content:center">+ Add Press Mention</button>
+        </div>
+
         <div class="form-actions">
           <button class="btn-save" onclick="addCredit()">Add Credit</button>
           <button class="btn-cancel" onclick="toggleAddForm('addCreditForm')">Cancel</button>

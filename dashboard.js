@@ -535,6 +535,9 @@ function editCredit(i) {
   document.getElementById('newCreditPinned').checked = c.pinned || false;
   pendingCreditCollaborators = [...(c.collaborators || [])];
   renderCreditCollaborators();
+  // Restore press items
+  pendingPressItems = [...(c.press || [])];
+  renderPressItems();
   // Restore photos preview
   pendingCreditPhotos = [...(c.photos || [])];
   renderCreditPhotosPreview();
@@ -654,6 +657,8 @@ function addCredit() {
   pendingCreditPhotos = [];
   pendingCreditCollaborators = [];
   pendingCreditMedia = [];
+  pendingPressItems = [];
+  renderPressItems();
   renderCreditPhotosPreview();
   renderCreditCollaborators();
   renderCreditMediaList();
@@ -1320,6 +1325,49 @@ function addAsset() {
 function removeAsset(i) { epk.assets.splice(i, 1); renderAssets(); persistUser(); showSaveBanner(); }
 
 // AWARDS
+// PRESS & ARCHIVE
+let pendingPressItems = [];
+
+function addPressItem() {
+  pendingPressItems.push({ publication: '', location: '', year: '', summary: '', url: '' });
+  renderPressItems();
+  setTimeout(() => {
+    const inputs = document.querySelectorAll('#pressItemsList .press-pub-input');
+    if (inputs.length) inputs[inputs.length-1].focus();
+  }, 50);
+}
+
+function removePressItem(i) {
+  pendingPressItems.splice(i, 1);
+  renderPressItems();
+}
+
+function renderPressItems() {
+  const container = document.getElementById('pressItemsList');
+  if (!container) return;
+  container.innerHTML = pendingPressItems.map((p, i) => `
+    <div style="background:var(--dark-3);border:1px solid rgba(201,168,76,0.1);padding:1rem;display:flex;flex-direction:column;gap:0.5rem">
+      <div style="display:flex;gap:0.5rem">
+        <input type="text" class="press-pub-input" placeholder="Publication (e.g. El Nuevo Herald)" value="${p.publication || ''}"
+          oninput="pendingPressItems[${i}].publication=this.value"
+          style="flex:2;background:var(--dark-2);border:1px solid rgba(255,255,255,0.08);color:var(--white);padding:0.5rem 0.75rem;font-size:0.8rem">
+        <input type="text" placeholder="Location (e.g. Miami, FL)" value="${p.location || ''}"
+          oninput="pendingPressItems[${i}].location=this.value"
+          style="flex:1;background:var(--dark-2);border:1px solid rgba(255,255,255,0.08);color:var(--white);padding:0.5rem 0.75rem;font-size:0.8rem">
+        <input type="text" placeholder="Year" value="${p.year || ''}"
+          oninput="pendingPressItems[${i}].year=this.value"
+          style="width:70px;background:var(--dark-2);border:1px solid rgba(255,255,255,0.08);color:var(--white);padding:0.5rem 0.75rem;font-size:0.8rem">
+        <button onclick="removePressItem(${i})" style="background:none;border:none;color:var(--gray);cursor:pointer;padding:0.25rem 0.5rem;font-size:1rem">✕</button>
+      </div>
+      <textarea placeholder="Brief factual summary — e.g. 'Las Nenas del Swing listed among featured artists performing at Puerto Rico's Third AIDS Walk alongside Marc Anthony and Tony Vega.'"
+        oninput="pendingPressItems[${i}].summary=this.value"
+        rows="2" style="background:var(--dark-2);border:1px solid rgba(255,255,255,0.08);color:var(--white);padding:0.5rem 0.75rem;font-size:0.8rem;resize:vertical;font-family:inherit">${p.summary || ''}</textarea>
+      <input type="url" placeholder="Archive link or PDF URL (optional)" value="${p.url || ''}"
+        oninput="pendingPressItems[${i}].url=this.value"
+        style="background:var(--dark-2);border:1px solid rgba(255,255,255,0.08);color:var(--white);padding:0.5rem 0.75rem;font-size:0.8rem">
+    </div>`).join('');
+}
+
 // QR CODE / SMART SHARE
 function initQRPanel() {
   const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');

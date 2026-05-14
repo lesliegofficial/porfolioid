@@ -992,6 +992,27 @@ function openCreditModal(i) {
   document.getElementById('creditModalPhotos').innerHTML = photos.map(url =>
     `<img class="credit-modal-photo" src="${url}" alt="${c.artist}" loading="lazy" onclick="openLightbox('${url}')" onerror="this.style.display='none'">`
   ).join('');
+
+  // Press & Archive section
+  const pressItems = c.press || [];
+  document.getElementById('creditModalPress').innerHTML = pressItems.length ? `
+    <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(201,168,76,0.12)">
+      <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem">
+        Press & Archive
+        <span style="flex:1;height:1px;background:linear-gradient(to right,rgba(201,168,76,0.2),transparent)"></span>
+      </div>
+      ${pressItems.map(p => `
+        <div style="padding:1rem 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;gap:0.4rem">
+          <div style="display:flex;align-items:baseline;gap:0.75rem;flex-wrap:wrap">
+            <span style="font-family:var(--font-mono);font-size:0.7rem;font-weight:700;letter-spacing:0.05em;color:var(--white);text-transform:uppercase">${p.publication}</span>
+            ${p.location ? `<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">${p.location}</span>` : ''}
+            ${p.year ? `<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gold);opacity:0.7">· ${p.year}</span>` : ''}
+          </div>
+          ${p.summary ? `<p style="font-size:0.82rem;color:var(--gray-light);line-height:1.65;font-style:italic;margin:0">${p.summary}</p>` : ''}
+          ${p.url ? `<a href="${p.url}" target="_blank" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:0.35rem;margin-top:0.25rem;opacity:0.8;transition:opacity 0.2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">View Archive →</a>` : ''}
+        </div>`).join('')}
+    </div>` : '';
+
   document.getElementById('creditModalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
