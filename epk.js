@@ -186,7 +186,7 @@ function buildEPK(epk) {
   const bioImgPos = epk.bioImagePosition !== undefined ? `center ${epk.bioImagePosition}%` : 'center 0%';
   const bioZoom = epk.bioImageZoom || 100;
   const bioZoomStyle = bioZoom !== 100 ? `transform:scale(${bioZoom/100});transform-origin:center center;` : '';
-  const bioPortrait = epk.bioImage ? `<div style="position:relative;overflow:hidden;width:100%;aspect-ratio:4/5;max-height:320px"><img src="${epk.bioImage}" class="career-portrait" alt="${epk.name}" style="object-position:${bioImgPos};${bioZoomStyle}"></div>` : '';
+  const bioPortrait = epk.bioImage ? `<div style="position:relative;overflow:hidden;width:100%;height:100%"><img src="${epk.bioImage}" class="career-portrait" alt="${epk.name}" style="object-position:${bioImgPos};${bioZoomStyle}"></div>` : '';
 
   const bioContent = `
     <div class="career-bio-text">
