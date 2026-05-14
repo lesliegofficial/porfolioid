@@ -317,12 +317,29 @@
 
       <div class="field-group">
         <label class="field-label">Bio Portrait Image</label>
-        <input type="url" id="bioImage" placeholder="https://... or upload below">
+        <input type="url" id="bioImage" placeholder="https://... or upload below" oninput="updateBioPreview(this.value)">
         <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
-          <button class="btn-add" onclick="triggerUpload('bioImageFile', 'bioImage')">↑ Upload Photo</button>
+          <button class="btn-add" onclick="triggerUpload('bioImageFile', 'bioImage', updateBioPreview)">↑ Upload Photo</button>
           <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
         </div>
         <input type="file" id="bioImageFile" accept="image/*" style="display:none">
+
+        <!-- Live preview with position slider -->
+        <div id="bioImagePreview" style="display:none;margin-top:1rem;position:relative;overflow:hidden;height:220px;background:var(--dark-3);border:1px solid rgba(201,168,76,0.15)">
+          <img id="bioPreviewImg" src="" style="width:100%;height:100%;object-fit:cover;object-position:center 0%" onerror="this.parentElement.style.display='none'">
+        </div>
+
+        <div id="bioPositionWrap" style="display:none;margin-top:0.75rem">
+          <label class="field-label" style="margin-bottom:0.5rem;display:block">Vertical Position <span style="color:var(--gray);font-weight:400">(drag to reframe)</span></label>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Top</span>
+            <input type="range" id="bioPositionSlider" min="0" max="100" value="0"
+              oninput="updateBioPosition(this.value)"
+              style="flex:1;accent-color:var(--gold);cursor:pointer;height:4px">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Bottom</span>
+          </div>
+          <input type="hidden" id="bioPositionValue" value="0">
+        </div>
       </div>
 
       <div class="field-group">

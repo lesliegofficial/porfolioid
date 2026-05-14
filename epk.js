@@ -180,7 +180,8 @@ function buildEPK(epk) {
 
   const careerLayout = epk.careerLayout || 'stacked';
   const resumeCards = epk.resumeCards || [];
-  const bioPortrait = epk.bioImage ? `<img src="${epk.bioImage}" class="career-portrait" alt="${epk.name}">` : '';
+  const bioImgPos = epk.bioImagePosition !== undefined ? `center ${epk.bioImagePosition}%` : 'center 0%';
+  const bioPortrait = epk.bioImage ? `<img src="${epk.bioImage}" class="career-portrait" alt="${epk.name}" style="object-position:${bioImgPos}">` : '';
 
   const bioContent = `
     <div class="career-bio-text">

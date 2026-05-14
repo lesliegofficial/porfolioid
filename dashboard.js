@@ -229,6 +229,14 @@ function loadAllFields() {
   document.getElementById('bioLocation').value = epk.location || '';
   // availability loaded below
   document.getElementById('bioImage').value = epk.bioImage || '';
+  if (epk.bioImage) {
+    updateBioPreview(epk.bioImage);
+    const posVal = epk.bioImagePosition || 0;
+    document.getElementById('bioPositionSlider').value = posVal;
+    document.getElementById('bioPositionValue').value = posVal;
+    const img = document.getElementById('bioPreviewImg');
+    if (img) img.style.objectPosition = `center ${posVal}%`;
+  }
   renderCredentials();
 
   // Credits
@@ -297,6 +305,7 @@ function saveAll() {
   epk.location = document.getElementById('bioLocation').value.trim();
   epk.availability = document.getElementById('availabilitySelect').value;
   epk.bioImage = document.getElementById('bioImage').value.trim();
+  epk.bioImagePosition = parseInt(document.getElementById('bioPositionValue').value || 0);
   epk.bookingEmail = document.getElementById('bookingEmail').value.trim();
   epk.bookingPhone = document.getElementById('bookingPhone').value.trim();
   epk.bookingTagline = document.getElementById('bookingTagline').value.trim();
@@ -961,6 +970,26 @@ function addPhoto() {
   toggleAddForm('addPhotoForm');
   renderPhotos(); persistUser(); showSaveBanner();
 }
+function updateBioPreview(url) {
+  const preview = document.getElementById('bioImagePreview');
+  const img = document.getElementById('bioPreviewImg');
+  const posWrap = document.getElementById('bioPositionWrap');
+  if (url) {
+    preview.style.display = 'block';
+    posWrap.style.display = 'block';
+    img.src = url;
+  } else {
+    preview.style.display = 'none';
+    posWrap.style.display = 'none';
+  }
+}
+
+function updateBioPosition(val) {
+  const img = document.getElementById('bioPreviewImg');
+  if (img) img.style.objectPosition = `center ${val}%`;
+  document.getElementById('bioPositionValue').value = val;
+}
+
 function saveCareerLayout(val) {
   epk.careerLayout = val;
   persistUser(); showSaveBanner();
