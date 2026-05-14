@@ -29,6 +29,7 @@ function buildEPK(epk) {
   navLinks.innerHTML = '';
   const sections = [
     { id: 'bio', label: 'Biography' },
+    { id: 'resume', label: 'Resume' },
     { id: 'credits', label: 'Credits' },
     { id: 'photos', label: 'Photos' },
     { id: 'music', label: 'Music' },
@@ -159,7 +160,11 @@ function buildEPK(epk) {
     ? `<div class="credentials-row">${epk.credentials.map(c => `<span class="credential-badge">${c}</span>`).join('')}</div>`
     : '';
 
-  const bioParagraphs = (epk.bio || '').split('\n').filter(p => p.trim()).map(p => `<p style="margin-bottom:1.5em">${p}</p>`).join('');
+  const bioParas = (epk.bio || '').split('\n').filter(p => p.trim());
+  const shortBio = epk.shortBio || (bioParas[0] || '');
+  const hasMoreBio = bioParas.length > 1;
+  const bioParagraphs = bioParas.map(p => `<p style="margin-bottom:1.5em">${p}</p>`).join('');
+  const shortBioHTML = `<p style="margin-bottom:1.5em">${shortBio}</p>`;
 
   // Sort: pinned first, filter hidden
   const visibleCredits = (epk.credits || [])
@@ -390,7 +395,34 @@ function buildEPK(epk) {
           ${contactHTML}
           ${credentialsHTML}
         </div>
-        <div class="bio-text">${bioParagraphs}</div>
+        <div class="bio-text">
+          <div id="bioShort">${shortBioHTML}</div>
+          ${hasMoreBio ? `
+          <div id="bioFull" style="display:none">${bioParagraphs}</div>
+          <button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:0.5rem;transition:all 0.2s">Read Full Bio +</button>
+          ` : ''}
+        </div>
+      </div>
+    </section>
+    <div class="divider"></div>` : ''}
+
+    <!-- RESUME -->
+    ${epk.resumeEnabled !== false && (epk.resumeCards || []).length ? `
+    <section class="resume-section" id="resume">
+      <div class="resume-inner">
+        <div class="section-label">Professional Resume</div>
+        <h2 class="section-title">Career <em>Profile</em></h2>
+        <div class="resume-cards">
+          ${(epk.resumeCards || []).map(r => `
+          <div class="resume-card">
+            <div class="resume-card-label">${r.label || 'Resume'}</div>
+            <div class="resume-card-title">${r.title}</div>
+            <div class="resume-card-subtitle">${r.subtitle || ''}</div>
+            ${r.skills?.length ? `<div class="resume-card-skills">${r.skills.map(s => `<span class="resume-skill-tag">${s}</span>`).join('')}</div>` : ''}
+            ${r.desc ? `<div class="resume-card-desc">${r.desc}</div>` : ''}
+            ${r.url ? `<a href="${r.url}" target="_blank" class="resume-card-btn">View Resume →</a>` : ''}
+          </div>`).join('')}
+        </div>
       </div>
     </section>
     <div class="divider"></div>` : ''}
@@ -782,6 +814,18 @@ async function ownerMoveItem(section, idx, dir) {
     // Re-render just that section without page reload
     buildEPK(window._epkData);
   } catch(e) { console.error('Reorder failed:', e); }
+}
+
+// Bio toggle
+function toggleBio() {
+  const full = document.getElementById('bioFull');
+  const short = document.getElementById('bioShort');
+  const btn = document.getElementById('bioToggleBtn');
+  if (!full) return;
+  const isHidden = full.style.display === 'none';
+  full.style.display = isHidden ? 'block' : 'none';
+  short.style.display = isHidden ? 'none' : 'block';
+  btn.textContent = isHidden ? 'Show Less –' : 'Read Full Bio +';
 }
 
 // Booking form submission

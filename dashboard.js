@@ -225,6 +225,7 @@ function loadAllFields() {
 
   // Bio
   document.getElementById('bioText').value = epk.bio || '';
+  document.getElementById('shortBioText').value = epk.shortBio || '';
   document.getElementById('bioLocation').value = epk.location || '';
   // availability loaded below
   document.getElementById('bioImage').value = epk.bioImage || '';
@@ -273,6 +274,11 @@ function loadAllFields() {
 
   // Video Layout
   loadVideoLayout();
+
+  // Resume
+  renderResumeCards();
+  const resumeToggle = document.getElementById('resumeToggle');
+  if (resumeToggle) resumeToggle.checked = epk.resumeEnabled !== false;
 }
 
 function saveAll() {
@@ -284,6 +290,7 @@ function saveAll() {
     { number: document.getElementById('stat3num').value, label: document.getElementById('stat3label').value },
   ];
   epk.bio = document.getElementById('bioText').value.trim();
+  epk.shortBio = document.getElementById('shortBioText').value.trim();
   epk.location = document.getElementById('bioLocation').value.trim();
   epk.availability = document.getElementById('availabilitySelect').value;
   epk.bioImage = document.getElementById('bioImage').value.trim();
@@ -1087,6 +1094,99 @@ function addAsset() {
 function removeAsset(i) { epk.assets.splice(i, 1); renderAssets(); persistUser(); showSaveBanner(); }
 
 // AWARDS
+// RESUME CARDS
+let editingResumeIdx = -1;
+
+function renderResumeCards() {
+  const container = document.getElementById('resumeCardsList');
+  if (!container) return;
+  container.innerHTML = '';
+  (epk.resumeCards || []).forEach((r, i) => {
+    const skills = (r.skills || []).slice(0, 4).join(' · ');
+    container.innerHTML += `
+      <div class="editable-card">
+        <div class="editable-card-header">
+          <div style="flex:1">
+            <div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.25rem">${r.label || ''}</div>
+            <div class="editable-card-title">${r.title}</div>
+            <div class="editable-card-subtitle">${r.subtitle || ''}</div>
+            ${skills ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.25rem">${skills}</div>` : ''}
+          </div>
+          <div class="card-actions">
+            <button class="btn-card-action" onclick="editResumeCard(${i})">Edit</button>
+            <button class="btn-card-action btn-card-delete" onclick="removeResumeCard(${i})">Delete</button>
+          </div>
+        </div>
+      </div>`;
+  });
+  // Hide add button if 2 cards already
+  const addBtn = document.getElementById('addResumeBtn');
+  if (addBtn) addBtn.style.display = (epk.resumeCards || []).length >= 2 ? 'none' : '';
+}
+
+function editResumeCard(i) {
+  editingResumeIdx = i;
+  const r = epk.resumeCards[i];
+  document.getElementById('newResumeLabel').value = r.label || '';
+  document.getElementById('newResumeTitle').value = r.title || '';
+  document.getElementById('newResumeSubtitle').value = r.subtitle || '';
+  document.getElementById('newResumeSkills').value = (r.skills || []).join(', ');
+  document.getElementById('newResumeDesc').value = r.desc || '';
+  document.getElementById('newResumeUrl').value = r.url || '';
+  document.getElementById('addResumeForm').classList.add('open');
+  document.getElementById('addResumeForm').scrollIntoView({ behavior: 'smooth' });
+  document.querySelector('#addResumeForm .add-form-title').textContent = 'Edit Resume Card';
+}
+
+function triggerResumeUpload() {
+  const input = document.getElementById('resumeFileInput');
+  input.value = '';
+  input.onchange = async function() {
+    const file = input.files[0];
+    if (!file) return;
+    const btn = document.querySelector('[onclick="triggerResumeUpload()"]');
+    if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/raw/upload`, { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.secure_url) {
+        document.getElementById('newResumeUrl').value = data.secure_url;
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload PDF'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      }
+    } catch(e) { if (btn) { btn.textContent = '↑ Upload PDF'; btn.disabled = false; } }
+  };
+  input.click();
+}
+
+function addResumeCard() {
+  const title = document.getElementById('newResumeTitle').value.trim();
+  if (!title) return;
+  const card = {
+    label: document.getElementById('newResumeLabel').value.trim(),
+    title,
+    subtitle: document.getElementById('newResumeSubtitle').value.trim(),
+    skills: document.getElementById('newResumeSkills').value.split(',').map(s => s.trim()).filter(Boolean),
+    desc: document.getElementById('newResumeDesc').value.trim(),
+    url: document.getElementById('newResumeUrl').value.trim(),
+  };
+  epk.resumeCards = epk.resumeCards || [];
+  if (editingResumeIdx >= 0) {
+    epk.resumeCards[editingResumeIdx] = card;
+    editingResumeIdx = -1;
+    document.querySelector('#addResumeForm .add-form-title').textContent = 'New Resume Card';
+  } else {
+    epk.resumeCards.push(card);
+  }
+  ['newResumeLabel','newResumeTitle','newResumeSubtitle','newResumeSkills','newResumeDesc','newResumeUrl'].forEach(id => document.getElementById(id).value = '');
+  toggleAddForm('addResumeForm');
+  renderResumeCards(); persistUser(); showSaveBanner();
+}
+
+function removeResumeCard(i) { epk.resumeCards.splice(i, 1); renderResumeCards(); persistUser(); showSaveBanner(); }
+
 function renderAwards() {
   const container = document.getElementById('awardsList');
   if (!container) return;

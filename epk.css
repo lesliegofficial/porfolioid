@@ -289,6 +289,23 @@
   .gallery-scroll-arrow:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
   @media (max-width: 768px) { .gallery-scroll-item { width: 220px; height: 300px; } }
 
+  /* RESUME SECTION */
+  .resume-section { padding: 5rem 0; }
+  .resume-inner { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+  .resume-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+  .resume-card { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.15); padding: 2rem; position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
+  .resume-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(to right, var(--gold), rgba(201,168,76,0.3)); }
+  .resume-card:hover { border-color: rgba(201,168,76,0.35); transform: translateY(-2px); }
+  .resume-card-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+  .resume-card-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--white); margin-bottom: 0.35rem; line-height: 1.3; }
+  .resume-card-subtitle { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gray); letter-spacing: 0.1em; margin-bottom: 1.25rem; }
+  .resume-card-skills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+  .resume-skill-tag { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.15); color: var(--gray); padding: 0.2rem 0.6rem; }
+  .resume-card-desc { font-size: 0.85rem; color: var(--gray); line-height: 1.7; font-style: italic; margin-bottom: 1.5rem; }
+  .resume-card-btn { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); text-decoration: none; border: 1px solid rgba(201,168,76,0.3); padding: 0.6rem 1.25rem; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s; }
+  .resume-card-btn:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
+  @media (max-width: 768px) { .resume-cards { grid-template-columns: 1fr; } }
+
   /* AWARDS */
   .awards-section { padding: 5rem 0; background: var(--dark-2); }
   .awards-inner { max-width: 900px; margin: 0 auto; padding: 0 2rem; }

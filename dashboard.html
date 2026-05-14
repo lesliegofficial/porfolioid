@@ -64,6 +64,9 @@
       <button class="nav-item" onclick="showPanel('socials')">
         <span class="nav-item-icon">🔗</span><span>Social Links</span>
       </button>
+      <button class="nav-item" onclick="showPanel('resume')">
+        <span class="nav-item-icon">📋</span><span>Resume</span>
+      </button>
       <button class="nav-item" onclick="showPanel('awards')">
         <span class="nav-item-icon">🏅</span><span>Awards & Degrees</span>
       </button>
@@ -263,9 +266,15 @@
       <p class="panel-sub">Your professional story. Write it the way the industry reads it — not a social media bio.</p>
 
       <div class="field-group">
+        <label class="field-label">Short Bio <span style="color:var(--gray);font-weight:400">(1-2 sentences — shown by default)</span></label>
+        <p class="field-hint">This is what visitors see first. Make it punch hard. The full bio expands below it.</p>
+        <textarea id="shortBioText" rows="3" placeholder="e.g. Leslie Guerra is a career vocalist, recording artist, and music industry professional with over 25 years of documented experience across live performance, recording, label operations, A&R, and artist development."></textarea>
+      </div>
+
+      <div class="field-group">
         <label class="field-label">Full Biography</label>
-        <p class="field-hint">Write in paragraphs. The first paragraph should be your strongest — labels and bookers often only read the first one.</p>
-        <textarea id="bioText" rows="10" placeholder="Write your professional biography here..."></textarea>
+        <p class="field-hint">Write in paragraphs. Visitors click "Read Full Bio +" to expand this.</p>
+        <textarea id="bioText" rows="10" placeholder="Write your full professional biography here..."></textarea>
       </div>
 
       <div class="field-row">
@@ -993,6 +1002,68 @@
 
       <div class="form-actions">
         <button class="btn-save" onclick="saveSocials()">Save Links</button>
+      </div>
+    </div>
+
+    <!-- RESUME PANEL -->
+    <div class="panel" id="panel-resume">
+      <h1 class="panel-title">Professional Resume</h1>
+      <p class="panel-sub">Add up to 2 resume cards — styled in black and gold to match your portfolio. Each card links to a downloadable resume.</p>
+
+      <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);padding:1rem 1.25rem;border:1px solid rgba(201,168,76,0.15);margin-bottom:1.5rem">
+        <label class="field-label" style="margin:0;flex:1">Show Resume Section on Portfolio</label>
+        <label style="position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0">
+          <input type="checkbox" id="resumeToggle" onchange="epk.resumeEnabled=this.checked;persistUser();showSaveBanner()" style="opacity:0;width:0;height:0" checked>
+          <span style="position:absolute;cursor:pointer;inset:0;background:var(--dark-4);border:1px solid rgba(201,168,76,0.2);transition:0.3s;border-radius:24px" id="resumeToggleSlider"></span>
+        </label>
+      </div>
+      <style>
+        #resumeToggle:checked + span { background: var(--gold); border-color: var(--gold); }
+        #resumeToggle:checked + span::before { transform: translateX(20px); }
+        #resumeToggleSlider::before { content:''; position:absolute; height:16px; width:16px; left:3px; bottom:3px; background:white; transition:0.3s; border-radius:50%; }
+      </style>
+
+      <div id="resumeCardsList"></div>
+
+      <button class="btn-add-new" onclick="toggleAddForm('addResumeForm')" id="addResumeBtn">+ Add Resume Card</button>
+
+      <div class="add-form" id="addResumeForm">
+        <div class="add-form-title">New Resume Card</div>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Card Label <span style="color:var(--gray);font-weight:400">(small tag above title)</span></label>
+            <input type="text" id="newResumeLabel" placeholder="e.g. Marketing & Artist Relations">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Title</label>
+          <input type="text" id="newResumeTitle" placeholder="e.g. Administrative & CRM Specialist">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Subtitle</label>
+          <input type="text" id="newResumeSubtitle" placeholder="e.g. Operations | Compliance | Case Management">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Key Skills <span style="color:var(--gray);font-weight:400">(comma separated)</span></label>
+          <input type="text" id="newResumeSkills" placeholder="e.g. HubSpot, Salesforce, A&R, Digital Marketing">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Description</label>
+          <textarea id="newResumeDesc" rows="3" placeholder="Brief professional summary for this career track..."></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Resume Link / PDF URL</label>
+          <input type="url" id="newResumeUrl" placeholder="https://... link to PDF">
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+            <button class="btn-add" onclick="triggerResumeUpload()">↑ Upload PDF</button>
+            <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
+          </div>
+          <input type="file" id="resumeFileInput" accept=".pdf" style="display:none">
+        </div>
+        <div class="form-actions">
+          <button class="btn-save" onclick="addResumeCard()">Save Card</button>
+          <button class="btn-cancel" onclick="toggleAddForm('addResumeForm')">Cancel</button>
+        </div>
       </div>
     </div>
 
