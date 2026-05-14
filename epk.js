@@ -506,6 +506,7 @@ function buildEPK(epk) {
     <div class="collapsible-section" id="music">
       <div class="collapsible-header" onclick="toggleSection('musicBody', this)">
         <div class="collapsible-header-left">
+          <div class="collapsible-icon">♪</div>
           <div>
             <div class="collapsible-header-label">Music</div>
             <div class="collapsible-header-title">Live Tracks & Recordings</div>
@@ -526,6 +527,7 @@ function buildEPK(epk) {
     <div class="collapsible-section" id="awards">
       <div class="collapsible-header" onclick="toggleSection('awardsBody', this)">
         <div class="collapsible-header-left">
+          <div class="collapsible-icon">✦</div>
           <div>
             <div class="collapsible-header-label">Recognition</div>
             <div class="collapsible-header-title">Awards, Degrees & Credentials</div>
@@ -565,6 +567,7 @@ function buildEPK(epk) {
     <div class="collapsible-section" id="assets">
       <div class="collapsible-header" onclick="toggleSection('assetsBody', this)">
         <div class="collapsible-header-left">
+          <div class="collapsible-icon">⬡</div>
           <div>
             <div class="collapsible-header-label">Professional Assets</div>
             <div class="collapsible-header-title">Resources & Downloads</div>
@@ -584,6 +587,7 @@ function buildEPK(epk) {
     <div class="collapsible-section" id="connect">
       <div class="collapsible-header" onclick="toggleSection('connectBody', this)">
         <div class="collapsible-header-left">
+          <div class="collapsible-icon">◎</div>
           <div>
             <div class="collapsible-header-label">Connect</div>
             <div class="collapsible-header-title">Find Me Online</div>
