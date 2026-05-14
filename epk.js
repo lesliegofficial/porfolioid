@@ -306,7 +306,7 @@ function buildEPK(epk) {
   const categoryIcons = { 'Resume':'📋', 'Press Kit':'📦', 'Tech Rider':'🎛', 'Stage Plot':'🎭', 'Bio':'📝', 'Photo Pack':'📸', 'Contract Template':'📜', 'Certificate':'🏅', 'Other':'📄' };
 
   const assetsHTML = (epk.assets || [])
-    .filter(a => a.visible !== false)
+    .filter(a => a.visible !== false && a.category !== 'Resume')
     .map((a, i) => {
       const icon = categoryIcons[a.category] || '📄';
       const categoryTag = a.category ? `<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.75rem">${a.category}</div>` : '';
@@ -339,7 +339,7 @@ function buildEPK(epk) {
     <div class="hero">
       <div class="hero-image-panel">${heroImgHTML}</div>
       <div class="hero-content">
-        <p class="hero-eyebrow">Electronic Press Kit</p>
+        <p class="hero-eyebrow">PorfolioID — Professional Identity Platform</p>
         <h1 class="hero-name">${firstName}<br><em>${lastName}</em></h1>
         ${taglinesHTML ? `<p class="hero-tagline">${taglinesHTML}</p>` : ''}
         <div class="hero-ctas">
@@ -421,7 +421,9 @@ function buildEPK(epk) {
             <div class="resume-card-subtitle">${r.subtitle || ''}</div>
             ${r.skills?.length ? `<div class="resume-card-skills">${r.skills.map(s => `<span class="resume-skill-tag">${s}</span>`).join('')}</div>` : ''}
             ${r.desc ? `<div class="resume-card-desc">${r.desc}</div>` : ''}
-            ${r.url ? `<a href="${r.url}" target="_blank" class="resume-card-btn">View Resume →</a>` : ''}
+            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:auto">
+              ${r.url ? `<a href="${r.url}" target="_blank" class="resume-card-btn">↓ Download Resume →</a>` : '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;opacity:0.5">PDF coming soon</span>'}
+            </div>
           </div>`).join('')}
         </div>
       </div>
