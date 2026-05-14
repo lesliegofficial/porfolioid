@@ -646,7 +646,7 @@ function addCredit() {
   const pinned = document.getElementById('newCreditPinned').checked;
   if (!artist || !role) return;
   epk.credits = epk.credits || [];
-  const creditData = { artist, years, category, contractType, role, projectType, desc, fullDesc, mediaLink, mediaLabel, videoUrl, mediaItems, proofLink, visible, verified, pinned, collaborators: [...pendingCreditCollaborators], photos: [...pendingCreditPhotos] };
+  const creditData = { artist, years, category, contractType, role, projectType, desc, fullDesc, mediaLink, mediaLabel, videoUrl, mediaItems, proofLink, visible, verified, pinned, collaborators: [...pendingCreditCollaborators], photos: [...pendingCreditPhotos], press: pendingPressItems.filter(p => p.publication && p.summary) };
   if (editingCreditIdx >= 0) {
     epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], ...creditData };
     editingCreditIdx = -1;
@@ -733,7 +733,7 @@ function addCreditMedia(type) {
     input.onchange = async function() {
       const file = input.files[0];
       if (!file) return;
-      const btn = document.querySelector('[onclick="addCreditMedia('doc')"]');
+      const btn = document.querySelector('.btn-add[onclick*="doc"]');
       if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
       const formData = new FormData();
       formData.append('file', file);
