@@ -1328,6 +1328,31 @@ function removeAsset(i) { epk.assets.splice(i, 1); renderAssets(); persistUser()
 // PRESS & ARCHIVE
 let pendingPressItems = [];
 
+async function uploadPressDoc(i) {
+  const input = document.getElementById(`pressFileInput_${i}`);
+  input.value = '';
+  input.onchange = async function() {
+    const file = input.files[0];
+    if (!file) return;
+    const btn = document.getElementById(`pressUploadBtn_${i}`);
+    if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.secure_url) {
+        pendingPressItems[i].url = data.secure_url;
+        const urlInput = document.getElementById(`pressUrl_${i}`);
+        if (urlInput) urlInput.value = data.secure_url;
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload PDF'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      }
+    } catch(e) { if (btn) { btn.textContent = '↑ Upload PDF'; btn.disabled = false; } }
+  };
+  input.click();
+}
+
 function addPressItem() {
   pendingPressItems.push({ publication: '', location: '', year: '', summary: '', url: '' });
   renderPressItems();
@@ -1362,9 +1387,13 @@ function renderPressItems() {
       <textarea placeholder="Brief factual summary — e.g. 'Las Nenas del Swing listed among featured artists performing at Puerto Rico's Third AIDS Walk alongside Marc Anthony and Tony Vega.'"
         oninput="pendingPressItems[${i}].summary=this.value"
         rows="2" style="background:var(--dark-2);border:1px solid rgba(255,255,255,0.08);color:var(--white);padding:0.5rem 0.75rem;font-size:0.8rem;resize:vertical;font-family:inherit">${p.summary || ''}</textarea>
-      <input type="url" placeholder="Archive link or PDF URL (optional)" value="${p.url || ''}"
-        oninput="pendingPressItems[${i}].url=this.value"
-        style="background:var(--dark-2);border:1px solid rgba(255,255,255,0.08);color:var(--white);padding:0.5rem 0.75rem;font-size:0.8rem">
+      <div style="display:flex;gap:0.5rem;align-items:center">
+        <input type="url" id="pressUrl_${i}" placeholder="Archive link — or upload PDF below" value="${p.url || ''}"
+          oninput="pendingPressItems[${i}].url=this.value"
+          style="flex:1;background:var(--dark-2);border:1px solid rgba(255,255,255,0.08);color:var(--white);padding:0.5rem 0.75rem;font-size:0.8rem">
+        <button onclick="uploadPressDoc(${i})" id="pressUploadBtn_${i}" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold);padding:0.5rem 0.85rem;cursor:pointer;white-space:nowrap">↑ Upload PDF</button>
+        <input type="file" id="pressFileInput_${i}" accept=".pdf,.jpg,.jpeg,.png" style="display:none">
+      </div>
     </div>`).join('');
 }
 
