@@ -289,6 +289,26 @@
   .gallery-scroll-arrow:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
   @media (max-width: 768px) { .gallery-scroll-item { width: 220px; height: 300px; } }
 
+  /* AWARDS */
+  .awards-section { padding: 5rem 0; background: var(--dark-2); }
+  .awards-inner { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+  .awards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+  .award-card { background: var(--dark-3); border: 1px solid rgba(201,168,76,0.1); padding: 1.5rem; position: relative; transition: border-color 0.3s; }
+  .award-card:hover { border-color: rgba(201,168,76,0.3); }
+  .award-card-icon { font-size: 1.75rem; margin-bottom: 0.75rem; display: block; }
+  .award-card-type { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+  .award-card-title { font-size: 1rem; font-weight: 400; color: var(--white); margin-bottom: 0.25rem; line-height: 1.4; }
+  .award-card-org { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gray); letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+  .award-card-desc { font-size: 0.82rem; color: var(--gray); font-style: italic; line-height: 1.6; margin-top: 0.5rem; }
+  .award-card-badges { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .award-badge { font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.5rem; }
+  .award-badge-verified { background: rgba(201,168,76,0.12); color: var(--gold); border: 1px solid rgba(201,168,76,0.2); }
+  .award-badge-category { background: rgba(255,255,255,0.05); color: var(--gray); border: 1px solid rgba(255,255,255,0.08); }
+  .award-proof-link { font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.1em; color: var(--gold); text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.75rem; opacity: 0.8; transition: opacity 0.2s; }
+  .award-proof-link:hover { opacity: 1; }
+  .award-cert-link { font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.1em; color: var(--gray); text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.5rem; transition: color 0.2s; }
+  .award-cert-link:hover { color: var(--gold); }
+
   /* ASSETS */
   .assets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
   .asset-card { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.08); padding: 2rem; transition: border-color 0.3s; }

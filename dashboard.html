@@ -999,7 +999,7 @@
     <!-- AWARDS PANEL -->
     <div class="panel" id="panel-awards">
       <h1 class="panel-title">Awards, Degrees <em>& Nominations</em></h1>
-      <p class="panel-sub">Document your academic credentials, industry awards, nominations, and certifications. This is one of the most powerful sections on your EPK.</p>
+      <p class="panel-sub">Document your academic credentials, industry awards, nominations, and certifications. This is one of the most powerful sections on your portfolio.</p>
 
       <div class="cards-list" id="awardsList"></div>
 
@@ -1007,15 +1007,17 @@
 
       <div class="add-form" id="addAwardForm">
         <div class="add-form-title">New Entry</div>
+
         <div class="field-row">
           <div class="field-group">
             <label class="field-label">Type</label>
             <select id="newAwardType">
-              <option value="award">Award</option>
-              <option value="nomination">Nomination</option>
-              <option value="degree">Degree / Education</option>
-              <option value="certification">Certification</option>
-              <option value="recognition">Industry Recognition</option>
+              <option value="award">🏆 Award — Won</option>
+              <option value="nomination">🎯 Nomination</option>
+              <option value="degree">🎓 Degree / Education</option>
+              <option value="certification">📜 Certification</option>
+              <option value="recognition">⭐ Industry Recognition</option>
+              <option value="honor">🏅 Honor / Honorary</option>
             </select>
           </div>
           <div class="field-group">
@@ -1023,18 +1025,55 @@
             <input type="text" id="newAwardYear" placeholder="e.g. 2024">
           </div>
         </div>
+
         <div class="field-group">
           <label class="field-label">Title</label>
           <input type="text" id="newAwardTitle" placeholder="e.g. BAS in Supervision and Management">
         </div>
+
         <div class="field-group">
           <label class="field-label">Organization / Institution</label>
           <input type="text" id="newAwardOrg" placeholder="e.g. Polk State College">
         </div>
+
         <div class="field-group">
-          <label class="field-label">Description (optional)</label>
+          <label class="field-label">Category <span style="color:var(--gray);font-weight:400">(optional)</span></label>
+          <input type="text" id="newAwardCategory" placeholder="e.g. Urban Album of the Year · Best New Artist">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Description <span style="color:var(--gray);font-weight:400">(optional)</span></label>
           <textarea id="newAwardDesc" rows="2" placeholder="Any additional context..."></textarea>
         </div>
+
+        <div class="field-group">
+          <label class="field-label">Verification / Proof Link <span style="color:var(--gray);font-weight:400">(optional)</span></label>
+          <input type="url" id="newAwardProof" placeholder="https://... link to official source, article, or certificate">
+          <p class="field-hint">Link to the official announcement, institution page, or press coverage.</p>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Certificate Upload <span style="color:var(--gray);font-weight:400">(optional)</span></label>
+          <input type="url" id="newAwardCertUrl" placeholder="https://... or upload below">
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+            <button class="btn-add" onclick="triggerAwardCertUpload()">↑ Upload Certificate</button>
+            <span style="font-size:0.75rem;color:var(--gray)">PDF, JPG, or PNG</span>
+          </div>
+          <input type="file" id="awardCertInput" accept=".pdf,.jpg,.jpeg,.png" style="display:none">
+        </div>
+
+        <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-3);padding:0.85rem 1rem;border:1px solid rgba(201,168,76,0.1);margin-bottom:1.25rem">
+          <label style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);flex:1">Options</label>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="newAwardVerified" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gold)">✓ Verified</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-left:1rem">
+            <input type="checkbox" id="newAwardFeatured" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">⭐ Featured</span>
+          </label>
+        </div>
+
         <div class="form-actions">
           <button class="btn-save" onclick="addAward()">Save Entry</button>
           <button class="btn-cancel" onclick="toggleAddForm('addAwardForm')">Cancel</button>

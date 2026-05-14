@@ -33,6 +33,7 @@ function buildEPK(epk) {
     { id: 'photos', label: 'Photos' },
     { id: 'music', label: 'Music' },
     { id: 'videos', label: 'Video' },
+    { id: 'awards', label: 'Awards' },
     { id: 'assets', label: 'Assets' },
     { id: 'booking', label: 'Booking' },
   ];
@@ -434,6 +435,37 @@ function buildEPK(epk) {
       <div id="videosFeatured">${visibleVideos.length <= 3 ? videosHTML : `<div class="videos-grid">${visibleVideos.slice(0,3).map((v,i) => buildVideoCard(v,i)).join("")}</div>`}</div>
       ${visibleVideos.length > 3 ? `<div id="videosAll" style="display:none">${videosHTML}</div>` : ''}
     </section>
+    <div class="divider"></div>` : ''}
+
+    <!-- AWARDS -->
+    ${(epk.awards || []).length ? `
+    <div class="awards-section" id="awards">
+      <div class="awards-inner">
+        <div class="section-label">Recognition</div>
+        <h2 class="section-title">Awards, Degrees <em>& Credentials</em></h2>
+        <div class="awards-grid">
+          ${(epk.awards || []).map(a => {
+            const icons = { award:'🏆', nomination:'🎯', degree:'🎓', certification:'📜', recognition:'⭐', honor:'🏅' };
+            const typeLabels = { award:'Award', nomination:'Nomination', degree:'Education', certification:'Certification', recognition:'Recognition', honor:'Honor' };
+            const icon = icons[a.type] || '🏆';
+            const typeLabel = typeLabels[a.type] || 'Award';
+            return `<div class="award-card">
+              <span class="award-card-icon">${icon}</span>
+              <div class="award-card-type">${typeLabel} ${a.year ? '· ' + a.year : ''}</div>
+              <div class="award-card-badges">
+                ${a.verified ? '<span class="award-badge award-badge-verified">✓ Verified</span>' : ''}
+                ${a.category ? `<span class="award-badge award-badge-category">${a.category}</span>` : ''}
+              </div>
+              <div class="award-card-title">${a.title}</div>
+              ${a.org ? `<div class="award-card-org">${a.org}</div>` : ''}
+              ${a.desc ? `<div class="award-card-desc">${a.desc}</div>` : ''}
+              ${a.proofLink ? `<a href="${a.proofLink}" target="_blank" class="award-proof-link">✦ View Verification →</a>` : ''}
+              ${a.certUrl ? `<a href="${a.certUrl}" target="_blank" class="award-cert-link">📄 View Certificate →</a>` : ''}
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>
     <div class="divider"></div>` : ''}
 
     <!-- ASSETS -->

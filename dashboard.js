@@ -1091,24 +1091,59 @@ function renderAwards() {
   const container = document.getElementById('awardsList');
   if (!container) return;
   container.innerHTML = '';
+  const typeIcons = { award:'🏆', nomination:'🎯', degree:'🎓', certification:'📜', recognition:'⭐', honor:'🏅' };
   (epk.awards || []).forEach((a, i) => {
+    const icon = typeIcons[a.type] || '🏆';
+    const badges = [
+      a.verified ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.15rem 0.5rem">✓ VERIFIED</span>' : '',
+      a.featured ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,255,255,0.06);color:var(--gray);padding:0.15rem 0.5rem">⭐ FEATURED</span>' : '',
+      a.category ? `<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,255,255,0.04);color:var(--gray);padding:0.15rem 0.5rem">${a.category}</span>` : '',
+    ].filter(Boolean).join(' ');
     container.innerHTML += `
       <div class="editable-card">
         <div class="editable-card-header">
-          <div>
-            <div class="editable-card-title">${a.title}</div>
-            <div class="editable-card-subtitle">${a.org || ''} ${a.year ? '· ' + a.year : ''}</div>
+          <div style="display:flex;gap:0.75rem;align-items:flex-start;flex:1">
+            <span style="font-size:1.4rem;line-height:1;flex-shrink:0;margin-top:0.1rem">${icon}</span>
+            <div style="flex:1">
+              ${badges ? `<div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.3rem">${badges}</div>` : ''}
+              <div class="editable-card-title">${a.title}</div>
+              <div class="editable-card-subtitle">${[a.org, a.year].filter(Boolean).join(' · ')}</div>
+              ${a.proofLink ? `<a href="${a.proofLink}" target="_blank" style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gold);text-decoration:none;letter-spacing:0.08em">✦ View Verification →</a>` : ''}
+            </div>
           </div>
           <div class="card-actions">
             <button class="btn-card-action" onclick="editAward(${i})">Edit</button>
             <button class="btn-card-action btn-card-delete" onclick="removeAward(${i})">Delete</button>
           </div>
         </div>
-        ${a.desc ? `<p style="font-size:0.85rem;color:var(--gray);margin-top:0.5rem">${a.desc}</p>` : ''}
+        ${a.desc ? `<p style="font-size:0.85rem;color:var(--gray);margin-top:0.5rem;padding-left:2.25rem">${a.desc}</p>` : ''}
       </div>`;
   });
 }
 let editingAwardIdx = -1;
+function triggerAwardCertUpload() {
+  const input = document.getElementById('awardCertInput');
+  input.value = '';
+  input.onchange = async function() {
+    const file = input.files[0];
+    if (!file) return;
+    const btn = document.querySelector('[onclick="triggerAwardCertUpload()"]');
+    if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/raw/upload`, { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.secure_url) {
+        document.getElementById('newAwardCertUrl').value = data.secure_url;
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload Certificate'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      }
+    } catch(e) { if (btn) { btn.textContent = '↑ Upload Certificate'; btn.disabled = false; } }
+  };
+  input.click();
+}
+
 function editAward(i) {
   editingAwardIdx = i;
   const a = epk.awards[i];
@@ -1117,7 +1152,13 @@ function editAward(i) {
   document.getElementById('newAwardYear').value = a.year || '';
   document.getElementById('newAwardType').value = a.type || 'award';
   document.getElementById('newAwardDesc').value = a.desc || '';
+  document.getElementById('newAwardCategory').value = a.category || '';
+  document.getElementById('newAwardProof').value = a.proofLink || '';
+  document.getElementById('newAwardCertUrl').value = a.certUrl || '';
+  document.getElementById('newAwardVerified').checked = a.verified || false;
+  document.getElementById('newAwardFeatured').checked = a.featured || false;
   document.getElementById('addAwardForm').classList.add('open');
+  document.getElementById('addAwardForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addAwardForm .add-form-title').textContent = 'Edit Entry';
 }
 function addAward() {
@@ -1126,16 +1167,24 @@ function addAward() {
   const year = document.getElementById('newAwardYear').value.trim();
   const type = document.getElementById('newAwardType').value;
   const desc = document.getElementById('newAwardDesc').value.trim();
+  const category = document.getElementById('newAwardCategory').value.trim();
+  const proofLink = document.getElementById('newAwardProof').value.trim();
+  const certUrl = document.getElementById('newAwardCertUrl').value.trim();
+  const verified = document.getElementById('newAwardVerified').checked;
+  const featured = document.getElementById('newAwardFeatured').checked;
   if (!title) return;
   epk.awards = epk.awards || [];
+  const awardData = { title, org, year, type, desc, category, proofLink, certUrl, verified, featured };
   if (editingAwardIdx >= 0) {
-    epk.awards[editingAwardIdx] = { title, org, year, type, desc };
+    epk.awards[editingAwardIdx] = { ...epk.awards[editingAwardIdx], ...awardData };
     editingAwardIdx = -1;
     document.querySelector('#addAwardForm .add-form-title').textContent = 'New Entry';
   } else {
-    epk.awards.push({ title, org, year, type, desc });
+    epk.awards.push(awardData);
   }
-  ['newAwardTitle','newAwardOrg','newAwardYear','newAwardDesc'].forEach(id => document.getElementById(id).value = '');
+  ['newAwardTitle','newAwardOrg','newAwardYear','newAwardDesc','newAwardCategory','newAwardProof','newAwardCertUrl'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('newAwardVerified').checked = false;
+  document.getElementById('newAwardFeatured').checked = false;
   toggleAddForm('addAwardForm');
   renderAwards(); persistUser(); showSaveBanner();
 }
