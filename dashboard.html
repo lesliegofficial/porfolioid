@@ -15,7 +15,7 @@
   <a href="/index.html" class="topbar-logo">Porfolio<span>ID</span></a>
   <div class="topbar-actions">
     <span class="topbar-user" id="topbarUser"></span>
-    <a href="#" class="btn-sm btn-sm-gold" id="viewEPKBtn" target="_blank">View My EPK →</a>
+    <a href="#" class="btn-sm btn-sm-gold" id="viewEPKBtn" target="_blank">View My Portfolio →</a>
     <button class="btn-sm btn-sm-outline" onclick="logout()">Sign Out</button>
   </div>
 </div>
@@ -23,7 +23,7 @@
 <div class="app-layout">
   <aside class="sidebar">
     <div class="epk-url-box">
-      <div class="epk-url-label">Your EPK Link</div>
+      <div class="epk-url-label">Your Portfolio Link</div>
       <a href="#" class="epk-url-link" id="epkUrlDisplay">—</a>
     </div>
 
@@ -75,7 +75,7 @@
     <!-- HERO PANEL -->
     <div class="panel active" id="panel-hero">
       <h1 class="panel-title">Hero & <em>Identity</em></h1>
-      <p class="panel-sub">This is the first thing people see on your EPK. Make it count.</p>
+      <p class="panel-sub">This is the first thing people see on your PorfolioID. Make it count.</p>
 
       <div class="field-row">
         <div class="field-group">
@@ -120,7 +120,7 @@
 
       <!-- IDENTITY BLOCK -->
       <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:0.5rem;">Identity Block</h3>
-      <p class="field-hint" style="margin-bottom:1.5rem">Toggle on the blocks you want to display below your Career Stats on your EPK. Only enabled blocks are shown.</p>
+      <p class="field-hint" style="margin-bottom:1.5rem">Toggle on the blocks you want to display below your Career Stats on your portfolio. Only enabled blocks are shown.</p>
 
       <!-- AVAILABILITY BADGES -->
       <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
@@ -128,7 +128,7 @@
           <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Availability Badges</span>
           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
             <input type="checkbox" id="identityAvailabilityEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on EPK</span>
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on Portfolio</span>
           </label>
         </div>
         <div class="tag-input-row" id="availabilityBadgesList"></div>
@@ -144,7 +144,7 @@
           <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Industry Roles</span>
           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
             <input type="checkbox" id="identityRolesEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on EPK</span>
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on Portfolio</span>
           </label>
         </div>
         <div class="tag-input-row" id="industryRolesList"></div>
@@ -160,7 +160,7 @@
           <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Featured Credit</span>
           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
             <input type="checkbox" id="identityFeaturedEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on EPK</span>
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on Portfolio</span>
           </label>
         </div>
         <select id="featuredCreditSelect" onchange="saveIdentityBlock()" style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.8rem 1rem;font-family:var(--font-body);font-size:0.9rem;outline:none">
@@ -174,7 +174,7 @@
           <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Verification Status</span>
           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
             <input type="checkbox" id="identityVerifiedEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on EPK</span>
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on Portfolio</span>
           </label>
         </div>
         <input type="text" id="verificationStatus" placeholder="e.g. Verified Artist · ASCAP Member" onchange="saveIdentityBlock()">
@@ -186,7 +186,7 @@
           <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Languages Spoken</span>
           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
             <input type="checkbox" id="identityLanguagesEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on EPK</span>
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on Portfolio</span>
           </label>
         </div>
         <div class="tag-input-row" id="languagesList"></div>
@@ -202,7 +202,7 @@
           <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Representation</span>
           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
             <input type="checkbox" id="identityRepEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on EPK</span>
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on Portfolio</span>
           </label>
         </div>
         <div class="field-row" style="margin-bottom:0.75rem">
@@ -227,7 +227,7 @@
           <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Career Timeline Preview</span>
           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
             <input type="checkbox" id="identityTimelineEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on EPK</span>
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on Portfolio</span>
           </label>
         </div>
         <div id="timelineList" style="margin-bottom:0.75rem"></div>

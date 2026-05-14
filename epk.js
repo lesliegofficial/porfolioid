@@ -40,8 +40,8 @@ function buildEPK(epk) {
     navLinks.innerHTML += `<li><a href="#${s.id}">${s.label}</a></li>`;
   });
 
-  document.getElementById('footerLogo').textContent = `${epk.name} — EPK 2025`;
-  document.title = `${epk.name} — Electronic Press Kit`;
+  document.getElementById('footerLogo').textContent = `${epk.name} — PorfolioID`;
+  document.title = `${epk.name} — Professional Portfolio & Identity | PorfolioID`;
 
   // Show edit button if logged in as this artist
   try {
