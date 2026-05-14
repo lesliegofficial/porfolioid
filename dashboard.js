@@ -1014,14 +1014,14 @@ function updateHeroPosition(val) {
 function updateHeroZoom(val) {
   const img = document.getElementById('heroPreviewImg');
   if (img) {
-    const zoom = val / 100;
-    img.style.width = `${zoom * 100}%`;
-    img.style.height = `${zoom * 100}%`;
-    img.style.maxWidth = 'none';
-    img.style.position = 'absolute';
-    img.style.top = '50%';
-    img.style.left = '50%';
-    img.style.transform = 'translate(-50%, -50%)';
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.maxWidth = '';
+    img.style.position = '';
+    img.style.top = '';
+    img.style.left = '';
+    img.style.transform = `scale(${val/100})`;
+    img.style.transformOrigin = 'center center';
     img.style.objectFit = 'cover';
   }
   document.getElementById('heroZoomValue').value = val;
@@ -1050,15 +1050,14 @@ function updateBioPosition(val) {
 function updateBioZoom(val) {
   const img = document.getElementById('bioPreviewImg');
   if (img) {
-    // Use width/height percentage to simulate zoom while keeping object-fit behavior
-    const zoom = val / 100;
-    img.style.width = `${zoom * 100}%`;
-    img.style.height = `${zoom * 100}%`;
-    img.style.maxWidth = 'none';
-    img.style.position = 'absolute';
-    img.style.top = '50%';
-    img.style.left = '50%';
-    img.style.transform = 'translate(-50%, -50%)';
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.maxWidth = '';
+    img.style.position = '';
+    img.style.top = '';
+    img.style.left = '';
+    img.style.transform = `scale(${val/100})`;
+    img.style.transformOrigin = 'center center';
     img.style.objectFit = 'cover';
   }
   document.getElementById('bioZoomValue').value = val;
