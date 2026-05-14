@@ -334,13 +334,19 @@
   .connect-card { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.1); padding: 2rem; }
   .connect-card-title { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
   .connect-card-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.2), transparent); }
-  .connect-links { display: flex; flex-direction: column; gap: 0.5rem; }
-  .connect-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem; text-decoration: none; color: var(--gray-light); font-size: 0.85rem; transition: all 0.2s; border: 1px solid transparent; }
-  .connect-link:hover { color: var(--gold); border-color: rgba(201,168,76,0.15); background: rgba(201,168,76,0.03); }
-  .connect-link svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; opacity: 0.7; }
+  .connect-links { display: flex; flex-direction: column; gap: 0.4rem; }
+  .connect-link { display: flex; align-items: center; gap: 0.85rem; padding: 0.75rem 0.85rem; text-decoration: none; color: var(--gray-light); font-size: 0.85rem; transition: all 0.25s; border: 1px solid rgba(255,255,255,0.04); background: rgba(255,255,255,0.02); position: relative; overflow: hidden; }
+  .connect-link::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--platform-color, rgba(201,168,76,0.4)); opacity: 0; transition: opacity 0.25s; }
+  .connect-link:hover { color: var(--white); border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); transform: translateX(3px); }
+  .connect-link:hover::before { opacity: 1; }
+  .connect-link svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; opacity: 0.6; transition: opacity 0.25s; }
   .connect-link:hover svg { opacity: 1; }
-  .connect-link-label { font-size: 0.85rem; }
-  .connect-link-url { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gray); margin-left: auto; letter-spacing: 0.05em; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .connect-link-info { flex: 1; min-width: 0; }
+  .connect-link-label { font-size: 0.85rem; display: block; }
+  .connect-link-sub { font-family: var(--font-mono); font-size: 0.55rem; color: var(--gray); letter-spacing: 0.05em; display: block; margin-top: 0.1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .connect-link-followers { font-family: var(--font-mono); font-size: 0.55rem; color: var(--gold); opacity: 0.7; flex-shrink: 0; letter-spacing: 0.05em; }
+  .connect-link-arrow { font-size: 0.7rem; opacity: 0; transition: opacity 0.25s; color: var(--gold); flex-shrink: 0; }
+  .connect-link:hover .connect-link-arrow { opacity: 1; }
 
   @media (max-width: 768px) { .connect-grid { grid-template-columns: 1fr; } }
 

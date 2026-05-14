@@ -77,15 +77,32 @@ function buildEPK(epk) {
   const multiKeys = ['instagram','facebook','website'];
   const labels = { instagram:'Instagram', facebook:'Facebook', tiktok:'TikTok', linkedin:'LinkedIn', website:'Website', spotify:'Spotify', appleMusic:'Apple Music', youtube:'YouTube', soundcloud:'SoundCloud', tidal:'Tidal', bandcamp:'Bandcamp' };
 
+  const platformColors = {
+    instagram: '#E1306C', facebook: '#1877F2', tiktok: '#010101',
+    linkedin: '#0A66C2', website: '#C9A84C', spotify: '#1DB954',
+    appleMusic: '#FC3C44', youtube: '#FF0000', soundcloud: '#FF5500',
+    tidal: '#000000', bandcamp: '#1DA0C3'
+  };
+
   const buildConnectLinks = (keys, s) => keys.flatMap(k => {
     const val = s[k];
     if (!val) return [];
     const urls = Array.isArray(val) ? val.filter(Boolean) : (val ? [val] : []);
     if (!urls.length) return [];
+    const followers = s[k + '_followers'] || '';
+    const color = platformColors[k] || '#C9A84C';
     return urls.map((url, i) => {
-      const domain = (() => { try { return new URL(url).hostname.replace('www.',''); } catch { return ''; } })();
-      const labelSuffix = urls.length > 1 ? ` <span style="font-size:0.55rem;opacity:0.6">${i+1}</span>` : '';
-      return `<a href="${url}" class="connect-link" target="_blank" rel="noopener">${svgIcons[k]}<span class="connect-link-label">${labels[k]}${labelSuffix}</span><span class="connect-link-url">${domain}</span></a>`;
+      const domain = (() => { try { return new URL(url).hostname.replace('www.',''); } catch { return url; } })();
+      const labelSuffix = urls.length > 1 ? ` ${i+1}` : '';
+      return `<a href="${url}" class="connect-link" target="_blank" rel="noopener" style="--platform-color:${color}">
+        ${svgIcons[k]}
+        <span class="connect-link-info">
+          <span class="connect-link-label">${labels[k]}${labelSuffix}</span>
+          <span class="connect-link-sub">${domain}</span>
+        </span>
+        ${followers ? `<span class="connect-link-followers">${followers}</span>` : ''}
+        <span class="connect-link-arrow">→</span>
+      </a>`;
     });
   }).join('');
 

@@ -1188,10 +1188,14 @@ function saveSocials() {
   // Save multi fields (already kept in sync via updateSocialField)
   // Save single fields
   epk.socials.tiktok = document.getElementById('socialTiktok').value.trim();
+  epk.socials.tiktok_followers = document.getElementById('socialTiktok_followers').value.trim();
   epk.socials.linkedin = document.getElementById('socialLinkedin').value.trim();
+  epk.socials.linkedin_followers = document.getElementById('socialLinkedin_followers').value.trim();
   epk.socials.spotify = document.getElementById('socialSpotify').value.trim();
+  epk.socials.spotify_followers = document.getElementById('socialSpotify_followers').value.trim();
   epk.socials.appleMusic = document.getElementById('socialAppleMusic').value.trim();
   epk.socials.youtube = document.getElementById('socialYoutube').value.trim();
+  epk.socials.youtube_followers = document.getElementById('socialYoutube_followers').value.trim();
   epk.socials.soundcloud = document.getElementById('socialSoundcloud').value.trim();
   epk.socials.tidal = document.getElementById('socialTidal').value.trim();
   epk.socials.bandcamp = document.getElementById('socialBandcamp').value.trim();
@@ -1216,6 +1220,11 @@ function loadSocials() {
   });
   // Load single fields
   const singles = { tiktok:'socialTiktok', linkedin:'socialLinkedin', spotify:'socialSpotify', appleMusic:'socialAppleMusic', youtube:'socialYoutube', soundcloud:'socialSoundcloud', tidal:'socialTidal', bandcamp:'socialBandcamp' };
+  // Load follower counts
+  ['tiktok','linkedin','spotify','youtube'].forEach(k => {
+    const el = document.getElementById('social' + k.charAt(0).toUpperCase() + k.slice(1) + '_followers');
+    if (el) el.value = s[k + '_followers'] || '';
+  });
   Object.entries(singles).forEach(([key, elId]) => {
     const el = document.getElementById(elId);
     if (el) el.value = s[key] || '';
