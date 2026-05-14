@@ -141,8 +141,11 @@ function buildEPK(epk) {
 
   const taglinesHTML = (epk.taglines || []).join('<br>');
 
+  const heroImgPos = epk.heroImagePosition !== undefined ? `center ${epk.heroImagePosition}%` : 'center 0%';
+  const heroZoom = epk.heroImageZoom || 100;
+  const heroZoomStyle = heroZoom !== 100 ? `width:${heroZoom}%;height:${heroZoom}%;max-width:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);object-fit:cover;` : `object-position:${heroImgPos}`;
   const heroImgHTML = epk.heroImage
-    ? `<img class="hero-img" src="${epk.heroImage}" alt="${epk.name}" onerror="this.parentElement.innerHTML='<div class=hero-placeholder><div class=hero-placeholder-icon>🎤</div></div>'">`
+    ? `<img class="hero-img" src="${epk.heroImage}" alt="${epk.name}" style="${heroZoom !== 100 ? heroZoomStyle : `object-position:${heroImgPos}`}" onerror="this.parentElement.innerHTML='<div class=hero-placeholder><div class=hero-placeholder-icon>🎤</div></div>'">`
     : `<div class="hero-placeholder"><div class="hero-placeholder-icon">🎤</div></div>`;
 
   const bioImgHTML = epk.bioImage

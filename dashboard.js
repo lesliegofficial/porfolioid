@@ -215,6 +215,18 @@ function loadAllFields() {
   document.getElementById('heroFirstName').value = nameParts[0] || '';
   document.getElementById('heroLastName').value = nameParts.slice(1).join(' ') || '';
   document.getElementById('heroImage').value = epk.heroImage || '';
+  if (epk.heroImage) {
+    updateHeroPreview(epk.heroImage);
+    const heroPosVal = epk.heroImagePosition || 0;
+    const heroZoomVal = epk.heroImageZoom || 100;
+    document.getElementById('heroPositionSlider').value = heroPosVal;
+    document.getElementById('heroPositionValue').value = heroPosVal;
+    document.getElementById('heroZoomSlider').value = heroZoomVal;
+    document.getElementById('heroZoomValue').value = heroZoomVal;
+    const heroImg = document.getElementById('heroPreviewImg');
+    if (heroImg) heroImg.style.objectPosition = `center ${heroPosVal}%`;
+    updateHeroZoom(heroZoomVal);
+  }
 
   const stats = epk.stats || [];
   if (stats[0]) { document.getElementById('stat1num').value = stats[0].number || ''; document.getElementById('stat1label').value = stats[0].label || ''; }
@@ -301,6 +313,8 @@ function loadAllFields() {
 function saveAll() {
   epk.name = `${document.getElementById('heroFirstName').value.trim()} ${document.getElementById('heroLastName').value.trim()}`.trim();
   epk.heroImage = document.getElementById('heroImage').value.trim();
+  epk.heroImagePosition = parseInt(document.getElementById('heroPositionValue').value || 0);
+  epk.heroImageZoom = parseInt(document.getElementById('heroZoomValue').value || 100);
   epk.stats = [
     { number: document.getElementById('stat1num').value, label: document.getElementById('stat1label').value },
     { number: document.getElementById('stat2num').value, label: document.getElementById('stat2label').value },
@@ -977,6 +991,42 @@ function addPhoto() {
   toggleAddForm('addPhotoForm');
   renderPhotos(); persistUser(); showSaveBanner();
 }
+function updateHeroPreview(url) {
+  const preview = document.getElementById('heroImagePreview');
+  const img = document.getElementById('heroPreviewImg');
+  const posWrap = document.getElementById('heroPositionWrap');
+  if (url) {
+    preview.style.display = 'block';
+    posWrap.style.display = 'block';
+    img.src = url;
+  } else {
+    preview.style.display = 'none';
+    posWrap.style.display = 'none';
+  }
+}
+
+function updateHeroPosition(val) {
+  const img = document.getElementById('heroPreviewImg');
+  if (img) img.style.objectPosition = `center ${val}%`;
+  document.getElementById('heroPositionValue').value = val;
+}
+
+function updateHeroZoom(val) {
+  const img = document.getElementById('heroPreviewImg');
+  if (img) {
+    const zoom = val / 100;
+    img.style.width = `${zoom * 100}%`;
+    img.style.height = `${zoom * 100}%`;
+    img.style.maxWidth = 'none';
+    img.style.position = 'absolute';
+    img.style.top = '50%';
+    img.style.left = '50%';
+    img.style.transform = 'translate(-50%, -50%)';
+    img.style.objectFit = 'cover';
+  }
+  document.getElementById('heroZoomValue').value = val;
+}
+
 function updateBioPreview(url) {
   const preview = document.getElementById('bioImagePreview');
   const img = document.getElementById('bioPreviewImg');
