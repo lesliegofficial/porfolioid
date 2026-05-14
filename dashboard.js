@@ -223,8 +223,14 @@ function loadAllFields() {
     document.getElementById('heroPositionValue').value = heroPosVal;
     document.getElementById('heroZoomSlider').value = heroZoomVal;
     document.getElementById('heroZoomValue').value = heroZoomVal;
+    const heroCropVal = epk.heroImageCropTop || 0;
+    document.getElementById('heroCropTopSlider').value = heroCropVal;
+    document.getElementById('heroCropTopValue').value = heroCropVal;
     const heroImg = document.getElementById('heroPreviewImg');
-    if (heroImg) heroImg.style.objectPosition = `center ${heroPosVal}%`;
+    if (heroImg) {
+      heroImg.style.objectFit = epk.heroImageFit || 'cover';
+      heroImg.style.objectPosition = `center ${heroPosVal}%`;
+    }
     updateHeroZoom(heroZoomVal);
   }
 
@@ -319,6 +325,8 @@ function saveAll() {
   epk.heroImage = document.getElementById('heroImage').value.trim();
   epk.heroImagePosition = parseInt(document.getElementById('heroPositionValue').value || 0);
   epk.heroImageZoom = parseInt(document.getElementById('heroZoomValue').value || 100);
+  epk.heroImageCropTop = parseInt(document.getElementById('heroCropTopValue').value || 0);
+  epk.heroImageFit = epk.heroImageFit || 'cover';
   epk.stats = [
     { number: document.getElementById('stat1num').value, label: document.getElementById('stat1label').value },
     { number: document.getElementById('stat2num').value, label: document.getElementById('stat2label').value },
@@ -1030,6 +1038,34 @@ function updateHeroZoom(val) {
     img.style.objectFit = 'cover';
   }
   document.getElementById('heroZoomValue').value = val;
+}
+
+function fitFullHeroImage() {
+  const img = document.getElementById('heroPreviewImg');
+  if (img) { img.style.objectFit = 'contain'; img.style.transform = 'none'; }
+  document.getElementById('heroPositionSlider').value = 0;
+  document.getElementById('heroPositionValue').value = 0;
+  document.getElementById('heroZoomSlider').value = 100;
+  document.getElementById('heroZoomValue').value = 100;
+  document.getElementById('heroCropTopSlider').value = 0;
+  document.getElementById('heroCropTopValue').value = 0;
+  epk.heroImageFit = 'contain';
+  persistUser(); showSaveBanner();
+}
+
+function resetHeroImageFit() {
+  const img = document.getElementById('heroPreviewImg');
+  if (img) { img.style.objectFit = 'cover'; }
+  epk.heroImageFit = 'cover';
+  persistUser(); showSaveBanner();
+}
+
+function updateHeroCropTop(val) {
+  const img = document.getElementById('heroPreviewImg');
+  if (img) { img.style.objectPosition = `center ${val}%`; }
+  document.getElementById('heroCropTopValue').value = val;
+  document.getElementById('heroPositionSlider').value = val;
+  document.getElementById('heroPositionValue').value = val;
 }
 
 function updateBioPreview(url) {
