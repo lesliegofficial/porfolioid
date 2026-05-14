@@ -325,7 +325,7 @@
         <input type="file" id="bioImageFile" accept="image/*" style="display:none">
 
         <!-- Live preview with position slider -->
-        <div id="bioImagePreview" style="display:none;margin-top:1rem;position:relative;overflow:hidden;height:220px;background:var(--dark-3);border:1px solid rgba(201,168,76,0.15)">
+        <div id="bioImagePreview" style="display:none;margin-top:1rem;position:relative;overflow:hidden;height:400px;background:var(--dark-3);border:1px solid rgba(201,168,76,0.15)">
           <img id="bioPreviewImg" src="" style="width:100%;height:100%;object-fit:cover;object-position:center 0%" onerror="this.parentElement.style.display='none'">
         </div>
 
@@ -340,11 +340,11 @@
           </div>
           <label class="field-label" style="margin-bottom:0.5rem;display:block">Zoom <span style="color:var(--gray);font-weight:400">(drag to zoom in or out)</span></label>
           <div style="display:flex;align-items:center;gap:1rem">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Out</span>
-            <input type="range" id="bioZoomSlider" min="100" max="200" value="100"
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Smaller</span>
+            <input type="range" id="bioZoomSlider" min="50" max="200" value="100"
               oninput="updateBioZoom(this.value)"
               style="flex:1;accent-color:var(--gold);cursor:pointer;height:4px">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">In</span>
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Larger</span>
           </div>
           <input type="hidden" id="bioPositionValue" value="0">
           <input type="hidden" id="bioZoomValue" value="100">

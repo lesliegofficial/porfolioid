@@ -240,8 +240,7 @@ function loadAllFields() {
     const img = document.getElementById('bioPreviewImg');
     if (img) {
       img.style.objectPosition = `center ${posVal}%`;
-      img.style.transform = `scale(${zoomVal/100})`;
-      img.style.transformOrigin = 'center center';
+      updateBioZoom(zoomVal);
     }
   }
   renderCredentials();
@@ -1000,9 +999,18 @@ function updateBioPosition(val) {
 
 function updateBioZoom(val) {
   const img = document.getElementById('bioPreviewImg');
-  if (img) img.style.objectFit = 'cover';
-  if (img) img.style.transform = `scale(${val/100})`;
-  if (img) img.style.transformOrigin = 'center center';
+  if (img) {
+    // Use width/height percentage to simulate zoom while keeping object-fit behavior
+    const zoom = val / 100;
+    img.style.width = `${zoom * 100}%`;
+    img.style.height = `${zoom * 100}%`;
+    img.style.maxWidth = 'none';
+    img.style.position = 'absolute';
+    img.style.top = '50%';
+    img.style.left = '50%';
+    img.style.transform = 'translate(-50%, -50%)';
+    img.style.objectFit = 'cover';
+  }
   document.getElementById('bioZoomValue').value = val;
 }
 
