@@ -31,8 +31,8 @@ function buildEPK(epk) {
     { id: 'bio', label: 'Career Profile' },
     { id: 'credits', label: 'Credits' },
     { id: 'photos', label: 'Photos' },
-    { id: 'music', label: 'Music' },
     { id: 'videos', label: 'Video' },
+    { id: 'music', label: 'Music' },
     { id: 'awards', label: 'Awards' },
     { id: 'assets', label: 'Assets' },
     { id: 'booking', label: 'Booking' },
@@ -466,15 +466,6 @@ function buildEPK(epk) {
       </div>
     </div>` : ''}
 
-    <!-- MUSIC -->
-    ${epk.tracks?.length ? `
-    <section id="music">
-      <div class="section-label">Live Music Tracks</div>
-      <h2 class="section-title">On Record</h2>
-      <div class="music-tracks">${tracksHTML}</div>
-    </section>
-    <div class="divider"></div>` : ''}
-
     <!-- VIDEOS -->
     ${visibleVideos.length ? `
     <section id="videos">
@@ -485,6 +476,15 @@ function buildEPK(epk) {
       </div>
       <div id="videosFeatured">${visibleVideos.length <= 3 ? videosHTML : `<div class="videos-grid">${visibleVideos.slice(0,3).map((v,i) => buildVideoCard(v,i)).join("")}</div>`}</div>
       ${visibleVideos.length > 3 ? `<div id="videosAll" style="display:none">${videosHTML}</div>` : ''}
+    </section>
+    <div class="divider"></div>` : ''}
+
+    <!-- MUSIC -->
+    ${epk.tracks?.length ? `
+    <section id="music">
+      <div class="section-label">Live Music Tracks</div>
+      <h2 class="section-title">On Record</h2>
+      <div class="music-tracks">${tracksHTML}</div>
     </section>
     <div class="divider"></div>` : ''}
 
