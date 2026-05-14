@@ -181,7 +181,8 @@ function buildEPK(epk) {
   const careerLayout = epk.careerLayout || 'stacked';
   const resumeCards = epk.resumeCards || [];
   const bioImgPos = epk.bioImagePosition !== undefined ? `center ${epk.bioImagePosition}%` : 'center 0%';
-  const bioPortrait = epk.bioImage ? `<img src="${epk.bioImage}" class="career-portrait" alt="${epk.name}" style="object-position:${bioImgPos}">` : '';
+  const bioImgZoom = epk.bioImageZoom && epk.bioImageZoom !== 100 ? `transform:scale(${epk.bioImageZoom/100});transform-origin:center center;` : '';
+  const bioPortrait = epk.bioImage ? `<img src="${epk.bioImage}" class="career-portrait" alt="${epk.name}" style="object-position:${bioImgPos};${bioImgZoom}">` : '';
 
   const bioContent = `
     <div class="career-bio-text">

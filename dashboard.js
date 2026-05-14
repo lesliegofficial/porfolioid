@@ -234,8 +234,15 @@ function loadAllFields() {
     const posVal = epk.bioImagePosition || 0;
     document.getElementById('bioPositionSlider').value = posVal;
     document.getElementById('bioPositionValue').value = posVal;
+    const zoomVal = epk.bioImageZoom || 100;
+    document.getElementById('bioZoomSlider').value = zoomVal;
+    document.getElementById('bioZoomValue').value = zoomVal;
     const img = document.getElementById('bioPreviewImg');
-    if (img) img.style.objectPosition = `center ${posVal}%`;
+    if (img) {
+      img.style.objectPosition = `center ${posVal}%`;
+      img.style.transform = `scale(${zoomVal/100})`;
+      img.style.transformOrigin = 'center center';
+    }
   }
   renderCredentials();
 
@@ -306,6 +313,7 @@ function saveAll() {
   epk.availability = document.getElementById('availabilitySelect').value;
   epk.bioImage = document.getElementById('bioImage').value.trim();
   epk.bioImagePosition = parseInt(document.getElementById('bioPositionValue').value || 0);
+  epk.bioImageZoom = parseInt(document.getElementById('bioZoomValue').value || 100);
   epk.bookingEmail = document.getElementById('bookingEmail').value.trim();
   epk.bookingPhone = document.getElementById('bookingPhone').value.trim();
   epk.bookingTagline = document.getElementById('bookingTagline').value.trim();
@@ -988,6 +996,14 @@ function updateBioPosition(val) {
   const img = document.getElementById('bioPreviewImg');
   if (img) img.style.objectPosition = `center ${val}%`;
   document.getElementById('bioPositionValue').value = val;
+}
+
+function updateBioZoom(val) {
+  const img = document.getElementById('bioPreviewImg');
+  if (img) img.style.objectFit = 'cover';
+  if (img) img.style.transform = `scale(${val/100})`;
+  if (img) img.style.transformOrigin = 'center center';
+  document.getElementById('bioZoomValue').value = val;
 }
 
 function saveCareerLayout(val) {
