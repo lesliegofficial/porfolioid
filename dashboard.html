@@ -496,14 +496,16 @@
         </div>
 
         <div class="field-group">
-          <label class="field-label">Media & Videos <span style="color:var(--gray);font-weight:400">(add multiple)</span></label>
-          <p class="field-hint">Add YouTube links, Spotify links, or upload MP4s. Each appears in the credit modal.</p>
+          <label class="field-label">Media, Documents & Press <span style="color:var(--gray);font-weight:400">(add multiple)</span></label>
+          <p class="field-hint">Add YouTube links, Spotify links, upload MP4s, PDFs, press clippings, or articles. Each appears in the credit modal.</p>
           <div id="creditMediaList" style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:0.75rem"></div>
           <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
             <button class="btn-add" onclick="addCreditMedia('link')">+ Add Link</button>
             <button class="btn-add" onclick="addCreditMedia('upload')">↑ Upload MP4</button>
+            <button class="btn-add" onclick="addCreditMedia('doc')">📄 Upload PDF / Doc</button>
           </div>
           <input type="file" id="creditVideoInput" accept="video/*" style="display:none">
+          <input type="file" id="creditDocInput" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none">
         </div>
 
         <div class="field-group">

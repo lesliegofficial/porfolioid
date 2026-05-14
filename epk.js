@@ -953,6 +953,10 @@ function openCreditModal(i) {
         if (!m.url) return;
         if (m.type === 'video' || m.url.includes('.mp4') || m.url.includes('.mov')) {
           html += `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain;margin-bottom:1rem" src="${m.url}"></video>`;
+        } else if (m.type === 'doc' || m.url.includes('.pdf') || m.url.includes('.doc')) {
+          const label = m.label || 'View Document';
+          const ext = m.ext || 'PDF';
+          html += `<a href="${m.url}" target="_blank" style="display:inline-flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1.25rem;margin-bottom:0.75rem;margin-right:0.5rem;background:rgba(201,168,76,0.05);transition:all 0.3s;width:100%;box-sizing:border-box" onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='rgba(201,168,76,0.05)'"><span style="font-size:1.2rem">📄</span><div><div style="color:var(--white);margin-bottom:0.15rem">${label}</div><div style="color:var(--gold);font-size:0.5rem">${ext} Document — Click to View</div></div><span style="margin-left:auto;color:var(--gold)">→</span></a>`;
         } else {
           const ytId2 = m.url.split('v=')[1]?.split('&')[0] || m.url.split('youtu.be/')[1]?.split('?')[0];
           if (ytId2) {

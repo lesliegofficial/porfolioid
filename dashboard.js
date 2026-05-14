@@ -722,6 +722,34 @@ function addCreditMedia(type) {
       } catch(e) { console.error('Upload failed', e); }
     };
     input.click();
+  } else if (type === 'doc') {
+    const input = document.getElementById('creditDocInput');
+    input.value = '';
+    input.onchange = async function() {
+      const file = input.files[0];
+      if (!file) return;
+      const btn = document.querySelector('[onclick="addCreditMedia('doc')"]');
+      if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_PRESET);
+      const isImage = file.type.startsWith('image/');
+      const endpoint = isImage ? 'image' : 'raw';
+      try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${endpoint}/upload`, { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.secure_url) {
+          const ext = file.name.split('.').pop().toUpperCase();
+          pendingCreditMedia.push({ type: 'doc', url: data.secure_url, label: file.name.replace(/\.[^.]+$/, ''), ext });
+          renderCreditMediaList();
+          if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '📄 Upload PDF / Doc'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+        }
+      } catch(e) {
+        if (btn) { btn.textContent = '📄 Upload PDF / Doc'; btn.disabled = false; }
+        console.error('Upload failed', e);
+      }
+    };
+    input.click();
   } else {
     pendingCreditMedia.push({ type: 'link', url: '', label: '' });
     renderCreditMediaList();
