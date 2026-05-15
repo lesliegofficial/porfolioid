@@ -248,7 +248,7 @@ function buildEPK(epk) {
     .sort((a, b) => (b.pinned?1:0) - (a.pinned?1:0));
   epkVisibleCredits = visibleCredits;
 
-  const musicCreditNames = ['Don Omar','J Álvarez','Adam Torres Concerts','Urban Latino Music','Melina León','Las Nenas del Swing'];
+  const musicCreditNames = ['Don Omar','J Álvarez','Melina León','Las Nenas del Swing'];
 
   const creditsHTML = visibleCredits.map((c, i) => {
     const origI = c._origIdx;
