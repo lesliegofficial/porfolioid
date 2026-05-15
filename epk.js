@@ -171,17 +171,21 @@ function buildEPK(epk) {
   const shortBioHTML = `<p style="margin-bottom:1.5em">${shortBio}</p>`;
 
   // Build career profile resume card
-  const buildResumeCard = (r) => `
-    <div class="resume-card">
-      <div class="resume-card-label">${r.label || 'Resume'}</div>
+  const buildResumeCard = (r) => {
+    const isMusicResume = (r.label||'').includes('Marketing') || (r.title||'').includes('Marketing') || (r.label||'').includes('Artist');
+    const rc = isMusicResume ? 'var(--gold)' : '#7B9BAF';
+    const rbg = isMusicResume ? 'rgba(201,168,76,' : 'rgba(123,155,175,';
+    return `<div class="resume-card" style="border-top:3px solid ${rc}">
+      <div class="resume-card-label" style="color:${rc}">${r.label || 'Resume'}</div>
       <div class="resume-card-title">${r.title}</div>
       <div class="resume-card-subtitle">${r.subtitle || ''}</div>
-      ${r.skills?.length ? `<div class="resume-card-skills">${r.skills.map(s => `<span class="resume-skill-tag">${s}</span>`).join('')}</div>` : ''}
+      ${r.skills?.length ? `<div class="resume-card-skills">${r.skills.map(s => `<span class="resume-skill-tag" style="border-color:${rc}4D;background:${rc}0D">${s}</span>`).join('')}</div>` : ''}
       ${r.desc ? `<div class="resume-card-desc">${r.desc}</div>` : ''}
       <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:auto">
-        ${r.url ? `<a href="${r.url}" target="_blank" class="resume-card-btn">↓ Download Resume →</a>` : '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;opacity:0.5">PDF coming soon</span>'}
+        ${r.url ? `<a href="${r.url}" target="_blank" class="resume-card-btn" style="color:${rc};border-color:${rc}4D">↓ Download Resume →</a>` : '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;opacity:0.5">PDF coming soon</span>'}
       </div>
     </div>`;
+  };
 
   const careerLayout = epk.careerLayout || 'stacked';
   const resumeCards = epk.resumeCards || [];
@@ -551,16 +555,18 @@ function buildEPK(epk) {
               const icon = icons[a.type] || '🏆';
               const typeLabel = typeLabels[a.type] || 'Award';
               const hasDetails = a.desc || a.proofLink || a.certUrl || (a.photos||[]).length;
-              return `<div class="award-card ${hasDetails ? 'award-card-clickable' : ''}" ${hasDetails ? `onclick="openAwardModal(${idx})"` : ''}>
+              const isMusicAward = ['award','nomination'].includes(a.type);
+              const awColor = isMusicAward ? 'var(--gold)' : '#7B9BAF';
+              return `<div class="award-card ${hasDetails ? 'award-card-clickable' : ''}" ${hasDetails ? `onclick="openAwardModal(${idx})"` : ''} style="border-top:2px solid ${awColor}">
                 <span class="award-card-icon">${icon}</span>
-                <div class="award-card-type">${typeLabel} ${a.year ? '· ' + a.year : ''}</div>
+                <div class="award-card-type" style="color:${awColor}">${typeLabel} ${a.year ? '· ' + a.year : ''}</div>
                 <div class="award-card-badges">
-                  ${a.verified ? '<span class="award-badge award-badge-verified">✓ Verified</span>' : ''}
+                  ${a.verified ? `<span class="award-badge award-badge-verified" style="background:${awColor}1A;color:${awColor};border-color:${awColor}33">✓ Verified</span>` : ''}
                   ${a.category ? `<span class="award-badge award-badge-category">${a.category}</span>` : ''}
                 </div>
                 <div class="award-card-title">${a.title}</div>
                 ${a.org ? `<div class="award-card-org">${a.org}</div>` : ''}
-                ${hasDetails ? `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-top:0.75rem;opacity:0.7">View Details →</div>` : ''}
+                ${hasDetails ? `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:${awColor};margin-top:0.75rem;opacity:0.7">View Details →</div>` : ''}
               </div>`;
             }).join('')}
           </div>
