@@ -173,7 +173,7 @@ function buildEPK(epk) {
   // Build career profile resume card
   const buildResumeCard = (r) => {
     const isMusicResume = (r.label||'').includes('Marketing') || (r.title||'').includes('Marketing') || (r.label||'').includes('Artist');
-    const rc = isMusicResume ? 'var(--gold)' : '#7B9BAF';
+    const rc = isMusicResume ? 'var(--gold)' : '#8FB8D0';
     const rbg = isMusicResume ? 'rgba(201,168,76,' : 'rgba(123,155,175,';
     return `<div class="resume-card" style="border-top:3px solid ${rc}">
       <div class="resume-card-label" style="color:${rc}">${r.label || 'Resume'}</div>
@@ -255,7 +255,7 @@ function buildEPK(epk) {
     const hasPhotos = c.photos && c.photos.length > 0;
     const hasDetail = c.fullDesc || hasPhotos || c.mediaLink || c.videoUrl;
     const isMusic = musicCreditNames.includes(c.artist);
-    const accentColor = isMusic ? 'var(--gold)' : '#7B9BAF';
+    const accentColor = isMusic ? 'var(--gold)' : '#8FB8D0';
     const cardTypeLabel = isMusic ? 'MUSIC & ENTERTAINMENT' : 'PROFESSIONAL';
     const categoryBadge = c.category ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.08);color:var(--gray);padding:0.15rem 0.5rem;margin-right:0.4rem">${c.category}</span>` : '';
     const verifiedBadge = c.verified ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(100,200,100,0.1);color:#7ec97e;padding:0.15rem 0.5rem">✦ VERIFIED</span>` : '';
@@ -541,14 +541,14 @@ function buildEPK(epk) {
     <div class="collapsible-section" id="awards">
       <div class="collapsible-header" onclick="toggleSection('awardsBody', this)">
         <div class="collapsible-header-left">
-          <div class="collapsible-icon" style="border-color:rgba(123,155,175,0.35);color:#7B9BAF;background:rgba(123,155,175,0.06)">✦</div>
+          <div class="collapsible-icon" style="border-color:rgba(123,155,175,0.35);color:#8FB8D0;background:rgba(123,155,175,0.06)">✦</div>
           <div>
-            <div class="collapsible-header-label" style="color:#7B9BAF">Recognition</div>
+            <div class="collapsible-header-label" style="color:#8FB8D0">Recognition</div>
             <div class="collapsible-header-title">Awards, Degrees & Credentials</div>
             <div class="collapsible-header-meta">${(epk.awards||[]).length} entr${(epk.awards||[]).length !== 1 ? 'ies' : 'y'} · ${(epk.awards||[]).filter(a=>a.verified).length} verified</div>
           </div>
         </div>
-        <div class="collapsible-toggle" style="color:#7B9BAF"><span class="toggle-label">Expand</span> ＋</div>
+        <div class="collapsible-toggle" style="color:#8FB8D0"><span class="toggle-label">Expand</span> ＋</div>
       </div>
       <div class="collapsible-body" id="awardsBody">
         <div class="collapsible-body-inner awards-inner">
@@ -560,7 +560,7 @@ function buildEPK(epk) {
               const typeLabel = typeLabels[a.type] || 'Award';
               const hasDetails = a.desc || a.proofLink || a.certUrl || (a.photos||[]).length;
               const isMusicAward = ['award','nomination'].includes(a.type);
-              const awColor = isMusicAward ? 'var(--gold)' : '#7B9BAF';
+              const awColor = isMusicAward ? 'var(--gold)' : '#8FB8D0';
               return `<div class="award-card ${hasDetails ? 'award-card-clickable' : ''}" ${hasDetails ? `onclick="openAwardModal(${idx})"` : ''} style="border-top:2px solid ${awColor}">
                 <span class="award-card-icon">${icon}</span>
                 <div class="award-card-type" style="color:${awColor}">${typeLabel} ${a.year ? '· ' + a.year : ''}</div>
