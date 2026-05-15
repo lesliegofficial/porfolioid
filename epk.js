@@ -537,14 +537,14 @@ function buildEPK(epk) {
     <div class="collapsible-section" id="awards">
       <div class="collapsible-header" onclick="toggleSection('awardsBody', this)">
         <div class="collapsible-header-left">
-          <div class="collapsible-icon">✦</div>
+          <div class="collapsible-icon" style="border-color:rgba(123,155,175,0.35);color:#7B9BAF;background:rgba(123,155,175,0.06)">✦</div>
           <div>
-            <div class="collapsible-header-label">Recognition</div>
+            <div class="collapsible-header-label" style="color:#7B9BAF">Recognition</div>
             <div class="collapsible-header-title">Awards, Degrees & Credentials</div>
             <div class="collapsible-header-meta">${(epk.awards||[]).length} entr${(epk.awards||[]).length !== 1 ? 'ies' : 'y'} · ${(epk.awards||[]).filter(a=>a.verified).length} verified</div>
           </div>
         </div>
-        <div class="collapsible-toggle"><span class="toggle-label">Expand</span> ＋</div>
+        <div class="collapsible-toggle" style="color:#7B9BAF"><span class="toggle-label">Expand</span> ＋</div>
       </div>
       <div class="collapsible-body" id="awardsBody">
         <div class="collapsible-body-inner awards-inner">
