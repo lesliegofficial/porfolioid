@@ -484,7 +484,11 @@ function buildEPK(epk) {
       <div class="credits-inner">
         <div class="section-label">Credits & Collaborations</div>
         <h2 class="section-title">The Record</h2>
-        <div class="credits-grid">${creditsHTML}</div>
+        <div class="credits-grid" id="creditsGrid">${creditsHTML}</div>
+        ${visibleCredits.length > 4 ? `
+        <div style="text-align:center;margin-top:2rem">
+          <button onclick="toggleAllCredits()" id="creditsToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.6rem 1.5rem;cursor:pointer;transition:all 0.2s">View All ${visibleCredits.length} Credits +</button>
+        </div>` : ''}
       </div>
     </div>` : ''}
 
@@ -895,6 +899,17 @@ function toggleAllVideos() {
   allDiv.style.display = isHidden ? 'block' : 'none';
   featDiv.style.display = isHidden ? 'none' : 'block';
   btn.textContent = isHidden ? 'Show Less –' : 'View All Videos +';
+}
+
+// Credits collapse/expand
+function toggleAllCredits() {
+  const grid = document.getElementById('creditsGrid');
+  const btn = document.getElementById('creditsToggleBtn');
+  if (!grid || !btn) return;
+  const isExpanded = grid.classList.contains('credits-expanded');
+  grid.classList.toggle('credits-expanded', !isExpanded);
+  const total = grid.querySelectorAll('.credit-card').length;
+  btn.textContent = isExpanded ? `View All ${total} Credits +` : 'Show Less –';
 }
 
 // Owner inline reorder
