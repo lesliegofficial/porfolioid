@@ -473,7 +473,7 @@
 
     /* HERO */
     .hero { grid-template-columns: 1fr; min-height: auto; }
-    .hero-image-panel { height: 70vw; min-height: 280px; max-height: 420px; }
+    .hero-image-panel { height: 90vw; min-height: 340px; max-height: 520px; }
     .hero-img { object-position: center 35%; }
     .hero-content { padding: 2.5rem 1.25rem 2rem; }
     .hero-name { font-size: clamp(2.6rem, 11vw, 4.5rem); }
