@@ -244,26 +244,32 @@ function buildEPK(epk) {
     .sort((a, b) => (b.pinned?1:0) - (a.pinned?1:0));
   epkVisibleCredits = visibleCredits;
 
+  const musicCreditNames = ['Don Omar','J Álvarez','Sony Music Latin','Arrow Management / Orfanato Music Group','Adam Torres Concerts','Urban Latino Music','Melina León','Las Nenas del Swing'];
+
   const creditsHTML = visibleCredits.map((c, i) => {
     const origI = c._origIdx;
     const hasPhotos = c.photos && c.photos.length > 0;
     const hasDetail = c.fullDesc || hasPhotos || c.mediaLink || c.videoUrl;
+    const isMusic = musicCreditNames.includes(c.artist);
+    const accentColor = isMusic ? 'var(--gold)' : '#7B9BAF';
+    const cardTypeLabel = isMusic ? 'MUSIC & ENTERTAINMENT' : 'PROFESSIONAL';
     const categoryBadge = c.category ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.08);color:var(--gray);padding:0.15rem 0.5rem;margin-right:0.4rem">${c.category}</span>` : '';
     const verifiedBadge = c.verified ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(100,200,100,0.1);color:#7ec97e;padding:0.15rem 0.5rem">✦ VERIFIED</span>` : '';
     const pinnedBadge = c.pinned ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.12);color:var(--gold);padding:0.15rem 0.5rem">📌 FEATURED</span>` : '';
     const badgesRow = (categoryBadge || verifiedBadge || pinnedBadge) ? `<div style="margin-bottom:0.5rem;display:flex;gap:0.3rem;flex-wrap:wrap">${pinnedBadge}${verifiedBadge}${categoryBadge}</div>` : '';
     const collaboratorsRow = c.collaborators?.length ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.3rem;letter-spacing:0.08em">w/ ${c.collaborators.join(', ')}</div>` : '';
     return `
-    <div class="credit-card" ${hasDetail ? `onclick="openCreditModal(${i})"` : ''}>
+    <div class="credit-card" ${hasDetail ? `onclick="openCreditModal(${i})"` : ''} style="border-top:2px solid ${accentColor}">
+      <div style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:${accentColor};opacity:0.6;margin-bottom:0.5rem">${cardTypeLabel}</div>
       ${badgesRow}
       <div class="credit-header">
         <div class="credit-artist">${c.artist}</div>
         ${c.years ? `<span class="credit-years">${c.years}</span>` : ''}
       </div>
-      <div class="credit-role">${c.role}${c.contractType ? ` · <span style="opacity:0.7">${c.contractType}</span>` : ''}</div>
+      <div class="credit-role" style="color:${accentColor}">${c.role}${c.contractType ? ` · <span style="opacity:0.7">${c.contractType}</span>` : ''}</div>
       ${collaboratorsRow}
       ${c.desc ? `<p class="credit-desc" style="-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden">${c.desc}</p>` : ''}
-      ${hasDetail ? `<div class="credit-expand-hint">View Details →</div>` : ''}
+      ${hasDetail ? `<div class="credit-expand-hint" style="color:${accentColor}">View Details →</div>` : ''}
     </div>`;
   }).join('');
 
