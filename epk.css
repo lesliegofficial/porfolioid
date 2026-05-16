@@ -315,8 +315,10 @@
 
   /* 3-column layout */
   .career-threecol { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; align-items: start; }
-  .career-threecol .resume-card { height: 100%; box-sizing: border-box; display: flex; flex-direction: column; }
-  .career-threecol-bio { display: flex; flex-direction: column; gap: 0; }
+  .career-threecol .resume-card { height: auto; box-sizing: border-box; display: flex; flex-direction: column; align-self: start; }
+  .career-threecol-bio { display: flex; flex-direction: column; gap: 0; align-self: start; }
+  /* Right two columns stack naturally — wrap them so they sit top-aligned independently */
+  .career-threecol-right { display: flex; flex-direction: column; gap: 1.5rem; align-self: start; }
   @media (max-width: 900px) { .career-threecol { grid-template-columns: 1fr; } }
 
   /* Shared bio styles in career profile */
