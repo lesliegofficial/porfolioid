@@ -33,9 +33,6 @@
   .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
   .hero-image-panel { position: relative; overflow: hidden; }
   .hero-image-panel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, transparent 60%, var(--black) 100%), linear-gradient(to bottom, transparent 70%, var(--black) 100%); }
-  /* Credits collapse — hide beyond 4th card by default */
-  .credits-grid .credit-card:nth-child(n+5) { display: none; }
-  .credits-grid.credits-expanded .credit-card { display: block; }
 
   /* Hero image — default desktop */
   .hero-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; filter: grayscale(15%) contrast(1.05); }
@@ -470,6 +467,10 @@
   .owner-down:hover { background: var(--gold); }
 
   @media (max-width: 768px) {
+    /* Credits collapse — show 4 by default, expand on tap */
+    .credits-grid .credit-card:nth-child(n+5) { display: none; }
+    .credits-grid.credits-expanded .credit-card { display: block; }
+
     /* NAV */
     nav { padding: 1rem 1.25rem; }
     .nav-links { display: none; }
