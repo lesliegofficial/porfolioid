@@ -314,7 +314,7 @@
   .career-sidebyside-right { display: flex; flex-direction: column; gap: 1.5rem; }
 
   /* 3-column layout */
-  .career-threecol { display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem; align-items: start; }
+  .career-threecol { display: grid; grid-template-columns: 1.4fr 2fr; gap: 1.5rem; align-items: start; }
   .career-threecol-bio { display: flex; flex-direction: column; gap: 0; align-self: start; }
   .career-threecol-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: stretch; }
   .career-threecol-cards .resume-card { height: 100%; box-sizing: border-box; display: flex; flex-direction: column; }
