@@ -1232,8 +1232,7 @@ let _currentLang = 'en';
 function toggleLang(lang) {
   _currentLang = lang;
   const epk = window._epkData;
-  if (!epk) { console.log('No EPK data'); return; }
-  console.log('Toggling to', lang, 'es data:', epk.es);
+  if (!epk) return;
 
   const btnEN = document.getElementById('langEN');
   const btnES = document.getElementById('langES');
