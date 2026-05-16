@@ -224,12 +224,12 @@ function buildEPK(epk) {
     careerProfileHTML = `
       <div class="career-threecol">
         <div class="career-threecol-bio">
-          <div class="career-threecol-right">
-            ${resumeCards[0] ? buildResumeCard(resumeCards[0]) : ''}
-            ${resumeCards[1] ? buildResumeCard(resumeCards[1]) : ''}
-          </div>
           ${bioPortrait}
           ${bioContent}
+        </div>
+        <div class="career-threecol-right">
+          ${resumeCards[0] ? buildResumeCard(resumeCards[0]) : ''}
+          ${resumeCards[1] ? buildResumeCard(resumeCards[1]) : ''}
         </div>
       </div>`;
   } else {
