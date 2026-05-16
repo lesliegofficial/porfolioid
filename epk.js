@@ -235,7 +235,7 @@ function buildEPK(epk) {
         ${resumeCards[0] ? buildResumeCard(resumeCards[0]) : ''}
         ${resumeCards[1] ? buildResumeCard(resumeCards[1]) : ''}
       </div>
-      ${bioFullContent ? `<div class="career-bio-full-width" style="margin-top:0;padding-top:0">${bioFullContent}</div>` : ''}
+      ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}
     `;
   } else {
     // Stacked (default)
