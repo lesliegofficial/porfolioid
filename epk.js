@@ -50,6 +50,21 @@ function buildEPK(epk) {
   document.getElementById('footerLogo').textContent = `${epk.name} — PorfolioID`;
   document.title = `${epk.name} — Professional Portfolio & Identity | PorfolioID`;
 
+  // Dynamic OG / Twitter meta tags
+  const metaTitle = `${epk.name} — Professional Portfolio | PorfolioID`;
+  const metaDesc = epk.shortBio || epk.bio
+    ? (epk.shortBio || epk.bio).slice(0, 160).replace(/\s+\S*$/, '') + '…'
+    : `View ${epk.name}'s professional portfolio on PorfolioID.`;
+  const metaImage = epk.heroImage || epk.bioImage || 'https://porfolioid.com/og-default.png';
+  const metaUrl = `https://porfolioid.com/epk/${epk.slug}`;
+
+  const setMeta = (id, val) => { const el = document.getElementById(id); if (el) el.setAttribute('content', val); };
+  document.getElementById('pageTitle') && (document.getElementById('pageTitle').textContent = metaTitle);
+  document.getElementById('pageDesc') && (document.getElementById('pageDesc').setAttribute('content', metaDesc));
+  setMeta('ogTitle', metaTitle); setMeta('ogDesc', metaDesc);
+  setMeta('ogImage', metaImage); setMeta('ogUrl', metaUrl);
+  setMeta('twTitle', metaTitle); setMeta('twDesc', metaDesc); setMeta('twImage', metaImage);
+
   // Show edit button if logged in as this artist
   try {
     const session = JSON.parse(localStorage.getItem('porfolioid_session') || 'null');
@@ -897,6 +912,22 @@ function navigateSlide(col, state, total, dir) {
         qrMode,
         eventName: eventName ? decodeURIComponent(eventName) : null,
         userAgent: navigator.userAgent
+      })
+    }).catch(() => {});
+  }
+
+  // Track page view (fire and forget — always, for every portfolio visit)
+  if (s) {
+    const device = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'trackView',
+        slug: s,
+        referrer: document.referrer || null,
+        qrMode: qrMode || null,
+        device
       })
     }).catch(() => {});
   }

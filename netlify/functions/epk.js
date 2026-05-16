@@ -320,6 +320,85 @@ exports.handler = async (event) => {
         return ok({ success: true, count: countRes.ok ? countRes.data.length : 0 });
       }
 
+      // ── TRACK PAGE VIEW ──
+      if (action === 'trackView') {
+        if (!slug) return ok({ success: true }); // silent fail
+        if (!USE_SUPABASE) return ok({ success: true });
+
+        const { referrer, qrMode, device, country } = body;
+        await sb('profile_views', 'POST', {
+          slug,
+          referrer: referrer || null,
+          qr_mode: qrMode || null,
+          device: device || null,
+          country: country || null,
+          viewed_at: new Date().toISOString()
+        });
+        return ok({ success: true });
+      }
+
+      // ── GET ANALYTICS ──
+      if (action === 'getAnalytics') {
+        const { userSlug, days = 30 } = body;
+        if (!userSlug) return err('userSlug required');
+        if (!USE_SUPABASE) return ok({ views: 0, scans: 0, downloads: 0, topSections: [], recent: [] });
+
+        const since = new Date(Date.now() - days * 86400000).toISOString();
+
+        // Get all profile slugs for this user
+        const profilesRes = await sbGet('user_profiles', `user_slug=eq.${userSlug}&select=profile_slug`);
+        const slugs = profilesRes.ok && profilesRes.data.length
+          ? profilesRes.data.map(p => p.profile_slug)
+          : [userSlug];
+
+        // Run queries in parallel
+        const [viewsRes, scansRes, downloadsRes] = await Promise.all([
+          sbGet('profile_views', `slug=in.(${slugs.join(',')})&viewed_at=gte.${since}&select=id,slug,viewed_at,device,country,qr_mode`),
+          sbGet('qr_scans', `slug=in.(${slugs.join(',')})&scanned_at=gte.${since}&select=id,slug,qr_mode,event_name,scanned_at`),
+          sbGet('assets', `slug=in.(${slugs.join(',')})&select=title,downloads,slug`)
+        ]);
+
+        const views = viewsRes.ok ? viewsRes.data : [];
+        const scans = scansRes.ok ? scansRes.data : [];
+        const assets = downloadsRes.ok ? downloadsRes.data : [];
+        const totalDownloads = assets.reduce((sum, a) => sum + (a.downloads || 0), 0);
+
+        // Device breakdown
+        const devices = views.reduce((acc, v) => {
+          const d = v.device || 'unknown';
+          acc[d] = (acc[d] || 0) + 1;
+          return acc;
+        }, {});
+
+        // Daily view counts for chart (last 14 days)
+        const daily = {};
+        for (let i = 13; i >= 0; i--) {
+          const d = new Date(Date.now() - i * 86400000);
+          daily[d.toISOString().slice(0,10)] = 0;
+        }
+        views.forEach(v => {
+          const day = v.viewed_at.slice(0,10);
+          if (daily[day] !== undefined) daily[day]++;
+        });
+
+        // QR mode breakdown
+        const qrModes = scans.reduce((acc, s) => {
+          acc[s.qr_mode] = (acc[s.qr_mode] || 0) + 1;
+          return acc;
+        }, {});
+
+        return ok({
+          totalViews: views.length,
+          totalScans: scans.length,
+          totalDownloads,
+          devices,
+          daily: Object.entries(daily).map(([date, count]) => ({ date, count })),
+          qrModes,
+          recentViews: views.slice(-10).reverse(),
+          topAssets: assets.sort((a,b) => (b.downloads||0) - (a.downloads||0)).slice(0,5)
+        });
+      }
+
       // ── MIGRATE (manual trigger) ──
       if (action === 'migrate') {
         if (!slug) return err('slug required');

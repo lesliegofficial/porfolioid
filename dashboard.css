@@ -242,3 +242,32 @@
 
 /* NEW PROFILE MODAL */
 #newProfileModal.open { display: flex !important; }
+
+/* ── ANALYTICS ── */
+.analytics-range-btn {
+  background: var(--dark-2); border: 1px solid rgba(201,168,76,0.15);
+  color: var(--gray); font-family: var(--font-mono); font-size: 0.55rem;
+  letter-spacing: 0.08em; padding: 0.35rem 0.75rem; cursor: pointer; transition: all 0.2s;
+}
+.analytics-range-btn:hover { border-color: rgba(201,168,76,0.35); color: var(--white); }
+.analytics-range-btn.active { background: rgba(201,168,76,0.1); border-color: var(--gold); color: var(--white); }
+.analytics-bar {
+  flex: 1; background: rgba(201,168,76,0.25); min-height: 2px;
+  transition: height 0.4s ease; position: relative; cursor: default;
+}
+.analytics-bar:hover { background: rgba(201,168,76,0.6); }
+.analytics-bar-tooltip {
+  display: none; position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%);
+  background: var(--dark); border: 1px solid rgba(201,168,76,0.3);
+  font-family: var(--font-mono); font-size: 0.5rem; color: var(--white);
+  padding: 0.25rem 0.5rem; white-space: nowrap; pointer-events: none; z-index: 10;
+}
+.analytics-bar:hover .analytics-bar-tooltip { display: block; }
+.analytics-breakdown-row {
+  display: flex; align-items: center; gap: 0.75rem;
+  font-family: var(--font-mono); font-size: 0.58rem; color: var(--gray-light);
+}
+.analytics-breakdown-bar {
+  height: 4px; background: rgba(201,168,76,0.3); flex: 1; position: relative;
+}
+.analytics-breakdown-fill { height: 100%; background: var(--gold); transition: width 0.5s ease; }

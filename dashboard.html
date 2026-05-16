@@ -134,6 +134,9 @@
       <button class="nav-item" onclick="showPanel('awards')">
         <span class="nav-item-icon">🏅</span><span>Awards & Degrees</span>
       </button>
+      <button class="nav-item" onclick="showPanel('analytics')">
+        <span class="nav-item-icon">📊</span><span>Analytics</span>
+      </button>
     </div>
   </aside>
 
@@ -1522,6 +1525,82 @@
         </div>
       </div>
     </div>
+
+<!-- ANALYTICS PANEL -->
+<div class="panel" id="panel-analytics" style="display:none">
+  <h1 class="panel-title">Analytics <em>& Insights</em></h1>
+  <p class="panel-sub">See who's viewing your portfolio, scanning your QR codes, and downloading your assets.</p>
+
+  <!-- TIME RANGE -->
+  <div style="display:flex;align-items:center;gap:0.75rem;margin-top:2rem;margin-bottom:2rem">
+    <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray)">Show last</div>
+    <div style="display:flex;gap:0.5rem">
+      <button onclick="loadAnalytics(7)"  id="anDays-7"  class="analytics-range-btn">7 days</button>
+      <button onclick="loadAnalytics(30)" id="anDays-30" class="analytics-range-btn active">30 days</button>
+      <button onclick="loadAnalytics(90)" id="anDays-90" class="analytics-range-btn">90 days</button>
+    </div>
+    <button onclick="loadAnalytics(currentAnalyticsDays)" style="margin-left:auto;background:none;border:1px solid rgba(201,168,76,0.2);color:var(--gold);padding:0.4rem 0.75rem;font-family:var(--font-mono);font-size:0.55rem;cursor:pointer;letter-spacing:0.08em" id="analyticsRefreshBtn">↺ Refresh</button>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem" id="analyticsStatCards">
+    <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.15);padding:1.5rem;text-align:center">
+      <div style="font-size:2rem;font-family:var(--font-display);font-weight:700;color:var(--gold)" id="anTotalViews">—</div>
+      <div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.4rem">Portfolio Views</div>
+    </div>
+    <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.15);padding:1.5rem;text-align:center">
+      <div style="font-size:2rem;font-family:var(--font-display);font-weight:700;color:var(--gold)" id="anTotalScans">—</div>
+      <div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.4rem">QR Scans</div>
+    </div>
+    <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.15);padding:1.5rem;text-align:center">
+      <div style="font-size:2rem;font-family:var(--font-display);font-weight:700;color:var(--gold)" id="anTotalDownloads">—</div>
+      <div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.4rem">Asset Downloads</div>
+    </div>
+  </div>
+
+  <!-- DAILY CHART -->
+  <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.12);padding:1.5rem;margin-bottom:1.5rem">
+    <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem">Daily Views</div>
+    <div id="analyticsChart" style="height:80px;display:flex;align-items:flex-end;gap:3px;overflow:hidden">
+      <div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Loading...</div>
+    </div>
+    <div id="analyticsChartLabels" style="display:flex;justify-content:space-between;margin-top:0.5rem;font-family:var(--font-mono);font-size:0.45rem;color:var(--gray)"></div>
+  </div>
+
+  <!-- DEVICE + QR MODE BREAKDOWN -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+
+    <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.12);padding:1.25rem">
+      <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Device Split</div>
+      <div id="anDeviceBreakdown" style="display:flex;flex-direction:column;gap:0.5rem">
+        <div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">—</div>
+      </div>
+    </div>
+
+    <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.12);padding:1.25rem">
+      <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">QR Mode Scans</div>
+      <div id="anQRBreakdown" style="display:flex;flex-direction:column;gap:0.5rem">
+        <div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">—</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TOP ASSETS -->
+  <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.12);padding:1.25rem;margin-bottom:1.5rem">
+    <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Top Downloaded Assets</div>
+    <div id="anTopAssets">
+      <div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">No downloads yet.</div>
+    </div>
+  </div>
+
+  <!-- NO SUPABASE NOTICE (shown when Supabase not configured) -->
+  <div id="analyticsNoSupabase" style="display:none;margin-top:1rem;padding:1.25rem;background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.15)">
+    <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">⚡ Supabase Required</div>
+    <p style="font-family:var(--font-mono);font-size:0.58rem;color:var(--gray);line-height:1.7">Analytics require Supabase to be connected. Add your <code style="color:var(--white)">SUPABASE_URL</code> and <code style="color:var(--white)">SUPABASE_SERVICE_KEY</code> environment variables in Netlify to enable tracking.</p>
+  </div>
+
+</div>
 
   </main>
 </div>

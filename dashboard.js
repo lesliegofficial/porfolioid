@@ -413,10 +413,12 @@ function showPanel(name) {
   if (name === 'sections') setTimeout(initSectionsPanel, 100);
   if (name === 'careertype') setTimeout(initCareerTypePanel, 100);
   if (name === 'bio') setTimeout(loadSpanish, 100);
+  if (name === 'analytics') setTimeout(() => loadAnalytics(currentAnalyticsDays || 30), 100);
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById(`panel-${name}`).classList.add('active');
-  event.currentTarget.classList.add('active');
+  const panel = document.getElementById(`panel-${name}`);
+  if (panel) panel.classList.add('active');
+  if (event && event.currentTarget) event.currentTarget.classList.add('active');
 }
 
 // ── SECTION ORDER & VISIBILITY ──
@@ -2776,7 +2778,6 @@ async function confirmDeleteProfile(profileSlug, profileName) {
 }
 
 // ── PATCH showSaveBanner to optionally show a message ────────────
-const _origShowSaveBanner = showSaveBanner;
 function showSaveBanner(msg) {
   const banner = document.getElementById('saveBanner');
   if (!banner) return;
@@ -2784,5 +2785,136 @@ function showSaveBanner(msg) {
   if (msg) banner.textContent = msg;
   banner.classList.add('show');
   setTimeout(() => { banner.classList.remove('show'); if (msg) banner.textContent = prev; }, 2500);
+}
+
+
+// ── PHASE 8 — ANALYTICS ──────────────────────────────────────────
+
+let currentAnalyticsDays = 30;
+
+async function loadAnalytics(days) {
+  currentAnalyticsDays = days;
+
+  // Update range button states
+  [7, 30, 90].forEach(d => {
+    const btn = document.getElementById(`anDays-${d}`);
+    if (btn) btn.classList.toggle('active', d === days);
+  });
+
+  const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
+  const userSlug = session.slug;
+  if (!userSlug) return;
+
+  // Show loading
+  document.getElementById('anTotalViews').textContent = '…';
+  document.getElementById('anTotalScans').textContent = '…';
+  document.getElementById('anTotalDownloads').textContent = '…';
+
+  try {
+    const res = await fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'getAnalytics', userSlug, days })
+    });
+    const data = await res.json();
+
+    if (data.error || data.totalViews === undefined) {
+      // Likely no Supabase — show notice
+      document.getElementById('analyticsNoSupabase').style.display = 'block';
+      document.getElementById('anTotalViews').textContent = '0';
+      document.getElementById('anTotalScans').textContent = '0';
+      document.getElementById('anTotalDownloads').textContent = '0';
+      return;
+    }
+
+    document.getElementById('analyticsNoSupabase').style.display = 'none';
+
+    // Stat cards
+    document.getElementById('anTotalViews').textContent = data.totalViews.toLocaleString();
+    document.getElementById('anTotalScans').textContent = data.totalScans.toLocaleString();
+    document.getElementById('anTotalDownloads').textContent = data.totalDownloads.toLocaleString();
+
+    // Daily chart
+    renderAnalyticsChart(data.daily || []);
+
+    // Device breakdown
+    renderBreakdown('anDeviceBreakdown', data.devices || {}, {
+      mobile: '📱 Mobile', desktop: '🖥 Desktop', unknown: '? Unknown'
+    });
+
+    // QR mode breakdown
+    renderBreakdown('anQRBreakdown', data.qrModes || {}, {
+      artist: '🎨 Artist QR', career: '💼 Career QR', event: '⚡ Event QR'
+    });
+
+    // Top assets
+    renderTopAssets(data.topAssets || []);
+
+  } catch (e) {
+    console.error('Analytics load error:', e);
+    document.getElementById('anTotalViews').textContent = '—';
+    document.getElementById('anTotalScans').textContent = '—';
+    document.getElementById('anTotalDownloads').textContent = '—';
+  }
+}
+
+function renderAnalyticsChart(daily) {
+  const chart = document.getElementById('analyticsChart');
+  const labels = document.getElementById('analyticsChartLabels');
+  if (!chart) return;
+
+  const max = Math.max(...daily.map(d => d.count), 1);
+
+  chart.innerHTML = daily.map(d => {
+    const pct = Math.max((d.count / max) * 100, 2);
+    const label = d.date.slice(5); // MM-DD
+    return `<div class="analytics-bar" style="height:${pct}%">
+      <div class="analytics-bar-tooltip">${label}: ${d.count} view${d.count !== 1 ? 's' : ''}</div>
+    </div>`;
+  }).join('');
+
+  if (labels && daily.length) {
+    const first = daily[0].date.slice(5);
+    const last = daily[daily.length - 1].date.slice(5);
+    const mid = daily[Math.floor(daily.length / 2)].date.slice(5);
+    labels.innerHTML = `<span>${first}</span><span>${mid}</span><span>${last}</span>`;
+  }
+}
+
+function renderBreakdown(containerId, data, labelMap) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const total = Object.values(data).reduce((a, b) => a + b, 0) || 1;
+  const entries = Object.entries(data).sort((a, b) => b[1] - a[1]);
+
+  if (!entries.length) {
+    el.innerHTML = '<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">No data yet.</div>';
+    return;
+  }
+
+  el.innerHTML = entries.map(([key, count]) => {
+    const pct = Math.round((count / total) * 100);
+    const label = labelMap[key] || key;
+    return `<div class="analytics-breakdown-row">
+      <span style="min-width:90px">${label}</span>
+      <div class="analytics-breakdown-bar"><div class="analytics-breakdown-fill" style="width:${pct}%"></div></div>
+      <span style="min-width:40px;text-align:right;color:var(--gold)">${count}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderTopAssets(assets) {
+  const el = document.getElementById('anTopAssets');
+  if (!el) return;
+  if (!assets.length) {
+    el.innerHTML = '<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">No downloads yet.</div>';
+    return;
+  }
+  el.innerHTML = assets.map((a, i) => `
+    <div style="display:flex;align-items:center;gap:1rem;padding:0.75rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+      <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);min-width:16px">${i + 1}</span>
+      <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--white);flex:1">${a.title || 'Untitled'}</span>
+      <span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold)">${a.downloads} dl</span>
+    </div>`).join('');
 }
 
