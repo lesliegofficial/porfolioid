@@ -604,3 +604,15 @@
     body.edit-mode { padding-top: 56px; }
     #inlineEditBar { gap: 0.6rem; padding: 0.5rem 1rem; }
   }
+
+  /* Full bio flows full width below the 3-col grid */
+  .career-bio-full-width {
+    margin-top: 0;
+    padding-top: 0;
+  }
+  .career-bio-full-width p {
+    font-size: 1rem;
+    color: var(--gray);
+    line-height: 1.9;
+    margin-bottom: 1rem;
+  }

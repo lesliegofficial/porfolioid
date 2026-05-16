@@ -198,14 +198,18 @@ function buildEPK(epk) {
   const bioContainerStyle = bioFit === 'contain' ? 'background:transparent;display:flex;align-items:flex-start;justify-content:center;' : '';
   const bioPortrait = epk.bioImage ? `<div style="position:relative;overflow:hidden;width:100%;height:100%;${bioContainerStyle}"><img src="${epk.bioImage}" class="career-portrait" alt="${epk.name}" style="object-fit:${bioFit};object-position:${bioImgPos};${bioZoomStyle}${bioCropStyle}"></div>` : '';
 
-  const bioContent = `
+  const bioShortContent = `
     <div class="career-bio-text">
       <div id="bioShort" data-editable data-editable-key="shortBio" data-editable-type="body" style="outline:none">${shortBioHTML}</div>
-      ${hasMoreBio ? `
-      <div id="bioFull" style="display:none">${bioParagraphs}</div>
-      <button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:0.5rem;transition:all 0.2s">Read Full Bio +</button>
-      ` : ''}
+      ${hasMoreBio ? `<button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:0.5rem;transition:all 0.2s">Read Full Bio +</button>` : ''}
     </div>`;
+
+  const bioFullContent = hasMoreBio ? `
+    <div id="bioFull" style="display:none;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(201,168,76,0.1)">
+      ${bioParagraphs}
+    </div>` : '';
+
+  const bioContent = bioShortContent;
 
   // Build career profile HTML based on layout
   let careerProfileHTML = '';
@@ -229,7 +233,9 @@ function buildEPK(epk) {
         </div>
         ${resumeCards[0] ? buildResumeCard(resumeCards[0]) : ''}
         ${resumeCards[1] ? buildResumeCard(resumeCards[1]) : ''}
-      </div>`;
+      </div>
+      ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}
+    `;
   } else {
     // Stacked (default)
     careerProfileHTML = `
@@ -1030,12 +1036,10 @@ function downloadEPKQR() {
 // Bio toggle
 function toggleBio() {
   const full = document.getElementById('bioFull');
-  const short = document.getElementById('bioShort');
   const btn = document.getElementById('bioToggleBtn');
   if (!full) return;
   const isHidden = full.style.display === 'none';
   full.style.display = isHidden ? 'block' : 'none';
-  short.style.display = isHidden ? 'none' : 'block';
   btn.textContent = isHidden ? 'Show Less –' : 'Read Full Bio +';
 }
 
