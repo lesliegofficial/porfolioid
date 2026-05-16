@@ -42,7 +42,7 @@
   .hero-placeholder-icon { font-size: 5rem; opacity: 0.2; }
   .hero-content { display: flex; flex-direction: column; justify-content: center; padding: 8rem 4rem 4rem 3rem; position: relative; }
   .hero-eyebrow { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; opacity: 0.9; }
-  .hero-name { font-family: var(--font-display); font-size: clamp(4rem, 7vw, 7.5rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.02em; color: var(--white); margin-bottom: 1.5rem; }
+  .hero-name { font-family: var(--font-display); font-size: clamp(4rem, 7vw, 7.5rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.02em; color: var(--white); margin-bottom: 0.75rem; }
   .hero-name em { font-style: italic; color: var(--gold-light); }
   .hero-tagline { font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); margin-bottom: 3rem; line-height: 2; border-left: 2px solid var(--gold); padding-left: 1rem; }
   .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 4rem; }
@@ -83,7 +83,7 @@
   .credit-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; gap: 1rem; }
   .credit-artist { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; }
   .credit-years { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 0.25rem 0.6rem; white-space: nowrap; }
-  .credit-role { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+  .credit-role { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
   .credit-desc { font-size: 0.82rem; color: var(--gray); line-height: 1.65; white-space: pre-line; }
   .credit-expand-hint { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; color: var(--gold); margin-top: 0.75rem; text-decoration: underline; text-underline-offset: 3px; }
   /* Credit detail modal */
@@ -93,9 +93,9 @@
   .credit-modal-close { position: absolute; top: 1.25rem; right: 1.25rem; background: none; border: 1px solid rgba(255,255,255,0.1); color: var(--gray); font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; padding: 0.4rem 0.75rem; cursor: pointer; }
   .credit-modal-close:hover { border-color: var(--gold); color: var(--white); }
   .credit-modal-artist { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem; }
-  .credit-modal-meta { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+  .credit-modal-meta { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
   .credit-modal-desc { font-size: 1rem; color: var(--gray); line-height: 1.9; white-space: pre-line; margin-bottom: 1.5rem; transition: font-size 0.2s; }
-  .modal-font-controls { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; }
+  .modal-font-controls { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
   .modal-font-btn { font-family: var(--font-mono); background: none; border: 1px solid rgba(255,255,255,0.12); color: var(--gray); cursor: pointer; padding: 0.25rem 0.65rem; font-size: 0.7rem; letter-spacing: 0.08em; transition: all 0.2s; }
   .modal-font-btn:hover { border-color: var(--gold); color: var(--gold); }
   .modal-font-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.25); text-transform: uppercase; }
@@ -291,7 +291,7 @@
     font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.1em;
     color: rgba(255,255,255,0.75); z-index: 4; line-height: 1.5;
   }
-  .gallery-scroll-arrows { display: flex; gap: 0.5rem; justify-content: flex-end; margin-bottom: 0.75rem; }
+  .gallery-scroll-arrows { display: flex; gap: 0.5rem; justify-content: flex-end; margin-bottom: 0.5rem; }
   .gallery-scroll-arrow {
     background: none; border: 1px solid rgba(201,168,76,0.3); color: var(--gold);
     width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
@@ -334,15 +334,15 @@
   .resume-section { padding: 3rem 0; }
   .resume-inner { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
   .resume-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
-  .resume-card { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.15); padding: 2rem; position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
+  .resume-card { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.15); padding: 1.5rem; position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
   .resume-card::before { display: none; }
   .resume-card:hover { border-color: rgba(201,168,76,0.35); transform: translateY(-2px); }
-  .resume-card-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+  .resume-card-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
   .resume-card-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--white); margin-bottom: 0.35rem; line-height: 1.3; }
-  .resume-card-subtitle { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gray); letter-spacing: 0.1em; margin-bottom: 1.25rem; }
-  .resume-card-skills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+  .resume-card-subtitle { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gray); letter-spacing: 0.1em; margin-bottom: 0.75rem; }
+  .resume-card-skills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem; }
   .resume-skill-tag { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.15); color: var(--gray); padding: 0.2rem 0.6rem; }
-  .resume-card-desc { font-size: 0.85rem; color: var(--gray); line-height: 1.7; font-style: italic; margin-bottom: 1.5rem; }
+  .resume-card-desc { font-size: 0.85rem; color: var(--gray); line-height: 1.7; font-style: italic; margin-bottom: 0.75rem; }
   .resume-card-btn { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); text-decoration: none; border: 1px solid rgba(201,168,76,0.3); padding: 0.6rem 1.25rem; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s; }
   .resume-card-btn:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
   @media (max-width: 768px) { .resume-cards { grid-template-columns: 1fr; } }
@@ -358,7 +358,7 @@
   .award-card-title { font-size: 1rem; font-weight: 400; color: var(--white); margin-bottom: 0.25rem; line-height: 1.4; }
   .award-card-org { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gray); letter-spacing: 0.08em; margin-bottom: 0.5rem; }
   .award-card-desc { font-size: 0.82rem; color: var(--gray); font-style: italic; line-height: 1.6; margin-top: 0.5rem; }
-  .award-card-badges { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .award-card-badges { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
   .award-badge { font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.5rem; }
   .award-badge-verified { background: rgba(201,168,76,0.12); color: var(--gold); border: 1px solid rgba(201,168,76,0.2); }
   .award-badge-category { background: rgba(255,255,255,0.05); color: var(--gray); border: 1px solid rgba(255,255,255,0.08); }
@@ -375,7 +375,7 @@
   .asset-card:hover { border-color: rgba(201,168,76,0.25); }
   .asset-icon { font-size: 1.5rem; margin-bottom: 1rem; }
   .asset-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
-  .asset-desc { font-size: 0.85rem; color: var(--gray); line-height: 1.6; margin-bottom: 1.5rem; }
+  .asset-desc { font-size: 0.85rem; color: var(--gray); line-height: 1.6; margin-bottom: 0.75rem; }
   .asset-btn { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); text-decoration: none; transition: opacity 0.3s; }
   .asset-btn:hover { opacity: 0.7; }
 
@@ -398,9 +398,9 @@
   /* BOOKING */
   .booking-section { background: linear-gradient(to bottom, var(--dark-2), var(--black)); padding: 8rem 3rem; text-align: center; }
   .booking-inner { max-width: 700px; margin: 0 auto; }
-  .booking-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; }
+  .booking-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 0.75rem; }
   .booking-title em { font-style: italic; color: var(--gold-light); }
-  .booking-sub { font-size: 1rem; color: var(--gray-light); margin-bottom: 0.75rem; }
+  .booking-sub { font-size: 1rem; color: var(--gray-light); margin-bottom: 0.5rem; }
   .booking-note { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 3rem; }
   .booking-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
@@ -495,7 +495,7 @@
     .gallery-inner { padding: 0 1.25rem; }
 
     /* SECTION TITLE */
-    .section-title { font-size: clamp(1.8rem, 7vw, 2.5rem); margin-bottom: 1.5rem; }
+    .section-title { font-size: clamp(1.8rem, 7vw, 2.5rem); margin-bottom: 0.75rem; }
 
     /* BIO */
     .bio-grid { grid-template-columns: 1fr; gap: 1.5rem; }
