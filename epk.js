@@ -200,12 +200,12 @@ function buildEPK(epk) {
 
   const bioShortContent = `
     <div class="career-bio-text">
-      <div id="bioShort" data-editable data-editable-key="shortBio" data-editable-type="body" style="outline:none;cursor:text;min-height:1em">${shortBioHTML}</div>
+      <div id="bioShort" data-editable data-editable-key="shortBio" data-editable-type="body" style="outline:none">${shortBioHTML}</div>
       ${hasMoreBio ? `<button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1rem;transition:all 0.2s">Read Full Bio +</button>` : ''}
     </div>`;
 
   const bioFullContent = hasMoreBio ? `
-    <div id="bioFull" style="display:none" data-editable data-editable-key="fullBio" data-editable-type="body" style="outline:none">
+    <div id="bioFull" style="display:none">
       ${bioParagraphs}
       <button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem;transition:all 0.2s">Show Less –</button>
     </div>` : '';
@@ -228,16 +228,16 @@ function buildEPK(epk) {
   } else if (careerLayout === 'threecol') {
     careerProfileHTML = `
       <div class="career-threecol">
-        <div class="career-threecol-photo">${bioPortrait}</div>
+        <div class="career-threecol-bio">
+          ${bioPortrait}
+          ${bioContent}
+        </div>
         <div class="career-threecol-cards">
           ${resumeCards[0] ? buildResumeCard(resumeCards[0]) : ''}
           ${resumeCards[1] ? buildResumeCard(resumeCards[1]) : ''}
         </div>
-        <div class="career-threecol-bio">
-          ${bioContent}
-          ${bioFullContent || ''}
-        </div>
       </div>
+      ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}
     `;
   } else {
     // Stacked (default)
@@ -908,15 +908,6 @@ function toggleAllVideos() {
   allDiv.style.display = isHidden ? 'block' : 'none';
   featDiv.style.display = isHidden ? 'none' : 'block';
   btn.textContent = isHidden ? 'Show Less –' : 'View All Videos +';
-}
-
-// Bio width slider
-function adjustBioWidth(val) {
-  const bioText = document.querySelector('.career-bio-text');
-  if (bioText) bioText.style.maxWidth = val + 'px';
-  const label = document.getElementById('bioWidthVal');
-  if (label) label.textContent = val + 'px';
-  _pendingEdits['__bioWidth__'] = val;
 }
 
 // Modal font size control
