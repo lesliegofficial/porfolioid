@@ -322,7 +322,7 @@
 
   /* Shared bio styles in career profile */
   .career-portrait { width: 100%; height: 100%; min-height: 440px; object-fit: cover; object-position: top; filter: grayscale(20%) contrast(1.05); display: block; }
-  .career-bio-text { margin-top: 0.75rem; max-width: 340px; }
+  .career-bio-text { margin-top: 0.75rem; max-width: 260px; }
   .career-bio-text p { font-size: 0.95rem; color: var(--white); margin-bottom: 1em; line-height: 1.8; font-weight: 400; }
   .career-bio-text p:first-child { font-size: 0.95rem; color: var(--white); font-weight: 400; }
 
