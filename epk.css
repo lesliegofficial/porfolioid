@@ -315,7 +315,7 @@
 
   /* 3-column layout */
   .career-threecol { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; align-items: stretch; }
-  .career-threecol .resume-card { height: 100%; box-sizing: border-box; display: flex; flex-direction: column; }
+  .career-threecol .resume-card { height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; }
   .career-threecol-bio { display: flex; flex-direction: column; gap: 0; align-self: start; }
   @media (max-width: 900px) { .career-threecol { grid-template-columns: 1fr; } }
 
@@ -334,7 +334,7 @@
   .resume-section { padding: 3rem 0; }
   .resume-inner { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
   .resume-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
-  .resume-card { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.15); padding: 1.5rem; position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
+  .resume-card { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.15); padding: 1.25rem 1.5rem 1.5rem; position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
   .resume-card::before { display: none; }
   .resume-card:hover { border-color: rgba(201,168,76,0.35); transform: translateY(-2px); }
   .resume-card-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
@@ -607,7 +607,7 @@
 
   /* Full bio flows full width below the 3-col grid */
   .career-bio-full-width {
-    margin-top: 0;
+    margin-top: 2rem;
     padding-top: 0;
   }
   .career-bio-full-width p {
