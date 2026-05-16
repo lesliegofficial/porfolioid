@@ -181,7 +181,7 @@ function buildEPK(epk) {
       <div class="resume-card-subtitle">${r.subtitle || ''}</div>
       ${r.skills?.length ? `<div class="resume-card-skills">${r.skills.map(s => `<span class="resume-skill-tag" style="border-color:${rc}4D;background:${rc}0D">${s}</span>`).join('')}</div>` : ''}
       ${r.desc ? `<div class="resume-card-desc">${r.desc}</div>` : ''}
-      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:auto;padding-top:1rem">
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem">
         ${r.url ? `<a href="${r.url}" target="_blank" class="resume-card-btn" style="color:${rc};border-color:${rc}4D">↓ Download Resume →</a>` : '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;opacity:0.5">PDF coming soon</span>'}
       </div>
     </div>`;
