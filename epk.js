@@ -200,7 +200,7 @@ function buildEPK(epk) {
 
   const bioShortContent = `
     <div class="career-bio-text">
-      <div id="bioShort" data-editable data-editable-key="shortBio" data-editable-type="body" style="outline:none">${shortBioHTML}</div>
+      <div id="bioShort" data-editable data-editable-key="shortBio" data-editable-type="body" style="outline:none;cursor:text;min-height:1em">${shortBioHTML}</div>
       ${hasMoreBio ? `<button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1rem;transition:all 0.2s">Read Full Bio +</button>` : ''}
     </div>`;
 
