@@ -190,12 +190,12 @@ async function init() {
   }
 
   document.getElementById('topbarUser').textContent = session.name;
-  document.getElementById('epkUrlDisplay').textContent = `porfolioid.com/epk.html?slug=${session.slug}`;
-  document.getElementById('epkUrlDisplay').href = `/epk/${session.slug}`;
-  document.getElementById('epkUrlDisplay').textContent = `porfolioid.com/epk/${session.slug}`;
-  document.getElementById('viewEPKBtn').href = `/epk.html?slug=${session.slug}`;
 
   loadAllFields();
+
+  // Phase 7 — load all profiles for this user
+  activeProfileSlug = session.slug;
+  initProfiles();
 }
 
 function createEmptyEPK(slug, name) {
@@ -2482,3 +2482,307 @@ async function saveCareerType() {
   persistUser();
   showToast('Career type saved ✓');
 }
+// ── PHASE 7 — MULTIPLE PROFESSIONAL PROFILES ──────────────────────
+
+const PROFILE_TYPE_META = {
+  creative:  { emoji: '🎨', label: 'Creative',  color: '#C9A84C' },
+  corporate: { emoji: '💼', label: 'Corporate', color: '#8FB8D0' },
+  freelance: { emoji: '⚡', label: 'Freelance', color: '#A8C5A0' },
+  speaker:   { emoji: '🎤', label: 'Speaker',   color: '#D4A0C0' },
+  primary:   { emoji: '✦',  label: 'Primary',   color: '#C9A84C' },
+};
+
+let userProfiles = [];       // [{profileSlug, profileType, profileName, isPrimary}]
+let activeProfileSlug = '';  // currently editing
+let newProfileType = 'creative';
+
+// ── INIT: Load all profiles for user ──────────────────────────────
+async function initProfiles() {
+  const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
+  const userSlug = session.slug;
+  if (!userSlug) return;
+
+  try {
+    const res = await fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'listProfiles', userSlug })
+    });
+    const data = await res.json();
+
+    if (data.profiles && data.profiles.length > 0) {
+      userProfiles = data.profiles.map(p => ({
+        profileSlug: p.profile_slug || p.profileSlug,
+        profileType: p.profile_type || p.profileType || 'primary',
+        profileName: p.profile_name || p.profileName || 'Primary',
+        isPrimary: p.is_primary || p.isPrimary || false
+      }));
+    } else {
+      // First time / blobs user — create primary entry
+      userProfiles = [{ profileSlug: userSlug, profileType: 'primary', profileName: 'Primary', isPrimary: true }];
+    }
+
+    // Set active profile to primary (or first)
+    const primary = userProfiles.find(p => p.isPrimary) || userProfiles[0];
+    activeProfileSlug = primary.profileSlug;
+
+    renderProfileSwitcher();
+    updateSidebarProfileInfo();
+
+  } catch (e) {
+    console.error('Profile init error:', e);
+    // Fallback — single profile mode
+    userProfiles = [{ profileSlug: userSlug, profileType: 'primary', profileName: 'Primary', isPrimary: true }];
+    activeProfileSlug = userSlug;
+    renderProfileSwitcher();
+  }
+}
+
+// ── RENDER profile tabs in topbar ────────────────────────────────
+function renderProfileSwitcher() {
+  const container = document.getElementById('profileSwitcher');
+  if (!container) return;
+
+  const tabs = userProfiles.map(p => {
+    const meta = PROFILE_TYPE_META[p.profileType] || PROFILE_TYPE_META.primary;
+    const isActive = p.profileSlug === activeProfileSlug;
+    return `<button
+      class="profile-tab ${isActive ? 'active' : ''}"
+      onclick="switchProfile('${p.profileSlug}')"
+      title="${p.profileName} — ${meta.label}"
+    >
+      <span>${meta.emoji}</span>
+      <span>${p.profileName}</span>
+      ${p.isPrimary ? '' : `<span onclick="event.stopPropagation();confirmDeleteProfile('${p.profileSlug}','${p.profileName}')" title="Delete profile" style="opacity:0.4;font-size:0.65rem;margin-left:0.25rem;line-height:1" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.4'">✕</span>`}
+    </button>`;
+  }).join('');
+
+  container.innerHTML = tabs + `<button class="profile-tab-add" onclick="openNewProfileModal()">+ New Profile</button>`;
+}
+
+// ── SWITCH active profile ─────────────────────────────────────────
+async function switchProfile(profileSlug) {
+  if (profileSlug === activeProfileSlug) return;
+
+  // Auto-save current profile first
+  saveAll();
+
+  activeProfileSlug = profileSlug;
+  renderProfileSwitcher();
+
+  // Show loading state
+  document.getElementById('topbarUser').textContent = 'Switching...';
+
+  // Load the new profile's EPK
+  try {
+    const res = await fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'load', slug: profileSlug })
+    });
+    const data = await res.json();
+
+    if (data.success && data.epk) {
+      epk = data.epk;
+    } else {
+      epk = createEmptyEPK(profileSlug, epk.name || '');
+      epk.profileType = userProfiles.find(p => p.profileSlug === profileSlug)?.profileType || 'creative';
+    }
+
+    loadAllFields();
+    updateSidebarProfileInfo();
+
+    const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
+    document.getElementById('topbarUser').textContent = session.name || '';
+
+    showSaveBanner('Switched to ' + (userProfiles.find(p => p.profileSlug === profileSlug)?.profileName || profileSlug));
+  } catch (e) {
+    console.error('Profile switch error:', e);
+    document.getElementById('topbarUser').textContent = 'Switch failed';
+  }
+}
+
+// ── UPDATE sidebar link to reflect active profile ────────────────
+function updateSidebarProfileInfo() {
+  const profile = userProfiles.find(p => p.profileSlug === activeProfileSlug);
+  const meta = PROFILE_TYPE_META[(profile?.profileType) || 'primary'];
+
+  const urlDisplay = document.getElementById('epkUrlDisplay');
+  const badge = document.getElementById('activeProfileBadge');
+  const label = document.getElementById('activeProfileLabel');
+  const viewBtn = document.getElementById('viewEPKBtn');
+
+  const url = `porfolioid.com/epk/${activeProfileSlug}`;
+  const fullUrl = `/epk.html?slug=${activeProfileSlug}`;
+
+  if (urlDisplay) { urlDisplay.textContent = url; urlDisplay.href = fullUrl; }
+  if (badge) { badge.textContent = meta.emoji + ' ' + (profile?.profileName || 'Primary'); }
+  if (label) label.textContent = 'Portfolio Link';
+  if (viewBtn) viewBtn.href = fullUrl;
+}
+
+// ── OVERRIDE persistUser to save to active profile slug ──────────
+// (monkey-patch: replace the slug used in saves)
+const _origPersistUser = persistUser;
+async function persistUser() {
+  // Use activeProfileSlug instead of session slug for saves
+  const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
+  const slug = activeProfileSlug || session.slug || epk.slug;
+
+  const PAGINATED_SECTIONS = ['credits', 'music', 'videos', 'photos', 'assets', 'awards'];
+  const coreData = {};
+  const sectionData = {};
+
+  Object.entries(epk).forEach(([k, v]) => {
+    if (PAGINATED_SECTIONS.includes(k) && Array.isArray(v)) sectionData[k] = v;
+    else coreData[k] = v;
+  });
+
+  try {
+    await fetch('/api/epk', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'save', slug, data: coreData })
+    });
+
+    await Promise.all(
+      Object.entries(sectionData)
+        .filter(([_, items]) => items && items.length > 0)
+        .map(([section, items]) =>
+          fetch('/api/epk', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'saveSection', slug, section, items })
+          }).catch(e => console.error(`Section save failed (${section}):`, e))
+        )
+    );
+  } catch (e) { console.error('Save failed:', e); }
+}
+
+// ── NEW PROFILE MODAL ─────────────────────────────────────────────
+function openNewProfileModal() {
+  newProfileType = 'creative';
+  document.getElementById('newProfileName').value = '';
+  document.getElementById('newProfileUrlPreview').textContent = 'porfolioid.com/epk/—';
+  updateNewProfileTypeUI();
+  document.getElementById('newProfileModal').classList.add('open');
+}
+
+function closeNewProfileModal() {
+  document.getElementById('newProfileModal').classList.remove('open');
+}
+
+function selectNewProfileType(type) {
+  newProfileType = type;
+  updateNewProfileTypeUI();
+}
+
+function updateNewProfileTypeUI() {
+  ['creative','corporate','freelance','speaker'].forEach(t => {
+    const btn = document.getElementById('npt-' + t);
+    if (!btn) return;
+    btn.style.border = t === newProfileType ? '2px solid var(--gold)' : '2px solid rgba(201,168,76,0.15)';
+    btn.style.background = t === newProfileType ? 'rgba(201,168,76,0.08)' : 'var(--dark-3)';
+  });
+}
+
+// Live URL preview as user types profile name
+document.addEventListener('DOMContentLoaded', () => {
+  const nameInput = document.getElementById('newProfileName');
+  if (nameInput) {
+    nameInput.addEventListener('input', () => {
+      const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
+      const base = session.slug || 'your-slug';
+      const suffix = nameInput.value.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      const profileSlug = suffix ? `${base}--${suffix}` : base;
+      document.getElementById('newProfileUrlPreview').textContent = `porfolioid.com/epk/${profileSlug}`;
+    });
+  }
+});
+
+async function createNewProfile() {
+  const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
+  const userSlug = session.slug;
+  const nameVal = document.getElementById('newProfileName').value.trim();
+
+  if (!nameVal) {
+    document.getElementById('newProfileName').style.borderColor = 'rgba(255,100,100,0.5)';
+    return;
+  }
+
+  const suffix = nameVal.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const profileSlug = `${userSlug}--${suffix}`;
+
+  const btn = document.querySelector('#newProfileModal button[onclick="createNewProfile()"]');
+  if (btn) { btn.textContent = 'Creating...'; btn.disabled = true; }
+
+  try {
+    const res = await fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'createProfile',
+        userSlug,
+        profileSlug,
+        profileType: newProfileType,
+        profileName: nameVal,
+        name: epk.name || session.name || ''
+      })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      userProfiles.push({ profileSlug, profileType: newProfileType, profileName: nameVal, isPrimary: false });
+      closeNewProfileModal();
+      renderProfileSwitcher();
+      // Switch to the new profile
+      await switchProfile(profileSlug);
+    } else {
+      alert(data.error || 'Could not create profile. Try a different name.');
+    }
+  } catch (e) {
+    console.error('Create profile error:', e);
+    alert('Network error. Please try again.');
+  } finally {
+    if (btn) { btn.textContent = 'Create Profile'; btn.disabled = false; }
+  }
+}
+
+async function confirmDeleteProfile(profileSlug, profileName) {
+  if (!confirm(`Delete the "${profileName}" profile? This cannot be undone.`)) return;
+
+  const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
+
+  try {
+    const res = await fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'deleteProfile', userSlug: session.slug, profileSlug })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      userProfiles = userProfiles.filter(p => p.profileSlug !== profileSlug);
+      if (activeProfileSlug === profileSlug) {
+        const primary = userProfiles.find(p => p.isPrimary) || userProfiles[0];
+        await switchProfile(primary.profileSlug);
+      } else {
+        renderProfileSwitcher();
+      }
+    } else {
+      alert(data.error || 'Could not delete profile.');
+    }
+  } catch (e) {
+    console.error('Delete profile error:', e);
+  }
+}
+
+// ── PATCH showSaveBanner to optionally show a message ────────────
+const _origShowSaveBanner = showSaveBanner;
+function showSaveBanner(msg) {
+  const banner = document.getElementById('saveBanner');
+  if (!banner) return;
+  const prev = banner.textContent;
+  if (msg) banner.textContent = msg;
+  banner.classList.add('show');
+  setTimeout(() => { banner.classList.remove('show'); if (msg) banner.textContent = prev; }, 2500);
+}
+

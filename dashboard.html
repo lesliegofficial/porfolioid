@@ -13,17 +13,69 @@
 
 <div class="topbar">
   <a href="/index.html" class="topbar-logo">Porfolio<span>ID</span></a>
+
+  <!-- PROFILE SWITCHER -->
+  <div id="profileSwitcher" style="display:flex;align-items:center;gap:0.5rem;flex:1;margin:0 1.5rem;overflow-x:auto;scrollbar-width:none">
+    <!-- Profile tabs injected by JS -->
+  </div>
+
   <div class="topbar-actions">
     <span class="topbar-user" id="topbarUser"></span>
-    <a href="#" class="btn-sm btn-sm-gold" id="viewEPKBtn" target="_blank">View My Portfolio →</a>
+    <a href="#" class="btn-sm btn-sm-gold" id="viewEPKBtn" target="_blank">View Portfolio →</a>
     <button class="btn-sm btn-sm-outline" onclick="logout()">Sign Out</button>
+  </div>
+</div>
+
+<!-- NEW PROFILE MODAL -->
+<div id="newProfileModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center">
+  <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.3);padding:2.5rem;width:min(480px,90vw);position:relative">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C9A84C,#E8C97A,#C9A84C)"></div>
+    <h2 style="font-family:var(--font-display);font-size:1.4rem;color:var(--white);margin-bottom:0.5rem">New <em>Profile</em></h2>
+    <p style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);margin-bottom:2rem">Each profile has its own URL, content, and career type. Switch instantly from the top bar.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:2rem" id="newProfileTypeGrid">
+      <button onclick="selectNewProfileType('creative')" id="npt-creative" style="padding:1.25rem;background:var(--dark-3);border:2px solid rgba(201,168,76,0.15);cursor:pointer;text-align:left;transition:all 0.2s">
+        <div style="font-size:1.4rem;margin-bottom:0.4rem">🎨</div>
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--white);letter-spacing:0.08em;text-transform:uppercase">Creative</div>
+        <div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.25rem">EPK · Credits · Music · Media</div>
+      </button>
+      <button onclick="selectNewProfileType('corporate')" id="npt-corporate" style="padding:1.25rem;background:var(--dark-3);border:2px solid rgba(201,168,76,0.15);cursor:pointer;text-align:left;transition:all 0.2s">
+        <div style="font-size:1.4rem;margin-bottom:0.4rem">💼</div>
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--white);letter-spacing:0.08em;text-transform:uppercase">Corporate</div>
+        <div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.25rem">Resume · Projects · Credentials</div>
+      </button>
+      <button onclick="selectNewProfileType('freelance')" id="npt-freelance" style="padding:1.25rem;background:var(--dark-3);border:2px solid rgba(201,168,76,0.15);cursor:pointer;text-align:left;transition:all 0.2s">
+        <div style="font-size:1.4rem;margin-bottom:0.4rem">⚡</div>
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--white);letter-spacing:0.08em;text-transform:uppercase">Freelance</div>
+        <div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.25rem">Portfolio · Rates · Case Studies</div>
+      </button>
+      <button onclick="selectNewProfileType('speaker')" id="npt-speaker" style="padding:1.25rem;background:var(--dark-3);border:2px solid rgba(201,168,76,0.15);cursor:pointer;text-align:left;transition:all 0.2s">
+        <div style="font-size:1.4rem;margin-bottom:0.4rem">🎤</div>
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--white);letter-spacing:0.08em;text-transform:uppercase">Speaker</div>
+        <div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.25rem">Topics · Talks · Press Kit</div>
+      </button>
+    </div>
+
+    <div style="margin-bottom:1.5rem">
+      <label style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light);display:block;margin-bottom:0.4rem">Profile Name</label>
+      <input id="newProfileName" type="text" placeholder="e.g. Creative, Corporate, Speaker..." style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-mono);font-size:0.7rem;outline:none;box-sizing:border-box">
+      <p style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);margin-top:0.4rem">Your URL: <span id="newProfileUrlPreview" style="color:var(--gold)">porfolioid.com/epk/—</span></p>
+    </div>
+
+    <div style="display:flex;gap:0.75rem">
+      <button onclick="createNewProfile()" style="flex:1;background:var(--gold);color:#000;border:none;padding:0.85rem;font-family:var(--font-mono);font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer">Create Profile</button>
+      <button onclick="closeNewProfileModal()" style="background:none;border:1px solid rgba(255,255,255,0.15);color:var(--gray);padding:0.85rem 1.25rem;font-family:var(--font-mono);font-size:0.65rem;cursor:pointer">Cancel</button>
+    </div>
   </div>
 </div>
 
 <div class="app-layout">
   <aside class="sidebar">
     <div class="epk-url-box">
-      <div class="epk-url-label">Your Portfolio Link</div>
+      <div class="epk-url-label" style="display:flex;align-items:center;justify-content:space-between">
+        <span id="activeProfileLabel">Portfolio Link</span>
+        <span id="activeProfileBadge" style="font-family:var(--font-mono);font-size:0.48rem;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.15rem 0.5rem;letter-spacing:0.1em;text-transform:uppercase"></span>
+      </div>
       <a href="#" class="epk-url-link" id="epkUrlDisplay">—</a>
     </div>
 

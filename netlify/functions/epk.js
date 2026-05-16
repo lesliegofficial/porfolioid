@@ -328,6 +328,75 @@ exports.handler = async (event) => {
         return ok({ success: true, message: 'Migrated successfully' });
       }
 
+      // ── LIST PROFILES for a user ──
+      if (action === 'listProfiles') {
+        const { userSlug } = body;
+        if (!userSlug) return err('userSlug required');
+
+        if (!USE_SUPABASE) {
+          // Blobs: return just the primary profile
+          const store = await getBlobs();
+          const raw = await store.get(`epk:${userSlug}`);
+          if (!raw) return ok({ profiles: [] });
+          return ok({ profiles: [{ profileSlug: userSlug, profileType: 'primary', profileName: 'Primary', isPrimary: true }] });
+        }
+
+        const res = await sbGet('user_profiles', `user_slug=eq.${userSlug}&order=created_at.asc`);
+        if (!res.ok) return ok({ profiles: [] });
+        return ok({ profiles: res.data });
+      }
+
+      // ── CREATE PROFILE ──
+      if (action === 'createProfile') {
+        const { userSlug, profileSlug, profileType, profileName } = body;
+        if (!userSlug || !profileSlug) return err('userSlug and profileSlug required');
+
+        // Check slug not taken
+        const slugCheck = await sbGet('epk_profiles', `slug=eq.${profileSlug}&select=slug`);
+        if (slugCheck.ok && slugCheck.data.length > 0) return err('Profile slug already taken', 409);
+
+        // Also check users table
+        const userSlugCheck = await sbGet('users', `slug=eq.${profileSlug}&select=slug`);
+        if (userSlugCheck.ok && userSlugCheck.data.length > 0) return err('Profile slug already taken', 409);
+
+        // Create empty EPK for this profile
+        const initEpk = { slug: profileSlug, profileType: profileType || 'creative', profileName: profileName || 'My Profile', name: body.name || '' };
+        await sbUpsert('epk_profiles', { slug: profileSlug, data: initEpk, updated_at: new Date().toISOString() });
+
+        // Register in user_profiles table
+        if (USE_SUPABASE) {
+          await sb('user_profiles', 'POST', {
+            user_slug: userSlug,
+            profile_slug: profileSlug,
+            profile_type: profileType || 'creative',
+            profile_name: profileName || 'My Profile',
+            is_primary: false
+          });
+        }
+
+        return ok({ success: true, profileSlug });
+      }
+
+      // ── DELETE PROFILE ──
+      if (action === 'deleteProfile') {
+        const { userSlug, profileSlug } = body;
+        if (!userSlug || !profileSlug) return err('userSlug and profileSlug required');
+
+        // Can't delete primary profile
+        if (profileSlug === userSlug) return err('Cannot delete primary profile', 400);
+
+        if (USE_SUPABASE) {
+          await sbDelete('epk_profiles', { slug: profileSlug });
+          await sbDelete('user_profiles', { user_slug: userSlug, profile_slug: profileSlug });
+          // Delete all section data
+          for (const table of ['credits','music_tracks','videos','photos','assets','awards']) {
+            await sbDelete(table, { slug: profileSlug });
+          }
+        }
+
+        return ok({ success: true });
+      }
+
       return err('Unknown action');
     }
 

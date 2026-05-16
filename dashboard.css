@@ -209,3 +209,36 @@
     .field-row, .field-row-3 { grid-template-columns: 1fr; }
     .stats-grid { grid-template-columns: 1fr; }
   }
+
+/* ── PROFILE SWITCHER ── */
+.profile-tab {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  background: var(--dark-2); border: 1px solid rgba(201,168,76,0.15);
+  color: var(--gray); font-family: var(--font-mono); font-size: 0.58rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer; white-space: nowrap; transition: all 0.2s;
+  position: relative;
+}
+.profile-tab:hover { border-color: rgba(201,168,76,0.35); color: var(--white); }
+.profile-tab.active {
+  background: rgba(201,168,76,0.12); border-color: var(--gold);
+  color: var(--white);
+}
+.profile-tab.active::after {
+  content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+  height: 2px; background: var(--gold);
+}
+.profile-tab-add {
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  background: none; border: 1px dashed rgba(201,168,76,0.25);
+  color: rgba(201,168,76,0.5); font-family: var(--font-mono); font-size: 0.55rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; white-space: nowrap; transition: all 0.2s; margin-left: 0.25rem;
+}
+.profile-tab-add:hover { border-color: var(--gold); color: var(--gold); }
+#profileSwitcher::-webkit-scrollbar { display: none; }
+
+/* NEW PROFILE MODAL */
+#newProfileModal.open { display: flex !important; }
