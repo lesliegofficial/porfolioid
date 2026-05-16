@@ -379,6 +379,7 @@ function showSaveBanner() {
 function showPanel(name) {
   if (name === 'qr') setTimeout(initQRPanel, 100);
   if (name === 'sections') setTimeout(initSectionsPanel, 100);
+  if (name === 'bio') setTimeout(loadSpanish, 100);
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById(`panel-${name}`).classList.add('active');
@@ -2038,3 +2039,36 @@ function logout() {
 }
 
 init();
+
+// ── SPANISH TRANSLATION ──
+function loadSpanish() {
+  const es = window._epkData?.es || {};
+  const shortBio = document.getElementById('esShortBio');
+  const bio = document.getElementById('esBio');
+  const taglines = document.getElementById('esTaglines');
+  if (shortBio) shortBio.value = es.shortBio || '';
+  if (bio) bio.value = es.bio || '';
+  if (taglines) taglines.value = (es.taglines || []).join('\n');
+}
+
+async function saveSpanish() {
+  const epk = window._epkData;
+  if (!epk) return;
+  if (!epk.es) epk.es = {};
+  epk.es.shortBio = document.getElementById('esShortBio')?.value || '';
+  epk.es.bio = document.getElementById('esBio')?.value || '';
+  const taglinesRaw = document.getElementById('esTaglines')?.value || '';
+  epk.es.taglines = taglinesRaw.split('\n').map(t => t.trim()).filter(Boolean);
+
+  const slug = document.getElementById('portfolioSlug')?.textContent?.replace('porfolioid.com/epk/', '').trim();
+  if (!slug) { showToast('Could not find slug'); return; }
+  try {
+    const res = await fetch('/.netlify/functions/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, data: epk })
+    });
+    if (res.ok) showToast('Spanish content saved ✓');
+    else showToast('Save failed');
+  } catch(e) { showToast('Error saving'); }
+}

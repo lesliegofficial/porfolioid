@@ -14,7 +14,11 @@
 <nav>
   <a href="/index.html" class="nav-logo">Porfolio<span>ID</span></a>
   <ul class="nav-links" id="navLinks"></ul>
-  <button onclick="toggleEditMode()" class="nav-edit-btn" id="editBtn">Edit Portfolio</button>
+  <div style="display:flex;align-items:center;gap:0.75rem">
+    <button onclick="toggleLang('en')" id="langEN" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.4);padding:0.3rem 0.6rem;cursor:pointer;transition:all 0.2s">EN</button>
+    <button onclick="toggleLang('es')" id="langES" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;background:none;color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.15);padding:0.3rem 0.6rem;cursor:pointer;transition:all 0.2s">ES</button>
+    <button onclick="toggleEditMode()" class="nav-edit-btn" id="editBtn">Edit Portfolio</button>
+  </div>
 </nav>
 
 

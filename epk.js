@@ -1225,6 +1225,53 @@ document.addEventListener('keydown', e => {
 });
 
 // ══════════════════════════════════════════════
+// LANGUAGE TOGGLE EN/ES
+// ══════════════════════════════════════════════
+let _currentLang = 'en';
+
+function toggleLang(lang) {
+  _currentLang = lang;
+  const epk = window._epkData;
+  if (!epk) return;
+
+  const btnEN = document.getElementById('langEN');
+  const btnES = document.getElementById('langES');
+  const activeStyle = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.4);padding:0.3rem 0.6rem;cursor:pointer;transition:all 0.2s';
+  const inactiveStyle = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;background:none;color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.15);padding:0.3rem 0.6rem;cursor:pointer;transition:all 0.2s';
+
+  if (btnEN) btnEN.style.cssText = lang === 'en' ? activeStyle : inactiveStyle;
+  if (btnES) btnES.style.cssText = lang === 'es' ? activeStyle : inactiveStyle;
+
+  const es = epk.es || {};
+
+  // Swap bio text
+  const bioEl = document.getElementById('bioShort');
+  if (bioEl) {
+    const text = lang === 'es' && es.bio ? es.bio : (epk.shortBio || (epk.bio||'').split('\n')[0] || '');
+    bioEl.innerHTML = `<p style="margin-bottom:1.5em">${text}</p>`;
+  }
+
+  // Swap taglines
+  const taglineEl = document.querySelector('.hero-tagline');
+  if (taglineEl) {
+    const taglines = lang === 'es' && es.taglines ? es.taglines : (epk.taglines || []);
+    taglineEl.innerHTML = taglines.join('<br>');
+  }
+
+  // Swap section titles
+  const titleMap = {
+    careerTitle: lang === 'es' ? (es.careerTitle || 'Identidad <em>Profesional</em>') : 'Professional <em>Identity</em>',
+    creditsTitle: lang === 'es' ? (es.creditsTitle || 'El Récord') : 'The Record',
+    photosTitle:  lang === 'es' ? (es.photosTitle  || 'En Escena & Detrás de Cámaras') : 'On Stage & Behind the Scenes',
+    videoTitle:   lang === 'es' ? (es.videoTitle   || 'En Vivo & En Cámara') : 'Live & On Camera',
+  };
+  Object.entries(titleMap).forEach(([key, val]) => {
+    const el = document.querySelector(`[data-editable-key="${key}"]`);
+    if (el) el.innerHTML = val;
+  });
+}
+
+// ══════════════════════════════════════════════
 // INLINE EDIT MODE
 // ══════════════════════════════════════════════
 let _editMode = false;
