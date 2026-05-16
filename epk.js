@@ -232,8 +232,10 @@ function buildEPK(epk) {
           ${bioPortrait}
           ${bioContent}
         </div>
-        ${resumeCards[0] ? buildResumeCard(resumeCards[0]) : ''}
-        ${resumeCards[1] ? buildResumeCard(resumeCards[1]) : ''}
+        <div class="career-threecol-cards">
+          ${resumeCards[0] ? buildResumeCard(resumeCards[0]) : ''}
+          ${resumeCards[1] ? buildResumeCard(resumeCards[1]) : ''}
+        </div>
       </div>
       ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}
     `;
