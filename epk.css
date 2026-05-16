@@ -623,3 +623,6 @@
     font-weight: 400;
     margin-bottom: 1em;
   }
+
+  .career-bio-below { margin-top: 1.5rem; padding-bottom: 3rem; }
+  .career-bio-below p { font-size: 0.95rem; color: var(--white); line-height: 1.8; font-weight: 400; margin-bottom: 1em; }
