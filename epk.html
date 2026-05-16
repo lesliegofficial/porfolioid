@@ -32,6 +32,12 @@
     <button class="credit-modal-close" onclick="closeCreditModal()">✕ CLOSE</button>
     <div class="credit-modal-artist" id="creditModalArtist"></div>
     <div class="credit-modal-meta" id="creditModalMeta"></div>
+    <div class="modal-font-controls">
+      <span class="modal-font-label">Text Size</span>
+      <button class="modal-font-btn" onclick="adjustModalFont(-1)">A−</button>
+      <button class="modal-font-btn" onclick="adjustModalFont(0)">A</button>
+      <button class="modal-font-btn" onclick="adjustModalFont(1)">A+</button>
+    </div>
     <div class="credit-modal-desc" id="creditModalDesc"></div>
     <div id="creditModalCollaborators"></div>
     <div id="creditModalMedia" style="margin-top:1.25rem"></div>

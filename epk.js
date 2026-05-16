@@ -901,6 +901,18 @@ function toggleAllVideos() {
   btn.textContent = isHidden ? 'Show Less –' : 'View All Videos +';
 }
 
+// Modal font size control
+let _modalFontSize = 1.0; // rem, default
+function adjustModalFont(dir) {
+  const desc = document.getElementById('creditModalDesc');
+  if (!desc) return;
+  if (dir === 0) { _modalFontSize = 1.0; }
+  else { _modalFontSize = Math.min(1.5, Math.max(0.8, _modalFontSize + dir * 0.1)); }
+  desc.style.fontSize = _modalFontSize + 'rem';
+  // Also scale line height for readability
+  desc.style.lineHeight = _modalFontSize > 1.1 ? '2' : '1.9';
+}
+
 // Credits collapse/expand
 function toggleAllCredits() {
   const grid = document.getElementById('creditsGrid');

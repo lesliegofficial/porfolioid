@@ -95,7 +95,11 @@
   .credit-modal-close:hover { border-color: var(--gold); color: var(--white); }
   .credit-modal-artist { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem; }
   .credit-modal-meta { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
-  .credit-modal-desc { font-size: 0.9rem; color: var(--gray); line-height: 1.85; white-space: pre-line; margin-bottom: 1.5rem; }
+  .credit-modal-desc { font-size: 1rem; color: var(--gray); line-height: 1.9; white-space: pre-line; margin-bottom: 1.5rem; transition: font-size 0.2s; }
+  .modal-font-controls { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; }
+  .modal-font-btn { font-family: var(--font-mono); background: none; border: 1px solid rgba(255,255,255,0.12); color: var(--gray); cursor: pointer; padding: 0.25rem 0.65rem; font-size: 0.7rem; letter-spacing: 0.08em; transition: all 0.2s; }
+  .modal-font-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .modal-font-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.25); text-transform: uppercase; }
   .credit-modal-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.5rem; margin-top: 1.5rem; padding-bottom: 1rem; }
   .credit-modal-photo { width: 100%; object-fit: contain; background: var(--dark-3); cursor: pointer; border: 1px solid rgba(201,168,76,0.1); transition: opacity 0.2s; max-height: 280px; }
   .credit-modal-photo:hover { opacity: 0.85; }
