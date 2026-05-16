@@ -28,7 +28,7 @@ function buildEPK(epk) {
   // Build nav
   const navLinks = document.getElementById('navLinks');
   navLinks.innerHTML = '';
-  const sections = [
+  const ALL_SECTIONS = [
     { id: 'bio', label: 'Career Profile' },
     { id: 'credits', label: 'Credits' },
     { id: 'photos', label: 'Photos' },
@@ -38,6 +38,11 @@ function buildEPK(epk) {
     { id: 'assets', label: 'Assets' },
     { id: 'booking', label: 'Booking' },
   ];
+  const sectionOrder = epk.sectionOrder || ALL_SECTIONS.map(s => s.id);
+  const sectionVisibility = epk.sectionVisibility || {};
+  const sections = sectionOrder
+    .map(id => ALL_SECTIONS.find(s => s.id === id))
+    .filter(s => s && sectionVisibility[s.id] !== false);
   sections.forEach(s => {
     navLinks.innerHTML += `<li><a href="#${s.id}">${s.label}</a></li>`;
   });
