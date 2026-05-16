@@ -167,7 +167,7 @@ function buildEPK(epk) {
   const bioParas = (epk.bio || '').split('\n').filter(p => p.trim());
   const shortBio = epk.shortBio || (bioParas[0] || '');
   const hasMoreBio = bioParas.length > 1;
-  const bioParagraphs = bioParas.slice(1).map(p => `<p style="margin-bottom:1.5em">${p}</p>`).join('');
+  const bioParagraphs = bioParas.slice(1).map(p => `<p>${p}</p>`).join('');
   const shortBioHTML = `<p style="margin-bottom:1.5em">${shortBio}</p>`;
 
   // Build career profile resume card
@@ -205,7 +205,7 @@ function buildEPK(epk) {
     </div>`;
 
   const bioFullContent = hasMoreBio ? `
-    <div id="bioFull" style="display:none;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(201,168,76,0.1)">
+    <div id="bioFull" style="display:none">
       ${bioParagraphs}
     </div>` : '';
 
