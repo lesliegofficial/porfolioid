@@ -301,7 +301,7 @@
   @media (max-width: 768px) { .gallery-scroll-item { width: 220px; height: 300px; } }
 
   /* CAREER PROFILE SECTION */
-  .career-profile-section { padding: 3rem 0; }
+  .career-profile-section { padding: 3rem 0 0; }
   .career-profile-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
 
   /* Stacked layout */
@@ -610,6 +610,7 @@
   .career-bio-full-width {
     margin-top: 0;
     padding-top: 0;
+    padding-bottom: 3rem;
   }
   .career-bio-full-width p {
     font-size: 0.95rem;
