@@ -228,17 +228,15 @@ function buildEPK(epk) {
   } else if (careerLayout === 'threecol') {
     careerProfileHTML = `
       <div class="career-threecol">
-        <div class="career-threecol-bio">
-          ${bioPortrait}
-        </div>
+        <div class="career-threecol-photo">${bioPortrait}</div>
         <div class="career-threecol-cards">
           ${resumeCards[0] ? buildResumeCard(resumeCards[0]) : ''}
           ${resumeCards[1] ? buildResumeCard(resumeCards[1]) : ''}
         </div>
-      </div>
-      <div class="career-bio-below">
-        ${bioContent}
-        ${bioFullContent || ''}
+        <div class="career-threecol-biotext">
+          ${bioContent}
+          ${bioFullContent || ''}
+        </div>
       </div>
     `;
   } else {
