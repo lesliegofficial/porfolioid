@@ -998,78 +998,154 @@
     </div>
 
     <div class="panel" id="panel-qr">
-      <h1 class="panel-title">Share Card & <em>QR Code</em></h1>
-      <p class="panel-sub">Your portfolio. One scan away. Share it anywhere — events, meetings, networking, studio sessions.</p>
+      <h1 class="panel-title">Smart Share <em>Card</em></h1>
+      <p class="panel-sub">Three QR modes for every situation. One scan. Your full professional identity.</p>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem">
+      <!-- MODE SELECTOR -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-top:2rem" id="qrModeSelector">
 
-        <!-- QR Preview -->
+        <button onclick="setQRMode('artist')" id="qrMode-artist" style="padding:1.25rem 1rem;background:var(--dark-2);border:2px solid rgba(201,168,76,0.15);cursor:pointer;text-align:left;transition:all 0.3s;position:relative">
+          <div style="font-size:1.5rem;margin-bottom:0.5rem">🎨</div>
+          <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);margin-bottom:0.3rem">Artist QR</div>
+          <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);line-height:1.5">EPK · Credits · Music · Videos · Socials</div>
+          <div id="qrMode-artist-check" style="display:none;position:absolute;top:0.75rem;right:0.75rem;width:18px;height:18px;background:var(--gold);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:0.55rem">✓</div>
+        </button>
+
+        <button onclick="setQRMode('career')" id="qrMode-career" style="padding:1.25rem 1rem;background:var(--dark-2);border:2px solid rgba(201,168,76,0.15);cursor:pointer;text-align:left;transition:all 0.3s;position:relative">
+          <div style="font-size:1.5rem;margin-bottom:0.5rem">💼</div>
+          <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);margin-bottom:0.3rem">Career QR</div>
+          <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);line-height:1.5">Resume · Experience · Certifications · Assets</div>
+          <div id="qrMode-career-check" style="display:none;position:absolute;top:0.75rem;right:0.75rem;width:18px;height:18px;background:var(--gold);border-radius:50%;align-items:center;justify-content:center;font-size:0.55rem">✓</div>
+        </button>
+
+        <button onclick="setQRMode('event')" id="qrMode-event" style="padding:1.25rem 1rem;background:var(--dark-2);border:2px solid rgba(201,168,76,0.15);cursor:pointer;text-align:left;transition:all 0.3s;position:relative">
+          <div style="font-size:1.5rem;margin-bottom:0.5rem">⚡</div>
+          <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);margin-bottom:0.3rem">Event QR</div>
+          <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);line-height:1.5">Temporary · Expirable · Trackable</div>
+          <div id="qrMode-event-check" style="display:none;position:absolute;top:0.75rem;right:0.75rem;width:18px;height:18px;background:var(--gold);border-radius:50%;align-items:center;justify-content:center;font-size:0.55rem">✓</div>
+        </button>
+
+      </div>
+
+      <!-- EVENT QR OPTIONS (shown only for event mode) -->
+      <div id="eventQROptions" style="display:none;margin-top:1.5rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.2);padding:1.5rem">
+        <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">⚡ Event Settings</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div>
+            <label style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light);display:block;margin-bottom:0.4rem">Event Name</label>
+            <input id="eventQRName" type="text" placeholder="e.g. MIDEM 2025, A3C Panel..." style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.15);color:var(--white);padding:0.6rem 0.75rem;font-family:var(--font-mono);font-size:0.65rem;outline:none">
+          </div>
+          <div>
+            <label style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light);display:block;margin-bottom:0.4rem">Expires On</label>
+            <input id="eventQRExpiry" type="date" style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.15);color:var(--white);padding:0.6rem 0.75rem;font-family:var(--font-mono);font-size:0.65rem;outline:none">
+          </div>
+        </div>
+        <div style="margin-top:1rem">
+          <label style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light);display:block;margin-bottom:0.4rem">Event Note <span style="color:var(--gray)">(optional — appears on scan landing page)</span></label>
+          <input id="eventQRNote" type="text" placeholder="e.g. Scanning from my panel at A3C — let's connect!" style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.15);color:var(--white);padding:0.6rem 0.75rem;font-family:var(--font-mono);font-size:0.65rem;outline:none">
+        </div>
+        <div id="eventQRScanCount" style="margin-top:1rem;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray)">Scans: <span id="scanCountNum" style="color:var(--gold);font-weight:600">0</span></div>
+      </div>
+
+      <!-- SECTION VISIBILITY FOR THIS QR -->
+      <div style="margin-top:1.5rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.5rem">
+        <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.25rem">Visible Sections</div>
+        <p style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-bottom:1rem">Choose what this QR shows when scanned. Defaults match your mode.</p>
+        <div id="qrSectionToggles" style="display:flex;flex-wrap:wrap;gap:0.6rem"></div>
+      </div>
+
+      <!-- MAIN GRID: QR + SHARE CARD PREVIEW -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:1.5rem">
+
+        <!-- LEFT: QR Code -->
         <div style="display:flex;flex-direction:column;align-items:center;background:var(--dark-2);border:1px solid rgba(201,168,76,0.15);padding:2rem">
-          <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Your QR Code</div>
-          <div id="qrCodeDisplay" style="background:white;padding:1rem;margin-bottom:1.5rem"></div>
-          <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);text-align:center;margin-bottom:1.5rem" id="qrUrlDisplay">—</div>
+          <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">QR Code</div>
+          <div id="qrCodeDisplay" style="background:white;padding:1rem;margin-bottom:1rem"></div>
+          <div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);text-align:center;margin-bottom:0.5rem" id="qrModeLabel">— select a mode —</div>
+          <div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);text-align:center;margin-bottom:1.5rem;word-break:break-all" id="qrUrlDisplay">—</div>
           <div style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center">
-            <button class="btn-save" onclick="downloadQR()" style="font-size:0.6rem;padding:0.6rem 1.25rem">↓ Download QR</button>
+            <button class="btn-save" onclick="downloadQR()" style="font-size:0.6rem;padding:0.6rem 1.25rem">↓ QR PNG</button>
             <button class="btn-add" onclick="copyPortfolioLink()" id="copyLinkBtn" style="font-size:0.6rem;padding:0.6rem 1.25rem">⎘ Copy Link</button>
           </div>
         </div>
 
-        <!-- Share Options -->
-        <div style="display:flex;flex-direction:column;gap:1rem">
-          <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">Share Options</div>
+        <!-- RIGHT: Smart Share Card Preview -->
+        <div style="display:flex;flex-direction:column">
+          <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Smart Share Card Preview</div>
 
-          <button onclick="shareVia('email')" style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1rem 1.25rem;cursor:pointer;text-align:left;transition:border-color 0.3s;width:100%" onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.1)'">
-            <span style="font-size:1.25rem">✉</span>
-            <div>
-              <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white)">Share by Email</div>
-              <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);margin-top:0.2rem">Opens your email with portfolio link</div>
+          <!-- THE CARD -->
+          <div id="smartShareCard" style="background:#0E0E0E;border:1px solid rgba(201,168,76,0.3);padding:1.5rem;position:relative;flex:1;min-height:260px">
+            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C9A84C,#E8C97A,#C9A84C)"></div>
+
+            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+              <div id="shareCardPhoto" style="width:52px;height:52px;border-radius:50%;background:var(--dark-3);border:2px solid var(--gold);overflow:hidden;flex-shrink:0">
+                <img id="shareCardPhotoImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none">
+                <div id="shareCardPhotoInitial" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.2rem;color:var(--gold)">L</div>
+              </div>
+              <div>
+                <div id="shareCardName" style="font-family:var(--font-display);font-size:1rem;color:var(--white);font-weight:700">Leslie Guerra</div>
+                <div id="shareCardTagline" style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gold);margin-top:0.15rem">—</div>
+              </div>
+              <div id="shareCardModeBadge" style="margin-left:auto;font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.12em;text-transform:uppercase;color:#000;background:var(--gold);padding:0.25rem 0.6rem;align-self:flex-start">ARTIST</div>
             </div>
-          </button>
 
-          <button onclick="shareVia('sms')" style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1rem 1.25rem;cursor:pointer;text-align:left;transition:border-color 0.3s;width:100%" onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.1)'">
-            <span style="font-size:1.25rem">💬</span>
-            <div>
-              <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white)">Share by Text</div>
-              <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);margin-top:0.2rem">Send your portfolio link via SMS</div>
+            <div id="shareCardSections" style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);margin-bottom:1rem;line-height:1.8"></div>
+
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:1rem">
+              <div>
+                <div style="font-family:var(--font-mono);font-size:0.45rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);margin-bottom:0.25rem">PorfolioID</div>
+                <div id="shareCardUrl" style="font-family:var(--font-mono);font-size:0.48rem;color:var(--gold)">porfolioid.com/epk.html?slug=—</div>
+              </div>
+              <div id="shareCardQRMini" style="background:white;padding:4px;width:52px;height:52px;display:flex;align-items:center;justify-content:center">
+                <img id="shareCardQRImg" src="" alt="QR" style="width:44px;height:44px">
+              </div>
             </div>
-          </button>
+          </div>
 
-          <button onclick="shareVia('native')" style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1rem 1.25rem;cursor:pointer;text-align:left;transition:border-color 0.3s;width:100%" onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.1)'">
-            <span style="font-size:1.25rem">↗</span>
-            <div>
-              <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white)">Share Portfolio</div>
-              <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);margin-top:0.2rem">Share via any app on your device</div>
-            </div>
-          </button>
-
-          <div style="margin-top:1rem;padding:1rem;background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.1)">
-            <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">💡 Pro Tip</div>
-            <p style="font-family:var(--font-mono);font-size:0.58rem;color:var(--gray);line-height:1.7">Download your QR code and save it to your phone. At any event, meeting, or studio session — show it and say <em style="color:var(--white)">"Here, scan this."</em></p>
+          <div style="margin-top:0.75rem;display:flex;gap:0.75rem">
+            <button onclick="downloadShareCard()" class="btn-save" style="font-size:0.6rem;padding:0.6rem 1rem;flex:1">↓ Download Card</button>
+            <button onclick="shareCardVia('native')" class="btn-add" style="font-size:0.6rem;padding:0.6rem 1rem;flex:1">↗ Share Card</button>
           </div>
         </div>
 
       </div>
 
-      <!-- Coming Soon -->
-      <div style="margin-top:2rem;padding:1.5rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.1)">
-        <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Coming Soon — Smart Share Modes</div>
-        <div style="display:flex;gap:1rem;flex-wrap:wrap">
-          <div style="flex:1;min-width:160px;padding:1rem;background:var(--dark-3);border:1px solid rgba(255,255,255,0.05)">
-            <div style="font-size:1.2rem;margin-bottom:0.5rem">🎨</div>
-            <div style="font-family:var(--font-mono);font-size:0.58rem;color:var(--white);margin-bottom:0.25rem">Artist QR</div>
-            <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray)">EPK, credits, music, socials</div>
-          </div>
-          <div style="flex:1;min-width:160px;padding:1rem;background:var(--dark-3);border:1px solid rgba(255,255,255,0.05)">
-            <div style="font-size:1.2rem;margin-bottom:0.5rem">💼</div>
-            <div style="font-family:var(--font-mono);font-size:0.58rem;color:var(--white);margin-bottom:0.25rem">Career QR</div>
-            <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray)">Resume, certifications, experience</div>
-          </div>
-          <div style="flex:1;min-width:160px;padding:1rem;background:var(--dark-3);border:1px solid rgba(255,255,255,0.05)">
-            <div style="font-size:1.2rem;margin-bottom:0.5rem">⚡</div>
-            <div style="font-family:var(--font-mono);font-size:0.58rem;color:var(--white);margin-bottom:0.25rem">Event QR</div>
-            <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray)">Temporary, expirable, trackable</div>
-          </div>
+      <!-- SEND OPTIONS -->
+      <div style="margin-top:2rem">
+        <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Send It</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem">
+
+          <button onclick="shareVia('email')" style="display:flex;align-items:center;gap:0.75rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:0.875rem 1rem;cursor:pointer;text-align:left;transition:border-color 0.3s" onmouseover="this.style.borderColor='rgba(201,168,76,0.35)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.1)'">
+            <span style="font-size:1.1rem">✉</span>
+            <div>
+              <div style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--white)">Email</div>
+              <div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.15rem">With portfolio link</div>
+            </div>
+          </button>
+
+          <button onclick="shareVia('sms')" style="display:flex;align-items:center;gap:0.75rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:0.875rem 1rem;cursor:pointer;text-align:left;transition:border-color 0.3s" onmouseover="this.style.borderColor='rgba(201,168,76,0.35)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.1)'">
+            <span style="font-size:1.1rem">💬</span>
+            <div>
+              <div style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--white)">Text</div>
+              <div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.15rem">Via SMS</div>
+            </div>
+          </button>
+
+          <button onclick="shareVia('native')" style="display:flex;align-items:center;gap:0.75rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:0.875rem 1rem;cursor:pointer;text-align:left;transition:border-color 0.3s" onmouseover="this.style.borderColor='rgba(201,168,76,0.35)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.1)'">
+            <span style="font-size:1.1rem">↗</span>
+            <div>
+              <div style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--white)">Share</div>
+              <div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.15rem">Any app</div>
+            </div>
+          </button>
+
         </div>
+      </div>
+
+      <!-- PRO TIP -->
+      <div style="margin-top:1.5rem;padding:1rem 1.25rem;background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.12)">
+        <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">💡 Pro Tip</div>
+        <p style="font-family:var(--font-mono);font-size:0.58rem;color:var(--gray);line-height:1.7">Save your QR to your phone lock screen. At any event, meeting, or studio session — hold up your phone and say <em style="color:var(--white)">"Here, scan this."</em> No fumbling for links. No exchanging numbers. Just your full career story in one scan.</p>
       </div>
 
     </div>

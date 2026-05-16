@@ -1510,42 +1510,339 @@ function renderPressItems() {
     </div>`).join('');
 }
 
-// QR CODE / SMART SHARE
+// QR CODE / SMART SHARE — PHASE 5
+let currentQRMode = 'artist';
+let qrScanCounts = {};
+
+const QR_MODE_CONFIG = {
+  artist: {
+    label: 'ARTIST QR',
+    badge: 'ARTIST',
+    emoji: '🎨',
+    param: 'mode=artist',
+    sections: ['bio','credits','music','videos','photos','booking','socials'],
+    defaultOn: ['bio','credits','music','videos','socials'],
+    tagline: 'EPK · Credits · Music · Videos · Socials'
+  },
+  career: {
+    label: 'CAREER QR',
+    badge: 'CAREER',
+    emoji: '💼',
+    param: 'mode=career',
+    sections: ['bio','credits','assets','awards','booking','socials'],
+    defaultOn: ['bio','credits','assets','awards'],
+    tagline: 'Resume · Experience · Certifications · Assets'
+  },
+  event: {
+    label: 'EVENT QR',
+    badge: 'EVENT',
+    emoji: '⚡',
+    param: 'mode=event',
+    sections: ['bio','credits','music','videos','assets','booking','socials'],
+    defaultOn: ['bio','credits','music','socials'],
+    tagline: 'Temporary · Expirable · Trackable'
+  }
+};
+
+const SECTION_LABELS = {
+  bio: 'Bio', credits: 'Credits', music: 'Music', videos: 'Videos',
+  photos: 'Photos', assets: 'Assets', awards: 'Awards', booking: 'Booking', socials: 'Socials'
+};
+
 function initQRPanel() {
+  const saved = JSON.parse(localStorage.getItem('porfolioid_qr_settings') || '{}');
+  currentQRMode = saved.mode || 'artist';
+  qrScanCounts = JSON.parse(localStorage.getItem('porfolioid_scan_counts') || '{}');
+
+  // Restore event fields
+  if (saved.eventName) document.getElementById('eventQRName') && (document.getElementById('eventQRName').value = saved.eventName);
+  if (saved.eventExpiry) document.getElementById('eventQRExpiry') && (document.getElementById('eventQRExpiry').value = saved.eventExpiry);
+  if (saved.eventNote) document.getElementById('eventQRNote') && (document.getElementById('eventQRNote').value = saved.eventNote);
+
+  setQRMode(currentQRMode, true);
+}
+
+function setQRMode(mode, init) {
+  currentQRMode = mode;
+
+  // Update button styles
+  ['artist','career','event'].forEach(m => {
+    const btn = document.getElementById('qrMode-' + m);
+    if (!btn) return;
+    if (m === mode) {
+      btn.style.border = '2px solid var(--gold)';
+      btn.style.background = 'rgba(201,168,76,0.08)';
+    } else {
+      btn.style.border = '2px solid rgba(201,168,76,0.15)';
+      btn.style.background = 'var(--dark-2)';
+    }
+  });
+
+  // Show/hide event options
+  const eventOpts = document.getElementById('eventQROptions');
+  if (eventOpts) eventOpts.style.display = mode === 'event' ? 'block' : 'none';
+
+  // Build section toggles
+  buildQRSectionToggles(mode);
+
+  // Update QR
+  refreshQRCode();
+
+  // Update share card preview
+  updateShareCardPreview();
+
+  // Save
+  if (!init) saveQRSettings();
+}
+
+function buildQRSectionToggles(mode) {
+  const container = document.getElementById('qrSectionToggles');
+  if (!container) return;
+
+  const config = QR_MODE_CONFIG[mode];
+  const saved = JSON.parse(localStorage.getItem('porfolioid_qr_settings') || '{}');
+  const savedSections = saved.sections && saved.sections[mode] ? saved.sections[mode] : config.defaultOn;
+
+  container.innerHTML = config.sections.map(s => {
+    const on = savedSections.includes(s);
+    return `<label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-family:var(--font-mono);font-size:0.58rem;color:${on ? 'var(--white)' : 'var(--gray)'};background:${on ? 'rgba(201,168,76,0.1)' : 'var(--dark-3)'};border:1px solid ${on ? 'rgba(201,168,76,0.3)' : 'rgba(255,255,255,0.05)'};padding:0.4rem 0.75rem;transition:all 0.2s" id="qrtoggle-label-${s}">
+      <input type="checkbox" id="qrtoggle-${s}" ${on ? 'checked' : ''} onchange="onQRSectionToggle('${s}')" style="accent-color:var(--gold)">
+      ${SECTION_LABELS[s] || s}
+    </label>`;
+  }).join('');
+}
+
+function onQRSectionToggle(section) {
+  const cb = document.getElementById('qrtoggle-' + section);
+  const label = document.getElementById('qrtoggle-label-' + section);
+  if (!cb || !label) return;
+  if (cb.checked) {
+    label.style.color = 'var(--white)';
+    label.style.background = 'rgba(201,168,76,0.1)';
+    label.style.border = '1px solid rgba(201,168,76,0.3)';
+  } else {
+    label.style.color = 'var(--gray)';
+    label.style.background = 'var(--dark-3)';
+    label.style.border = '1px solid rgba(255,255,255,0.05)';
+  }
+  updateShareCardPreview();
+  saveQRSettings();
+}
+
+function getSelectedSections() {
+  const config = QR_MODE_CONFIG[currentQRMode];
+  return config.sections.filter(s => {
+    const cb = document.getElementById('qrtoggle-' + s);
+    return cb && cb.checked;
+  });
+}
+
+function buildQRUrl() {
   const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
   const slug = session.slug || epk.slug || '';
-  if (!slug) return;
+  if (!slug) return '';
 
-  const portfolioUrl = `https://porfolioid.com/epk.html?slug=${slug}`;
+  let url = `https://porfolioid.com/epk.html?slug=${slug}&qr=${currentQRMode}`;
 
-  // Update URL display
+  if (currentQRMode === 'event') {
+    const nameEl = document.getElementById('eventQRName');
+    const expiryEl = document.getElementById('eventQRExpiry');
+    if (nameEl && nameEl.value) url += `&event=${encodeURIComponent(nameEl.value)}`;
+    if (expiryEl && expiryEl.value) url += `&expires=${expiryEl.value}`;
+  }
+
+  const sections = getSelectedSections();
+  if (sections.length) url += `&sections=${sections.join(',')}`;
+
+  return url;
+}
+
+function refreshQRCode() {
+  const url = buildQRUrl();
+  if (!url) return;
+
+  const display = document.getElementById('qrCodeDisplay');
   const urlDisplay = document.getElementById('qrUrlDisplay');
-  if (urlDisplay) urlDisplay.textContent = portfolioUrl;
+  const modeLabel = document.getElementById('qrModeLabel');
+  const config = QR_MODE_CONFIG[currentQRMode];
 
-  // Generate QR using free QR API
-  const qrDisplay = document.getElementById('qrCodeDisplay');
-  if (qrDisplay) {
-    qrDisplay.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(portfolioUrl)}&color=000000&bgcolor=ffffff&margin=10" alt="Portfolio QR Code" style="width:200px;height:200px;display:block">`;
+  if (urlDisplay) urlDisplay.textContent = url;
+  if (modeLabel) modeLabel.textContent = config.label;
+
+  if (display) {
+    display.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}&color=000000&bgcolor=ffffff&margin=10" alt="QR Code" style="width:200px;height:200px;display:block">`;
+  }
+
+  // Update mini QR in share card
+  const miniImg = document.getElementById('shareCardQRImg');
+  if (miniImg) {
+    miniImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(url)}&color=000000&bgcolor=ffffff&margin=5`;
   }
 }
 
-function downloadQR() {
+function updateShareCardPreview() {
+  const config = QR_MODE_CONFIG[currentQRMode];
   const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
   const slug = session.slug || epk.slug || '';
-  const portfolioUrl = `https://porfolioid.com/epk.html?slug=${slug}`;
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(portfolioUrl)}&color=000000&bgcolor=ffffff&margin=20`;
+
+  // Badge
+  const badge = document.getElementById('shareCardModeBadge');
+  if (badge) badge.textContent = config.badge;
+
+  // Name
+  const nameEl = document.getElementById('shareCardName');
+  if (nameEl) nameEl.textContent = epk.name || 'Leslie Guerra';
+
+  // Tagline
+  const taglineEl = document.getElementById('shareCardTagline');
+  if (taglineEl) {
+    if (currentQRMode === 'event') {
+      const evtName = document.getElementById('eventQRName');
+      taglineEl.textContent = evtName && evtName.value ? '⚡ ' + evtName.value : config.tagline;
+    } else {
+      taglineEl.textContent = epk.tagline || config.tagline;
+    }
+  }
+
+  // URL
+  const urlEl = document.getElementById('shareCardUrl');
+  if (urlEl) urlEl.textContent = slug ? `porfolioid.com/epk.html?slug=${slug}` : 'porfolioid.com';
+
+  // Photo
+  const img = document.getElementById('shareCardPhotoImg');
+  const initial = document.getElementById('shareCardPhotoInitial');
+  if (epk.photo) {
+    if (img) { img.src = epk.photo; img.style.display = 'block'; }
+    if (initial) initial.style.display = 'none';
+  } else {
+    if (img) img.style.display = 'none';
+    if (initial) {
+      initial.style.display = 'flex';
+      initial.textContent = (epk.name || 'L')[0].toUpperCase();
+    }
+  }
+
+  // Sections list
+  const sections = getSelectedSections();
+  const sectionsEl = document.getElementById('shareCardSections');
+  if (sectionsEl) {
+    sectionsEl.textContent = sections.map(s => SECTION_LABELS[s]).join(' · ');
+  }
+
+  // Scan count for event
+  const scanCountEl = document.getElementById('scanCountNum');
+  if (scanCountEl) {
+    const key = currentQRMode === 'event' ? 'event_' + (document.getElementById('eventQRName') || {value:''}).value : currentQRMode;
+    scanCountEl.textContent = qrScanCounts[key] || 0;
+  }
+}
+
+function saveQRSettings() {
+  const saved = JSON.parse(localStorage.getItem('porfolioid_qr_settings') || '{}');
+  saved.mode = currentQRMode;
+
+  // Save section selections per mode
+  if (!saved.sections) saved.sections = {};
+  saved.sections[currentQRMode] = getSelectedSections();
+
+  // Save event fields
+  const nameEl = document.getElementById('eventQRName');
+  const expiryEl = document.getElementById('eventQRExpiry');
+  const noteEl = document.getElementById('eventQRNote');
+  if (nameEl) saved.eventName = nameEl.value;
+  if (expiryEl) saved.eventExpiry = expiryEl.value;
+  if (noteEl) saved.eventNote = noteEl.value;
+
+  localStorage.setItem('porfolioid_qr_settings', JSON.stringify(saved));
+}
+
+function downloadQR() {
+  const url = buildQRUrl();
+  if (!url) return;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(url)}&color=000000&bgcolor=ffffff&margin=20`;
+  const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
+  const slug = session.slug || epk.slug || '';
   const a = document.createElement('a');
   a.href = qrUrl;
-  a.download = `porfolioid-qr-${slug}.png`;
+  a.download = `porfolioid-${currentQRMode}-qr-${slug}.png`;
   a.target = '_blank';
   a.click();
 }
 
-function copyPortfolioLink() {
+function downloadShareCard() {
+  // Generate a downloadable version using html2canvas or just share as image link
+  // For now, open the card as a printable page
+  const url = buildQRUrl();
+  if (!url) return;
   const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
   const slug = session.slug || epk.slug || '';
-  const portfolioUrl = `https://porfolioid.com/epk.html?slug=${slug}`;
-  navigator.clipboard.writeText(portfolioUrl).then(() => {
+  const name = epk.name || 'PorfolioID';
+  const config = QR_MODE_CONFIG[currentQRMode];
+  const sections = getSelectedSections().map(s => SECTION_LABELS[s]).join(' · ');
+  const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}&color=000000&bgcolor=ffffff&margin=10`;
+
+  const cardHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&display=swap');
+  body { margin:0; background:#080808; display:flex; align-items:center; justify-content:center; min-height:100vh; font-family:'DM Mono',monospace; }
+  .card { width:420px; background:#0E0E0E; border:1px solid rgba(201,168,76,0.4); padding:2rem; position:relative; }
+  .card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,#C9A84C,#E8C97A,#C9A84C); }
+  .top { display:flex; align-items:center; gap:1rem; margin-bottom:1.25rem; }
+  .photo { width:60px; height:60px; border-radius:50%; border:2px solid #C9A84C; overflow:hidden; flex-shrink:0; background:#1C1C1C; display:flex; align-items:center; justify-content:center; }
+  .photo img { width:100%; height:100%; object-fit:cover; }
+  .name { font-family:'Playfair Display',serif; font-size:1.15rem; color:#F5F3EE; font-weight:700; }
+  .tagline { font-size:0.55rem; color:#C9A84C; margin-top:0.2rem; }
+  .badge { margin-left:auto; font-size:0.48rem; letter-spacing:0.12em; text-transform:uppercase; color:#000; background:#C9A84C; padding:0.3rem 0.7rem; align-self:flex-start; font-weight:600; }
+  .sections { font-size:0.52rem; color:#888; margin-bottom:1.25rem; line-height:1.8; }
+  .bottom { display:flex; align-items:flex-end; justify-content:space-between; gap:1rem; }
+  .brand { font-size:0.45rem; letter-spacing:0.15em; text-transform:uppercase; color:#888; margin-bottom:0.25rem; }
+  .url { font-size:0.5rem; color:#C9A84C; }
+  .qr { background:white; padding:6px; }
+  .qr img { display:block; width:60px; height:60px; }
+  @media print { body { background:#080808; } }
+</style>
+<title>PorfolioID Share Card — ${name}</title></head>
+<body>
+<div class="card">
+  <div class="top">
+    <div class="photo">${epk && epk.photo ? `<img src="${epk.photo}">` : `<span style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#C9A84C">${name[0]}</span>`}</div>
+    <div>
+      <div class="name">${name}</div>
+      <div class="tagline">${epk && epk.tagline ? epk.tagline : config.tagline}</div>
+    </div>
+    <div class="badge">${config.badge}</div>
+  </div>
+  <div class="sections">${sections}</div>
+  <div class="bottom">
+    <div><div class="brand">PorfolioID</div><div class="url">porfolioid.com/epk.html?slug=${slug}</div></div>
+    <div class="qr"><img src="${qrImgUrl}" alt="QR"></div>
+  </div>
+</div>
+<script>window.onload=()=>setTimeout(()=>window.print(),500)<\/script>
+</body></html>`;
+
+  const blob = new Blob([cardHtml], { type: 'text/html' });
+  const blobUrl = URL.createObjectURL(blob);
+  window.open(blobUrl, '_blank');
+}
+
+function shareCardVia(method) {
+  const url = buildQRUrl();
+  if (!url) return;
+  const name = epk.name || 'My Portfolio';
+  const config = QR_MODE_CONFIG[currentQRMode];
+  const text = `${name} — ${config.label} on PorfolioID`;
+  if (method === 'native' && navigator.share) {
+    navigator.share({ title: text, url });
+  } else {
+    navigator.clipboard.writeText(url);
+  }
+}
+
+function copyPortfolioLink() {
+  const url = buildQRUrl();
+  if (!url) return;
+  navigator.clipboard.writeText(url).then(() => {
     const btn = document.getElementById('copyLinkBtn');
     if (btn) {
       btn.textContent = '✓ Copied!';
@@ -1556,24 +1853,28 @@ function copyPortfolioLink() {
 }
 
 function shareVia(method) {
-  const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
-  const slug = session.slug || epk.slug || '';
-  const portfolioUrl = `https://porfolioid.com/epk.html?slug=${slug}`;
+  const url = buildQRUrl() || `https://porfolioid.com/epk.html?slug=${epk.slug || ''}`;
   const name = epk.name || 'My Portfolio';
-  const text = `Check out my PorfolioID — ${name}'s professional portfolio`;
-
+  const config = QR_MODE_CONFIG[currentQRMode];
+  const text = `${name} — ${config.label} on PorfolioID`;
   if (method === 'email') {
-    window.location.href = `mailto:?subject=${encodeURIComponent(name + ' — PorfolioID Portfolio')}&body=${encodeURIComponent(text + '\n\n' + portfolioUrl)}`;
+    window.location.href = `mailto:?subject=${encodeURIComponent(name + ' — PorfolioID')}&body=${encodeURIComponent(text + '\n\n' + url)}`;
   } else if (method === 'sms') {
-    window.location.href = `sms:?body=${encodeURIComponent(text + ' ' + portfolioUrl)}`;
+    window.location.href = `sms:?body=${encodeURIComponent(text + ' ' + url)}`;
   } else if (method === 'native') {
-    if (navigator.share) {
-      navigator.share({ title: name + ' — PorfolioID', text, url: portfolioUrl });
-    } else {
-      copyPortfolioLink();
-    }
+    if (navigator.share) navigator.share({ title: text, url });
+    else copyPortfolioLink();
   }
 }
+
+// Hook event inputs to live-update the card
+document.addEventListener('DOMContentLoaded', () => {
+  ['eventQRName','eventQRExpiry','eventQRNote'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => { refreshQRCode(); updateShareCardPreview(); saveQRSettings(); });
+  });
+});
+
 
 // RESUME CARDS
 let editingResumeIdx = -1;
