@@ -315,6 +315,9 @@
 
   /* 3-column layout */
   .career-threecol { display: grid; grid-template-columns: 1.4fr 2fr; gap: 1.5rem; align-items: start; }
+  .career-threecol-bio { grid-column: 1; }
+  .career-bio-text { max-width: 100%; width: 100%; }
+  .career-bio-text p:first-child { max-width: 100%; }
   .career-threecol-bio { display: flex; flex-direction: column; gap: 0; align-self: start; }
   .career-threecol-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: stretch; }
   .career-threecol-cards .resume-card { height: 100%; box-sizing: border-box; display: flex; flex-direction: column; }
@@ -624,11 +627,12 @@
   /* Drop cap on first paragraph */
   .career-bio-text p:first-child::first-letter {
     font-family: var(--font-display);
-    font-size: 4.5rem;
-    font-weight: 700;
+    font-size: 5.5rem;
+    font-weight: 400;
     color: var(--gold);
     float: left;
-    line-height: 0.8;
-    margin-right: 0.1em;
-    margin-top: 0.05em;
+    line-height: 0.75;
+    margin-right: 0.08em;
+    margin-top: 0.08em;
+    font-style: italic;
   }
