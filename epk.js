@@ -201,12 +201,13 @@ function buildEPK(epk) {
   const bioShortContent = `
     <div class="career-bio-text">
       <div id="bioShort" data-editable data-editable-key="shortBio" data-editable-type="body" style="outline:none">${shortBioHTML}</div>
-      ${hasMoreBio ? `<button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:0.5rem;transition:all 0.2s">Read Full Bio +</button>` : ''}
+      ${hasMoreBio ? `<button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1rem;transition:all 0.2s">Read Full Bio +</button>` : ''}
     </div>`;
 
   const bioFullContent = hasMoreBio ? `
     <div id="bioFull" style="display:none">
       ${bioParagraphs}
+      <button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem;transition:all 0.2s">Show Less –</button>
     </div>` : '';
 
   const bioContent = bioShortContent;
@@ -1040,7 +1041,7 @@ function toggleBio() {
   if (!full) return;
   const isHidden = full.style.display === 'none';
   full.style.display = isHidden ? 'block' : 'none';
-  btn.textContent = isHidden ? 'Show Less –' : 'Read Full Bio +';
+  if (btn) btn.style.display = isHidden ? 'none' : 'inline';
 }
 
 // Booking form submission
