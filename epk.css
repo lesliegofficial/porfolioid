@@ -620,3 +620,15 @@
     font-weight: 400;
     margin-bottom: 1em;
   }
+
+  /* Drop cap on first paragraph */
+  .career-bio-text p:first-child::first-letter {
+    font-family: var(--font-display);
+    font-size: 4.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    float: left;
+    line-height: 0.8;
+    margin-right: 0.1em;
+    margin-top: 0.05em;
+  }
