@@ -22,23 +22,36 @@
   .nav-link { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.3s; }
   .nav-link:hover { color: var(--gold); }
   .auth-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; padding: 4rem 2rem; }
-  .auth-box { width: 100%; max-width: 440px; border: 1px solid rgba(201,168,76,0.15); background: var(--dark-2); padding: 3rem; animation: fadeUp 0.6s ease forwards; }
+  .auth-box { width: 100%; max-width: 440px; border: 1px solid rgba(201,168,76,0.15); background: var(--dark-2); padding: 3rem; animation: fadeUp 0.6s ease forwards; position: relative; }
+  .auth-box::before { content: ''; display: block; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #C9A84C, #E8C97A, #C9A84C); }
   .auth-eyebrow { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
   .auth-title { font-family: var(--font-display); font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.2; }
   .auth-title em { font-style: italic; color: var(--gold-light); }
   .auth-sub { font-size: 0.9rem; color: var(--gray); margin-bottom: 2.5rem; line-height: 1.6; }
-  .form-group { margin-bottom: 1.5rem; }
+  .form-group { margin-bottom: 1.5rem; position: relative; }
   label { display: block; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.5rem; }
-  input[type="email"], input[type="password"] { width: 100%; background: var(--dark-3); border: 1px solid rgba(201,168,76,0.15); color: var(--white); padding: 0.85rem 1rem; font-family: var(--font-body); font-size: 0.95rem; font-weight: 300; transition: border-color 0.3s; outline: none; }
+  .label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+  .label-row label { margin-bottom: 0; }
+  .forgot-link { font-family: var(--font-mono); font-size: 0.55rem; color: var(--gold); text-decoration: none; opacity: 0.7; transition: opacity 0.2s; cursor: pointer; }
+  .forgot-link:hover { opacity: 1; }
+  input[type="email"], input[type="password"], input[type="text"] { width: 100%; background: var(--dark-3); border: 1px solid rgba(201,168,76,0.15); color: var(--white); padding: 0.85rem 1rem; font-family: var(--font-body); font-size: 0.95rem; font-weight: 300; transition: border-color 0.3s; outline: none; }
   input:focus { border-color: rgba(201,168,76,0.5); }
+  input.error { border-color: rgba(220,50,50,0.5); }
   input::placeholder { color: var(--gray); }
-  .btn-submit { width: 100%; background: var(--gold); color: var(--black); border: none; padding: 1rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; font-weight: 500; transition: all 0.3s; margin-top: 0.5rem; }
-  .btn-submit:hover { background: var(--gold-light); }
-  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  .field-error { font-family: var(--font-mono); font-size: 0.55rem; color: #ff6b6b; margin-top: 0.35rem; display: none; }
+  .btn-submit { width: 100%; background: var(--gold); color: var(--black); border: none; padding: 1rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; font-weight: 500; transition: all 0.3s; margin-top: 0.5rem; position: relative; overflow: hidden; }
+  .btn-submit:hover:not(:disabled) { background: var(--gold-light); }
+  .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+  .btn-submit .btn-spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(0,0,0,0.3); border-top-color: #000; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 0.5rem; }
   .auth-footer { text-align: center; margin-top: 2rem; font-size: 0.85rem; color: var(--gray); }
   .auth-footer a { color: var(--gold); text-decoration: none; }
-  .error-msg { background: rgba(220,50,50,0.1); border: 1px solid rgba(220,50,50,0.3); color: #ff6b6b; padding: 0.75rem 1rem; font-size: 0.85rem; margin-bottom: 1.5rem; display: none; }
+  .error-banner { background: rgba(220,50,50,0.1); border: 1px solid rgba(220,50,50,0.3); color: #ff6b6b; padding: 0.75rem 1rem; font-family: var(--font-mono); font-size: 0.7rem; margin-bottom: 1.5rem; display: none; line-height: 1.5; }
+  .success-banner { background: rgba(80,180,80,0.1); border: 1px solid rgba(80,180,80,0.3); color: #7ec97e; padding: 0.75rem 1rem; font-family: var(--font-mono); font-size:0.7rem; margin-bottom: 1.5rem; display: none; line-height: 1.5; }
+  /* Forgot password panel */
+  #forgotPanel { display: none; }
+  #loginPanel { display: block; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -48,35 +61,91 @@
 </nav>
 <div class="auth-wrapper">
   <div class="auth-box">
-    <div class="auth-eyebrow">Welcome back</div>
-    <h1 class="auth-title">Sign in to<br><em>PorfolioID</em></h1>
-    <p class="auth-sub">Access your EPK dashboard and manage your professional profile.</p>
-    <div class="error-msg" id="errorMsg"></div>
-    <form id="loginForm">
-      <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" placeholder="you@example.com" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="••••••••" required>
-      </div>
-      <button type="submit" class="btn-submit" id="submitBtn">Sign In →</button>
-    </form>
-    <div class="auth-footer">Don't have an account? <a href="/signup.html">Create one free →</a></div>
+
+    <!-- LOGIN PANEL -->
+    <div id="loginPanel">
+      <div class="auth-eyebrow">Welcome back</div>
+      <h1 class="auth-title">Sign in to<br><em>PorfolioID</em></h1>
+      <p class="auth-sub">Access your dashboard and manage your professional portfolio.</p>
+
+      <div class="error-banner" id="errorBanner"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+          <div class="field-error" id="emailError">Please enter a valid email.</div>
+        </div>
+        <div class="form-group">
+          <div class="label-row">
+            <label for="password">Password</label>
+            <span class="forgot-link" onclick="showForgotPanel()">Forgot password?</span>
+          </div>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+          <div class="field-error" id="passwordError">Password is required.</div>
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">Sign In →</button>
+      </form>
+
+      <div class="auth-footer">Don't have an account? <a href="/signup.html">Create one free →</a></div>
+    </div>
+
+    <!-- FORGOT PASSWORD PANEL -->
+    <div id="forgotPanel">
+      <div class="auth-eyebrow">Password Reset</div>
+      <h1 class="auth-title">Reset your<br><em>password</em></h1>
+      <p class="auth-sub">Enter your email address and we'll send you a reset link.</p>
+
+      <div class="error-banner" id="forgotErrorBanner"></div>
+      <div class="success-banner" id="forgotSuccessBanner"></div>
+
+      <form id="forgotForm" novalidate>
+        <div class="form-group">
+          <label for="forgotEmail">Email Address</label>
+          <input type="email" id="forgotEmail" placeholder="you@example.com" autocomplete="email">
+          <div class="field-error" id="forgotEmailError">Please enter a valid email.</div>
+        </div>
+        <button type="submit" class="btn-submit" id="forgotBtn">Send Reset Link →</button>
+      </form>
+
+      <div class="auth-footer"><span class="forgot-link" onclick="showLoginPanel()" style="font-size:0.85rem">← Back to Sign In</span></div>
+    </div>
+
   </div>
 </div>
+
 <script>
+// ── LOGIN ────────────────────────────────────────────────────────
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
   const btn = document.getElementById('submitBtn');
-  const errorMsg = document.getElementById('errorMsg');
-  
-  btn.textContent = 'Signing in...';
+  const errorBanner = document.getElementById('errorBanner');
+
+  // Client-side validation
+  let valid = true;
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    document.getElementById('email').classList.add('error');
+    document.getElementById('emailError').style.display = 'block';
+    valid = false;
+  } else {
+    document.getElementById('email').classList.remove('error');
+    document.getElementById('emailError').style.display = 'none';
+  }
+  if (!password) {
+    document.getElementById('password').classList.add('error');
+    document.getElementById('passwordError').style.display = 'block';
+    valid = false;
+  } else {
+    document.getElementById('password').classList.remove('error');
+    document.getElementById('passwordError').style.display = 'none';
+  }
+  if (!valid) return;
+
+  btn.innerHTML = '<span class="btn-spinner"></span>Signing In...';
   btn.disabled = true;
-  errorMsg.style.display = 'none';
+  errorBanner.style.display = 'none';
 
   try {
     const res = await fetch('/api/epk', {
@@ -85,7 +154,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
       body: JSON.stringify({ action: 'login', email, password })
     });
     const data = await res.json();
-    
+
     if (data.success) {
       localStorage.setItem('porfolioid_session', JSON.stringify({
         slug: data.user.slug,
@@ -93,19 +162,85 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         email: data.user.email,
         ts: Date.now()
       }));
-      window.location.href = '/dashboard.html';
+      btn.innerHTML = '✓ Signed In';
+      btn.style.background = '#7ec97e';
+      setTimeout(() => { window.location.href = '/dashboard.html'; }, 400);
     } else {
-      errorMsg.textContent = data.error || 'Invalid email or password.';
-      errorMsg.style.display = 'block';
-      btn.textContent = 'Sign In →';
+      const msg = data.error === 'User not found'
+        ? 'No account found with that email. <a href="/signup.html" style="color:inherit;text-decoration:underline">Create one →</a>'
+        : data.error === 'Invalid password'
+        ? 'Incorrect password. <span style="cursor:pointer;text-decoration:underline" onclick="showForgotPanel()">Forgot it?</span>'
+        : data.error || 'Sign in failed. Please try again.';
+      errorBanner.innerHTML = msg;
+      errorBanner.style.display = 'block';
+      btn.innerHTML = 'Sign In →';
       btn.disabled = false;
     }
   } catch(err) {
-    errorMsg.textContent = 'Connection error. Please try again.';
-    errorMsg.style.display = 'block';
-    btn.textContent = 'Sign In →';
+    errorBanner.textContent = 'Connection error. Please check your connection and try again.';
+    errorBanner.style.display = 'block';
+    btn.innerHTML = 'Sign In →';
     btn.disabled = false;
   }
+});
+
+// ── FORGOT PASSWORD ──────────────────────────────────────────────
+document.getElementById('forgotForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const email = document.getElementById('forgotEmail').value.trim();
+  const btn = document.getElementById('forgotBtn');
+  const errorEl = document.getElementById('forgotErrorBanner');
+  const successEl = document.getElementById('forgotSuccessBanner');
+
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    document.getElementById('forgotEmail').classList.add('error');
+    document.getElementById('forgotEmailError').style.display = 'block';
+    return;
+  }
+
+  btn.innerHTML = '<span class="btn-spinner"></span>Sending...';
+  btn.disabled = true;
+  errorEl.style.display = 'none';
+
+  try {
+    const res = await fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'requestPasswordReset', email })
+    });
+    const data = await res.json();
+
+    // Always show success (security — don't reveal if email exists)
+    successEl.textContent = `If an account exists for ${email}, a reset link has been sent. Check your inbox.`;
+    successEl.style.display = 'block';
+    btn.innerHTML = '✓ Sent';
+    btn.style.background = '#7ec97e';
+  } catch {
+    errorEl.textContent = 'Could not send reset email. Please try again.';
+    errorEl.style.display = 'block';
+    btn.innerHTML = 'Send Reset Link →';
+    btn.disabled = false;
+  }
+});
+
+function showForgotPanel() {
+  document.getElementById('loginPanel').style.display = 'none';
+  document.getElementById('forgotPanel').style.display = 'block';
+  document.getElementById('forgotEmail').focus();
+}
+
+function showLoginPanel() {
+  document.getElementById('forgotPanel').style.display = 'none';
+  document.getElementById('loginPanel').style.display = 'block';
+}
+
+// Clear errors on input
+['email','password'].forEach(id => {
+  document.getElementById(id).addEventListener('input', function() {
+    this.classList.remove('error');
+    document.getElementById(id + 'Error').style.display = 'none';
+    document.getElementById('errorBanner').style.display = 'none';
+  });
 });
 </script>
 </body>

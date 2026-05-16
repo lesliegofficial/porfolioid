@@ -40,9 +40,20 @@ function buildEPK(epk) {
   ];
   const sectionOrder = epk.sectionOrder || ALL_SECTIONS.map(s => s.id);
   const sectionVisibility = epk.sectionVisibility || {};
+
+  // QR mode can override which sections are visible via ?sections= param
+  const urlParams = new URLSearchParams(window.location.search);
+  const qrSections = urlParams.get('sections');
+  const qrAllowed = qrSections ? new Set(qrSections.split(',')) : null;
+
   const sections = sectionOrder
     .map(id => ALL_SECTIONS.find(s => s.id === id))
-    .filter(s => s && sectionVisibility[s.id] !== false);
+    .filter(s => {
+      if (!s) return false;
+      if (sectionVisibility[s.id] === false) return false;
+      if (qrAllowed && !qrAllowed.has(s.id)) return false; // QR override
+      return true;
+    });
   sections.forEach(s => {
     navLinks.innerHTML += `<li><a href="#${s.id}">${s.label}</a></li>`;
   });
@@ -1009,14 +1020,20 @@ function applySectionOrderAndVisibility(epk) {
   const DEFAULT_ORDER = ['bio','credits','photos','videos','music','awards','assets','booking'];
   const order = epk.sectionOrder || DEFAULT_ORDER;
   const visibility = epk.sectionVisibility || {};
+
+  // QR mode section override
+  const urlParams = new URLSearchParams(window.location.search);
+  const qrSections = urlParams.get('sections');
+  const qrAllowed = qrSections ? new Set(qrSections.split(',')) : null;
+
   const container = document.getElementById('epkContent');
   if (!container) return;
 
-  // Hide/show sections based on visibility
+  // Hide/show sections based on visibility + QR override
   DEFAULT_ORDER.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-    const isVisible = visibility[id] !== false;
+    const isVisible = visibility[id] !== false && (!qrAllowed || qrAllowed.has(id));
     el.style.display = isVisible ? '' : 'none';
   });
 

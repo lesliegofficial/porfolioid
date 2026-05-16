@@ -1929,6 +1929,7 @@ function renderResumeCards() {
             ${skills ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.25rem">${skills}</div>` : ''}
           </div>
           <div class="card-actions">
+            <button class="btn-card-action" onclick="generateResumePDF(${i})" title="Download as PDF" style="background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.3);color:var(--gold)">↓ PDF</button>
             <button class="btn-card-action" onclick="editResumeCard(${i})">Edit</button>
             <button class="btn-card-action btn-card-delete" onclick="removeResumeCard(${i})">Delete</button>
           </div>
@@ -1938,6 +1939,95 @@ function renderResumeCards() {
   // Hide add button if 2 cards already
   const addBtn = document.getElementById('addResumeBtn');
   if (addBtn) addBtn.style.display = (epk.resumeCards || []).length >= 2 ? 'none' : '';
+}
+
+function generateResumePDF(idx) {
+  const r = epk.resumeCards[idx];
+  if (!r) return;
+
+  const name = epk.name || 'Portfolio';
+  const location = epk.location || '';
+  const email = epk.bookingEmail || '';
+  const phone = epk.bookingPhone || '';
+  const skills = (r.skills || []).join(' · ');
+  const portfolioUrl = `porfolioid.com/epk/${epk.slug || ''}`;
+
+  // Build experience/credit lines from credits
+  const relevantCredits = (epk.credits || []).slice(0, 12).map(c =>
+    `<tr>
+      <td style="padding:0.4rem 0;border-bottom:1px solid #1a1a1a;font-size:0.75rem;color:#F5F3EE;font-weight:500">${c.title || ''}</td>
+      <td style="padding:0.4rem 0;border-bottom:1px solid #1a1a1a;font-size:0.7rem;color:#C9A84C;text-align:right">${c.role || ''}</td>
+      <td style="padding:0.4rem 0;border-bottom:1px solid #1a1a1a;font-size:0.65rem;color:#888;text-align:right;min-width:60px">${c.year || ''}</td>
+    </tr>`
+  ).join('');
+
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+<title>${name} — Resume | PorfolioID</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #080808; color: #F5F3EE; font-family: 'DM Sans', sans-serif; font-weight: 300; padding: 0; }
+  .page { max-width: 800px; margin: 0 auto; padding: 3rem 3.5rem; min-height: 100vh; position: relative; }
+  .page::before { content: ''; display: block; height: 4px; background: linear-gradient(90deg, #C9A84C, #E8C97A, #C9A84C); margin-bottom: 2.5rem; }
+  .header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(201,168,76,0.2); }
+  .name { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: #F5F3EE; line-height: 1.1; }
+  .label-tag { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: #C9A84C; margin-top: 0.5rem; }
+  .title-line { font-family: 'Playfair Display', serif; font-size: 1rem; color: #BBBBBB; margin-top: 0.35rem; }
+  .contact { text-align: right; }
+  .contact div { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #888; margin-bottom: 0.35rem; }
+  .contact .portfolio-link { color: #C9A84C; }
+  .section-title { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: #C9A84C; margin-bottom: 1rem; margin-top: 1.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid rgba(201,168,76,0.15); }
+  .skills-block { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-tag { font-family: 'DM Mono', monospace; font-size: 0.6rem; background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2); color: #C9A84C; padding: 0.25rem 0.7rem; }
+  .desc { font-size: 0.8rem; color: #BBBBBB; line-height: 1.7; }
+  table { width: 100%; border-collapse: collapse; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid rgba(201,168,76,0.1); display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Playfair Display', serif; font-size: 0.9rem; color: rgba(255,255,255,0.3); }
+  .footer-brand span { color: #C9A84C; }
+  .footer-url { font-family: 'DM Mono', monospace; font-size: 0.55rem; color: #C9A84C; }
+  @media print { body { background: #080808 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div>
+      <div class="name">${name}</div>
+      ${r.label ? `<div class="label-tag">${r.label}</div>` : ''}
+      ${r.subtitle ? `<div class="title-line">${r.subtitle}</div>` : ''}
+    </div>
+    <div class="contact">
+      ${location ? `<div>📍 ${location}</div>` : ''}
+      ${email ? `<div>✉ ${email}</div>` : ''}
+      ${phone ? `<div>📞 ${phone}</div>` : ''}
+      <div class="portfolio-link">🔗 ${portfolioUrl}</div>
+    </div>
+  </div>
+
+  ${r.desc ? `
+  <div class="section-title">Professional Summary</div>
+  <p class="desc">${r.desc}</p>` : ''}
+
+  ${skills ? `
+  <div class="section-title">Skills & Expertise</div>
+  <div class="skills-block">
+    ${(r.skills || []).map(s => `<span class="skill-tag">${s}</span>`).join('')}
+  </div>` : ''}
+
+  ${relevantCredits ? `
+  <div class="section-title">Selected Credits & Experience</div>
+  <table>${relevantCredits}</table>` : ''}
+
+  <div class="footer">
+    <div class="footer-brand">Porfolio<span>ID</span></div>
+    <div class="footer-url">${portfolioUrl}</div>
+  </div>
+</div>
+<script>window.onload = () => setTimeout(() => window.print(), 600);<\/script>
+</body></html>`;
+
+  const blob = new Blob([html], { type: 'text/html' });
+  window.open(URL.createObjectURL(blob), '_blank');
 }
 
 function editResumeCard(i) {
