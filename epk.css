@@ -547,3 +547,58 @@
     .hero-name { font-size: clamp(2.2rem, 10vw, 3rem); }
     .credit-modal { padding: 1.25rem 1rem; }
   }
+
+  /* ── INLINE EDIT MODE ── */
+  body.edit-mode { padding-top: 48px; }
+  body.edit-mode .nav-edit-btn { background: var(--gold) !important; color: #000 !important; }
+
+  /* Editable elements — subtle glow on hover in edit mode */
+  body.edit-mode [data-editable]:hover {
+    outline: 1.5px dashed rgba(201,168,76,0.5);
+    outline-offset: 3px;
+    cursor: text;
+    background: rgba(201,168,76,0.03);
+    border-radius: 2px;
+  }
+  body.edit-mode [data-editable]:focus {
+    outline: 2px solid rgba(201,168,76,0.7);
+    outline-offset: 3px;
+    background: rgba(201,168,76,0.05);
+  }
+  body.edit-mode [data-editable] { transition: outline 0.15s, background 0.15s; }
+
+  /* Edit mode label badge */
+  .edit-field-label {
+    position: absolute;
+    top: -18px; left: 0;
+    font-family: var(--font-mono);
+    font-size: 0.45rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(0,0,0,0.8);
+    padding: 0.1rem 0.35rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+  body.edit-mode [data-editable]:hover .edit-field-label,
+  body.edit-mode [data-editable]:focus .edit-field-label { opacity: 1; }
+
+  /* Unsaved changes dot */
+  .unsaved-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    margin-left: 6px;
+    vertical-align: middle;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  @media (max-width: 768px) {
+    body.edit-mode { padding-top: 56px; }
+    #inlineEditBar { gap: 0.6rem; padding: 0.5rem 1rem; }
+  }

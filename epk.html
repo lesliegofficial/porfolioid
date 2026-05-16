@@ -14,8 +14,34 @@
 <nav>
   <a href="/index.html" class="nav-logo">Porfolio<span>ID</span></a>
   <ul class="nav-links" id="navLinks"></ul>
-  <a href="/dashboard.html" class="nav-edit-btn" id="editBtn">Edit Portfolio</a>
+  <button onclick="toggleEditMode()" class="nav-edit-btn" id="editBtn">Edit Portfolio</button>
 </nav>
+
+
+<!-- INLINE EDIT TOOLBAR -->
+<div id="inlineEditBar" style="display:none;position:fixed;top:0;left:0;right:0;z-index:8000;background:rgba(10,10,10,0.97);border-bottom:1px solid rgba(201,168,76,0.3);padding:0.6rem 1.5rem;display:none;align-items:center;gap:1rem;flex-wrap:wrap">
+  <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase">✏ Edit Mode</span>
+  <div style="width:1px;height:20px;background:rgba(255,255,255,0.1)"></div>
+  <div style="display:flex;align-items:center;gap:0.5rem">
+    <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:rgba(255,255,255,0.4);text-transform:uppercase">Font Size</span>
+    <select id="editFontSize" onchange="applyFontSize()" style="font-family:var(--font-mono);font-size:0.65rem;background:#1a1a1a;color:var(--white);border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.5rem;cursor:pointer">
+      <option value="12">12px</option>
+      <option value="14">14px</option>
+      <option value="16" selected>16px</option>
+      <option value="18">18px</option>
+      <option value="20">20px</option>
+      <option value="22">22px</option>
+    </select>
+  </div>
+  <label style="display:flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:rgba(255,255,255,0.5);cursor:pointer">
+    <input type="checkbox" id="applyToAll" style="accent-color:var(--gold)"> Apply to all text
+  </label>
+  <div style="width:1px;height:20px;background:rgba(255,255,255,0.1)"></div>
+  <div style="display:flex;gap:0.5rem;margin-left:auto">
+    <button onclick="saveInlineEdits()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;background:var(--gold);color:#000;border:none;padding:0.4rem 1rem;cursor:pointer;font-weight:600">✓ Save Changes</button>
+    <button onclick="toggleEditMode()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;background:none;color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.15);padding:0.4rem 0.75rem;cursor:pointer">✕ Exit</button>
+  </div>
+</div>
 
 <div id="epkContent"></div>
 

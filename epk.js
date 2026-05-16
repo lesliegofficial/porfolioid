@@ -200,7 +200,7 @@ function buildEPK(epk) {
 
   const bioContent = `
     <div class="career-bio-text">
-      <div id="bioShort">${shortBioHTML}</div>
+      <div id="bioShort" data-editable data-editable-key="shortBio" data-editable-type="body" style="outline:none">${shortBioHTML}</div>
       ${hasMoreBio ? `
       <div id="bioFull" style="display:none">${bioParagraphs}</div>
       <button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:0.5rem;transition:all 0.2s">Read Full Bio +</button>
@@ -272,7 +272,7 @@ function buildEPK(epk) {
       </div>
       <div class="credit-role" style="color:${accentColor}">${c.role}${c.contractType ? ` · <span style="opacity:0.7">${c.contractType}</span>` : ''}</div>
       ${collaboratorsRow}
-      ${c.desc ? `<p class="credit-desc" style="-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden">${c.desc}</p>` : ''}
+      ${c.desc ? `<p class="credit-desc" data-editable data-editable-key="credits.${i}.desc" data-editable-type="body" style="-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;outline:none" onclick="event.stopPropagation()">${c.desc}</p>` : ''}
       ${hasDetail ? `<div class="credit-expand-hint" style="color:${accentColor}">View Details →</div>` : ''}
     </div>`;
   }).join('');
@@ -471,7 +471,7 @@ function buildEPK(epk) {
     <section class="career-profile-section" id="bio">
       <div class="career-profile-inner">
         <div class="section-label">Career Profile</div>
-        <h2 class="section-title">Professional <em>Identity</em></h2>
+        <h2 class="section-title" data-editable data-editable-key="careerTitle" data-editable-type="title" style="outline:none">Professional <em>Identity</em></h2>
         ${careerProfileHTML}
       </div>
     </section>
@@ -483,7 +483,7 @@ function buildEPK(epk) {
     <div class="credits-section" id="credits">
       <div class="credits-inner">
         <div class="section-label">Credits & Collaborations</div>
-        <h2 class="section-title">The Record</h2>
+        <h2 class="section-title" data-editable data-editable-key="creditsTitle" data-editable-type="title" style="outline:none">The Record</h2>
         <div class="credits-grid" id="creditsGrid">${creditsHTML}</div>
         ${visibleCredits.length > 4 ? `
         <div style="text-align:center;margin-top:2rem">
@@ -497,7 +497,7 @@ function buildEPK(epk) {
     <div class="gallery-section" id="photos">
       <div class="gallery-inner">
         <div class="section-label">Photos</div>
-        <h2 class="section-title">On Stage & Behind the Scenes</h2>
+        <h2 class="section-title" data-editable data-editable-key="photosTitle" data-editable-type="title" style="outline:none">On Stage & Behind the Scenes</h2>
         <div id="galleryContent"></div>
       </div>
     </div>` : ''}
@@ -507,7 +507,7 @@ function buildEPK(epk) {
     <section id="videos">
       <div class="section-label">Video</div>
       <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:0">
-        <h2 class="section-title" style="margin-bottom:0">Live & On Camera</h2>
+        <h2 class="section-title" data-editable data-editable-key="videoTitle" data-editable-type="title" style="outline:none;margin-bottom:0">Live & On Camera</h2>
         ${visibleVideos.length > 3 ? `<button onclick="toggleAllVideos()" id="videoToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-bottom:1.5rem;transition:all 0.2s">View All Videos +</button>` : ''}
       </div>
       <div id="videosFeatured">${visibleVideos.length <= 3 ? videosHTML : `<div class="videos-grid">${visibleVideos.slice(0,3).map((v,i) => buildVideoCard(v,i)).join("")}</div>`}</div>
@@ -1174,3 +1174,185 @@ function closeLightbox() {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeCreditModal(); closeLightbox(); }
 });
+
+// ══════════════════════════════════════════════
+// INLINE EDIT MODE
+// ══════════════════════════════════════════════
+let _editMode = false;
+let _pendingEdits = {}; // { fieldKey: newValue }
+let _globalFontSize = 16; // px
+
+function toggleEditMode() {
+  if (!window._isOwner) return;
+  _editMode = !_editMode;
+  document.body.classList.toggle('edit-mode', _editMode);
+  const bar = document.getElementById('inlineEditBar');
+  const btn = document.getElementById('editBtn');
+  if (_editMode) {
+    bar.style.display = 'flex';
+    btn.textContent = '✕ Exit Editing';
+    activateEditableFields();
+  } else {
+    bar.style.display = 'none';
+    btn.textContent = 'Edit Portfolio';
+    deactivateEditableFields();
+  }
+}
+
+function activateEditableFields() {
+  // Make all data-editable elements contenteditable
+  document.querySelectorAll('[data-editable]').forEach(el => {
+    el.setAttribute('contenteditable', 'true');
+    el.setAttribute('spellcheck', 'true');
+    el.addEventListener('input', onFieldEdit);
+    el.addEventListener('focus', onFieldFocus);
+    // Apply current global font size
+    if (el.dataset.editableType === 'body') {
+      el.style.fontSize = _globalFontSize + 'px';
+    }
+  });
+}
+
+function deactivateEditableFields() {
+  document.querySelectorAll('[data-editable]').forEach(el => {
+    el.setAttribute('contenteditable', 'false');
+    el.removeEventListener('input', onFieldEdit);
+    el.removeEventListener('focus', onFieldFocus);
+  });
+}
+
+function onFieldEdit(e) {
+  const el = e.target;
+  const key = el.dataset.editableKey;
+  if (key) {
+    _pendingEdits[key] = el.innerText.trim();
+    // Show unsaved dot on save button
+    const saveBtn = document.querySelector('#inlineEditBar button');
+    if (saveBtn && !saveBtn.querySelector('.unsaved-dot')) {
+      const dot = document.createElement('span');
+      dot.className = 'unsaved-dot';
+      saveBtn.appendChild(dot);
+    }
+  }
+}
+
+function onFieldFocus(e) {
+  const el = e.target;
+  const type = el.dataset.editableType;
+  // Sync font size selector to current element size
+  const currentSize = parseInt(window.getComputedStyle(el).fontSize);
+  const sel = document.getElementById('editFontSize');
+  if (sel && currentSize) {
+    // Find closest option
+    const options = Array.from(sel.options).map(o => parseInt(o.value));
+    const closest = options.reduce((a,b) => Math.abs(b-currentSize) < Math.abs(a-currentSize) ? b : a);
+    sel.value = closest;
+  }
+}
+
+function applyFontSize() {
+  const size = parseInt(document.getElementById('editFontSize').value);
+  const applyAll = document.getElementById('applyToAll').checked;
+  _globalFontSize = size;
+
+  if (applyAll) {
+    // Apply to all body text fields
+    document.querySelectorAll('[data-editable][data-editable-type="body"]').forEach(el => {
+      el.style.fontSize = size + 'px';
+      el.style.lineHeight = size >= 18 ? '2' : '1.85';
+      const key = el.dataset.editableKey;
+      if (key) _pendingEdits['__fontSize__' + key] = size;
+    });
+    _pendingEdits['__globalFontSize__'] = size;
+  } else {
+    // Apply only to focused element
+    const focused = document.querySelector('[data-editable]:focus');
+    if (focused) {
+      focused.style.fontSize = size + 'px';
+      focused.style.lineHeight = size >= 18 ? '2' : '1.85';
+    }
+  }
+  // Show unsaved dot
+  const saveBtn = document.querySelector('#inlineEditBar button');
+  if (saveBtn && !saveBtn.querySelector('.unsaved-dot')) {
+    const dot = document.createElement('span');
+    dot.className = 'unsaved-dot';
+    saveBtn.appendChild(dot);
+  }
+}
+
+async function saveInlineEdits() {
+  if (!window._ownerSlug || Object.keys(_pendingEdits).length === 0) {
+    showEditToast('No changes to save');
+    return;
+  }
+  const saveBtn = document.querySelector('#inlineEditBar button');
+  const originalText = '✓ Save Changes';
+  saveBtn.textContent = 'Saving...';
+  saveBtn.disabled = true;
+
+  try {
+    // Load current EPK data
+    const res = await fetch(`/.netlify/functions/epk?slug=${window._ownerSlug}`);
+    const epk = await res.json();
+
+    // Apply pending edits to epk data object
+    for (const [key, value] of Object.entries(_pendingEdits)) {
+      if (key.startsWith('__')) continue; // skip meta keys
+      const parts = key.split('.');
+      if (parts.length === 1) {
+        epk[parts[0]] = value;
+      } else if (parts.length === 2) {
+        if (!epk[parts[0]]) epk[parts[0]] = {};
+        epk[parts[0]][parts[1]] = value;
+      } else if (parts.length === 3) {
+        const [section, idx, field] = parts;
+        if (epk[section] && epk[section][parseInt(idx)]) {
+          epk[section][parseInt(idx)][field] = value;
+        }
+      }
+    }
+
+    // Apply global font size if changed
+    if (_pendingEdits['__globalFontSize__']) {
+      epk._globalFontSize = _pendingEdits['__globalFontSize__'];
+    }
+
+    // Save back
+    const saveRes = await fetch('/.netlify/functions/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: window._ownerSlug, data: epk })
+    });
+
+    if (saveRes.ok) {
+      _pendingEdits = {};
+      saveBtn.textContent = '✓ Saved!';
+      saveBtn.style.background = '#2a7a2a';
+      setTimeout(() => {
+        saveBtn.textContent = originalText;
+        saveBtn.style.background = '';
+        saveBtn.disabled = false;
+      }, 2000);
+      showEditToast('Changes saved ✓');
+    } else {
+      throw new Error('Save failed');
+    }
+  } catch(err) {
+    saveBtn.textContent = '✕ Error — retry';
+    saveBtn.style.background = '#7a2a2a';
+    saveBtn.disabled = false;
+    setTimeout(() => {
+      saveBtn.textContent = originalText;
+      saveBtn.style.background = '';
+    }, 3000);
+  }
+}
+
+function showEditToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(10,10,10,0.92);color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;padding:0.6rem 1.25rem;border:1px solid rgba(201,168,76,0.3);z-index:9999;pointer-events:none;transition:opacity 0.3s';
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 2500);
+}
