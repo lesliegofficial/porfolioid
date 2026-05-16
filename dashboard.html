@@ -58,6 +58,9 @@
 
     <div class="sidebar-section">
       <div class="sidebar-section-label">Layout</div>
+      <button class="nav-item" onclick="showPanel('careertype')">
+        <span class="nav-item-icon">⚡</span><span>Career Type</span>
+      </button>
       <button class="nav-item" onclick="showPanel('sections')">
         <span class="nav-item-icon">⠿</span><span>Section Order</span>
       </button>
@@ -975,6 +978,17 @@
     </div>
 
     <!-- QR SHARE PANEL -->
+    <!-- CAREER TYPE PANEL -->
+    <div class="panel" id="panel-careertype">
+      <h1 class="panel-title">Career <em>Type</em></h1>
+      <p class="panel-sub">Your portfolio adapts its labels and sections based on your career type. Change it anytime.</p>
+      <div id="careerTypeGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;margin-top:2rem"></div>
+      <div id="careerTypeHybridNote" style="display:none;margin-top:1.5rem;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:1.25rem;font-size:0.88rem;color:var(--gray-light);line-height:1.6">
+        <strong style="color:var(--gold)">Hybrid selected.</strong> Your portfolio will show both creative and professional sections.
+      </div>
+      <button onclick="saveCareerType()" style="margin-top:2rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;background:var(--gold);color:#000;border:none;padding:0.75rem 2rem;cursor:pointer;font-weight:600">✓ Save Career Type</button>
+    </div>
+
     <!-- SECTIONS PANEL -->
     <div class="panel" id="panel-sections">
       <h1 class="panel-title">Section <em>Order & Visibility</em></h1>

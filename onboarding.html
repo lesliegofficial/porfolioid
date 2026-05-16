@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What describes your career? — PorfolioID</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --gold: #C9A84C; --gold-light: #E8C97A; --black: #080808; --dark: #0E0E0E; --dark-2: #141414; --dark-3: #1C1C1C; --gray: #888; --gray-light: #BBBBBB; --white: #F5F3EE; --font-display: 'Playfair Display', Georgia, serif; --font-body: 'DM Sans', sans-serif; --font-mono: 'DM Mono', monospace; }
+  body { background: var(--black); color: var(--white); font-family: var(--font-body); min-height: 100vh; }
+  nav { padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(201,168,76,0.08); }
+  .nav-logo { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--gold); }
+  .wrapper { max-width: 900px; margin: 0 auto; padding: 4rem 2rem; }
+  .eyebrow { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .title { font-family: var(--font-display); font-size: 2.8rem; font-weight: 700; margin-bottom: 0.75rem; line-height: 1.2; }
+  .title em { font-style: italic; color: var(--gold-light); }
+  .subtitle { font-size: 1rem; color: var(--gray); margin-bottom: 3rem; line-height: 1.7; max-width: 560px; }
+  .types-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+  .type-card { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.1); padding: 1.5rem; cursor: pointer; transition: all 0.2s; position: relative; }
+  .type-card:hover { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.04); }
+  .type-card.selected { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+  .type-card.selected::after { content: '✓'; position: absolute; top: 1rem; right: 1rem; color: var(--gold); font-size: 1rem; }
+  .type-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .type-name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; }
+  .type-desc { font-size: 0.82rem; color: var(--gray); line-height: 1.5; }
+  .type-examples { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; color: rgba(201,168,76,0.6); margin-top: 0.5rem; text-transform: uppercase; }
+  .hybrid-note { background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.2); padding: 1.25rem; margin-bottom: 2rem; font-size: 0.88rem; color: var(--gray-light); display: none; line-height: 1.6; }
+  .hybrid-note strong { color: var(--gold); }
+  .btn-continue { background: var(--gold); color: var(--black); border: none; padding: 1rem 3rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; font-weight: 500; transition: all 0.3s; opacity: 0.4; pointer-events: none; }
+  .btn-continue.active { opacity: 1; pointer-events: all; }
+  .btn-continue.active:hover { background: var(--gold-light); }
+  .skip-link { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; color: var(--gray); text-decoration: none; margin-left: 1.5rem; text-transform: uppercase; }
+  .skip-link:hover { color: var(--white); }
+  @media (max-width: 600px) { .types-grid { grid-template-columns: 1fr 1fr; } .title { font-size: 2rem; } }
+  @media (max-width: 400px) { .types-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<nav>
+  <a href="/index.html" class="nav-logo">Porfolio<span>ID</span></a>
+</nav>
+<div class="wrapper">
+  <div class="eyebrow">Step 1 of 1</div>
+  <h1 class="title">What best describes<br><em>your career?</em></h1>
+  <p class="subtitle">PorfolioID adapts to you. Pick the type that fits best — you can always change it later. Hybrid? Pick two.</p>
+
+  <div class="types-grid" id="typesGrid">
+    <div class="type-card" onclick="selectType('creative')" data-type="creative">
+      <div class="type-icon">🎤</div>
+      <div class="type-name">Creative / Artist</div>
+      <div class="type-desc">Performer, recording artist, visual artist, dancer, actor, musician.</div>
+      <div class="type-examples">Vocalist · Producer · Photographer · Designer</div>
+    </div>
+    <div class="type-card" onclick="selectType('corporate')" data-type="corporate">
+      <div class="type-icon">💼</div>
+      <div class="type-name">Corporate Professional</div>
+      <div class="type-desc">Executive, manager, specialist in business, operations, or administration.</div>
+      <div class="type-examples">Director · Manager · Coordinator · Specialist</div>
+    </div>
+    <div class="type-card" onclick="selectType('freelancer')" data-type="freelancer">
+      <div class="type-icon">🔧</div>
+      <div class="type-name">Freelancer</div>
+      <div class="type-desc">Independent contractor offering services across clients and projects.</div>
+      <div class="type-examples">Consultant · Contractor · Gig Worker</div>
+    </div>
+    <div class="type-card" onclick="selectType('entrepreneur')" data-type="entrepreneur">
+      <div class="type-icon">🚀</div>
+      <div class="type-name">Entrepreneur</div>
+      <div class="type-desc">Founder, startup builder, business owner, investor.</div>
+      <div class="type-examples">Founder · CEO · Startup · Small Business</div>
+    </div>
+    <div class="type-card" onclick="selectType('media')" data-type="media">
+      <div class="type-icon">🎬</div>
+      <div class="type-name">Media / Entertainment</div>
+      <div class="type-desc">Industry professional in music, film, TV, sports, or live events.</div>
+      <div class="type-examples">A&R · Publicist · Agent · Label · Promoter</div>
+    </div>
+    <div class="type-card" onclick="selectType('tech')" data-type="tech">
+      <div class="type-icon">💻</div>
+      <div class="type-name">Tech / Data</div>
+      <div class="type-desc">Developer, analyst, engineer, data scientist, product manager.</div>
+      <div class="type-examples">Engineer · Analyst · Product · UX</div>
+    </div>
+    <div class="type-card" onclick="selectType('academic')" data-type="academic">
+      <div class="type-icon">🎓</div>
+      <div class="type-name">Academic / Research</div>
+      <div class="type-desc">Professor, researcher, scientist, educator, PhD candidate.</div>
+      <div class="type-examples">Professor · Researcher · Scientist · Scholar</div>
+    </div>
+    <div class="type-card" onclick="selectType('hybrid')" data-type="hybrid">
+      <div class="type-icon">⚡</div>
+      <div class="type-name">Hybrid / Multi-hyphenate</div>
+      <div class="type-desc">You wear multiple hats. Your career doesn't fit one box — and that's the point.</div>
+      <div class="type-examples">Artist + Executive · Creator + Entrepreneur</div>
+    </div>
+  </div>
+
+  <div class="hybrid-note" id="hybridNote">
+    <strong>Hybrid selected.</strong> Your portfolio will show both creative and professional sections. You can customize which sections appear and what they're called from your dashboard.
+  </div>
+
+  <div style="display:flex;align-items:center">
+    <button class="btn-continue" id="continueBtn" onclick="continueToDashboard()">Build My Portfolio →</button>
+    <a href="/dashboard.html" class="skip-link">Skip for now</a>
+  </div>
+</div>
+
+<script>
+let selectedTypes = [];
+
+function selectType(type) {
+  const card = document.querySelector(`[data-type="${type}"]`);
+  const isHybrid = type === 'hybrid';
+
+  if (isHybrid) {
+    // Toggle hybrid — deselect all others, select hybrid
+    selectedTypes = selectedTypes.includes('hybrid') ? [] : ['hybrid'];
+    document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+    if (selectedTypes.includes('hybrid')) card.classList.add('selected');
+  } else {
+    // Remove hybrid if selecting specific type
+    selectedTypes = selectedTypes.filter(t => t !== 'hybrid');
+    document.querySelector('[data-type="hybrid"]')?.classList.remove('selected');
+    // Toggle this type (allow up to 2 for multi-hyphenate)
+    if (selectedTypes.includes(type)) {
+      selectedTypes = selectedTypes.filter(t => t !== type);
+      card.classList.remove('selected');
+    } else if (selectedTypes.length < 2) {
+      selectedTypes.push(type);
+      card.classList.add('selected');
+    }
+  }
+
+  // Show hybrid note if hybrid or 2 types selected
+  const hybridNote = document.getElementById('hybridNote');
+  hybridNote.style.display = (selectedTypes.includes('hybrid') || selectedTypes.length === 2) ? 'block' : 'none';
+
+  // Enable continue button
+  const btn = document.getElementById('continueBtn');
+  btn.classList.toggle('active', selectedTypes.length > 0);
+}
+
+async function continueToOnboarding() {
+  // handled by continueToDashboard
+}
+
+async function continueTodashboard() {
+  const session = JSON.parse(localStorage.getItem('porfolioid_session') || 'null');
+  if (!session?.slug) { window.location.href = '/dashboard.html'; return; }
+
+  const btn = document.getElementById('continueBtn');
+  btn.textContent = 'Setting up...';
+
+  try {
+    // Load existing EPK
+    const res = await fetch(`/.netlify/functions/epk?slug=${session.slug}`);
+    const epk = await res.json();
+
+    // Save career type
+    epk.careerType = selectedTypes.length === 1 ? selectedTypes[0] : selectedTypes;
+
+    // Apply label adaptations based on career type
+    const primary = selectedTypes[0];
+    const labels = getCareerLabels(primary);
+    epk.careerLabels = labels;
+
+    // Save
+    await fetch('/.netlify/functions/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: session.slug, data: epk })
+    });
+
+    window.location.href = '/dashboard.html';
+  } catch(e) {
+    window.location.href = '/dashboard.html';
+  }
+}
+
+// Fix function name
+document.getElementById('continueBtn').onclick = continueToOnboarding;
+function continueToOnboarding() { continueTodashboard(); }
+
+function getCareerLabels(type) {
+  const map = {
+    creative:     { credits: 'Credits', booking: 'Booking', assets: 'Media Kit', bio: 'Artist Bio' },
+    corporate:    { credits: 'Experience', booking: 'Available For', assets: 'Professional Assets', bio: 'Professional Summary' },
+    freelancer:   { credits: 'Projects', booking: 'Hire Me', assets: 'Portfolio Assets', bio: 'About Me' },
+    entrepreneur: { credits: 'Ventures', booking: 'Connect', assets: 'Resources', bio: 'Founder Story' },
+    media:        { credits: 'Credits', booking: 'Booking', assets: 'Press Kit', bio: 'Industry Bio' },
+    tech:         { credits: 'Projects', booking: 'Available For', assets: 'Case Studies', bio: 'Professional Summary' },
+    academic:     { credits: 'Publications', booking: 'Speaking', assets: 'Research', bio: 'Academic Profile' },
+    hybrid:       { credits: 'Credits & Experience', booking: 'Connect', assets: 'Assets', bio: 'Professional Identity' },
+  };
+  return map[type] || map.creative;
+}
+
+// Check if already has career type — redirect to dashboard
+const session = JSON.parse(localStorage.getItem('porfolioid_session') || 'null');
+if (!session) window.location.href = '/login.html';
+</script>
+</body>
+</html>

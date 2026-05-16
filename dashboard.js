@@ -379,6 +379,7 @@ function showSaveBanner() {
 function showPanel(name) {
   if (name === 'qr') setTimeout(initQRPanel, 100);
   if (name === 'sections') setTimeout(initSectionsPanel, 100);
+  if (name === 'careertype') setTimeout(initCareerTypePanel, 100);
   if (name === 'bio') setTimeout(loadSpanish, 100);
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -2071,4 +2072,80 @@ async function saveSpanish() {
     if (res.ok) showToast('Spanish content saved ✓');
     else showToast('Save failed');
   } catch(e) { showToast('Error saving'); }
+}
+
+// ── CAREER TYPE PANEL ──
+const CAREER_TYPES = [
+  { id: 'creative',     icon: '🎤', name: 'Creative / Artist',        desc: 'Performer, recording artist, visual artist, musician.' },
+  { id: 'corporate',    icon: '💼', name: 'Corporate Professional',    desc: 'Executive, manager, specialist in business or ops.' },
+  { id: 'freelancer',   icon: '🔧', name: 'Freelancer',               desc: 'Independent contractor across clients and projects.' },
+  { id: 'entrepreneur', icon: '🚀', name: 'Entrepreneur',             desc: 'Founder, startup builder, business owner.' },
+  { id: 'media',        icon: '🎬', name: 'Media / Entertainment',     desc: 'Industry professional in music, film, TV, events.' },
+  { id: 'tech',         icon: '💻', name: 'Tech / Data',              desc: 'Developer, analyst, engineer, product manager.' },
+  { id: 'academic',     icon: '🎓', name: 'Academic / Research',      desc: 'Professor, researcher, scientist, educator.' },
+  { id: 'hybrid',       icon: '⚡', name: 'Hybrid / Multi-hyphenate', desc: 'You wear multiple hats. Pick up to 2 types.' },
+];
+
+const CAREER_LABELS = {
+  creative:     { credits: 'Credits', booking: 'Booking', assets: 'Media Kit', bio: 'Artist Bio' },
+  corporate:    { credits: 'Experience', booking: 'Available For', assets: 'Professional Assets', bio: 'Professional Summary' },
+  freelancer:   { credits: 'Projects', booking: 'Hire Me', assets: 'Portfolio Assets', bio: 'About Me' },
+  entrepreneur: { credits: 'Ventures', booking: 'Connect', assets: 'Resources', bio: 'Founder Story' },
+  media:        { credits: 'Credits', booking: 'Booking', assets: 'Press Kit', bio: 'Industry Bio' },
+  tech:         { credits: 'Projects', booking: 'Available For', assets: 'Case Studies', bio: 'Professional Summary' },
+  academic:     { credits: 'Publications', booking: 'Speaking', assets: 'Research', bio: 'Academic Profile' },
+  hybrid:       { credits: 'Credits & Experience', booking: 'Connect', assets: 'Assets', bio: 'Professional Identity' },
+};
+
+let _selectedCareerTypes = [];
+
+function initCareerTypePanel() {
+  const epk = window._epkData || {};
+  const current = epk.careerType;
+  _selectedCareerTypes = Array.isArray(current) ? current : (current ? [current] : []);
+
+  const grid = document.getElementById('careerTypeGrid');
+  if (!grid) return;
+
+  grid.innerHTML = CAREER_TYPES.map(t => `
+    <div onclick="toggleCareerType('${t.id}')" id="ct_${t.id}"
+      style="background:var(--dark-2);border:1px solid ${_selectedCareerTypes.includes(t.id) ? 'var(--gold)' : 'rgba(201,168,76,0.1)'};
+      background:${_selectedCareerTypes.includes(t.id) ? 'rgba(201,168,76,0.08)' : 'var(--dark-2)'};
+      padding:1.25rem;cursor:pointer;transition:all 0.2s;position:relative">
+      <div style="font-size:1.5rem;margin-bottom:0.5rem">${t.icon}</div>
+      <div style="font-family:var(--font-display);font-size:0.95rem;font-weight:700;margin-bottom:0.25rem;color:var(--white)">${t.name}</div>
+      <div style="font-size:0.78rem;color:var(--gray);line-height:1.4">${t.desc}</div>
+      ${_selectedCareerTypes.includes(t.id) ? '<div style="position:absolute;top:0.75rem;right:0.75rem;color:var(--gold)">✓</div>' : ''}
+    </div>
+  `).join('');
+
+  updateHybridNote();
+}
+
+function toggleCareerType(id) {
+  if (id === 'hybrid') {
+    _selectedCareerTypes = _selectedCareerTypes.includes('hybrid') ? [] : ['hybrid'];
+  } else {
+    _selectedCareerTypes = _selectedCareerTypes.filter(t => t !== 'hybrid');
+    if (_selectedCareerTypes.includes(id)) {
+      _selectedCareerTypes = _selectedCareerTypes.filter(t => t !== id);
+    } else if (_selectedCareerTypes.length < 2) {
+      _selectedCareerTypes.push(id);
+    }
+  }
+  initCareerTypePanel();
+}
+
+function updateHybridNote() {
+  const note = document.getElementById('careerTypeHybridNote');
+  if (note) note.style.display = (_selectedCareerTypes.includes('hybrid') || _selectedCareerTypes.length === 2) ? 'block' : 'none';
+}
+
+async function saveCareerType() {
+  const epk = window._epkData;
+  if (!epk || _selectedCareerTypes.length === 0) { showToast('Please select a career type'); return; }
+  epk.careerType = _selectedCareerTypes.length === 1 ? _selectedCareerTypes[0] : _selectedCareerTypes;
+  epk.careerLabels = CAREER_LABELS[_selectedCareerTypes[0]] || CAREER_LABELS.creative;
+  persistUser();
+  showToast('Career type saved ✓');
 }
