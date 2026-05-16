@@ -1220,7 +1220,7 @@ function openCreditModal(i) {
   const photos = c.photos || [];
   document.getElementById('creditModalArtist').textContent = c.artist;
   document.getElementById('creditModalMeta').textContent = [c.role, c.contractType, c.years].filter(Boolean).join(' · ');
-  document.getElementById('creditModalDesc').textContent = c.fullDesc || c.desc || '';
+  document.getElementById('creditModalDesc').textContent = (_currentLang === 'es' && c.fullDescEs) ? c.fullDescEs : (c.fullDesc || c.desc || '');
 
   // Collaborators
   const collabEl = document.getElementById('creditModalCollaborators');

@@ -673,6 +673,7 @@ function editCredit(i) {
   document.getElementById('newCreditProjectType').value = c.projectType || '';
   document.getElementById('newCreditDesc').value = c.desc || '';
   document.getElementById('newCreditFullDesc').value = c.fullDesc || '';
+  if (document.getElementById('newCreditFullDescEs')) document.getElementById('newCreditFullDescEs').value = c.fullDescEs || '';
   pendingCreditMedia = c.mediaItems || (c.mediaLink ? [{type:'link', url:c.mediaLink, label:c.mediaLabel||''}] : []);
   if (c.videoUrl && !pendingCreditMedia.find(m => m.url === c.videoUrl)) pendingCreditMedia.push({type:'video', url:c.videoUrl, label:''});
   renderCreditMediaList();
@@ -783,6 +784,7 @@ function addCredit() {
   const projectType = document.getElementById('newCreditProjectType').value.trim();
   const desc = document.getElementById('newCreditDesc').value.trim();
   const fullDesc = document.getElementById('newCreditFullDesc').value.trim();
+  const fullDescEs = document.getElementById('newCreditFullDescEs')?.value.trim() || '';
   const mediaItems = [...pendingCreditMedia];
   const mediaLink = mediaItems[0]?.url || '';
   const mediaLabel = mediaItems[0]?.label || '';
@@ -793,7 +795,7 @@ function addCredit() {
   const pinned = document.getElementById('newCreditPinned').checked;
   if (!artist || !role) return;
   epk.credits = epk.credits || [];
-  const creditData = { artist, years, category, contractType, role, projectType, desc, fullDesc, mediaLink, mediaLabel, videoUrl, mediaItems, proofLink, visible, verified, pinned, collaborators: [...pendingCreditCollaborators], photos: [...pendingCreditPhotos], press: pendingPressItems.filter(p => p.publication && p.summary) };
+  const creditData = { artist, years, category, contractType, role, projectType, desc, fullDesc, fullDescEs, mediaLink, mediaLabel, videoUrl, mediaItems, proofLink, visible, verified, pinned, collaborators: [...pendingCreditCollaborators], photos: [...pendingCreditPhotos], press: pendingPressItems.filter(p => p.publication && p.summary) };
   if (editingCreditIdx >= 0) {
     epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], ...creditData };
     editingCreditIdx = -1;
@@ -809,7 +811,7 @@ function addCredit() {
   renderCreditPhotosPreview();
   renderCreditCollaborators();
   renderCreditMediaList();
-  ['newCreditArtist','newCreditYears','newCreditRole','newCreditProjectType','newCreditDesc','newCreditFullDesc','newCreditProofLink'].forEach(id => document.getElementById(id).value = '');
+  ['newCreditArtist','newCreditYears','newCreditRole','newCreditProjectType','newCreditDesc','newCreditFullDesc','newCreditFullDescEs','newCreditProofLink'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
   document.getElementById('newCreditCategory').value = '';
   document.getElementById('newCreditContractType').value = '';
   document.getElementById('newCreditVisible').checked = true;
