@@ -227,7 +227,6 @@ function buildEPK(epk) {
       </div>`;
   } else if (careerLayout === 'threecol') {
     careerProfileHTML = `
-      <div class="career-threecol-intro">${bioShortContent}</div>
       <div class="career-threecol">
         <div class="career-threecol-bio">
           ${bioPortrait}
@@ -237,7 +236,10 @@ function buildEPK(epk) {
           ${resumeCards[1] ? buildResumeCard(resumeCards[1]) : ''}
         </div>
       </div>
-      ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}
+      <div class="career-bio-full-width">
+        ${bioShortContent}
+        ${bioFullContent || ''}
+      </div>
     `;
   } else {
     // Stacked (default)
