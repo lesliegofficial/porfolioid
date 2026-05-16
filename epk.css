@@ -558,10 +558,10 @@
 
   /* Editable elements — subtle glow on hover in edit mode */
   body.edit-mode [data-editable]:hover {
-    outline: 1.5px dashed rgba(201,168,76,0.5);
-    outline-offset: 3px;
+    outline: 2px dashed rgba(201,168,76,0.8);
+    outline-offset: 4px;
     cursor: text;
-    background: rgba(201,168,76,0.03);
+    background: rgba(201,168,76,0.06);
     border-radius: 2px;
   }
   body.edit-mode [data-editable]:focus {

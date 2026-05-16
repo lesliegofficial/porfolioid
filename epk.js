@@ -205,7 +205,7 @@ function buildEPK(epk) {
     </div>`;
 
   const bioFullContent = hasMoreBio ? `
-    <div id="bioFull" style="display:none">
+    <div id="bioFull" style="display:none" data-editable data-editable-key="fullBio" data-editable-type="body" style="outline:none">
       ${bioParagraphs}
       <button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem;transition:all 0.2s">Show Less –</button>
     </div>` : '';
