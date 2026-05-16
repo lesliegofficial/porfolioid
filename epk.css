@@ -608,6 +608,9 @@
   }
 
   /* Full bio flows full width below the 3-col grid */
+  .career-threecol-intro { margin-bottom: 1.5rem; }
+  .career-threecol-intro p { font-size: 0.95rem; color: var(--white); line-height: 1.8; font-weight: 400; margin: 0; }
+
   .career-bio-full-width {
     margin-top: -0.5rem;
     padding-top: 0;
