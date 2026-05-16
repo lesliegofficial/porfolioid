@@ -378,10 +378,121 @@ function showSaveBanner() {
 
 function showPanel(name) {
   if (name === 'qr') setTimeout(initQRPanel, 100);
+  if (name === 'sections') setTimeout(initSectionsPanel, 100);
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById(`panel-${name}`).classList.add('active');
   event.currentTarget.classList.add('active');
+}
+
+// ── SECTION ORDER & VISIBILITY ──
+const DEFAULT_SECTIONS = [
+  { id: 'bio',     label: 'Career Profile', icon: '✦' },
+  { id: 'credits', label: 'Credits',        icon: '🏆' },
+  { id: 'photos',  label: 'Photos',         icon: '📸' },
+  { id: 'videos',  label: 'Video',          icon: '🎬' },
+  { id: 'music',   label: 'Music',          icon: '🎵' },
+  { id: 'awards',  label: 'Awards',         icon: '🏅' },
+  { id: 'assets',  label: 'Assets',         icon: '📦' },
+  { id: 'booking', label: 'Booking',        icon: '📅' },
+];
+
+function initSectionsPanel() {
+  const epk = window._epkData || {};
+  const order = epk.sectionOrder || DEFAULT_SECTIONS.map(s => s.id);
+  const visibility = epk.sectionVisibility || {};
+  const list = document.getElementById('sectionsOrderList');
+  if (!list) return;
+
+  // Build ordered list
+  const ordered = order.map(id => DEFAULT_SECTIONS.find(s => s.id === id)).filter(Boolean);
+  // Add any missing sections
+  DEFAULT_SECTIONS.forEach(s => { if (!ordered.find(o => o.id === s.id)) ordered.push(s); });
+
+  list.innerHTML = ordered.map((s, i) => {
+    const visible = visibility[s.id] !== false;
+    return `
+    <div class="section-order-item" draggable="true" data-id="${s.id}" data-index="${i}"
+      style="display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;margin-bottom:0.5rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.15);cursor:grab;border-left:3px solid ${visible ? 'var(--gold)' : 'rgba(255,255,255,0.1)'}">
+      <span style="color:rgba(255,255,255,0.3);font-size:1.2rem;cursor:grab;letter-spacing:-2px">⠿⠿</span>
+      <span style="font-size:1.1rem">${s.icon}</span>
+      <span style="font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--white);flex:1">${s.label}</span>
+      <button onclick="toggleSectionVisibility('${s.id}', this)" 
+        style="background:none;border:1px solid rgba(255,255,255,0.15);color:${visible ? 'var(--gold)' : 'rgba(255,255,255,0.3)'};padding:0.35rem 0.75rem;cursor:pointer;font-size:0.85rem;transition:all 0.2s"
+        title="${visible ? 'Hide section' : 'Show section'}">
+        ${visible ? '👁 Visible' : '🚫 Hidden'}
+      </button>
+    </div>`;
+  }).join('');
+
+  // Add drag-and-drop
+  initDragDrop();
+}
+
+function toggleSectionVisibility(id, btn) {
+  const epk = window._epkData || {};
+  if (!epk.sectionVisibility) epk.sectionVisibility = {};
+  const current = epk.sectionVisibility[id] !== false;
+  epk.sectionVisibility[id] = !current;
+  window._epkData = epk;
+  // Update button
+  const item = btn.closest('.section-order-item');
+  btn.textContent = !current ? '👁 Visible' : '🚫 Hidden';
+  btn.style.color = !current ? 'var(--gold)' : 'rgba(255,255,255,0.3)';
+  item.style.borderLeftColor = !current ? 'var(--gold)' : 'rgba(255,255,255,0.1)';
+}
+
+function initDragDrop() {
+  const items = document.querySelectorAll('.section-order-item');
+  let dragSrc = null;
+
+  items.forEach(item => {
+    item.addEventListener('dragstart', e => {
+      dragSrc = item;
+      e.dataTransfer.effectAllowed = 'move';
+      item.style.opacity = '0.4';
+    });
+    item.addEventListener('dragend', () => { item.style.opacity = '1'; });
+    item.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
+    item.addEventListener('dragenter', e => { e.preventDefault(); item.style.background = 'rgba(201,168,76,0.08)'; });
+    item.addEventListener('dragleave', () => { item.style.background = 'var(--dark-2)'; });
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      item.style.background = 'var(--dark-2)';
+      if (dragSrc === item) return;
+      const list = item.parentNode;
+      const allItems = [...list.querySelectorAll('.section-order-item')];
+      const fromIdx = allItems.indexOf(dragSrc);
+      const toIdx = allItems.indexOf(item);
+      if (fromIdx < toIdx) list.insertBefore(dragSrc, item.nextSibling);
+      else list.insertBefore(dragSrc, item);
+      // Update epk data
+      const newOrder = [...list.querySelectorAll('.section-order-item')].map(el => el.dataset.id);
+      if (!window._epkData) window._epkData = {};
+      window._epkData.sectionOrder = newOrder;
+    });
+  });
+}
+
+async function saveSectionSettings() {
+  const epk = window._epkData;
+  if (!epk) return;
+  // Read current order from DOM
+  const items = document.querySelectorAll('.section-order-item');
+  epk.sectionOrder = [...items].map(el => el.dataset.id);
+  
+  const slug = document.getElementById('portfolioSlug')?.textContent?.replace('porfolioid.com/epk/', '').trim();
+  if (!slug) { showToast('Could not find portfolio slug'); return; }
+
+  try {
+    const res = await fetch('/.netlify/functions/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, data: epk })
+    });
+    if (res.ok) showToast('Section settings saved ✓');
+    else showToast('Save failed — try again');
+  } catch(e) { showToast('Error saving — try again'); }
 }
 
 function toggleAddForm(id) {

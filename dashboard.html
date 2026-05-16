@@ -57,6 +57,12 @@
     </div>
 
     <div class="sidebar-section">
+      <div class="sidebar-section-label">Layout</div>
+      <button class="nav-item" onclick="showPanel('sections')">
+        <span class="nav-item-icon">⠿</span><span>Section Order</span>
+      </button>
+    </div>
+    <div class="sidebar-section">
       <div class="sidebar-section-label">Business</div>
       <button class="nav-item" onclick="showPanel('qr')">
         <span class="nav-item-icon">⬛</span><span>Share Card / QR</span>
@@ -944,6 +950,14 @@
     </div>
 
     <!-- QR SHARE PANEL -->
+    <!-- SECTIONS PANEL -->
+    <div class="panel" id="panel-sections">
+      <h1 class="panel-title">Section <em>Order & Visibility</em></h1>
+      <p class="panel-sub">Drag to reorder sections. Toggle the eye to show or hide each section on your portfolio.</p>
+      <div id="sectionsOrderList" style="margin-top:2rem"></div>
+      <button onclick="saveSectionSettings()" style="margin-top:2rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;background:var(--gold);color:#000;border:none;padding:0.75rem 2rem;cursor:pointer;font-weight:600">✓ Save Section Settings</button>
+    </div>
+
     <div class="panel" id="panel-qr">
       <h1 class="panel-title">Share Card & <em>QR Code</em></h1>
       <p class="panel-sub">Your portfolio. One scan away. Share it anywhere — events, meetings, networking, studio sessions.</p>

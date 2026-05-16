@@ -690,6 +690,9 @@ function buildEPK(epk) {
     </div>` : '<div id="booking" style="display:none"></div>'}
   `;
 
+  // Apply section order and visibility from epk data
+  applySectionOrderAndVisibility(epk);
+
   // Build photo gallery if photos exist
   if (epk.photos?.length) buildGallery(epk.photos);
 }
@@ -920,6 +923,40 @@ function adjustModalFont(dir) {
   desc.style.fontSize = _modalFontSize + 'rem';
   // Also scale line height for readability
   desc.style.lineHeight = _modalFontSize > 1.1 ? '2' : '1.9';
+}
+
+// Section order and visibility
+function applySectionOrderAndVisibility(epk) {
+  const DEFAULT_ORDER = ['bio','credits','photos','videos','music','awards','assets','booking'];
+  const order = epk.sectionOrder || DEFAULT_ORDER;
+  const visibility = epk.sectionVisibility || {};
+  const container = document.getElementById('epkContent');
+  if (!container) return;
+
+  // Hide/show sections based on visibility
+  DEFAULT_ORDER.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const isVisible = visibility[id] !== false;
+    el.style.display = isVisible ? '' : 'none';
+  });
+
+  // Reorder sections in DOM based on sectionOrder
+  // Find the divider after hero as the insertion point
+  const hero = container.querySelector('.hero');
+  if (!hero) return;
+  let insertAfter = hero.nextElementSibling; // usually a divider or first section
+
+  order.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    // Also move any sibling divider that follows this section
+    const nextSib = el.nextElementSibling;
+    container.appendChild(el);
+    if (nextSib && nextSib.classList && nextSib.classList.contains('divider')) {
+      container.appendChild(nextSib);
+    }
+  });
 }
 
 // Credits collapse/expand
