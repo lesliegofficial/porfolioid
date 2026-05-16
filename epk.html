@@ -37,6 +37,12 @@
     <input type="checkbox" id="applyToAll" style="accent-color:var(--gold)"> Apply to all text
   </label>
   <div style="width:1px;height:20px;background:rgba(255,255,255,0.1)"></div>
+  <div style="display:flex;align-items:center;gap:0.5rem">
+    <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:rgba(255,255,255,0.4);text-transform:uppercase">Bio Width</span>
+    <input type="range" id="bioWidthSlider" min="200" max="600" value="380" step="10" oninput="adjustBioWidth(this.value)" style="width:100px;accent-color:var(--gold)">
+    <span id="bioWidthVal" style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold);min-width:35px">380px</span>
+  </div>
+  <div style="width:1px;height:20px;background:rgba(255,255,255,0.1)"></div>
   <div style="display:flex;gap:0.5rem;margin-left:auto">
     <button onclick="saveInlineEdits()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;background:var(--gold);color:#000;border:none;padding:0.4rem 1rem;cursor:pointer;font-weight:600">✓ Save Changes</button>
     <button onclick="toggleEditMode()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;background:none;color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.15);padding:0.4rem 0.75rem;cursor:pointer">✕ Exit</button>

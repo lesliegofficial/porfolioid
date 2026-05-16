@@ -910,6 +910,15 @@ function toggleAllVideos() {
   btn.textContent = isHidden ? 'Show Less –' : 'View All Videos +';
 }
 
+// Bio width slider
+function adjustBioWidth(val) {
+  const bioText = document.querySelector('.career-bio-text');
+  if (bioText) bioText.style.maxWidth = val + 'px';
+  const label = document.getElementById('bioWidthVal');
+  if (label) label.textContent = val + 'px';
+  _pendingEdits['__bioWidth__'] = val;
+}
+
 // Modal font size control
 let _modalFontSize = 1.0; // rem, default
 function adjustModalFont(dir) {
