@@ -859,6 +859,49 @@ function navigateSlide(col, state, total, dir) {
   goToSlide(col, state, next);
 }
 
+// ── QR SCAN TRACKING + EXPIRY CHECK ──
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const qrMode = params.get('qr');
+  const expires = params.get('expires');
+  const eventName = params.get('event');
+  const s = params.get('slug');
+
+  // Check expiry for Event QR
+  if (qrMode === 'event' && expires) {
+    const expDate = new Date(expires + 'T23:59:59');
+    if (Date.now() > expDate.getTime()) {
+      document.addEventListener('DOMContentLoaded', () => {
+        const content = document.getElementById('epkContent');
+        if (content) content.innerHTML = `
+          <div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">
+            <div style="font-size:2rem;margin-bottom:1rem">⚡</div>
+            <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#C9A84C;margin-bottom:1rem">This QR code has expired</div>
+            ${eventName ? `<div style="font-size:0.75rem;margin-bottom:0.5rem">Event: ${decodeURIComponent(eventName)}</div>` : ''}
+            <div style="font-size:0.65rem;color:#666">Expired: ${expires}</div>
+            <div style="margin-top:2rem"><a href="/index.html" style="color:#C9A84C;font-size:0.65rem;letter-spacing:0.1em">PorfolioID →</a></div>
+          </div>`;
+      });
+      return; // Stop execution
+    }
+  }
+
+  // Track scan (fire and forget)
+  if (qrMode && s) {
+    fetch('/api/epk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'trackScan',
+        slug: s,
+        qrMode,
+        eventName: eventName ? decodeURIComponent(eventName) : null,
+        userAgent: navigator.userAgent
+      })
+    }).catch(() => {});
+  }
+})();
+
 // Init
 const slug = getSlugFromURL();
 if (slug) {

@@ -1,83 +1,340 @@
-const { getStore } = require('@netlify/blobs');
+// PorfolioID — Netlify Function
+// Phase 6: Supabase backend with Netlify Blobs fallback
 
-exports.handler = async (event, context) => {
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const USE_SUPABASE = !!(SUPABASE_URL && SUPABASE_SERVICE_KEY);
+
+// ── SUPABASE HELPERS ──────────────────────────────────────────────
+async function sb(path, method = 'GET', body) {
+  const opts = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_SERVICE_KEY,
+      'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+      'Prefer': method === 'POST' ? 'return=representation' : 'return=minimal'
+    }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, opts);
+  const text = await res.text();
+  try { return { ok: res.ok, status: res.status, data: JSON.parse(text) }; }
+  catch { return { ok: res.ok, status: res.status, data: text }; }
+}
+
+async function sbGet(table, query) {
+  return sb(`${table}?${query}`, 'GET');
+}
+
+async function sbUpsert(table, data) {
+  return sb(`${table}?on_conflict=${data.slug ? 'slug' : 'id'}`, 'POST', data);
+}
+
+async function sbUpdate(table, match, data) {
+  const q = Object.entries(match).map(([k,v]) => `${k}=eq.${encodeURIComponent(v)}`).join('&');
+  return sb(`${table}?${q}`, 'PATCH', data);
+}
+
+async function sbDelete(table, match) {
+  const q = Object.entries(match).map(([k,v]) => `${k}=eq.${encodeURIComponent(v)}`).join('&');
+  return sb(`${table}?${q}`, 'DELETE');
+}
+
+// ── NETLIFY BLOBS FALLBACK ────────────────────────────────────────
+let blobStore = null;
+async function getBlobs() {
+  if (blobStore) return blobStore;
+  try {
+    const { getStore } = require('@netlify/blobs');
+    blobStore = getStore({ name: 'epk-data', siteID: process.env.EPK_SITE_ID, token: process.env.NETLIFY_BLOBS_TOKEN });
+    return blobStore;
+  } catch { return null; }
+}
+
+// ── MIGRATE BLOB → SUPABASE ───────────────────────────────────────
+async function migrateFromBlobs(slug) {
+  try {
+    const store = await getBlobs();
+    if (!store) return null;
+    const raw = await store.get(`epk:${slug}`);
+    if (!raw) return null;
+    const epkData = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    // Already migrated check
+    const existing = await sbGet('epk_profiles', `slug=eq.${slug}&select=slug`);
+    if (existing.ok && existing.data.length > 0) return epkData;
+    // Migrate core profile
+    await sbUpsert('epk_profiles', { slug, data: epkData, updated_at: new Date().toISOString() });
+    console.log(`Migrated ${slug} from Blobs to Supabase`);
+    return epkData;
+  } catch (e) {
+    console.error('Migration error:', e.message);
+    return null;
+  }
+}
+
+// ── MAIN HANDLER ─────────────────────────────────────────────────
+exports.handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
     'Content-Type': 'application/json'
   };
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers, body: '' };
-  }
-  const siteID = process.env.EPK_SITE_ID;
-  const token = process.env.NETLIFY_BLOBS_TOKEN;
-  if (!siteID || !token) {
-    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Missing env vars' }) };
-  }
-  const store = getStore({ name: 'epk-data', siteID, token });
+
+  if (event.httpMethod === 'OPTIONS') return { statusCode: 200, headers, body: '' };
+
+  const ok = (data) => ({ statusCode: 200, headers, body: JSON.stringify(data) });
+  const err = (msg, code = 400) => ({ statusCode: code, headers, body: JSON.stringify({ error: msg }) });
+
   try {
+    // ── GET: Load EPK ──────────────────────────────────────────
     if (event.httpMethod === 'GET') {
-      const slug = event.queryStringParameters?.slug;
-      if (!slug) return { statusCode: 400, headers, body: JSON.stringify({ error: 'slug required' }) };
-      const data = await store.get(`epk:${slug}`, { type: 'json' });
-      if (!data) return { statusCode: 404, headers, body: JSON.stringify({ error: 'not found' }) };
-      return { statusCode: 200, headers, body: JSON.stringify(data) };
-    }
-    if (event.httpMethod === 'POST') {
-      const body = JSON.parse(event.body);
-      const { slug, data, action } = body;
-      if (action === 'login') {
-        const emailRecord = await store.get(`email:${body.email}`, { type: 'json' });
-        if (!emailRecord) return { statusCode: 404, headers, body: JSON.stringify({ error: 'User not found' }) };
-        const existing = await store.get(`user:${emailRecord.slug}`, { type: 'json' });
-        if (!existing) return { statusCode: 404, headers, body: JSON.stringify({ error: 'User not found' }) };
-        if (existing.password !== body.password) return { statusCode: 401, headers, body: JSON.stringify({ error: 'Invalid password' }) };
-        const { password, ...safeUser } = existing;
-        return { statusCode: 200, headers, body: JSON.stringify({ success: true, user: safeUser }) };
-      }
-      if (!slug && action !== 'login') return { statusCode: 400, headers, body: JSON.stringify({ error: 'slug required' }) };
-      if (action === 'signup') {
-        const existingSlug = await store.get(`user:${slug}`, { type: 'json' });
-        if (existingSlug) return { statusCode: 409, headers, body: JSON.stringify({ error: 'Slug already taken' }) };
-        const emailCheck = await store.get(`email:${body.email}`, { type: 'json' });
-        if (emailCheck) return { statusCode: 409, headers, body: JSON.stringify({ error: 'Email already registered' }) };
-        const newUser = { id: `user_${Date.now()}`, firstName: body.firstName, lastName: body.lastName, email: body.email, slug };
-        await store.set(`user:${slug}`, JSON.stringify(newUser));
-        await store.set(`email:${body.email}`, JSON.stringify({ slug }));
-        await store.set(`epk:${slug}`, JSON.stringify(body.epk));
-        const { password, ...safeUser } = newUser;
-        return { statusCode: 200, headers, body: JSON.stringify({ success: true, user: safeUser }) };
-      }
-      if (action === 'save') {
-        await store.set(`epk:${slug}`, JSON.stringify(data));
-        return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
-      }
-      if (action === 'load') {
+      const { slug, section, page = 0, limit = 50 } = event.queryStringParameters || {};
+      if (!slug) return err('slug required');
+
+      if (!USE_SUPABASE) {
+        // Fallback to blobs
+        const store = await getBlobs();
+        if (!store) return err('No storage configured', 500);
         const raw = await store.get(`epk:${slug}`);
-        if (!raw) return { statusCode: 404, headers, body: JSON.stringify({ error: 'EPK not found' }) };
-        let epk;
-        try { epk = typeof raw === 'string' ? JSON.parse(raw) : raw; } catch(e) { epk = raw; }
-        return { statusCode: 200, headers, body: JSON.stringify({ success: true, epk }) };
+        if (!raw) return err('not found', 404);
+        const data = typeof raw === 'string' ? JSON.parse(raw) : raw;
+        return ok(data);
       }
-      if (action === 'load_old_unused') {
-        const epk = await store.get(`epk:${slug}`, { type: 'json' });
-        if (!epk) return { statusCode: 404, headers, body: JSON.stringify({ error: 'EPK not found' }) };
-        return { statusCode: 200, headers, body: JSON.stringify({ success: true, epk }) };
+
+      // Try Supabase
+      const profileRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data,updated_at`);
+
+      let epkData;
+      if (!profileRes.ok || !profileRes.data.length) {
+        // Try migrating from blobs
+        epkData = await migrateFromBlobs(slug);
+        if (!epkData) return err('not found', 404);
+      } else {
+        epkData = profileRes.data[0].data;
       }
-      if (action === 'trackDownload') {
-        const epk = await store.get(`epk:${slug}`, { type: 'json' });
-        if (epk && epk.assets && epk.assets[body.assetIdx] !== undefined) {
-          epk.assets[body.assetIdx].downloads = (epk.assets[body.assetIdx].downloads || 0) + 1;
-          await store.set(`epk:${slug}`, JSON.stringify(epk));
+
+      // If requesting a specific section with pagination
+      if (section) {
+        const tableMap = {
+          credits: 'credits', music: 'music_tracks', videos: 'videos',
+          photos: 'photos', assets: 'assets', awards: 'awards'
+        };
+        const table = tableMap[section];
+        if (table) {
+          const offset = parseInt(page) * parseInt(limit);
+          const sectionRes = await sbGet(table,
+            `slug=eq.${slug}&order=sort_order.asc,created_at.asc&limit=${limit}&offset=${offset}`
+          );
+          if (sectionRes.ok) return ok({ items: sectionRes.data, page: parseInt(page) });
         }
-        return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
       }
-      return { statusCode: 400, headers, body: JSON.stringify({ error: 'Unknown action' }) };
+
+      return ok(epkData);
     }
-    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
-  } catch (err) {
-    console.error('EPK function error:', err);
-    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Server error', details: err.message }) };
+
+    // ── POST: All write actions ────────────────────────────────
+    if (event.httpMethod === 'POST') {
+      const body = JSON.parse(event.body || '{}');
+      const { action, slug, data } = body;
+
+      // ── SIGNUP ──
+      if (action === 'signup') {
+        if (!USE_SUPABASE) {
+          const store = await getBlobs();
+          if (!store) return err('No storage', 500);
+          const existingSlug = await store.get(`user:${slug}`, { type: 'json' });
+          if (existingSlug) return err('Slug already taken', 409);
+          const emailCheck = await store.get(`email:${body.email}`, { type: 'json' });
+          if (emailCheck) return err('Email already registered', 409);
+          const newUser = { id: `user_${Date.now()}`, firstName: body.firstName, lastName: body.lastName, email: body.email, slug };
+          await store.set(`user:${slug}`, JSON.stringify(newUser));
+          await store.set(`email:${body.email}`, JSON.stringify({ slug }));
+          await store.set(`epk:${slug}`, JSON.stringify(body.epk || {}));
+          const { password: _p, ...safeUser } = newUser;
+          return ok({ success: true, user: safeUser });
+        }
+
+        // Supabase signup
+        const slugCheck = await sbGet('users', `slug=eq.${slug}&select=slug`);
+        if (slugCheck.ok && slugCheck.data.length > 0) return err('Slug already taken', 409);
+        const emailCheck = await sbGet('users', `email=eq.${encodeURIComponent(body.email)}&select=email`);
+        if (emailCheck.ok && emailCheck.data.length > 0) return err('Email already registered', 409);
+
+        const userRes = await sbUpsert('users', {
+          slug,
+          email: body.email,
+          password: body.password,
+          first_name: body.firstName,
+          last_name: body.lastName
+        });
+        if (!userRes.ok) return err('Signup failed: ' + JSON.stringify(userRes.data), 500);
+
+        const initEpk = body.epk || { name: `${body.firstName} ${body.lastName}`, slug };
+        await sbUpsert('epk_profiles', { slug, data: initEpk, updated_at: new Date().toISOString() });
+
+        // Migrate any existing blob data
+        await migrateFromBlobs(slug);
+
+        return ok({ success: true, user: { id: userRes.data[0]?.id, firstName: body.firstName, lastName: body.lastName, email: body.email, slug } });
+      }
+
+      // ── LOGIN ──
+      if (action === 'login') {
+        if (!USE_SUPABASE) {
+          const store = await getBlobs();
+          if (!store) return err('No storage', 500);
+          const emailRecord = await store.get(`email:${body.email}`, { type: 'json' });
+          if (!emailRecord) return err('User not found', 404);
+          const existing = await store.get(`user:${emailRecord.slug}`, { type: 'json' });
+          if (!existing || existing.password !== body.password) return err('Invalid password', 401);
+          const { password: _p, ...safeUser } = existing;
+          return ok({ success: true, user: safeUser });
+        }
+
+        // Supabase login
+        const userRes = await sbGet('users', `email=eq.${encodeURIComponent(body.email)}&select=*`);
+        if (!userRes.ok || !userRes.data.length) return err('User not found', 404);
+        const user = userRes.data[0];
+        if (user.password !== body.password) return err('Invalid password', 401);
+
+        // Load EPK — migrate from blobs if needed
+        let epkData = null;
+        const profileRes = await sbGet('epk_profiles', `slug=eq.${user.slug}&select=data`);
+        if (profileRes.ok && profileRes.data.length) {
+          epkData = profileRes.data[0].data;
+        } else {
+          epkData = await migrateFromBlobs(user.slug);
+        }
+
+        return ok({
+          success: true,
+          user: { id: user.id, firstName: user.first_name, lastName: user.last_name, email: user.email, slug: user.slug },
+          epk: epkData
+        });
+      }
+
+      // ── SAVE (full EPK) ──
+      if (action === 'save') {
+        if (!slug) return err('slug required');
+
+        if (!USE_SUPABASE) {
+          const store = await getBlobs();
+          if (!store) return err('No storage', 500);
+          await store.set(`epk:${slug}`, JSON.stringify(data));
+          return ok({ success: true });
+        }
+
+        // Save core profile data to Supabase
+        const saveRes = await sb(
+          `epk_profiles?slug=eq.${slug}`,
+          'PATCH',
+          { data, updated_at: new Date().toISOString() }
+        );
+
+        // If no row exists yet, insert
+        if (saveRes.status === 404 || (saveRes.ok && saveRes.data === '')) {
+          await sbUpsert('epk_profiles', { slug, data, updated_at: new Date().toISOString() });
+        }
+
+        return ok({ success: true });
+      }
+
+      // ── SAVE SECTION (paginated arrays) ──
+      if (action === 'saveSection') {
+        const { section, items } = body;
+        if (!slug || !section) return err('slug and section required');
+
+        const tableMap = {
+          credits: 'credits', music: 'music_tracks', videos: 'videos',
+          photos: 'photos', assets: 'assets', awards: 'awards'
+        };
+        const table = tableMap[section];
+        if (!table) return err('Unknown section');
+
+        if (!USE_SUPABASE) {
+          // Fallback: save into blob EPK data
+          const store = await getBlobs();
+          const raw = await store.get(`epk:${slug}`);
+          const epkData = raw ? (typeof raw === 'string' ? JSON.parse(raw) : raw) : {};
+          epkData[section] = items;
+          await store.set(`epk:${slug}`, JSON.stringify(epkData));
+          return ok({ success: true });
+        }
+
+        // Delete existing and reinsert with new sort order
+        await sbDelete(table, { slug });
+        if (items && items.length) {
+          const rows = items.map((item, i) => ({ ...item, slug, sort_order: i, id: item.id || `${section}_${slug}_${Date.now()}_${i}` }));
+          // Batch insert (Supabase handles arrays)
+          const insertRes = await sb(table, 'POST', rows);
+          if (!insertRes.ok) console.error('Section save error:', insertRes.data);
+        }
+        return ok({ success: true });
+      }
+
+      // ── TRACK DOWNLOAD ──
+      if (action === 'trackDownload') {
+        if (!slug) return err('slug required');
+        const { assetIdx } = body;
+
+        if (!USE_SUPABASE) {
+          const store = await getBlobs();
+          const raw = await store.get(`epk:${slug}`);
+          if (raw) {
+            const epkData = typeof raw === 'string' ? JSON.parse(raw) : raw;
+            if (epkData.assets && epkData.assets[assetIdx] !== undefined) {
+              epkData.assets[assetIdx].downloads = (epkData.assets[assetIdx].downloads || 0) + 1;
+              await store.set(`epk:${slug}`, JSON.stringify(epkData));
+            }
+          }
+          return ok({ success: true });
+        }
+
+        // Increment downloads in assets table
+        const assetRes = await sbGet('assets', `slug=eq.${slug}&order=sort_order.asc&limit=100`);
+        if (assetRes.ok && assetRes.data[assetIdx]) {
+          const asset = assetRes.data[assetIdx];
+          await sbUpdate('assets', { id: asset.id }, { downloads: (asset.downloads || 0) + 1 });
+        }
+        return ok({ success: true });
+      }
+
+      // ── TRACK QR SCAN ──
+      if (action === 'trackScan') {
+        if (!slug) return err('slug required');
+        if (!USE_SUPABASE) return ok({ success: true }); // Skip tracking without Supabase
+
+        await sb('qr_scans', 'POST', {
+          slug,
+          qr_mode: body.qrMode || 'artist',
+          event_name: body.eventName || null,
+          user_agent: body.userAgent || null
+        });
+
+        // Return current count for this mode
+        const countRes = await sbGet('qr_scans',
+          `slug=eq.${slug}&qr_mode=eq.${body.qrMode || 'artist'}&select=id`
+        );
+        return ok({ success: true, count: countRes.ok ? countRes.data.length : 0 });
+      }
+
+      // ── MIGRATE (manual trigger) ──
+      if (action === 'migrate') {
+        if (!slug) return err('slug required');
+        const epkData = await migrateFromBlobs(slug);
+        if (!epkData) return err('Nothing to migrate or already migrated');
+        return ok({ success: true, message: 'Migrated successfully' });
+      }
+
+      return err('Unknown action');
+    }
+
+    return err('Method not allowed', 405);
+
+  } catch (e) {
+    console.error('EPK function error:', e);
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Server error', details: e.message }) };
   }
 };

@@ -360,11 +360,43 @@ async function persistUser() {
   currentUser.epk = epk;
   try {
     const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
-    await fetch('/api/epk', {
+    const slug = session.slug || epk.slug;
+    if (!slug) return;
+
+    // Separate large paginated arrays from core profile data
+    const PAGINATED_SECTIONS = ['credits', 'music', 'videos', 'photos', 'assets', 'awards'];
+    const coreData = {};
+    const sectionData = {};
+
+    Object.entries(epk).forEach(([k, v]) => {
+      if (PAGINATED_SECTIONS.includes(k) && Array.isArray(v)) {
+        sectionData[k] = v;
+      } else {
+        coreData[k] = v;
+      }
+    });
+
+    // Save core profile (always)
+    const coreRes = await fetch('/api/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'save', slug: session.slug || epk.slug, data: epk })
+      body: JSON.stringify({ action: 'save', slug, data: coreData })
     });
+    if (!coreRes.ok) console.error('Core save failed');
+
+    // Save paginated sections in parallel (only sections that have data)
+    const sectionSaves = Object.entries(sectionData)
+      .filter(([_, items]) => items && items.length > 0)
+      .map(([section, items]) =>
+        fetch('/api/epk', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'saveSection', slug, section, items })
+        }).catch(e => console.error(`Section save failed (${section}):`, e))
+      );
+
+    await Promise.all(sectionSaves);
+
   } catch(err) {
     console.error('Save failed:', err);
   }
