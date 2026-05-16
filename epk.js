@@ -230,14 +230,16 @@ function buildEPK(epk) {
       <div class="career-threecol">
         <div class="career-threecol-bio">
           ${bioPortrait}
-          ${bioContent}
         </div>
         <div class="career-threecol-cards">
           ${resumeCards[0] ? buildResumeCard(resumeCards[0]) : ''}
           ${resumeCards[1] ? buildResumeCard(resumeCards[1]) : ''}
         </div>
       </div>
-      ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}
+      <div class="career-bio-full-width">
+        ${bioContent}
+        ${bioFullContent || ''}
+      </div>
     `;
   } else {
     // Stacked (default)
