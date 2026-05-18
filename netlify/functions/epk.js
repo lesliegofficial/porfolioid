@@ -139,6 +139,26 @@ exports.handler = async (event) => {
       const body = JSON.parse(event.body || '{}');
       const { action, slug, data } = body;
 
+      // ── LOAD ──
+      if (action === 'load') {
+        if (!slug) return err('slug required');
+        if (!USE_SUPABASE) {
+          const store = await getBlobs();
+          if (!store) return err('No storage configured', 500);
+          const raw = await store.get(`epk:${slug}`);
+          if (!raw) return err('not found', 404);
+          const data = typeof raw === 'string' ? JSON.parse(raw) : raw;
+          return ok({ success: true, epk: data });
+        }
+        const profileRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data,updated_at`);
+        if (!profileRes.ok || !profileRes.data.length) {
+          const epkData = await migrateFromBlobs(slug);
+          if (!epkData) return err('not found', 404);
+          return ok({ success: true, epk: epkData });
+        }
+        return ok({ success: true, epk: profileRes.data[0].data });
+      }
+
       // ── SIGNUP ──
       if (action === 'signup') {
         if (!USE_SUPABASE) {
