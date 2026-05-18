@@ -517,14 +517,14 @@ async function saveSectionSettings() {
   const items = document.querySelectorAll('.section-order-item');
   epk.sectionOrder = [...items].map(el => el.dataset.id);
   
-  const slug = document.getElementById('portfolioSlug')?.textContent?.replace('porfolioid.com/epk/', '').trim();
+  const slug = currentUser?.slug;
   if (!slug) { showToast('Could not find portfolio slug'); return; }
 
   try {
     const res = await fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug, data: epk })
+      body: JSON.stringify({ action: 'save', slug, data: epk })
     });
     if (res.ok) showToast('Section settings saved ✓');
     else showToast('Save failed — try again');
@@ -2488,13 +2488,13 @@ async function saveSpanish() {
   const taglinesRaw = document.getElementById('esTaglines')?.value || '';
   epk.es.taglines = taglinesRaw.split('\n').map(t => t.trim()).filter(Boolean);
 
-  const slug = document.getElementById('portfolioSlug')?.textContent?.replace('porfolioid.com/epk/', '').trim();
+  const slug = currentUser?.slug;
   if (!slug) { showToast('Could not find slug'); return; }
   try {
     const res = await fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug, data: epk })
+      body: JSON.stringify({ action: 'save', slug, data: epk })
     });
     if (res.ok) showToast('Spanish content saved ✓');
     else showToast('Save failed');
