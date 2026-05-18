@@ -175,11 +175,15 @@ async function init() {
 
     if (data.success && data.epk) {
       epk = data.epk;
+      window._epkData = epk; // sync immediately on load
+      window.epk = epk;
       currentUser = { firstName: session.name.split(' ')[0], lastName: session.name.split(' ').slice(1).join(' '), email: session.email, slug: session.slug, epk };
     } else {
       // EPK not found - redirect to setup
       console.warn('EPK not found for slug:', session.slug, data);
       epk = createEmptyEPK(session.slug, session.name);
+      window._epkData = epk;
+      window.epk = epk;
       currentUser = { firstName: session.name.split(' ')[0], lastName: session.name.split(' ').slice(1).join(' '), email: session.email, slug: session.slug, epk };
     }
   } catch(err) {
@@ -435,7 +439,7 @@ const DEFAULT_SECTIONS = [
 ];
 
 function initSectionsPanel() {
-  const epk = window._epkData || {};
+  const epk = window._epkData || window.epk || {};
   const order = epk.sectionOrder || DEFAULT_SECTIONS.map(s => s.id);
   const visibility = epk.sectionVisibility || {};
   const list = document.getElementById('sectionsOrderList');
@@ -480,44 +484,87 @@ function toggleSectionVisibility(id, btn) {
 }
 
 function initDragDrop() {
-  const items = document.querySelectorAll('.section-order-item');
+  const list = document.getElementById('sectionsOrderList');
+  if (!list) return;
   let dragSrc = null;
+  let placeholder = null;
 
-  items.forEach(item => {
-    item.addEventListener('dragstart', e => {
-      dragSrc = item;
-      e.dataTransfer.effectAllowed = 'move';
-      item.style.opacity = '0.4';
-    });
-    item.addEventListener('dragend', () => { item.style.opacity = '1'; });
-    item.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
-    item.addEventListener('dragenter', e => { e.preventDefault(); item.style.background = 'rgba(201,168,76,0.08)'; });
-    item.addEventListener('dragleave', () => { item.style.background = 'var(--dark-2)'; });
-    item.addEventListener('drop', e => {
-      e.preventDefault();
-      item.style.background = 'var(--dark-2)';
-      if (dragSrc === item) return;
-      const list = item.parentNode;
-      const allItems = [...list.querySelectorAll('.section-order-item')];
-      const fromIdx = allItems.indexOf(dragSrc);
-      const toIdx = allItems.indexOf(item);
-      if (fromIdx < toIdx) list.insertBefore(dragSrc, item.nextSibling);
-      else list.insertBefore(dragSrc, item);
-      // Update epk data
-      const newOrder = [...list.querySelectorAll('.section-order-item')].map(el => el.dataset.id);
-      if (!window._epkData) window._epkData = {};
-      window._epkData.sectionOrder = newOrder;
-    });
+  function getItems() { return [...list.querySelectorAll('.section-order-item')]; }
+
+  function createPlaceholder() {
+    const ph = document.createElement('div');
+    ph.id = 'drag-placeholder';
+    ph.style.cssText = 'height:60px;margin-bottom:0.5rem;border:2px dashed var(--gold);background:rgba(201,168,76,0.05);border-radius:2px;transition:all 0.15s';
+    return ph;
+  }
+
+  function removePlaceholder() {
+    const ph = document.getElementById('drag-placeholder');
+    if (ph) ph.remove();
+  }
+
+  function updateOrder() {
+    const newOrder = getItems().map(el => el.dataset.id);
+    if (!window._epkData) window._epkData = {};
+    window._epkData.sectionOrder = newOrder;
+  }
+
+  list.addEventListener('dragstart', e => {
+    const item = e.target.closest('.section-order-item');
+    if (!item) return;
+    dragSrc = item;
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => { item.style.opacity = '0.4'; }, 0);
+    placeholder = createPlaceholder();
+  });
+
+  list.addEventListener('dragend', e => {
+    const item = e.target.closest('.section-order-item');
+    if (item) item.style.opacity = '1';
+    removePlaceholder();
+    dragSrc = null;
+  });
+
+  list.addEventListener('dragover', e => {
+    e.preventDefault();
+    if (!dragSrc || !placeholder) return;
+    const target = e.target.closest('.section-order-item');
+    if (!target || target === dragSrc) return;
+    const rect = target.getBoundingClientRect();
+    const midY = rect.top + rect.height / 2;
+    removePlaceholder();
+    if (e.clientY < midY) {
+      list.insertBefore(placeholder, target);
+    } else {
+      list.insertBefore(placeholder, target.nextSibling);
+    }
+  });
+
+  list.addEventListener('drop', e => {
+    e.preventDefault();
+    if (!dragSrc || !placeholder) return;
+    list.insertBefore(dragSrc, placeholder);
+    removePlaceholder();
+    dragSrc.style.opacity = '1';
+    updateOrder();
+    dragSrc = null;
   });
 }
 
 async function saveSectionSettings() {
-  const epk = window._epkData;
-  if (!epk) return;
+  // Use both window._epkData and module-level epk, whichever is available
+  const epkData = window._epkData || epk;
+  if (!epkData) return;
   // Read current order from DOM
   const items = document.querySelectorAll('.section-order-item');
-  epk.sectionOrder = [...items].map(el => el.dataset.id);
-  
+  epkData.sectionOrder = [...items].map(el => el.dataset.id);
+  // Sync visibility from current _epkData if available
+  if (window._epkData && window._epkData.sectionVisibility) {
+    epkData.sectionVisibility = window._epkData.sectionVisibility;
+  }
+  // Keep both references in sync
+  window._epkData = epkData;
+
   const slug = currentUser?.slug;
   if (!slug) { showToast('Could not find portfolio slug'); return; }
 
@@ -525,9 +572,9 @@ async function saveSectionSettings() {
     const res = await fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'save', slug, data: epk })
+      body: JSON.stringify({ action: 'save', slug, data: epkData })
     });
-    if (res.ok) showToast('Section settings saved ✓');
+    if (res.ok) showToast('Section order saved ✓');
     else showToast('Save failed — try again');
   } catch(e) { showToast('Error saving — try again'); }
 }
