@@ -1335,11 +1335,23 @@ function toggleLang(lang) {
 
   const es = epk.es || {};
 
-  // Swap bio text
+  // Swap bio text — support both shortBioES (top-level) and es.bio (nested)
   const bioEl = document.getElementById('bioShort');
   if (bioEl) {
-    const text = lang === 'es' && es.bio ? es.bio : (epk.shortBio || (epk.bio||'').split('\n')[0] || '');
+    const esText = epk.shortBioES || es.bio || '';
+    const text = lang === 'es' && esText ? esText : (epk.shortBio || (epk.bio||'').split('\n')[0] || '');
     bioEl.innerHTML = `<p style="margin-bottom:1.5em">${text}</p>`;
+  }
+
+  // Swap full bio
+  const bioFullEl = document.getElementById('bioFull');
+  if (bioFullEl) {
+    const esFullText = epk.bioES || es.bio || '';
+    if (lang === 'es' && esFullText) {
+      const paras = esFullText.split('\n\n').filter(Boolean);
+      bioFullEl.innerHTML = paras.slice(1).map(p => `<p>${p}</p>`).join('') +
+        `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem;transition:all 0.2s">Show Less –</button>`;
+    }
   }
 
   // Swap taglines
