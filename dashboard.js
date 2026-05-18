@@ -2470,22 +2470,22 @@ init();
 
 // ── SPANISH TRANSLATION ──
 function loadSpanish() {
-  const es = window._epkData?.es || {};
+  const epk = window._epkData || {};
   const shortBio = document.getElementById('esShortBio');
   const bio = document.getElementById('esBio');
   const taglines = document.getElementById('esTaglines');
-  if (shortBio) shortBio.value = es.shortBio || '';
-  if (bio) bio.value = es.bio || '';
-  if (taglines) taglines.value = (es.taglines || []).join('\n');
+  if (shortBio) shortBio.value = epk.shortBioES || epk.es?.shortBio || '';
+  if (bio) bio.value = epk.bioES || epk.es?.bio || '';
+  if (taglines) taglines.value = (epk.es?.taglines || []).join('\n');
 }
 
 async function saveSpanish() {
   const epk = window._epkData;
   if (!epk) return;
-  if (!epk.es) epk.es = {};
-  epk.es.shortBio = document.getElementById('esShortBio')?.value || '';
-  epk.es.bio = document.getElementById('esBio')?.value || '';
+  epk.shortBioES = document.getElementById('esShortBio')?.value || '';
+  epk.bioES = document.getElementById('esBio')?.value || '';
   const taglinesRaw = document.getElementById('esTaglines')?.value || '';
+  if (!epk.es) epk.es = {};
   epk.es.taglines = taglinesRaw.split('\n').map(t => t.trim()).filter(Boolean);
 
   const slug = currentUser?.slug;
