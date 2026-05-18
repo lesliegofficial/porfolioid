@@ -210,6 +210,7 @@ function createEmptyEPK(slug, name) {
 }
 
 function loadAllFields() {
+  window._epkData = epk; // keep _epkData in sync with loaded epk
   // Hero
   const nameParts = (epk.name || '').split(' ');
   document.getElementById('heroFirstName').value = nameParts[0] || '';
@@ -2484,6 +2485,7 @@ async function saveSpanish() {
   if (!epk) return;
   epk.shortBioES = document.getElementById('esShortBio')?.value || '';
   epk.bioES = document.getElementById('esBio')?.value || '';
+  window._epkData = epk;
   const taglinesRaw = document.getElementById('esTaglines')?.value || '';
   if (!epk.es) epk.es = {};
   epk.es.taglines = taglinesRaw.split('\n').map(t => t.trim()).filter(Boolean);
