@@ -565,7 +565,7 @@ function buildEPK(epk) {
     </div>` : ''}
 
     <!-- PHOTOS — moved before music for claim→proof sequence — Credits=Claim, Photos=Proof -->
-    ${epk.photos?.length ? `
+    ${true ? `
     <div class="gallery-section" id="photos">
       <div class="gallery-inner">
         <div class="section-label">Photos</div>
@@ -757,7 +757,12 @@ function buildEPK(epk) {
   applySectionOrderAndVisibility(epk);
 
   // Build photo gallery if photos exist
-  if (epk.photos?.length) buildGallery(epk.photos);
+  // Aggregate photos from top-level AND from all credits
+  const allPhotos = [
+    ...(epk.photos || []).map(url => typeof url === "string" ? { url } : url),
+    ...(epk.credits || []).flatMap(c => (c.photos || []).map(url => typeof url === "string" ? { url, caption: c.company || "" } : url))
+  ];
+  if (allPhotos.length) buildGallery(allPhotos);
 }
 
 let currentGalleryLayout = 'marquee'; // overridden by epk.galleryLayout
