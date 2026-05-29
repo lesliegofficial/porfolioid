@@ -290,7 +290,7 @@ function buildEPK(epk) {
         </div>
       </div>`;
   } else {
-  } else if (careerLayout === 'resumeleft') {
+    // Stacked (default)
     careerProfileHTML = `
       <div class="career-stacked-bio">
         ${bioPortrait ? `<div>${bioPortrait}</div>` : ''}
@@ -298,6 +298,7 @@ function buildEPK(epk) {
       </div>
       ${resumeCards.length ? `<div class="career-stacked-cards">${resumeCards.map(buildResumeCard).join('')}</div>` : ''}`;
   }
+
 
 
   // Sort: pinned first, filter hidden
