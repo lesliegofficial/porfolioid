@@ -270,8 +270,27 @@ function buildEPK(epk) {
       </div>
       ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}
     `;
+  } else if (careerLayout === 'resumeleft') {
+    careerProfileHTML = `
+      <div class="career-sidebyside">
+        <div class="career-sidebyside-left">
+          ${resumeCards.map(buildResumeCard).join('')}
+        </div>
+        <div class="career-sidebyside-right">
+          ${bioPortrait}
+          ${bioContent}
+        </div>
+      </div>`;
+  } else if (careerLayout === 'bioonly') {
+    careerProfileHTML = `
+      <div style="max-width:800px">
+        <div style="display:grid;grid-template-columns:280px 1fr;gap:2.5rem;align-items:start">
+          ${bioPortrait ? `<div>${bioPortrait}</div>` : ''}
+          <div>${bioContent}${bioFullContent || ''}</div>
+        </div>
+      </div>`;
   } else {
-    // Stacked (default)
+  } else if (careerLayout === 'resumeleft') {
     careerProfileHTML = `
       <div class="career-stacked-bio">
         ${bioPortrait ? `<div>${bioPortrait}</div>` : ''}
