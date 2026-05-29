@@ -249,11 +249,11 @@ function buildEPK(epk) {
     careerProfileHTML = `
       <div class="career-sidebyside">
         <div class="career-sidebyside-left">
-          ${bioPortrait}
-          ${bioContent}
+          ${resumeCards.map(buildResumeCard).join('')}
         </div>
         <div class="career-sidebyside-right">
-          ${resumeCards.map(buildResumeCard).join('')}
+          ${bioPortrait}
+          ${bioContent}
         </div>
       </div>`;
   } else if (careerLayout === 'threecol') {
