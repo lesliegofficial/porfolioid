@@ -15,14 +15,7 @@ function getEPKData(slug) {
 
 function getYouTubeThumb(url) {
   const match = url.match(/youtube\.com.*v=([^&]+)|youtu\.be\/([^?]+)/);
-  if (!match) return null;
-  const id = match[1] || match[2];
-  // Return hqdefault; the img tag will use onerror to try sddefault fallback
-  return `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-}
-function getYouTubeID(url) {
-  const match = url && url.match(/youtube\.com.*v=([^&]+)|youtu\.be\/([^?]+)/);
-  return match ? (match[1] || match[2]) : null;
+  return match ? `https://img.youtube.com/vi/${match[1]||match[2]}/hqdefault.jpg` : null;
 }
 
 function buildEPK(epk) {
@@ -301,7 +294,7 @@ function buildEPK(epk) {
     const origI = c._origIdx;
     const hasPhotos = c.photos && c.photos.length > 0;
     const hasDetail = c.fullDesc || hasPhotos || c.mediaLink || c.videoUrl;
-    const isMusic = musicCreditNames.includes(c.company || c.artist);
+    const isMusic = musicCreditNames.includes(c.artist);
     const accentColor = isMusic ? 'var(--gold)' : '#8FB8D0';
     const cardTypeLabel = isMusic ? 'MUSIC & ENTERTAINMENT' : 'PROFESSIONAL';
     const categoryBadge = c.category ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.08);color:var(--gray);padding:0.15rem 0.5rem;margin-right:0.4rem">${c.category}</span>` : '';
@@ -314,7 +307,7 @@ function buildEPK(epk) {
       <div style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:${accentColor};opacity:0.6;margin-bottom:0.5rem">${cardTypeLabel}</div>
       ${badgesRow}
       <div class="credit-header">
-        <div class="credit-artist">${c.company || c.artist}</div>
+        <div class="credit-artist">${c.artist}</div>
         ${c.years ? `<span class="credit-years">${c.years}</span>` : ''}
       </div>
       <div class="credit-role" style="color:${accentColor}">${c.role}${c.contractType ? ` · <span style="opacity:0.7">${c.contractType}</span>` : ''}</div>
@@ -364,7 +357,7 @@ function buildEPK(epk) {
     if (isMP4) {
       return `<div class="video-card owner-item-wrap" style="position:relative">${ownerOverlay}${categoryBadge}${featuredBadge}<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain" ${v.thumb ? `poster="${v.thumb}"` : ''}><source src="${v.url}" type="video/mp4"></video><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}</div>`;
     }
-    return `<div class="video-card owner-item-wrap" style="position:relative" onclick="window.open('${v.url}','_blank')">${ownerOverlay}${categoryBadge}${featuredBadge}${thumb ? `<img class="video-thumb" src="${thumb}" alt="${v.title}" loading="lazy" onerror="if(this.src.indexOf('hqdefault')>-1){this.src=this.src.replace('hqdefault','sddefault')}else if(this.src.indexOf('sddefault')>-1){this.src=this.src.replace('sddefault','0')}else{this.style.display='none'}">` : `<div class="video-thumb" style="background:var(--dark-4);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:2rem">▶</div>`}<div class="video-play">▶</div><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}</div>`;
+    return `<div class="video-card owner-item-wrap" style="position:relative" onclick="window.open('${v.url}','_blank')">${ownerOverlay}${categoryBadge}${featuredBadge}${thumb ? `<img class="video-thumb" src="${thumb}" alt="${v.title}" loading="lazy">` : `<div class="video-thumb" style="background:var(--dark-4);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:2rem">▶</div>`}<div class="video-play">▶</div><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}</div>`;
   };
 
   // Group by category — but keep original indices for reordering
@@ -490,7 +483,7 @@ function buildEPK(epk) {
           // Featured Credit
           if (ib.featuredEnabled && ib.featuredCreditIdx !== '' && epk.credits?.[ib.featuredCreditIdx]) {
             const fc = epk.credits[ib.featuredCreditIdx];
-            blocks += `<div class="identity-block"><div class="identity-block-label">Featured Credit</div><div class="identity-featured-credit"><span class="identity-featured-artist">${fc.company || fc.artist}</span><span class="identity-featured-role">${fc.role}${fc.years ? ' · ' + fc.years : ''}</span></div></div>`;
+            blocks += `<div class="identity-block"><div class="identity-block-label">Featured Credit</div><div class="identity-featured-credit"><span class="identity-featured-artist">${fc.artist}</span><span class="identity-featured-role">${fc.role}${fc.years ? ' · ' + fc.years : ''}</span></div></div>`;
           }
           // Verification
           if (ib.verifiedEnabled && ib.verificationStatus) {
@@ -1225,7 +1218,7 @@ function openCreditModal(i) {
   const c = epkVisibleCredits[i];
   if (!c) return;
   const photos = c.photos || [];
-  document.getElementById('creditModalArtist').textContent = c.company || c.artist;
+  document.getElementById('creditModalArtist').textContent = c.artist;
   document.getElementById('creditModalMeta').textContent = [c.role, c.contractType, c.years].filter(Boolean).join(' · ');
   document.getElementById('creditModalDesc').textContent = (_currentLang === 'es' && c.fullDescEs) ? c.fullDescEs : (c.fullDesc || c.desc || '');
 
@@ -1280,7 +1273,7 @@ function openCreditModal(i) {
   })();
   document.getElementById('creditModalMedia').innerHTML = mediaHTML;
   document.getElementById('creditModalPhotos').innerHTML = photos.map(url =>
-    `<img class="credit-modal-photo" src="${url}" alt="${c.company || c.artist}" loading="lazy" onclick="openLightbox('${url}')" onerror="this.style.display='none'">`
+    `<img class="credit-modal-photo" src="${url}" alt="${c.artist}" loading="lazy" onclick="openLightbox('${url}')" onerror="this.style.display='none'">`
   ).join('');
 
   // Press & Archive section
