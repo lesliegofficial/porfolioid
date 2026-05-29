@@ -249,11 +249,11 @@ function buildEPK(epk) {
     careerProfileHTML = `
       <div class="career-sidebyside">
         <div class="career-sidebyside-left">
-          ${resumeCards.map(buildResumeCard).join('')}
-        </div>
-        <div class="career-sidebyside-right">
           ${bioPortrait}
           ${bioContent}
+        </div>
+        <div class="career-sidebyside-right">
+          ${resumeCards.map(buildResumeCard).join('')}
         </div>
       </div>`;
   } else if (careerLayout === 'threecol') {
@@ -270,25 +270,6 @@ function buildEPK(epk) {
       </div>
       ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}
     `;
-  } else if (careerLayout === 'resumeleft') {
-    careerProfileHTML = `
-      <div class="career-sidebyside">
-        <div class="career-sidebyside-left">
-          ${resumeCards.map(buildResumeCard).join('')}
-        </div>
-        <div class="career-sidebyside-right">
-          ${bioPortrait}
-          ${bioContent}
-        </div>
-      </div>`;
-  } else if (careerLayout === 'bioonly') {
-    careerProfileHTML = `
-      <div style="max-width:800px">
-        <div style="display:grid;grid-template-columns:280px 1fr;gap:2.5rem;align-items:start">
-          ${bioPortrait ? `<div>${bioPortrait}</div>` : ''}
-          <div>${bioContent}${bioFullContent || ''}</div>
-        </div>
-      </div>`;
   } else {
     // Stacked (default)
     careerProfileHTML = `
@@ -298,7 +279,6 @@ function buildEPK(epk) {
       </div>
       ${resumeCards.length ? `<div class="career-stacked-cards">${resumeCards.map(buildResumeCard).join('')}</div>` : ''}`;
   }
-
 
 
   // Sort: pinned first, filter hidden
@@ -461,7 +441,6 @@ function buildEPK(epk) {
       ${a.url ? `<a href="${a.url}" class="asset-btn" target="_blank" ${downloadAttr}>${a.btnLabel || 'Download →'}</a>` : `<span class="asset-btn" style="opacity:0.4">${a.btnLabel || 'Coming Soon'}</span>`}
     </div>`;
     }).join('');
-
 
   const bookingEmail = epk.bookingEmail || '';
   const bookingPhone = epk.bookingPhone || '';
@@ -745,7 +724,6 @@ function buildEPK(epk) {
   // Apply section order and visibility from epk data
   applySectionOrderAndVisibility(epk);
 
-  // Build photo gallery if photos exist
   // Build photo gallery if photos exist
   if (epk.photos?.length) buildGallery(epk.photos);
 }
