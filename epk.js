@@ -462,6 +462,18 @@ function buildEPK(epk) {
     </div>`;
     }).join('');
 
+  // Build resume cards for assets section
+  const resumeAssetsHTML = resumeCards.map(card => `
+    <div class="asset-card">
+      <div class="asset-icon">📋</div>
+      <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">${card.label || 'Resume'}</div>
+      <div class="asset-title">${card.title}</div>
+      <p class="asset-desc">${card.desc || ''}</p>
+      ${card.resumeUrl ? `<a href="${card.resumeUrl}" class="asset-btn" target="_blank">↓ Download Resume →</a>` : '<span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray)">Resume on file</span>'}
+    </div>`
+  ).join('');
+
+
   const bookingEmail = epk.bookingEmail || '';
   const bookingPhone = epk.bookingPhone || '';
   const bookingTagline = epk.bookingTagline || 'Now booking live performances, studio sessions, and creative collaborations.';
@@ -647,14 +659,14 @@ function buildEPK(epk) {
           <div>
             <div class="collapsible-header-label">Professional Assets</div>
             <div class="collapsible-header-title">Resources & Downloads</div>
-            <div class="collapsible-header-meta">${epk.assets.filter(a=>a.visible!==false && a.category!=='Resume').length} available</div>
+            <div class="collapsible-header-meta">${(epk.assets.filter(a=>a.visible!==false && a.category!=='Resume').length + resumeCards.length)} available</div>
           </div>
         </div>
         <div class="collapsible-toggle"><span class="toggle-label">Expand</span> ＋</div>
       </div>
       <div class="collapsible-body" id="assetsBody">
         <div class="collapsible-body-inner" style="max-width:1100px;margin:0 auto;padding:0 2rem 3rem">
-          <div class="assets-grid">${assetsHTML}</div>
+          <div class="assets-grid">${resumeAssetsHTML}${assetsHTML}</div>
         </div>
       </div>
     </div>` : ''}
