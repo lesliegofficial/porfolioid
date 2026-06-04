@@ -243,6 +243,12 @@ function buildEPK(epk) {
 
   const bioContent = bioShortContent;
 
+  // DEBUG — remove after fix
+  console.log('DEBUG careerLayout:', careerLayout);
+  console.log('DEBUG hasMoreBio:', hasMoreBio);
+  console.log('DEBUG bioFullText length:', bioFullText.length);
+  console.log('DEBUG bioFullContent length:', bioFullContent.length);
+
   // Build career profile HTML based on layout
   let careerProfileHTML = '';
   if (careerLayout === 'sidebyside') {
