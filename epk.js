@@ -1359,6 +1359,13 @@ function toggleLang(lang) {
     bioFullEl.style.display = 'none';
   }
 
+  // Reset bio toggle button on language switch
+  const bioToggleBtn = document.getElementById('bioToggleBtn');
+  if (bioToggleBtn) {
+    bioToggleBtn.style.display = 'inline';
+    bioToggleBtn.textContent = lang === 'es' ? 'Leer bio completa +' : 'Read Full Bio +';
+  }
+
   // Swap taglines
   const taglineEl = document.querySelector('.hero-tagline');
   if (taglineEl) {
