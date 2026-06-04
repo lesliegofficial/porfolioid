@@ -613,9 +613,6 @@
     padding-top: 0;
     padding-bottom: 0;
   }
-  #bioFull {
-    padding-bottom: 2rem;
-  }
   .career-bio-full-width p {
     font-size: 0.95rem;
     color: var(--white);
