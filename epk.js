@@ -1182,19 +1182,18 @@ function toggleBio() {
   const full = document.getElementById('bioFull');
   const btn = document.getElementById('bioToggleBtn');
   if (!full || !btn) return;
-  const isHidden = full.style.display === 'none' || full.style.display === '';
+  const isOpen = full.classList.contains('open');
   const isES = window._currentLang === 'es';
 
-  if (isHidden) {
-    // Populate ES content if switching to Spanish
+  if (!isOpen) {
     if (isES && window._epkData && window._epkData.bioFullES) {
       const paras = window._epkData.bioFullES.split(/\n\n+/).filter(p => p.trim());
       full.innerHTML = paras.map(p => `<p style="margin-bottom:1em">${p}</p>`).join('');
     }
-    full.style.display = 'block';
+    full.classList.add('open');
     btn.textContent = isES ? 'Ver menos –' : 'Show Less –';
   } else {
-    full.style.display = 'none';
+    full.classList.remove('open');
     btn.textContent = isES ? 'Leer bio completa +' : 'Read Full Bio +';
   }
 }

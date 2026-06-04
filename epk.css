@@ -324,6 +324,8 @@
   .career-portrait { width: 100%; height: 100%; min-height: 440px; object-fit: cover; object-position: top; filter: grayscale(20%) contrast(1.05); display: block; }
   .career-bio-text { margin-top: 1.5rem; }
   .career-bio-text p { font-size: 0.95rem; color: var(--white); margin-bottom: 1em; line-height: 1.8; font-weight: 400; }
+  #bioFull { display: none; }
+  #bioFull.open { display: block; }
   .career-bio-text p:first-child { font-size: 0.95rem; color: var(--white); font-weight: 400; }
 
   @media (max-width: 768px) {
@@ -622,7 +624,7 @@
   }
 
   /* Drop cap — elegant gold L */
-  .career-bio-text p:first-child::first-letter {
+  #bioShort p:first-child::first-letter {
     font-family: var(--font-display);
     font-size: 5.2rem;
     font-weight: 700;
