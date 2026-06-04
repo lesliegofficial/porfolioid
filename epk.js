@@ -1198,17 +1198,6 @@ function toggleBio() {
     btn.textContent = isES ? 'Leer bio completa +' : 'Read Full Bio +';
   }
 }
-    }
-    full.style.display = 'block';
-    if (btn) btn.style.display = 'none';
-  } else {
-    full.style.display = 'none';
-    if (btn) {
-      btn.style.display = 'inline';
-      btn.textContent = isES ? 'Leer bio completa +' : 'Read Full Bio +';
-    }
-  }
-}
 
 // Booking form submission
 async function handleBookingSubmit(e) {
