@@ -1120,7 +1120,7 @@ function editVideo(i) {
   document.getElementById('newVideoCategory').value = v.category || '';
   document.getElementById('newVideoFeatured').checked = v.featured || false;
   document.getElementById('newVideoUrl').value = v.url || '';
-  document.getElementById('newVideoThumb').value = v.thumb || '';
+  document.getElementById('newVideoThumb').value = v.thumbnail || v.thumb || '';
   document.getElementById('newVideoAlbum').value = v.album || '';
   document.getElementById('newVideoYear').value = v.year || '';
   document.getElementById('newVideoDesc').value = v.desc || '';
@@ -1140,9 +1140,11 @@ function addVideo() {
   const year = document.getElementById('newVideoYear').value.trim();
   const desc = document.getElementById('newVideoDesc').value.trim();
   const visible = document.getElementById('newVideoVisible').checked;
-  if (!title || !url) return;
+  if (!title) return;
+  // Allow saving without url when editing (e.g. adding thumbnail to existing video)
+  if (!url && editingVideoIdx < 0) return;
   epk.videos = epk.videos || [];
-  const videoData = { title, category, featured, url, thumb, album, year, desc, visible };
+  const videoData = { title, category, featured, url, thumb, thumbnail: thumb, album, year, desc, visible };
   if (editingVideoIdx >= 0) {
     epk.videos[editingVideoIdx] = { ...epk.videos[editingVideoIdx], ...videoData };
     editingVideoIdx = -1;
