@@ -255,7 +255,8 @@ function buildEPK(epk) {
         <div class="career-sidebyside-right">
           ${resumeCards.map(buildResumeCard).join('')}
         </div>
-      </div>`;
+      </div>
+      ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}`;
   } else if (careerLayout === 'threecol') {
     careerProfileHTML = `
       <div class="career-threecol">
@@ -277,6 +278,7 @@ function buildEPK(epk) {
         ${bioPortrait ? `<div>${bioPortrait}</div>` : ''}
         ${bioContent}
       </div>
+      ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}
       ${resumeCards.length ? `<div class="career-stacked-cards">${resumeCards.map(buildResumeCard).join('')}</div>` : ''}`;
   }
 
