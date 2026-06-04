@@ -1175,8 +1175,24 @@ function toggleBio() {
   const btn = document.getElementById('bioToggleBtn');
   if (!full) return;
   const isHidden = full.style.display === 'none';
-  full.style.display = isHidden ? 'block' : 'none';
-  if (btn) btn.style.display = isHidden ? 'none' : 'inline';
+  const isES = document.documentElement.lang === 'es' || window._currentLang === 'es';
+
+  if (isHidden) {
+    // Expanding — if ES and bioES exists, populate with Spanish content
+    if (isES && window._epkData && window._epkData.bioES) {
+      const paras = window._epkData.bioES.split(/\n\n+/).filter(Boolean);
+      full.innerHTML = paras.slice(1).map(p => `<p>${p}</p>`).join('') +
+        `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem;transition:all 0.2s">Ver menos –</button>`;
+    }
+    full.style.display = 'block';
+    if (btn) btn.style.display = 'none';
+  } else {
+    full.style.display = 'none';
+    if (btn) {
+      btn.style.display = 'inline';
+      btn.textContent = isES ? 'Leer bio completa +' : 'Read Full Bio +';
+    }
+  }
 }
 
 // Booking form submission
@@ -1335,6 +1351,9 @@ function toggleLang(lang) {
 
   const es = epk.es || {};
 
+  // Track current language for toggleBio
+  window._currentLang = lang;
+
   // Swap bio text — support both shortBioES (top-level) and es.bio (nested)
   const bioEl = document.getElementById('bioShort');
   if (bioEl) {
@@ -1342,6 +1361,15 @@ function toggleLang(lang) {
     const text = lang === 'es' && esText ? esText : (epk.shortBio || (epk.bio||'').split('\n')[0] || '');
     bioEl.innerHTML = `<p style="margin-bottom:1.5em">${text}</p>`;
   }
+
+  // Update Read Full Bio button label + collapse bio if open
+  const bioToggleBtn = document.getElementById('bioToggleBtn');
+  if (bioToggleBtn) {
+    bioToggleBtn.textContent = lang === 'es' ? 'Leer bio completa +' : 'Read Full Bio +';
+    bioToggleBtn.style.display = 'inline';
+  }
+  const bioFull = document.getElementById('bioFull');
+  if (bioFull) bioFull.style.display = 'none';
 
   // Swap full bio
   const bioFullEl = document.getElementById('bioFull');
