@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MP3 Identifier — PortfolioID</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0E0E0E; color: #F5F3EE; font-family: 'Courier New', monospace; padding: 2rem; max-width: 860px; margin: 0 auto; }
+  h1 { color: #C9A84C; font-size: 1rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  p.sub { color: #888; font-size: 0.75rem; margin-bottom: 2rem; line-height: 1.6; }
+  .track { background: #1C1C1C; border: 1px solid #2a2a2a; border-radius: 4px; padding: 1.25rem; margin-bottom: 1rem; }
+  .num { color: #C9A84C; font-size: 0.65rem; letter-spacing: 0.15em; margin-bottom: 0.6rem; }
+  audio { width: 100%; margin: 0.6rem 0 0.8rem; accent-color: #C9A84C; display: block; }
+  label { font-size: 0.65rem; letter-spacing: 0.1em; color: #888; text-transform: uppercase; display: block; margin-bottom: 0.3rem; }
+  select { background: #242424; color: #F5F3EE; border: 1px solid #333; padding: 0.5rem 0.75rem; width: 100%; font-family: inherit; font-size: 0.85rem; border-radius: 3px; cursor: pointer; }
+  select:focus { outline: none; border-color: #C9A84C; }
+  .btn { background: #C9A84C; color: #080808; border: none; padding: 1rem 2rem; font-family: inherit; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; width: 100%; margin-top: 2rem; font-weight: bold; border-radius: 3px; }
+  .btn:hover { background: #E8C97A; }
+  .result { background: #141414; border: 1px solid #C9A84C; padding: 1.25rem; margin-top: 1rem; display: none; font-size: 0.78rem; line-height: 2; word-break: break-all; }
+  .done { color: #C9A84C; font-weight: bold; display: block; margin-bottom: 0.5rem; }
+</style>
+</head>
+<body>
+<h1>🎵 MP3 Identifier — Leslie A. Guerra</h1>
+<p class="sub">Play each file. Select which track it is from the dropdown. When done, click the button and paste the result back to Claude.</p>
+
+<div id="tracks"></div>
+<button class="btn" onclick="save()">✓ Copy My Assignments</button>
+<div class="result" id="result"><span class="done">✅ Copied! Paste this to Claude:</span><span id="text"></span></div>
+
+<script>
+const CLOUD = 'https://res.cloudinary.com/djj8xe3gx/video/upload/';
+const FILES = [
+  ['uoqnc3bdokfb1ajw1cc4','6124KB'],
+  ['achkcubwu4dcmb0c0equ','6307KB'],
+  ['bczdroudlbv8dcps0zfz','6120KB'],
+  ['lumrltvndmolhqtcp54y','4479KB'],
+  ['rj2ectbjhtska6aloacj','8343KB'],
+  ['jenbs1ag6hy7mvwr2ntp','8536KB'],
+  ['tl0h5vmckvueifo54qrq','11106KB'],
+  ['aujsq6b2vdyhgi4whbwk','4816KB'],
+  ['c66ijcnoclmmtcpfhnrd','5293KB'],
+  ['yiwmdypo89q64aqqvnqh','9809KB'],
+  ['utbfyi5dfxmvszlktco7','6307KB'],
+  ['u6fkmevvi3htr5xsb3jb','6124KB'],
+  ['ndodpzv0srhtzy30bi4u','10426KB'],
+  ['zzpbqutjwjht89ve0awe','10668KB'],
+];
+const NAMES = [
+  'Nadie Como Tu — Wisin, Yandel, Don Omar',
+  'Hasta Abajo — Don Omar, Yankee, Yandel',
+  'Yo Soy de Aqui — Don Omar, Yankee, Yandel, Arcangel',
+  'Te Necesito — J Álvarez',
+  'Le Llegaré — J Álvarez',
+  'Entre Gritos y Balas — J Álvarez',
+  'Siempre Fly — J Álvarez, Mestiza',
+  'Chicle Bomba — Las Nenas del Swing',
+  'Not my track — skip',
+];
+
+const wrap = document.getElementById('tracks');
+FILES.forEach(([id, size], i) => {
+  wrap.innerHTML += `
+    <div class="track">
+      <div class="num">FILE ${i+1} of ${FILES.length} &nbsp;·&nbsp; ${size}</div>
+      <audio controls src="${CLOUD}${id}.mp3"></audio>
+      <label>This is:</label>
+      <select id="s_${id}">
+        <option value="">— listen then select —</option>
+        ${NAMES.map(n=>`<option value="${n}">${n}</option>`).join('')}
+      </select>
+    </div>`;
+});
+
+function save() {
+  const lines = FILES.map(([id]) => {
+    const v = document.getElementById('s_'+id).value;
+    return `${id} → ${v || '(not assigned)'}`;
+  });
+  const out = lines.join('\n');
+  navigator.clipboard.writeText(out).catch(()=>{});
+  document.getElementById('text').textContent = out;
+  document.getElementById('result').style.display = 'block';
+}
+</script>
+</body>
+</html>
