@@ -622,7 +622,7 @@
   }
 
   /* Drop cap — elegant gold L */
-  .career-bio-text p:first-child::first-letter {
+  #bioShort p:first-child::first-letter {
     font-family: var(--font-display);
     font-size: 5.2rem;
     font-weight: 700;
