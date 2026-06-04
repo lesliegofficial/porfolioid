@@ -195,10 +195,10 @@ function buildEPK(epk) {
     ? `<div class="credentials-row">${epk.credentials.map(c => `<span class="credential-badge">${c}</span>`).join('')}</div>`
     : '';
 
-  const shortBio = epk.shortBio || (epk.bio || '').split('\n').filter(p => p.trim())[0] || '';
-  const bioFullText = epk.bioFull || '';
-  const hasMoreBio = bioFullText.trim().length > 0;
-  const bioParagraphs = bioFullText.split(/\n\n+/).filter(p => p.trim()).map(p => `<p style="margin-bottom:1em">${p}</p>`).join('');
+  const bioParas = (epk.bio || '').split('\n').filter(p => p.trim());
+  const shortBio = epk.shortBio || (bioParas[0] || '');
+  const hasMoreBio = bioParas.length > 1;
+  const bioParagraphs = bioParas.slice(1).map(p => `<p>${p}</p>`).join('');
   const shortBioHTML = `<p style="margin-bottom:1.5em">${shortBio}</p>`;
 
   // Build career profile resume card
@@ -232,22 +232,16 @@ function buildEPK(epk) {
   const bioShortContent = `
     <div class="career-bio-text">
       <div id="bioShort" data-editable data-editable-key="shortBio" data-editable-type="body" style="outline:none">${shortBioHTML}</div>
-      ${hasMoreBio ? `
-      <div id="bioFull" style="margin-top:0.5em">
-        ${bioParagraphs}
-      </div>
-      <button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1rem;transition:all 0.2s">Read Full Bio +</button>` : ''}
+      ${hasMoreBio ? `<button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1rem;transition:all 0.2s">Read Full Bio +</button>` : ''}
     </div>`;
 
-  const bioFullContent = '';
+  const bioFullContent = hasMoreBio ? `
+    <div id="bioFull" style="display:none">
+      ${bioParagraphs}
+      <button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem;transition:all 0.2s">Show Less –</button>
+    </div>` : '';
 
   const bioContent = bioShortContent;
-
-  // DEBUG — remove after fix
-  console.log('DEBUG careerLayout:', careerLayout);
-  console.log('DEBUG hasMoreBio:', hasMoreBio);
-  console.log('DEBUG bioFullText length:', bioFullText.length);
-  console.log('DEBUG bioFullContent length:', bioFullContent.length);
 
   // Build career profile HTML based on layout
   let careerProfileHTML = '';
@@ -261,8 +255,7 @@ function buildEPK(epk) {
         <div class="career-sidebyside-right">
           ${resumeCards.map(buildResumeCard).join('')}
         </div>
-      </div>
-      ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}`;
+      </div>`;
   } else if (careerLayout === 'threecol') {
     careerProfileHTML = `
       <div class="career-threecol">
@@ -284,7 +277,6 @@ function buildEPK(epk) {
         ${bioPortrait ? `<div>${bioPortrait}</div>` : ''}
         ${bioContent}
       </div>
-      ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}
       ${resumeCards.length ? `<div class="career-stacked-cards">${resumeCards.map(buildResumeCard).join('')}</div>` : ''}`;
   }
 
@@ -1181,21 +1173,10 @@ function downloadEPKQR() {
 function toggleBio() {
   const full = document.getElementById('bioFull');
   const btn = document.getElementById('bioToggleBtn');
-  if (!full || !btn) return;
-  const isOpen = full.classList.contains('open');
-  const isES = window._currentLang === 'es';
-
-  if (!isOpen) {
-    if (isES && window._epkData && window._epkData.bioFullES) {
-      const paras = window._epkData.bioFullES.split(/\n\n+/).filter(p => p.trim());
-      full.innerHTML = paras.map(p => `<p style="margin-bottom:1em">${p}</p>`).join('');
-    }
-    full.classList.add('open');
-    btn.textContent = isES ? 'Ver menos –' : 'Show Less –';
-  } else {
-    full.classList.remove('open');
-    btn.textContent = isES ? 'Leer bio completa +' : 'Read Full Bio +';
-  }
+  if (!full) return;
+  const isHidden = full.style.display === 'none';
+  full.style.display = isHidden ? 'block' : 'none';
+  if (btn) btn.style.display = isHidden ? 'none' : 'inline';
 }
 
 // Booking form submission
@@ -1354,9 +1335,6 @@ function toggleLang(lang) {
 
   const es = epk.es || {};
 
-  // Track current language for toggleBio
-  window._currentLang = lang;
-
   // Swap bio text — support both shortBioES (top-level) and es.bio (nested)
   const bioEl = document.getElementById('bioShort');
   if (bioEl) {
@@ -1365,31 +1343,15 @@ function toggleLang(lang) {
     bioEl.innerHTML = `<p style="margin-bottom:1.5em">${text}</p>`;
   }
 
-  // Update Read Full Bio button label
-  const bioToggleBtn = document.getElementById('bioToggleBtn');
-  if (bioToggleBtn) {
-    bioToggleBtn.textContent = lang === 'es' ? 'Leer bio completa +' : 'Read Full Bio +';
-    bioToggleBtn.style.display = 'inline';
-  }
-  // Reset full bio on language switch
-  const bioFull = document.getElementById('bioFull');
-  if (bioFull && bioFull.style.display !== 'none') {
-    bioFull.style.display = 'none';
-  }
-
-  // Swap full bio — pre-load ES content but keep hidden; toggleBio handles display
+  // Swap full bio
   const bioFullEl = document.getElementById('bioFull');
   if (bioFullEl) {
-    const esFullText = epk.bioFullES || '';
-    const enFullText = epk.bioFull || '';
+    const esFullText = epk.bioES || es.bio || '';
     if (lang === 'es' && esFullText) {
-      bioFullEl.innerHTML = esFullText.split(/\n\n+/).filter(p => p.trim()).map(p => `<p style="margin-bottom:1em">${p}</p>`).join('') +
-        `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem">Ver menos –</button>`;
-    } else if (lang === 'en' && enFullText) {
-      bioFullEl.innerHTML = enFullText.split(/\n\n+/).filter(p => p.trim()).map(p => `<p style="margin-bottom:1em">${p}</p>`).join('') +
-        `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem">Show Less –</button>`;
+      const paras = esFullText.split('\n\n').filter(Boolean);
+      bioFullEl.innerHTML = paras.slice(1).map(p => `<p>${p}</p>`).join('') +
+        `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem;transition:all 0.2s">Show Less –</button>`;
     }
-    bioFullEl.style.display = 'none';
   }
 
   // Swap taglines
