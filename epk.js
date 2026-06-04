@@ -232,14 +232,14 @@ function buildEPK(epk) {
   const bioShortContent = `
     <div class="career-bio-text">
       <div id="bioShort" data-editable data-editable-key="shortBio" data-editable-type="body" style="outline:none">${shortBioHTML}</div>
-      ${hasMoreBio ? `<button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1rem;transition:all 0.2s">Read Full Bio +</button>` : ''}
+      ${hasMoreBio ? `
+      <div id="bioFull" style="display:none;margin-top:0.5em">
+        ${bioParagraphs}
+      </div>
+      <button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1rem;transition:all 0.2s">Read Full Bio +</button>` : ''}
     </div>`;
 
-  const bioFullContent = hasMoreBio ? `
-    <div id="bioFull" style="display:none">
-      ${bioParagraphs}
-      <button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem;transition:all 0.2s">Show Less –</button>
-    </div>` : '';
+  const bioFullContent = '';
 
   const bioContent = bioShortContent;
 
@@ -1181,18 +1181,23 @@ function downloadEPKQR() {
 function toggleBio() {
   const full = document.getElementById('bioFull');
   const btn = document.getElementById('bioToggleBtn');
-  if (!full) return;
+  if (!full || !btn) return;
   const isHidden = full.style.display === 'none' || full.style.display === '';
   const isES = window._currentLang === 'es';
 
   if (isHidden) {
-    // Populate ES content if needed
+    // Populate ES content if switching to Spanish
     if (isES && window._epkData && window._epkData.bioFullES) {
       const paras = window._epkData.bioFullES.split(/\n\n+/).filter(p => p.trim());
-      if (paras.length > 0) {
-        full.innerHTML = paras.map(p => `<p style="margin-bottom:1em">${p}</p>`).join('') +
-          `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem">Ver menos –</button>`;
-      }
+      full.innerHTML = paras.map(p => `<p style="margin-bottom:1em">${p}</p>`).join('');
+    }
+    full.style.display = 'block';
+    btn.textContent = isES ? 'Ver menos –' : 'Show Less –';
+  } else {
+    full.style.display = 'none';
+    btn.textContent = isES ? 'Leer bio completa +' : 'Read Full Bio +';
+  }
+}
     }
     full.style.display = 'block';
     if (btn) btn.style.display = 'none';
