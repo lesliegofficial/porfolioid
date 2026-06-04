@@ -1174,15 +1174,17 @@ function toggleBio() {
   const full = document.getElementById('bioFull');
   const btn = document.getElementById('bioToggleBtn');
   if (!full) return;
-  const isHidden = full.style.display === 'none';
-  const isES = document.documentElement.lang === 'es' || window._currentLang === 'es';
+  const isHidden = full.style.display === 'none' || full.style.display === '';
+  const isES = window._currentLang === 'es';
 
   if (isHidden) {
-    // Expanding — if ES and bioES exists, populate with Spanish content
+    // Populate ES content if needed
     if (isES && window._epkData && window._epkData.bioES) {
-      const paras = window._epkData.bioES.split(/\n\n+/).filter(Boolean);
-      full.innerHTML = paras.slice(1).map(p => `<p>${p}</p>`).join('') +
-        `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem;transition:all 0.2s">Ver menos –</button>`;
+      const paras = window._epkData.bioES.split(/\n\n+/).filter(p => p.trim());
+      if (paras.length > 1) {
+        full.innerHTML = paras.slice(1).map(p => `<p style="margin-bottom:1em">${p}</p>`).join('') +
+          `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem">Ver menos –</button>`;
+      }
     }
     full.style.display = 'block';
     if (btn) btn.style.display = 'none';
@@ -1362,14 +1364,17 @@ function toggleLang(lang) {
     bioEl.innerHTML = `<p style="margin-bottom:1.5em">${text}</p>`;
   }
 
-  // Update Read Full Bio button label + collapse bio if open
+  // Update Read Full Bio button label
   const bioToggleBtn = document.getElementById('bioToggleBtn');
   if (bioToggleBtn) {
     bioToggleBtn.textContent = lang === 'es' ? 'Leer bio completa +' : 'Read Full Bio +';
     bioToggleBtn.style.display = 'inline';
   }
+  // Reset full bio on language switch
   const bioFull = document.getElementById('bioFull');
-  if (bioFull) bioFull.style.display = 'none';
+  if (bioFull && bioFull.style.display !== 'none') {
+    bioFull.style.display = 'none';
+  }
 
   // Swap full bio
   const bioFullEl = document.getElementById('bioFull');
