@@ -609,9 +609,12 @@
 
   /* Full bio flows full width below the 3-col grid */
   .career-bio-full-width {
-    margin-top: -0.5rem;
+    margin-top: 0;
     padding-top: 0;
-    padding-bottom: 3rem;
+    padding-bottom: 0;
+  }
+  #bioFull {
+    padding-bottom: 2rem;
   }
   .career-bio-full-width p {
     font-size: 0.95rem;

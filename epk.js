@@ -1378,15 +1378,21 @@ function toggleLang(lang) {
     bioFull.style.display = 'none';
   }
 
-  // Swap full bio
+  // Swap full bio — pre-load ES content but keep hidden; toggleBio handles display
   const bioFullEl = document.getElementById('bioFull');
   if (bioFullEl) {
     const esFullText = epk.bioES || es.bio || '';
     if (lang === 'es' && esFullText) {
-      const paras = esFullText.split('\n\n').filter(Boolean);
-      bioFullEl.innerHTML = paras.slice(1).map(p => `<p>${p}</p>`).join('') +
-        `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem;transition:all 0.2s">Show Less –</button>`;
+      const paras = esFullText.split(/\n\n+/).filter(p => p.trim());
+      bioFullEl.innerHTML = paras.slice(1).map(p => `<p style="margin-bottom:1em">${p}</p>`).join('') +
+        `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem">Ver menos –</button>`;
+    } else if (lang === 'en') {
+      // Restore EN content
+      const bioParas = (epk.bio || '').split('\n').filter(p => p.trim());
+      bioFullEl.innerHTML = bioParas.slice(1).map(p => `<p style="margin-bottom:1em">${p}</p>`).join('') +
+        `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem">Show Less –</button>`;
     }
+    bioFullEl.style.display = 'none'; // Always keep hidden after lang swap
   }
 
   // Swap taglines
