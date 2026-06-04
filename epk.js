@@ -195,10 +195,10 @@ function buildEPK(epk) {
     ? `<div class="credentials-row">${epk.credentials.map(c => `<span class="credential-badge">${c}</span>`).join('')}</div>`
     : '';
 
-  const bioParas = (epk.bio || '').split('\n').filter(p => p.trim());
-  const shortBio = epk.shortBio || (bioParas[0] || '');
-  const hasMoreBio = bioParas.length > 1;
-  const bioParagraphs = bioParas.slice(1).map(p => `<p>${p}</p>`).join('');
+  const shortBio = epk.shortBio || (epk.bio || '').split('\n').filter(p => p.trim())[0] || '';
+  const bioFullText = epk.bioFull || '';
+  const hasMoreBio = bioFullText.trim().length > 0;
+  const bioParagraphs = bioFullText.split(/\n\n+/).filter(p => p.trim()).map(p => `<p style="margin-bottom:1em">${p}</p>`).join('');
   const shortBioHTML = `<p style="margin-bottom:1.5em">${shortBio}</p>`;
 
   // Build career profile resume card
@@ -1181,10 +1181,10 @@ function toggleBio() {
 
   if (isHidden) {
     // Populate ES content if needed
-    if (isES && window._epkData && window._epkData.bioES) {
-      const paras = window._epkData.bioES.split(/\n\n+/).filter(p => p.trim());
-      if (paras.length > 1) {
-        full.innerHTML = paras.slice(1).map(p => `<p style="margin-bottom:1em">${p}</p>`).join('') +
+    if (isES && window._epkData && window._epkData.bioFullES) {
+      const paras = window._epkData.bioFullES.split(/\n\n+/).filter(p => p.trim());
+      if (paras.length > 0) {
+        full.innerHTML = paras.map(p => `<p style="margin-bottom:1em">${p}</p>`).join('') +
           `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem">Ver menos –</button>`;
       }
     }
@@ -1381,18 +1381,16 @@ function toggleLang(lang) {
   // Swap full bio — pre-load ES content but keep hidden; toggleBio handles display
   const bioFullEl = document.getElementById('bioFull');
   if (bioFullEl) {
-    const esFullText = epk.bioES || es.bio || '';
+    const esFullText = epk.bioFullES || '';
+    const enFullText = epk.bioFull || '';
     if (lang === 'es' && esFullText) {
-      const paras = esFullText.split(/\n\n+/).filter(p => p.trim());
-      bioFullEl.innerHTML = paras.slice(1).map(p => `<p style="margin-bottom:1em">${p}</p>`).join('') +
+      bioFullEl.innerHTML = esFullText.split(/\n\n+/).filter(p => p.trim()).map(p => `<p style="margin-bottom:1em">${p}</p>`).join('') +
         `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem">Ver menos –</button>`;
-    } else if (lang === 'en') {
-      // Restore EN content
-      const bioParas = (epk.bio || '').split('\n').filter(p => p.trim());
-      bioFullEl.innerHTML = bioParas.slice(1).map(p => `<p style="margin-bottom:1em">${p}</p>`).join('') +
+    } else if (lang === 'en' && enFullText) {
+      bioFullEl.innerHTML = enFullText.split(/\n\n+/).filter(p => p.trim()).map(p => `<p style="margin-bottom:1em">${p}</p>`).join('') +
         `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem">Show Less –</button>`;
     }
-    bioFullEl.style.display = 'none'; // Always keep hidden after lang swap
+    bioFullEl.style.display = 'none';
   }
 
   // Swap taglines
