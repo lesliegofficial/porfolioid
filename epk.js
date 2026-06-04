@@ -236,9 +236,9 @@ function buildEPK(epk) {
     </div>`;
 
   const bioFullContent = hasMoreBio ? `
-    <div id="bioFull" style="display:none;margin-top:1.5rem">
+    <div id="bioFull" style="display:none">
       ${bioParagraphs}
-      <button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1rem;transition:all 0.2s">Show Less –</button>
+      <button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem;transition:all 0.2s">Show Less –</button>
     </div>` : '';
 
   const bioContent = bioShortContent;
@@ -284,7 +284,7 @@ function buildEPK(epk) {
         ${bioPortrait ? `<div>${bioPortrait}</div>` : ''}
         ${bioContent}
       </div>
-      ${bioFullContent ? `<div class="career-bio-full-width" id="bioFullWrapper" style="display:none">${bioFullContent}</div>` : ''}
+      ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}
       ${resumeCards.length ? `<div class="career-stacked-cards">${resumeCards.map(buildResumeCard).join('')}</div>` : ''}`;
   }
 
@@ -1179,32 +1179,29 @@ function downloadEPKQR() {
 
 // Bio toggle
 function toggleBio() {
-  const wrapper = document.getElementById('bioFullWrapper');
   const full = document.getElementById('bioFull');
   const btn = document.getElementById('bioToggleBtn');
-  const target = wrapper || full;
-  if (!target) return;
-  const isHidden = target.style.display === 'none' || target.style.display === '';
+  if (!full) return;
+  const isHidden = full.style.display === 'none' || full.style.display === '';
   const isES = window._currentLang === 'es';
 
   if (isHidden) {
-    if (full && isES && window._epkData && window._epkData.bioFullES) {
+    // Populate ES content if needed
+    if (isES && window._epkData && window._epkData.bioFullES) {
       const paras = window._epkData.bioFullES.split(/\n\n+/).filter(p => p.trim());
       if (paras.length > 0) {
         full.innerHTML = paras.map(p => `<p style="margin-bottom:1em">${p}</p>`).join('') +
-          `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1rem">Ver menos –</button>`;
+          `<button onclick="toggleBio()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1.5rem">Ver menos –</button>`;
       }
     }
-    target.style.display = 'block';
+    full.style.display = 'block';
     if (btn) btn.style.display = 'none';
   } else {
-    target.style.display = 'none';
+    full.style.display = 'none';
     if (btn) {
       btn.style.display = 'inline';
       btn.textContent = isES ? 'Leer bio completa +' : 'Read Full Bio +';
     }
-  }
-}
   }
 }
 
@@ -1382,10 +1379,10 @@ function toggleLang(lang) {
     bioToggleBtn.style.display = 'inline';
   }
   // Reset full bio on language switch
-  const bioFullWrapper = document.getElementById('bioFullWrapper');
   const bioFull = document.getElementById('bioFull');
-  const bioTarget = bioFullWrapper || bioFull;
-  if (bioTarget) bioTarget.style.display = 'none';
+  if (bioFull && bioFull.style.display !== 'none') {
+    bioFull.style.display = 'none';
+  }
 
   // Swap full bio — pre-load ES content but keep hidden; toggleBio handles display
   const bioFullEl = document.getElementById('bioFull');
