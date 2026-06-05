@@ -240,13 +240,17 @@ exports.handler = async (event) => {
               btnLabel: '\u2193 Download Resume \u2192', visible: true
             }));
           }
-          if (videosRes.ok && videosRes.data.length) {
+          // Videos: use core data directly if it has videos — only fall back to section table if core has none
+          const coreHasVideos = coreData.videos && coreData.videos.length > 0;
+          if (!coreHasVideos && videosRes.ok && videosRes.data.length) {
             coreData.videos = videosRes.data.map(v => ({
               title: v.title, url: v.url, thumb: v.thumbnail,
               year: v.year, visible: true
             }));
           }
-          if (tracksRes.ok && tracksRes.data.length) {
+          // Tracks: use core data directly if it has tracks — only fall back to section table if core has none
+          const coreHasTracks = coreData.tracks && coreData.tracks.length > 0;
+          if (!coreHasTracks && tracksRes.ok && tracksRes.data.length) {
             coreData.tracks = tracksRes.data.map(t => ({
               title: t.title, artist: t.artist, album: t.album,
               year: t.year, link: t.url, visible: true, role: 'Touring Vocalist'
@@ -349,6 +353,32 @@ exports.handler = async (event) => {
         // CRITICAL: If incoming data has empty/missing credits, preserve existing credits from server
         // This prevents photo/video saves from wiping fullDesc
         let safeData = { ...data };
+        // Protect videos and tracks — if incoming data has none, preserve from server
+        // This prevents photo/credit saves from wiping videos and tracks
+        if (!safeData.videos || safeData.videos.length === 0) {
+          try {
+            const existingRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data`);
+            if (existingRes.ok && existingRes.data.length) {
+              const existingVideos = existingRes.data[0].data && existingRes.data[0].data.videos;
+              if (existingVideos && existingVideos.length > 0) {
+                safeData.videos = existingVideos;
+                console.log(`PROTECTED: preserved ${existingVideos.length} videos from server`);
+              }
+            }
+          } catch(e) { console.error('Videos protection failed:', e); }
+        }
+        if (!safeData.tracks || safeData.tracks.length === 0) {
+          try {
+            const existingRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data`);
+            if (existingRes.ok && existingRes.data.length) {
+              const existingTracks = existingRes.data[0].data && existingRes.data[0].data.tracks;
+              if (existingTracks && existingTracks.length > 0) {
+                safeData.tracks = existingTracks;
+                console.log(`PROTECTED: preserved ${existingTracks.length} tracks from server`);
+              }
+            }
+          } catch(e) { console.error('Tracks protection failed:', e); }
+        }
         if (!safeData.credits || safeData.credits.length === 0) {
           try {
             const existingRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data`);
