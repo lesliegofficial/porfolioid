@@ -379,7 +379,7 @@ async function persistUser() {
     if (!slug) return;
 
     // Separate large paginated arrays from core profile data
-    const PAGINATED_SECTIONS = ['music', 'videos', 'photos', 'assets', 'awards']; // credits intentionally excluded — saved in core to preserve fullDesc
+    const PAGINATED_SECTIONS = ['photos', 'assets', 'awards']; // credits, videos, tracks excluded — saved in core data to prevent wipes
     const coreData = {};
     const sectionData = {};
 
@@ -2907,8 +2907,8 @@ async function persistUser() {
   const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
   const slug = activeProfileSlug || session.slug || epk.slug;
 
-  // credits excluded from PAGINATED_SECTIONS — saved in core to preserve fullDesc
-  const PAGINATED_SECTIONS = ['music', 'videos', 'photos', 'assets', 'awards'];
+  // credits, videos, tracks excluded from PAGINATED_SECTIONS — saved in core to prevent wipes
+  const PAGINATED_SECTIONS = ['photos', 'assets', 'awards'];
   const coreData = {};
   const sectionData = {};
 
