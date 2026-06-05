@@ -366,8 +366,20 @@ exports.handler = async (event) => {
           const GITHUB_TOKEN = process.env.GITHUB_BACKUP_TOKEN;
           const GITHUB_REPO = process.env.GITHUB_BACKUP_REPO || 'lesliegofficial/porfolioid';
           if (GITHUB_TOKEN) {
-            const backupPath = `_backups/${slug}.json`;
-            const backupContent = JSON.stringify(data, null, 2);
+            const backupPath = `_backups/${slug}-core.json`;
+            // For backup, fetch complete data including credits from Supabase
+            let fullBackupData = { ...data };
+            try {
+              const fullRes = await fetch(
+                `${SUPABASE_URL}/rest/v1/epk_profiles?slug=eq.${slug}&select=data`,
+                { headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}` } }
+              );
+              if (fullRes.ok) {
+                const fullProfile = await fullRes.json();
+                if (fullProfile[0]) fullBackupData = fullProfile[0].data;
+              }
+            } catch(e) {}
+            const backupContent = JSON.stringify(fullBackupData, null, 2);
             const encoded = Buffer.from(backupContent).toString('base64');
             // Get current SHA if file exists (required for updates)
             let fileSha = null;
