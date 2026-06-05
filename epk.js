@@ -1237,7 +1237,8 @@ function openCreditModal(i) {
       mediaItems.forEach(m => {
         if (!m.url) return;
         if (m.type === 'video' || m.url.includes('.mp4') || m.url.includes('.mov')) {
-          html += `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain;margin-bottom:1rem" src="${m.url}"></video>`;
+          const posterAttr = m.thumb ? `poster="${m.thumb}"` : '';
+          html += `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain;margin-bottom:1rem" src="${m.url}" ${posterAttr}></video>`;
         } else if (m.type === 'doc' || m.url.includes('.pdf') || m.url.includes('.doc')) {
           const label = m.label || 'View Document';
           const ext = m.ext || 'PDF';
