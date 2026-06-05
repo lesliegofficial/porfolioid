@@ -108,6 +108,64 @@
       "visible": true
     }
   ],
+  "videos": [
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/enm9wrua4ny4wnupsnv8.mp4",
+      "year": "2010",
+      "album": "Hecho En Puerto Rico",
+      "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780541625/thumb_mayor_que_yo.jpg",
+      "title": "Mayor Que Yo",
+      "visible": true
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/fsjmx13ajtrookzp7oab.mp4",
+      "year": "2007",
+      "album": "",
+      "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780542122/thumb_nadie_mejor_que_tu.jpg",
+      "title": "Nadie Como Tu",
+      "visible": true
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/ks8xy10yuwvut4sey7sg.mp4",
+      "year": "2018",
+      "album": "La Fama Que Camina Unplugged",
+      "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780541626/thumb_le_llegare.jpg",
+      "title": "Le Llegare",
+      "visible": true
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/ezgtijfsneslgb6nh6dk.mp4",
+      "year": "2018",
+      "album": "La Fama Que Camina Unplugged",
+      "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780541627/thumb_te_necesito.jpg",
+      "title": "Te Necesito",
+      "visible": true
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/f_mp4,vc_h264/btnivoiptzpj7l4swclz.mp4",
+      "year": "2008",
+      "album": "",
+      "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780542120/thumb_donde_esta_el_amor.jpg",
+      "title": "Donde Esta El Amor",
+      "visible": true
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/f_mp4,vc_h264/s7hxtw9rnlkphhbmgw1u.mp4",
+      "year": "2013",
+      "album": "",
+      "thumb": "",
+      "title": "Don Omar Medley",
+      "visible": true
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/f_mp4,vc_h264/xctvnenwfkunfagdyihz.mp4",
+      "year": "2013",
+      "album": "",
+      "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780542121/thumb_my_space.jpg",
+      "title": "My Space",
+      "visible": true
+    }
+  ],
   "bioFull": "Her performance credits include touring as a supporting vocalist for reggaeton icons Don Omar (2006–2015) and J Álvarez (2015–2020), appearing before audiences throughout the United States, Latin America, and Europe. She is featured on the live release King of Kings: En Directo, recorded during Don Omar’s King of Kings World Tour and released by Machete Music.\n\nGuerra began her recording career as a member of Las Nenas del Swing, contributing to recordings including Rompe Corazones, Chicle Bomba, Desearía, and Me Faltas Tú. Throughout her touring career, she also performed on productions featuring artists such as Wisin & Yandel, Arcángel, Daddy Yankee, Natti Natasha, and Melina León.\n\nBeyond the stage, Guerra has held leadership and operational roles throughout the entertainment industry. She served as A&R Coordinator at Sony Music Latin, supporting executive A&R operations and artist development initiatives. She also coordinated artist and management operations for Orfanato Music Group and Arrow Management, managed artist logistics for Adam Torres Concerts, and led marketing and public relations initiatives through NV Marketing & Public Relations.\n\nToday, Guerra combines her experience in performance, artist development, operations, marketing, and business strategy through creative and entrepreneurial ventures, including PortfolioID, a professional platform designed to help artists, creators, and professionals showcase their work, accomplishments, and career journeys.",
   "credits": [
     {
@@ -115,7 +173,9 @@
       "desc": "Exclusive touring female vocalist across multiple international productions spanning nearly a decade. Featured on King of Kings: En Directo (Machete Music, 2007). Venues: Madison Square Garden, Radio City Music Hall, Luna Park Stadium, Viña del Mar, Coliseo de Puerto Rico, Kaseya Center.",
       "role": "Exclusive Touring Vocalist",
       "color": "gold",
+      "press": [],
       "years": "2006–2015",
+      "artist": "Don Omar",
       "descEs": "Vocalista femenina exclusiva de gira en múltiples producciones internacionales durante casi una década. Aparece en King of Kings: En Directo (Machete Music, 2007). Venues: Madison Square Garden, Radio City Music Hall, Luna Park Stadium, Viña del Mar, Coliseo de Puerto Rico, Kaseya Center.",
       "photos": [
         "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780691546/z1gszcskhc3tegcjeesz.jpg",
@@ -125,19 +185,26 @@
       "pinned": true,
       "company": "Don Omar",
       "visible": true,
-      "category": "Music & Entertainment",
+      "category": "",
       "fullDesc": "Leslie served as the exclusive touring female vocalist for Don Omar across multiple international productions and live tours spanning nearly a decade.\n\nHer live performance work appears on King of Kings: En Directo, released through Machete Music in 2007 — a large-scale live production distributed internationally in CD and DVD formats and broadcast through DirecTV.\n\nThroughout her touring career with Don Omar, Leslie participated in hundreds of performances across five continents, including appearances at Madison Square Garden, Radio City Music Hall, Luna Park Stadium, Viña del Mar International Song Festival, Coliseo de Puerto Rico José Miguel Agrelot, and Kaseya Center, along with televised appearances and international broadcast productions.\n\nHer introduction into reggaetón touring began during the genre’s early commercial expansion after being recruited by musical director Félix Márquez for live performances with Héctor & Tito. Prior to joining Don Omar’s touring productions, she also performed as a backup vocalist for Melina León. Approximately one year later, she was invited by sound engineer Ramón Pabón to join Don Omar’s first major live touring production, eventually becoming one of the few prominently featured female touring vocalists within large-scale international reggaetón productions during the genre’s global crossover era.\n\n<strong>Special thanks to William Omar Landrón for the opportunity of a lifetime — and for that midnight call that changed everything. To Ramón Pabón and Carlos Martínez, sound engineers for Don Omar and former engineers for Melina León, whose referral opened the door. It was Ramón who made the call that night, with Don on the line, and nothing was ever the same after that. To Adam Torres, Abraham Quiñones, and Miguel Márquez for their support and unwavering presence throughout this journey. And to fellow colleagues Ángel Eric Ríos, Mario VI, DJ Robin, and DJ Eliel — the team behind the scenes that made every show feel like family coming home.</strong>",
       "verified": true,
       "videoUrl": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780691676/uotjg56wip0kzed5entx.mp4",
+      "mediaLink": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780691676/uotjg56wip0kzed5entx.mp4",
+      "proofLink": "",
       "fullDescEs": "Leslie se desempeñó como vocalista femenina exclusiva de gira para Don Omar en múltiples producciones y giras internacionales durante casi una década.\n\nSu trabajo en vivo forma parte de King of Kings: En Directo, lanzado por Machete Music en 2007, una producción en vivo distribuida internacionalmente en formatos CD y DVD y transmitida a través de DirecTV.\n\nA lo largo de su carrera de giras con Don Omar, Leslie participó en cientos de presentaciones en cinco continentes, incluyendo el Madison Square Garden, Radio City Music Hall, Luna Park Stadium, el Festival Internacional de la Canción de Viña del Mar, el Coliseo de Puerto Rico José Miguel Agrelot y el Kaseya Center, además de apariciones televisadas y producciones de transmisión internacional.\n\nSu entrada al mundo de las giras de reggaetón comenzó durante la expansión comercial temprana del género, cuando fue reclutada por el director musical Félix Márquez para presentaciones en vivo con Héctor & Tito. Antes de unirse a las producciones de gira de Don Omar, también se desempeñó como vocalista de apoyo para Melina León. Aproximadamente un año después, fue invitada por el ingeniero de sonido Ramón Pabón a integrarse a la primera gran producción de gira en vivo de Don Omar.\n\n<strong>Un agradecimiento especial a William Omar Landrón por la oportunidad de una vida — y por esa llamada a medianoche que lo cambió todo. A Ramón Pabón y Carlos Martínez, ingenieros de sonido de Don Omar y ex ingenieros de Melina León, cuya recomendación abrió la puerta. Fue Ramón quien hizo esa llamada aquella noche, con Don al teléfono, y nada volvió a ser igual después de eso. A Adam Torres, Abraham Quiñones y Miguel Márquez por su apoyo y presencia a lo largo de este camino. Y a los colegas Ángel Eric Ríos, Mario VI, DJ Robin y DJ Eliel — el equipo detrás del escenario que hizo que cada show se sintiera como volver a casa en familia.</strong>",
       "mediaItems": [
         {
           "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780691676/uotjg56wip0kzed5entx.mp4",
           "type": "video",
-          "label": "Don Omar Medley Hecho en PR"
+          "label": "Don Omar Medley Hecho en PR",
+          "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696088/itx3jollwaoylj3xh1cm.png"
         }
       ],
-      "sort_order": 0
+      "mediaLabel": "Don Omar Medley Hecho en PR",
+      "sort_order": 0,
+      "projectType": "",
+      "contractType": "",
+      "collaborators": []
     },
     {
       "id": "credit_02_j_alvarez",
