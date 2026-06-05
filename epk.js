@@ -1219,7 +1219,10 @@ function openCreditModal(i) {
   const photos = c.photos || [];
   document.getElementById('creditModalArtist').textContent = c.company || c.artist;
   document.getElementById('creditModalMeta').textContent = [c.role, c.contractType, c.years].filter(Boolean).join(' · ');
-  document.getElementById('creditModalDesc').innerHTML = (_currentLang === 'es' && c.fullDescEs) ? c.fullDescEs : (c.fullDesc || c.desc || '');
+  const rawDesc = (_currentLang === 'es' && c.fullDescEs) ? c.fullDescEs : (c.fullDesc || c.desc || '');
+  // Convert newlines to <br> tags so paragraphs display correctly without white-space:pre-line
+  const formattedDesc = rawDesc.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+  document.getElementById('creditModalDesc').innerHTML = formattedDesc;
 
   // Collaborators
   const collabEl = document.getElementById('creditModalCollaborators');
