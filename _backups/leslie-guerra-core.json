@@ -227,7 +227,8 @@
       "descEs": "Participé como vocalista de apoyo en presentaciones en vivo, aportando armonías, ejecución escénica y soporte colaborativo dentro de producciones profesionales de música urbana latina.",
       "photos": [
         "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780694244/ngygwrznpdj6lu3gngyh.png",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780694300/wuhii9wvfylleds1p6vz.jpg"
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780694300/wuhii9wvfylleds1p6vz.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780697296/ypdyhvnj3u9ilv0yzq35.webp"
       ],
       "pinned": true,
       "company": "J Álvarez",
@@ -243,7 +244,8 @@
         {
           "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780694563/yrwkdcg5n8su1zi8eait.mp4",
           "type": "video",
-          "label": "J Alvarez Medley"
+          "label": "J Alvarez Medley",
+          "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780697273/mziu3vnvvbrrvolrrcms.png"
         }
       ],
       "mediaLabel": "J Alvarez Medley",
