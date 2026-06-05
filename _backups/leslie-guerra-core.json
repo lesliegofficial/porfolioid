@@ -261,15 +261,30 @@
       "desc": "Founding member. Released album Rompe Corazones on September 10, 1998 on R&R Music. 11-track tropical and merengue album. Lead vocals on Chicle Bomba (first single), Desearía, Me Faltas Tú.",
       "role": "Recording Artist",
       "color": "gold",
-      "press": [],
+      "press": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700279/rvacefp3hq5pjbjveacg.pdf",
+          "year": "2000",
+          "summary": "Las Nenas del Swing featured as a performing merengue group at the Miss Puerto Rico of Lancaster Scholarship Gala on April 22, 2000, alongside Sabor Tropical.",
+          "location": "Lancaster, PA",
+          "publication": "Sunday News"
+        },
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700290/nfzfytdtlunzskckcrkt.pdf",
+          "year": "1999",
+          "summary": "Las Nenas del Swing listed among featured artists performing at Puerto Rico's Third AIDS Awareness Walk alongside Marc Anthony, Tony Vega, and Domingo Quiñones.",
+          "location": "Miami, FL",
+          "publication": "El Nuevo Herald"
+        }
+      ],
       "years": "1998",
       "artist": "Las Nenas del Swing",
       "descEs": "Miembro fundadora. Lanzó el álbum Rompe Corazones el 10 de septiembre de 1998 bajo R&R Music. Álbum de 11 pistas de tropical y merengue. Voces principales en Chicle Bomba, Desearía y Me Faltas Tú.",
       "photos": [
         "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780698796/mix76xfq2m2fx4kwjnav.jpg",
         "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780699035/ua162dyr4kpl6evojklo.png",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780699351/e4pmvz9oqkcsrgcznqe4.png",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780699531/akfqs6xzg4437yim1fvt.png"
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700250/kivjqfsplahof1bwrjvm.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700259/ipyu5ypddudo9gmd8xxk.png"
       ],
       "pinned": true,
       "company": "Las Nenas del Swing",
