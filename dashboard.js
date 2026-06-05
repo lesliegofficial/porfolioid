@@ -111,6 +111,31 @@ function triggerThumbUpload(inputId) {
   };
 }
 
+// PDF/Doc upload — routes through GitHub for public access (Cloudinary raw requires auth)
+async function uploadPdfToGitHub(file, folder) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+      try {
+        // Convert to base64
+        const base64 = e.target.result.split(',')[1];
+        const res = await fetch('/api/upload-pdf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fileData: base64, fileName: file.name, folder: folder || 'press' })
+        });
+        const data = await res.json();
+        if (data.url) {
+          resolve(data.url);
+        } else {
+          reject(new Error(data.error || 'Upload failed'));
+        }
+      } catch(err) { reject(err); }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 function triggerMp3Upload(inputId) {
   const input = document.getElementById(inputId);
   input.click();
@@ -1056,23 +1081,15 @@ function addCreditMedia(type) {
       if (!file) return;
       const btn = document.querySelector('.btn-add[onclick*="doc"]');
       if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', CLOUDINARY_PRESET);
-      // Always use image endpoint for public access (raw requires auth)
-      const endpoint = 'image';
       try {
-        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${endpoint}/upload`, { method: 'POST', body: formData });
-        const data = await res.json();
-        if (data.secure_url) {
-          const ext = file.name.split('.').pop().toUpperCase();
-          pendingCreditMedia.push({ type: 'doc', url: data.secure_url, label: file.name.replace(/\.[^.]+$/, ''), ext });
-          renderCreditMediaList();
-          if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '📄 Upload PDF / Doc'; btn.style.color = ''; btn.disabled = false; }, 2000); }
-        }
+        const publicUrl = await uploadPdfToGitHub(file, 'press');
+        const ext = file.name.split('.').pop().toUpperCase();
+        pendingCreditMedia.push({ type: 'doc', url: publicUrl, label: file.name.replace(/\.[^.]+$/, ''), ext });
+        renderCreditMediaList();
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '📄 Upload PDF / Doc'; btn.style.color = ''; btn.disabled = false; }, 2000); }
       } catch(e) {
         if (btn) { btn.textContent = '📄 Upload PDF / Doc'; btn.disabled = false; }
-        console.error('Upload failed', e);
+        console.error('PDF upload failed', e);
       }
     };
     input.click();
@@ -1675,19 +1692,13 @@ async function uploadPressDoc(i) {
     if (!file) return;
     const btn = document.getElementById(`pressUploadBtn_${i}`);
     if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_PRESET);
     try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
-      const data = await res.json();
-      if (data.secure_url) {
-        pendingPressItems[i].url = data.secure_url;
-        const urlInput = document.getElementById(`pressUrl_${i}`);
-        if (urlInput) urlInput.value = data.secure_url;
-        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload PDF'; btn.style.color = ''; btn.disabled = false; }, 2000); }
-      }
-    } catch(e) { if (btn) { btn.textContent = '↑ Upload PDF'; btn.disabled = false; } }
+      const publicUrl = await uploadPdfToGitHub(file, 'press');
+      pendingPressItems[i].url = publicUrl;
+      const urlInput = document.getElementById(`pressUrl_${i}`);
+      if (urlInput) urlInput.value = publicUrl;
+      if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload PDF'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+    } catch(e) { if (btn) { btn.textContent = '↑ Upload PDF'; btn.disabled = false; } console.error('PDF upload failed', e); }
   };
   input.click();
 }
@@ -2244,17 +2255,11 @@ function triggerResumeUpload() {
     if (!file) return;
     const btn = document.querySelector('[onclick="triggerResumeUpload()"]');
     if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_PRESET);
     try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/raw/upload`, { method: 'POST', body: formData });
-      const data = await res.json();
-      if (data.secure_url) {
-        document.getElementById('newResumeUrl').value = data.secure_url;
-        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload PDF'; btn.style.color = ''; btn.disabled = false; }, 2000); }
-      }
-    } catch(e) { if (btn) { btn.textContent = '↑ Upload PDF'; btn.disabled = false; } }
+      const publicUrl = await uploadPdfToGitHub(file, 'assets');
+      document.getElementById('newResumeUrl').value = publicUrl;
+      if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload PDF'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+    } catch(e) { if (btn) { btn.textContent = '↑ Upload PDF'; btn.disabled = false; } console.error('PDF upload failed', e); }
   };
   input.click();
 }
@@ -2362,17 +2367,11 @@ function triggerAwardCertUpload() {
     if (!file) return;
     const btn = document.querySelector('[onclick="triggerAwardCertUpload()"]');
     if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_PRESET);
     try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/raw/upload`, { method: 'POST', body: formData });
-      const data = await res.json();
-      if (data.secure_url) {
-        document.getElementById('newAwardCertUrl').value = data.secure_url;
-        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload Certificate'; btn.style.color = ''; btn.disabled = false; }, 2000); }
-      }
-    } catch(e) { if (btn) { btn.textContent = '↑ Upload Certificate'; btn.disabled = false; } }
+      const publicUrl = await uploadPdfToGitHub(file, 'awards');
+      document.getElementById('newAwardCertUrl').value = publicUrl;
+      if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload Certificate'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+    } catch(e) { if (btn) { btn.textContent = '↑ Upload Certificate'; btn.disabled = false; } console.error('PDF upload failed', e); }
   };
   input.click();
 }
