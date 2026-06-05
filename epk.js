@@ -1295,7 +1295,7 @@ function openCreditModal(i) {
             ${p.year ? `<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gold);opacity:0.7">· ${p.year}</span>` : ''}
           </div>
           ${p.summary ? `<p style="font-size:0.82rem;color:var(--gray-light);line-height:1.65;font-style:italic;margin:0">${p.summary}</p>` : ''}
-          ${p.url ? `<a href="${p.url}" target="_blank" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:0.35rem;margin-top:0.25rem;opacity:0.8;transition:opacity 0.2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">View Archive →</a>` : ''}
+          ${p.url ? `<a href="https://docs.google.com/viewer?url=${encodeURIComponent(p.url)}" target="_blank" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:0.35rem;margin-top:0.25rem;opacity:0.8;transition:opacity 0.2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">View Archive →</a>` : ''}
         </div>`).join('')}
     </div>` : '';
 
