@@ -190,7 +190,52 @@ exports.handler = async (event) => {
           if (!epkData) return err('not found', 404);
           return ok({ success: true, epk: epkData });
         }
-        return ok({ success: true, epk: profileRes.data[0].data });
+        // Merge section data from separate tables into core EPK data
+        const coreData = profileRes.data[0].data;
+        try {
+          const [creditsRes, awardsRes, assetsRes, videosRes, tracksRes] = await Promise.all([
+            sbGet('credits', `slug=eq.${slug}&order=sort_order.asc&limit=100`),
+            sbGet('awards', `slug=eq.${slug}&order=sort_order.asc&limit=50`),
+            sbGet('assets', `slug=eq.${slug}&order=sort_order.asc&limit=50`),
+            sbGet('videos', `slug=eq.${slug}&order=sort_order.asc&limit=50`),
+            sbGet('music_tracks', `slug=eq.${slug}&order=sort_order.asc&limit=100`)
+          ]);
+          if (creditsRes.ok && creditsRes.data.length) {
+            coreData.credits = creditsRes.data.map(c => ({
+              company: c.title, role: c.role, years: c.year,
+              desc: c.description, category: c.category,
+              visible: true, verified: true,
+              pinned: c.sort_order < 3
+            }));
+          }
+          if (awardsRes.ok && awardsRes.data.length) {
+            coreData.awards = awardsRes.data.map(a => ({
+              title: a.title, org: a.organization, year: a.year,
+              verified: true, type: 'recognition'
+            }));
+          }
+          if (assetsRes.ok && assetsRes.data.length) {
+            coreData.assets = assetsRes.data.map(a => ({
+              title: a.title, url: a.url, category: 'Professional Assets',
+              btnLabel: '\u2193 Download Resume \u2192', visible: true
+            }));
+          }
+          if (videosRes.ok && videosRes.data.length) {
+            coreData.videos = videosRes.data.map(v => ({
+              title: v.title, url: v.url, thumb: v.thumbnail,
+              year: v.year, visible: true
+            }));
+          }
+          if (tracksRes.ok && tracksRes.data.length) {
+            coreData.tracks = tracksRes.data.map(t => ({
+              title: t.title, artist: t.artist, album: t.album,
+              year: t.year, link: t.url, visible: true, role: 'Touring Vocalist'
+            }));
+          }
+        } catch(mergeErr) {
+          console.error('Section merge error (non-fatal):', mergeErr.message);
+        }
+        return ok({ success: true, epk: coreData });
       }
 
       // ── SIGNUP ──
