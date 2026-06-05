@@ -201,12 +201,24 @@ exports.handler = async (event) => {
             sbGet('music_tracks', `slug=eq.${slug}&order=sort_order.asc&limit=100`)
           ]);
           if (creditsRes.ok && creditsRes.data.length) {
-            coreData.credits = creditsRes.data.map(c => ({
-              company: c.title, role: c.role, years: c.year,
-              desc: c.description, category: c.category,
-              visible: true, verified: true,
-              pinned: c.sort_order < 3
-            }));
+            // Merge section table data WITH core data — preserve fullDesc/fullDescEs from core
+            const coreCredits = coreData.credits || [];
+            coreData.credits = creditsRes.data.map((c, i) => {
+              const core = coreCredits.find(cc => cc.company === c.title) || coreCredits[i] || {};
+              return {
+                company: c.title, role: c.role, years: c.year,
+                desc: core.desc || c.description || '',
+                descEs: core.descEs || '',
+                category: c.category,
+                visible: true, verified: true,
+                pinned: c.sort_order < 3,
+                fullDesc: core.fullDesc || '',
+                fullDescEs: core.fullDescEs || '',
+                id: core.id || '',
+                color: core.color || 'gold',
+                sort_order: c.sort_order
+              };
+            });
           }
           if (awardsRes.ok && awardsRes.data.length) {
             coreData.awards = awardsRes.data.map(a => ({
