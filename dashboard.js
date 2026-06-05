@@ -709,7 +709,7 @@ function renderCredits() {
           </div>
           <div style="flex:1">
             <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.3rem">${badges}</div>
-            <div class="editable-card-title">${c.artist}</div>
+            <div class="editable-card-title">${c.company || c.artist || c.title || ''}</div>
             <div class="editable-card-subtitle">${c.role}${c.years ? ' · ' + c.years : ''}${c.contractType ? ' · ' + c.contractType : ''}</div>
             ${c.collaborators?.length ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.2rem;letter-spacing:0.08em">w/ ${c.collaborators.join(', ')}</div>` : ''}
             <p style="font-size:0.85rem;color:var(--gray);line-height:1.6;margin:0.3rem 0 0;white-space:pre-line">${c.desc || ''}</p>
@@ -737,7 +737,7 @@ function toggleCreditPhotos(i) {
 function editCredit(i) {
   editingCreditIdx = i;
   const c = epk.credits[i];
-  document.getElementById('newCreditArtist').value = c.artist || '';
+  document.getElementById('newCreditArtist').value = c.company || c.artist || '';
   document.getElementById('newCreditYears').value = c.years || '';
   document.getElementById('newCreditCategory').value = c.category || '';
   document.getElementById('newCreditContractType').value = c.contractType || '';
@@ -867,7 +867,7 @@ function addCredit() {
   const pinned = document.getElementById('newCreditPinned').checked;
   if (!artist || !role) return;
   epk.credits = epk.credits || [];
-  const creditData = { artist, years, category, contractType, role, projectType, desc, fullDesc, fullDescEs, mediaLink, mediaLabel, videoUrl, mediaItems, proofLink, visible, verified, pinned, collaborators: [...pendingCreditCollaborators], photos: [...pendingCreditPhotos], press: pendingPressItems.filter(p => p.publication && p.summary) };
+  const creditData = { company: artist, artist, years, category, contractType, role, projectType, desc, fullDesc, fullDescEs, mediaLink, mediaLabel, videoUrl, mediaItems, proofLink, visible, verified, pinned, collaborators: [...pendingCreditCollaborators], photos: [...pendingCreditPhotos], press: pendingPressItems.filter(p => p.publication && p.summary) };
   if (editingCreditIdx >= 0) {
     epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], ...creditData };
     editingCreditIdx = -1;
