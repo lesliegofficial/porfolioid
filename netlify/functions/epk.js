@@ -200,23 +200,31 @@ exports.handler = async (event) => {
             sbGet('videos', `slug=eq.${slug}&order=sort_order.asc&limit=50`),
             sbGet('music_tracks', `slug=eq.${slug}&order=sort_order.asc&limit=100`)
           ]);
-          if (creditsRes.ok && creditsRes.data.length) {
-            // Merge section table data WITH core data — preserve fullDesc/fullDescEs from core
-            const coreCredits = coreData.credits || [];
+          // Credits: use core data credits directly if they have fullDesc
+          // Only fall back to section table if core data has no credits
+          const coreCredits = coreData.credits || [];
+          const coreHasFullDesc = coreCredits.some(c => c.fullDesc && c.fullDesc.length > 0);
+          if (coreHasFullDesc) {
+            // Core data has full descriptions — use it directly, just add photos from section table if any
+            coreData.credits = coreCredits;
+          } else if (creditsRes.ok && creditsRes.data.length) {
+            // Fall back to section table merge only if core has no fullDesc
             coreData.credits = creditsRes.data.map((c, i) => {
-              const core = coreCredits.find(cc => cc.company === c.title) || coreCredits[i] || {};
+              const core = coreCredits.find(cc => cc.company === c.title || cc.company === c.company) || coreCredits[i] || {};
               return {
-                company: c.title, role: c.role, years: c.year,
+                company: c.title || core.company, role: c.role || core.role, years: c.year || core.years,
                 desc: core.desc || c.description || '',
                 descEs: core.descEs || '',
-                category: c.category,
-                visible: true, verified: true,
-                pinned: c.sort_order < 3,
+                category: c.category || core.category,
+                visible: core.visible !== undefined ? core.visible : true,
+                verified: core.verified !== undefined ? core.verified : true,
+                pinned: core.pinned !== undefined ? core.pinned : (c.sort_order < 3),
                 fullDesc: core.fullDesc || '',
                 fullDescEs: core.fullDescEs || '',
-                id: core.id || '',
+                id: core.id || c.id || '',
                 color: core.color || 'gold',
-                sort_order: c.sort_order
+                sort_order: c.sort_order,
+                photos: core.photos || []
               };
             });
           }
@@ -338,7 +346,44 @@ exports.handler = async (event) => {
         }
 
         // Save core profile data to Supabase — reliable upsert (insert or update)
-        // PATCH was silently failing and causing data loss. Upsert always works.
+        // CRITICAL: If incoming data has empty/missing credits, preserve existing credits from server
+        // This prevents photo/video saves from wiping fullDesc
+        let safeData = { ...data };
+        if (!safeData.credits || safeData.credits.length === 0) {
+          try {
+            const existingRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data`);
+            if (existingRes.ok && existingRes.data.length) {
+              const existingCredits = existingRes.data[0].data && existingRes.data[0].data.credits;
+              if (existingCredits && existingCredits.length > 0) {
+                safeData.credits = existingCredits;
+                console.log(`PROTECTED: preserved ${existingCredits.length} credits from server`);
+              }
+            }
+          } catch(e) { console.error('Credits protection check failed:', e); }
+        } else {
+          // Credits present — but ensure fullDesc is preserved from server for any credit missing it
+          try {
+            const existingRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data`);
+            if (existingRes.ok && existingRes.data.length) {
+              const existingCredits = existingRes.data[0].data && existingRes.data[0].data.credits || [];
+              safeData.credits = safeData.credits.map(c => {
+                const existing = existingCredits.find(e => e.company === c.company || e.id === c.id);
+                if (existing) {
+                  return {
+                    ...existing,
+                    ...c,
+                    fullDesc: c.fullDesc || existing.fullDesc || '',
+                    fullDescEs: c.fullDescEs || existing.fullDescEs || '',
+                    desc: c.desc || existing.desc || '',
+                    descEs: c.descEs || existing.descEs || '',
+                    photos: c.photos || existing.photos || []
+                  };
+                }
+                return c;
+              });
+            }
+          } catch(e) { console.error('Credits fullDesc merge failed:', e); }
+        }
         const upsertRes = await fetch(
           `${SUPABASE_URL}/rest/v1/epk_profiles?on_conflict=slug`,
           {
@@ -349,7 +394,7 @@ exports.handler = async (event) => {
               'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
               'Prefer': 'resolution=merge-duplicates,return=minimal'
             },
-            body: JSON.stringify({ slug, data, updated_at: new Date().toISOString() })
+            body: JSON.stringify({ slug, data: safeData, updated_at: new Date().toISOString() })
           }
         ).then(r => ({ ok: r.ok, status: r.status }));
 
