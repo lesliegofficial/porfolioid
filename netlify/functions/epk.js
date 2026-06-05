@@ -262,11 +262,19 @@ exports.handler = async (event) => {
 
         // Save core profile data to Supabase — reliable upsert (insert or update)
         // PATCH was silently failing and causing data loss. Upsert always works.
-        const upsertRes = await sb(
-          `epk_profiles?on_conflict=slug`,
-          'POST',
-          { slug, data, updated_at: new Date().toISOString() }
-        );
+        const upsertRes = await fetch(
+          `${SUPABASE_URL}/rest/v1/epk_profiles?on_conflict=slug`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_SERVICE_KEY,
+              'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+              'Prefer': 'resolution=merge-duplicates,return=minimal'
+            },
+            body: JSON.stringify({ slug, data, updated_at: new Date().toISOString() })
+          }
+        ).then(r => ({ ok: r.ok, status: r.status }));
 
         // Also write backup to Netlify Blobs so data survives Supabase hiccups
         try {
