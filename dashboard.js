@@ -93,6 +93,16 @@ function triggerThumbUpload(inputId) {
       const data = await res.json();
       if (data.secure_url) {
         document.getElementById('newVideoThumb').value = data.secure_url;
+        // Show live preview so client can confirm the right image was uploaded
+        let preview = document.getElementById('videoThumbPreview');
+        if (!preview) {
+          preview = document.createElement('div');
+          preview.id = 'videoThumbPreview';
+          preview.style.cssText = 'margin-top:0.5rem';
+          const thumbInput = document.getElementById('newVideoThumb');
+          thumbInput.parentNode.insertBefore(preview, thumbInput.nextSibling);
+        }
+        preview.innerHTML = `<img src="${data.secure_url}" style="width:160px;height:90px;object-fit:cover;border:2px solid rgba(126,201,126,0.5);margin-top:0.5rem;display:block"><div style="font-family:var(--font-mono);font-size:0.5rem;color:#7ec97e;margin-top:0.3rem">✓ Thumbnail uploaded — confirm this matches your video</div>`;
         if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload Thumbnail'; btn.style.color = ''; btn.disabled = false; }, 2000); }
       }
     } catch(e) {
@@ -1183,7 +1193,21 @@ function editVideo(i) {
   document.getElementById('newVideoCategory').value = v.category || '';
   document.getElementById('newVideoFeatured').checked = v.featured || false;
   document.getElementById('newVideoUrl').value = v.url || '';
-  document.getElementById('newVideoThumb').value = v.thumbnail || v.thumb || '';
+  const existingThumb = v.thumbnail || v.thumb || '';
+  document.getElementById('newVideoThumb').value = existingThumb;
+  // Show existing thumbnail preview when editing
+  let preview = document.getElementById('videoThumbPreview');
+  if (!preview) {
+    preview = document.createElement('div');
+    preview.id = 'videoThumbPreview';
+    const thumbInput = document.getElementById('newVideoThumb');
+    thumbInput.parentNode.insertBefore(preview, thumbInput.nextSibling);
+  }
+  if (existingThumb) {
+    preview.innerHTML = `<img src="${existingThumb}" style="width:160px;height:90px;object-fit:cover;border:2px solid rgba(201,168,76,0.3);margin-top:0.5rem;display:block"><div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.3rem">Current thumbnail</div>`;
+  } else {
+    preview.innerHTML = '';
+  }
   document.getElementById('newVideoAlbum').value = v.album || '';
   document.getElementById('newVideoYear').value = v.year || '';
   document.getElementById('newVideoDesc').value = v.desc || '';
@@ -1216,6 +1240,8 @@ function addVideo() {
     epk.videos.push(videoData);
   }
   ['newVideoTitle','newVideoUrl','newVideoThumb','newVideoAlbum','newVideoYear','newVideoDesc'].forEach(id => document.getElementById(id).value = '');
+  const thumbPreview = document.getElementById('videoThumbPreview');
+  if (thumbPreview) thumbPreview.innerHTML = '';
   document.getElementById('newVideoCategory').value = '';
   document.getElementById('newVideoFeatured').checked = false;
   document.getElementById('newVideoVisible').checked = true;
