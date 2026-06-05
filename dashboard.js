@@ -965,16 +965,60 @@ let pendingCreditMedia = [];
 function renderCreditMediaList() {
   const container = document.getElementById('creditMediaList');
   if (!container) return;
-  container.innerHTML = pendingCreditMedia.map((m, i) => `
-    <div style="background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);padding:0.75rem;display:flex;gap:0.5rem;align-items:center">
-      <span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);min-width:40px">${m.type === 'video' ? '📹 MP4' : '🔗 LINK'}</span>
-      <input type="url" value="${m.url}" placeholder="URL" oninput="pendingCreditMedia[${i}].url=this.value"
-        style="flex:1;background:transparent;border:none;color:var(--white);font-family:var(--font-body);font-size:0.8rem;outline:none">
-      <input type="text" value="${m.label}" placeholder="Label (optional)" oninput="pendingCreditMedia[${i}].label=this.value"
-        style="width:160px;background:transparent;border:none;border-left:1px solid rgba(255,255,255,0.1);padding-left:0.5rem;color:var(--gray);font-family:var(--font-body);font-size:0.75rem;outline:none">
-      <button onclick="pendingCreditMedia.splice(${i},1);renderCreditMediaList()"
-        style="background:none;border:none;color:#ff6b6b;cursor:pointer;font-size:0.8rem;padding:0 0.25rem">✕</button>
-    </div>`).join('');
+  container.innerHTML = pendingCreditMedia.map((m, i) => {
+    const isVideo = m.type === 'video' || (m.url && m.url.includes('.mp4'));
+    const typeLabel = isVideo ? '📹 MP4' : m.type === 'doc' ? '📄 DOC' : '🔗 LINK';
+    const thumbSection = isVideo ? `
+      <div style="margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.06)">
+        <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
+          <span style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray)">Thumbnail:</span>
+          ${m.thumb ? `<img src="${m.thumb}" style="width:80px;height:45px;object-fit:cover;border:1px solid rgba(201,168,76,0.3)">` : '<span style="font-family:var(--font-mono);font-size:0.48rem;color:var(--gray);opacity:0.6">None uploaded</span>'}
+          <button onclick="triggerCreditItemThumb(${i})" style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.08em;text-transform:uppercase;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);color:var(--gold);padding:0.25rem 0.6rem;cursor:pointer">↑ Upload Thumbnail</button>
+          <input type="file" id="creditItemThumbInput_${i}" accept="image/*" style="display:none">
+        </div>
+      </div>` : '';
+    return `
+    <div style="background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);padding:0.75rem">
+      <div style="display:flex;gap:0.5rem;align-items:center">
+        <span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);min-width:40px">${typeLabel}</span>
+        <input type="url" value="${m.url}" placeholder="URL" oninput="pendingCreditMedia[${i}].url=this.value"
+          style="flex:1;background:transparent;border:none;color:var(--white);font-family:var(--font-body);font-size:0.8rem;outline:none">
+        <input type="text" value="${m.label}" placeholder="Label (optional)" oninput="pendingCreditMedia[${i}].label=this.value"
+          style="width:160px;background:transparent;border:none;border-left:1px solid rgba(255,255,255,0.1);padding-left:0.5rem;color:var(--gray);font-family:var(--font-body);font-size:0.75rem;outline:none">
+        <button onclick="pendingCreditMedia.splice(${i},1);renderCreditMediaList()"
+          style="background:none;border:none;color:#ff6b6b;cursor:pointer;font-size:0.8rem;padding:0 0.25rem">✕</button>
+      </div>
+      ${thumbSection}
+    </div>`;
+  }).join('');
+}
+
+function triggerCreditItemThumb(idx) {
+  const input = document.getElementById(`creditItemThumbInput_${idx}`);
+  if (!input) return;
+  input.value = '';
+  input.onchange = async function() {
+    const file = input.files[0];
+    if (!file) return;
+    const btn = document.querySelector(`[onclick="triggerCreditItemThumb(${idx})"]`);
+    if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.secure_url) {
+        pendingCreditMedia[idx].thumb = data.secure_url;
+        renderCreditMediaList();
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; }
+      }
+    } catch(e) {
+      if (btn) { btn.textContent = '↑ Upload Thumbnail'; btn.disabled = false; }
+      console.error('Thumb upload failed', e);
+    }
+  };
+  input.click();
 }
 
 function addCreditMedia(type) {
