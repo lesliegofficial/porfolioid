@@ -7,7 +7,8 @@
     "note": "THIS IS THE SOURCE OF TRUTH. Never overwrite from conversation history. Always restore from this file.",
     "version": "v3.0",
     "photo_note": "Photos and videos stored per credit. If Supabase wipes, restore from this file. Each credit has photos[], videoUrl, and mediaItems[] fields.",
-    "last_photo_backup": "2026-06-05"
+    "last_photo_backup": "2026-06-05",
+    "video_note": "Each video has: title, artists, year, album, full video URL, full thumb URL, cloudinary_video_id, cloudinary_thumb_id. When adding new videos always add here with all fields populated."
   },
   "credits": [
     {
@@ -233,52 +234,73 @@
   "_epk_videos": [
     {
       "title": "Mayor Que Yo",
+      "artists": "Don Omar, Daddy Yankee, Yandel",
+      "year": "2010",
+      "album": "Hecho En Puerto Rico",
       "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/enm9wrua4ny4wnupsnv8.mp4",
       "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780541625/thumb_mayor_que_yo.jpg",
-      "year": "2010",
-      "album": "Hecho En Puerto Rico"
+      "cloudinary_video_id": "enm9wrua4ny4wnupsnv8",
+      "cloudinary_thumb_id": "thumb_mayor_que_yo"
     },
     {
       "title": "Nadie Como Tu",
+      "artists": "Don Omar",
+      "year": "2007",
+      "album": "",
       "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/fsjmx13ajtrookzp7oab.mp4",
       "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780542122/thumb_nadie_mejor_que_tu.jpg",
-      "year": "2007",
-      "album": ""
+      "cloudinary_video_id": "fsjmx13ajtrookzp7oab",
+      "cloudinary_thumb_id": "thumb_nadie_mejor_que_tu"
     },
     {
       "title": "Le Llegare",
+      "artists": "J Álvarez",
+      "year": "2018",
+      "album": "La Fama Que Camina Unplugged",
       "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/ks8xy10yuwvut4sey7sg.mp4",
       "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780541626/thumb_le_llegare.jpg",
-      "year": "2018",
-      "album": "La Fama Que Camina Unplugged"
+      "cloudinary_video_id": "ks8xy10yuwvut4sey7sg",
+      "cloudinary_thumb_id": "thumb_le_llegare"
     },
     {
       "title": "Te Necesito",
+      "artists": "J Álvarez",
+      "year": "2018",
+      "album": "La Fama Que Camina Unplugged",
       "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/ezgtijfsneslgb6nh6dk.mp4",
       "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780541627/thumb_te_necesito.jpg",
-      "year": "2018",
-      "album": "La Fama Que Camina Unplugged"
+      "cloudinary_video_id": "ezgtijfsneslgb6nh6dk",
+      "cloudinary_thumb_id": "thumb_te_necesito"
     },
     {
       "title": "Donde Esta El Amor",
+      "artists": "Don Omar, Wisin & Yandel",
+      "year": "2008",
+      "album": "",
       "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/f_mp4,vc_h264/btnivoiptzpj7l4swclz.mp4",
       "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780542120/thumb_donde_esta_el_amor.jpg",
-      "year": "2008",
-      "album": ""
+      "cloudinary_video_id": "btnivoiptzpj7l4swclz",
+      "cloudinary_thumb_id": "thumb_donde_esta_el_amor"
     },
     {
       "title": "Don Omar Medley",
+      "artists": "Don Omar",
+      "year": "2013",
+      "album": "",
       "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/f_mp4,vc_h264/s7hxtw9rnlkphhbmgw1u.mp4",
       "thumb": "",
-      "year": "2013",
-      "album": ""
+      "cloudinary_video_id": "s7hxtw9rnlkphhbmgw1u",
+      "cloudinary_thumb_id": "none — no thumbnail uploaded"
     },
     {
       "title": "My Space",
+      "artists": "Don Omar & Yandel",
+      "year": "2013",
+      "album": "",
       "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/f_mp4,vc_h264/xctvnenwfkunfagdyihz.mp4",
       "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780542121/thumb_my_space.jpg",
-      "year": "2013",
-      "album": ""
+      "cloudinary_video_id": "xctvnenwfkunfagdyihz",
+      "cloudinary_thumb_id": "thumb_my_space"
     }
   ]
 }
