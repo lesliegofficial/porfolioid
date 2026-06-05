@@ -1,4 +1,12 @@
 
+function pdfViewerUrl(url) {
+  // If URL looks like a PDF, wrap in Google Docs viewer so it opens inline
+  if (url && (url.includes('.pdf') || url.includes('/raw/') || url.includes('raw.githubusercontent'))) {
+    return 'https://docs.google.com/viewer?url=' + encodeURIComponent(url);
+  }
+  return url;
+}
+
 function getSlugFromURL() {
   const params = new URLSearchParams(window.location.search);
   const fromQuery = params.get('slug');
@@ -1126,8 +1134,8 @@ function openAwardModal(idx) {
         ${(a.photos||[]).map(p=>`<img src="${p}" onclick="openLightbox('${p}')" style="width:calc(50% - 0.25rem);aspect-ratio:4/3;object-fit:cover;cursor:pointer;border:1px solid rgba(201,168,76,0.15);transition:opacity 0.2s" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" onerror="this.style.display='none'">`).join('')}
       </div>` : ''}
     <div style="display:flex;flex-direction:column;gap:0.5rem">
-      ${a.certUrl ? `<a href="${a.certUrl}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;background:rgba(201,168,76,0.05);transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='rgba(201,168,76,0.05)'">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--gold)">→</span></a>` : ''}
-      ${a.proofLink ? `<a href="${a.proofLink}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.15);padding:0.75rem 1rem;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.05)'" onmouseout="this.style.background=''">✦ <span>View Verification</span> <span style="margin-left:auto">→</span></a>` : ''}
+      ${a.certUrl ? `<a href="${pdfViewerUrl(a.certUrl)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;background:rgba(201,168,76,0.05);transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='rgba(201,168,76,0.05)'">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--gold)">→</span></a>` : ''}
+      ${a.proofLink ? `<a href="${pdfViewerUrl(a.proofLink)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.15);padding:0.75rem 1rem;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.05)'" onmouseout="this.style.background=''">✦ <span>View Verification</span> <span style="margin-left:auto">→</span></a>` : ''}
     </div>`;
 
   const overlay = document.getElementById('awardModalOverlay');
@@ -1242,7 +1250,7 @@ function openCreditModal(i) {
         } else if (m.type === 'doc' || m.url.includes('.pdf') || m.url.includes('.doc')) {
           const label = m.label || 'View Document';
           const ext = m.ext || 'PDF';
-          html += `<a href="${m.url}" target="_blank" style="display:inline-flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1.25rem;margin-bottom:0.75rem;margin-right:0.5rem;background:rgba(201,168,76,0.05);transition:all 0.3s;width:100%;box-sizing:border-box" onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='rgba(201,168,76,0.05)'"><span style="font-size:1.2rem">📄</span><div><div style="color:var(--white);margin-bottom:0.15rem">${label}</div><div style="color:var(--gold);font-size:0.5rem">${ext} Document — Click to View</div></div><span style="margin-left:auto;color:var(--gold)">→</span></a>`;
+          html += `<a href="${pdfViewerUrl(m.url)}" target="_blank" style="display:inline-flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1.25rem;margin-bottom:0.75rem;margin-right:0.5rem;background:rgba(201,168,76,0.05);transition:all 0.3s;width:100%;box-sizing:border-box" onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='rgba(201,168,76,0.05)'"><span style="font-size:1.2rem">📄</span><div><div style="color:var(--white);margin-bottom:0.15rem">${label}</div><div style="color:var(--gold);font-size:0.5rem">${ext} Document — Click to View</div></div><span style="margin-left:auto;color:var(--gold)">→</span></a>`;
         } else {
           const ytId2 = m.url.split('v=')[1]?.split('&')[0] || m.url.split('youtu.be/')[1]?.split('?')[0];
           if (ytId2) {
@@ -1270,7 +1278,7 @@ function openCreditModal(i) {
     }
     // Proof link
     if (c.proofLink) {
-      html += `<div style="margin-top:0.5rem"><a href="${c.proofLink}" target="_blank" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1px">✦ View Verification Source →</a></div>`;
+      html += `<div style="margin-top:0.5rem"><a href="${pdfViewerUrl(c.proofLink)}" target="_blank" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1px">✦ View Verification Source →</a></div>`;
     }
     return html;
   })();
