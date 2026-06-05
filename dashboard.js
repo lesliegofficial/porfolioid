@@ -1035,7 +1035,14 @@ function addCreditMedia(type) {
         const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`, { method: 'POST', body: formData });
         const data = await res.json();
         if (data.secure_url) {
-          pendingCreditMedia.push({ type: 'video', url: data.secure_url, label: file.name.replace(/\.[^.]+$/, '') });
+          // Auto-generate thumbnail from video using Cloudinary
+          // Replace /video/upload/ with /video/upload/so_auto,w_800,h_450,c_fill/f_jpg/ to get a frame
+          const autoThumb = data.secure_url
+            .replace('/video/upload/', '/video/upload/so_auto,w_800,h_450,c_fill/f_jpg/')
+            .replace(/\.mp4$/, '.jpg')
+            .replace(/\.mov$/, '.jpg')
+            .replace(/\.webm$/, '.jpg');
+          pendingCreditMedia.push({ type: 'video', url: data.secure_url, label: file.name.replace(/\.[^.]+$/, ''), thumb: autoThumb });
           renderCreditMediaList();
         }
       } catch(e) { console.error('Upload failed', e); }
