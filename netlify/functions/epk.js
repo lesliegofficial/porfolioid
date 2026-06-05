@@ -152,6 +152,20 @@ exports.handler = async (event) => {
         }
         const profileRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data,updated_at`);
         if (!profileRes.ok || !profileRes.data.length) {
+          // Supabase failed — try Netlify Blobs backup
+          const store = await getBlobs();
+          if (store) {
+            try {
+              const raw = await store.get(`epk:${slug}`);
+              if (raw) {
+                const blobData = typeof raw === 'string' ? JSON.parse(raw) : raw;
+                // Restore to Supabase while we're at it
+                await sb(`epk_profiles?on_conflict=slug`, 'POST', { slug, data: blobData, updated_at: new Date().toISOString() });
+                console.log(`Restored ${slug} from Blobs backup to Supabase`);
+                return ok({ success: true, epk: blobData });
+              }
+            } catch(e) { console.error('Blob fallback error:', e.message); }
+          }
           const epkData = await migrateFromBlobs(slug);
           if (!epkData) return err('not found', 404);
           return ok({ success: true, epk: epkData });
@@ -246,16 +260,25 @@ exports.handler = async (event) => {
           return ok({ success: true });
         }
 
-        // Save core profile data to Supabase
-        const saveRes = await sb(
-          `epk_profiles?slug=eq.${slug}`,
-          'PATCH',
-          { data, updated_at: new Date().toISOString() }
+        // Save core profile data to Supabase — reliable upsert (insert or update)
+        // PATCH was silently failing and causing data loss. Upsert always works.
+        const upsertRes = await sb(
+          `epk_profiles?on_conflict=slug`,
+          'POST',
+          { slug, data, updated_at: new Date().toISOString() }
         );
 
-        // If no row exists yet, insert
-        if (saveRes.status === 404 || (saveRes.ok && saveRes.data === '')) {
-          await sbUpsert('epk_profiles', { slug, data, updated_at: new Date().toISOString() });
+        // Also write backup to Netlify Blobs so data survives Supabase hiccups
+        try {
+          const store = await getBlobs();
+          if (store) await store.set(`epk:${slug}`, JSON.stringify(data));
+        } catch(backupErr) {
+          console.error('Blob backup failed (non-fatal):', backupErr.message);
+        }
+
+        if (!upsertRes.ok) {
+          console.error('Supabase upsert failed:', JSON.stringify(upsertRes.data));
+          return err('Save failed: ' + JSON.stringify(upsertRes.data), 500);
         }
 
         return ok({ success: true });
