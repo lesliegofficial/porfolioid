@@ -369,7 +369,7 @@ async function persistUser() {
     if (!slug) return;
 
     // Separate large paginated arrays from core profile data
-    const PAGINATED_SECTIONS = ['credits', 'music', 'videos', 'photos', 'assets', 'awards'];
+    const PAGINATED_SECTIONS = ['music', 'videos', 'photos', 'assets', 'awards']; // credits intentionally excluded — saved in core to preserve fullDesc
     const coreData = {};
     const sectionData = {};
 
@@ -391,7 +391,7 @@ async function persistUser() {
 
     // Save paginated sections — CRITICAL: never overwrite a section with empty
     // if memory is empty for that section, load current server data first to protect it
-    const SAFE_SECTIONS = ['credits', 'videos', 'assets', 'awards'];
+    const SAFE_SECTIONS = ['videos', 'assets', 'awards'];
     const sectionSaves = await Promise.all(Object.entries(sectionData).map(async ([section, items]) => {
       let finalItems = items;
       // If section appears empty in memory but is a critical section,
@@ -2837,7 +2837,8 @@ async function persistUser() {
   const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
   const slug = activeProfileSlug || session.slug || epk.slug;
 
-  const PAGINATED_SECTIONS = ['credits', 'music', 'videos', 'photos', 'assets', 'awards'];
+  // credits excluded from PAGINATED_SECTIONS — saved in core to preserve fullDesc
+  const PAGINATED_SECTIONS = ['music', 'videos', 'photos', 'assets', 'awards'];
   const coreData = {};
   const sectionData = {};
 
