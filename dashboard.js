@@ -419,6 +419,45 @@ async function persistUser() {
         }
       }
       if (!finalItems || finalItems.length === 0) return; // truly empty, skip
+
+      // CRITICAL: For credits, always merge with server to preserve fullDesc/fullDescEs
+      // These fields are not always in browser memory but must never be lost
+      if (section === 'credits') {
+        try {
+          const serverRes = await fetch('/api/epk', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'load', slug })
+          });
+          if (serverRes.ok) {
+            const serverData = await serverRes.json();
+            const serverCredits = serverData.epk && serverData.epk.credits;
+            if (serverCredits && serverCredits.length > 0) {
+              finalItems = finalItems.map(localCredit => {
+                const serverCredit = serverCredits.find(sc =>
+                  sc.company === localCredit.company || sc.artist === localCredit.company
+                );
+                if (serverCredit) {
+                  return {
+                    ...serverCredit,
+                    ...localCredit,
+                    // Always preserve these rich fields from server
+                    fullDesc: localCredit.fullDesc || serverCredit.fullDesc || '',
+                    fullDescEs: localCredit.fullDescEs || serverCredit.fullDescEs || '',
+                    desc: localCredit.desc || serverCredit.desc || '',
+                    descEs: localCredit.descEs || serverCredit.descEs || '',
+                  };
+                }
+                return localCredit;
+              });
+              console.log('Credits merged with server data — fullDesc preserved');
+            }
+          }
+        } catch(e) {
+          console.error('Credits merge failed (non-fatal):', e);
+        }
+      }
+
       return fetch('/api/epk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
