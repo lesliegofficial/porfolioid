@@ -427,6 +427,34 @@ exports.handler = async (event) => {
           return ok({ success: true });
         }
 
+        // For credits: save to epk_profiles core data to preserve fullDesc/fullDescEs
+        // The credits table only has basic columns and would silently drop rich fields
+        if (section === 'credits') {
+          const profileRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data`);
+          if (profileRes.ok && profileRes.data.length) {
+            const coreData = profileRes.data[0].data || {};
+            coreData.credits = items;
+            const updateRes = await sb('epk_profiles', 'POST', { slug, data: coreData, updated_at: new Date().toISOString() }, {
+              headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' }
+            });
+            if (!updateRes.ok) console.error('Credits core save error:', updateRes.data);
+          }
+          // Also update the basic credits table for indexing purposes only
+          await sbDelete(table, { slug });
+          if (items && items.length) {
+            const rows = items.map((item, i) => ({
+              slug, sort_order: i,
+              title: item.company || item.artist || '',
+              role: item.role || '',
+              year: item.years || '',
+              category: item.category || '',
+              description: item.desc || ''
+            }));
+            await sb(table, 'POST', rows);
+          }
+          return ok({ success: true });
+        }
+
         // Delete existing and reinsert with new sort order
         await sbDelete(table, { slug });
         if (items && items.length) {
