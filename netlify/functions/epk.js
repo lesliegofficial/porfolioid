@@ -166,6 +166,26 @@ exports.handler = async (event) => {
               }
             } catch(e) { console.error('Blob fallback error:', e.message); }
           }
+          // Last resort — try GitHub backup
+          try {
+            const GITHUB_TOKEN = process.env.GITHUB_BACKUP_TOKEN;
+            const GITHUB_REPO = process.env.GITHUB_BACKUP_REPO || 'lesliegofficial/porfolioid';
+            if (GITHUB_TOKEN) {
+              const ghRes = await fetch(
+                `https://api.github.com/repos/${GITHUB_REPO}/contents/_backups/${slug}.json`,
+                { headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'User-Agent': 'porfolioid-backup' } }
+              );
+              if (ghRes.ok) {
+                const ghFile = await ghRes.json();
+                const ghData = JSON.parse(Buffer.from(ghFile.content, 'base64').toString('utf-8'));
+                // Restore to Supabase and Blobs
+                await sb(`epk_profiles?on_conflict=slug`, 'POST', { slug, data: ghData, updated_at: new Date().toISOString() });
+                if (store) await store.set(`epk:${slug}`, JSON.stringify(ghData));
+                console.log(`Restored ${slug} from GitHub backup`);
+                return ok({ success: true, epk: ghData });
+              }
+            }
+          } catch(ghErr) { console.error('GitHub fallback error:', ghErr.message); }
           const epkData = await migrateFromBlobs(slug);
           if (!epkData) return err('not found', 404);
           return ok({ success: true, epk: epkData });
@@ -282,6 +302,42 @@ exports.handler = async (event) => {
           if (store) await store.set(`epk:${slug}`, JSON.stringify(data));
         } catch(backupErr) {
           console.error('Blob backup failed (non-fatal):', backupErr.message);
+        }
+
+        // Also write backup to GitHub — permanent, never resets, survives everything
+        try {
+          const GITHUB_TOKEN = process.env.GITHUB_BACKUP_TOKEN;
+          const GITHUB_REPO = process.env.GITHUB_BACKUP_REPO || 'lesliegofficial/porfolioid';
+          if (GITHUB_TOKEN) {
+            const backupPath = `_backups/${slug}.json`;
+            const backupContent = JSON.stringify(data, null, 2);
+            const encoded = Buffer.from(backupContent).toString('base64');
+            // Get current SHA if file exists (required for updates)
+            let fileSha = null;
+            try {
+              const getRes = await fetch(
+                `https://api.github.com/repos/${GITHUB_REPO}/contents/${backupPath}`,
+                { headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'User-Agent': 'porfolioid-backup' } }
+              );
+              if (getRes.ok) {
+                const existing = await getRes.json();
+                fileSha = existing.sha;
+              }
+            } catch(e) {}
+            // Write backup file
+            const body = { message: `Auto-backup: ${slug} ${new Date().toISOString()}`, content: encoded };
+            if (fileSha) body.sha = fileSha;
+            await fetch(
+              `https://api.github.com/repos/${GITHUB_REPO}/contents/${backupPath}`,
+              {
+                method: 'PUT',
+                headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json', 'User-Agent': 'porfolioid-backup' },
+                body: JSON.stringify(body)
+              }
+            );
+          }
+        } catch(ghErr) {
+          console.error('GitHub backup failed (non-fatal):', ghErr.message);
         }
 
         if (!upsertRes.ok) {
