@@ -389,18 +389,42 @@ async function persistUser() {
     });
     if (!coreRes.ok) console.error('Core save failed');
 
-    // Save paginated sections in parallel (only sections that have data)
-    const sectionSaves = Object.entries(sectionData)
-      .filter(([_, items]) => items && items.length > 0)
-      .map(([section, items]) =>
-        fetch('/api/epk', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'saveSection', slug, section, items })
-        }).catch(e => console.error(`Section save failed (${section}):`, e))
-      );
-
-    await Promise.all(sectionSaves);
+    // Save paginated sections — CRITICAL: never overwrite a section with empty
+    // if memory is empty for that section, load current server data first to protect it
+    const SAFE_SECTIONS = ['credits', 'videos', 'assets', 'awards'];
+    const sectionSaves = await Promise.all(Object.entries(sectionData).map(async ([section, items]) => {
+      let finalItems = items;
+      // If section appears empty in memory but is a critical section,
+      // fetch current server data and use that instead of wiping it
+      if ((!items || items.length === 0) && SAFE_SECTIONS.includes(section)) {
+        try {
+          const checkRes = await fetch('/api/epk', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'load', slug })
+          });
+          if (checkRes.ok) {
+            const checkData = await checkRes.json();
+            const serverItems = checkData.epk && checkData.epk[section];
+            if (serverItems && serverItems.length > 0) {
+              console.log(`PROTECTED: ${section} was empty in memory but has ${serverItems.length} items on server — keeping server data`);
+              finalItems = serverItems;
+              // Also restore in local epk object
+              epk[section] = serverItems;
+            }
+          }
+        } catch(e) {
+          console.error(`Protection check failed for ${section}:`, e);
+          return; // skip saving this section rather than wiping it
+        }
+      }
+      if (!finalItems || finalItems.length === 0) return; // truly empty, skip
+      return fetch('/api/epk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'saveSection', slug, section, items: finalItems })
+      }).catch(e => console.error(`Section save failed (${section}):`, e));
+    }));
 
   } catch(err) {
     console.error('Save failed:', err);
