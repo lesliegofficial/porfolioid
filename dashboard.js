@@ -3365,3 +3365,48 @@ function renderTopAssets(assets) {
     </div>`).join('');
 }
 
+
+function browseCloudinaryVideo() {
+  _openCloudinaryPicker('cloudinaryBrowserVideo','mp4-videos','☁ Browse Cloudinary — Videos',function(url){
+    document.getElementById('newVideoUrl').value=url;
+    document.getElementById('cloudinaryBrowserVideo').remove();
+  });
+}
+function browseCloudinaryMp3() {
+  _openCloudinaryPicker('cloudinaryBrowserMp3','mp3-tracks','☁ Browse Cloudinary — MP3 Tracks',function(url){
+    document.getElementById('newTrackLink').value=url;
+    document.getElementById('cloudinaryBrowserMp3').remove();
+  });
+}
+function _openCloudinaryPicker(id,folder,title,onSelect) {
+  const existing=document.getElementById(id); if(existing) existing.remove();
+  const overlay=document.createElement('div');
+  overlay.id=id;
+  overlay.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;display:flex;align-items:center;justify-content:center';
+  overlay.innerHTML=`<div style="background:#141414;border:1px solid rgba(201,168,76,0.3);padding:1.5rem;width:680px;max-height:80vh;overflow-y:auto;position:relative">
+    <button onclick="document.getElementById('${id}').remove()" style="position:absolute;top:0.75rem;right:0.75rem;background:none;border:none;color:#888;font-size:1rem;cursor:pointer">✕ Close</button>
+    <div style="font-family:'Courier Prime',monospace;font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase;margin-bottom:1rem">${title}</div>
+    <div id="${id}-files" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0.75rem"></div>
+    <div id="${id}-status" style="font-size:0.75rem;color:#888;margin-top:0.75rem">Loading...</div>
+  </div>`;
+  document.body.appendChild(overlay);
+  window['_picker_cb_'+id]=onSelect;
+  fetch('/.netlify/functions/cloudinary-browse?folder='+encodeURIComponent(folder))
+    .then(r=>r.json()).then(data=>{
+      const items=data.resources||[];
+      const statusEl=document.getElementById(id+'-status');
+      const filesEl=document.getElementById(id+'-files');
+      if(!items.length){statusEl.textContent='No files in "'+folder+'" yet. Upload to Cloudinary first.';return;}
+      statusEl.textContent=items.length+' file'+(items.length>1?'s':'')+' in "'+folder+'" — click to select';
+      filesEl.innerHTML=items.map(function(item){
+        const name=item.public_id.split('/').pop();
+        const isVid=item.resource_type==='video';
+        const thumb=isVid?item.secure_url.replace('/upload/','/upload/w_150,h_90,c_fill,f_jpg,so_2/'):null;
+        const safeUrl=item.secure_url.replace(/'/g,'%27');
+        return '<div onclick="(window[\'_picker_cb_'+id+'\'])(\''+safeUrl+'\')" style="cursor:pointer;border:1px solid rgba(201,168,76,0.2);padding:0.5rem;background:rgba(201,168,76,0.04);border-radius:4px">'
+          +(thumb?'<img src="'+thumb+'" style="width:100%;height:70px;object-fit:cover;display:block;margin-bottom:0.4rem" onerror="this.style.display=\'none\'">'
+          :'<div style="width:100%;height:40px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:0.4rem">\uD83C\uDFB5</div>')
+          +'<div style="font-size:10px;color:#aaa;font-family:monospace;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">'+name+'</div></div>';
+      }).join('');
+    }).catch(function(){document.getElementById(id+'-status').textContent='Error loading files.';});
+}

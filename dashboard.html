@@ -711,8 +711,9 @@
         <div class="field-group">
           <label class="field-label">Link or MP3</label>
           <input type="url" id="newTrackLink" placeholder="Spotify / Apple Music / YouTube / SoundCloud URL">
-          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
             <button class="btn-add" onclick="triggerMp3Upload('newTrackMp3File')">↑ Upload MP3</button>
+            <button class="btn-add" onclick="browseCloudinaryMp3()" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a streaming link above</span>
           </div>
           <input type="file" id="newTrackMp3File" accept="audio/*" style="display:none">
@@ -831,8 +832,9 @@
         <div class="field-group">
           <label class="field-label">YouTube / Vimeo URL or MP4</label>
           <input type="url" id="newVideoUrl" placeholder="https://youtube.com/watch?v=...">
-          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
             <button class="btn-add" onclick="triggerMp4Upload('newVideoMp4File')">↑ Upload MP4</button>
+            <button class="btn-add" onclick="browseCloudinaryVideo()" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a YouTube/Vimeo link above</span>
           </div>
           <input type="file" id="newVideoMp4File" accept="video/*" style="display:none">
