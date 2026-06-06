@@ -134,12 +134,16 @@
       "thumbnail": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780542122/thumb_nadie_mejor_que_tu.jpg"
     },
     {
-      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/ks8xy10yuwvut4sey7sg.mp4",
+      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780790027/efxcq9ga9jjxgdnainlj.mp4",
+      "desc": "",
       "year": "2018",
       "album": "La Fama Que Camina Unplugged",
       "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780541626/thumb_le_llegare.jpg",
       "title": "Le Llegare",
-      "visible": true
+      "visible": true,
+      "category": "Acoustic / Unplugged",
+      "featured": false,
+      "thumbnail": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780541626/thumb_le_llegare.jpg"
     },
     {
       "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/ezgtijfsneslgb6nh6dk.mp4",
