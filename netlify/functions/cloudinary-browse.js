@@ -6,9 +6,18 @@ exports.handler = async (event) => {
 
   try {
     const credentials = Buffer.from(`${API_KEY}:${API_SECRET}`).toString('base64');
-    const url = `https://api.cloudinary.com/v1_1/${CLOUD}/resources/image?type=upload&prefix=${encodeURIComponent(folder + '/')}&max_results=50`;
+    const url = `https://api.cloudinary.com/v1_1/${CLOUD}/resources/search`;
     const res = await fetch(url, {
-      headers: { 'Authorization': `Basic ${credentials}` }
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${credentials}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        expression: `folder="${folder}" AND resource_type:image`,
+        max_results: 50,
+        with_field: ['secure_url','public_id','version']
+      })
     });
     const data = await res.json();
     return {
