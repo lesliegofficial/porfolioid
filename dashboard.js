@@ -788,7 +788,7 @@ function renderCredits() {
             ${c.collaborators?.length ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.2rem;letter-spacing:0.08em">w/ ${c.collaborators.join(', ')}</div>` : ''}
             <p style="font-size:0.85rem;color:var(--gray);line-height:1.6;margin:0.3rem 0 0;white-space:pre-line">${c.desc || ''}</p>
             ${photosHTML}
-            ${photos.length < 20 ? `
+            ${photos.length < 50 ? `
             <div style="margin-top:0.5rem">
               <input type="file" id="creditPhotoInput_${i}" accept="image/*" multiple style="display:none">
               <button class="credit-photo-add-btn" onclick="addPhotosToCredit(${i})">+ Add Photos</button>
@@ -881,6 +881,71 @@ function triggerCreditPhotoUpload() {
       } catch(e) { console.error('Upload failed', e); }
     }
   };
+}
+function browseCloudinaryForm() {
+  const existing = document.getElementById('cloudinaryBrowserForm');
+  if (existing) existing.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'cloudinaryBrowserForm';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;display:flex;align-items:center;justify-content:center';
+  const FOLDERS = ['don-omar','j-alvarez','las-nenas','melina-leon','sony-music-latin','arrow-management','nv-marketing','fema','venetian-productions','urban-latino','adam-torres','video-thumbs','gallery','resume','bio-photo','hero-photo','awards-degrees','delete-me'];
+  overlay.innerHTML = `
+    <div style="background:#141414;border:1px solid rgba(201,168,76,0.3);padding:1.5rem;width:680px;max-height:80vh;overflow-y:auto;position:relative">
+      <button onclick="document.getElementById('cloudinaryBrowserForm').remove()" style="position:absolute;top:0.75rem;right:0.75rem;background:none;border:none;color:#888;font-size:1rem;cursor:pointer">✕ Close</button>
+      <div style="font-family:'Courier Prime',monospace;font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase;margin-bottom:1rem">☁ Cloudinary — Browse Folder</div>
+      <div id="cldrform-folders" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem"></div>
+      <div id="cldrform-photos" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:0.5rem"></div>
+      <div id="cldrform-status" style="font-size:0.75rem;color:#888;margin-top:0.5rem">Select a folder to browse photos</div>
+      <button id="cldrform-add-btn" onclick="addSelectedFromCloudinaryForm()" style="display:none;margin-top:1rem;padding:0.5rem 1.5rem;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);color:var(--gold);font-family:'Courier Prime',monospace;font-size:0.6rem;letter-spacing:0.1em;cursor:pointer;text-transform:uppercase">+ Add Selected to Credit</button>
+    </div>`;
+  document.body.appendChild(overlay);
+  const foldersEl = document.getElementById('cldrform-folders');
+  FOLDERS.forEach(f => {
+    const btn = document.createElement('button');
+    btn.textContent = f;
+    btn.style.cssText = 'font-family:"Courier Prime",monospace;font-size:0.55rem;letter-spacing:0.08em;padding:0.25rem 0.6rem;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);color:#aaa;cursor:pointer;text-transform:uppercase';
+    btn.onclick = () => loadCloudinaryFolderForm(f);
+    foldersEl.appendChild(btn);
+  });
+}
+window._cldrFormSelected = {};
+async function loadCloudinaryFolderForm(folder) {
+  window._cldrFormSelected = {};
+  const photosEl = document.getElementById('cldrform-photos');
+  const statusEl = document.getElementById('cldrform-status');
+  const addBtn = document.getElementById('cldrform-add-btn');
+  photosEl.innerHTML = '<div style="color:#888;font-size:0.75rem;grid-column:1/-1">Loading...</div>';
+  addBtn.style.display = 'none';
+  try {
+    const res = await fetch(`/.netlify/functions/cloudinary-browse?folder=${encodeURIComponent(folder)}`);
+    const data = await res.json();
+    const images = data.resources || [];
+    if (!images.length) { photosEl.innerHTML = '<div style="color:#888;font-size:0.75rem;grid-column:1/-1">No images in this folder yet.</div>'; statusEl.textContent = `0 images in "${folder}"`; return; }
+    statusEl.textContent = `${images.length} image${images.length>1?'s':''} in "${folder}" — click to select`;
+    photosEl.innerHTML = images.map(img => `
+      <div id="cldrform_${img.public_id.replace(/[^a-z0-9]/gi,'_')}" onclick="toggleCldrFormSelect('${img.public_id}','${img.secure_url}')" style="cursor:pointer;border:2px solid transparent">
+        <img src="${img.secure_url.replace('/upload/','/upload/w_150,h_150,c_fill,f_jpg/')}" style="width:100%;height:90px;object-fit:cover;display:block" onerror="this.style.opacity='0.3'">
+        <div style="font-size:9px;color:#666;padding:2px 4px;font-family:monospace;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${img.public_id.split('/').pop()}</div>
+      </div>`).join('');
+  } catch(e) { photosEl.innerHTML = '<div style="color:#ff6b6b;font-size:0.75rem;grid-column:1/-1">Error loading folder.</div>'; }
+}
+function toggleCldrFormSelect(publicId, secureUrl) {
+  const safeId = 'cldrform_' + publicId.replace(/[^a-z0-9]/gi,'_');
+  const el = document.getElementById(safeId);
+  if (window._cldrFormSelected[publicId]) { delete window._cldrFormSelected[publicId]; el.style.border = '2px solid transparent'; el.style.background = 'none'; }
+  else { window._cldrFormSelected[publicId] = secureUrl; el.style.border = '2px solid var(--gold)'; el.style.background = 'rgba(201,168,76,0.1)'; }
+  const count = Object.keys(window._cldrFormSelected).length;
+  const addBtn = document.getElementById('cldrform-add-btn');
+  addBtn.style.display = count > 0 ? 'block' : 'none';
+  addBtn.textContent = `+ Add ${count} Photo${count>1?'s':''} to Credit`;
+}
+function addSelectedFromCloudinaryForm() {
+  const urls = Object.values(window._cldrFormSelected);
+  if (!urls.length) return;
+  urls.forEach(url => pendingCreditPhotos.push(url));
+  renderCreditPhotosPreview();
+  document.getElementById('cloudinaryBrowserForm').remove();
+  window._cldrFormSelected = {};
 }
 async function addPhotosToCredit(i) {
   const input = document.getElementById(`creditPhotoInput_${i}`);
