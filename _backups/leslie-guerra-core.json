@@ -470,6 +470,22 @@
       "sort_order": 4
     },
     {
+      "desc": "Founder and product architect of two original SaaS platforms built from concept to deployment.",
+      "role": "Founder & Product Architect",
+      "media": [],
+      "years": "2025–Present",
+      "descEs": "",
+      "photos": [],
+      "company": "PortfolioID / IDPressDrop",
+      "visible": true,
+      "category": "Professional",
+      "featured": true,
+      "fullDesc": "Conceived, designed, and built two original SaaS platforms from the ground up — PortfolioID, a professional identity and portfolio platform for artists, creators, and multi-career professionals, and IDPressDrop, a press tracking and media relations management platform for publicists and label teams.\n\nDirected all product architecture, feature development, UX decision-making, content strategy, and deployment infrastructure across a full modern stack including JavaScript, Netlify serverless functions, Cloudinary media management, GitHub version control, and Supabase database architecture.\n\nDefined every feature, user flow, and design system — including bilingual (EN/ES) content support, Cloudinary media organization, QR Smart Share, video and music showcase, credit card documentation system, and professional assets management.\n\nBoth platforms were built while simultaneously navigating career development, higher education, royalty recovery, and ongoing business operations — demonstrating the same operational discipline, systems thinking, and execution capacity that defines the full arc of this career.",
+      "verified": true,
+      "fullDescEs": "Concibió, diseñó y desarrolló dos plataformas SaaS originales desde cero — PortfolioID, una plataforma de identidad profesional y portafolio para artistas, creadores y profesionales multidisciplinarios, e IDPressDrop, una plataforma de seguimiento de prensa y gestión de relaciones con medios para publicistas y equipos de sellos discográficos.\n\nDirigió toda la arquitectura de producto, desarrollo de funcionalidades, decisiones de experiencia de usuario, estrategia de contenido e infraestructura de despliegue utilizando un stack moderno que incluye JavaScript, funciones serverless de Netlify, gestión de medios con Cloudinary, control de versiones con GitHub y arquitectura de base de datos con Supabase.\n\nDefinió cada funcionalidad, flujo de usuario y sistema de diseño — incluyendo soporte de contenido bilingüe (EN/ES), organización de medios en Cloudinary, QR Smart Share, presentación de video y música, sistema de documentación de créditos y gestión de activos profesionales.\n\nAmbas plataformas fueron desarrolladas simultáneamente con el desarrollo de carrera, educación superior, recuperación de regalías y operaciones comerciales en curso.",
+      "projectType": "Platform Development · Product Strategy · UX Direction"
+    },
+    {
       "id": "credit_06_nv_marketing",
       "desc": "Remote | 2019–2023. Coordinated marketing operations and digital content support for artist branding, publicity campaigns, and entertainment marketing initiatives.",
       "role": "Marketing & Content Coordinator",
@@ -487,22 +503,6 @@
       "fullDescEs": "NV Marketing & Public Relations — Coordinadora de Mercadeo y Contenido\nRemoto | 2019–2023\n\nLeslie A. Guerra conceptualizó, lanzó y administró toda la presencia en Instagram de NV Marketing & Public Relations — construyendo la operación de redes sociales de la agencia desde cero durante la pandemia, mientras coordinaba campañas de contenido digital para importantes artistas de la música latina.\n\nTrabajando de forma remota, gestionó la producción de contenido digital, la estrategia en redes sociales y la coordinación de campañas para una lista de artistas de alto volumen. Entre los artistas apoyados se encuentran Nicky Jam, Anuel AA, Manuel Turizo, Olga Tañón, Jay Wheeler, Nio García y Chocquibtown, entre otros.\n\nEl trabajo de campaña generó cobertura en Billboard, Rolling Stone, People en Español, Telemundo, Univision y SiriusXM.\n\nResponsabilidades Principales:\n• Conceptualizó y construyó la presencia en Instagram de NV Marketing desde cero\n• Produjo y gestionó campañas de contenido digital completas para Nicky Jam, Anuel AA, Manuel Turizo, Olga Tañón, Jay Wheeler, Nio García y Chocquibtown\n• Creó lanzamientos de sencillos, anuncios de posiciones en Billboard y contenido de campañas de premios\n• Gestionó campañas de Premio Lo Nuestro, New Music Friday y anuncios de conciertos\n• Facilitó la comunicación entre partes interesadas, artistas y equipos de campaña\n\nSignificado en la Carrera:\nNV Marketing & Public Relations representó una evolución natural en la carrera de Leslie, combinando su experiencia en desarrollo artístico y entretenimiento en vivo con marketing digital moderno. El rol fortalecció la base que contribuiría al desarrollo de PortfolioID e IDPressDrop.\n\nVer Portafolio de Campañas: <a href=\"https://nvmarketingassets.my.canva.site/\" target=\"_blank\">https://nvmarketingassets.my.canva.site/</a>\n\n<strong>Un agradecimiento especial a la familia de NV Marketing & Public Relations por la inolvidable experiencia de aprendizaje.</strong>",
       "mediaItems": [],
       "sort_order": 5
-    },
-    {
-      "desc": "Founder and product architect of two original SaaS platforms built from concept to deployment.",
-      "role": "Founder & Product Architect",
-      "media": [],
-      "years": "2025–Present",
-      "descEs": "",
-      "photos": [],
-      "company": "PortfolioID / IDPressDrop",
-      "visible": true,
-      "category": "Professional",
-      "featured": true,
-      "fullDesc": "Conceived, designed, and built two original SaaS platforms from the ground up — PortfolioID, a professional identity and portfolio platform for artists, creators, and multi-career professionals, and IDPressDrop, a press tracking and media relations management platform for publicists and label teams.\n\nDirected all product architecture, feature development, UX decision-making, content strategy, and deployment infrastructure across a full modern stack including JavaScript, Netlify serverless functions, Cloudinary media management, GitHub version control, and Supabase database architecture.\n\nDefined every feature, user flow, and design system — including bilingual (EN/ES) content support, Cloudinary media organization, QR Smart Share, video and music showcase, credit card documentation system, and professional assets management.\n\nBoth platforms were built while simultaneously navigating career development, higher education, royalty recovery, and ongoing business operations — demonstrating the same operational discipline, systems thinking, and execution capacity that defines the full arc of this career.",
-      "verified": true,
-      "fullDescEs": "Concibió, diseñó y desarrolló dos plataformas SaaS originales desde cero — PortfolioID, una plataforma de identidad profesional y portafolio para artistas, creadores y profesionales multidisciplinarios, e IDPressDrop, una plataforma de seguimiento de prensa y gestión de relaciones con medios para publicistas y equipos de sellos discográficos.\n\nDirigió toda la arquitectura de producto, desarrollo de funcionalidades, decisiones de experiencia de usuario, estrategia de contenido e infraestructura de despliegue utilizando un stack moderno que incluye JavaScript, funciones serverless de Netlify, gestión de medios con Cloudinary, control de versiones con GitHub y arquitectura de base de datos con Supabase.\n\nDefinió cada funcionalidad, flujo de usuario y sistema de diseño — incluyendo soporte de contenido bilingüe (EN/ES), organización de medios en Cloudinary, QR Smart Share, presentación de video y música, sistema de documentación de créditos y gestión de activos profesionales.\n\nAmbas plataformas fueron desarrolladas simultáneamente con el desarrollo de carrera, educación superior, recuperación de regalías y operaciones comerciales en curso.",
-      "projectType": "Platform Development · Product Strategy · UX Direction"
     },
     {
       "id": "credit_07_sony_music",
