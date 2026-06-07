@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Arrow Test</title>
+<link rel="stylesheet" href="/epk.css">
+<style>
+  body { background: #0E0E0E; padding: 2rem; }
+  .info { font-family: monospace; font-size: 0.8rem; color: #C9A84C; margin-bottom: 1rem; }
+  .credits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+</style>
+</head>
+<body>
+<div class="info" id="status">Checking owner status...</div>
+<button onclick="toggleOwner()" style="font-family:monospace;background:#C9A84C;color:#000;border:none;padding:0.5rem 1rem;cursor:pointer;margin-bottom:1rem">Toggle is-owner class</button>
+
+<div class="credits-grid">
+  <div class="credit-card owner-item-wrap" style="border-top:2px solid #C9A84C;position:relative;background:#141414;padding:1.5rem;">
+    <div class="owner-overlay" style="flex-direction:column;gap:0.2rem;">
+      <button class="owner-action-btn owner-up">▲</button>
+      <button class="owner-action-btn owner-down">▼</button>
+    </div>
+    <div style="color:#C9A84C;font-size:0.8rem">Test Card 1</div>
+    <div style="color:#888;font-size:0.7rem">Hover me when is-owner is ON</div>
+  </div>
+  <div class="credit-card owner-item-wrap" style="border-top:2px solid #8FB8D0;position:relative;background:#141414;padding:1.5rem;">
+    <div class="owner-overlay" style="flex-direction:column;gap:0.2rem;">
+      <button class="owner-action-btn owner-up">▲</button>
+      <button class="owner-action-btn owner-down">▼</button>
+    </div>
+    <div style="color:#8FB8D0;font-size:0.8rem">Test Card 2</div>
+    <div style="color:#888;font-size:0.7rem">Hover me when is-owner is ON</div>
+  </div>
+</div>
+
+<script>
+  function toggleOwner() {
+    document.body.classList.toggle('is-owner');
+    const on = document.body.classList.contains('is-owner');
+    document.getElementById('status').textContent = 'is-owner: ' + (on ? 'ON — hover a card to see arrows' : 'OFF — arrows hidden');
+  }
+
+  // Check actual session
+  try {
+    const session = JSON.parse(localStorage.getItem('porfolioid_session') || 'null');
+    if (session) {
+      document.getElementById('status').textContent = 'Session found: slug=' + session.slug + ' | is-owner will be set if slug matches';
+    } else {
+      document.getElementById('status').textContent = 'No session in localStorage — you are not logged in on this browser';
+    }
+  } catch(e) {
+    document.getElementById('status').textContent = 'Error reading session: ' + e.message;
+  }
+</script>
+</body>
+</html>
