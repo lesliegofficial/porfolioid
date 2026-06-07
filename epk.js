@@ -394,11 +394,15 @@ function buildEPK(epk) {
   if (videoLayout === 'cinematic') {
     // First video large, rest in grid below
     const [first, ...rest] = visibleVideos;
-    const isMP4First = first && first.url && (first.url.includes('.mp4') || first.url.includes('cloudinary'));
+    const isMP4First = first && first.url && (first.url.includes('.mp4') || first.url.includes('.mov') || first.url.includes('.webm') || (first.url.includes('cloudinary') && !first.url.includes('youtube')));
     const firstThumb = first && (first.thumb || getYouTubeThumb(first.url));
+    const firstYtMatch = first && first.url ? first.url.match(/youtube\.com.*v=([^&]+)|youtu\.be\/([^?]+)/) : null;
+    const firstYtId = firstYtMatch ? (firstYtMatch[1] || firstYtMatch[2]) : null;
     const firstMedia = first ? (isMP4First
       ? `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000" ${first.thumb?`poster="${first.thumb}"`:''}><source src="${first.url}" type="video/mp4"></video>`
-      : `<div onclick="window.open('${first.url}','_blank')" style="position:relative;cursor:pointer">${firstThumb?`<img src="${firstThumb}" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block">`:''}<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.2rem;background:rgba(0,0,0,0.5)">▶</div></div>`) : '';
+      : firstYtId
+        ? `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden"><iframe src="https://www.youtube.com/embed/${firstYtId}?rel=0" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen allow="autoplay; encrypted-media"></iframe></div>`
+        : `<div onclick="window.open('${first.url}','_blank')" style="position:relative;cursor:pointer">${firstThumb?`<img src="${firstThumb}" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block">`:''}<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.2rem;background:rgba(0,0,0,0.5)">▶</div></div>`) : '';
     if (first) {
       videosHTML = `<div class="video-cinematic-featured">${firstMedia}<div class="video-cinematic-title">${first.title}</div><div class="video-cinematic-meta">${[first.album, first.year].filter(Boolean).join(' · ')}</div>${first.desc?`<div class="video-cinematic-desc">${first.desc}</div>`:''}</div>`;
     }
