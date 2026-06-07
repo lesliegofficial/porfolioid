@@ -103,13 +103,21 @@
       "releaseDate": ""
     },
     {
+      "tag": "RECORDING CREDIT",
+      "desc": "",
+      "isrc": "",
       "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/bczdroudlbv8dcps0zfz.mp3",
-      "role": "Touring Vocalist",
-      "year": null,
-      "album": null,
+      "role": "Backing Vocalist",
+      "type": "Session Recording",
+      "year": "",
+      "album": "",
       "title": "Siempre Fly",
       "artist": "J Alvarez ft. Mestiza",
-      "visible": true
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
     },
     {
       "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/lumrltvndmolhqtcp54y.mp3",
