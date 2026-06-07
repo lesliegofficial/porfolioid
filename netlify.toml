@@ -9,6 +9,12 @@
   status = 200
 
 [[redirects]]
+  from = "/:slug"
+  to = "/epk.html?slug=:slug"
+  status = 200
+  conditions = {Path = ["^/[a-z0-9-]+$"]}
+
+[[redirects]]
   from = "/epk/:slug"
   to = "/epk.html?slug=:slug"
   status = 200
