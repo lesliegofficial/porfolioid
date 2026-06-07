@@ -315,46 +315,21 @@
       "collaborators": []
     },
     {
-      "id": "credit_01_don_omar",
-      "desc": "Exclusive touring female vocalist across multiple international productions spanning nearly a decade. Featured on King of Kings: En Directo (Machete Music, 2007). Venues: Madison Square Garden, Radio City Music Hall, Luna Park Stadium, Viña del Mar, Coliseo de Puerto Rico, Kaseya Center.",
-      "role": "Exclusive Touring Vocalist",
-      "color": "gold",
-      "press": [],
-      "years": "2006–2015",
-      "artist": "Don Omar",
-      "descEs": "Vocalista femenina exclusiva de gira en múltiples producciones internacionales durante casi una década. Aparece en King of Kings: En Directo (Machete Music, 2007). Venues: Madison Square Garden, Radio City Music Hall, Luna Park Stadium, Viña del Mar, Coliseo de Puerto Rico, Kaseya Center.",
-      "photos": [
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780691546/z1gszcskhc3tegcjeesz.jpg",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780691557/bgyrrntc0dqcxxm5oelp.jpg",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780691626/dkkmur4sfnorrjhgkide.jpg",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696623/dizanbnk90ysgkqfyv72.jpg",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696624/rz5mkfjlo4guk5ijnpgu.jpg",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696789/dig8u5psfj62csjjrcv3.webp",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696862/xs6reobuxk3ml4cgen74.jpg"
-      ],
-      "pinned": true,
-      "company": "Don Omar",
+      "desc": "Founder and product architect of two original SaaS platforms built from concept to deployment.",
+      "role": "Founder & Product Architect",
+      "media": [],
+      "years": "2025–Present",
+      "descEs": "",
+      "photos": [],
+      "pinned": false,
+      "company": "PortfolioID / IDPressDrop",
       "visible": true,
-      "category": "",
-      "fullDesc": "Leslie served as the exclusive touring female vocalist for Don Omar across multiple international productions and live tours spanning nearly a decade.\n\nHer live performance work appears on King of Kings: En Directo, released through Machete Music in 2007 — a large-scale live production distributed internationally in CD and DVD formats and broadcast through DirecTV.\n\nThroughout her touring career with Don Omar, Leslie participated in hundreds of performances across five continents, including appearances at Madison Square Garden, Radio City Music Hall, Luna Park Stadium, Viña del Mar International Song Festival, Coliseo de Puerto Rico José Miguel Agrelot, and Kaseya Center, along with televised appearances and international broadcast productions.\n\nHer introduction into reggaetón touring began during the genre’s early commercial expansion after being recruited by musical director Félix Márquez for live performances with Héctor & Tito. Prior to joining Don Omar’s touring productions, she also performed as a backup vocalist for Melina León. Approximately one year later, she was invited by sound engineer Ramón Pabón to join Don Omar’s first major live touring production, eventually becoming one of the few prominently featured female touring vocalists within large-scale international reggaetón productions during the genre’s global crossover era.\n\n<strong>Special thanks to William Omar Landrón for the opportunity of a lifetime — and for that midnight call that changed everything. To Ramón Pabón and Carlos Martínez, sound engineers for Don Omar and former engineers for Melina León, whose referral opened the door. It was Ramón who made the call that night, with Don on the line, and nothing was ever the same after that. To Adam Torres, Abraham Quiñones, and Miguel Márquez for their support and unwavering presence throughout this journey. And to fellow colleagues Ángel Eric Ríos, Mario VI, DJ Robin, and DJ Eliel — the team behind the scenes that made every show feel like family coming home.</strong>",
+      "category": "Professional",
+      "featured": true,
+      "fullDesc": "Conceived, designed, and built two original SaaS platforms from the ground up — PortfolioID, a professional identity and portfolio platform for artists, creators, and multi-career professionals, and IDPressDrop, a press tracking and media relations management platform for publicists and label teams.\n\nDirected all product architecture, feature development, UX decision-making, content strategy, and deployment infrastructure across a full modern stack including JavaScript, Netlify serverless functions, Cloudinary media management, GitHub version control, and Supabase database architecture.\n\nDefined every feature, user flow, and design system — including bilingual (EN/ES) content support, Cloudinary media organization, QR Smart Share, video and music showcase, credit card documentation system, and professional assets management.\n\nBoth platforms were built while simultaneously navigating career development, higher education, royalty recovery, and ongoing business operations — demonstrating the same operational discipline, systems thinking, and execution capacity that defines the full arc of this career.",
       "verified": true,
-      "videoUrl": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780691676/uotjg56wip0kzed5entx.mp4",
-      "mediaLink": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780691676/uotjg56wip0kzed5entx.mp4",
-      "proofLink": "",
-      "fullDescEs": "Leslie se desempeñó como vocalista femenina exclusiva de gira para Don Omar en múltiples producciones y giras internacionales durante casi una década.\n\nSu trabajo en vivo forma parte de King of Kings: En Directo, lanzado por Machete Music en 2007, una producción en vivo distribuida internacionalmente en formatos CD y DVD y transmitida a través de DirecTV.\n\nA lo largo de su carrera de giras con Don Omar, Leslie participó en cientos de presentaciones en cinco continentes, incluyendo el Madison Square Garden, Radio City Music Hall, Luna Park Stadium, el Festival Internacional de la Canción de Viña del Mar, el Coliseo de Puerto Rico José Miguel Agrelot y el Kaseya Center, además de apariciones televisadas y producciones de transmisión internacional.\n\nSu entrada al mundo de las giras de reggaetón comenzó durante la expansión comercial temprana del género, cuando fue reclutada por el director musical Félix Márquez para presentaciones en vivo con Héctor & Tito. Antes de unirse a las producciones de gira de Don Omar, también se desempeñó como vocalista de apoyo para Melina León. Aproximadamente un año después, fue invitada por el ingeniero de sonido Ramón Pabón a integrarse a la primera gran producción de gira en vivo de Don Omar.\n\n<strong>Un agradecimiento especial a William Omar Landrón por la oportunidad de una vida — y por esa llamada a medianoche que lo cambió todo. A Ramón Pabón y Carlos Martínez, ingenieros de sonido de Don Omar y ex ingenieros de Melina León, cuya recomendación abrió la puerta. Fue Ramón quien hizo esa llamada aquella noche, con Don al teléfono, y nada volvió a ser igual después de eso. A Adam Torres, Abraham Quiñones y Miguel Márquez por su apoyo y presencia a lo largo de este camino. Y a los colegas Ángel Eric Ríos, Mario VI, DJ Robin y DJ Eliel — el equipo detrás del escenario que hizo que cada show se sintiera como volver a casa en familia.</strong>",
-      "mediaItems": [
-        {
-          "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780691676/uotjg56wip0kzed5entx.mp4",
-          "type": "video",
-          "label": "Don Omar Medley Hecho en PR",
-          "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696327/heuuadjnzi1mpoihaw1h.png"
-        }
-      ],
-      "mediaLabel": "Don Omar Medley Hecho en PR",
-      "sort_order": 0,
-      "projectType": "",
-      "contractType": "",
-      "collaborators": []
+      "fullDescEs": "Concibió, diseñó y desarrolló dos plataformas SaaS originales desde cero — PortfolioID, una plataforma de identidad profesional y portafolio para artistas, creadores y profesionales multidisciplinarios, e IDPressDrop, una plataforma de seguimiento de prensa y gestión de relaciones con medios para publicistas y equipos de sellos discográficos.\n\nDirigió toda la arquitectura de producto, desarrollo de funcionalidades, decisiones de experiencia de usuario, estrategia de contenido e infraestructura de despliegue utilizando un stack moderno que incluye JavaScript, funciones serverless de Netlify, gestión de medios con Cloudinary, control de versiones con GitHub y arquitectura de base de datos con Supabase.\n\nDefinió cada funcionalidad, flujo de usuario y sistema de diseño — incluyendo soporte de contenido bilingüe (EN/ES), organización de medios en Cloudinary, QR Smart Share, presentación de video y música, sistema de documentación de créditos y gestión de activos profesionales.\n\nAmbas plataformas fueron desarrolladas simultáneamente con el desarrollo de carrera, educación superior, recuperación de regalías y operaciones comerciales en curso.",
+      "projectType": "Platform Development · Product Strategy · UX Direction"
     },
     {
       "id": "credit_03_las_nenas",
@@ -451,21 +426,46 @@
       "collaborators": []
     },
     {
-      "desc": "Founder and product architect of two original SaaS platforms built from concept to deployment.",
-      "role": "Founder & Product Architect",
-      "media": [],
-      "years": "2025–Present",
-      "descEs": "",
-      "photos": [],
-      "pinned": false,
-      "company": "PortfolioID / IDPressDrop",
+      "id": "credit_01_don_omar",
+      "desc": "Exclusive touring female vocalist across multiple international productions spanning nearly a decade. Featured on King of Kings: En Directo (Machete Music, 2007). Venues: Madison Square Garden, Radio City Music Hall, Luna Park Stadium, Viña del Mar, Coliseo de Puerto Rico, Kaseya Center.",
+      "role": "Exclusive Touring Vocalist",
+      "color": "gold",
+      "press": [],
+      "years": "2006–2015",
+      "artist": "Don Omar",
+      "descEs": "Vocalista femenina exclusiva de gira en múltiples producciones internacionales durante casi una década. Aparece en King of Kings: En Directo (Machete Music, 2007). Venues: Madison Square Garden, Radio City Music Hall, Luna Park Stadium, Viña del Mar, Coliseo de Puerto Rico, Kaseya Center.",
+      "photos": [
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780691546/z1gszcskhc3tegcjeesz.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780691557/bgyrrntc0dqcxxm5oelp.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780691626/dkkmur4sfnorrjhgkide.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696623/dizanbnk90ysgkqfyv72.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696624/rz5mkfjlo4guk5ijnpgu.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696789/dig8u5psfj62csjjrcv3.webp",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696862/xs6reobuxk3ml4cgen74.jpg"
+      ],
+      "pinned": true,
+      "company": "Don Omar",
       "visible": true,
-      "category": "Professional",
-      "featured": true,
-      "fullDesc": "Conceived, designed, and built two original SaaS platforms from the ground up — PortfolioID, a professional identity and portfolio platform for artists, creators, and multi-career professionals, and IDPressDrop, a press tracking and media relations management platform for publicists and label teams.\n\nDirected all product architecture, feature development, UX decision-making, content strategy, and deployment infrastructure across a full modern stack including JavaScript, Netlify serverless functions, Cloudinary media management, GitHub version control, and Supabase database architecture.\n\nDefined every feature, user flow, and design system — including bilingual (EN/ES) content support, Cloudinary media organization, QR Smart Share, video and music showcase, credit card documentation system, and professional assets management.\n\nBoth platforms were built while simultaneously navigating career development, higher education, royalty recovery, and ongoing business operations — demonstrating the same operational discipline, systems thinking, and execution capacity that defines the full arc of this career.",
+      "category": "",
+      "fullDesc": "Leslie served as the exclusive touring female vocalist for Don Omar across multiple international productions and live tours spanning nearly a decade.\n\nHer live performance work appears on King of Kings: En Directo, released through Machete Music in 2007 — a large-scale live production distributed internationally in CD and DVD formats and broadcast through DirecTV.\n\nThroughout her touring career with Don Omar, Leslie participated in hundreds of performances across five continents, including appearances at Madison Square Garden, Radio City Music Hall, Luna Park Stadium, Viña del Mar International Song Festival, Coliseo de Puerto Rico José Miguel Agrelot, and Kaseya Center, along with televised appearances and international broadcast productions.\n\nHer introduction into reggaetón touring began during the genre’s early commercial expansion after being recruited by musical director Félix Márquez for live performances with Héctor & Tito. Prior to joining Don Omar’s touring productions, she also performed as a backup vocalist for Melina León. Approximately one year later, she was invited by sound engineer Ramón Pabón to join Don Omar’s first major live touring production, eventually becoming one of the few prominently featured female touring vocalists within large-scale international reggaetón productions during the genre’s global crossover era.\n\n<strong>Special thanks to William Omar Landrón for the opportunity of a lifetime — and for that midnight call that changed everything. To Ramón Pabón and Carlos Martínez, sound engineers for Don Omar and former engineers for Melina León, whose referral opened the door. It was Ramón who made the call that night, with Don on the line, and nothing was ever the same after that. To Adam Torres, Abraham Quiñones, and Miguel Márquez for their support and unwavering presence throughout this journey. And to fellow colleagues Ángel Eric Ríos, Mario VI, DJ Robin, and DJ Eliel — the team behind the scenes that made every show feel like family coming home.</strong>",
       "verified": true,
-      "fullDescEs": "Concibió, diseñó y desarrolló dos plataformas SaaS originales desde cero — PortfolioID, una plataforma de identidad profesional y portafolio para artistas, creadores y profesionales multidisciplinarios, e IDPressDrop, una plataforma de seguimiento de prensa y gestión de relaciones con medios para publicistas y equipos de sellos discográficos.\n\nDirigió toda la arquitectura de producto, desarrollo de funcionalidades, decisiones de experiencia de usuario, estrategia de contenido e infraestructura de despliegue utilizando un stack moderno que incluye JavaScript, funciones serverless de Netlify, gestión de medios con Cloudinary, control de versiones con GitHub y arquitectura de base de datos con Supabase.\n\nDefinió cada funcionalidad, flujo de usuario y sistema de diseño — incluyendo soporte de contenido bilingüe (EN/ES), organización de medios en Cloudinary, QR Smart Share, presentación de video y música, sistema de documentación de créditos y gestión de activos profesionales.\n\nAmbas plataformas fueron desarrolladas simultáneamente con el desarrollo de carrera, educación superior, recuperación de regalías y operaciones comerciales en curso.",
-      "projectType": "Platform Development · Product Strategy · UX Direction"
+      "videoUrl": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780691676/uotjg56wip0kzed5entx.mp4",
+      "mediaLink": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780691676/uotjg56wip0kzed5entx.mp4",
+      "proofLink": "",
+      "fullDescEs": "Leslie se desempeñó como vocalista femenina exclusiva de gira para Don Omar en múltiples producciones y giras internacionales durante casi una década.\n\nSu trabajo en vivo forma parte de King of Kings: En Directo, lanzado por Machete Music en 2007, una producción en vivo distribuida internacionalmente en formatos CD y DVD y transmitida a través de DirecTV.\n\nA lo largo de su carrera de giras con Don Omar, Leslie participó en cientos de presentaciones en cinco continentes, incluyendo el Madison Square Garden, Radio City Music Hall, Luna Park Stadium, el Festival Internacional de la Canción de Viña del Mar, el Coliseo de Puerto Rico José Miguel Agrelot y el Kaseya Center, además de apariciones televisadas y producciones de transmisión internacional.\n\nSu entrada al mundo de las giras de reggaetón comenzó durante la expansión comercial temprana del género, cuando fue reclutada por el director musical Félix Márquez para presentaciones en vivo con Héctor & Tito. Antes de unirse a las producciones de gira de Don Omar, también se desempeñó como vocalista de apoyo para Melina León. Aproximadamente un año después, fue invitada por el ingeniero de sonido Ramón Pabón a integrarse a la primera gran producción de gira en vivo de Don Omar.\n\n<strong>Un agradecimiento especial a William Omar Landrón por la oportunidad de una vida — y por esa llamada a medianoche que lo cambió todo. A Ramón Pabón y Carlos Martínez, ingenieros de sonido de Don Omar y ex ingenieros de Melina León, cuya recomendación abrió la puerta. Fue Ramón quien hizo esa llamada aquella noche, con Don al teléfono, y nada volvió a ser igual después de eso. A Adam Torres, Abraham Quiñones y Miguel Márquez por su apoyo y presencia a lo largo de este camino. Y a los colegas Ángel Eric Ríos, Mario VI, DJ Robin y DJ Eliel — el equipo detrás del escenario que hizo que cada show se sintiera como volver a casa en familia.</strong>",
+      "mediaItems": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780691676/uotjg56wip0kzed5entx.mp4",
+          "type": "video",
+          "label": "Don Omar Medley Hecho en PR",
+          "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696327/heuuadjnzi1mpoihaw1h.png"
+        }
+      ],
+      "mediaLabel": "Don Omar Medley Hecho en PR",
+      "sort_order": 0,
+      "projectType": "",
+      "contractType": "",
+      "collaborators": []
     },
     {
       "id": "credit_06_nv_marketing",
