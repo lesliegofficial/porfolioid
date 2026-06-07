@@ -587,8 +587,8 @@ function buildEPK(epk) {
         <h2 class="section-title" data-editable data-editable-key="videoTitle" data-editable-type="title" style="outline:none;margin-bottom:0">Live & On Camera</h2>
         ${visibleVideos.length > 3 ? `<button onclick="toggleAllVideos()" id="videoToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-bottom:1.5rem;transition:all 0.2s">View All Videos +</button>` : ''}
       </div>
-      <div id="videosFeatured">${visibleVideos.length <= 3 ? videosHTML : `<div class="videos-grid">${visibleVideos.slice(0,3).map((v,i) => buildVideoCard(v,i)).join("")}</div>`}</div>
-      ${visibleVideos.length > 3 ? `<div id="videosAll" style="display:none">${videosHTML}</div>` : ''}
+      <div id="videosFeatured">${(videoLayout === 'spotlight' || videoLayout === 'cinematic' || videoLayout === 'list' || visibleVideos.length <= 3) ? videosHTML : `<div class="videos-grid">${visibleVideos.slice(0,3).map((v,i) => buildVideoCard(v,i)).join("")}</div>`}</div>
+      ${(videoLayout !== 'spotlight' && videoLayout !== 'cinematic' && videoLayout !== 'list' && visibleVideos.length > 3) ? `<div id="videosAll" style="display:none">${videosHTML}</div>` : ''}
     </section>
     <div class="divider"></div>` : ''}
 
