@@ -72,21 +72,21 @@
       "visible": true
     },
     {
-      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/jenbs1ag6hy7mvwr2ntp.mp3",
-      "role": "Touring Vocalist",
-      "year": "1998",
-      "album": "Rompe Corazones",
-      "title": "Chicle Bomba",
-      "artist": "Las Nenas del Swing",
-      "visible": true
-    },
-    {
       "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/c66ijcnoclmmtcpfhnrd.mp3",
       "role": "Touring Vocalist",
       "year": null,
       "album": null,
       "title": "Hasta Abajo",
       "artist": "Don Omar, Yankee, Yandel",
+      "visible": true
+    },
+    {
+      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/jenbs1ag6hy7mvwr2ntp.mp3",
+      "role": "Touring Vocalist",
+      "year": "1998",
+      "album": "Rompe Corazones",
+      "title": "Chicle Bomba",
+      "artist": "Las Nenas del Swing",
       "visible": true
     },
     {
