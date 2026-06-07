@@ -379,6 +379,18 @@ exports.handler = async (event) => {
             }
           } catch(e) { console.error('Tracks protection failed:', e); }
         }
+        // Protect photos, awards, assets from partial saves
+        for (const field of ['photos', 'awards', 'assets']) {
+          if (!safeData[field] || safeData[field].length === 0) {
+            try {
+              const existingRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data`);
+              if (existingRes.ok && existingRes.data.length) {
+                const existing = existingRes.data[0].data && existingRes.data[0].data[field];
+                if (existing && existing.length > 0) safeData[field] = existing;
+              }
+            } catch(e) { console.error(`${field} protection failed:`, e); }
+          }
+        }
         if (!safeData.credits || safeData.credits.length === 0) {
           try {
             const existingRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data`);
