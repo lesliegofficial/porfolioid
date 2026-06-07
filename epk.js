@@ -310,7 +310,7 @@ function buildEPK(epk) {
     const pinnedBadge = c.pinned ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.12);color:var(--gold);padding:0.15rem 0.5rem">📌 FEATURED</span>` : '';
     const badgesRow = (categoryBadge || verifiedBadge || pinnedBadge) ? `<div style="margin-bottom:0.5rem;display:flex;gap:0.3rem;flex-wrap:wrap">${pinnedBadge}${verifiedBadge}${categoryBadge}</div>` : '';
     const collaboratorsRow = c.collaborators?.length ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.3rem;letter-spacing:0.08em">w/ ${c.collaborators.join(', ')}</div>` : '';
-    const ownerArrows = window._isOwner ? `<div class="owner-overlay" style="flex-direction:column;gap:0.2rem"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('credits',${origI},-1)" title="Move Up">▲</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('credits',${origI},1)" title="Move Down">▼</button></div>` : '';
+    const ownerArrows = `<div class="owner-overlay" style="flex-direction:column;gap:0.2rem"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('credits',${origI},-1)" title="Move Up">▲</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('credits',${origI},1)" title="Move Down">▼</button></div>`;
     return `
     <div class="credit-card owner-item-wrap" ${hasDetail ? `onclick="openCreditModal(${i})"` : ''} style="border-top:2px solid ${accentColor};position:relative">
       ${ownerArrows}
@@ -954,7 +954,7 @@ function navigateSlide(col, state, total, dir) {
 
   // Track scan (fire and forget)
   if (qrMode && s) {
-    fetch('/api/epk', {
+    fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -970,7 +970,7 @@ function navigateSlide(col, state, total, dir) {
   // Track page view (fire and forget — always, for every portfolio visit)
   if (s) {
     const device = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
-    fetch('/api/epk', {
+    fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -988,7 +988,7 @@ function navigateSlide(col, state, total, dir) {
 const slug = getSlugFromURL();
 if (slug) {
   // Try API first
-  fetch('/api/epk', {
+  fetch('/.netlify/functions/epk', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action: 'load', slug })
@@ -1261,7 +1261,7 @@ async function handleBookingSubmit(e) {
 // Asset download tracking
 function trackAssetDownload(idx) {
   try {
-    fetch('/api/epk', {
+    fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'trackDownload', slug: getSlugFromURL(), assetIdx: idx })
