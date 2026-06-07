@@ -3401,7 +3401,8 @@ function _openCloudinaryPicker(id,folder,title,onSelect) {
       filesEl.innerHTML=items.map(function(item){
         const name=item.public_id.split('/').pop();
         const isVid=item.resource_type==='video';
-        const thumb=isVid?item.secure_url.replace('/upload/','/upload/w_150,h_90,c_fill,f_jpg,so_2/'):null;
+        const isImg=item.resource_type==='image';
+        const thumb=isVid?item.secure_url.replace('/upload/','/upload/w_150,h_90,c_fill,f_jpg,so_2/'):isImg?item.secure_url.replace('/upload/','/upload/w_150,h_90,c_fill,f_jpg/'):null;
         const safeUrl=item.secure_url.replace(/'/g,'%27');
         return '<div onclick="(window[\'_picker_cb_'+id+'\'])(\''+safeUrl+'\')" style="cursor:pointer;border:1px solid rgba(201,168,76,0.2);padding:0.5rem;background:rgba(201,168,76,0.04);border-radius:4px">'
           +(thumb?'<img src="'+thumb+'" style="width:100%;height:70px;object-fit:cover;display:block;margin-bottom:0.4rem" onerror="this.style.display=\'none\'">'
