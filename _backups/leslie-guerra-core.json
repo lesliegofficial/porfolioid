@@ -30,26 +30,50 @@
       "org": "Polk State College",
       "type": "degree",
       "year": "2026",
-      "title": "A.S. Business Administration (In Progress)"
+      "title": "A.S. Business Administration (In Progress)",
+      "photos": []
     },
     {
       "org": "Florida Technical College (NUC University)",
       "note": "High Honors, GPA 4.0",
       "type": "degree",
       "year": "2025",
-      "title": "Computer Support Technician Diploma"
+      "title": "Computer Support Technician Diploma",
+      "photos": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778792056/rypcc7shqcz7rt4kyhny.jpg",
+          "caption": "Graduation — Florida Technical College"
+        },
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778792051/apw3zngzif4uxweqfn9a.jpg",
+          "caption": "Graduation Ceremony — NUC University"
+        }
+      ],
+      "certUrl": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778790944/p0npavwpllen9vfqceiq.ai"
+    },
+    {
+      "org": "Florida Technical College (NUC University)",
+      "type": "recognition",
+      "year": "2025",
+      "title": "President's List",
+      "photos": [],
+      "certUrl": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778790963/zjz3grw21r7nqtwgajh8.pdf"
     },
     {
       "org": "Google",
       "type": "certification",
       "year": "2026",
-      "title": "Google Analytics Certification"
+      "title": "Google Analytics Certification",
+      "photos": [],
+      "certUrl": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778790962/npjxzfwiyguoi2mo7syv.pdf"
     },
     {
       "org": "Microsoft",
       "type": "certification",
       "year": "2026",
-      "title": "Business Analytics with Excel"
+      "title": "Business Analytics with Excel",
+      "photos": [],
+      "certUrl": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778790945/epkrox93k924u62rppv6.pdf"
     }
   ],
   "photos": [
