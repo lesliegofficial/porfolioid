@@ -338,6 +338,8 @@ function loadAllFields() {
     bcatOtherCb.addEventListener('change', function() { bcatOtherInp.style.display = this.checked ? 'block' : 'none'; });
   }
   loadBookingToggle();
+  epk.assetsLocked = epk.assetsLocked !== undefined ? epk.assetsLocked : true;
+  updateAssetsLockUI();
 
   // Availability dropdown
   const availSel = document.getElementById('availabilitySelect');
@@ -736,6 +738,32 @@ document.getElementById('newCredential').addEventListener('keydown', e => { if (
 
 // CREDITS
 let editingCreditIdx = -1;
+
+function toggleAssetsLock() {
+  epk.assetsLocked = !epk.assetsLocked;
+  updateAssetsLockUI();
+  persistUser(); showSaveBanner();
+}
+
+function updateAssetsLockUI() {
+  const locked = epk.assetsLocked;
+  const track = document.getElementById('assetsLockTrack');
+  const thumb = document.getElementById('assetsLockThumb');
+  const label = document.getElementById('assetsLockLabel');
+  const toggleLabel = document.getElementById('assetsLockToggleLabel');
+  if (!track) return;
+  if (locked) {
+    track.style.background = '#333';
+    thumb.style.left = '3px';
+    label.textContent = '🔒 Assets Locked';
+    toggleLabel.textContent = 'Locked';
+  } else {
+    track.style.background = 'var(--gold)';
+    thumb.style.left = '23px';
+    label.textContent = '🔓 Assets Unlocked';
+    toggleLabel.textContent = 'Unlocked';
+  }
+}
 
 function toggleCreditCategoryOther(sel) {
   const other = document.getElementById('newCreditCategoryOther');
