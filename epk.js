@@ -423,8 +423,28 @@ function buildEPK(epk) {
       </div>`;
     });
     videosHTML += '</div>';
+  } else if (videoLayout === 'spotlight') {
+    const first = visibleVideos[0];
+    const firstThumb = first ? (first.thumb || getYouTubeThumb(first.url)) : null;
+    const firstIsMP4 = first && first.url && (first.url.includes('.mp4') || first.url.includes('.mov') || first.url.includes('.webm') || (first.url.includes('cloudinary') && !first.url.includes('youtube')));
+    const firstYtId = first && first.url ? (first.url.match(/youtube\.com.*v=([^&]+)|youtu\.be\/([^?]+)/) || []) : [];
+    const firstYtVideoId = firstYtId[1] || firstYtId[2] || null;
+    let playerHTML = '';
+    if (firstIsMP4) {
+      playerHTML = `<video id="spotlightPlayer" controls style="width:100%;height:100%;display:block;background:#000;object-fit:contain" ${first.thumb?`poster="${first.thumb}"`:''}><source src="${first.url}" type="video/mp4"></video>`;
+    } else if (firstYtVideoId) {
+      playerHTML = `<iframe id="spotlightPlayer" src="https://www.youtube.com/embed/${firstYtVideoId}?rel=0" style="width:100%;height:100%;border:none;display:block" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+    }
+    const thumbsHTML = visibleVideos.map((v, i) => {
+      const th = v.thumb || getYouTubeThumb(v.url);
+      return `<div class="videos-spotlight-thumb${i===0?' active':''}" onclick="spotlightSelect(${i})" id="spotthumb_${i}">
+        ${th ? `<img src="${th}" alt="${v.title}" loading="lazy">` : `<div style="width:100%;aspect-ratio:16/9;background:var(--dark-4);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:1.5rem">▶</div>`}
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)" class="video-play" style="width:1.8rem;height:1.8rem;font-size:0.8rem">▶</div>
+        <div class="spot-title">${v.title}</div>
+      </div>`;
+    }).join('');
+    videosHTML = `<div class="videos-spotlight-player">${playerHTML}</div><div class="videos-spotlight-grid">${thumbsHTML}</div>`;
   } else {
-    // Default grid
     if (hasCategories) {
       Object.entries(groupedVideos).forEach(([cat, vids]) => {
         videosHTML += `<div style="margin-bottom:3rem"><div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem">${cat}<span style="flex:1;height:1px;background:linear-gradient(to right,rgba(201,168,76,0.2),transparent);max-width:200px;display:inline-block"></span></div><div class="videos-grid">${vids.map(v => buildVideoCard(v, v._origIdx)).join('')}</div></div>`;
@@ -1613,4 +1633,25 @@ function playYouTubeInline(embedId, ytVideoId) {
   thumb.style.display = 'none';
   embed.style.display = 'block';
   embed.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytVideoId}?autoplay=1&rel=0" style="width:100%;height:100%;border:none;display:block" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+}
+
+function spotlightSelect(idx) {
+  const videos = window._epkData?.videos || [];
+  const v = videos.filter(v => v.visible !== false)[idx];
+  if (!v) return;
+  // Update active thumb
+  document.querySelectorAll('.videos-spotlight-thumb').forEach((el, i) => {
+    el.classList.toggle('active', i === idx);
+  });
+  // Update player
+  const player = document.querySelector('.videos-spotlight-player');
+  if (!player) return;
+  const isMP4 = v.url && (v.url.includes('.mp4') || v.url.includes('.mov') || v.url.includes('.webm') || (v.url.includes('cloudinary') && !v.url.includes('youtube')));
+  const ytId = v.url ? v.url.match(/youtube\.com.*v=([^&]+)|youtu\.be\/([^?]+)/) : null;
+  const ytVideoId = ytId ? (ytId[1] || ytId[2]) : null;
+  if (isMP4) {
+    player.innerHTML = `<video controls autoplay style="width:100%;height:100%;display:block;background:#000;object-fit:contain" ${v.thumb?`poster="${v.thumb}"`:''}><source src="${v.url}" type="video/mp4"></video>`;
+  } else if (ytVideoId) {
+    player.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytVideoId}?autoplay=1&rel=0" style="width:100%;height:100%;border:none;display:block" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+  }
 }
