@@ -2828,7 +2828,7 @@ function loadSpanish() {
   const bio = document.getElementById('esBio');
   const taglines = document.getElementById('esTaglines');
   if (shortBio) shortBio.value = epk.shortBioES || epk.es?.shortBio || '';
-  if (bio) bio.value = epk.bioES || epk.es?.bio || '';
+  if (bio) bio.value = epk.bioFullES || epk.bioES || epk.es?.bio || '';
   if (taglines) taglines.value = (epk.es?.taglines || []).join('\n');
 }
 
@@ -2836,7 +2836,8 @@ async function saveSpanish() {
   const epk = window._epkData;
   if (!epk) return;
   epk.shortBioES = document.getElementById('esShortBio')?.value || '';
-  epk.bioES = document.getElementById('esBio')?.value || '';
+  epk.bioFullES = document.getElementById('esBio')?.value || '';
+  epk.bioES = epk.bioFullES;
   window._epkData = epk;
   const taglinesRaw = document.getElementById('esTaglines')?.value || '';
   if (!epk.es) epk.es = {};
