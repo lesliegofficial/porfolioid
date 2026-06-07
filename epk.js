@@ -292,8 +292,7 @@ function buildEPK(epk) {
   // Sort: pinned first, filter hidden
   const visibleCredits = (epk.credits || [])
     .map((c, i) => ({...c, _origIdx: i}))
-    .filter(c => c.visible !== false)
-    .sort((a, b) => (b.pinned?1:0) - (a.pinned?1:0));
+    .filter(c => c.visible !== false);
   epkVisibleCredits = visibleCredits;
 
   const musicCreditNames = ['Don Omar','J Álvarez','Melina León','Las Nenas del Swing'];
@@ -310,8 +309,10 @@ function buildEPK(epk) {
     const pinnedBadge = c.pinned ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.12);color:var(--gold);padding:0.15rem 0.5rem">📌 FEATURED</span>` : '';
     const badgesRow = (categoryBadge || verifiedBadge || pinnedBadge) ? `<div style="margin-bottom:0.5rem;display:flex;gap:0.3rem;flex-wrap:wrap">${pinnedBadge}${verifiedBadge}${categoryBadge}</div>` : '';
     const collaboratorsRow = c.collaborators?.length ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.3rem;letter-spacing:0.08em">w/ ${c.collaborators.join(', ')}</div>` : '';
+    const ownerArrows = `<div class="owner-overlay" style="flex-direction:column;gap:0.2rem"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();moveCreditCard(${i},-1)" title="Move Up">▲</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();moveCreditCard(${i},1)" title="Move Down">▼</button></div>`;
     return `
-    <div class="credit-card" ${hasDetail ? `onclick="openCreditModal(${i})"` : ''} style="border-top:2px solid ${accentColor}">
+    <div class="credit-card owner-item-wrap" ${hasDetail ? `onclick="openCreditModal(${i})"` : ''} style="border-top:2px solid ${accentColor};position:relative">
+      ${ownerArrows}`
       <div style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:${accentColor};opacity:0.6;margin-bottom:0.5rem">${cardTypeLabel}</div>
       ${badgesRow}
       <div class="credit-header">
@@ -1102,6 +1103,27 @@ function toggleAllCredits() {
   grid.classList.toggle('credits-expanded', !isExpanded);
   const total = grid.querySelectorAll('.credit-card').length;
   btn.textContent = isExpanded ? `View All ${total} Credits +` : 'Show Less –';
+}
+
+// Move credit card up or down
+function moveCreditCard(idx, dir) {
+  const credits = window._epkData && window._epkData.credits;
+  if (!credits) return;
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= credits.length) return;
+  const temp = credits[idx];
+  credits[idx] = credits[newIdx];
+  credits[newIdx] = temp;
+  window._epkData.credits = credits;
+  const slug = window._ownerSlug || (JSON.parse(localStorage.getItem('porfolioid_session')||'null')||{}).slug;
+  if (slug) {
+    fetch('/.netlify/functions/epk', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({action:'save', slug, data:{credits}})
+    });
+  }
+  buildEPK(window._epkData);
 }
 
 // Owner inline reorder
