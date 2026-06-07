@@ -63,7 +63,7 @@ function buildEPK(epk) {
       return true;
     });
   sections.forEach(s => {
-    navLinks.innerHTML += `<li><a href="#${s.id}">${s.label}</a></li>`;
+    navLinks.innerHTML += `<li><a href="#${s.id}" onclick="expandSection('${s.id}')">${s.label}</a></li>`;
   });
 
   document.getElementById('footerLogo').textContent = `${epk.name} — PorfolioID`;
@@ -1105,6 +1105,24 @@ function toggleSection(bodyId, header) {
   const toggle = header.querySelector('.collapsible-toggle');
   const label = header.querySelector('.toggle-label');
   if (toggle) toggle.innerHTML = isOpen ? '<span class="toggle-label">Expand</span> ＋' : '<span class="toggle-label">Collapse</span> －';
+}
+
+function expandSection(sectionId) {
+  // Map section IDs to their body IDs
+  const bodyMap = { music:'musicBody', awards:'awardsBody', assets:'assetsBody', booking:'connectBody' };
+  const bodyId = bodyMap[sectionId];
+  if (!bodyId) return;
+  const body = document.getElementById(bodyId);
+  if (!body) return;
+  // Open it if not already open
+  if (!body.classList.contains('open')) {
+    body.classList.add('open');
+    const header = body.previousElementSibling;
+    if (header) {
+      const toggle = header.querySelector('.collapsible-toggle');
+      if (toggle) toggle.innerHTML = '<span class="toggle-label">Collapse</span> －';
+    }
+  }
 }
 
 // Award Modal
