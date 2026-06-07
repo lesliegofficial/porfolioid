@@ -1108,35 +1108,20 @@ function toggleAllCredits() {
 
 // Move credit card by visible position
 function moveCreditCard(visibleIdx, dir) {
-  try {
-    if (!window._epkData || !window._epkData.credits) return;
-    const slug = window._ownerSlug || (JSON.parse(localStorage.getItem('porfolioid_session')||'null')||{}).slug;
-    if (!slug) return;
-    // Get current visible order (same logic as render)
-    const credits = window._epkData.credits;
-    const visible = credits
-      .map((c, i) => ({...c, _ri: i}))
-      .filter(c => c.visible !== false)
-      .sort((a, b) => (b.pinned?1:0) - (a.pinned?1:0));
-    const newVisibleIdx = visibleIdx + dir;
-    if (newVisibleIdx < 0 || newVisibleIdx >= visible.length) return;
-    // Get real indexes
-    const riA = visible[visibleIdx]._ri;
-    const riB = visible[newVisibleIdx]._ri;
-    // Swap in real array
-    const temp = credits[riA];
-    credits[riA] = credits[riB];
-    credits[riB] = temp;
-    window._epkData.credits = credits;
-    // Save
-    fetch('/.netlify/functions/epk', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({action:'save', slug, data: window._epkData})
-    });
-    // Re-render
-    buildEPK(window._epkData);
-  } catch(e) { console.error('moveCreditCard failed:', e); }
+  const credits = window._epkData && window._epkData.credits;
+  if (!credits) return;
+  const newIdx = visibleIdx + dir;
+  if (newIdx < 0 || newIdx >= credits.length) return;
+  const temp = credits[visibleIdx];
+  credits[visibleIdx] = credits[newIdx];
+  credits[newIdx] = temp;
+  window._epkData.credits = credits;
+  fetch('/.netlify/functions/epk', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({action:'save', slug:'leslie-guerra', data: window._epkData})
+  });
+  buildEPK(window._epkData);
 }
 
 // Owner inline reorder
