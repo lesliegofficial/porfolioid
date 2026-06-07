@@ -1108,8 +1108,10 @@ function toggleAllCredits() {
 
 // Owner inline reorder
 async function ownerMoveItem(section, idx, dir) {
-  if (!window._isOwner || !window._ownerSlug) return;
   try {
+    if (!window._epkData) return;
+    const slug = window._ownerSlug || (JSON.parse(localStorage.getItem('porfolioid_session')||'null')||{}).slug;
+    if (!slug) return;
     const arr = window._epkData[section] || [];
     const newIdx = idx + dir;
     if (newIdx < 0 || newIdx >= arr.length) return;
@@ -1122,9 +1124,9 @@ async function ownerMoveItem(section, idx, dir) {
     fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'save', slug: window._ownerSlug, data: window._epkData })
+      body: JSON.stringify({ action: 'save', slug: slug, data: window._epkData })
     });
-    // Re-render just that section without page reload
+    // Re-render
     buildEPK(window._epkData);
   } catch(e) { console.error('Reorder failed:', e); }
 }
