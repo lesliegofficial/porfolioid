@@ -2317,7 +2317,7 @@ function generateResumePDF(idx) {
   const email = epk.bookingEmail || '';
   const phone = epk.bookingPhone || '';
   const skills = (r.skills || []).join(' · ');
-  const portfolioUrl = `porfolioid.com/epk/${epk.slug || ''}`;
+  const portfolioUrl = `porfolioid.com/${epk.slug || ''}`;
 
   // Build experience/credit lines from credits
   const relevantCredits = (epk.credits || []).slice(0, 12).map(c =>
@@ -3061,7 +3061,7 @@ function updateSidebarProfileInfo() {
   const label = document.getElementById('activeProfileLabel');
   const viewBtn = document.getElementById('viewEPKBtn');
 
-  const url = `porfolioid.com/epk/${activeProfileSlug}`;
+  const url = `porfolioid.com/${activeProfileSlug}`;
   const fullUrl = `/epk.html?slug=${activeProfileSlug}`;
 
   if (urlDisplay) { urlDisplay.textContent = url; urlDisplay.href = fullUrl; }
@@ -3111,7 +3111,7 @@ async function persistUser() {
 function openNewProfileModal() {
   newProfileType = 'creative';
   document.getElementById('newProfileName').value = '';
-  document.getElementById('newProfileUrlPreview').textContent = 'porfolioid.com/epk/—';
+  document.getElementById('newProfileUrlPreview').textContent = 'porfolioid.com/—';
   updateNewProfileTypeUI();
   document.getElementById('newProfileModal').classList.add('open');
 }
@@ -3143,7 +3143,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const base = session.slug || 'your-slug';
       const suffix = nameInput.value.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
       const profileSlug = suffix ? `${base}--${suffix}` : base;
-      document.getElementById('newProfileUrlPreview').textContent = `porfolioid.com/epk/${profileSlug}`;
+      document.getElementById('newProfileUrlPreview').textContent = `porfolioid.com/${profileSlug}`;
     });
   }
 });

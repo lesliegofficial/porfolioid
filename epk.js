@@ -1003,7 +1003,7 @@ if (slug) {
       if (epk) {
         buildEPK(epk);
       } else {
-        document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">EPK not found. <a href="/" style="color:var(--gold)">Return home →</a></div>';
+        document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">Portfolio not found. <a href="/" style="color:var(--gold)">Return home →</a></div>';
       }
     }
   })

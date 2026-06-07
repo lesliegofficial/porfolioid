@@ -37,7 +37,7 @@
       <button onclick="selectNewProfileType('creative')" id="npt-creative" style="padding:1.25rem;background:var(--dark-3);border:2px solid rgba(201,168,76,0.15);cursor:pointer;text-align:left;transition:all 0.2s">
         <div style="font-size:1.4rem;margin-bottom:0.4rem">🎨</div>
         <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--white);letter-spacing:0.08em;text-transform:uppercase">Creative</div>
-        <div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.25rem">EPK · Credits · Music · Media</div>
+        <div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.25rem">Portfolio · Credits · Music · Media</div>
       </button>
       <button onclick="selectNewProfileType('corporate')" id="npt-corporate" style="padding:1.25rem;background:var(--dark-3);border:2px solid rgba(201,168,76,0.15);cursor:pointer;text-align:left;transition:all 0.2s">
         <div style="font-size:1.4rem;margin-bottom:0.4rem">💼</div>
@@ -59,7 +59,7 @@
     <div style="margin-bottom:1.5rem">
       <label style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light);display:block;margin-bottom:0.4rem">Profile Name</label>
       <input id="newProfileName" type="text" placeholder="e.g. Creative, Corporate, Speaker..." style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-mono);font-size:0.7rem;outline:none;box-sizing:border-box">
-      <p style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);margin-top:0.4rem">Your URL: <span id="newProfileUrlPreview" style="color:var(--gold)">porfolioid.com/epk/—</span></p>
+      <p style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);margin-top:0.4rem">Your URL: <span id="newProfileUrlPreview" style="color:var(--gold)">porfolioid.com/—</span></p>
     </div>
 
     <div style="display:flex;gap:0.75rem">
@@ -608,7 +608,7 @@
         </div>
 
         <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-3);padding:0.85rem 1rem;border:1px solid rgba(201,168,76,0.1);margin-bottom:1.25rem">
-          <label style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);flex:1">Show on Public EPK</label>
+          <label style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);flex:1">Show on Portfolio</label>
           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
             <input type="checkbox" id="newCreditVisible" checked style="accent-color:var(--gold)">
             <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Visible</span>
@@ -742,7 +742,7 @@
         </div>
 
         <div class="field-group">
-          <label class="field-label">Lyrics <span style="color:var(--gray);font-weight:400">(optional — shown on EPK when expanded)</span></label>
+          <label class="field-label">Lyrics <span style="color:var(--gray);font-weight:400">(optional — shown on Portfolio when expanded)</span></label>
           <textarea id="newTrackLyrics" rows="6" placeholder="Paste lyrics here..."></textarea>
         </div>
 
@@ -755,7 +755,7 @@
           <label style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);flex:1">Visibility</label>
           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
             <input type="checkbox" id="newTrackVisible" checked style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Visible on EPK</span>
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Visible on Portfolio</span>
           </label>
           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-left:1rem">
             <input type="checkbox" id="newTrackUnreleased" style="accent-color:var(--gold)">
@@ -873,7 +873,7 @@
           <label style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);flex:1">Visibility</label>
           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
             <input type="checkbox" id="newVideoVisible" checked style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Visible on EPK</span>
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Visible on Portfolio</span>
           </label>
         </div>
 
@@ -1033,7 +1033,7 @@
           <label style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);flex:1">Visibility</label>
           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
             <input type="checkbox" id="newAssetVisible" checked style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Visible on EPK</span>
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Visible on Portfolio</span>
           </label>
         </div>
 
@@ -1074,7 +1074,7 @@
         <button onclick="setQRMode('artist')" id="qrMode-artist" style="padding:1.25rem 1rem;background:var(--dark-2);border:2px solid rgba(201,168,76,0.15);cursor:pointer;text-align:left;transition:all 0.3s;position:relative">
           <div style="font-size:1.5rem;margin-bottom:0.5rem">🎨</div>
           <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);margin-bottom:0.3rem">Artist QR</div>
-          <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);line-height:1.5">EPK · Credits · Music · Videos · Socials</div>
+          <div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);line-height:1.5">Portfolio · Credits · Music · Videos · Socials</div>
           <div id="qrMode-artist-check" style="display:none;position:absolute;top:0.75rem;right:0.75rem;width:18px;height:18px;background:var(--gold);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:0.55rem">✓</div>
         </button>
 
@@ -1223,7 +1223,7 @@
       <p class="panel-sub">Control how people reach you — or turn this section off entirely.</p>
 
       <div class="field-group" style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);padding:1rem 1.25rem;border:1px solid rgba(201,168,76,0.15)">
-        <label class="field-label" style="margin:0;flex:1">Show Booking Section on My EPK</label>
+        <label class="field-label" style="margin:0;flex:1">Show Booking Section on My Portfolio</label>
         <label style="position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0">
           <input type="checkbox" id="bookingToggle" onchange="toggleBooking()" style="opacity:0;width:0;height:0">
           <span style="position:absolute;cursor:pointer;inset:0;background:var(--dark-4);border:1px solid rgba(201,168,76,0.2);transition:0.3s;border-radius:24px" id="toggleSlider"></span>
@@ -1241,7 +1241,7 @@
       <div class="field-group">
         <label class="field-label">Booking Email</label>
         <input type="email" id="bookingEmail" placeholder="booking@youremail.com">
-        <p class="field-hint">Booking inquiries from your EPK will be sent to this address.</p>
+        <p class="field-hint">Booking inquiries from your Portfolio will be sent to this address.</p>
       </div>
       <div class="field-group">
         <label class="field-label">Phone Number (optional)</label>
@@ -1271,7 +1271,7 @@
 
       <hr class="section-divider">
       <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:1rem;">What You're Available For</h3>
-      <p class="field-hint" style="margin-bottom:1rem">Select all that apply — these appear as tags on your EPK.</p>
+      <p class="field-hint" style="margin-bottom:1rem">Select all that apply — these appear as tags on your Portfolio.</p>
 
       <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1.5rem">
         <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_live" style="accent-color:var(--gold)"> Live Performances</label>
@@ -1308,7 +1308,7 @@
     <!-- SOCIAL LINKS PANEL -->
     <div class="panel" id="panel-socials">
       <h1 class="panel-title">Social <em>Links</em></h1>
-      <p class="panel-sub">Add your platforms and profiles. These appear in a dedicated Connect section on your EPK.</p>
+      <p class="panel-sub">Add your platforms and profiles. These appear in a dedicated Connect section on your Portfolio.</p>
 
       <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:1.5rem;">Social Platforms</h3>
 
