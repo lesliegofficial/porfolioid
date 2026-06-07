@@ -1231,7 +1231,7 @@ function toggleBio() {
   if (!full) return;
   const isHidden = full.style.display === 'none';
   full.style.display = isHidden ? 'block' : 'none';
-  if (btn) btn.style.display = isHidden ? 'none' : 'inline';
+  if (btn) btn.textContent = isHidden ? 'Collapse Bio −' : 'Read Full Bio +';
 }
 
 // Booking form submission
