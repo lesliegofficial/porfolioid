@@ -490,7 +490,7 @@ function buildEPK(epk) {
   const bookingRegion = epk.bookingRegion || '';
   const bookingCategories = epk.bookingCategories || [];
   const availabilityLabels = { available:'✅ Available for Bookings', limited:'⚡ Limited Availability', touring:'🎤 Currently on Tour', selective:'🎯 Selective Projects Only', unavailable:'❌ Not Currently Available' };
-  const categoryLabels = { live:'Live Performances', studio:'Studio Sessions', features:'Features / Collabs', touring:'Touring', hosting:'Hosting / MC', ar:'A&R Consulting', creative:'Creative Direction', media:'Media / Press' };
+  const categoryLabels = { live:'Live Performances', studio:'Studio Sessions', features:'Features / Collabs', touring:'Touring', hosting:'Hosting / MC', ar:'A&R Consulting', creative:'Creative Direction', media:'Media / Press', marketing:'Marketing / PR', professional:'Professional', government:'Government', entrepreneur:'Entrepreneur', technical:'Technical', administration:'Administration', crm:'CRM', sales:'Sales', armedforces:'Armed Forces', other:'Other' };
   const availBadge = bookingAvailability ? `<div style="display:inline-block;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);color:var(--gold);padding:0.4rem 1rem;margin-bottom:1.5rem">${availabilityLabels[bookingAvailability]||''}</div>` : '';
   const regionBadge = bookingRegion ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;margin-bottom:1rem">📍 ${bookingRegion}</div>` : '';
   const catBadges = bookingCategories.length ? `<div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:2rem">${bookingCategories.map(c => `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(201,168,76,0.2);color:var(--gray);padding:0.25rem 0.6rem">${categoryLabels[c]||c}</span>`).join('')}</div>` : '';
@@ -742,8 +742,27 @@ function buildEPK(epk) {
               <option value="A&R Consulting">A&R Consulting</option>
               <option value="Creative Direction">Creative Direction</option>
               <option value="Media / Press">Media / Press</option>
+              <option value="Marketing / PR">Marketing / PR</option>
+              <option value="Professional">Professional</option>
+              <option value="Government">Government</option>
+              <option value="Entrepreneur">Entrepreneur</option>
+              <option value="Technical">Technical</option>
+              <option value="Administration">Administration</option>
+              <option value="CRM">CRM</option>
+              <option value="Sales">Sales</option>
+              <option value="Armed Forces">Armed Forces</option>
               <option value="Other">Other</option>
             </select>
+            <input type="text" name="booking-type-other" id="bookingTypeOther" placeholder="Describe your inquiry type"
+              style="display:none;width:100%;margin-top:0.5rem;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box">
+            <script>
+              document.addEventListener('change', function(e) {
+                if (e.target && e.target.name === 'booking-type') {
+                  const other = document.getElementById('bookingTypeOther');
+                  if (other) other.style.display = e.target.value === 'Other' ? 'block' : 'none';
+                }
+              });
+            </script>
           </div>
           <div style="margin-bottom:1.5rem">
             <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Message</label>
