@@ -282,7 +282,7 @@ function loadAllFields() {
   renderTaglines();
 
   // Bio
-  document.getElementById('bioText').value = epk.bio || '';
+  document.getElementById('bioText').value = epk.bioFull || epk.bio || '';
   document.getElementById('shortBioText').value = epk.shortBio || '';
   document.getElementById('bioLocation').value = epk.location || '';
   // availability loaded below
@@ -372,7 +372,7 @@ function saveAll() {
     { number: document.getElementById('stat2num').value, label: document.getElementById('stat2label').value },
     { number: document.getElementById('stat3num').value, label: document.getElementById('stat3label').value },
   ];
-  epk.bio = document.getElementById('bioText').value.trim();
+  epk.bioFull = document.getElementById('bioText').value.trim();
   epk.shortBio = document.getElementById('shortBioText').value.trim();
   epk.location = document.getElementById('bioLocation').value.trim();
   epk.availability = document.getElementById('availabilitySelect').value;
