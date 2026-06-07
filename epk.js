@@ -466,19 +466,23 @@ function buildEPK(epk) {
 
   const categoryIcons = { 'Resume':'📋', 'Press Kit':'📦', 'Tech Rider':'🎛', 'Stage Plot':'🎭', 'Bio':'📝', 'Photo Pack':'📸', 'Contract Template':'📜', 'Certificate':'🏅', 'Other':'📄' };
 
+  const assetsLocked = epk.assetsLocked !== false && epk.assetsLocked !== undefined ? (epk.assetsLocked === true ? true : false) : false;
   const assetsHTML = (epk.assets || [])
     .filter(a => a.visible !== false && a.category !== 'Resume')
     .map((a, i) => {
       const icon = categoryIcons[a.category] || '📄';
       const categoryTag = a.category ? `<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.75rem">${a.category}</div>` : '';
       const downloadAttr = a.url ? `onclick="trackAssetDownload(${epk.assets.indexOf(a)})"` : '';
+      const actionBtn = assetsLocked
+        ? `<button class="asset-btn" onclick="openAssetRequest()" style="cursor:pointer;border:1px solid rgba(201,168,76,0.3);background:none;color:var(--gold)">🔒 Request Access</button>`
+        : (a.url ? `<a href="${a.url}" class="asset-btn" target="_blank" ${downloadAttr}>${a.btnLabel || 'Download →'}</a>` : `<span class="asset-btn" style="opacity:0.4">${a.btnLabel || 'Coming Soon'}</span>`);
       return `
     <div class="asset-card">
       <div class="asset-icon">${icon}</div>
       ${categoryTag}
       <div class="asset-title">${a.title}</div>
       <p class="asset-desc">${a.desc || ''}</p>
-      ${a.url ? `<a href="${a.url}" class="asset-btn" target="_blank" ${downloadAttr}>${a.btnLabel || 'Download →'}</a>` : `<span class="asset-btn" style="opacity:0.4">${a.btnLabel || 'Coming Soon'}</span>`}
+      ${actionBtn}
     </div>`;
     }).join('');
 
@@ -666,7 +670,7 @@ function buildEPK(epk) {
           <div class="collapsible-icon">⬡</div>
           <div>
             <div class="collapsible-header-label">Professional Assets</div>
-            <div class="collapsible-header-title">Resources & Downloads</div>
+            <div class="collapsible-header-title">Resources & Downloads ${epk.assetsLocked ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;color:var(--gray);margin-left:0.5rem">🔒 Access Required</span>' : '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;color:var(--gray);margin-left:0.5rem">🔓 Open Access</span>'}</div>
             <div class="collapsible-header-meta">${epk.assets.filter(a=>a.visible!==false && a.category!=='Resume').length} available</div>
           </div>
         </div>
@@ -1247,13 +1251,51 @@ function openAwardModal(idx) {
         ${(a.photos||[]).map(p=>`<img src="${p}" onclick="openLightbox('${p}')" style="width:calc(50% - 0.25rem);aspect-ratio:4/3;object-fit:cover;cursor:pointer;border:1px solid rgba(201,168,76,0.15);transition:opacity 0.2s" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" onerror="this.style.display='none'">`).join('')}
       </div>` : ''}
     <div style="display:flex;flex-direction:column;gap:0.5rem">
-      ${a.certUrl ? `<a href="${pdfViewerUrl(a.certUrl)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;background:rgba(201,168,76,0.05);transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='rgba(201,168,76,0.05)'">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--gold)">→</span></a>` : ''}
+      ${a.certUrl ? `<div style="margin-top:1rem"><div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.5rem">📄 Certificate</div><iframe src="${pdfViewerUrl(a.certUrl)}" style="width:100%;height:480px;border:1px solid rgba(201,168,76,0.2);background:#1C1C1C" title="Certificate"></iframe></div>` : ''}
       ${a.proofLink ? `<a href="${pdfViewerUrl(a.proofLink)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.15);padding:0.75rem 1rem;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.05)'" onmouseout="this.style.background=''">✦ <span>View Verification</span> <span style="margin-left:auto">→</span></a>` : ''}
     </div>`;
 
   const overlay = document.getElementById('awardModalOverlay');
   overlay.style.display = 'flex';
   document.body.style.overflow = 'hidden';
+}
+
+function openAssetRequest() {
+  const existing = document.getElementById('assetRequestModal');
+  if (existing) { existing.style.display = 'flex'; return; }
+  const modal = document.createElement('div');
+  modal.id = 'assetRequestModal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10000;display:flex;align-items:center;justify-content:center;padding:1rem';
+  modal.innerHTML = `
+    <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.2);padding:2rem;max-width:420px;width:100%;position:relative">
+      <button onclick="document.getElementById('assetRequestModal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--gray);font-size:1.2rem;cursor:pointer">✕</button>
+      <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">🔒 Access Required</div>
+      <h3 style="font-family:var(--font-display);font-size:1.3rem;color:var(--white);margin-bottom:0.5rem">Request Download Access</h3>
+      <p style="font-family:var(--font-body);font-size:0.85rem;color:var(--gray-light);line-height:1.6;margin-bottom:1.5rem">These assets contain personal information and are available to authorized contacts only. Submit your info and Leslie will review your request.</p>
+      <div id="assetRequestForm">
+        <input id="arName" type="text" placeholder="Your Full Name" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;margin-bottom:0.75rem;box-sizing:border-box">
+        <input id="arEmail" type="email" placeholder="Your Email Address" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;margin-bottom:0.75rem;box-sizing:border-box">
+        <input id="arOrg" type="text" placeholder="Company / Organization (optional)" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;margin-bottom:1rem;box-sizing:border-box">
+        <button onclick="submitAssetRequest()" style="width:100%;background:var(--gold);color:var(--black);border:none;padding:0.85rem;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer">Send Request</button>
+      </div>
+      <div id="assetRequestSuccess" style="display:none;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;color:var(--gold);text-align:center;padding:1rem;border:1px solid rgba(201,168,76,0.2)">✓ Request sent. Leslie will be in touch shortly.</div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+function submitAssetRequest() {
+  const name = document.getElementById('arName').value.trim();
+  const email = document.getElementById('arEmail').value.trim();
+  const org = document.getElementById('arOrg').value.trim();
+  if (!name || !email) { alert('Please enter your name and email.'); return; }
+  const slug = getSlugFromURL();
+  fetch('/.netlify/functions/epk', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({action:'assetRequest', slug, name, email, org})
+  }).catch(()=>{});
+  document.getElementById('assetRequestForm').style.display = 'none';
+  document.getElementById('assetRequestSuccess').style.display = 'block';
 }
 
 function closeAwardModal() {
