@@ -531,7 +531,7 @@
         <div class="field-row">
           <div class="field-group">
             <label class="field-label">Category</label>
-            <select id="newCreditCategory">
+            <select id="newCreditCategory" onchange="toggleCreditCategoryOther(this)">
               <option value="">— Select Category —</option>
               <option value="Touring">Touring</option>
               <option value="Recording">Recording</option>
@@ -540,8 +540,18 @@
               <option value="Media / TV">Media / TV</option>
               <option value="Live Event">Live Event</option>
               <option value="A&R">A&R</option>
+              <option value="Marketing / Public Relations">Marketing / Public Relations</option>
+              <option value="Professional">Professional</option>
+              <option value="Government">Government</option>
+              <option value="Entrepreneur">Entrepreneur</option>
+              <option value="Technical">Technical</option>
+              <option value="Administration">Administration</option>
+              <option value="CRM">CRM</option>
+              <option value="Sales">Sales</option>
+              <option value="Armed Forces">Armed Forces</option>
               <option value="Other">Other</option>
             </select>
+            <input type="text" id="newCreditCategoryOther" placeholder="Describe your category" style="display:none;margin-top:0.5rem;width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.6rem;font-family:var(--font-mono);font-size:0.7rem;box-sizing:border-box">
           </div>
           <div class="field-group">
             <label class="field-label">Contract Type</label>
@@ -1279,9 +1289,22 @@
         <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_features" style="accent-color:var(--gold)"> Features / Collabs</label>
         <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_touring" style="accent-color:var(--gold)"> Touring</label>
         <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_hosting" style="accent-color:var(--gold)"> Hosting / MC</label>
-        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_ar" style="accent-color:var(--gold)"> A&R Consulting</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_ar" style="accent-color:var(--gold)"> A&amp;R Consulting</label>
         <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_creative" style="accent-color:var(--gold)"> Creative Direction</label>
         <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_media" style="accent-color:var(--gold)"> Media / Press</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_marketing" style="accent-color:var(--gold)"> Marketing / PR</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_professional" style="accent-color:var(--gold)"> Professional</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_government" style="accent-color:var(--gold)"> Government</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_entrepreneur" style="accent-color:var(--gold)"> Entrepreneur</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_technical" style="accent-color:var(--gold)"> Technical</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_administration" style="accent-color:var(--gold)"> Administration</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_crm" style="accent-color:var(--gold)"> CRM</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_sales" style="accent-color:var(--gold)"> Sales</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_armedforces" style="accent-color:var(--gold)"> Armed Forces</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_other" style="accent-color:var(--gold)"> Other</label>
+      </div>
+      <div id="bcat_other_input" style="display:none;margin-bottom:1rem">
+        <input type="text" id="bcat_other_text" placeholder="Describe your availability type" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.6rem;font-family:var(--font-mono);font-size:0.7rem;box-sizing:border-box">
       </div>
 
       <hr class="section-divider">
