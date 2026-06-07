@@ -54,21 +54,21 @@
       "visible": true
     },
     {
-      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/bczdroudlbv8dcps0zfz.mp3",
-      "role": "Touring Vocalist",
-      "year": null,
-      "album": null,
-      "title": "Siempre Fly",
-      "artist": "J Alvarez ft. Mestiza",
-      "visible": true
-    },
-    {
       "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/aujsq6b2vdyhgi4whbwk.mp3",
       "role": "Touring Vocalist",
       "year": "2007",
       "album": null,
       "title": "Nadie Mejor Que Tú",
       "artist": "Wisin, Yandel, Don Omar",
+      "visible": true
+    },
+    {
+      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/bczdroudlbv8dcps0zfz.mp3",
+      "role": "Touring Vocalist",
+      "year": null,
+      "album": null,
+      "title": "Siempre Fly",
+      "artist": "J Alvarez ft. Mestiza",
       "visible": true
     },
     {
