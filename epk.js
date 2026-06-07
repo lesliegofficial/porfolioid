@@ -224,6 +224,7 @@ function buildEPK(epk) {
       <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:auto;padding-top:1.25rem">
         ${r.url ? `<a href="${r.url}" target="_blank" class="resume-card-btn" style="color:${rc};border-color:${rc}4D">↓ Download Resume →</a>` : '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;opacity:0.5">PDF coming soon</span>'}
       </div>
+      <div style="margin-top:0.85rem;padding-top:0.75rem;border-top:1px solid rgba(201,168,76,0.15);font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.08em;line-height:1.5;opacity:0.7">Full job descriptions and career documentation available in the Credits section below</div>
     </div>`;
   };
 
