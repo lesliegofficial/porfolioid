@@ -1013,8 +1013,9 @@
         <div class="field-group">
           <label class="field-label">File</label>
           <input type="url" id="newAssetUrl" placeholder="https://... or upload below">
-          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
             <button class="btn-add" onclick="triggerAssetUpload()">↑ Upload File</button>
+            <button class="btn-add" onclick="browseCloudinaryAsset()" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
           </div>
           <input type="file" id="assetFileInput" accept=".pdf,.doc,.docx,.zip,.jpg,.png,.mp3,.wav" style="display:none">
