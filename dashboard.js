@@ -515,7 +515,7 @@ function showPanel(name) {
   if (name === 'qr') setTimeout(initQRPanel, 100);
   if (name === 'sections') setTimeout(initSectionsPanel, 100);
   if (name === 'careertype') setTimeout(initCareerTypePanel, 100);
-  if (name === 'bio') setTimeout(loadSpanish, 100);
+  if (name === 'bio') setTimeout(loadSpanish, 300);
   if (name === 'analytics') setTimeout(() => loadAnalytics(currentAnalyticsDays || 30), 100);
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -2823,7 +2823,7 @@ init();
 
 // ── SPANISH TRANSLATION ──
 function loadSpanish() {
-  const epk = window._epkData || {};
+  const epk = window._epkData || window.epk || {};
   const shortBio = document.getElementById('esShortBio');
   const bio = document.getElementById('esBio');
   const taglines = document.getElementById('esTaglines');
