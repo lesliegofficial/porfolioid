@@ -1110,7 +1110,9 @@ function toggleAllCredits() {
 function moveCreditCard(visibleIdx, dir) {
   const credits = window._epkData && window._epkData.credits;
   if (!credits) return;
-  const newIdx = visibleIdx + dir;
+  const cols = 3;
+  const step = dir * cols;
+  const newIdx = visibleIdx + step;
   if (newIdx < 0 || newIdx >= credits.length) return;
   const temp = credits[visibleIdx];
   credits[visibleIdx] = credits[newIdx];
