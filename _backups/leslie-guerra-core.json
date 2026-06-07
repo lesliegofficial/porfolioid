@@ -872,7 +872,7 @@
     "availabilityBadges": []
   },
   "resumeEnabled": true,
-  "bookingEnabled": true,
+  "bookingEnabled": false,
   "bookingTagline": "Now booking live performances, studio sessions, and creative collaborations.",
   "bioImageCropTop": 36,
   "bioImagePosition": 33,
