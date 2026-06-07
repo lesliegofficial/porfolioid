@@ -511,9 +511,18 @@
       "desc": "Founder and product architect of two original SaaS platforms built from concept to deployment.",
       "role": "Founder & Product Architect",
       "media": [],
+      "press": [],
       "years": "2025–Present",
+      "artist": "PortfolioID / IDPressDrop",
       "descEs": "",
-      "photos": [],
+      "photos": [
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780875254/wxupgzrpfz6aso1tsvnt.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780875255/yyn8z1q22h0zhouqlffs.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780875256/z2wmhyyzcho8f60x96gj.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780875258/d6lpcxnldzgtyzyb9qeu.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780875259/glss61up55za5ypdl1pa.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780875260/vyxv5tsmui7sd3cpicfg.png"
+      ],
       "pinned": false,
       "company": "PortfolioID / IDPressDrop",
       "visible": true,
@@ -521,8 +530,15 @@
       "featured": true,
       "fullDesc": "Conceived, designed, and built two original SaaS platforms from the ground up — PortfolioID, a professional identity and portfolio platform for artists, creators, and multi-career professionals, and IDPressDrop, a press tracking and media relations management platform for publicists and label teams.\n\nDirected all product architecture, feature development, UX decision-making, content strategy, and deployment infrastructure across a full modern stack including JavaScript, Netlify serverless functions, Cloudinary media management, GitHub version control, and Supabase database architecture.\n\nDefined every feature, user flow, and design system — including bilingual (EN/ES) content support, Cloudinary media organization, QR Smart Share, video and music showcase, credit card documentation system, and professional assets management.\n\nBoth platforms were built while simultaneously navigating career development, higher education, royalty recovery, and ongoing business operations — demonstrating the same operational discipline, systems thinking, and execution capacity that defines the full arc of this career.",
       "verified": true,
+      "videoUrl": "",
+      "mediaLink": "",
+      "proofLink": "",
       "fullDescEs": "Concibió, diseñó y desarrolló dos plataformas SaaS originales desde cero — PortfolioID, una plataforma de identidad profesional y portafolio para artistas, creadores y profesionales multidisciplinarios, e IDPressDrop, una plataforma de seguimiento de prensa y gestión de relaciones con medios para publicistas y equipos de sellos discográficos.\n\nDirigió toda la arquitectura de producto, desarrollo de funcionalidades, decisiones de experiencia de usuario, estrategia de contenido e infraestructura de despliegue utilizando un stack moderno que incluye JavaScript, funciones serverless de Netlify, gestión de medios con Cloudinary, control de versiones con GitHub y arquitectura de base de datos con Supabase.\n\nDefinió cada funcionalidad, flujo de usuario y sistema de diseño — incluyendo soporte de contenido bilingüe (EN/ES), organización de medios en Cloudinary, QR Smart Share, presentación de video y música, sistema de documentación de créditos y gestión de activos profesionales.\n\nAmbas plataformas fueron desarrolladas simultáneamente con el desarrollo de carrera, educación superior, recuperación de regalías y operaciones comerciales en curso.",
-      "projectType": "Platform Development · Product Strategy · UX Direction"
+      "mediaItems": [],
+      "mediaLabel": "",
+      "projectType": "Platform Development · Product Strategy · UX Direction",
+      "contractType": "",
+      "collaborators": []
     },
     {
       "id": "credit_06_nv_marketing",
