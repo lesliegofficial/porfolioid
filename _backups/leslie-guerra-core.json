@@ -52,13 +52,21 @@
       "releaseDate": ""
     },
     {
+      "tag": "LIVE CREDIT",
+      "desc": "",
+      "isrc": "",
       "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/aujsq6b2vdyhgi4whbwk.mp3",
       "role": "Touring Vocalist",
+      "type": "Live Performance",
       "year": "2007",
-      "album": null,
+      "album": "",
       "title": "Nadie Mejor Que Tú",
       "artist": "Wisin, Yandel, Don Omar",
-      "visible": true
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
     },
     {
       "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/uoqnc3bdokfb1ajw1cc4.mp3",
