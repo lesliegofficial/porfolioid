@@ -3410,3 +3410,11 @@ function _openCloudinaryPicker(id,folder,title,onSelect) {
       }).join('');
     }).catch(function(){document.getElementById(id+'-status').textContent='Error loading files.';});
 }
+
+function browseCloudinaryPhoto() {
+  _openCloudinaryPicker('cloudinaryBrowserPhoto','gallery','☁ Browse Cloudinary — Gallery',function(url){
+    document.getElementById('newPhotoUrl').value=url;
+    if(window.updatePhotoPreview) updatePhotoPreview(url);
+    document.getElementById('cloudinaryBrowserPhoto').remove();
+  });
+}

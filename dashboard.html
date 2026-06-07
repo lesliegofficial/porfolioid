@@ -917,8 +917,9 @@
         <div class="field-group">
           <label class="field-label">Image</label>
           <input type="url" id="newPhotoUrl" placeholder="https://... or upload below" oninput="updatePhotoPreview(this.value)">
-          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
             <button class="btn-add" onclick="triggerPhotoUpload('newPhotoFile')">↑ Upload Photo</button>
+            <button class="btn-add" onclick="browseCloudinaryPhoto()" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
           </div>
           <input type="file" id="newPhotoFile" accept="image/*" style="display:none">
