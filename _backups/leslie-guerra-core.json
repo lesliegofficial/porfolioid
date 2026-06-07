@@ -16,138 +16,6 @@
       "number": "5"
     }
   ],
-  "photos": [
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780095510/leslie_concert_blue.jpg",
-      "caption": "With J Balvin",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780095510/leslie_jalvarez_selfie.jpg",
-      "caption": "With Rauw Alejandro",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1779064319/fcuh5fopximnxoz3ue0g.jpg",
-      "caption": "With Luis Fonsi",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778697158/w7ggvn49z18lhavzht1u.jpg",
-      "caption": "With Chris Mercedes and Gio Williams",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778629271/g9jwktzynq9yxlu4jsc1.jpg",
-      "caption": "With Don Omar",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778629124/ekfdjyawqz9m3ixwz37d.png",
-      "caption": "With Adam Torres",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778613766/ewm8lcxopo7ybkkts7mk.jpg",
-      "caption": "With Don Omar — Viña del Mar",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778612180/lik9rzoezrabdhf4tflw.jpg",
-      "caption": "With Kiara and Natti Natasha",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778612139/zht7vuseuz6gwc5fvhon.jpg",
-      "caption": "J Álvarez Show",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778612102/g7d22rfmdgczl07yueyc.jpg",
-      "caption": "With J Álvarez",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778611958/belq6epfwatfxki2ujyt.jpg",
-      "caption": "With Don Omar — King of Kings Concert",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778611946/dposa8bmaw9gbpzpm8u9.jpg",
-      "caption": "With Backup Singer Angel Eric Rios",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778611933/zx4rezwxxemi2iy66qcf.jpg",
-      "caption": "Backstage with Angel Eric — Hecho en Puerto Rico Concert",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778611908/kaxabjdrhafbceygxyfo.jpg",
-      "caption": "Backstage with Angel Eric — Hecho en Puerto Rico Concert",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778611895/tq1lseuchmmnhc5xjhke.webp",
-      "caption": "Backstage — Viña del Mar Festival with Don Omar's Gaviotas",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778611880/wi8wryhun0x69mpy1omj.jpg",
-      "caption": "With Robert Santiago — Backstage Viña del Mar Festival",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778611864/cxpwqlu9rkwp6vusj393.jpg",
-      "caption": "With AJ Ramos",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778443357/vps4myvnifs8gfzhybtt.jpg",
-      "caption": "With Angel Eric Rios",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778443300/oiglaxgsmna97yrqw5z1.jpg",
-      "caption": "Gallery Photo 19",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778443071/bmbvaqsmuzt4rqsw05ia.jpg",
-      "caption": "Gallery Photo 20",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778443008/rfgqlp1j0qs0gjdyki53.jpg",
-      "caption": "On Stage with Don Omar and Natti Natasha — Dutty Love",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778442969/gpdkrnybqxokkubhutqq.jpg",
-      "caption": "On Stage with Don Omar and Natti Natasha — Dutty Love",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778442824/qwvvzb0rvdijia9vteyw.webp",
-      "caption": "On Stage — Puerto Rico Sinfónico Concert",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778442809/tzkfljsf6qmmgrerq8an.jpg",
-      "caption": "On Stage — Puerto Rico Sinfónico Concert",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778374822/aylyji2mn4cdmwzmkcgb.png",
-      "caption": "With Adam Torres",
-      "position": "center"
-    },
-    {
-      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778190019/kz1ti0u2tqqvqmxhhvzr.jpg",
-      "caption": "Leslie Ann Guerra",
-      "position": "center"
-    }
-  ],
   "tracks": [
     {
       "tag": "LIVE CREDIT",
@@ -416,23 +284,6 @@
   "bioFull": "Her performance credits include touring as a supporting vocalist for reggaeton icons Don Omar (2006–2015) and J Álvarez (2015–2020), appearing before audiences throughout the United States, Latin America, and Europe. She is featured on the live release King of Kings: En Directo, recorded during Don Omar’s King of Kings World Tour and released by Machete Music.\n\nGuerra began her recording career as a member of Las Nenas del Swing, contributing to recordings including Rompe Corazones, Chicle Bomba, Desearía, and Me Faltas Tú. Throughout her touring career, she also performed on productions featuring artists such as Wisin & Yandel, Arcángel, Daddy Yankee, Natti Natasha, and Melina León.\n\nBeyond the stage, Guerra has held leadership and operational roles throughout the entertainment industry. She served as A&R Coordinator at Sony Music Latin, supporting executive A&R operations and artist development initiatives. She also coordinated artist and management operations for Orfanato Music Group and Arrow Management, managed artist logistics for Adam Torres Concerts, and led marketing and public relations initiatives through NV Marketing & Public Relations.\n\nToday, Guerra combines her experience in performance, artist development, operations, marketing, and business strategy through creative and entrepreneurial ventures, including PortfolioID, a professional platform designed to help artists, creators, and professionals showcase their work, accomplishments, and career journeys.",
   "credits": [
     {
-      "desc": "Founder and product architect of two original SaaS platforms built from concept to deployment.",
-      "role": "Founder & Product Architect",
-      "media": [],
-      "years": "2025–Present",
-      "descEs": "",
-      "photos": [],
-      "pinned": false,
-      "company": "PortfolioID / IDPressDrop",
-      "visible": true,
-      "category": "Professional",
-      "featured": true,
-      "fullDesc": "Conceived, designed, and built two original SaaS platforms from the ground up — PortfolioID, a professional identity and portfolio platform for artists, creators, and multi-career professionals, and IDPressDrop, a press tracking and media relations management platform for publicists and label teams.\n\nDirected all product architecture, feature development, UX decision-making, content strategy, and deployment infrastructure across a full modern stack including JavaScript, Netlify serverless functions, Cloudinary media management, GitHub version control, and Supabase database architecture.\n\nDefined every feature, user flow, and design system — including bilingual (EN/ES) content support, Cloudinary media organization, QR Smart Share, video and music showcase, credit card documentation system, and professional assets management.\n\nBoth platforms were built while simultaneously navigating career development, higher education, royalty recovery, and ongoing business operations — demonstrating the same operational discipline, systems thinking, and execution capacity that defines the full arc of this career.",
-      "verified": true,
-      "fullDescEs": "Concibió, diseñó y desarrolló dos plataformas SaaS originales desde cero — PortfolioID, una plataforma de identidad profesional y portafolio para artistas, creadores y profesionales multidisciplinarios, e IDPressDrop, una plataforma de seguimiento de prensa y gestión de relaciones con medios para publicistas y equipos de sellos discográficos.\n\nDirigió toda la arquitectura de producto, desarrollo de funcionalidades, decisiones de experiencia de usuario, estrategia de contenido e infraestructura de despliegue utilizando un stack moderno que incluye JavaScript, funciones serverless de Netlify, gestión de medios con Cloudinary, control de versiones con GitHub y arquitectura de base de datos con Supabase.\n\nDefinió cada funcionalidad, flujo de usuario y sistema de diseño — incluyendo soporte de contenido bilingüe (EN/ES), organización de medios en Cloudinary, QR Smart Share, presentación de video y música, sistema de documentación de créditos y gestión de activos profesionales.\n\nAmbas plataformas fueron desarrolladas simultáneamente con el desarrollo de carrera, educación superior, recuperación de regalías y operaciones comerciales en curso.",
-      "projectType": "Platform Development · Product Strategy · UX Direction"
-    },
-    {
       "id": "credit_02_j_alvarez",
       "desc": "Performed as a supporting vocalist for live performance engagements, contributing vocal harmonies, stage execution, and collaborative performance support within professional touring and large-scale Latin urban music productions.",
       "role": "Exclusive Touring Vocalist",
@@ -471,6 +322,23 @@
       "projectType": "",
       "contractType": "",
       "collaborators": []
+    },
+    {
+      "desc": "Founder and product architect of two original SaaS platforms built from concept to deployment.",
+      "role": "Founder & Product Architect",
+      "media": [],
+      "years": "2025–Present",
+      "descEs": "",
+      "photos": [],
+      "pinned": false,
+      "company": "PortfolioID / IDPressDrop",
+      "visible": true,
+      "category": "Professional",
+      "featured": true,
+      "fullDesc": "Conceived, designed, and built two original SaaS platforms from the ground up — PortfolioID, a professional identity and portfolio platform for artists, creators, and multi-career professionals, and IDPressDrop, a press tracking and media relations management platform for publicists and label teams.\n\nDirected all product architecture, feature development, UX decision-making, content strategy, and deployment infrastructure across a full modern stack including JavaScript, Netlify serverless functions, Cloudinary media management, GitHub version control, and Supabase database architecture.\n\nDefined every feature, user flow, and design system — including bilingual (EN/ES) content support, Cloudinary media organization, QR Smart Share, video and music showcase, credit card documentation system, and professional assets management.\n\nBoth platforms were built while simultaneously navigating career development, higher education, royalty recovery, and ongoing business operations — demonstrating the same operational discipline, systems thinking, and execution capacity that defines the full arc of this career.",
+      "verified": true,
+      "fullDescEs": "Concibió, diseñó y desarrolló dos plataformas SaaS originales desde cero — PortfolioID, una plataforma de identidad profesional y portafolio para artistas, creadores y profesionales multidisciplinarios, e IDPressDrop, una plataforma de seguimiento de prensa y gestión de relaciones con medios para publicistas y equipos de sellos discográficos.\n\nDirigió toda la arquitectura de producto, desarrollo de funcionalidades, decisiones de experiencia de usuario, estrategia de contenido e infraestructura de despliegue utilizando un stack moderno que incluye JavaScript, funciones serverless de Netlify, gestión de medios con Cloudinary, control de versiones con GitHub y arquitectura de base de datos con Supabase.\n\nDefinió cada funcionalidad, flujo de usuario y sistema de diseño — incluyendo soporte de contenido bilingüe (EN/ES), organización de medios en Cloudinary, QR Smart Share, presentación de video y música, sistema de documentación de créditos y gestión de activos profesionales.\n\nAmbas plataformas fueron desarrolladas simultáneamente con el desarrollo de carrera, educación superior, recuperación de regalías y operaciones comerciales en curso.",
+      "projectType": "Platform Development · Product Strategy · UX Direction"
     },
     {
       "id": "credit_03_las_nenas",
