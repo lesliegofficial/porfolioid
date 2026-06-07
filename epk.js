@@ -814,7 +814,28 @@ function buildMarqueeGallery(photos, container) {
     const pos = photo.position || 'center 0%';
     const item = document.createElement('div');
     item.className = 'gallery-marquee-item';
-    item.innerHTML = `<img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onerror="this.style.display='none'" style="object-position:${pos}"><div class="gallery-marquee-caption">${photo.caption || ''}</div>`;
+    const img = document.createElement('img');
+    img.src = photo.url;
+    img.alt = photo.caption || '';
+    img.loading = 'lazy';
+    img.style.objectPosition = pos;
+    img.onerror = function() { this.style.display = 'none'; };
+    img.onload = function() {
+      const ratio = this.naturalWidth / this.naturalHeight;
+      if (ratio > 1.1) {
+        // Landscape — expand width to show full image, keep height fixed
+        const newWidth = Math.min(Math.round(380 * ratio), 700);
+        item.style.width = newWidth + 'px';
+        img.style.objectFit = 'contain';
+        img.style.background = '#0E0E0E';
+      }
+    };
+    const caption = document.createElement('div');
+    caption.className = 'gallery-marquee-caption';
+    caption.textContent = photo.caption || '';
+    item.appendChild(img);
+    item.appendChild(caption);
+    item.innerHTML += '';
     const photoIdx = photos.indexOf(photo) % (photos.length / 2);
     item.innerHTML += `<div class="owner-overlay"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('photos',${photoIdx},-1)">▲</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('photos',${photoIdx},1)">▼</button></div>`;
     item.onclick = () => openLightbox(photo.url);
