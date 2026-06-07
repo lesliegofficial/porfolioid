@@ -201,7 +201,7 @@ async function init() {
 
   // Load EPK data from API
   try {
-    const res = await fetch('/api/epk', {
+    const res = await fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'load', slug: session.slug })
@@ -417,7 +417,7 @@ async function persistUser() {
     });
 
     // Save core profile (always)
-    const coreRes = await fetch('/api/epk', {
+    const coreRes = await fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'save', slug, data: coreData })
@@ -433,7 +433,7 @@ async function persistUser() {
       // fetch current server data and use that instead of wiping it
       if ((!items || items.length === 0) && SAFE_SECTIONS.includes(section)) {
         try {
-          const checkRes = await fetch('/api/epk', {
+          const checkRes = await fetch('/.netlify/functions/epk', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: 'load', slug })
@@ -459,7 +459,7 @@ async function persistUser() {
       // These fields are not always in browser memory but must never be lost
       if (section === 'credits') {
         try {
-          const serverRes = await fetch('/api/epk', {
+          const serverRes = await fetch('/.netlify/functions/epk', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: 'load', slug })
@@ -493,7 +493,7 @@ async function persistUser() {
         }
       }
 
-      return fetch('/api/epk', {
+      return fetch('/.netlify/functions/epk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'saveSection', slug, section, items: finalItems })
@@ -2952,7 +2952,7 @@ async function initProfiles() {
   if (!userSlug) return;
 
   try {
-    const res = await fetch('/api/epk', {
+    const res = await fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'listProfiles', userSlug })
@@ -3024,7 +3024,7 @@ async function switchProfile(profileSlug) {
 
   // Load the new profile's EPK
   try {
-    const res = await fetch('/api/epk', {
+    const res = await fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'load', slug: profileSlug })
@@ -3089,7 +3089,7 @@ async function persistUser() {
   });
 
   try {
-    await fetch('/api/epk', {
+    await fetch('/.netlify/functions/epk', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'save', slug, data: coreData })
     });
@@ -3098,7 +3098,7 @@ async function persistUser() {
       Object.entries(sectionData)
         .filter(([_, items]) => items && items.length > 0)
         .map(([section, items]) =>
-          fetch('/api/epk', {
+          fetch('/.netlify/functions/epk', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: 'saveSection', slug, section, items })
           }).catch(e => console.error(`Section save failed (${section}):`, e))
@@ -3165,7 +3165,7 @@ async function createNewProfile() {
   if (btn) { btn.textContent = 'Creating...'; btn.disabled = true; }
 
   try {
-    const res = await fetch('/api/epk', {
+    const res = await fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -3202,7 +3202,7 @@ async function confirmDeleteProfile(profileSlug, profileName) {
   const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
 
   try {
-    const res = await fetch('/api/epk', {
+    const res = await fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'deleteProfile', userSlug: session.slug, profileSlug })
@@ -3259,7 +3259,7 @@ async function loadAnalytics(days) {
   document.getElementById('anTotalDownloads').textContent = '…';
 
   try {
-    const res = await fetch('/api/epk', {
+    const res = await fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'getAnalytics', userSlug, days })
