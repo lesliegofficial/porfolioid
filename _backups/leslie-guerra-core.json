@@ -86,13 +86,21 @@
       "releaseDate": ""
     },
     {
+      "tag": "RECORDING CREDIT",
+      "desc": "",
+      "isrc": "",
       "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/achkcubwu4dcmb0c0equ.mp3",
-      "role": "Touring Vocalist",
+      "role": "Backing Vocalist",
+      "type": "Session Recording",
       "year": "2018",
-      "album": null,
+      "album": "",
       "title": "Le Llegare",
       "artist": "J Alvarez",
-      "visible": true
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
     },
     {
       "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/bczdroudlbv8dcps0zfz.mp3",
