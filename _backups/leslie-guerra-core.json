@@ -16,7 +16,6 @@
       "number": "5"
     }
   ],
-  "awards": [],
   "tracks": [
     {
       "tag": "LIVE CREDIT",
@@ -285,6 +284,117 @@
   "bioFull": "Her performance credits include touring as a supporting vocalist for reggaeton icons Don Omar (2006–2015) and J Álvarez (2015–2020), appearing before audiences throughout the United States, Latin America, and Europe. She is featured on the live release King of Kings: En Directo, recorded during Don Omar’s King of Kings World Tour and released by Machete Music.\n\nGuerra began her recording career as a member of Las Nenas del Swing, contributing to recordings including Rompe Corazones, Chicle Bomba, Desearía, and Me Faltas Tú. Throughout her touring career, she also performed on productions featuring artists such as Wisin & Yandel, Arcángel, Daddy Yankee, Natti Natasha, and Melina León.\n\nBeyond the stage, Guerra has held leadership and operational roles throughout the entertainment industry. She served as A&R Coordinator at Sony Music Latin, supporting executive A&R operations and artist development initiatives. She also coordinated artist and management operations for Orfanato Music Group and Arrow Management, managed artist logistics for Adam Torres Concerts, and led marketing and public relations initiatives through NV Marketing & Public Relations.\n\nToday, Guerra combines her experience in performance, artist development, operations, marketing, and business strategy through creative and entrepreneurial ventures, including PortfolioID, a professional platform designed to help artists, creators, and professionals showcase their work, accomplishments, and career journeys.",
   "credits": [
     {
+      "desc": "Founder and product architect of two original SaaS platforms built from concept to deployment.",
+      "role": "Founder & Product Architect",
+      "media": [],
+      "years": "2025–Present",
+      "descEs": "",
+      "photos": [],
+      "pinned": false,
+      "company": "PortfolioID / IDPressDrop",
+      "visible": true,
+      "category": "Professional",
+      "featured": true,
+      "fullDesc": "Conceived, designed, and built two original SaaS platforms from the ground up — PortfolioID, a professional identity and portfolio platform for artists, creators, and multi-career professionals, and IDPressDrop, a press tracking and media relations management platform for publicists and label teams.\n\nDirected all product architecture, feature development, UX decision-making, content strategy, and deployment infrastructure across a full modern stack including JavaScript, Netlify serverless functions, Cloudinary media management, GitHub version control, and Supabase database architecture.\n\nDefined every feature, user flow, and design system — including bilingual (EN/ES) content support, Cloudinary media organization, QR Smart Share, video and music showcase, credit card documentation system, and professional assets management.\n\nBoth platforms were built while simultaneously navigating career development, higher education, royalty recovery, and ongoing business operations — demonstrating the same operational discipline, systems thinking, and execution capacity that defines the full arc of this career.",
+      "verified": true,
+      "fullDescEs": "Concibió, diseñó y desarrolló dos plataformas SaaS originales desde cero — PortfolioID, una plataforma de identidad profesional y portafolio para artistas, creadores y profesionales multidisciplinarios, e IDPressDrop, una plataforma de seguimiento de prensa y gestión de relaciones con medios para publicistas y equipos de sellos discográficos.\n\nDirigió toda la arquitectura de producto, desarrollo de funcionalidades, decisiones de experiencia de usuario, estrategia de contenido e infraestructura de despliegue utilizando un stack moderno que incluye JavaScript, funciones serverless de Netlify, gestión de medios con Cloudinary, control de versiones con GitHub y arquitectura de base de datos con Supabase.\n\nDefinió cada funcionalidad, flujo de usuario y sistema de diseño — incluyendo soporte de contenido bilingüe (EN/ES), organización de medios en Cloudinary, QR Smart Share, presentación de video y música, sistema de documentación de créditos y gestión de activos profesionales.\n\nAmbas plataformas fueron desarrolladas simultáneamente con el desarrollo de carrera, educación superior, recuperación de regalías y operaciones comerciales en curso.",
+      "projectType": "Platform Development · Product Strategy · UX Direction"
+    },
+    {
+      "id": "credit_02_j_alvarez",
+      "desc": "Performed as a supporting vocalist for live performance engagements, contributing vocal harmonies, stage execution, and collaborative performance support within professional touring and large-scale Latin urban music productions.",
+      "role": "Exclusive Touring Vocalist",
+      "color": "gold",
+      "press": [],
+      "years": "2015–2020",
+      "artist": "J Álvarez",
+      "descEs": "Participé como vocalista de apoyo en presentaciones en vivo, aportando armonías, ejecución escénica y soporte colaborativo dentro de producciones profesionales de música urbana latina.",
+      "photos": [
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780694244/ngygwrznpdj6lu3gngyh.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780694300/wuhii9wvfylleds1p6vz.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780697913/yw5taad7slxsywenjpnd.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780698160/atjzbiwtjc6fsg467kxy.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780698329/ytvjrw1k95aohozcgin2.png"
+      ],
+      "pinned": true,
+      "company": "J Álvarez",
+      "visible": true,
+      "category": "",
+      "fullDesc": "J Álvarez — Touring Vocalist / Live Performance Collaboration\n\nLeslie was recruited into J Álvarez’s touring production by Robert Santiago, J Álvarez’s production manager, who had previously worked with Don Omar’s touring team.\n\nCollaborated as a touring supporting vocalist in live performance environments, contributing background vocal execution, harmonic support, and stage performance coordination as part of professional Latin urban music productions.\n\nKey Contributions:\n- Live supporting vocal performance\n- Harmony execution and vocal blending\n- Stage synchronization and live performance coordination\n- Musical timing and performance precision\n- Adaptability within dynamic touring environments\n- Collaborative execution with artists, musicians, and production teams\n- Consistent delivery across live performance settings\n- Professional stage presence and performance support\n\n<strong>Special thanks to J Álvarez for the opportunity and for welcoming me into his world. And to Robert Santiago, whose call made it all possible.</strong>",
+      "verified": true,
+      "videoUrl": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780694563/yrwkdcg5n8su1zi8eait.mp4",
+      "mediaLink": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780694563/yrwkdcg5n8su1zi8eait.mp4",
+      "proofLink": "",
+      "fullDescEs": "J Álvarez — Vocalista de Gira / Colaboración en Presentaciones en Vivo\n\nLeslie fue reclutada para la producción de gira de J Álvarez por Robert Santiago, el mánager de producción de J Álvarez, quien anteriormente formó parte del equipo de gira de Don Omar.\n\nColaboré como vocalista de apoyo dentro de entornos profesionales de gira y presentaciones en vivo, aportando ejecución vocal, soporte armónico y coordinación escénica en producciones de música urbana latina.\n\nContribuciones Principales:\n- Apoyo vocal en presentaciones en vivo\n- Ejecución de armonías y acople vocal\n- Coordinación escénica y sincronización musical\n- Precisión interpretativa en entornos de gira\n- Adaptabilidad dentro de producciones dinámicas\n- Colaboración con artistas, músicos y producción\n- Consistencia profesional en múltiples presentaciones\n- Presencia escénica y soporte interpretativo\n\n<strong>Un agradecimiento especial a J Álvarez por la oportunidad y por abrirme las puertas a su mundo. Y a Robert Santiago, cuya llamada lo hizo todo posible.</strong>",
+      "mediaItems": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780694563/yrwkdcg5n8su1zi8eait.mp4",
+          "type": "video",
+          "label": "J Alvarez Medley",
+          "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780697273/mziu3vnvvbrrvolrrcms.png"
+        }
+      ],
+      "mediaLabel": "J Alvarez Medley",
+      "sort_order": 1,
+      "projectType": "",
+      "contractType": "",
+      "collaborators": []
+    },
+    {
+      "id": "credit_03_las_nenas",
+      "desc": "Founding member. Released album Rompe Corazones on September 10, 1998 on R&R Music. 11-track tropical and merengue album. Lead vocals on Chicle Bomba (first single), Desearía, Me Faltas Tú.",
+      "role": "Recording Artist",
+      "color": "gold",
+      "press": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700279/rvacefp3hq5pjbjveacg.pdf",
+          "year": "2000",
+          "summary": "Las Nenas del Swing featured as a performing merengue group at the Miss Puerto Rico of Lancaster Scholarship Gala on April 22, 2000, alongside Sabor Tropical.",
+          "location": "Lancaster, PA",
+          "publication": "Sunday News"
+        },
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700290/nfzfytdtlunzskckcrkt.pdf",
+          "year": "1999",
+          "summary": "Las Nenas del Swing listed among featured artists performing at Puerto Rico's Third AIDS Awareness Walk alongside Marc Anthony, Tony Vega, and Domingo Quiñones.",
+          "location": "Miami, FL",
+          "publication": "El Nuevo Herald"
+        }
+      ],
+      "years": "1998",
+      "artist": "Las Nenas del Swing",
+      "descEs": "Miembro fundadora. Lanzó el álbum Rompe Corazones el 10 de septiembre de 1998 bajo R&R Music. Álbum de 11 pistas de tropical y merengue. Voces principales en Chicle Bomba, Desearía y Me Faltas Tú.",
+      "photos": [
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780698796/mix76xfq2m2fx4kwjnav.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780699035/ua162dyr4kpl6evojklo.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700250/kivjqfsplahof1bwrjvm.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700259/ipyu5ypddudo9gmd8xxk.png"
+      ],
+      "pinned": true,
+      "company": "Las Nenas del Swing",
+      "visible": true,
+      "category": "Other",
+      "fullDesc": "Las Nenas del Swing — Recording Artist / Founding Member\n\nBefore Las Nenas del Swing was formed, Leslie A. Guerra was already establishing herself as a performer throughout Puerto Rico, appearing at venues including Hotel Intercontinental and Hotel San Juan. It was during a Sunday performance at Rancho de los Trovadores in Cayey that Elvis Crespo and Wilfredo Ortiz walked in — and everything changed. That night led to an audition with producer Luis Corporán and her selection as a founding member of Las Nenas del Swing.\n\nOn September 10, 1998, Las Nenas del Swing released Rompe Corazones, an 11-track tropical and merengue album released through R&R Music, distributed in Puerto Rico by Combo Records and in the United States through Rimas Records in New York. Managed by Ramón Rivera, who also managed Grupo Karis, the group developed a growing fan base throughout Puerto Rico, the Caribbean, and major East Coast Latino markets.\n\nAs a founding member and featured vocalist, Leslie contributed to several of the album’s best-known recordings, including Chicle Bomba, Desearía, and Me Faltas Tú. The project featured contributions from respected musicians and vocalists within the tropical music genre, including backing vocal participation by Elvis Crespo, Juan Castro (Tony Tun Tun), and Juan Luis Guzmán. Production credits included Freddy Méndez on piano and Luis Corporán on saxophone.\n\nDuring the promotional cycle for Rompe Corazones, Las Nenas del Swing shared stages with prominent tropical and merengue acts including Los Hermanos Rosario, El Gran Combo de Puerto Rico, Grupo Karis, Grupo Manía, Grupo Mambo, Manny Manuel, Tony Tun Tun, Melina León, and Gisselle. The group also participated in performances associated with the New York Puerto Rican Day Parade and appeared throughout Puerto Rico, Connecticut, Pennsylvania, Massachusetts, and the Dominican Republic.\n\nRompe Corazones represents Leslie Guerra’s earliest documented commercial recording credit and the beginning of a professional music career that would later expand into international touring, artist development, label operations, marketing, A&R, and entertainment management.\n\nToday, the album remains available through major digital streaming platforms, preserving an important chapter in Puerto Rican tropical music and serving as the foundation of Leslie’s decades-long career in the music industry.\n\n<strong>Special thanks to Melissa, Marie, and Kadmara — and to Elvis Crespo, Wilfredo Ortiz, Ramón Rivera, Luis Corporán, Freddie Méndez, and Raúl Armando Del Valle for their guidance, support, and belief during the formative years of this journey.</strong>",
+      "verified": true,
+      "videoUrl": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780800128/wg1vtldzko9dib2h5stk.mp4",
+      "mediaLink": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780800128/wg1vtldzko9dib2h5stk.mp4",
+      "proofLink": "",
+      "fullDescEs": "Las Nenas del Swing — Artista de Grabación / Miembro Fundadora\n\nAntes de que Las Nenas del Swing se formara, Leslie A. Guerra ya se estaba estableciendo como artista en Puerto Rico, presentándose en venues como el Hotel Intercontinental y el Hotel San Juan. Fue durante una actuación dominical en el Rancho de los Trovadores en Cayey que Elvis Crespo y Wilfredo Ortiz entraron al lugar — y todo cambió. Esa noche llevó a una audición con el productor Luis Corporán y a su selección como miembro fundadora de Las Nenas del Swing.\n\nEl 10 de septiembre de 1998, Las Nenas del Swing lanzaron Rompe Corazones, un álbum de 11 pistas de tropical y merengue bajo R&R Music, distribuido en Puerto Rico por Combo Records y en Estados Unidos por Rimas Records en Nueva York. Bajo la gestión de Ramón Rivera, quien también representaba a Grupo Karis, el grupo desarrolló una creciente base de seguidores en Puerto Rico, el Caribe y los principales mercados latinos de la Costa Este.\n\nComo miembro fundadora y vocalista destacada, Leslie contribuyó a algunas de las grabaciones más reconocidas del álbum, incluyendo Chicle Bomba, Desearía y Me Faltas Tú. El proyecto contó con la participación de reconocidos músicos y vocalistas del género tropical, incluyendo coros de Elvis Crespo, Juan Castro (Tony Tun Tun) y Juan Luis Guzmán. Los créditos de producción incluyen a Freddy Méndez en piano y Luis Corporán en saxofón.\n\nDurante el ciclo promocional de Rompe Corazones, Las Nenas del Swing compartieron escenarios con destacadas figuras del tropical y el merengue, incluyendo a Los Hermanos Rosario, El Gran Combo de Puerto Rico, Grupo Karis, Grupo Manía, Grupo Mambo, Manny Manuel, Tony Tun Tun, Melina León y Gisselle. El grupo también participó en presentaciones asociadas al Desfile Puertorriqueño de Nueva York y se presentó en Puerto Rico, Connecticut, Pensilvania, Massachusetts y la República Dominicana.\n\nRompe Corazones representa el primer crédito comercial de grabación documentado de Leslie Guerra y el inicio de una carrera musical profesional que se expandiría hacia giras internacionales, desarrollo artístico, operaciones discográficas, mercadeo, A&R y gestión del entretenimiento.\n\nHoy, el álbum sigue disponible en las principales plataformas digitales de streaming, preservando un capítulo importante de la música tropical puertorriqueña y sirviendo como la base de la carrera de Leslie en la industria musical.\n\n<strong>Un agradecimiento especial a mis compañeras Melissa, Marie y Kadmara — y a Elvis Crespo, Wilfredo Ortiz, Ramón Rivera, Luis Corporán, Freddie Méndez y Raúl Armando Del Valle por su guía, apoyo y confianza durante los años formativos de este camino.</strong>",
+      "mediaItems": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780800128/wg1vtldzko9dib2h5stk.mp4",
+          "type": "video",
+          "label": "Chicle_Bomba_Show De las 12_Compressed",
+          "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780800560/faw6bmwifh1qwhrumyug.png"
+        }
+      ],
+      "mediaLabel": "Chicle_Bomba_Show De las 12_Compressed",
+      "sort_order": 2,
+      "projectType": "",
+      "contractType": "",
+      "collaborators": []
+    },
+    {
       "id": "credit_04_melina_leon",
       "desc": "Live supporting vocalist during performance engagements. This experience led to her invitation to join Don Omar’s first major live touring production.",
       "role": "Live Performance Collaboration",
@@ -355,117 +465,6 @@
       "projectType": "",
       "contractType": "",
       "collaborators": []
-    },
-    {
-      "id": "credit_03_las_nenas",
-      "desc": "Founding member. Released album Rompe Corazones on September 10, 1998 on R&R Music. 11-track tropical and merengue album. Lead vocals on Chicle Bomba (first single), Desearía, Me Faltas Tú.",
-      "role": "Recording Artist",
-      "color": "gold",
-      "press": [
-        {
-          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700279/rvacefp3hq5pjbjveacg.pdf",
-          "year": "2000",
-          "summary": "Las Nenas del Swing featured as a performing merengue group at the Miss Puerto Rico of Lancaster Scholarship Gala on April 22, 2000, alongside Sabor Tropical.",
-          "location": "Lancaster, PA",
-          "publication": "Sunday News"
-        },
-        {
-          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700290/nfzfytdtlunzskckcrkt.pdf",
-          "year": "1999",
-          "summary": "Las Nenas del Swing listed among featured artists performing at Puerto Rico's Third AIDS Awareness Walk alongside Marc Anthony, Tony Vega, and Domingo Quiñones.",
-          "location": "Miami, FL",
-          "publication": "El Nuevo Herald"
-        }
-      ],
-      "years": "1998",
-      "artist": "Las Nenas del Swing",
-      "descEs": "Miembro fundadora. Lanzó el álbum Rompe Corazones el 10 de septiembre de 1998 bajo R&R Music. Álbum de 11 pistas de tropical y merengue. Voces principales en Chicle Bomba, Desearía y Me Faltas Tú.",
-      "photos": [
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780698796/mix76xfq2m2fx4kwjnav.jpg",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780699035/ua162dyr4kpl6evojklo.png",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700250/kivjqfsplahof1bwrjvm.png",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700259/ipyu5ypddudo9gmd8xxk.png"
-      ],
-      "pinned": true,
-      "company": "Las Nenas del Swing",
-      "visible": true,
-      "category": "Other",
-      "fullDesc": "Las Nenas del Swing — Recording Artist / Founding Member\n\nBefore Las Nenas del Swing was formed, Leslie A. Guerra was already establishing herself as a performer throughout Puerto Rico, appearing at venues including Hotel Intercontinental and Hotel San Juan. It was during a Sunday performance at Rancho de los Trovadores in Cayey that Elvis Crespo and Wilfredo Ortiz walked in — and everything changed. That night led to an audition with producer Luis Corporán and her selection as a founding member of Las Nenas del Swing.\n\nOn September 10, 1998, Las Nenas del Swing released Rompe Corazones, an 11-track tropical and merengue album released through R&R Music, distributed in Puerto Rico by Combo Records and in the United States through Rimas Records in New York. Managed by Ramón Rivera, who also managed Grupo Karis, the group developed a growing fan base throughout Puerto Rico, the Caribbean, and major East Coast Latino markets.\n\nAs a founding member and featured vocalist, Leslie contributed to several of the album’s best-known recordings, including Chicle Bomba, Desearía, and Me Faltas Tú. The project featured contributions from respected musicians and vocalists within the tropical music genre, including backing vocal participation by Elvis Crespo, Juan Castro (Tony Tun Tun), and Juan Luis Guzmán. Production credits included Freddy Méndez on piano and Luis Corporán on saxophone.\n\nDuring the promotional cycle for Rompe Corazones, Las Nenas del Swing shared stages with prominent tropical and merengue acts including Los Hermanos Rosario, El Gran Combo de Puerto Rico, Grupo Karis, Grupo Manía, Grupo Mambo, Manny Manuel, Tony Tun Tun, Melina León, and Gisselle. The group also participated in performances associated with the New York Puerto Rican Day Parade and appeared throughout Puerto Rico, Connecticut, Pennsylvania, Massachusetts, and the Dominican Republic.\n\nRompe Corazones represents Leslie Guerra’s earliest documented commercial recording credit and the beginning of a professional music career that would later expand into international touring, artist development, label operations, marketing, A&R, and entertainment management.\n\nToday, the album remains available through major digital streaming platforms, preserving an important chapter in Puerto Rican tropical music and serving as the foundation of Leslie’s decades-long career in the music industry.\n\n<strong>Special thanks to Melissa, Marie, and Kadmara — and to Elvis Crespo, Wilfredo Ortiz, Ramón Rivera, Luis Corporán, Freddie Méndez, and Raúl Armando Del Valle for their guidance, support, and belief during the formative years of this journey.</strong>",
-      "verified": true,
-      "videoUrl": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780800128/wg1vtldzko9dib2h5stk.mp4",
-      "mediaLink": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780800128/wg1vtldzko9dib2h5stk.mp4",
-      "proofLink": "",
-      "fullDescEs": "Las Nenas del Swing — Artista de Grabación / Miembro Fundadora\n\nAntes de que Las Nenas del Swing se formara, Leslie A. Guerra ya se estaba estableciendo como artista en Puerto Rico, presentándose en venues como el Hotel Intercontinental y el Hotel San Juan. Fue durante una actuación dominical en el Rancho de los Trovadores en Cayey que Elvis Crespo y Wilfredo Ortiz entraron al lugar — y todo cambió. Esa noche llevó a una audición con el productor Luis Corporán y a su selección como miembro fundadora de Las Nenas del Swing.\n\nEl 10 de septiembre de 1998, Las Nenas del Swing lanzaron Rompe Corazones, un álbum de 11 pistas de tropical y merengue bajo R&R Music, distribuido en Puerto Rico por Combo Records y en Estados Unidos por Rimas Records en Nueva York. Bajo la gestión de Ramón Rivera, quien también representaba a Grupo Karis, el grupo desarrolló una creciente base de seguidores en Puerto Rico, el Caribe y los principales mercados latinos de la Costa Este.\n\nComo miembro fundadora y vocalista destacada, Leslie contribuyó a algunas de las grabaciones más reconocidas del álbum, incluyendo Chicle Bomba, Desearía y Me Faltas Tú. El proyecto contó con la participación de reconocidos músicos y vocalistas del género tropical, incluyendo coros de Elvis Crespo, Juan Castro (Tony Tun Tun) y Juan Luis Guzmán. Los créditos de producción incluyen a Freddy Méndez en piano y Luis Corporán en saxofón.\n\nDurante el ciclo promocional de Rompe Corazones, Las Nenas del Swing compartieron escenarios con destacadas figuras del tropical y el merengue, incluyendo a Los Hermanos Rosario, El Gran Combo de Puerto Rico, Grupo Karis, Grupo Manía, Grupo Mambo, Manny Manuel, Tony Tun Tun, Melina León y Gisselle. El grupo también participó en presentaciones asociadas al Desfile Puertorriqueño de Nueva York y se presentó en Puerto Rico, Connecticut, Pensilvania, Massachusetts y la República Dominicana.\n\nRompe Corazones representa el primer crédito comercial de grabación documentado de Leslie Guerra y el inicio de una carrera musical profesional que se expandiría hacia giras internacionales, desarrollo artístico, operaciones discográficas, mercadeo, A&R y gestión del entretenimiento.\n\nHoy, el álbum sigue disponible en las principales plataformas digitales de streaming, preservando un capítulo importante de la música tropical puertorriqueña y sirviendo como la base de la carrera de Leslie en la industria musical.\n\n<strong>Un agradecimiento especial a mis compañeras Melissa, Marie y Kadmara — y a Elvis Crespo, Wilfredo Ortiz, Ramón Rivera, Luis Corporán, Freddie Méndez y Raúl Armando Del Valle por su guía, apoyo y confianza durante los años formativos de este camino.</strong>",
-      "mediaItems": [
-        {
-          "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780800128/wg1vtldzko9dib2h5stk.mp4",
-          "type": "video",
-          "label": "Chicle_Bomba_Show De las 12_Compressed",
-          "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780800560/faw6bmwifh1qwhrumyug.png"
-        }
-      ],
-      "mediaLabel": "Chicle_Bomba_Show De las 12_Compressed",
-      "sort_order": 2,
-      "projectType": "",
-      "contractType": "",
-      "collaborators": []
-    },
-    {
-      "id": "credit_02_j_alvarez",
-      "desc": "Performed as a supporting vocalist for live performance engagements, contributing vocal harmonies, stage execution, and collaborative performance support within professional touring and large-scale Latin urban music productions.",
-      "role": "Exclusive Touring Vocalist",
-      "color": "gold",
-      "press": [],
-      "years": "2015–2020",
-      "artist": "J Álvarez",
-      "descEs": "Participé como vocalista de apoyo en presentaciones en vivo, aportando armonías, ejecución escénica y soporte colaborativo dentro de producciones profesionales de música urbana latina.",
-      "photos": [
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780694244/ngygwrznpdj6lu3gngyh.png",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780694300/wuhii9wvfylleds1p6vz.jpg",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780697913/yw5taad7slxsywenjpnd.png",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780698160/atjzbiwtjc6fsg467kxy.png",
-        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780698329/ytvjrw1k95aohozcgin2.png"
-      ],
-      "pinned": true,
-      "company": "J Álvarez",
-      "visible": true,
-      "category": "",
-      "fullDesc": "J Álvarez — Touring Vocalist / Live Performance Collaboration\n\nLeslie was recruited into J Álvarez’s touring production by Robert Santiago, J Álvarez’s production manager, who had previously worked with Don Omar’s touring team.\n\nCollaborated as a touring supporting vocalist in live performance environments, contributing background vocal execution, harmonic support, and stage performance coordination as part of professional Latin urban music productions.\n\nKey Contributions:\n- Live supporting vocal performance\n- Harmony execution and vocal blending\n- Stage synchronization and live performance coordination\n- Musical timing and performance precision\n- Adaptability within dynamic touring environments\n- Collaborative execution with artists, musicians, and production teams\n- Consistent delivery across live performance settings\n- Professional stage presence and performance support\n\n<strong>Special thanks to J Álvarez for the opportunity and for welcoming me into his world. And to Robert Santiago, whose call made it all possible.</strong>",
-      "verified": true,
-      "videoUrl": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780694563/yrwkdcg5n8su1zi8eait.mp4",
-      "mediaLink": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780694563/yrwkdcg5n8su1zi8eait.mp4",
-      "proofLink": "",
-      "fullDescEs": "J Álvarez — Vocalista de Gira / Colaboración en Presentaciones en Vivo\n\nLeslie fue reclutada para la producción de gira de J Álvarez por Robert Santiago, el mánager de producción de J Álvarez, quien anteriormente formó parte del equipo de gira de Don Omar.\n\nColaboré como vocalista de apoyo dentro de entornos profesionales de gira y presentaciones en vivo, aportando ejecución vocal, soporte armónico y coordinación escénica en producciones de música urbana latina.\n\nContribuciones Principales:\n- Apoyo vocal en presentaciones en vivo\n- Ejecución de armonías y acople vocal\n- Coordinación escénica y sincronización musical\n- Precisión interpretativa en entornos de gira\n- Adaptabilidad dentro de producciones dinámicas\n- Colaboración con artistas, músicos y producción\n- Consistencia profesional en múltiples presentaciones\n- Presencia escénica y soporte interpretativo\n\n<strong>Un agradecimiento especial a J Álvarez por la oportunidad y por abrirme las puertas a su mundo. Y a Robert Santiago, cuya llamada lo hizo todo posible.</strong>",
-      "mediaItems": [
-        {
-          "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780694563/yrwkdcg5n8su1zi8eait.mp4",
-          "type": "video",
-          "label": "J Alvarez Medley",
-          "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780697273/mziu3vnvvbrrvolrrcms.png"
-        }
-      ],
-      "mediaLabel": "J Alvarez Medley",
-      "sort_order": 1,
-      "projectType": "",
-      "contractType": "",
-      "collaborators": []
-    },
-    {
-      "desc": "Founder and product architect of two original SaaS platforms built from concept to deployment.",
-      "role": "Founder & Product Architect",
-      "media": [],
-      "years": "2025–Present",
-      "descEs": "",
-      "photos": [],
-      "pinned": false,
-      "company": "PortfolioID / IDPressDrop",
-      "visible": true,
-      "category": "Professional",
-      "featured": true,
-      "fullDesc": "Conceived, designed, and built two original SaaS platforms from the ground up — PortfolioID, a professional identity and portfolio platform for artists, creators, and multi-career professionals, and IDPressDrop, a press tracking and media relations management platform for publicists and label teams.\n\nDirected all product architecture, feature development, UX decision-making, content strategy, and deployment infrastructure across a full modern stack including JavaScript, Netlify serverless functions, Cloudinary media management, GitHub version control, and Supabase database architecture.\n\nDefined every feature, user flow, and design system — including bilingual (EN/ES) content support, Cloudinary media organization, QR Smart Share, video and music showcase, credit card documentation system, and professional assets management.\n\nBoth platforms were built while simultaneously navigating career development, higher education, royalty recovery, and ongoing business operations — demonstrating the same operational discipline, systems thinking, and execution capacity that defines the full arc of this career.",
-      "verified": true,
-      "fullDescEs": "Concibió, diseñó y desarrolló dos plataformas SaaS originales desde cero — PortfolioID, una plataforma de identidad profesional y portafolio para artistas, creadores y profesionales multidisciplinarios, e IDPressDrop, una plataforma de seguimiento de prensa y gestión de relaciones con medios para publicistas y equipos de sellos discográficos.\n\nDirigió toda la arquitectura de producto, desarrollo de funcionalidades, decisiones de experiencia de usuario, estrategia de contenido e infraestructura de despliegue utilizando un stack moderno que incluye JavaScript, funciones serverless de Netlify, gestión de medios con Cloudinary, control de versiones con GitHub y arquitectura de base de datos con Supabase.\n\nDefinió cada funcionalidad, flujo de usuario y sistema de diseño — incluyendo soporte de contenido bilingüe (EN/ES), organización de medios en Cloudinary, QR Smart Share, presentación de video y música, sistema de documentación de créditos y gestión de activos profesionales.\n\nAmbas plataformas fueron desarrolladas simultáneamente con el desarrollo de carrera, educación superior, recuperación de regalías y operaciones comerciales en curso.",
-      "projectType": "Platform Development · Product Strategy · UX Direction"
     },
     {
       "id": "credit_06_nv_marketing",
