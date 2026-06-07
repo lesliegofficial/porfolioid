@@ -120,13 +120,21 @@
       "releaseDate": ""
     },
     {
+      "tag": "RECORDING CREDIT",
+      "desc": "",
+      "isrc": "",
       "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/lumrltvndmolhqtcp54y.mp3",
-      "role": "Touring Vocalist",
+      "role": "Backing Vocalist",
+      "type": "Session Recording",
       "year": "2016",
-      "album": null,
+      "album": "",
       "title": "Entre Gritos y Balas",
       "artist": "J Alvarez",
-      "visible": true
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
     },
     {
       "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/rj2ectbjhtska6aloacj.mp3",
