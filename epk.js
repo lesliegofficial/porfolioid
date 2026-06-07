@@ -1116,10 +1116,11 @@ function moveCreditCard(visibleIdx, dir) {
   credits[newIdx] = temp;
   window._epkData.credits = credits;
   const slug = window._ownerSlug || (JSON.parse(localStorage.getItem('porfolioid_session')||'null')||{}).slug || 'leslie-guerra';
+  // CRITICAL: only save credits — never send full _epkData which would wipe photos/tracks/videos
   fetch('/.netlify/functions/epk', {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({action:'save', slug, data: window._epkData})
+    body: JSON.stringify({action:'save', slug, data: {credits: credits}})
   });
   buildEPK(window._epkData);
 }
