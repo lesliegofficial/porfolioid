@@ -171,13 +171,21 @@
       "releaseDate": ""
     },
     {
+      "tag": "RECORDING CREDIT",
+      "desc": "",
+      "isrc": "",
       "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/tl0h5vmckvueifo54qrq.mp3",
-      "role": "Touring Vocalist",
+      "role": "Lead Vocalist",
+      "type": "Album Track",
       "year": "1998",
       "album": "Rompe Corazones",
       "title": "Me Faltas Tú",
       "artist": "Las Nenas del Swing",
-      "visible": true
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
     }
   ],
   "videos": [
