@@ -326,10 +326,17 @@ function loadAllFields() {
   document.getElementById('bookingRegion').value = epk.bookingRegion || '';
   document.getElementById('bookingAutoResponse').value = epk.bookingAutoResponse || '';
   const bcats = epk.bookingCategories || [];
-  ['live','studio','features','touring','hosting','ar','creative','media'].forEach(cat => {
+  ['live','studio','features','touring','hosting','ar','creative','media','marketing','professional','government','entrepreneur','technical','administration','crm','sales','armedforces','other'].forEach(cat => {
     const el = document.getElementById('bcat_' + cat);
     if (el) el.checked = bcats.includes(cat);
   });
+  // Show/hide Other text input
+  const bcatOtherCb = document.getElementById('bcat_other');
+  const bcatOtherInp = document.getElementById('bcat_other_input');
+  if (bcatOtherCb && bcatOtherInp) {
+    if (bcats.includes('other')) bcatOtherInp.style.display = 'block';
+    bcatOtherCb.addEventListener('change', function() { bcatOtherInp.style.display = this.checked ? 'block' : 'none'; });
+  }
   loadBookingToggle();
 
   // Availability dropdown
@@ -387,7 +394,7 @@ function saveAll() {
   epk.bookingAvailability = document.getElementById('bookingAvailability').value;
   epk.bookingRegion = document.getElementById('bookingRegion').value.trim();
   epk.bookingAutoResponse = document.getElementById('bookingAutoResponse').value.trim();
-  epk.bookingCategories = ['live','studio','features','touring','hosting','ar','creative','media'].filter(cat => {
+  epk.bookingCategories = ['live','studio','features','touring','hosting','ar','creative','media','marketing','professional','government','entrepreneur','technical','administration','crm','sales','armedforces','other'].filter(cat => {
     const el = document.getElementById('bcat_' + cat);
     return el && el.checked;
   });
@@ -729,6 +736,11 @@ document.getElementById('newCredential').addEventListener('keydown', e => { if (
 
 // CREDITS
 let editingCreditIdx = -1;
+
+function toggleCreditCategoryOther(sel) {
+  const other = document.getElementById('newCreditCategoryOther');
+  if (other) other.style.display = sel.value === 'Other' ? 'block' : 'none';
+}
 
 function moveItem(section, idx, direction) {
   const arr = epk[section] || [];
@@ -1088,7 +1100,10 @@ function dropSavedPhoto(e, creditIdx, photoIdx) {
 function addCredit() {
   const artist = document.getElementById('newCreditArtist').value.trim();
   const years = document.getElementById('newCreditYears').value.trim();
-  const category = document.getElementById('newCreditCategory').value;
+  const catSelect = document.getElementById('newCreditCategory');
+  const category = catSelect.value === 'Other'
+    ? (document.getElementById('newCreditCategoryOther').value.trim() || 'Other')
+    : catSelect.value;
   const contractType = document.getElementById('newCreditContractType').value;
   const role = document.getElementById('newCreditRole').value.trim();
   const projectType = document.getElementById('newCreditProjectType').value.trim();
