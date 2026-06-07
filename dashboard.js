@@ -750,7 +750,7 @@ function renderCredits() {
   container.innerHTML = '';
   const credits = epk.credits || [];
   // Sort: pinned first
-  const sorted = [...credits.map((c,i) => ({...c, _origIdx: i}))].sort((a,b) => (b.pinned?1:0)-(a.pinned?1:0));
+  const sorted = credits.map((c,i) => ({...c, _origIdx: i}));
   sorted.forEach((c) => {
     const i = c._origIdx;
     const photos = c.photos || [];
