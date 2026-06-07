@@ -379,42 +379,6 @@ exports.handler = async (event) => {
             }
           } catch(e) { console.error('Tracks protection failed:', e); }
         }
-        // Protect photos — never wipe if sending partial data
-        if (!safeData.photos || safeData.photos.length === 0) {
-          try {
-            const existingRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data`);
-            if (existingRes.ok && existingRes.data.length) {
-              const existingPhotos = existingRes.data[0].data && existingRes.data[0].data.photos;
-              if (existingPhotos && existingPhotos.length > 0) {
-                safeData.photos = existingPhotos;
-              }
-            }
-          } catch(e) { console.error('Photos protection failed:', e); }
-        }
-        // Protect awards — never wipe if sending partial data
-        if (!safeData.awards || safeData.awards.length === 0) {
-          try {
-            const existingRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data`);
-            if (existingRes.ok && existingRes.data.length) {
-              const existingAwards = existingRes.data[0].data && existingRes.data[0].data.awards;
-              if (existingAwards && existingAwards.length > 0) {
-                safeData.awards = existingAwards;
-              }
-            }
-          } catch(e) { console.error('Awards protection failed:', e); }
-        }
-        // Protect assets — never wipe if sending partial data
-        if (!safeData.assets || safeData.assets.length === 0) {
-          try {
-            const existingRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data`);
-            if (existingRes.ok && existingRes.data.length) {
-              const existingAssets = existingRes.data[0].data && existingRes.data[0].data.assets;
-              if (existingAssets && existingAssets.length > 0) {
-                safeData.assets = existingAssets;
-              }
-            }
-          } catch(e) { console.error('Assets protection failed:', e); }
-        }
         if (!safeData.credits || safeData.credits.length === 0) {
           try {
             const existingRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data`);
