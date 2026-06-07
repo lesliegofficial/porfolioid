@@ -292,8 +292,7 @@ function buildEPK(epk) {
   // Sort: pinned first, filter hidden
   const visibleCredits = (epk.credits || [])
     .map((c, i) => ({...c, _origIdx: i}))
-    .filter(c => c.visible !== false)
-    .sort((a, b) => (b.pinned?1:0) - (a.pinned?1:0));
+    .filter(c => c.visible !== false);
   epkVisibleCredits = visibleCredits;
 
   const musicCreditNames = ['Don Omar','J Álvarez','Melina León','Las Nenas del Swing'];
@@ -1110,18 +1109,17 @@ function toggleAllCredits() {
 function moveCreditCard(visibleIdx, dir) {
   const credits = window._epkData && window._epkData.credits;
   if (!credits) return;
-  const cols = 3;
-  const step = dir * cols;
-  const newIdx = visibleIdx + step;
+  const newIdx = visibleIdx + dir;
   if (newIdx < 0 || newIdx >= credits.length) return;
   const temp = credits[visibleIdx];
   credits[visibleIdx] = credits[newIdx];
   credits[newIdx] = temp;
   window._epkData.credits = credits;
+  const slug = window._ownerSlug || (JSON.parse(localStorage.getItem('porfolioid_session')||'null')||{}).slug || 'leslie-guerra';
   fetch('/.netlify/functions/epk', {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({action:'save', slug:'leslie-guerra', data: window._epkData})
+    body: JSON.stringify({action:'save', slug, data: window._epkData})
   });
   buildEPK(window._epkData);
 }
