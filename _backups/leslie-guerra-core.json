@@ -451,6 +451,22 @@
       "collaborators": []
     },
     {
+      "desc": "Founder and product architect of two original SaaS platforms built from concept to deployment.",
+      "role": "Founder & Product Architect",
+      "media": [],
+      "years": "2025–Present",
+      "descEs": "",
+      "photos": [],
+      "company": "PortfolioID / IDPressDrop",
+      "visible": true,
+      "category": "Professional",
+      "featured": true,
+      "fullDesc": "Conceived, designed, and built two original SaaS platforms from the ground up — PortfolioID, a professional identity and portfolio platform for artists, creators, and multi-career professionals, and IDPressDrop, a press tracking and media relations management platform for publicists and label teams.\n\nDirected all product architecture, feature development, UX decision-making, content strategy, and deployment infrastructure across a full modern stack including JavaScript, Netlify serverless functions, Cloudinary media management, GitHub version control, and Supabase database architecture.\n\nDefined every feature, user flow, and design system — including bilingual (EN/ES) content support, Cloudinary media organization, QR Smart Share, video and music showcase, credit card documentation system, and professional assets management.\n\nBoth platforms were built while simultaneously navigating career development, higher education, royalty recovery, and ongoing business operations — demonstrating the same operational discipline, systems thinking, and execution capacity that defines the full arc of this career.",
+      "verified": true,
+      "fullDescEs": "Concibió, diseñó y desarrolló dos plataformas SaaS originales desde cero — PortfolioID, una plataforma de identidad profesional y portafolio para artistas, creadores y profesionales multidisciplinarios, e IDPressDrop, una plataforma de seguimiento de prensa y gestión de relaciones con medios para publicistas y equipos de sellos discográficos.\n\nDirigió toda la arquitectura de producto, desarrollo de funcionalidades, decisiones de experiencia de usuario, estrategia de contenido e infraestructura de despliegue utilizando un stack moderno que incluye JavaScript, funciones serverless de Netlify, gestión de medios con Cloudinary, control de versiones con GitHub y arquitectura de base de datos con Supabase.\n\nDefinió cada funcionalidad, flujo de usuario y sistema de diseño — incluyendo soporte de contenido bilingüe (EN/ES), organización de medios en Cloudinary, QR Smart Share, presentación de video y música, sistema de documentación de créditos y gestión de activos profesionales.\n\nAmbas plataformas fueron desarrolladas simultáneamente con el desarrollo de carrera, educación superior, recuperación de regalías y operaciones comerciales en curso.",
+      "projectType": "Platform Development · Product Strategy · UX Direction"
+    },
+    {
       "id": "credit_05_arrow_orfanato",
       "desc": "Garfield, NJ | Hybrid | 2013–2015. Operational and administrative support for artist management. Payroll for ~30 staff via check and wire transfer across US and Puerto Rico.",
       "role": "Artist Support & Operations Coordinator",
@@ -468,22 +484,6 @@
       "fullDescEs": "Arrow Management — Coordinadora de Operaciones y Manejo Artístico\nGarfield, Nueva Jersey | 2013–2015\n\nTras años de experiencia en presentaciones en vivo y giras, Leslie A. Guerra realizó la transición hacia el manejo artístico y las operaciones empresariales a través de Arrow Management, la compañía de manejo fundada por William Omar Landrón Rivera.\n\nEn este rol, Leslie apoyó las funciones operacionales y administrativas diarias asociadas al manejo artístico, los asuntos empresariales y las operaciones de entretenimiento. Trabajando de cerca con el personal de manejo, artistas, proveedores y socios comerciales, ayudó a coordinar los procesos internos esenciales para la ejecución exitosa de actividades relacionadas con artistas y los objetivos organizacionales.\n\nSus responsabilidades incluían gestionar agendas, coordinar comunicaciones, organizar documentación, apoyar la planificación logística y asistir con los flujos de trabajo operacionales en múltiples proyectos. El puesto requería organización excepcional, discreción, adaptabilidad y la capacidad de gestionar prioridades en competencia dentro de un entorno dinámico del entretenimiento.\n\nResponsabilidades Principales:\n• Coordinó actividades de apoyo operacional y de manejo artístico\n• Gestionó calendarios, programación y flujos de trabajo administrativos\n• Facilitó la comunicación entre manejo, artistas, proveedores y socios comerciales\n• Organizó registros operacionales, documentación y procesos internos\n• Apoyó la planificación logística y la coordinación de proyectos\n• Asistió con operaciones comerciales diarias e iniciativas de manejo\n• Mantuvo información confidencial y documentación sensible\n• Rastreó prioridades, plazos y entregables organizacionales\n• Apoyó múltiples proyectos simultáneos en un entorno de alto volumen\n\nSignificado en la Carrera:\nArrow Management marcó la transición de Leslie desde las presentaciones en escenario hacia la comprensión de la infraestructura operacional que sostiene a los artistas y marcas de entretenimiento exitosas. La experiencia proporcionó una base en manejo artístico, administración empresarial y operaciones organizacionales que apoyaría posteriormente su trabajo en A&R, mercadeo, desarrollo artístico y roles de coordinación ejecutiva en la industria musical.\n\n<strong>Un agradecimiento especial a William Omar Landrón Rivera, Héctor Luis Landrón Rivera, Rebeca López y Milton Johan Restituyo por la experiencia que alteró mi vida y que nunca, jamás olvidaré.</strong>",
       "mediaItems": [],
       "sort_order": 4
-    },
-    {
-      "desc": "Founder and product architect of two original SaaS platforms built from concept to deployment.",
-      "role": "Founder & Product Architect",
-      "media": [],
-      "years": "2025–Present",
-      "descEs": "",
-      "photos": [],
-      "company": "PortfolioID / IDPressDrop",
-      "visible": true,
-      "category": "Professional",
-      "featured": true,
-      "fullDesc": "Conceived, designed, and built two original SaaS platforms from the ground up — PortfolioID, a professional identity and portfolio platform for artists, creators, and multi-career professionals, and IDPressDrop, a press tracking and media relations management platform for publicists and label teams.\n\nDirected all product architecture, feature development, UX decision-making, content strategy, and deployment infrastructure across a full modern stack including JavaScript, Netlify serverless functions, Cloudinary media management, GitHub version control, and Supabase database architecture.\n\nDefined every feature, user flow, and design system — including bilingual (EN/ES) content support, Cloudinary media organization, QR Smart Share, video and music showcase, credit card documentation system, and professional assets management.\n\nBoth platforms were built while simultaneously navigating career development, higher education, royalty recovery, and ongoing business operations — demonstrating the same operational discipline, systems thinking, and execution capacity that defines the full arc of this career.",
-      "verified": true,
-      "fullDescEs": "Concibió, diseñó y desarrolló dos plataformas SaaS originales desde cero — PortfolioID, una plataforma de identidad profesional y portafolio para artistas, creadores y profesionales multidisciplinarios, e IDPressDrop, una plataforma de seguimiento de prensa y gestión de relaciones con medios para publicistas y equipos de sellos discográficos.\n\nDirigió toda la arquitectura de producto, desarrollo de funcionalidades, decisiones de experiencia de usuario, estrategia de contenido e infraestructura de despliegue utilizando un stack moderno que incluye JavaScript, funciones serverless de Netlify, gestión de medios con Cloudinary, control de versiones con GitHub y arquitectura de base de datos con Supabase.\n\nDefinió cada funcionalidad, flujo de usuario y sistema de diseño — incluyendo soporte de contenido bilingüe (EN/ES), organización de medios en Cloudinary, QR Smart Share, presentación de video y música, sistema de documentación de créditos y gestión de activos profesionales.\n\nAmbas plataformas fueron desarrolladas simultáneamente con el desarrollo de carrera, educación superior, recuperación de regalías y operaciones comerciales en curso.",
-      "projectType": "Platform Development · Product Strategy · UX Direction"
     },
     {
       "id": "credit_06_nv_marketing",
