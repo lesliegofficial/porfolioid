@@ -364,6 +364,12 @@ function buildEPK(epk) {
     if (isMP4) {
       return `<div class="video-card owner-item-wrap" style="position:relative">${ownerOverlay}${categoryBadge}${featuredBadge}<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain" ${v.thumb ? `poster="${v.thumb}"` : ''}><source src="${v.url}" type="video/mp4"></video><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}</div>`;
     }
+    const ytId = v.url ? v.url.match(/youtube\.com.*v=([^&]+)|youtu\.be\/([^?]+)/) : null;
+    const ytVideoId = ytId ? (ytId[1] || ytId[2]) : null;
+    if (ytVideoId) {
+      const ytEmbedId = 'yt_' + vidIdx + '_' + ytVideoId;
+      return `<div class="video-card owner-item-wrap" style="position:relative" id="ytcard_${ytEmbedId}">${ownerOverlay}${categoryBadge}${featuredBadge}<div id="ytthumb_${ytEmbedId}" style="position:relative;cursor:pointer" onclick="playYouTubeInline('${ytEmbedId}','${ytVideoId}')">${thumb ? `<img class="video-thumb" src="${thumb}" alt="${v.title}" loading="lazy" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block">` : `<div class="video-thumb" style="background:var(--dark-4);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:2rem;aspect-ratio:16/9">▶</div>`}<div class="video-play">▶</div></div><div id="ytembed_${ytEmbedId}" style="display:none;width:100%;aspect-ratio:16/9"></div><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}<div style="text-align:right;margin-top:0.25rem"><a href="${v.url}" target="_blank" style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.05em;text-decoration:none;opacity:0.6">↗ Watch on YouTube</a></div></div>`;
+    }
     return `<div class="video-card owner-item-wrap" style="position:relative" onclick="window.open('${v.url}','_blank')">${ownerOverlay}${categoryBadge}${featuredBadge}${thumb ? `<img class="video-thumb" src="${thumb}" alt="${v.title}" loading="lazy">` : `<div class="video-thumb" style="background:var(--dark-4);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:2rem">▶</div>`}<div class="video-play">▶</div><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}</div>`;
   };
 
@@ -1599,3 +1605,12 @@ function showEditToast(msg) {
 }
 
 // Mon May 18 10:20:25 UTC 2026
+
+function playYouTubeInline(embedId, ytVideoId) {
+  const thumb = document.getElementById('ytthumb_' + embedId);
+  const embed = document.getElementById('ytembed_' + embedId);
+  if (!thumb || !embed) return;
+  thumb.style.display = 'none';
+  embed.style.display = 'block';
+  embed.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytVideoId}?autoplay=1&rel=0" style="width:100%;height:100%;border:none;display:block" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+}
