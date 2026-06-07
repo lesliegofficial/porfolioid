@@ -18,21 +18,21 @@
   ],
   "tracks": [
     {
-      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/uoqnc3bdokfb1ajw1cc4.mp3",
-      "role": "Touring Vocalist",
-      "year": "2018",
-      "album": null,
-      "title": "Te Necesito",
-      "artist": "J Alvarez",
-      "visible": true
-    },
-    {
       "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/yiwmdypo89q64aqqvnqh.mp3",
       "role": "Touring Vocalist",
       "year": null,
       "album": null,
       "title": "Yo Soy de Aqui",
       "artist": "Don Omar, Yankee, Yandel, Arcangel",
+      "visible": true
+    },
+    {
+      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/uoqnc3bdokfb1ajw1cc4.mp3",
+      "role": "Touring Vocalist",
+      "year": "2018",
+      "album": null,
+      "title": "Te Necesito",
+      "artist": "J Alvarez",
       "visible": true
     },
     {
