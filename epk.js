@@ -1251,7 +1251,18 @@ function openAwardModal(idx) {
         ${(a.photos||[]).map(p=>`<img src="${p}" onclick="openLightbox('${p}')" style="width:calc(50% - 0.25rem);aspect-ratio:4/3;object-fit:cover;cursor:pointer;border:1px solid rgba(201,168,76,0.15);transition:opacity 0.2s" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" onerror="this.style.display='none'">`).join('')}
       </div>` : ''}
     <div style="display:flex;flex-direction:column;gap:0.5rem">
-      ${a.certUrl ? `<div style="margin-top:1rem"><div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.5rem">📄 Certificate</div><img src="${(function(u){const t=u.includes('zjz3grw21r7nqtwgajh8')?'f_jpg,q_90,pg_1,a_90':'f_jpg,q_90,pg_1';return u.replace('/upload/','/upload/'+t+'/');}).call(null,a.certUrl)}" style="width:100%;max-height:520px;object-fit:contain;background:#1C1C1C;border:1px solid rgba(201,168,76,0.2);display:block" onerror="this.outerHTML='<div style=\'padding:2rem;text-align:center;color:var(--gray);font-family:var(--font-mono);font-size:0.7rem\'>Preview not available</div>'"></div>` : ''}
+      ${a.certUrl ? `<div style="margin-top:1rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
+          <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray)">📄 Certificate</div>
+          <div style="display:flex;gap:0.5rem">
+            <button onclick="rotateCert(-90)" style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold);padding:0.3rem 0.6rem;cursor:pointer;font-size:0.8rem" title="Rotate Left">↺</button>
+            <button onclick="rotateCert(90)" style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold);padding:0.3rem 0.6rem;cursor:pointer;font-size:0.8rem" title="Rotate Right">↻</button>
+          </div>
+        </div>
+        <div style="overflow:hidden;background:#1C1C1C;border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;min-height:300px">
+          <img id="certPreviewImg" src="${(function(u){const t=u.includes('zjz3grw21r7nqtwgajh8')?'f_jpg,q_90,pg_1,a_90':'f_jpg,q_90,pg_1';return u.replace('/upload/','/upload/'+t+'/');}).call(null,a.certUrl)}" data-rotation="${a.certUrl.includes('zjz3grw21r7nqtwgajh8')?90:0}" style="max-width:100%;max-height:520px;object-fit:contain;display:block;transition:transform 0.3s" onerror="this.outerHTML='<div style=\'padding:2rem;text-align:center;color:var(--gray);font-family:var(--font-mono);font-size:0.7rem\'>Preview not available</div>'">
+        </div>
+      </div>` : ''}
       ${a.proofLink ? `<a href="${pdfViewerUrl(a.proofLink)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.15);padding:0.75rem 1rem;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.05)'" onmouseout="this.style.background=''">✦ <span>View Verification</span> <span style="margin-left:auto">→</span></a>` : ''}
     </div>`;
 
@@ -1296,6 +1307,24 @@ function submitAssetRequest() {
   }).catch(()=>{});
   document.getElementById('assetRequestForm').style.display = 'none';
   document.getElementById('assetRequestSuccess').style.display = 'block';
+}
+
+function rotateCert(deg) {
+  const img = document.getElementById('certPreviewImg');
+  if (!img) return;
+  const current = parseInt(img.dataset.rotation || 0);
+  const next = (current + deg + 360) % 360;
+  img.dataset.rotation = next;
+  img.style.transform = next ? `rotate(${next}deg)` : '';
+  // Adjust container height for portrait vs landscape
+  const wrap = img.parentElement;
+  if (next === 90 || next === 270) {
+    wrap.style.minHeight = '520px';
+    img.style.maxWidth = '60%';
+  } else {
+    wrap.style.minHeight = '300px';
+    img.style.maxWidth = '100%';
+  }
 }
 
 function closeAwardModal() {
