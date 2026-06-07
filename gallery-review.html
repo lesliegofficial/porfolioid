@@ -3,154 +3,155 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gallery Photo Review — LeslieOS</title>
+<title>Gallery Photo Reference — LeslieOS</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #0E0E0E; color: #F5F3EE; font-family: 'Helvetica Neue', sans-serif; padding: 2rem; }
   h1 { color: #C9A84C; font-size: 1.4rem; font-weight: 600; margin-bottom: 0.25rem; }
   p.sub { color: #888; font-size: 0.85rem; margin-bottom: 2rem; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
   .card { background: #141414; border: 1px solid #242424; border-radius: 8px; overflow: hidden; }
-  .card img { width: 100%; height: 200px; object-fit: cover; display: block; background: #1C1C1C; }
+  .card img { width: 100%; height: 210px; object-fit: cover; display: block; background: #1C1C1C; }
   .card .label { padding: 0.75rem 1rem; }
-  .num { font-size: 1.1rem; font-weight: 700; color: #C9A84C; }
-  .id { font-size: 0.7rem; color: #666; margin-top: 2px; word-break: break-all; font-family: monospace; }
-  .no-load { height: 200px; background: #1C1C1C; display: flex; align-items: center; justify-content: center; color: #555; font-size: 0.75rem; }
+  .num { font-size: 1rem; font-weight: 700; color: #C9A84C; }
+  .caption { font-size: 0.82rem; color: #F5F3EE; margin-top: 4px; line-height: 1.4; }
+  .id { font-size: 0.65rem; color: #555; margin-top: 4px; word-break: break-all; font-family: monospace; }
+  .no-load { height: 210px; background: #1C1C1C; display: flex; align-items: center; justify-content: center; color: #555; font-size: 0.75rem; text-align: center; padding: 1rem; }
 </style>
 </head>
 <body>
-<h1>Gallery Photo Review</h1>
-<p class="sub">All 26 photos in your Cloudinary gallery folder. Tell me: keep, move (to which folder), or exclude.</p>
+<h1>Gallery Photo Reference — Leslie Ann Guerra</h1>
+<p class="sub">26 photos · All confirmed for gallery · Labeled by Leslie June 7, 2026</p>
 <div class="grid">
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/leslie_concert_blue.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#1</div><div class="id">leslie_concert_blue</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/leslie_concert_blue.jpg" onerror="this.outerHTML='<div class=no-load>#1 — failed to load</div>'">
+  <div class="label"><div class="num">#1</div><div class="caption">With J Balvin</div><div class="id">leslie_concert_blue</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/leslie_jalvarez_selfie.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#2</div><div class="id">leslie_jalvarez_selfie</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/leslie_jalvarez_selfie.jpg" onerror="this.outerHTML='<div class=no-load>#2 — failed to load</div>'">
+  <div class="label"><div class="num">#2</div><div class="caption">With Rauw Alejandro</div><div class="id">leslie_jalvarez_selfie</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/fcuh5fopximnxoz3ue0g.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#3</div><div class="id">fcuh5fopximnxoz3ue0g</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/fcuh5fopximnxoz3ue0g.jpg" onerror="this.outerHTML='<div class=no-load>#3 — failed to load</div>'">
+  <div class="label"><div class="num">#3</div><div class="caption">With Luis Fonsi</div><div class="id">fcuh5fopximnxoz3ue0g</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/w7ggvn49z18lhavzht1u.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#4</div><div class="id">w7ggvn49z18lhavzht1u</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/w7ggvn49z18lhavzht1u.jpg" onerror="this.outerHTML='<div class=no-load>#4 — failed to load</div>'">
+  <div class="label"><div class="num">#4</div><div class="caption">With Chris Mercedes and Gio Williams</div><div class="id">w7ggvn49z18lhavzht1u</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/g9jwktzynq9yxlu4jsc1.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#5</div><div class="id">g9jwktzynq9yxlu4jsc1</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/g9jwktzynq9yxlu4jsc1.jpg" onerror="this.outerHTML='<div class=no-load>#5 — failed to load</div>'">
+  <div class="label"><div class="num">#5</div><div class="caption">With Don Omar</div><div class="id">g9jwktzynq9yxlu4jsc1</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/ekfdjyawqz9m3ixwz37d.png" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#6</div><div class="id">ekfdjyawqz9m3ixwz37d</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/ekfdjyawqz9m3ixwz37d.png" onerror="this.outerHTML='<div class=no-load>#6 — failed to load</div>'">
+  <div class="label"><div class="num">#6</div><div class="caption">With Adam Torres</div><div class="id">ekfdjyawqz9m3ixwz37d</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/ewm8lcxopo7ybkkts7mk.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#7</div><div class="id">ewm8lcxopo7ybkkts7mk</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/ewm8lcxopo7ybkkts7mk.jpg" onerror="this.outerHTML='<div class=no-load>#7 — failed to load</div>'">
+  <div class="label"><div class="num">#7</div><div class="caption">With Don Omar — Viña del Mar</div><div class="id">ewm8lcxopo7ybkkts7mk</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/lik9rzoezrabdhf4tflw.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#8</div><div class="id">lik9rzoezrabdhf4tflw</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/lik9rzoezrabdhf4tflw.jpg" onerror="this.outerHTML='<div class=no-load>#8 — failed to load</div>'">
+  <div class="label"><div class="num">#8</div><div class="caption">With Kiara and Natti Natasha</div><div class="id">lik9rzoezrabdhf4tflw</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/zht7vuseuz6gwc5fvhon.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#9</div><div class="id">zht7vuseuz6gwc5fvhon</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/zht7vuseuz6gwc5fvhon.jpg" onerror="this.outerHTML='<div class=no-load>#9 — failed to load</div>'">
+  <div class="label"><div class="num">#9</div><div class="caption">J Álvarez Show</div><div class="id">zht7vuseuz6gwc5fvhon</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/g7d22rfmdgczl07yueyc.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#10</div><div class="id">g7d22rfmdgczl07yueyc</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/g7d22rfmdgczl07yueyc.jpg" onerror="this.outerHTML='<div class=no-load>#10 — failed to load</div>'">
+  <div class="label"><div class="num">#10</div><div class="caption">With J Álvarez</div><div class="id">g7d22rfmdgczl07yueyc</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/belq6epfwatfxki2ujyt.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#11</div><div class="id">belq6epfwatfxki2ujyt</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/belq6epfwatfxki2ujyt.jpg" onerror="this.outerHTML='<div class=no-load>#11 — failed to load</div>'">
+  <div class="label"><div class="num">#11</div><div class="caption">With Don Omar — King of Kings Concert</div><div class="id">belq6epfwatfxki2ujyt</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/dposa8bmaw9gbpzpm8u9.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#12</div><div class="id">dposa8bmaw9gbpzpm8u9</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/dposa8bmaw9gbpzpm8u9.jpg" onerror="this.outerHTML='<div class=no-load>#12 — failed to load</div>'">
+  <div class="label"><div class="num">#12</div><div class="caption">With Backup Singer Angel Eric Rios</div><div class="id">dposa8bmaw9gbpzpm8u9</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/zx4rezwxxemi2iy66qcf.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#13</div><div class="id">zx4rezwxxemi2iy66qcf</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/zx4rezwxxemi2iy66qcf.jpg" onerror="this.outerHTML='<div class=no-load>#13 — failed to load</div>'">
+  <div class="label"><div class="num">#13</div><div class="caption">Backstage with Angel Eric — Hecho en Puerto Rico Concert</div><div class="id">zx4rezwxxemi2iy66qcf</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/kaxabjdrhafbceygxyfo.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#14</div><div class="id">kaxabjdrhafbceygxyfo</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/kaxabjdrhafbceygxyfo.jpg" onerror="this.outerHTML='<div class=no-load>#14 — failed to load</div>'">
+  <div class="label"><div class="num">#14</div><div class="caption">Backstage with Angel Eric — Hecho en Puerto Rico Concert</div><div class="id">kaxabjdrhafbceygxyfo</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/tq1lseuchmmnhc5xjhke.webp" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#15</div><div class="id">tq1lseuchmmnhc5xjhke</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/tq1lseuchmmnhc5xjhke.webp" onerror="this.outerHTML='<div class=no-load>#15 — failed to load</div>'">
+  <div class="label"><div class="num">#15</div><div class="caption">Backstage — Viña del Mar Festival with Don Omar's Gaviotas</div><div class="id">tq1lseuchmmnhc5xjhke</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/wi8wryhun0x69mpy1omj.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#16</div><div class="id">wi8wryhun0x69mpy1omj</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/wi8wryhun0x69mpy1omj.jpg" onerror="this.outerHTML='<div class=no-load>#16 — failed to load</div>'">
+  <div class="label"><div class="num">#16</div><div class="caption">With Robert Santiago — Backstage Viña del Mar Festival</div><div class="id">wi8wryhun0x69mpy1omj</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/cxpwqlu9rkwp6vusj393.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#17</div><div class="id">cxpwqlu9rkwp6vusj393</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/cxpwqlu9rkwp6vusj393.jpg" onerror="this.outerHTML='<div class=no-load>#17 — failed to load</div>'">
+  <div class="label"><div class="num">#17</div><div class="caption">With AJ Ramos</div><div class="id">cxpwqlu9rkwp6vusj393</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/vps4myvnifs8gfzhybtt.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#18</div><div class="id">vps4myvnifs8gfzhybtt</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/vps4myvnifs8gfzhybtt.jpg" onerror="this.outerHTML='<div class=no-load>#18 — failed to load</div>'">
+  <div class="label"><div class="num">#18</div><div class="caption">With Angel Eric Rios</div><div class="id">vps4myvnifs8gfzhybtt</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/oiglaxgsmna97yrqw5z1.tiff" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#19</div><div class="id">oiglaxgsmna97yrqw5z1 (.tiff)</div></div>
+  <div class="no-load" style="height:210px">#19 — .tiff not renderable in browser<br><span style="font-size:0.7rem;color:#444;margin-top:6px;display:block">oiglaxgsmna97yrqw5z1</span></div>
+  <div class="label"><div class="num">#19</div><div class="caption">Gallery Photo 19 (caption TBD)</div><div class="id">oiglaxgsmna97yrqw5z1.tiff</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/bmbvaqsmuzt4rqsw05ia.tiff" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#20</div><div class="id">bmbvaqsmuzt4rqsw05ia (.tiff)</div></div>
+  <div class="no-load" style="height:210px">#20 — .tiff not renderable in browser<br><span style="font-size:0.7rem;color:#444;margin-top:6px;display:block">bmbvaqsmuzt4rqsw05ia</span></div>
+  <div class="label"><div class="num">#20</div><div class="caption">Gallery Photo 20 (caption TBD)</div><div class="id">bmbvaqsmuzt4rqsw05ia.tiff</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/rfgqlp1j0qs0gjdyki53.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#21</div><div class="id">rfgqlp1j0qs0gjdyki53</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/rfgqlp1j0qs0gjdyki53.jpg" onerror="this.outerHTML='<div class=no-load>#21 — failed to load</div>'">
+  <div class="label"><div class="num">#21</div><div class="caption">On Stage with Don Omar and Natti Natasha — Dutty Love</div><div class="id">rfgqlp1j0qs0gjdyki53</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/gpdkrnybqxokkubhutqq.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#22</div><div class="id">gpdkrnybqxokkubhutqq</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/gpdkrnybqxokkubhutqq.jpg" onerror="this.outerHTML='<div class=no-load>#22 — failed to load</div>'">
+  <div class="label"><div class="num">#22</div><div class="caption">On Stage with Don Omar and Natti Natasha — Dutty Love</div><div class="id">gpdkrnybqxokkubhutqq</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/qwvvzb0rvdijia9vteyw.webp" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#23</div><div class="id">qwvvzb0rvdijia9vteyw (.webp)</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/qwvvzb0rvdijia9vteyw.webp" onerror="this.outerHTML='<div class=no-load>#23 — failed to load</div>'">
+  <div class="label"><div class="num">#23</div><div class="caption">On Stage — Puerto Rico Sinfónico Concert</div><div class="id">qwvvzb0rvdijia9vteyw</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/tzkfljsf6qmmgrerq8an.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#24</div><div class="id">tzkfljsf6qmmgrerq8an</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/tzkfljsf6qmmgrerq8an.jpg" onerror="this.outerHTML='<div class=no-load>#24 — failed to load</div>'">
+  <div class="label"><div class="num">#24</div><div class="caption">On Stage — Puerto Rico Sinfónico Concert</div><div class="id">tzkfljsf6qmmgrerq8an</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/aylyji2mn4cdmwzmkcgb.png" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#25</div><div class="id">aylyji2mn4cdmwzmkcgb (.png)</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/aylyji2mn4cdmwzmkcgb.png" onerror="this.outerHTML='<div class=no-load>#25 — failed to load</div>'">
+  <div class="label"><div class="num">#25</div><div class="caption">With Adam Torres (duplicate)</div><div class="id">aylyji2mn4cdmwzmkcgb</div></div>
 </div>
 
 <div class="card">
-  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_480,h_400,c_fill,q_80/kz1ti0u2tqqvqmxhhvzr.jpg" onerror="this.outerHTML='<div class=no-load>Failed to load</div>'">
-  <div class="label"><div class="num">#26</div><div class="id">kz1ti0u2tqqvqmxhhvzr</div></div>
+  <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/w_520,h_420,c_fill,q_80/kz1ti0u2tqqvqmxhhvzr.jpg" onerror="this.outerHTML='<div class=no-load>#26 — failed to load</div>'">
+  <div class="label"><div class="num">#26</div><div class="caption">Leslie Ann Guerra</div><div class="id">kz1ti0u2tqqvqmxhhvzr</div></div>
 </div>
 
 </div>
