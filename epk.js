@@ -1848,9 +1848,11 @@ function trackAssetDownload(idx) {
 // Credit modal
 let epkCreditsData = [];
 let epkVisibleCredits = [];
+let _currentOpenCredit = null;
 function openCreditModal(i) {
-  const c = epkVisibleCredits[i];
+  const c = (typeof i === 'object') ? i : epkVisibleCredits[i];
   if (!c) return;
+  _currentOpenCredit = c;
   const photos = c.photos || [];
   document.getElementById('creditModalArtist').textContent = c.company || c.artist;
   document.getElementById('creditModalMeta').textContent = [c.role, c.contractType, c.years].filter(Boolean).join(' · ');
@@ -1863,56 +1865,136 @@ function openCreditModal(i) {
   const collabEl = document.getElementById('creditModalCollaborators');
   collabEl.innerHTML = c.collaborators?.length ? `<div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;color:var(--gray);margin-bottom:1rem">w/ ${c.collaborators.join(', ')}</div>` : '';
 
-  // Media — support multiple items
-  const mediaHTML = (() => {
-    let html = '';
-    // New multi-media system
-    const mediaItems = c.mediaItems || [];
-    if (mediaItems.length > 0) {
-      mediaItems.forEach(m => {
-        if (!m.url) return;
-        if (m.type === 'video' || m.url.includes('.mp4') || m.url.includes('.mov')) {
-          const posterAttr = m.thumb ? `poster="${m.thumb}"` : '';
-          html += `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain;margin-bottom:1rem" src="${m.url}" ${posterAttr}></video>`;
-        } else if (m.type === 'doc' || m.url.includes('.pdf') || m.url.includes('.doc')) {
-          const label = m.label || 'View Document';
-          const ext = m.ext || 'PDF';
-          html += `<a href="${pdfViewerUrl(m.url)}" target="_blank" style="display:inline-flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1.25rem;margin-bottom:0.75rem;margin-right:0.5rem;background:rgba(201,168,76,0.05);transition:all 0.3s;width:100%;box-sizing:border-box" onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='rgba(201,168,76,0.05)'"><span style="font-size:1.2rem">📄</span><div><div style="color:var(--white);margin-bottom:0.15rem">${label}</div><div style="color:var(--gold);font-size:0.5rem">${ext} Document — Click to View</div></div><span style="margin-left:auto;color:var(--gold)">→</span></a>`;
-        } else {
-          const ytId2 = m.url.split('v=')[1]?.split('&')[0] || m.url.split('youtu.be/')[1]?.split('?')[0];
-          if (ytId2) {
-            html += `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-bottom:1rem"><iframe src="https://www.youtube.com/embed/${ytId2}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>`;
+  // Build unified media grid — videos + photos together, same cell size
+  // mediaLayout: 'grid' (default) | 'stack'
+  const mediaLayout = c.mediaLayout || 'grid';
+  const allMediaItems = [];
+
+  // Collect videos/docs from mediaItems or legacy fields
+  const mediaItems = c.mediaItems || [];
+  if (mediaItems.length > 0) {
+    mediaItems.forEach(m => {
+      if (!m.url) return;
+      allMediaItems.push({ kind: 'media', data: m });
+    });
+  } else {
+    if (c.videoUrl) allMediaItems.push({ kind: 'legacy-video', url: c.videoUrl, thumb: c.videoThumb });
+    if (c.mediaLink) allMediaItems.push({ kind: 'legacy-link', url: c.mediaLink, label: c.mediaLabel });
+  }
+  // Collect photos
+  photos.forEach(url => allMediaItems.push({ kind: 'photo', url }));
+
+  const totalMedia = allMediaItems.length;
+  let unifiedHTML = '';
+
+  if (totalMedia > 0) {
+    // Layout toggle — only show if there are both videos and photos
+    const hasVideos = allMediaItems.some(i => i.kind === 'media' || i.kind === 'legacy-video' || i.kind === 'legacy-link');
+    const hasPhotos = allMediaItems.some(i => i.kind === 'photo');
+    const showToggle = hasVideos && hasPhotos;
+
+    if (showToggle) {
+      unifiedHTML += `<div class="credit-media-toggle">
+        <button class="credit-media-toggle-btn${mediaLayout === 'grid' ? ' active' : ''}" onclick="setCreditMediaLayout('${c.id||''}','grid')">⊞ Grid</button>
+        <button class="credit-media-toggle-btn${mediaLayout === 'stack' ? ' active' : ''}" onclick="setCreditMediaLayout('${c.id||''}','stack')">☰ Stacked</button>
+      </div>`;
+    }
+
+    if (mediaLayout === 'grid') {
+      unifiedHTML += `<div class="credit-media-grid">`;
+      allMediaItems.forEach(item => {
+        if (item.kind === 'photo') {
+          unifiedHTML += `<div class="credit-media-cell credit-media-cell-photo">
+            <img src="${item.url}" alt="${c.company||c.artist||''}" loading="lazy" onclick="openLightbox('${item.url}')" onerror="this.parentElement.style.display='none'">
+          </div>`;
+        } else if (item.kind === 'legacy-video') {
+          const posterAttr = item.thumb ? `poster="${item.thumb}"` : '';
+          unifiedHTML += `<div class="credit-media-cell credit-media-cell-video">
+            <video controls src="${item.url}" ${posterAttr} onerror="this.parentElement.style.display='none'"></video>
+          </div>`;
+        } else if (item.kind === 'legacy-link') {
+          const ytId = item.url.split('v=')[1]?.split('&')[0] || item.url.split('youtu.be/')[1]?.split('?')[0];
+          if (ytId) {
+            unifiedHTML += `<div class="credit-media-cell credit-media-cell-video">
+              <iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen style="width:100%;height:100%;border:none"></iframe>
+            </div>`;
           } else {
-            const label = m.label || 'Watch / Listen →';
-            html += `<a href="${m.url}" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;margin-bottom:0.75rem;margin-right:0.5rem;transition:all 0.3s" onmouseover="this.style.background=\'rgba(201,168,76,0.08)\'" onmouseout="this.style.background=\'\'\'">${label}</a>`;
+            unifiedHTML += `<div class="credit-media-cell credit-media-cell-link">
+              <a href="${item.url}" target="_blank">${item.label||'Watch →'}</a>
+            </div>`;
+          }
+        } else {
+          // mediaItems entry
+          const m = item.data;
+          if (m.type === 'video' || m.url.includes('.mp4') || m.url.includes('.mov')) {
+            const posterAttr = m.thumb ? `poster="${m.thumb}"` : '';
+            unifiedHTML += `<div class="credit-media-cell credit-media-cell-video">
+              <video controls src="${m.url}" ${posterAttr} onerror="this.parentElement.style.display='none'"></video>
+            </div>`;
+          } else if (m.type === 'doc' || m.url.includes('.pdf') || m.url.includes('.doc')) {
+            const label = m.label || 'View Document';
+            unifiedHTML += `<div class="credit-media-cell credit-media-cell-doc">
+              <a href="${pdfViewerUrl(m.url)}" target="_blank"><span style="font-size:2rem">📄</span><span>${label}</span></a>
+            </div>`;
+          } else {
+            const ytId2 = m.url.split('v=')[1]?.split('&')[0] || m.url.split('youtu.be/')[1]?.split('?')[0];
+            if (ytId2) {
+              unifiedHTML += `<div class="credit-media-cell credit-media-cell-video">
+                <iframe src="https://www.youtube.com/embed/${ytId2}" allowfullscreen style="width:100%;height:100%;border:none"></iframe>
+              </div>`;
+            } else {
+              unifiedHTML += `<div class="credit-media-cell credit-media-cell-link">
+                <a href="${m.url}" target="_blank">${m.label||'Watch / Listen →'}</a>
+              </div>`;
+            }
           }
         }
       });
+      unifiedHTML += `</div>`;
     } else {
-      // Legacy single media support
-      if (c.videoUrl) {
-        html += `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain;margin-bottom:1rem" src="${c.videoUrl}"></video>`;
-      }
-      if (c.mediaLink) {
-        const ytId2 = c.mediaLink.split('v=')[1]?.split('&')[0] || c.mediaLink.split('youtu.be/')[1]?.split('?')[0];
-        if (ytId2) {
-          html += `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-bottom:1rem"><iframe src="https://www.youtube.com/embed/${ytId2}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>`;
+      // Stack layout — original full-width behavior
+      allMediaItems.forEach(item => {
+        if (item.kind === 'photo') {
+          unifiedHTML += `<img class="credit-modal-photo" src="${item.url}" alt="" loading="lazy" onclick="openLightbox('${item.url}')" onerror="this.style.display='none'">`;
+        } else if (item.kind === 'legacy-video') {
+          const posterAttr = item.thumb ? `poster="${item.thumb}"` : '';
+          unifiedHTML += `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;margin-bottom:1rem" src="${item.url}" ${posterAttr}></video>`;
+        } else if (item.kind === 'legacy-link') {
+          const ytId = item.url.split('v=')[1]?.split('&')[0] || item.url.split('youtu.be/')[1]?.split('?')[0];
+          if (ytId) {
+            unifiedHTML += `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-bottom:1rem"><iframe src="https://www.youtube.com/embed/${ytId}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>`;
+          }
         } else {
-          const label = c.mediaLabel || 'View Media →';
-          html += `<a href="${c.mediaLink}" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;margin-bottom:1rem;transition:all 0.3s" onmouseover="this.style.background=\'rgba(201,168,76,0.08)\'" onmouseout="this.style.background=\'\'\'">${label}</a>`;
+          const m = item.data;
+          if (m.type === 'video' || m.url.includes('.mp4') || m.url.includes('.mov')) {
+            const posterAttr = m.thumb ? `poster="${m.thumb}"` : '';
+            unifiedHTML += `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain;margin-bottom:1rem" src="${m.url}" ${posterAttr}></video>`;
+          } else if (m.type === 'doc' || m.url.includes('.pdf') || m.url.includes('.doc')) {
+            const label = m.label || 'View Document';
+            unifiedHTML += `<a href="${pdfViewerUrl(m.url)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1.25rem;margin-bottom:0.75rem;background:rgba(201,168,76,0.05);transition:all 0.3s">📄 ${label} →</a>`;
+          } else {
+            const ytId2 = m.url.split('v=')[1]?.split('&')[0] || m.url.split('youtu.be/')[1]?.split('?')[0];
+            if (ytId2) {
+              unifiedHTML += `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-bottom:1rem"><iframe src="https://www.youtube.com/embed/${ytId2}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>`;
+            }
+          }
         }
-      }
+      });
     }
-    // Proof link
+
+    // Proof link always at bottom
     if (c.proofLink) {
-      html += `<div style="margin-top:0.5rem"><a href="${pdfViewerUrl(c.proofLink)}" target="_blank" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1px">✦ View Verification Source →</a></div>`;
+      unifiedHTML += `<div style="margin-top:1rem"><a href="${pdfViewerUrl(c.proofLink)}" target="_blank" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1px">✦ View Verification Source →</a></div>`;
     }
-    return html;
-  })();
-  document.getElementById('creditModalMedia').innerHTML = mediaHTML;
-  document.getElementById('creditModalPhotos').innerHTML = photos.map(url =>
-    `<img class="credit-modal-photo" src="${url}" alt="${c.company || c.artist}" loading="lazy" onclick="openLightbox('${url}')" onerror="this.style.display='none'">`
-  ).join('');
+  } else {
+    // No media at all — still show proof link if present
+    if (c.proofLink) {
+      unifiedHTML += `<div style="margin-top:0.5rem"><a href="${pdfViewerUrl(c.proofLink)}" target="_blank" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1px">✦ View Verification Source →</a></div>`;
+    }
+  }
+
+  document.getElementById('creditModalMedia').innerHTML = unifiedHTML;
+  document.getElementById('creditModalPhotos').innerHTML = ''; // now unified above
 
   // Press & Archive section
   const pressItems = c.press || [];
@@ -1940,6 +2022,13 @@ function openCreditModal(i) {
 function closeCreditModal() {
   document.getElementById('creditModalOverlay').classList.remove('open');
   document.body.style.overflow = '';
+}
+function setCreditMediaLayout(creditId, layout) {
+  // Rebuild media section with chosen layout for current open credit
+  if (typeof _currentOpenCredit !== 'undefined' && _currentOpenCredit) {
+    _currentOpenCredit.mediaLayout = layout;
+    openCreditModal(_currentOpenCredit);
+  }
 }
 // Lightbox for photos
 function openLightbox(url) {
