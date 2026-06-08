@@ -1870,12 +1870,15 @@ function openCreditModal(i) {
   document.getElementById('creditModalMeta').textContent = [c.role, c.contractType, c.years].filter(Boolean).join(' · ');
   const rawDesc = (_currentLang === 'es' && c.fullDescEs) ? c.fullDescEs : (c.fullDesc || c.desc || '');
   // Convert newlines to <br> tags
+  // Extract campaign portfolio link from desc and render separately above grid
   let formattedDesc = rawDesc.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
-  // Style "View Campaign Portfolio: <url>" as a bold headline CTA — works for any credit
+  let campaignLink = '';
   formattedDesc = formattedDesc.replace(
     /View Campaign Portfolio:\s*<a href="([^"]+)"[^>]*>[^<]*<\/a>/gi,
-    `<a href="$1" target="_blank" style="display:block;margin:1.5rem 0 0;text-decoration:none;color:inherit"><span style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--white);letter-spacing:0.01em">View Campaign</span> <span style="font-family:var(--font-display);font-size:1.5rem;font-style:italic;font-weight:700;color:var(--gold)">Portfolio →</span></a>`
+    (match, url) => { campaignLink = url; return ''; }
   );
+  // Also clean up trailing <br> left behind
+  formattedDesc = formattedDesc.replace(/(<br\s*\/?>)+\s*$/, '');
   document.getElementById('creditModalDesc').innerHTML = formattedDesc;
 
   // Collaborators
@@ -1905,10 +1908,11 @@ function openCreditModal(i) {
   let unifiedHTML = '';
 
   // Add teaser label above media grid if there's a campaign/portfolio link in the description
-  const hasCampaignLink = (c.fullDesc || c.desc || '').match(/View Campaign Portfolio/i);
+  const hasCampaignLink = !!campaignLink;
   if (totalMedia > 0) {
     if (hasCampaignLink) {
-      unifiedHTML += `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin:0.75rem 0 0.5rem;display:flex;align-items:center;gap:0.75rem">Inside the Campaign <span style="flex:1;height:1px;background:rgba(201,168,76,0.2)"></span></div>`;
+      unifiedHTML += `<a href="${campaignLink}" target="_blank" style="display:block;margin:0 0 0.5rem;text-decoration:none"><span style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:#F5F3EE;letter-spacing:0.01em">View Campaign</span> <span style="font-family:var(--font-display);font-size:1.5rem;font-style:italic;font-weight:700;color:#C9A84C">Portfolio →</span></a>`;
+      unifiedHTML += `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;opacity:0.7;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.75rem">Inside the Campaign <span style="flex:1;height:1px;background:rgba(201,168,76,0.2)"></span></div>`;
     }
     // Layout toggle — only show if there are both videos and photos
     if (mediaLayout === 'grid') {
