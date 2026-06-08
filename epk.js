@@ -2203,6 +2203,51 @@ function openCreditModal(i) {
         }
       });
       unifiedHTML += `</div>`;
+    } else if (mediaLayout === 'hybrid') {
+      // Hybrid: videos full-width on top, photos in grid below
+      const videoItems = allMediaItems.filter(item => item.kind !== 'photo');
+      const photoItems = allMediaItems.filter(item => item.kind === 'photo');
+
+      videoItems.forEach(item => {
+        if (item.kind === 'legacy-video') {
+          const thumb = fixVideoThumb(item.thumb || '');
+          const label = item.label || '';
+          unifiedHTML += `<div class="credit-media-cell credit-media-cell-video" style="width:100%;aspect-ratio:16/9;margin-bottom:0.75rem" onclick="openVideoPlayer('${item.url}','${thumb}')">
+            ${thumb ? `<img src="${thumb}" style="width:100%;height:100%;object-fit:cover;display:block;object-position:center top" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;background:#111"></div>`}
+            <div class="credit-media-play">▶</div>
+            ${label ? `<div class="credit-media-label">${label}</div>` : ''}
+          </div>`;
+        } else if (item.kind === 'legacy-link') {
+          const ytId = item.url.split('v=')[1]?.split('&')[0] || item.url.split('youtu.be/')[1]?.split('?')[0];
+          if (ytId) {
+            unifiedHTML += `<div style="position:relative;width:100%;aspect-ratio:16/9;margin-bottom:0.75rem"><iframe src="https://www.youtube.com/embed/${ytId}" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>`;
+          }
+        } else {
+          const m = item.data;
+          if (m.type === 'video' || m.url.includes('.mp4') || m.url.includes('.mov')) {
+            const thumb = fixVideoThumb(m.thumb || '');
+            const label = m.label || '';
+            unifiedHTML += `<div class="credit-media-cell credit-media-cell-video" style="width:100%;aspect-ratio:16/9;margin-bottom:0.75rem" onclick="openVideoPlayer('${m.url}','${thumb}')">
+              ${thumb ? `<img src="${thumb}" style="width:100%;height:100%;object-fit:cover;display:block;object-position:center top" onerror="this.style.background='#111'">` : `<div style="width:100%;height:100%;background:#111"></div>`}
+              <div class="credit-media-play">▶</div>
+              ${label ? `<div class="credit-media-label">${label}</div>` : ''}
+            </div>`;
+          } else if (m.type === 'doc' || m.url.includes('.pdf')) {
+            unifiedHTML += `<a href="${pdfViewerUrl(m.url)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;margin-bottom:0.75rem;background:rgba(201,168,76,0.05)">📄 ${m.label || 'View Document'} →</a>`;
+          }
+        }
+      });
+
+      if (photoItems.length) {
+        unifiedHTML += `<div class="credit-media-grid" style="margin-top:0.5rem">`;
+        photoItems.forEach(item => {
+          unifiedHTML += `<div class="credit-media-cell credit-media-cell-photo">
+            <img src="${item.url}" alt="" loading="lazy" onclick="openLightbox('${item.url}')" onerror="this.parentElement.style.display='none'" style="object-position:center top">
+          </div>`;
+        });
+        unifiedHTML += `</div>`;
+      }
+
     } else {
       // Stack layout — original full-width behavior
       allMediaItems.forEach(item => {
