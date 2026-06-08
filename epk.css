@@ -642,3 +642,7 @@
     margin-top: 0.06em;
     text-shadow: 0 0 40px rgba(201,168,76,0.3);
   }
+
+/* Asset card hover effects */
+.asset-card-hover { transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s !important; }
+.asset-card-hover:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(201,168,76,0.15); border-color: rgba(201,168,76,0.4) !important; }
