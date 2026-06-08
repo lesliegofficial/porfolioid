@@ -1224,18 +1224,11 @@ let pendingCreditMediaLayout = 'grid';
 function renderCreditMediaList() {
   const container = document.getElementById('creditMediaList');
   if (!container) return;
-
-  // Layout selector header
-  const layoutHtml = `<div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(201,168,76,0.1)">
-    <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray)">Media Display Style:</span>
-    <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)">
-      <input type="radio" name="perCardMediaLayout" value="grid" ${pendingCreditMediaLayout === 'grid' ? 'checked' : ''} onchange="pendingCreditMediaLayout='grid'" style="accent-color:var(--gold)"> ⊞ Grid
-    </label>
-    <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)">
-      <input type="radio" name="perCardMediaLayout" value="stack" ${pendingCreditMediaLayout === 'stack' ? 'checked' : ''} onchange="pendingCreditMediaLayout='stack'" style="accent-color:var(--gold)"> ☰ Stacked
-    </label>
-  </div>`;
-  container.innerHTML = layoutHtml + pendingCreditMedia.map((m, i) => {
+  // Sync the static radio buttons in the form
+  document.querySelectorAll('input[name="perCardMediaLayout"]').forEach(r => {
+    r.checked = r.value === pendingCreditMediaLayout;
+  });
+  container.innerHTML = pendingCreditMedia.map((m, i) => {
     const isVideo = m.type === 'video' || (m.url && m.url.includes('.mp4'));
     const typeLabel = isVideo ? '📹 MP4' : m.type === 'doc' ? '📄 DOC' : '🔗 LINK';
     const thumbSection = isVideo ? `
