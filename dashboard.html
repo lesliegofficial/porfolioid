@@ -1563,6 +1563,14 @@
 
         <div class="field-group">
           <label class="field-label">Photos <span style="color:var(--gray);font-weight:400">(ceremony, presentation, event)</span></label>
+          <div style="display:flex;gap:0.5rem;margin-bottom:0.5rem">
+            <label style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.08em">Display style:</label>
+            <select id="newAwardPhotoStyle" style="background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.2rem 0.4rem;font-family:var(--font-mono);font-size:0.55rem">
+              <option value="thumbnails">Thumbnails (small)</option>
+              <option value="grid">Grid (medium)</option>
+              <option value="full">Full Width (large)</option>
+            </select>
+          </div>
           <div id="awardPhotosPreview" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;min-height:20px"></div>
           <input type="file" id="awardPhotoInput" accept="image/*" style="display:none" multiple>
           <button class="btn-add" onclick="triggerAwardPhotoUpload()">+ Add Photos</button>
