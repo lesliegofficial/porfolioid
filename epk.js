@@ -466,107 +466,21 @@ function buildEPK(epk) {
 
   const categoryIcons = { 'Resume':'📋', 'Press Kit':'📦', 'Tech Rider':'🎛', 'Stage Plot':'🎭', 'Bio':'📝', 'Photo Pack':'📸', 'Contract Template':'📜', 'Certificate':'🏅', 'Other':'📄' };
 
-  const assetsLocked = epk.assetsLocked === true;
-  const assetsLayout = epk.assetsLayout || 'cards';
-  const visibleAssets = (epk.assets || []).filter(a => a.visible !== false && a.category !== 'Resume');
-
-  function makeAssetBtn(a, idx) {
-    if (assetsLocked) return `<button onclick="openAssetRequest()" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.3);background:none;color:var(--gold);padding:0.5rem 1rem">🔒 Request Access</button>`;
-    if (a.url) return `<a href="${a.url}" target="_blank" onclick="trackAssetDownload(${idx})" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;white-space:nowrap">${a.btnLabel || 'Download →'}</a>`;
-    return `<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);opacity:0.4">Coming Soon</span>`;
-  }
-
-  let assetsHTML = '';
-
-  if (assetsLayout === 'cards') {
-    // Option A: Standard cards (current)
-    assetsHTML = visibleAssets.map((a, i) => {
+  const assetsHTML = (epk.assets || [])
+    .filter(a => a.visible !== false && a.category !== 'Resume')
+    .map((a, i) => {
       const icon = categoryIcons[a.category] || '📄';
-      return `<div class="asset-card">
-        <div class="asset-icon">${icon}</div>
-        ${a.category ? `<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.75rem">${a.category}</div>` : ''}
-        <div class="asset-title">${a.title}</div>
-        <p class="asset-desc">${a.desc || ''}</p>
-        ${makeAssetBtn(a, i)}
-      </div>`;
+      const categoryTag = a.category ? `<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.75rem">${a.category}</div>` : '';
+      const downloadAttr = a.url ? `onclick="trackAssetDownload(${epk.assets.indexOf(a)})"` : '';
+      return `
+    <div class="asset-card">
+      <div class="asset-icon">${icon}</div>
+      ${categoryTag}
+      <div class="asset-title">${a.title}</div>
+      <p class="asset-desc">${a.desc || ''}</p>
+      ${a.url ? `<a href="${a.url}" class="asset-btn" target="_blank" ${downloadAttr}>${a.btnLabel || 'Download →'}</a>` : `<span class="asset-btn" style="opacity:0.4">${a.btnLabel || 'Coming Soon'}</span>`}
+    </div>`;
     }).join('');
-  } else if (assetsLayout === 'list') {
-    // Option B: Horizontal list rows
-    assetsHTML = `<div style="display:flex;flex-direction:column;gap:0;border:1px solid rgba(201,168,76,0.12)">` +
-      visibleAssets.map((a, i) => {
-        const icon = categoryIcons[a.category] || '📄';
-        return `<div style="display:flex;align-items:center;gap:1.5rem;padding:1.1rem 1.5rem;border-bottom:1px solid rgba(201,168,76,0.08);background:${i%2===0?'rgba(255,255,255,0.01)':'transparent'};transition:background 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.04)'" onmouseout="this.style.background='${i%2===0?'rgba(255,255,255,0.01)':'transparent'}'">
-          <span style="font-size:1.4rem;flex-shrink:0">${icon}</span>
-          <div style="flex:1;min-width:0">
-            <div style="font-family:var(--font-display);font-size:1rem;color:var(--white);margin-bottom:0.2rem">${a.title}</div>
-            ${a.desc ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.05em">${a.desc}</div>` : ''}
-          </div>
-          ${a.category ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);background:rgba(255,255,255,0.04);padding:0.2rem 0.6rem;flex-shrink:0">${a.category}</span>` : ''}
-          <div style="flex-shrink:0">${makeAssetBtn(a, i)}</div>
-        </div>`;
-      }).join('') + `</div>`;
-  } else if (assetsLayout === 'compact') {
-    // Option C: Compact 4-column cards
-    assetsHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.75rem">` +
-      visibleAssets.map((a, i) => {
-        const icon = categoryIcons[a.category] || '📄';
-        return `<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.12);padding:1.25rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.5rem;transition:border-color 0.2s" onmouseover="this.style.borderColor='rgba(201,168,76,0.35)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.12)'">
-          <span style="font-size:1.8rem">${icon}</span>
-          <div style="font-family:var(--font-display);font-size:0.85rem;color:var(--white);line-height:1.3">${a.title}</div>
-          ${makeAssetBtn(a, i)}
-        </div>`;
-      }).join('') + `</div>`;
-  } else if (assetsLayout === 'table') {
-    // Option D: Table style
-    assetsHTML = `<table style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:0.6rem">
-      <thead><tr style="border-bottom:1px solid rgba(201,168,76,0.3)">
-        <th style="text-align:left;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">DOCUMENT</th>
-        <th style="text-align:left;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">CATEGORY</th>
-        <th style="text-align:left;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">DESCRIPTION</th>
-        <th style="text-align:right;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">ACCESS</th>
-      </tr></thead>
-      <tbody>` +
-      visibleAssets.map((a, i) => {
-        const icon = categoryIcons[a.category] || '📄';
-        return `<tr style="border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.04)'" onmouseout="this.style.background=''">
-          <td style="padding:0.85rem 1rem;color:var(--white)"><span style="margin-right:0.5rem">${icon}</span>${a.title}</td>
-          <td style="padding:0.85rem 1rem;color:var(--gray);letter-spacing:0.08em;text-transform:uppercase;font-size:0.5rem">${a.category || '—'}</td>
-          <td style="padding:0.85rem 1rem;color:var(--gray)">${a.desc || '—'}</td>
-          <td style="padding:0.85rem 1rem;text-align:right">${makeAssetBtn(a, i)}</td>
-        </tr>`;
-      }).join('') +
-      `</tbody></table>`;
-  } else if (assetsLayout === 'featured') {
-    let _out = '<div style="display:grid;grid-template-columns:300px 1fr;border:1px solid rgba(201,168,76,0.2);overflow:hidden">';
-    // Left: first asset
-    if (visibleAssets.length > 0) {
-      const a0 = visibleAssets[0];
-      const ic0 = categoryIcons[a0.category] || '📄';
-      _out += '<div style="background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.02));border-right:1px solid rgba(201,168,76,0.15);padding:2.5rem 2rem;display:flex;flex-direction:column;justify-content:center;gap:1rem">';
-      _out += '<span style="font-size:3rem">' + ic0 + '</span>';
-      if (a0.category) _out += '<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">' + a0.category + '</div>';
-      _out += '<div style="font-family:var(--font-display);font-size:1.5rem;color:var(--white);line-height:1.2">' + a0.title + '</div>';
-      if (a0.desc) _out += '<p style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);line-height:1.6">' + a0.desc + '</p>';
-      _out += makeAssetBtn(a0, 0);
-      _out += '</div>';
-    }
-    // Right: rest of assets
-    _out += '<div style="display:flex;flex-direction:column">';
-    for (let _ri = 1; _ri < visibleAssets.length; _ri++) {
-      const _a = visibleAssets[_ri];
-      const _ic = categoryIcons[_a.category] || '📄';
-      _out += '<div style="display:flex;align-items:center;gap:1.25rem;padding:1rem 1.5rem;border-bottom:1px solid rgba(201,168,76,0.08)">';
-      _out += '<span style="font-size:1.4rem;flex-shrink:0">' + _ic + '</span>';
-      _out += '<div style="flex:1;min-width:0"><div style="font-family:var(--font-display);font-size:1rem;color:var(--white)">' + _a.title + '</div>';
-      if (_a.desc) _out += '<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.2rem">' + _a.desc + '</div>';
-      _out += '</div>';
-      _out += '<div style="flex-shrink:0;margin-left:1rem">' + makeAssetBtn(_a, _ri) + '</div>';
-      _out += '</div>';
-    }
-    _out += '</div>';
-    _out += '</div>';
-    assetsHTML = _out;
-  }
 
   const bookingEmail = epk.bookingEmail || '';
   const bookingPhone = epk.bookingPhone || '';
@@ -576,7 +490,7 @@ function buildEPK(epk) {
   const bookingRegion = epk.bookingRegion || '';
   const bookingCategories = epk.bookingCategories || [];
   const availabilityLabels = { available:'✅ Available for Bookings', limited:'⚡ Limited Availability', touring:'🎤 Currently on Tour', selective:'🎯 Selective Projects Only', unavailable:'❌ Not Currently Available' };
-  const categoryLabels = { live:'Live Performances', studio:'Studio Sessions', features:'Features / Collabs', touring:'Touring', hosting:'Hosting / MC', ar:'A&R Consulting', creative:'Creative Direction', media:'Media / Press', marketing:'Marketing / PR', professional:'Professional', government:'Government', entrepreneur:'Entrepreneur', technical:'Technical', administration:'Administration', crm:'CRM', sales:'Sales', armedforces:'Armed Forces', other:'Other' };
+  const categoryLabels = { live:'Live Performances', studio:'Studio Sessions', features:'Features / Collabs', touring:'Touring', hosting:'Hosting / MC', ar:'A&R Consulting', creative:'Creative Direction', media:'Media / Press' };
   const availBadge = bookingAvailability ? `<div style="display:inline-block;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);color:var(--gold);padding:0.4rem 1rem;margin-bottom:1.5rem">${availabilityLabels[bookingAvailability]||''}</div>` : '';
   const regionBadge = bookingRegion ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;margin-bottom:1rem">📍 ${bookingRegion}</div>` : '';
   const catBadges = bookingCategories.length ? `<div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:2rem">${bookingCategories.map(c => `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(201,168,76,0.2);color:var(--gray);padding:0.25rem 0.6rem">${categoryLabels[c]||c}</span>`).join('')}</div>` : '';
@@ -752,7 +666,7 @@ function buildEPK(epk) {
           <div class="collapsible-icon">⬡</div>
           <div>
             <div class="collapsible-header-label">Professional Assets</div>
-            <div class="collapsible-header-title">Resources & Downloads ${epk.assetsLocked ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;color:var(--gray);margin-left:0.5rem">🔒 Access Required</span>' : '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;color:var(--gray);margin-left:0.5rem">🔓 Open Access</span>'}</div>
+            <div class="collapsible-header-title">Resources & Downloads</div>
             <div class="collapsible-header-meta">${epk.assets.filter(a=>a.visible!==false && a.category!=='Resume').length} available</div>
           </div>
         </div>
@@ -828,27 +742,8 @@ function buildEPK(epk) {
               <option value="A&R Consulting">A&R Consulting</option>
               <option value="Creative Direction">Creative Direction</option>
               <option value="Media / Press">Media / Press</option>
-              <option value="Marketing / PR">Marketing / PR</option>
-              <option value="Professional">Professional</option>
-              <option value="Government">Government</option>
-              <option value="Entrepreneur">Entrepreneur</option>
-              <option value="Technical">Technical</option>
-              <option value="Administration">Administration</option>
-              <option value="CRM">CRM</option>
-              <option value="Sales">Sales</option>
-              <option value="Armed Forces">Armed Forces</option>
               <option value="Other">Other</option>
             </select>
-            <input type="text" name="booking-type-other" id="bookingTypeOther" placeholder="Describe your inquiry type"
-              style="display:none;width:100%;margin-top:0.5rem;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box">
-            <script>
-              document.addEventListener('change', function(e) {
-                if (e.target && e.target.name === 'booking-type') {
-                  const other = document.getElementById('bookingTypeOther');
-                  if (other) other.style.display = e.target.value === 'Other' ? 'block' : 'none';
-                }
-              });
-            </script>
           </div>
           <div style="margin-bottom:1.5rem">
             <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Message</label>
@@ -900,28 +795,7 @@ function buildMarqueeGallery(photos, container) {
     const pos = photo.position || 'center 0%';
     const item = document.createElement('div');
     item.className = 'gallery-marquee-item';
-    const img = document.createElement('img');
-    img.src = photo.url;
-    img.alt = photo.caption || '';
-    img.loading = 'lazy';
-    img.style.objectPosition = pos;
-    img.onerror = function() { this.style.display = 'none'; };
-    img.onload = function() {
-      const ratio = this.naturalWidth / this.naturalHeight;
-      if (ratio > 1.1) {
-        // Landscape — expand width to show full image, keep height fixed
-        const newWidth = Math.min(Math.round(380 * ratio), 700);
-        item.style.width = newWidth + 'px';
-        img.style.objectFit = 'contain';
-        img.style.background = '#0E0E0E';
-      }
-    };
-    const caption = document.createElement('div');
-    caption.className = 'gallery-marquee-caption';
-    caption.textContent = photo.caption || '';
-    item.appendChild(img);
-    item.appendChild(caption);
-    item.innerHTML += '';
+    item.innerHTML = `<img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onerror="this.style.display='none'" style="object-position:${pos}"><div class="gallery-marquee-caption">${photo.caption || ''}</div>`;
     const photoIdx = photos.indexOf(photo) % (photos.length / 2);
     item.innerHTML += `<div class="owner-overlay"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('photos',${photoIdx},-1)">▲</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('photos',${photoIdx},1)">▼</button></div>`;
     item.onclick = () => openLightbox(photo.url);
@@ -1307,20 +1181,6 @@ function expandSection(sectionId) {
 }
 
 // Award Modal
-function buildAwardPhotos(photos, style) {
-  if (!photos || !photos.length) return '';
-  const st = style || 'thumbnails';
-  const minWidth = st === 'thumbnails' ? '200px' : st === 'grid' ? '280px' : '100%';
-  const cols = st === 'full' ? '1fr' : 'repeat(auto-fill, minmax(' + minWidth + ', 1fr))';
-  const rows = photos.map(function(p) {
-    const pu = typeof p === 'object' ? p.url : p;
-    const pc = typeof p === 'object' ? (p.caption || '') : '';
-    const cap = pc ? '<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);padding:0.2rem 0;letter-spacing:0.05em">' + pc + '</div>' : '';
-    return '<div><img src="' + pu + '" data-url="' + pu.replace(/"/g, '&quot;') + '" onclick="openLightbox(this.dataset.url)" style="width:100%;aspect-ratio:4/3;object-fit:cover;cursor:pointer;border:1px solid rgba(201,168,76,0.15);transition:opacity 0.2s" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" onerror="this.style.display=\'none\'">' + cap + '</div>';
-  }).join('');
-  return '<div style="display:grid;grid-template-columns:' + cols + ';gap:0.5rem">' + rows + '</div>';
-}
-
 function openAwardModal(idx) {
   const awards = window._epkData?.awards || [];
   const a = awards[idx];
@@ -1342,86 +1202,18 @@ function openAwardModal(idx) {
     ${a.org ? `<div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--gray);letter-spacing:0.1em;margin-bottom:1rem">${a.org}</div>` : ''}
     ${a.category ? `<div style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,255,255,0.05);color:var(--gray);padding:0.2rem 0.6rem;display:inline-block;margin-bottom:1rem">${a.category}</div>` : ''}
     ${a.desc ? `<p style="font-size:0.9rem;color:var(--gray-light);line-height:1.75;margin-bottom:1.25rem">${a.desc}</p>` : ''}
-    <div style="display:flex;flex-direction:column;gap:0.5rem">
-      ${a.certUrl ? `<div style="margin-top:1rem">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
-          <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray)">📄 Certificate</div>
-          <div style="display:flex;gap:0.5rem">
-            <button onclick="rotateCert(-90)" style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold);padding:0.3rem 0.6rem;cursor:pointer;font-size:0.8rem" title="Rotate Left">↺</button>
-            <button onclick="rotateCert(90)" style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold);padding:0.3rem 0.6rem;cursor:pointer;font-size:0.8rem" title="Rotate Right">↻</button>
-          </div>
-        </div>
-        <div style="overflow:hidden;background:#1C1C1C;border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;min-height:300px">
-          <img id="certPreviewImg" src="${(function(u){const t=u.includes('zjz3grw21r7nqtwgajh8')?'f_jpg,q_90,pg_1,a_270':'f_jpg,q_90,pg_1';return u.replace('/upload/','/upload/'+t+'/');}).call(null,a.certUrl)}" data-rotation="${a.certUrl.includes('zjz3grw21r7nqtwgajh8')?270:0}" style="max-width:100%;max-height:520px;object-fit:contain;display:block;transition:transform 0.3s" onerror="this.outerHTML='<div style=\'padding:2rem;text-align:center;color:var(--gray);font-family:var(--font-mono);font-size:0.7rem\'>Preview not available</div>'">
-        </div>
-      </div>` : ''}
-      ${a.proofLink ? `<a href="${pdfViewerUrl(a.proofLink)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.15);padding:0.75rem 1rem;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.05)'" onmouseout="this.style.background=''">✦ <span>View Verification</span> <span style="margin-left:auto">→</span></a>` : ''}
-    </div>
     ${(a.photos||[]).length ? `
-      <div style="margin-top:1.25rem">
-        <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.75rem">📸 Photos</div>
-        ${buildAwardPhotos(a.photos, a.photoStyle)}
-      </div>` : ''}`;
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.25rem">
+        ${(a.photos||[]).map(p=>`<img src="${p}" onclick="openLightbox('${p}')" style="width:calc(50% - 0.25rem);aspect-ratio:4/3;object-fit:cover;cursor:pointer;border:1px solid rgba(201,168,76,0.15);transition:opacity 0.2s" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" onerror="this.style.display='none'">`).join('')}
+      </div>` : ''}
+    <div style="display:flex;flex-direction:column;gap:0.5rem">
+      ${a.certUrl ? `<a href="${pdfViewerUrl(a.certUrl)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;background:rgba(201,168,76,0.05);transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='rgba(201,168,76,0.05)'">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--gold)">→</span></a>` : ''}
+      ${a.proofLink ? `<a href="${pdfViewerUrl(a.proofLink)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.15);padding:0.75rem 1rem;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.05)'" onmouseout="this.style.background=''">✦ <span>View Verification</span> <span style="margin-left:auto">→</span></a>` : ''}
+    </div>`;
 
   const overlay = document.getElementById('awardModalOverlay');
   overlay.style.display = 'flex';
   document.body.style.overflow = 'hidden';
-}
-
-function openAssetRequest() {
-  const existing = document.getElementById('assetRequestModal');
-  if (existing) { existing.style.display = 'flex'; return; }
-  const modal = document.createElement('div');
-  modal.id = 'assetRequestModal';
-  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10000;display:flex;align-items:center;justify-content:center;padding:1rem';
-  modal.innerHTML = `
-    <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.2);padding:2rem;max-width:420px;width:100%;position:relative">
-      <button onclick="document.getElementById('assetRequestModal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--gray);font-size:1.2rem;cursor:pointer">✕</button>
-      <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">🔒 Access Required</div>
-      <h3 style="font-family:var(--font-display);font-size:1.3rem;color:var(--white);margin-bottom:0.5rem">Request Download Access</h3>
-      <p style="font-family:var(--font-body);font-size:0.85rem;color:var(--gray-light);line-height:1.6;margin-bottom:1.5rem">These assets contain personal information and are available to authorized contacts only. Submit your info and Leslie will review your request.</p>
-      <div id="assetRequestForm">
-        <input id="arName" type="text" placeholder="Your Full Name" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;margin-bottom:0.75rem;box-sizing:border-box">
-        <input id="arEmail" type="email" placeholder="Your Email Address" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;margin-bottom:0.75rem;box-sizing:border-box">
-        <input id="arOrg" type="text" placeholder="Company / Organization (optional)" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;margin-bottom:1rem;box-sizing:border-box">
-        <button onclick="submitAssetRequest()" style="width:100%;background:var(--gold);color:var(--black);border:none;padding:0.85rem;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer">Send Request</button>
-      </div>
-      <div id="assetRequestSuccess" style="display:none;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;color:var(--gold);text-align:center;padding:1rem;border:1px solid rgba(201,168,76,0.2)">✓ Request sent. Leslie will be in touch shortly.</div>
-    </div>`;
-  document.body.appendChild(modal);
-}
-
-function submitAssetRequest() {
-  const name = document.getElementById('arName').value.trim();
-  const email = document.getElementById('arEmail').value.trim();
-  const org = document.getElementById('arOrg').value.trim();
-  if (!name || !email) { alert('Please enter your name and email.'); return; }
-  const slug = getSlugFromURL();
-  fetch('/.netlify/functions/epk', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({action:'assetRequest', slug, name, email, org})
-  }).catch(()=>{});
-  document.getElementById('assetRequestForm').style.display = 'none';
-  document.getElementById('assetRequestSuccess').style.display = 'block';
-}
-
-function rotateCert(deg) {
-  const img = document.getElementById('certPreviewImg');
-  if (!img) return;
-  const current = parseInt(img.dataset.rotation || 0);
-  const next = (current + deg + 360) % 360;
-  img.dataset.rotation = next;
-  img.style.transform = next ? `rotate(${next}deg)` : '';
-  // Adjust container height for portrait vs landscape
-  const wrap = img.parentElement;
-  if (next === 90 || next === 270) {
-    wrap.style.minHeight = '520px';
-    img.style.maxWidth = '60%';
-  } else {
-    wrap.style.minHeight = '300px';
-    img.style.maxWidth = '100%';
-  }
 }
 
 function closeAwardModal() {
