@@ -1205,7 +1205,7 @@ function buildCollectionsGallery(photos, container) {
           <div class="gallery-collection-lb-title">${meta.icon} ${name}</div>
           <div class="gallery-collection-lb-grid">
             ${gphotos.map(p => `<div class="gallery-collection-lb-item" onclick="openLightbox('${p.url}')">
-              <img src="${p.url}" alt="${(p.caption||'').replace(/"/g,"'")}" loading="lazy" style="object-position:${p.position||'center 0%'}" onerror="this.style.display='none'">
+              <img src="${p.url}" alt="${(p.caption||'').replace(/"/g,"'")}" loading="lazy" style="object-position:${(p.position && p.position !== 'center') ? p.position : 'center top'}" onerror="this.style.display='none'">
               ${p.caption ? `<div class="gallery-collection-lb-cap">${p.caption}</div>` : ''}
             </div>`).join('')}
           </div>
@@ -1245,7 +1245,7 @@ function buildGridGallery(photos, container) {
       img.src = photo.url;
       img.alt = photo.caption || '';
       img.loading = 'lazy';
-      img.style.objectPosition = photo.position || 'center 0%';
+      img.style.objectPosition = (photo.position && photo.position !== 'center') ? photo.position : 'center top';
       img.onerror = function() { this.style.display = 'none'; };
       item.appendChild(img);
       if (photo.caption) {
@@ -1381,7 +1381,7 @@ function buildMagazineGallery(photos, container) {
       img.src = photo.url;
       img.alt = photo.caption || '';
       img.loading = 'lazy';
-      img.style.objectPosition = photo.position || 'center 0%';
+      img.style.objectPosition = (photo.position && photo.position !== 'center') ? photo.position : 'center top';
       img.onerror = function() { this.style.display = 'none'; };
       img.onclick = () => openLightbox(photo.url);
       item.appendChild(img);
@@ -1438,7 +1438,7 @@ function buildTimelineGallery(photos, container) {
       img.src = photo.url;
       img.alt = photo.caption || '';
       img.loading = 'lazy';
-      img.style.objectPosition = photo.position || 'center 0%';
+      img.style.objectPosition = (photo.position && photo.position !== 'center') ? photo.position : 'center top';
       img.onerror = function() { this.style.display = 'none'; };
       img.onclick = () => openLightbox(photo.url);
       item.appendChild(img);
