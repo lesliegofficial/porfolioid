@@ -1296,9 +1296,9 @@ function addCreditMedia(type) {
         const data = await res.json();
         if (data.secure_url) {
           // Auto-generate thumbnail from video using Cloudinary
-          // Replace /video/upload/ with /video/upload/so_auto,w_800,h_450,c_fill/f_jpg/ to get a frame
+          // Replace /video/upload/ with transform to get a frame at natural dimensions
           const autoThumb = data.secure_url
-            .replace('/video/upload/', '/video/upload/so_auto,w_800,h_450,c_fill/f_jpg/')
+            .replace('/video/upload/', '/video/upload/so_auto,w_800/f_jpg/')
             .replace(/\.mp4$/, '.jpg')
             .replace(/\.mov$/, '.jpg')
             .replace(/\.webm$/, '.jpg');
