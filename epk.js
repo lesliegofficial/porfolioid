@@ -1909,7 +1909,7 @@ function openCreditModal(i) {
             <img src="${item.url}" alt="${c.company||c.artist||''}" loading="lazy" onclick="openLightbox('${item.url}')" onerror="this.parentElement.style.display='none'">
           </div>`;
         } else if (item.kind === 'legacy-video') {
-          const thumb = item.thumb || '';
+          const thumb = fixVideoThumb(item.thumb || '');
           const label = item.label || '';
           unifiedHTML += `<div class="credit-media-cell credit-media-cell-video" onclick="openVideoPlayer('${item.url}','${thumb}')">
             ${thumb ? `<img src="${thumb}" style="width:100%;height:auto;display:block" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"></div>`}
@@ -1932,7 +1932,7 @@ function openCreditModal(i) {
         } else {
           const m = item.data;
           if (m.type === 'video' || m.url.includes('.mp4') || m.url.includes('.mov')) {
-            const thumb = m.thumb || '';
+            const thumb = fixVideoThumb(m.thumb || '');
             const label = m.label || '';
             unifiedHTML += `<div class="credit-media-cell credit-media-cell-video" onclick="openVideoPlayer('${m.url}','${thumb}')">
               ${thumb ? `<img src="${thumb}" style="width:100%;height:auto;display:block" onerror="this.style.background='#111'">` : `<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"></div>`}
@@ -2033,6 +2033,13 @@ function closeCreditModal() {
   document.getElementById('creditModalOverlay').classList.remove('open');
   document.body.style.overflow = '';
 }
+function fixVideoThumb(url) {
+  // Remove forced crop transforms from Cloudinary video thumbnails
+  // so portrait/square videos show correctly
+  if (!url) return url;
+  return url.replace(/so_auto,[^/]*c_fill[^/]*\/f_jpg\//, 'so_auto/f_jpg/');
+}
+
 function openVideoPlayer(src, thumb) {
   const existing = document.getElementById('videoPlayerOverlay');
   if (existing) existing.remove();
