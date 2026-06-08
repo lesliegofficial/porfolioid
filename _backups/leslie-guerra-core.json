@@ -970,7 +970,7 @@
     "booking"
   ],
   "bookingRegion": "",
-  "galleryLayout": "scroll",
+  "galleryLayout": "grid",
   "heroImageZoom": 101,
   "identityBlock": {
     "timeline": [],
