@@ -1011,6 +1011,7 @@
   "bioImagePosition": 33,
   "heroImageCropTop": 51,
   "bookingCategories": [],
+  "creditMediaLayout": "stack",
   "heroImagePosition": 26,
   "sectionVisibility": {},
   "bookingAvailability": ""
