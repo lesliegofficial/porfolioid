@@ -466,25 +466,101 @@ function buildEPK(epk) {
 
   const categoryIcons = { 'Resume':'📋', 'Press Kit':'📦', 'Tech Rider':'🎛', 'Stage Plot':'🎭', 'Bio':'📝', 'Photo Pack':'📸', 'Contract Template':'📜', 'Certificate':'🏅', 'Other':'📄' };
 
-  const assetsLocked = epk.assetsLocked !== false && epk.assetsLocked !== undefined ? (epk.assetsLocked === true ? true : false) : false;
-  const assetsHTML = (epk.assets || [])
-    .filter(a => a.visible !== false && a.category !== 'Resume')
-    .map((a, i) => {
+  const assetsLocked = epk.assetsLocked === true;
+  const assetsLayout = epk.assetsLayout || 'cards';
+  const visibleAssets = (epk.assets || []).filter(a => a.visible !== false && a.category !== 'Resume');
+
+  function makeAssetBtn(a, idx) {
+    if (assetsLocked) return `<button onclick="openAssetRequest()" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.3);background:none;color:var(--gold);padding:0.5rem 1rem">🔒 Request Access</button>`;
+    if (a.url) return `<a href="${a.url}" target="_blank" onclick="trackAssetDownload(${idx})" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;white-space:nowrap">${a.btnLabel || 'Download →'}</a>`;
+    return `<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);opacity:0.4">Coming Soon</span>`;
+  }
+
+  let assetsHTML = '';
+
+  if (assetsLayout === 'cards') {
+    // Option A: Standard cards (current)
+    assetsHTML = visibleAssets.map((a, i) => {
       const icon = categoryIcons[a.category] || '📄';
-      const categoryTag = a.category ? `<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.75rem">${a.category}</div>` : '';
-      const downloadAttr = a.url ? `onclick="trackAssetDownload(${epk.assets.indexOf(a)})"` : '';
-      const actionBtn = assetsLocked
-        ? `<button class="asset-btn" onclick="openAssetRequest()" style="cursor:pointer;border:1px solid rgba(201,168,76,0.3);background:none;color:var(--gold)">🔒 Request Access</button>`
-        : (a.url ? `<a href="${a.url}" class="asset-btn" target="_blank" ${downloadAttr}>${a.btnLabel || 'Download →'}</a>` : `<span class="asset-btn" style="opacity:0.4">${a.btnLabel || 'Coming Soon'}</span>`);
-      return `
-    <div class="asset-card">
-      <div class="asset-icon">${icon}</div>
-      ${categoryTag}
-      <div class="asset-title">${a.title}</div>
-      <p class="asset-desc">${a.desc || ''}</p>
-      ${actionBtn}
-    </div>`;
+      return `<div class="asset-card">
+        <div class="asset-icon">${icon}</div>
+        ${a.category ? `<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.75rem">${a.category}</div>` : ''}
+        <div class="asset-title">${a.title}</div>
+        <p class="asset-desc">${a.desc || ''}</p>
+        ${makeAssetBtn(a, i)}
+      </div>`;
     }).join('');
+  } else if (assetsLayout === 'list') {
+    // Option B: Horizontal list rows
+    assetsHTML = `<div style="display:flex;flex-direction:column;gap:0;border:1px solid rgba(201,168,76,0.12)">` +
+      visibleAssets.map((a, i) => {
+        const icon = categoryIcons[a.category] || '📄';
+        return `<div style="display:flex;align-items:center;gap:1.5rem;padding:1.1rem 1.5rem;border-bottom:1px solid rgba(201,168,76,0.08);background:${i%2===0?'rgba(255,255,255,0.01)':'transparent'};transition:background 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.04)'" onmouseout="this.style.background='${i%2===0?'rgba(255,255,255,0.01)':'transparent'}'">
+          <span style="font-size:1.4rem;flex-shrink:0">${icon}</span>
+          <div style="flex:1;min-width:0">
+            <div style="font-family:var(--font-display);font-size:1rem;color:var(--white);margin-bottom:0.2rem">${a.title}</div>
+            ${a.desc ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.05em">${a.desc}</div>` : ''}
+          </div>
+          ${a.category ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);background:rgba(255,255,255,0.04);padding:0.2rem 0.6rem;flex-shrink:0">${a.category}</span>` : ''}
+          <div style="flex-shrink:0">${makeAssetBtn(a, i)}</div>
+        </div>`;
+      }).join('') + `</div>`;
+  } else if (assetsLayout === 'compact') {
+    // Option C: Compact 4-column cards
+    assetsHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.75rem">` +
+      visibleAssets.map((a, i) => {
+        const icon = categoryIcons[a.category] || '📄';
+        return `<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.12);padding:1.25rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.5rem;transition:border-color 0.2s" onmouseover="this.style.borderColor='rgba(201,168,76,0.35)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.12)'">
+          <span style="font-size:1.8rem">${icon}</span>
+          <div style="font-family:var(--font-display);font-size:0.85rem;color:var(--white);line-height:1.3">${a.title}</div>
+          ${makeAssetBtn(a, i)}
+        </div>`;
+      }).join('') + `</div>`;
+  } else if (assetsLayout === 'table') {
+    // Option D: Table style
+    assetsHTML = `<table style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:0.6rem">
+      <thead><tr style="border-bottom:1px solid rgba(201,168,76,0.3)">
+        <th style="text-align:left;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">DOCUMENT</th>
+        <th style="text-align:left;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">CATEGORY</th>
+        <th style="text-align:left;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">DESCRIPTION</th>
+        <th style="text-align:right;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">ACCESS</th>
+      </tr></thead>
+      <tbody>` +
+      visibleAssets.map((a, i) => {
+        const icon = categoryIcons[a.category] || '📄';
+        return `<tr style="border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.04)'" onmouseout="this.style.background=''">
+          <td style="padding:0.85rem 1rem;color:var(--white)"><span style="margin-right:0.5rem">${icon}</span>${a.title}</td>
+          <td style="padding:0.85rem 1rem;color:var(--gray);letter-spacing:0.08em;text-transform:uppercase;font-size:0.5rem">${a.category || '—'}</td>
+          <td style="padding:0.85rem 1rem;color:var(--gray)">${a.desc || '—'}</td>
+          <td style="padding:0.85rem 1rem;text-align:right">${makeAssetBtn(a, i)}</td>
+        </tr>`;
+      }).join('') +
+      `</tbody></table>`;
+  } else if (assetsLayout === 'featured') {
+    // Option E: Featured hero + list
+    const first = visibleAssets[0];
+    const rest = visibleAssets.slice(1);
+    const heroIcon = first ? (categoryIcons[first.category] || '📄') : '';
+    assetsHTML = first ? `
+      <div style="background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.02));border:1px solid rgba(201,168,76,0.25);padding:2rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:2rem">
+        <span style="font-size:3rem;flex-shrink:0">${heroIcon}</span>
+        <div style="flex:1">
+          ${first.category ? `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">${first.category}</div>` : ''}
+          <div style="font-family:var(--font-display);font-size:1.5rem;color:var(--white);margin-bottom:0.5rem">${first.title}</div>
+          ${first.desc ? `<p style="font-family:var(--font-body);font-size:0.85rem;color:var(--gray-light);margin-bottom:1rem">${first.desc}</p>` : ''}
+          ${makeAssetBtn(first, 0)}
+        </div>
+      </div>` : '';
+    assetsHTML += rest.length ? `<div style="display:flex;flex-direction:column;gap:0;border:1px solid rgba(201,168,76,0.12)">` +
+      rest.map((a, i) => {
+        const icon = categoryIcons[a.category] || '📄';
+        return `<div style="display:flex;align-items:center;gap:1.25rem;padding:0.9rem 1.25rem;border-bottom:1px solid rgba(201,168,76,0.08);transition:background 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.04)'" onmouseout="this.style.background=''">
+          <span style="font-size:1.2rem;flex-shrink:0">${icon}</span>
+          <div style="flex:1"><div style="font-family:var(--font-display);font-size:0.9rem;color:var(--white)">${a.title}</div>${a.desc?`<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.15rem">${a.desc}</div>`:''}</div>
+          ${makeAssetBtn(a, i+1)}
+        </div>`;
+      }).join('') + `</div>` : '';
+  }
 
   const bookingEmail = epk.bookingEmail || '';
   const bookingPhone = epk.bookingPhone || '';
