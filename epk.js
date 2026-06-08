@@ -537,31 +537,32 @@ function buildEPK(epk) {
       }).join('') +
       `</tbody></table>`;
   } else if (assetsLayout === 'featured') {
-    // Option E: Featured hero + list side by side
+    // Option E: Featured hero left, list right
     const first = visibleAssets[0];
     const rest = visibleAssets.slice(1);
     const heroIcon = first ? (categoryIcons[first.category] || '📄') : '';
-    assetsHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid rgba(201,168,76,0.25);">`;
-    assetsHTML += first ? `
-      <div style="background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.02));padding:2rem;display:flex;align-items:center;gap:2rem;border-right:1px solid rgba(201,168,76,0.15)">
-        <span style="font-size:3rem;flex-shrink:0">${heroIcon}</span>
-        <div style="flex:1">
-          ${first.category ? `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">${first.category}</div>` : ''}
-          <div style="font-family:var(--font-display);font-size:1.5rem;color:var(--white);margin-bottom:0.5rem">${first.title}</div>
-          ${first.desc ? `<p style="font-family:var(--font-body);font-size:0.85rem;color:var(--gray-light);margin-bottom:1rem">${first.desc}</p>` : ''}
-          ${makeAssetBtn(first, 0)}
-        </div>
-      </div>` : '';
-    assetsHTML += rest.length ? `<div style="display:flex;flex-direction:column;gap:0;border:1px solid rgba(201,168,76,0.12);width:100%">` +
+    let heroHTML = first ? `
+      <div style="background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.02));border-right:1px solid rgba(201,168,76,0.15);padding:2.5rem 2rem;display:flex;flex-direction:column;justify-content:center;gap:1rem;min-height:320px">
+        <span style="font-size:3rem">${heroIcon}</span>
+        ${first.category ? `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">${first.category}</div>` : ''}
+        <div style="font-family:var(--font-display);font-size:1.5rem;color:var(--white);line-height:1.2">${first.title}</div>
+        ${first.desc ? `<p style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);line-height:1.6">${first.desc}</p>` : ''}
+        ${makeAssetBtn(first, 0)}
+      </div>` : '<div></div>';
+    let listHTML = rest.length ? `
+      <div style="display:flex;flex-direction:column">` +
       rest.map((a, i) => {
         const icon = categoryIcons[a.category] || '📄';
-        return `<div style="display:flex;align-items:stretch;gap:1.25rem;padding:0;border-bottom:1px solid rgba(201,168,76,0.08);transition:background 0.2s;min-height:80px" onmouseover="this.style.background='rgba(201,168,76,0.04)'" onmouseout="this.style.background=''">
-          <div style="display:flex;align-items:center;padding:0 1.25rem;flex-shrink:0"><span style="font-size:1.2rem">${icon}</span></div>
-          <div style="flex:1;padding:0.9rem 0;display:flex;flex-direction:column;justify-content:center"><div style="font-family:var(--font-display);font-size:0.95rem;color:var(--white)">${a.title}</div>${a.desc?`<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.25rem">${a.desc}</div>`:''}</div>
-          <div style="display:flex;align-items:center;padding:0 1.25rem;flex-shrink:0">${makeAssetBtn(a, i+1)}</div>
+        return `<div style="display:flex;align-items:center;gap:1.25rem;padding:1rem 1.5rem;border-bottom:1px solid rgba(201,168,76,0.08);flex:1;transition:background 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.04)'" onmouseout="this.style.background=''">
+          <span style="font-size:1.4rem;flex-shrink:0">${icon}</span>
+          <div style="flex:1;min-width:0">
+            <div style="font-family:var(--font-display);font-size:1rem;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.title}</div>
+            ${a.desc ? `<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.desc}</div>` : ''}
+          </div>
+          <div style="flex-shrink:0;margin-left:1rem">${makeAssetBtn(a, i+1)}</div>
         </div>`;
-      }).join('') + `</div>` : '';
-    assetsHTML += `</div>`;
+      }).join('') + `</div>` : '<div></div>';
+    assetsHTML = `<div style="display:grid;grid-template-columns:300px 1fr;border:1px solid rgba(201,168,76,0.2);overflow:hidden">${heroHTML}${listHTML}</div>`;
   }
 
   const bookingEmail = epk.bookingEmail || '';
