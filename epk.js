@@ -489,130 +489,201 @@ function buildEPK(epk) {
     return categoryIcons[a.category] || '📄';
   }
 
-  // Returns "Category • Detail1 • Detail2 • Year" from title+desc
-  function getAssetMeta(a) {
+  // ── PREMIUM ASSETS SECTION ────────────────────────────────────────────────
+  // Category pill colors
+  function getCatColor(cat) {
+    const c = (cat || '').toLowerCase();
+    if (c.includes('professional') || c.includes('resume')) return {bg:'rgba(201,168,76,0.15)',color:'#C9A84C',border:'rgba(201,168,76,0.4)'};
+    if (c.includes('education') || c.includes('diploma')) return {bg:'rgba(139,92,246,0.15)',color:'#a78bfa',border:'rgba(139,92,246,0.4)'};
+    if (c.includes('certif')) return {bg:'rgba(20,184,166,0.15)',color:'#2dd4bf',border:'rgba(20,184,166,0.4)'};
+    if (c.includes('award') || c.includes('honor')) return {bg:'rgba(251,191,36,0.15)',color:'#fbbf24',border:'rgba(251,191,36,0.4)'};
+    if (c.includes('press')) return {bg:'rgba(59,130,246,0.15)',color:'#60a5fa',border:'rgba(59,130,246,0.4)'};
+    if (c.includes('contract')) return {bg:'rgba(239,68,68,0.15)',color:'#f87171',border:'rgba(239,68,68,0.4)'};
+    return {bg:'rgba(255,255,255,0.06)',color:'#888',border:'rgba(255,255,255,0.15)'};
+  }
+
+  // SVG icons per asset type
+  function getAssetSVG(a) {
+    const t = (a.title||'').toLowerCase();
+    const c = (a.category||'').toLowerCase();
+    const gold = 'rgba(201,168,76,0.9)';
+    if (t.includes('resume') || c.includes('professional')) return '<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="6" y="3" width="20" height="26" rx="2" stroke="'+gold+'" stroke-width="1.5"/><line x1="10" y1="9" x2="22" y2="9" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="13" x2="22" y2="13" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="17" x2="18" y2="17" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="23" r="2" stroke="'+gold+'" stroke-width="1.5"/><line x1="16" y1="22" x2="22" y2="22" stroke="'+gold+'" stroke-width="1" stroke-linecap="round"/><line x1="16" y1="24" x2="20" y2="24" stroke="'+gold+'" stroke-width="1" stroke-linecap="round"/></svg>';
+    if (t.includes('diploma') || t.includes('degree') || c.includes('education')) return '<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 6L2 13l14 7 14-7-14-7z" stroke="'+gold+'" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 15.5V22c0 2.5 4.5 5 10 5s10-2.5 10-5v-6.5" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/><line x1="28" y1="13" x2="28" y2="21" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/><circle cx="28" cy="22.5" r="1.5" fill="'+gold+'"/></svg>';
+    if (t.includes('president') || t.includes('list') || (t.includes('certif') && c.includes('education'))) return '<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="5" y="4" width="22" height="18" rx="2" stroke="'+gold+'" stroke-width="1.5"/><path d="M10 28l6-5 6 5" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="13" r="4" stroke="'+gold+'" stroke-width="1.5"/><line x1="11" y1="9" x2="11" y2="9" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/></svg>';
+    if (t.includes('analytics') || t.includes('excel') || c.includes('certif')) return '<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="11" stroke="'+gold+'" stroke-width="1.5"/><path d="M16 16l-5-5" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/><circle cx="16" cy="16" r="2" fill="'+gold+'"/><path d="M16 5v3M27 16h-3M16 27v-3M5 16h3" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/></svg>';
+    return '<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="7" y="3" width="18" height="26" rx="2" stroke="'+gold+'" stroke-width="1.5"/><line x1="11" y1="10" x2="21" y2="10" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/><line x1="11" y1="15" x2="21" y2="15" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/><line x1="11" y1="20" x2="17" y2="20" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/></svg>';
+  }
+
+  function getAssetDetails(a) {
+    const t = (a.title||'').toLowerCase();
     const parts = [];
-    if (a.category) parts.push(a.category);
-    if (a.desc) {
-      const bits = a.desc.split(/[•·,—–]/).map(s => s.trim()).filter(s => s.length > 0 && s.length < 50);
-      bits.slice(0, 3).forEach(b => parts.push(b));
-    }
+    if (t.includes('resume')) { parts.push('Professional Resume'); parts.push('PDF'); }
+    else if (t.includes('diploma')) { parts.push('Diploma'); parts.push('1 document • PDF'); }
+    else if (t.includes('president')) { parts.push('Certificate'); parts.push('1 document • PDF'); }
+    else if (t.includes('analytics') && t.includes('google')) { parts.push('Google Analytics 4 Certification'); parts.push('1 document • PDF'); }
+    else if (t.includes('excel') || t.includes('business analytics')) { parts.push('Business Analytics Course'); parts.push('1 document • PDF'); }
+    else { if (a.desc) parts.push(a.desc.split(',')[0]); parts.push('PDF'); }
     return parts.join(' • ');
   }
 
-  // Only show PRIVATE badge when there is a mix of public/private; show VERIFIED/FEATURED always
-  function getVerificationBadge(a) {
-    let badges = '';
-    if (a.verified) badges += '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(126,201,126,0.12);color:#7ec97e;border:1px solid rgba(126,201,126,0.25);padding:0.15rem 0.5rem;margin-right:0.3rem">✓ VERIFIED</span>';
-    if (a.featured) badges += '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.25);padding:0.15rem 0.5rem;margin-right:0.3rem">⭐ FEATURED</span>';
-    // Only show PUBLIC/PRIVATE if there is a mix — all-locked means no badge needed
-    const hasMix = (epk.assets || []).some(x => x.publicOverride) && (epk.assets || []).some(x => !x.publicOverride);
-    if (hasMix) {
-      const isItemPublic = a.publicOverride || !epk.assetsLocked;
-      badges += isItemPublic
-        ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(74,127,165,0.12);color:#4A7FA5;border:1px solid rgba(74,127,165,0.25);padding:0.15rem 0.5rem">🌎 PUBLIC</span>'
-        : '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(255,255,255,0.04);color:var(--gray);border:1px solid rgba(255,255,255,0.08);padding:0.15rem 0.5rem">🔒 PRIVATE</span>';
+  function getAssetYear(a) {
+    if (!a.desc) return '';
+    const m = a.desc.match(/(\d{4})/);
+    return m ? m[1] : '';
+  }
+
+  function getAssetSubtitle(a) {
+    const t = (a.title||'').toLowerCase();
+    if (t.includes('resume')) return 'Professional Resume';
+    if (a.desc) {
+      const bits = a.desc.split(/[,—–]/).map(s=>s.trim()).filter(s=>s.length>0);
+      return bits.slice(0,2).join(' • ');
     }
-    return badges ? '<div style="display:flex;flex-wrap:wrap;gap:0.25rem;margin-bottom:0.5rem">' + badges + '</div>' : '';
+    return '';
   }
 
   const assetsLocked = epk.assetsLocked === true;
   const assetsLayout = epk.assetsLayout || 'cards';
   const visibleAssets = (epk.assets || []).filter(a => a.visible !== false && a.category !== 'Resume');
+  const allCategories = [...new Set(visibleAssets.map(a => a.category).filter(Boolean))];
 
-  function makeBtn(a, i) {
-    if (assetsLocked) return '<button onclick="openAssetRequest()" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.3);background:none;color:var(--gold);padding:0.5rem 1rem;white-space:nowrap">🔒 Request Access</button>';
-    if (a.url) return '<a href="' + a.url + '" target="_blank" onclick="trackAssetDownload(' + i + ')" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;white-space:nowrap">' + (a.btnLabel || 'Download →') + '</a>';
-    return '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);opacity:0.4">Coming Soon</span>';
+  function makePreviewBtn(a, i) {
+    return '<button onclick="openAssetRequest()" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.5);background:rgba(201,168,76,0.08);color:var(--gold);padding:0.45rem 0.9rem;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.background=\'rgba(201,168,76,0.18)\'" onmouseout="this.style.background=\'rgba(201,168,76,0.08)\'">👁 Preview</button>';
   }
 
+  function makeAccessBtn(a, i) {
+    if (assetsLocked) return '<button onclick="openAssetRequest()" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.35);background:none;color:var(--white);padding:0.45rem 0.9rem;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.borderColor=\'rgba(201,168,76,0.8)\'" onmouseout="this.style.borderColor=\'rgba(201,168,76,0.35)\'">🔒 Request Access</button>';
+    if (a.url) return '<a href="'+a.url+'" target="_blank" onclick="trackAssetDownload('+i+')" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.5);background:var(--gold);color:var(--black);padding:0.45rem 0.9rem;transition:all 0.2s;text-decoration:none;white-space:nowrap">↓ Download</a>';
+    return '';
+  }
+
+  // ── CARDS layout ────────────────────────────────────────────────────────────
   let assetsHTML = '';
-
-  if (assetsLayout === 'list') {
-    // STYLE 2 — LIST: compact rows, category+badge on same line, full row hover
-    assetsHTML = '<div style="border:1px solid rgba(201,168,76,0.15)">';
-    for (let i = 0; i < visibleAssets.length; i++) {
-      const a = visibleAssets[i];
-      const ic = getAssetIcon(a);
-      const meta = getAssetMeta(a).replace(a.category + ' • ', ''); // strip leading category since shown separately
-      const verBadge = a.verified ? ' <span style="font-family:var(--font-mono);font-size:0.45rem;color:#7ec97e;border:1px solid rgba(126,201,126,0.3);padding:0.1rem 0.4rem;vertical-align:middle">✓</span>' : '';
-      const featBadge = a.featured ? ' <span style="font-family:var(--font-mono);font-size:0.45rem;color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.1rem 0.4rem;vertical-align:middle">⭐</span>' : '';
-      assetsHTML += '<div class="asset-list-row" style="display:flex;align-items:center;gap:1.5rem;padding:1.1rem 1.75rem;border-bottom:1px solid rgba(201,168,76,0.07);cursor:pointer" onmouseover=\"this.style.background=\'rgba(201,168,76,0.04)\';\" onmouseout=\"this.style.background=\'\'\">'
-        + '<span style="font-size:1.6rem;flex-shrink:0">' + ic + '</span>'
-        + '<div style="flex:1;min-width:0">'
-        + '<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.2rem">'
-        + (a.category ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);opacity:0.8">' + a.category + '</span>' : '')
-        + verBadge + featBadge
+  if (assetsLayout === 'cards') {
+    assetsHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:rgba(201,168,76,0.1)">';
+    visibleAssets.forEach(function(a, i) {
+      const svg = getAssetSVG(a);
+      const cat = getCatColor(a.category);
+      const sub = getAssetSubtitle(a);
+      const year = getAssetYear(a);
+      const isFeat = a.featured || i === 0;
+      assetsHTML += '<div style="background:#0E0E0E;padding:1.75rem 1.5rem;display:flex;flex-direction:column;gap:0;position:relative;transition:background 0.2s" onmouseover="this.style.background=\'#141414\'" onmouseout="this.style.background=\'#0E0E0E\'">'
+        + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.25rem">'
+        + (isFeat ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.15rem 0.5rem">⭐ FEATURED</span>' : '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;background:rgba(255,255,255,0.04);color:var(--gray);border:1px solid rgba(255,255,255,0.08);padding:0.15rem 0.5rem">🔒 PRIVATE</span>')
+        + (a.verified ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(126,201,126,0.1);color:#7ec97e;border:1px solid rgba(126,201,126,0.25);padding:0.15rem 0.5rem">✓ VERIFIED</span>' : '')
         + '</div>'
-        + '<div style="font-family:var(--font-display);font-size:1.1rem;color:var(--white);margin-bottom:0.2rem">' + a.title + '</div>'
-        + (meta ? '<div style="font-family:var(--font-mono);font-size:0.58rem;color:rgba(187,187,187,0.85);letter-spacing:0.04em">' + meta + '</div>' : '')
-        + '</div>'
-        + '<div style="flex-shrink:0">' + makeBtn(a, i) + '</div>'
+        + '<div style="margin-bottom:1rem">' + svg + '</div>'
+        + '<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;display:inline-block;margin-bottom:0.75rem;background:'+cat.bg+';color:'+cat.color+';border:1px solid '+cat.border+'">' + (a.category||'') + '</div>'
+        + '<div style="font-family:var(--font-display);font-size:1.1rem;color:var(--white);line-height:1.3;margin-bottom:0.4rem">' + a.title + '</div>'
+        + (sub ? '<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);line-height:1.5;margin-bottom:1rem">' + sub + (year ? ' • ' + year : '') + '</div>' : '<div style="margin-bottom:1rem"></div>')
+        + '<div style="display:flex;gap:0.5rem;margin-bottom:0.75rem">' + makePreviewBtn(a,i) + makeAccessBtn(a,i) + '</div>'
+        + (year ? '<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);opacity:0.6">📅 Issued: ' + year + '</div>' : '')
+        + (isFeat ? '<div style="position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold)"></div>' : '')
         + '</div>';
-    }
+    });
     assetsHTML += '</div>';
 
-  } else if (assetsLayout === 'compact') {
-    // STYLE 3 — COMPACT: centered tiles with meta, hover glow
-    assetsHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:0.85rem">';
-    for (let i = 0; i < visibleAssets.length; i++) {
-      const a = visibleAssets[i];
-      const ic = getAssetIcon(a);
-      const meta = getAssetMeta(a);
-      const verBadge = a.verified ? '<span style="font-family:var(--font-mono);font-size:0.45rem;color:#7ec97e;border:1px solid rgba(126,201,126,0.3);padding:0.1rem 0.4rem">✓ VERIFIED</span>' : '';
-      const featBadge = a.featured ? '<span style="font-family:var(--font-mono);font-size:0.45rem;color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.1rem 0.4rem">⭐ FEATURED</span>' : '';
-      const badgeRow = (verBadge || featBadge) ? '<div style="display:flex;gap:0.25rem;justify-content:center;flex-wrap:wrap;margin-bottom:0.4rem">' + verBadge + featBadge + '</div>' : '';
-      assetsHTML += '<div class="asset-card-hover" style="background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.12);padding:1.6rem 1.25rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.4rem">'
-        + '<span style="font-size:2.2rem;margin-bottom:0.3rem">' + ic + '</span>'
-        + (a.category ? '<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(201,168,76,0.85);margin-bottom:0.1rem">' + a.category + '</div>' : '')
-        + '<div style="font-family:var(--font-display);font-size:1rem;color:var(--white);line-height:1.3;margin-bottom:0.2rem">' + a.title + '</div>'
-        + (meta ? '<div style="font-family:var(--font-mono);font-size:0.52rem;color:rgba(187,187,187,0.8);line-height:1.5;margin-bottom:0.4rem">' + meta.replace(a.category + ' • ', '') + '</div>' : '')
-        + badgeRow
-        + '<div style="margin-top:0.5rem">' + makeBtn(a, i) + '</div>'
-        + '</div>';
-    }
-    assetsHTML += '</div>';
-
-  } else if (assetsLayout === 'table') {
-    // STYLE 4 — TABLE: no Status column, wider Description, row hover, clickable titles
+  // ── LIST layout ──────────────────────────────────────────────────────────────
+  } else if (assetsLayout === 'list') {
     assetsHTML = '<table style="width:100%;border-collapse:collapse">'
-      + '<thead><tr style="border-bottom:2px solid rgba(201,168,76,0.3)">'
-      + '<th style="text-align:left;padding:0.85rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;font-weight:400;width:30%">DOCUMENT</th>'
-      + '<th style="text-align:left;padding:0.85rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;font-weight:400;width:15%">CATEGORY</th>'
-      + '<th style="text-align:left;padding:0.85rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;font-weight:400">DESCRIPTION</th>'
-      + '<th style="text-align:right;padding:0.85rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;font-weight:400;width:180px">ACCESS</th>'
+      + '<thead><tr style="border-bottom:1px solid rgba(201,168,76,0.2)">'
+      + '<th style="text-align:left;padding:0.75rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gray);font-weight:400">DOCUMENT</th>'
+      + '<th style="text-align:left;padding:0.75rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gray);font-weight:400">CATEGORY</th>'
+      + '<th style="text-align:left;padding:0.75rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gray);font-weight:400">DETAILS</th>'
+      + '<th style="text-align:left;padding:0.75rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gray);font-weight:400">LAST UPDATED</th>'
+      + '<th style="text-align:right;padding:0.75rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gray);font-weight:400">ACCESS</th>'
       + '</tr></thead><tbody>';
-    for (let i = 0; i < visibleAssets.length; i++) {
-      const a = visibleAssets[i];
-      const ic = getAssetIcon(a);
-      const verBadge = a.verified ? ' <span style="font-family:var(--font-mono);font-size:0.45rem;color:#7ec97e;border:1px solid rgba(126,201,126,0.3);padding:0.1rem 0.35rem">✓</span>' : '';
-      assetsHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.05);cursor:pointer" onmouseover=\"this.style.background=\'rgba(201,168,76,0.04)\';\" onmouseout=\"this.style.background=\'\'\">'
-        + '<td style="padding:1rem 1.25rem;font-family:var(--font-display);font-size:1.05rem;color:var(--white)">' + ic + ' ' + a.title + verBadge + '</td>'
-        + '<td style="padding:1rem 1.25rem;font-family:var(--font-mono);font-size:0.58rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em">' + (a.category || '—') + '</td>'
-        + '<td style="padding:1rem 1.25rem;font-family:var(--font-mono);font-size:0.63rem;color:rgba(187,187,187,0.85);line-height:1.6">' + (a.desc || '—') + '</td>'
-        + '<td style="padding:1rem 1.25rem;text-align:right">' + makeBtn(a, i) + '</td>'
+    visibleAssets.forEach(function(a, i) {
+      const svg = getAssetSVG(a);
+      const cat = getCatColor(a.category);
+      const sub = getAssetSubtitle(a);
+      const year = getAssetYear(a);
+      const details = getAssetDetails(a);
+      const isFeat = a.featured || i === 0;
+      assetsHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.2s;position:relative" onmouseover="this.style.background=\'rgba(201,168,76,0.03)\'" onmouseout="this.style.background=\'\'\'">'
+        + '<td style="padding:1rem 1rem">'
+        + '<div style="display:flex;align-items:center;gap:0.85rem">'
+        + '<div style="flex-shrink:0;width:44px;height:44px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);display:flex;align-items:center;justify-content:center">' + svg.replace('width="32" height="32"','width="22" height="22"') + '</div>'
+        + '<div>'
+        + '<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.2rem">'
+        + '<span style="font-family:var(--font-display);font-size:0.95rem;color:var(--white)">' + a.title + '</span>'
+        + (isFeat ? '<span style="font-family:var(--font-mono);font-size:0.45rem;background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.1rem 0.4rem">⭐ FEATURED</span>' : '')
+        + '</div>'
+        + (sub ? '<div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray)">' + sub + '</div>' : '')
+        + '</div></div></td>'
+        + '<td style="padding:1rem 1rem;vertical-align:middle">'
+        + '<div><span style="font-family:var(--font-mono);font-size:0.52rem;letter-spacing:0.08em;padding:0.2rem 0.6rem;background:'+cat.bg+';color:'+cat.color+';border:1px solid '+cat.border+'">' + (a.category||'—') + '</span>'
+        + '<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.35rem">🔒 Private</div></div>'
+        + '</td>'
+        + '<td style="padding:1rem 1rem;font-family:var(--font-mono);font-size:0.58rem;color:rgba(187,187,187,0.8);vertical-align:middle;line-height:1.6">' + details + '</td>'
+        + '<td style="padding:1rem 1rem;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);vertical-align:middle">' + (year || '—') + '</td>'
+        + '<td style="padding:1rem 1rem;vertical-align:middle;text-align:right">'
+        + '<div style="display:flex;gap:0.4rem;justify-content:flex-end">' + makePreviewBtn(a,i) + makeAccessBtn(a,i) + '</div></td>'
         + '</tr>';
-    }
-    assetsHTML += '</tbody></table>';
+    });
+    assetsHTML += '</tbody></table>'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;padding:0.85rem 1rem;border-top:1px solid rgba(255,255,255,0.05)">'
+      + '<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Showing 1 to ' + visibleAssets.length + ' of ' + visibleAssets.length + ' assets</div>'
+      + '<div style="display:flex;align-items:center;gap:0.5rem"><span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Rows per page: 10</span></div>'
+      + '</div>';
 
-  } else {
-    // STYLE 1 — CARDS: tighter height, metadata line, no PRIVATE badge when all locked, hover glow
-    const allLocked = epk.assetsLocked === true;
-    assetsHTML = visibleAssets.map(function(a, i) {
-      const ic = getAssetIcon(a);
-      const meta = getAssetMeta(a);
-      const verBadge = a.verified ? '<span style="font-family:var(--font-mono);font-size:0.45rem;letter-spacing:0.08em;background:rgba(126,201,126,0.12);color:#7ec97e;border:1px solid rgba(126,201,126,0.25);padding:0.12rem 0.45rem;margin-right:0.25rem">✓ VERIFIED</span>' : '';
-      const featBadge = a.featured ? '<span style="font-family:var(--font-mono);font-size:0.45rem;letter-spacing:0.08em;background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.25);padding:0.12rem 0.45rem">⭐ FEATURED</span>' : '';
-      const badgeRow = (verBadge || featBadge) ? '<div style="display:flex;flex-wrap:wrap;gap:0.2rem;margin-bottom:0.45rem">' + verBadge + featBadge + '</div>' : '';
-      return '<div class="asset-card asset-card-hover" style="padding:1.5rem">'
-        + '<div style="font-size:2rem;margin-bottom:0.75rem">' + ic + '</div>'
-        + badgeRow
-        + (a.category ? '<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.4rem">' + a.category + '</div>' : '')
-        + '<div class="asset-title" style="font-size:1.05rem;margin-bottom:0.3rem">' + a.title + '</div>'
-        + (meta ? '<div style="font-family:var(--font-mono);font-size:0.55rem;color:rgba(187,187,187,0.8);margin-bottom:0.75rem;line-height:1.5">' + meta.replace(a.category + ' • ', '') + '</div>' : '<div style="margin-bottom:0.75rem"></div>')
-        + makeBtn(a, i)
+  // ── COMPACT layout ───────────────────────────────────────────────────────────
+  } else if (assetsLayout === 'compact') {
+    assetsHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:0.75rem">';
+    visibleAssets.forEach(function(a, i) {
+      const svg = getAssetSVG(a);
+      const cat = getCatColor(a.category);
+      const sub = getAssetSubtitle(a);
+      const year = getAssetYear(a);
+      assetsHTML += '<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);padding:1.4rem 1.1rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.4rem;transition:border-color 0.2s,background 0.2s" onmouseover="this.style.borderColor=\'rgba(201,168,76,0.4)\';this.style.background=\'rgba(201,168,76,0.03)\'" onmouseout="this.style.borderColor=\'rgba(201,168,76,0.1)\';this.style.background=\'rgba(255,255,255,0.02)\'">'
+        + '<div style="margin-bottom:0.5rem">' + svg.replace('width="32" height="32"','width="28" height="28"') + '</div>'
+        + '<span style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.12em;padding:0.15rem 0.45rem;background:'+cat.bg+';color:'+cat.color+';border:1px solid '+cat.border+'">' + (a.category||'') + '</span>'
+        + '<div style="font-family:var(--font-display);font-size:0.9rem;color:var(--white);line-height:1.3">' + a.title + '</div>'
+        + (sub ? '<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);line-height:1.4">' + sub.replace(a.category+' • ','') + (year?' • '+year:'') + '</div>' : '')
+        + '<div style="margin-top:0.5rem;width:100%">' + makeAccessBtn(a,i) + '</div>'
         + '</div>';
-    }).join('');
+    });
+    assetsHTML += '</div>';
+
+  // ── TABLE layout ─────────────────────────────────────────────────────────────
+  } else {
+    assetsHTML = '<table style="width:100%;border-collapse:collapse">'
+      + '<thead><tr style="border-bottom:2px solid rgba(201,168,76,0.25)">'
+      + '<th style="text-align:left;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);font-weight:400;width:35%">DOCUMENT ↕</th>'
+      + '<th style="text-align:left;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);font-weight:400;width:16%">CATEGORY ↕</th>'
+      + '<th style="text-align:left;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);font-weight:400">DESCRIPTION</th>'
+      + '<th style="text-align:left;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);font-weight:400;width:120px">LAST UPDATED ↕</th>'
+      + '<th style="text-align:right;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);font-weight:400;width:220px">ACCESS</th>'
+      + '</tr></thead><tbody>';
+    visibleAssets.forEach(function(a, i) {
+      const svg = getAssetSVG(a);
+      const cat = getCatColor(a.category);
+      const sub = getAssetSubtitle(a);
+      const year = getAssetYear(a);
+      const details = getAssetDetails(a);
+      const isFeat = a.featured || i === 0;
+      assetsHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.2s" onmouseover="this.style.background=\'rgba(201,168,76,0.04)\'" onmouseout="this.style.background=\'\'\'">'
+        + '<td style="padding:0.9rem 1rem;' + (isFeat?'border-left:2px solid var(--gold);':'' ) + '">'
+        + '<div style="display:flex;align-items:center;gap:0.75rem">'
+        + '<div style="flex-shrink:0;width:40px;height:40px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);display:flex;align-items:center;justify-content:center">' + svg.replace('width="32" height="32"','width="20" height="20"') + '</div>'
+        + '<div><div style="font-family:var(--font-display);font-size:1rem;color:var(--white);display:flex;align-items:center;gap:0.4rem">' + a.title
+        + (isFeat ? ' <span style="font-family:var(--font-mono);font-size:0.45rem;background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.1rem 0.35rem">⭐ Featured</span>' : '')
+        + '</div>'
+        + (sub ? '<div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);margin-top:0.2rem">' + sub + '</div>' : '')
+        + '</div></div></td>'
+        + '<td style="padding:0.9rem 1rem;vertical-align:middle"><div><span style="font-family:var(--font-mono);font-size:0.52rem;letter-spacing:0.06em;padding:0.2rem 0.55rem;background:'+cat.bg+';color:'+cat.color+';border:1px solid '+cat.border+'">' + (a.category||'—') + '</span>'
+        + '<div style="font-family:var(--font-mono);font-size:0.48rem;color:var(--gray);margin-top:0.3rem">🔒 Private</div></div></td>'
+        + '<td style="padding:0.9rem 1rem;font-family:var(--font-mono);font-size:0.6rem;color:rgba(187,187,187,0.85);vertical-align:middle;line-height:1.6">' + details + '</td>'
+        + '<td style="padding:0.9rem 1rem;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);vertical-align:middle">' + (year||'—') + '</td>'
+        + '<td style="padding:0.9rem 1rem;vertical-align:middle;text-align:right">'
+        + '<div style="display:flex;gap:0.4rem;justify-content:flex-end">' + makePreviewBtn(a,i) + makeAccessBtn(a,i) + '</div></td>'
+        + '</tr>';
+    });
+    assetsHTML += '</tbody></table>'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;border-top:1px solid rgba(255,255,255,0.05)">'
+      + '<div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray)">Showing 1 to '+visibleAssets.length+' of '+visibleAssets.length+' assets</div>'
+      + '<div style="display:flex;align-items:center;gap:0.5rem"><span style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray)">Rows per page: 10</span></div>'
+      + '</div>';
   }
 
     const bookingEmail = epk.bookingEmail || '';
@@ -1363,7 +1434,7 @@ function openAwardModal(idx) {
       </div>` : ''}
     <div style="display:flex;flex-direction:column;gap:0.5rem">
       ${a.certUrl ? `<a href="${pdfViewerUrl(a.certUrl)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;background:rgba(201,168,76,0.05);transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='rgba(201,168,76,0.05)'">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--gold)">→</span></a>` : ''}
-      ${a.proofLink ? `<a href="${pdfViewerUrl(a.proofLink)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.15);padding:0.75rem 1rem;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.05)'" onmouseout="this.style.background=''">✦ <span>View Verification</span> <span style="margin-left:auto">→</span></a>` : ''}
+      ${a.proofLink ? `<a href="${pdfViewerUrl(a.proofLink)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.15);padding:0.75rem 1rem;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.05)'" onmouseout="this.style.background=\'\'\'">✦ <span>View Verification</span> <span style="margin-left:auto">→</span></a>` : ''}
     </div>`;
 
   const overlay = document.getElementById('awardModalOverlay');
@@ -1485,7 +1556,7 @@ function openCreditModal(i) {
             html += `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-bottom:1rem"><iframe src="https://www.youtube.com/embed/${ytId2}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>`;
           } else {
             const label = m.label || 'Watch / Listen →';
-            html += `<a href="${m.url}" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;margin-bottom:0.75rem;margin-right:0.5rem;transition:all 0.3s" onmouseover="this.style.background='rgba(201,168,76,0.08)'" onmouseout="this.style.background=''">${label}</a>`;
+            html += `<a href="${m.url}" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;margin-bottom:0.75rem;margin-right:0.5rem;transition:all 0.3s" onmouseover="this.style.background=\'rgba(201,168,76,0.08)\'" onmouseout="this.style.background=\'\'\'">${label}</a>`;
           }
         }
       });
@@ -1500,7 +1571,7 @@ function openCreditModal(i) {
           html += `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-bottom:1rem"><iframe src="https://www.youtube.com/embed/${ytId2}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>`;
         } else {
           const label = c.mediaLabel || 'View Media →';
-          html += `<a href="${c.mediaLink}" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;margin-bottom:1rem;transition:all 0.3s" onmouseover="this.style.background='rgba(201,168,76,0.08)'" onmouseout="this.style.background=''">${label}</a>`;
+          html += `<a href="${c.mediaLink}" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;margin-bottom:1rem;transition:all 0.3s" onmouseover="this.style.background=\'rgba(201,168,76,0.08)\'" onmouseout="this.style.background=\'\'\'">${label}</a>`;
         }
       }
     }
