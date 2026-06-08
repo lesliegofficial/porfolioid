@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head><title>Test</title></head>
+<body style="background:#111;color:white;font-family:monospace">
+<div id="out"></div>
+<script>
+fetch('https://porfolioid.com/api/epk?slug=leslie-guerra')
+  .then(r=>r.json())
+  .then(d=>{
+    const c = d.credits.find(c=>c.company&&c.company.includes('NV'));
+    const photos = c.photos||[];
+    const mediaItems = c.mediaItems||[];
+    const allItems = [];
+    mediaItems.forEach(m=>allItems.push({kind:'media',data:m}));
+    photos.forEach(url=>allItems.push({kind:'photo',url}));
+    
+    let html = `<p>Total: ${allItems.length} (${mediaItems.length} videos, ${photos.length} photos)</p>`;
+    html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">';
+    allItems.forEach((item,i)=>{
+      if(item.kind==='photo'){
+        html += `<div style="border:1px solid gold;padding:4px">
+          <p style="font-size:10px;margin:0">PHOTO ${i}</p>
+          <img src="${item.url}" style="width:100%;height:auto" onerror="this.parentElement.style.background='red';this.parentElement.innerHTML+='<p>FAILED</p>'">
+        </div>`;
+      } else {
+        html += `<div style="border:1px solid #444;padding:4px">
+          <p style="font-size:10px;margin:0">VIDEO ${i}: ${item.data.label||''}</p>
+          <img src="${item.data.thumb||''}" style="width:100%;height:auto" onerror="this.parentElement.style.background='#222'">
+        </div>`;
+      }
+    });
+    html += '</div>';
+    document.getElementById('out').innerHTML = html;
+  });
+</script>
+</body>
+</html>
