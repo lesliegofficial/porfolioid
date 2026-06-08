@@ -1210,9 +1210,10 @@ function buildWallGallery(photos, container) {
     if (mosaic.length) {
       const row2 = document.createElement('div');
       row2.className = 'ew-mosaic';
-      const sizes = ['large','medium','small','small','medium','large','small','medium'];
+      // Pattern repeats every 3: large(5)+medium(4)+small(3) = 12 cols exactly
+      const sizePattern = ['large','medium','small'];
       mosaic.forEach((photo, i) => {
-        row2.appendChild(makeCard(photo, `ew-mosaic-${sizes[i % sizes.length]}`, true));
+        row2.appendChild(makeCard(photo, `ew-mosaic-${sizePattern[i % 3]}`, true));
       });
       main.appendChild(row2);
     }
