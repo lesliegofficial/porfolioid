@@ -1874,7 +1874,7 @@ function openCreditModal(i) {
   // Style "View Campaign Portfolio: <url>" as a bold headline CTA — works for any credit
   formattedDesc = formattedDesc.replace(
     /View Campaign Portfolio:\s*<a href="([^"]+)"[^>]*>[^<]*<\/a>/gi,
-    `<a href="$1" target="_blank" style="display:block;margin:1.5rem 0 0.5rem;text-decoration:none"><span style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--text);letter-spacing:0.01em">View Campaign</span> <span style="font-family:var(--font-display);font-size:1.5rem;font-style:italic;font-weight:700;color:var(--gold)">Portfolio →</span></a>`
+    `<a href="$1" target="_blank" style="display:block;margin:1.5rem 0 0;text-decoration:none;color:inherit"><span style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--white);letter-spacing:0.01em">View Campaign</span> <span style="font-family:var(--font-display);font-size:1.5rem;font-style:italic;font-weight:700;color:var(--gold)">Portfolio →</span></a>`
   );
   document.getElementById('creditModalDesc').innerHTML = formattedDesc;
 
@@ -1908,7 +1908,7 @@ function openCreditModal(i) {
   const hasCampaignLink = (c.fullDesc || c.desc || '').match(/View Campaign Portfolio/i);
   if (totalMedia > 0) {
     if (hasCampaignLink) {
-      unifiedHTML += `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.6rem">Inside the Campaign</div>`;
+      unifiedHTML += `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin:0.75rem 0 0.5rem;display:flex;align-items:center;gap:0.75rem">Inside the Campaign <span style="flex:1;height:1px;background:rgba(201,168,76,0.2)"></span></div>`;
     }
     // Layout toggle — only show if there are both videos and photos
     if (mediaLayout === 'grid') {

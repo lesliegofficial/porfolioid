@@ -96,6 +96,7 @@
   .credit-modal-meta { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
   .credit-modal-desc { font-size: 1rem; color: var(--warm-white); line-height: 1.9; margin-bottom: 1.5rem; transition: font-size 0.2s; }
   .credit-modal-desc strong { color: var(--gold); font-weight: 700; display: block; margin-top: 1.5rem; }
+  .credit-modal-desc a { color: inherit; }
   .modal-font-controls { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
   .modal-font-btn { font-family: var(--font-mono); background: none; border: 1px solid rgba(255,255,255,0.12); color: var(--gray); cursor: pointer; padding: 0.25rem 0.65rem; font-size: 0.7rem; letter-spacing: 0.08em; transition: all 0.2s; }
   .modal-font-btn:hover { border-color: var(--gold); color: var(--gold); }
