@@ -464,7 +464,52 @@ function buildEPK(epk) {
     }
   }
 
-  const categoryIcons = { 'Resume':'📋', 'Press Kit':'📦', 'Tech Rider':'🎛', 'Stage Plot':'🎭', 'Bio':'📝', 'Photo Pack':'📸', 'Contract Template':'📜', 'Certificate':'🏅', 'Other':'📄' };
+  const categoryIcons = {
+    'Resume': '📄', 'Professional Assets': '📄',
+    'Education': '🎓', 'Diploma': '🎓',
+    'Certification': '📜', 'Certificate': '📜',
+    'Award': '🏆', 'Recognition': '🏆',
+    'Press': '📰', 'Press Kit': '📦',
+    'Contract': '✍️', 'Contract Template': '✍️',
+    'Letter': '✉️', 'Recommendation': '✉️',
+    'Tech Rider': '🎛', 'Stage Plot': '🎭',
+    'Bio': '📝', 'Photo Pack': '📸', 'Other': '📄'
+  };
+
+  function getAssetIcon(a) {
+    const t = (a.title || '').toLowerCase();
+    const c = (a.category || '').toLowerCase();
+    if (t.includes('resume') || c.includes('resume') || c.includes('professional')) return '📄';
+    if (t.includes('diploma') || t.includes('degree')) return '🎓';
+    if (t.includes('certification') || t.includes('certificate') || c.includes('certif')) return '📜';
+    if (t.includes('award') || t.includes('honor') || t.includes('president')) return '🏆';
+    if (t.includes('press') || t.includes('media')) return '📰';
+    if (t.includes('contract') || t.includes('agreement')) return '✍️';
+    if (t.includes('letter') || t.includes('recommendation')) return '✉️';
+    return categoryIcons[a.category] || '📄';
+  }
+
+  function getAssetMeta(a) {
+    const parts = [];
+    if (a.category) parts.push(a.category);
+    if (a.desc) {
+      // Pull key facts from desc — split on common separators
+      const bits = a.desc.split(/[•·,—–]/).map(s => s.trim()).filter(s => s.length > 0 && s.length < 40);
+      bits.slice(0,3).forEach(b => parts.push(b));
+    }
+    return parts.join(' • ');
+  }
+
+  function getVerificationBadge(a) {
+    let badges = '';
+    if (a.verified) badges += '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(126,201,126,0.12);color:#7ec97e;border:1px solid rgba(126,201,126,0.25);padding:0.15rem 0.5rem;margin-right:0.3rem">✓ VERIFIED</span>';
+    if (a.featured) badges += '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.25);padding:0.15rem 0.5rem;margin-right:0.3rem">⭐ FEATURED</span>';
+    const isPublic = !epk.assetsLocked;
+    badges += isPublic
+      ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(74,127,165,0.12);color:#4A7FA5;border:1px solid rgba(74,127,165,0.25);padding:0.15rem 0.5rem">🌎 PUBLIC</span>'
+      : '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(255,255,255,0.04);color:var(--gray);border:1px solid rgba(255,255,255,0.08);padding:0.15rem 0.5rem">🔒 PRIVATE</span>';
+    return badges ? '<div style="display:flex;flex-wrap:wrap;gap:0.25rem;margin-bottom:0.6rem">' + badges + '</div>' : '';
+  }
 
   const assetsLocked = epk.assetsLocked === true;
   const assetsLayout = epk.assetsLayout || 'cards';
@@ -483,11 +528,16 @@ function buildEPK(epk) {
     for (let i = 0; i < visibleAssets.length; i++) {
       const a = visibleAssets[i];
       const icon = categoryIcons[a.category] || '📄';
-      assetsHTML += '<div style="display:flex;align-items:center;gap:2rem;padding:1.5rem 2rem;border-bottom:1px solid rgba(201,168,76,0.08);width:100%;box-sizing:border-box">'
-        + '<span style="font-size:2rem;flex-shrink:0">' + icon + '</span>'
-        + '<div style="flex:1;min-width:0"><div style="font-family:var(--font-display);font-size:1.2rem;color:var(--white);margin-bottom:0.25rem">' + a.title + '</div>'
-        + (a.desc ? '<div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--gray);letter-spacing:0.05em">' + a.desc + '</div>' : '') + '</div>'
-        + (a.category ? '<span style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);background:rgba(255,255,255,0.04);padding:0.3rem 0.75rem;flex-shrink:0">' + a.category + '</span>' : '')
+      const _icon = getAssetIcon(a);
+      const _meta = getAssetMeta(a);
+      const _badges = getVerificationBadge(a);
+      assetsHTML += '<div style="display:flex;align-items:center;gap:2rem;padding:1.5rem 2rem;border-bottom:1px solid rgba(201,168,76,0.08)">'
+        + '<span style="font-size:2rem;flex-shrink:0">' + _icon + '</span>'
+        + '<div style="flex:1;min-width:0">'
+        + _badges
+        + '<div style="font-family:var(--font-display);font-size:1.2rem;color:var(--white);margin-bottom:0.2rem">' + a.title + '</div>'
+        + (_meta ? '<div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);letter-spacing:0.05em">' + _meta + '</div>' : '')
+        + '</div>'
         + '<div style="flex-shrink:0;margin-left:1rem">' + makeBtn(a, i) + '</div>'
         + '</div>';
     }
@@ -511,15 +561,19 @@ function buildEPK(epk) {
       + '<thead><tr style="border-bottom:2px solid rgba(201,168,76,0.3)">'
       + '<th style="text-align:left;padding:0.9rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;font-weight:400">DOCUMENT</th>'
       + '<th style="text-align:left;padding:0.9rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;font-weight:400">CATEGORY</th>'
+      + '<th style="text-align:left;padding:0.9rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;font-weight:400">STATUS</th>'
       + '<th style="text-align:left;padding:0.9rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;font-weight:400">DESCRIPTION</th>'
       + '<th style="text-align:right;padding:0.9rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;font-weight:400">ACCESS</th>'
       + '</tr></thead><tbody>';
     for (let i = 0; i < visibleAssets.length; i++) {
       const a = visibleAssets[i];
       const icon = categoryIcons[a.category] || '📄';
+      const _tic = getAssetIcon(a);
+      const _tbadge = a.verified ? '<span style="color:#7ec97e;font-size:0.6rem">✓ Verified</span>' : (a.featured ? '<span style="color:var(--gold);font-size:0.6rem">⭐ Featured</span>' : '<span style="color:var(--gray);font-size:0.6rem">—</span>');
       assetsHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.05)">'
-        + '<td style="padding:1.1rem 1.25rem;font-family:var(--font-display);font-size:1rem;color:var(--white)">' + icon + '  ' + a.title + '</td>'
+        + '<td style="padding:1.1rem 1.25rem;font-family:var(--font-display);font-size:1rem;color:var(--white)">' + _tic + '  ' + a.title + '</td>'
         + '<td style="padding:1.1rem 1.25rem;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em">' + (a.category || '—') + '</td>'
+        + '<td style="padding:1.1rem 1.25rem;font-family:var(--font-mono)">' + _tbadge + '</td>'
         + '<td style="padding:1.1rem 1.25rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--gray-light)">' + (a.desc || '—') + '</td>'
         + '<td style="padding:1.1rem 1.25rem;text-align:right">' + makeBtn(a, i) + '</td>'
         + '</tr>';
@@ -529,12 +583,15 @@ function buildEPK(epk) {
   } else {
     // Default: cards
     assetsHTML = visibleAssets.map(function(a, i) {
-      const icon = categoryIcons[a.category] || '📄';
-      return '<div class="asset-card">'
-        + '<div class="asset-icon">' + icon + '</div>'
-        + (a.category ? '<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.75rem">' + a.category + '</div>' : '')
+      const icon = getAssetIcon(a);
+      const meta = getAssetMeta(a);
+      const badges = getVerificationBadge(a);
+      return '<div class="asset-card asset-card-hover">'
+        + '<div style="font-size:2.5rem;margin-bottom:1rem">' + icon + '</div>'
+        + badges
+        + (a.category ? '<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.5rem">' + a.category + '</div>' : '')
         + '<div class="asset-title">' + a.title + '</div>'
-        + '<p class="asset-desc">' + (a.desc || '') + '</p>'
+        + (meta ? '<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.35rem;margin-bottom:0.75rem;line-height:1.5">' + meta + '</div>' : '<div style="margin-bottom:0.75rem"></div>')
         + makeBtn(a, i)
         + '</div>';
     }).join('');
