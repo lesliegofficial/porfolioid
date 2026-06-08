@@ -749,7 +749,7 @@
 .credit-media-toggle-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
 
 .credit-media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.6rem; margin-top: 0.25rem; align-items: start; }
-.credit-media-cell { position: relative; overflow: hidden; border: 1px solid rgba(201,168,76,0.12); background: var(--dark-3); width: 100%; }
+.credit-media-cell { position: relative; border: 1px solid rgba(201,168,76,0.12); background: var(--dark-3); width: 100%; }
 .credit-media-cell video { width: 100%; display: block; background: #000; }
 .credit-media-cell iframe { width: 100%; aspect-ratio: 16/9; display: block; }
 .credit-media-cell-photo { cursor: pointer; transition: border-color 0.2s; }
