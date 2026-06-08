@@ -537,12 +537,13 @@ function buildEPK(epk) {
       }).join('') +
       `</tbody></table>`;
   } else if (assetsLayout === 'featured') {
-    // Option E: Featured hero + list
+    // Option E: Featured hero + list side by side
     const first = visibleAssets[0];
     const rest = visibleAssets.slice(1);
     const heroIcon = first ? (categoryIcons[first.category] || '📄') : '';
-    assetsHTML = first ? `
-      <div style="background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.02));border:1px solid rgba(201,168,76,0.25);padding:2rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:2rem">
+    assetsHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid rgba(201,168,76,0.25);">`;
+    assetsHTML += first ? `
+      <div style="background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.02));padding:2rem;display:flex;align-items:center;gap:2rem;border-right:1px solid rgba(201,168,76,0.15)">
         <span style="font-size:3rem;flex-shrink:0">${heroIcon}</span>
         <div style="flex:1">
           ${first.category ? `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">${first.category}</div>` : ''}
@@ -551,15 +552,16 @@ function buildEPK(epk) {
           ${makeAssetBtn(first, 0)}
         </div>
       </div>` : '';
-    assetsHTML += rest.length ? `<div style="display:flex;flex-direction:column;gap:0;border:1px solid rgba(201,168,76,0.12)">` +
+    assetsHTML += rest.length ? `<div style="display:flex;flex-direction:column;gap:0;border:1px solid rgba(201,168,76,0.12);width:100%">` +
       rest.map((a, i) => {
         const icon = categoryIcons[a.category] || '📄';
-        return `<div style="display:flex;align-items:center;gap:1.25rem;padding:0.9rem 1.25rem;border-bottom:1px solid rgba(201,168,76,0.08);transition:background 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.04)'" onmouseout="this.style.background=''">
-          <span style="font-size:1.2rem;flex-shrink:0">${icon}</span>
-          <div style="flex:1"><div style="font-family:var(--font-display);font-size:0.9rem;color:var(--white)">${a.title}</div>${a.desc?`<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.15rem">${a.desc}</div>`:''}</div>
-          ${makeAssetBtn(a, i+1)}
+        return `<div style="display:flex;align-items:stretch;gap:1.25rem;padding:0;border-bottom:1px solid rgba(201,168,76,0.08);transition:background 0.2s;min-height:80px" onmouseover="this.style.background='rgba(201,168,76,0.04)'" onmouseout="this.style.background=''">
+          <div style="display:flex;align-items:center;padding:0 1.25rem;flex-shrink:0"><span style="font-size:1.2rem">${icon}</span></div>
+          <div style="flex:1;padding:0.9rem 0;display:flex;flex-direction:column;justify-content:center"><div style="font-family:var(--font-display);font-size:0.95rem;color:var(--white)">${a.title}</div>${a.desc?`<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.25rem">${a.desc}</div>`:''}</div>
+          <div style="display:flex;align-items:center;padding:0 1.25rem;flex-shrink:0">${makeAssetBtn(a, i+1)}</div>
         </div>`;
       }).join('') + `</div>` : '';
+    assetsHTML += `</div>`;
   }
 
   const bookingEmail = epk.bookingEmail || '';
