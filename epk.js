@@ -2108,8 +2108,8 @@ function openCreditModal(i) {
   collabEl.innerHTML = c.collaborators?.length ? `<div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;color:var(--gray);margin-bottom:1rem">w/ ${c.collaborators.join(', ')}</div>` : '';
 
   // Build unified media grid — videos + photos together, same cell size
-  // mediaLayout: read from global epk setting (set in dashboard Credits section)
-  const mediaLayout = (typeof epk !== 'undefined' && epk.creditMediaLayout) ? epk.creditMediaLayout : 'grid';
+  // mediaLayout: per-card setting saved in dashboard (defaults to 'grid')
+  const mediaLayout = c.mediaLayout || 'grid';
   const allMediaItems = [];
 
   // Collect videos/docs from mediaItems or legacy fields

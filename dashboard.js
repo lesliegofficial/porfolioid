@@ -361,9 +361,6 @@ function loadAllFields() {
   // Video Layout
   loadVideoLayout();
 
-  // Credit Media Layout
-  loadCreditMediaLayout();
-
   // Career Layout
   loadCareerLayout();
 
@@ -877,6 +874,7 @@ function editCredit(i) {
   if (document.getElementById('newCreditFullDescEs')) document.getElementById('newCreditFullDescEs').value = c.fullDescEs || '';
   pendingCreditMedia = c.mediaItems || (c.mediaLink ? [{type:'link', url:c.mediaLink, label:c.mediaLabel||''}] : []);
   if (c.videoUrl && !pendingCreditMedia.find(m => m.url === c.videoUrl)) pendingCreditMedia.push({type:'video', url:c.videoUrl, label:''});
+  pendingCreditMediaLayout = c.mediaLayout || 'grid';
   renderCreditMediaList();
   document.getElementById('newCreditProofLink').value = c.proofLink || '';
   document.getElementById('newCreditVisible').checked = c.visible !== false;
@@ -1175,7 +1173,7 @@ function addCredit() {
   const pinned = document.getElementById('newCreditPinned').checked;
   if (!artist || !role) return;
   epk.credits = epk.credits || [];
-  const creditData = { company: artist, artist, years, category, contractType, role, projectType, desc, fullDesc, fullDescEs, mediaLink, mediaLabel, videoUrl, mediaItems, proofLink, visible, verified, pinned, collaborators: [...pendingCreditCollaborators], photos: [...pendingCreditPhotos], press: pendingPressItems.filter(p => p.publication && p.summary) };
+  const creditData = { company: artist, artist, years, category, contractType, role, projectType, desc, fullDesc, fullDescEs, mediaLink, mediaLabel, videoUrl, mediaItems, proofLink, visible, verified, pinned, mediaLayout: pendingCreditMediaLayout, collaborators: [...pendingCreditCollaborators], photos: [...pendingCreditPhotos], press: pendingPressItems.filter(p => p.publication && p.summary) };
   if (editingCreditIdx >= 0) {
     epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], ...creditData };
     editingCreditIdx = -1;
@@ -1186,6 +1184,7 @@ function addCredit() {
   pendingCreditPhotos = [];
   pendingCreditCollaborators = [];
   pendingCreditMedia = [];
+  pendingCreditMediaLayout = 'grid';
   pendingPressItems = [];
   renderPressItems();
   renderCreditPhotosPreview();
@@ -1220,11 +1219,23 @@ function addCreditCollaborator() {
 
 // CREDIT MULTI-MEDIA
 let pendingCreditMedia = [];
+let pendingCreditMediaLayout = 'grid';
 
 function renderCreditMediaList() {
   const container = document.getElementById('creditMediaList');
   if (!container) return;
-  container.innerHTML = pendingCreditMedia.map((m, i) => {
+
+  // Layout selector header
+  const layoutHtml = `<div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(201,168,76,0.1)">
+    <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray)">Media Display Style:</span>
+    <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)">
+      <input type="radio" name="perCardMediaLayout" value="grid" ${pendingCreditMediaLayout === 'grid' ? 'checked' : ''} onchange="pendingCreditMediaLayout='grid'" style="accent-color:var(--gold)"> ⊞ Grid
+    </label>
+    <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)">
+      <input type="radio" name="perCardMediaLayout" value="stack" ${pendingCreditMediaLayout === 'stack' ? 'checked' : ''} onchange="pendingCreditMediaLayout='stack'" style="accent-color:var(--gold)"> ☰ Stacked
+    </label>
+  </div>`;
+  container.innerHTML = layoutHtml + pendingCreditMedia.map((m, i) => {
     const isVideo = m.type === 'video' || (m.url && m.url.includes('.mp4'));
     const typeLabel = isVideo ? '📹 MP4' : m.type === 'doc' ? '📄 DOC' : '🔗 LINK';
     const thumbSection = isVideo ? `
@@ -1789,15 +1800,6 @@ function loadVideoLayout() {
   document.querySelectorAll('input[name="videoLayout"]').forEach(r => r.checked = r.value === val);
 }
 
-function saveCreditMediaLayout(val) {
-  epk.creditMediaLayout = val;
-  persistUser(); showSaveBanner();
-}
-
-function loadCreditMediaLayout() {
-  const val = epk.creditMediaLayout || 'grid';
-  document.querySelectorAll('input[name="creditMediaLayout"]').forEach(r => r.checked = r.value === val);
-}
 
 function saveGalleryLayout(val) {
   epk.galleryLayout = val;

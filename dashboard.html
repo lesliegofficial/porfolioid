@@ -510,19 +510,6 @@
       <h1 class="panel-title">Credits & <em>Collaborations</em></h1>
       <p class="panel-sub">Document every significant credit — tours, recordings, label work, productions.</p>
 
-      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:1.5rem">
-        <label class="field-label" style="margin-bottom:0.75rem;display:block">Credit Media Layout</label>
-        <p style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.05em;margin:0 0 0.75rem">How videos and photos display inside each credit card detail view.</p>
-        <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
-          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)">
-            <input type="radio" name="creditMediaLayout" value="grid" onchange="saveCreditMediaLayout(this.value)" style="accent-color:var(--gold)"> ⊞ Grid — All same size
-          </label>
-          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)">
-            <input type="radio" name="creditMediaLayout" value="stack" onchange="saveCreditMediaLayout(this.value)" style="accent-color:var(--gold)"> ☰ Stacked — Full width
-          </label>
-        </div>
-      </div>
-
       <div class="cards-list" id="creditsList"></div>
 
       <button class="btn-add-new" onclick="toggleAddForm('addCreditForm')">+ Add Credit</button>
