@@ -952,7 +952,7 @@
   ],
   "videoLayout": "spotlight",
   "assetsLayout": "featured",
-  "assetsLocked": true,
+  "assetsLocked": false,
   "availability": "Available for tours & studio sessions",
   "bioImageZoom": 93,
   "bookingEmail": "leslieannguerra@gmail.com",
