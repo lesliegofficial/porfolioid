@@ -749,13 +749,17 @@
 .credit-media-toggle-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
 
 .credit-media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.6rem; margin-top: 0.25rem; }
-.credit-media-cell { position: relative; overflow: hidden; border: 1px solid rgba(201,168,76,0.12); background: var(--dark-3); aspect-ratio: 16/9; }
+.credit-media-cell { position: relative; overflow: hidden; border: 1px solid rgba(201,168,76,0.12); background: var(--dark-3); aspect-ratio: 16/9; cursor: pointer; }
 .credit-media-cell video { width: 100%; height: 100%; object-fit: contain; display: block; background: #000; }
 .credit-media-cell iframe { width: 100%; height: 100%; display: block; }
-.credit-media-cell-photo { cursor: pointer; transition: border-color 0.2s; }
+.credit-media-cell-photo { }
 .credit-media-cell-photo:hover { border-color: rgba(201,168,76,0.45); }
 .credit-media-cell-photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
 .credit-media-cell-photo:hover img { transform: scale(1.04); }
+.credit-media-cell-video:hover { border-color: rgba(201,168,76,0.45); }
+.credit-media-cell-video:hover .credit-media-play { background: rgba(201,168,76,0.9); color: #000; }
+.credit-media-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 44px; height: 44px; border-radius: 50%; background: rgba(0,0,0,0.65); border: 2px solid rgba(201,168,76,0.7); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: background 0.2s, color 0.2s; pointer-events: none; padding-left: 3px; }
+.credit-media-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 0.75rem 0.5rem 0.35rem; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.8); pointer-events: none; }
 .credit-media-cell-doc { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; }
 .credit-media-cell-doc a { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--gold); font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; transition: opacity 0.2s; }
 .credit-media-cell-doc a:hover { opacity: 0.75; }

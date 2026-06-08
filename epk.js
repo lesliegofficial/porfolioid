@@ -1909,15 +1909,20 @@ function openCreditModal(i) {
             <img src="${item.url}" alt="${c.company||c.artist||''}" loading="lazy" onclick="openLightbox('${item.url}')" onerror="this.parentElement.style.display='none'">
           </div>`;
         } else if (item.kind === 'legacy-video') {
-          const posterAttr = item.thumb ? `poster="${item.thumb}"` : '';
-          unifiedHTML += `<div class="credit-media-cell credit-media-cell-video">
-            <video controls src="${item.url}" ${posterAttr} onerror="this.parentElement.style.display='none'"></video>
+          const thumb = item.thumb || '';
+          const label = item.label || '';
+          unifiedHTML += `<div class="credit-media-cell credit-media-cell-video" onclick="openVideoPlayer('${item.url}','${thumb}')">
+            ${thumb ? `<img src="${thumb}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"></div>`}
+            <div class="credit-media-play">▶</div>
+            ${label ? `<div class="credit-media-label">${label}</div>` : ''}
           </div>`;
         } else if (item.kind === 'legacy-link') {
           const ytId = item.url.split('v=')[1]?.split('&')[0] || item.url.split('youtu.be/')[1]?.split('?')[0];
           if (ytId) {
-            unifiedHTML += `<div class="credit-media-cell credit-media-cell-video">
-              <iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen style="width:100%;height:100%;border:none"></iframe>
+            const ytThumb = `https://img.youtube.com/vi/${ytId}/mqdefault.jpg`;
+            unifiedHTML += `<div class="credit-media-cell credit-media-cell-video" onclick="openVideoPlayer('yt:${ytId}','${ytThumb}')">
+              <img src="${ytThumb}" style="width:100%;height:100%;object-fit:cover;display:block">
+              <div class="credit-media-play">▶</div>
             </div>`;
           } else {
             unifiedHTML += `<div class="credit-media-cell credit-media-cell-link">
@@ -1925,12 +1930,14 @@ function openCreditModal(i) {
             </div>`;
           }
         } else {
-          // mediaItems entry
           const m = item.data;
           if (m.type === 'video' || m.url.includes('.mp4') || m.url.includes('.mov')) {
-            const posterAttr = m.thumb ? `poster="${m.thumb}"` : '';
-            unifiedHTML += `<div class="credit-media-cell credit-media-cell-video">
-              <video controls src="${m.url}" ${posterAttr} onerror="this.parentElement.style.display='none'"></video>
+            const thumb = m.thumb || '';
+            const label = m.label || '';
+            unifiedHTML += `<div class="credit-media-cell credit-media-cell-video" onclick="openVideoPlayer('${m.url}','${thumb}')">
+              ${thumb ? `<img src="${thumb}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.background='#111'">` : `<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"></div>`}
+              <div class="credit-media-play">▶</div>
+              ${label ? `<div class="credit-media-label">${label}</div>` : ''}
             </div>`;
           } else if (m.type === 'doc' || m.url.includes('.pdf') || m.url.includes('.doc')) {
             const label = m.label || 'View Document';
@@ -1940,8 +1947,10 @@ function openCreditModal(i) {
           } else {
             const ytId2 = m.url.split('v=')[1]?.split('&')[0] || m.url.split('youtu.be/')[1]?.split('?')[0];
             if (ytId2) {
-              unifiedHTML += `<div class="credit-media-cell credit-media-cell-video">
-                <iframe src="https://www.youtube.com/embed/${ytId2}" allowfullscreen style="width:100%;height:100%;border:none"></iframe>
+              const ytThumb = `https://img.youtube.com/vi/${ytId2}/mqdefault.jpg`;
+              unifiedHTML += `<div class="credit-media-cell credit-media-cell-video" onclick="openVideoPlayer('yt:${ytId2}','${ytThumb}')">
+                <img src="${ytThumb}" style="width:100%;height:100%;object-fit:cover;display:block">
+                <div class="credit-media-play">▶</div>
               </div>`;
             } else {
               unifiedHTML += `<div class="credit-media-cell credit-media-cell-link">
@@ -2023,6 +2032,30 @@ function openCreditModal(i) {
 function closeCreditModal() {
   document.getElementById('creditModalOverlay').classList.remove('open');
   document.body.style.overflow = '';
+}
+function openVideoPlayer(src, thumb) {
+  const existing = document.getElementById('videoPlayerOverlay');
+  if (existing) existing.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'videoPlayerOverlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:10000;display:flex;align-items:center;justify-content:center;padding:1rem';
+  const isYT = src.startsWith('yt:');
+  const inner = document.createElement('div');
+  inner.style.cssText = 'position:relative;width:100%;max-width:860px;aspect-ratio:16/9;background:#000';
+  if (isYT) {
+    const ytId = src.replace('yt:', '');
+    inner.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen allow="autoplay"></iframe>`;
+  } else {
+    inner.innerHTML = `<video controls autoplay src="${src}" ${thumb?`poster="${thumb}"`:''}  style="width:100%;height:100%;object-fit:contain;background:#000"></video>`;
+  }
+  const closeBtn = document.createElement('button');
+  closeBtn.textContent = '✕';
+  closeBtn.style.cssText = 'position:absolute;top:-2.5rem;right:0;background:none;border:1px solid rgba(201,168,76,0.4);color:var(--gold);font-size:0.9rem;width:32px;height:32px;cursor:pointer;z-index:1';
+  closeBtn.onclick = () => overlay.remove();
+  inner.appendChild(closeBtn);
+  overlay.appendChild(inner);
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+  document.body.appendChild(overlay);
 }
 // Lightbox for photos
 function openLightbox(url) {
