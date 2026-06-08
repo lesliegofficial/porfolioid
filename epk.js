@@ -1912,7 +1912,7 @@ function openCreditModal(i) {
           const thumb = item.thumb || '';
           const label = item.label || '';
           unifiedHTML += `<div class="credit-media-cell credit-media-cell-video" onclick="openVideoPlayer('${item.url}','${thumb}')">
-            ${thumb ? `<img src="${thumb}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"></div>`}
+            ${thumb ? `<img src="${thumb}" style="width:100%;height:auto;display:block" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"></div>`}
             <div class="credit-media-play">▶</div>
             ${label ? `<div class="credit-media-label">${label}</div>` : ''}
           </div>`;
@@ -1921,7 +1921,7 @@ function openCreditModal(i) {
           if (ytId) {
             const ytThumb = `https://img.youtube.com/vi/${ytId}/mqdefault.jpg`;
             unifiedHTML += `<div class="credit-media-cell credit-media-cell-video" onclick="openVideoPlayer('yt:${ytId}','${ytThumb}')">
-              <img src="${ytThumb}" style="width:100%;height:100%;object-fit:cover;display:block">
+              <img src="${ytThumb}" style="width:100%;height:auto;display:block">
               <div class="credit-media-play">▶</div>
             </div>`;
           } else {
@@ -1935,7 +1935,7 @@ function openCreditModal(i) {
             const thumb = m.thumb || '';
             const label = m.label || '';
             unifiedHTML += `<div class="credit-media-cell credit-media-cell-video" onclick="openVideoPlayer('${m.url}','${thumb}')">
-              ${thumb ? `<img src="${thumb}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.background='#111'">` : `<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"></div>`}
+              ${thumb ? `<img src="${thumb}" style="width:100%;height:auto;display:block" onerror="this.style.background='#111'">` : `<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"></div>`}
               <div class="credit-media-play">▶</div>
               ${label ? `<div class="credit-media-label">${label}</div>` : ''}
             </div>`;
@@ -1949,7 +1949,7 @@ function openCreditModal(i) {
             if (ytId2) {
               const ytThumb = `https://img.youtube.com/vi/${ytId2}/mqdefault.jpg`;
               unifiedHTML += `<div class="credit-media-cell credit-media-cell-video" onclick="openVideoPlayer('yt:${ytId2}','${ytThumb}')">
-                <img src="${ytThumb}" style="width:100%;height:100%;object-fit:cover;display:block">
+                <img src="${ytThumb}" style="width:100%;height:auto;display:block">
                 <div class="credit-media-play">▶</div>
               </div>`;
             } else {
