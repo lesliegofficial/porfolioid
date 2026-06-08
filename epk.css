@@ -818,9 +818,9 @@
 .gallery-scroll-drag { font-family: var(--font-display); font-size: 1rem; font-style: italic; color: var(--gold); letter-spacing: 0.02em; }
 .gallery-scroll-star { position: absolute; top: 0.75rem; right: 0.75rem; color: var(--gold); font-size: 1.2rem; z-index: 2; text-shadow: 0 0 8px rgba(201,168,76,0.5); }
 .gallery-scroll-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 2.5rem 1rem 1rem; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%); }
-.gallery-scroll-category { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.25rem; }
-.gallery-scroll-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--white); line-height: 1.25; margin-bottom: 0.2rem; }
-.gallery-scroll-meta { font-family: var(--font-mono); font-size: 0.5rem; color: rgba(255,255,255,0.6); letter-spacing: 0.05em; }
+.gallery-scroll-category { display: inline-block; font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+.gallery-scroll-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); line-height: 1.2; margin-bottom: 0.25rem; letter-spacing: 0.01em; }
+.gallery-scroll-meta { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(201,168,76,0.85); }
 .gallery-scroll-bottom { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(201,168,76,0.15); }
 .gallery-scroll-arrows { display: flex; gap: 0.5rem; }
 .gallery-scroll-arrow-btn { background: none; border: 1px solid rgba(201,168,76,0.35); color: var(--gold); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
