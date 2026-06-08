@@ -1225,6 +1225,20 @@ function expandSection(sectionId) {
 }
 
 // Award Modal
+function buildAwardPhotos(photos, style) {
+  if (!photos || !photos.length) return '';
+  const st = style || 'thumbnails';
+  const minWidth = st === 'thumbnails' ? '100px' : st === 'grid' ? '180px' : '100%';
+  const cols = st === 'full' ? '1fr' : 'repeat(auto-fill, minmax(' + minWidth + ', 1fr))';
+  const rows = photos.map(function(p) {
+    const pu = typeof p === 'object' ? p.url : p;
+    const pc = typeof p === 'object' ? (p.caption || '') : '';
+    const cap = pc ? '<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);padding:0.2rem 0;letter-spacing:0.05em">' + pc + '</div>' : '';
+    return '<div><img src="' + pu + '" data-url="' + pu.replace(/"/g, '&quot;') + '" onclick="openLightbox(this.dataset.url)" style="width:100%;aspect-ratio:4/3;object-fit:cover;cursor:pointer;border:1px solid rgba(201,168,76,0.15);transition:opacity 0.2s" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" onerror="this.style.display=\'none\'">' + cap + '</div>';
+  }).join('');
+  return '<div style="display:grid;grid-template-columns:' + cols + ';gap:0.5rem">' + rows + '</div>';
+}
+
 function openAwardModal(idx) {
   const awards = window._epkData?.awards || [];
   const a = awards[idx];
@@ -1246,10 +1260,6 @@ function openAwardModal(idx) {
     ${a.org ? `<div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--gray);letter-spacing:0.1em;margin-bottom:1rem">${a.org}</div>` : ''}
     ${a.category ? `<div style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,255,255,0.05);color:var(--gray);padding:0.2rem 0.6rem;display:inline-block;margin-bottom:1rem">${a.category}</div>` : ''}
     ${a.desc ? `<p style="font-size:0.9rem;color:var(--gray-light);line-height:1.75;margin-bottom:1.25rem">${a.desc}</p>` : ''}
-    ${(a.photos||[]).length ? `
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.75rem;margin-bottom:1.5rem">
-        ${(a.photos||[]).map(p=>{const pu=typeof p==='object'?p.url:p;const pc=typeof p==='object'?p.caption:'';return `<img src="${pu}" onclick="openLightbox('${pu}')" title="${pc}" style="width:100%;aspect-ratio:4/3;object-fit:cover;cursor:pointer;border:1px solid rgba(201,168,76,0.15);transition:opacity 0.2s" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" onerror="this.style.display='none'">`;}).join('')}
-      </div>` : ''}
     <div style="display:flex;flex-direction:column;gap:0.5rem">
       ${a.certUrl ? `<div style="margin-top:1rem">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
@@ -1264,7 +1274,12 @@ function openAwardModal(idx) {
         </div>
       </div>` : ''}
       ${a.proofLink ? `<a href="${pdfViewerUrl(a.proofLink)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.15);padding:0.75rem 1rem;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.05)'" onmouseout="this.style.background=''">✦ <span>View Verification</span> <span style="margin-left:auto">→</span></a>` : ''}
-    </div>`;
+    </div>
+    ${(a.photos||[]).length ? `
+      <div style="margin-top:1.25rem">
+        <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.75rem">📸 Photos</div>
+        ${buildAwardPhotos(a.photos, a.photoStyle)}
+      </div>` : ''}`;
 
   const overlay = document.getElementById('awardModalOverlay');
   overlay.style.display = 'flex';
