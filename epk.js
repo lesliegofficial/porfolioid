@@ -1758,10 +1758,22 @@ function openAwardModal(idx) {
     ${a.desc ? `<p style="font-size:0.9rem;color:var(--gray-light);line-height:1.75;margin-bottom:1.25rem">${a.desc}</p>` : ''}
     ${(a.photos||[]).length ? `
       <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.25rem">
-        ${(a.photos||[]).map(p=>`<img src="${p}" onclick="openLightbox('${p}')" style="width:calc(50% - 0.25rem);aspect-ratio:4/3;object-fit:cover;cursor:pointer;border:1px solid rgba(201,168,76,0.15);transition:opacity 0.2s" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" onerror="this.style.display='none'">`).join('')}
+        ${(a.photos||[]).map(p=>{const url=typeof p==='string'?p:p.url; const cap=typeof p==='string'?'':p.caption||''; return `<div style="width:calc(50% - 0.25rem);position:relative"><img src="${url}" onclick="openLightbox('${url}')" style="width:100%;aspect-ratio:4/3;object-fit:cover;cursor:pointer;border:1px solid rgba(201,168,76,0.15);transition:opacity 0.2s;display:block" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" onerror="this.style.display='none'">${cap?`<div style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.08em;color:rgba(255,255,255,0.6);padding:0.3rem 0.25rem">${cap}</div>`:''}</div>`;}).join('')}
       </div>` : ''}
     <div style="display:flex;flex-direction:column;gap:0.5rem">
-      ${a.certUrl ? `<a href="${pdfViewerUrl(a.certUrl)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;background:rgba(201,168,76,0.05);transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='rgba(201,168,76,0.05)'">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--gold)">→</span></a>` : ''}
+      ${a.certUrl ? (() => {
+        const isCloudinary = a.certUrl.includes('cloudinary.com');
+        if (isCloudinary) {
+          const rotation = a.certRotation ? ',a_' + a.certRotation : '';
+          const match = a.certUrl.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.\w+)?$/);
+          const pubId = match ? match[1] : null;
+          const imgUrl = pubId
+            ? 'https://res.cloudinary.com/djj8xe3gx/image/upload/f_jpg,q_85' + rotation + '/' + pubId + '.pdf'
+            : a.certUrl;
+          return '<div style="margin-bottom:1rem"><img src="' + imgUrl + '" style="width:100%;border:1px solid rgba(201,168,76,0.2);display:block;cursor:pointer" onclick="openLightbox(\'' + imgUrl + '\')" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"><a href="' + a.certUrl + '" target="_blank" style="display:none;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;background:rgba(201,168,76,0.05)">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--gold)">→</span></a></div>';
+        }
+        return '<a href="' + pdfViewerUrl(a.certUrl) + '" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;background:rgba(201,168,76,0.05);transition:all 0.2s" onmouseover="this.style.background=\'rgba(201,168,76,0.1)\'" onmouseout="this.style.background=\'rgba(201,168,76,0.05)\'">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--gold)">→</span></a>';
+      })() : ''}
       ${a.proofLink ? `<a href="${pdfViewerUrl(a.proofLink)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.15);padding:0.75rem 1rem;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.05)'" onmouseout="this.style.background=\'\'\'">✦ <span>View Verification</span> <span style="margin-left:auto">→</span></a>` : ''}
     </div>`;
 
