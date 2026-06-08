@@ -1566,7 +1566,9 @@ function renderPhotos() {
     const badges = [
       p.featured ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.15rem 0.5rem">⭐ FEATURED</span>' : '',
       p.category ? `<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.08);color:var(--gray);padding:0.15rem 0.5rem">${p.category}</span>` : '',
-      p.group ? `<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,255,255,0.05);color:var(--gray);padding:0.15rem 0.5rem">${p.group}</span>` : '',
+      p.year ? `<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,255,255,0.05);color:var(--gray);padding:0.15rem 0.5rem">${p.year}</span>` : '',
+      (p.group || p.collection) ? `<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,255,255,0.05);color:var(--gray);padding:0.15rem 0.5rem">📁 ${p.group || p.collection}</span>` : '',
+      p.location ? `<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,255,255,0.04);color:var(--gray);padding:0.15rem 0.5rem">📍 ${p.location}</span>` : '',
     ].filter(Boolean).join(' ');
     container.innerHTML += `
       <div class="editable-card" style="display:flex;gap:1rem;align-items:center">
@@ -1591,11 +1593,21 @@ function editPhoto(i) {
   const p = epk.photos[i];
   document.getElementById('newPhotoCaption').value = p.caption || '';
   document.getElementById('newPhotoUrl').value = p.url || '';
-  document.getElementById('newPhotoGroup').value = p.group || '';
+  document.getElementById('newPhotoGroup').value = p.group || p.collection || '';
   document.getElementById('newPhotoCategory').value = p.category || '';
   document.getElementById('newPhotoFeatured').checked = p.featured || false;
+  document.getElementById('newPhotoCollectionCover').checked = p.collectionCover || false;
+  document.getElementById('newPhotoYear').value = p.year || '';
+  document.getElementById('newPhotoDate').value = p.date || '';
+  document.getElementById('newPhotoLocation').value = p.location || '';
+  document.getElementById('newPhotoPeople').value = p.people || '';
+  document.getElementById('newPhotoTags').value = Array.isArray(p.tags) ? p.tags.join(', ') : (p.tags || '');
+  document.getElementById('newPhotoDesc').value = p.desc || '';
+  document.getElementById('newPhotoCareerPhase').value = p.careerPhase || '';
+  document.getElementById('newPhotoMediaType').value = p.mediaType || '';
+  document.getElementById('newPhotoAchievement').value = p.achievement || '';
+  document.getElementById('newPhotoCredit').value = p.credit || '';
   const pos = p.position || 'center 0%';
-  // Extract % value from position string like "center 30%"
   const posMatch = pos.match(/(\d+)%/);
   const posVal = posMatch ? parseInt(posMatch[1]) : 0;
   document.getElementById('photoPositionSlider').value = posVal;
@@ -1612,10 +1624,22 @@ function addPhoto() {
   const group = document.getElementById('newPhotoGroup').value.trim();
   const category = document.getElementById('newPhotoCategory').value;
   const featured = document.getElementById('newPhotoFeatured').checked;
+  const collectionCover = document.getElementById('newPhotoCollectionCover').checked;
   const position = document.getElementById('photoPositionValue').value || 'center 0%';
+  const year = document.getElementById('newPhotoYear').value ? parseInt(document.getElementById('newPhotoYear').value) : null;
+  const date = document.getElementById('newPhotoDate').value.trim();
+  const location = document.getElementById('newPhotoLocation').value.trim();
+  const people = document.getElementById('newPhotoPeople').value.trim();
+  const tagsRaw = document.getElementById('newPhotoTags').value.trim();
+  const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+  const desc = document.getElementById('newPhotoDesc').value.trim();
+  const careerPhase = document.getElementById('newPhotoCareerPhase').value;
+  const mediaType = document.getElementById('newPhotoMediaType').value;
+  const achievement = document.getElementById('newPhotoAchievement').value;
+  const credit = document.getElementById('newPhotoCredit').value.trim();
   if (!url) return;
   epk.photos = epk.photos || [];
-  const photoData = { caption, url, group, category, featured, position };
+  const photoData = { caption, url, group, collection: group, category, featured, collectionCover, position, year, date, location, people, tags, desc, careerPhase, mediaType, achievement, credit };
   if (editingPhotoIdx >= 0) {
     epk.photos[editingPhotoIdx] = { ...epk.photos[editingPhotoIdx], ...photoData };
     editingPhotoIdx = -1;
@@ -1623,9 +1647,9 @@ function addPhoto() {
   } else {
     epk.photos.push(photoData);
   }
-  ['newPhotoCaption','newPhotoUrl','newPhotoGroup'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('newPhotoCategory').value = '';
-  document.getElementById('newPhotoFeatured').checked = false;
+  ['newPhotoCaption','newPhotoUrl','newPhotoGroup','newPhotoYear','newPhotoDate','newPhotoLocation','newPhotoPeople','newPhotoTags','newPhotoDesc','newPhotoCredit'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  ['newPhotoCategory','newPhotoCareerPhase','newPhotoMediaType','newPhotoAchievement'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  ['newPhotoFeatured','newPhotoCollectionCover'].forEach(id => { const el = document.getElementById(id); if(el) el.checked = false; });
   document.getElementById('photoPositionSlider').value = 0;
   document.getElementById('photoPositionValue').value = 'center 0%';
   document.getElementById('photoPreviewBox').style.display = 'none';

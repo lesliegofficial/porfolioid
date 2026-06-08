@@ -950,10 +950,8 @@
 
       <div class="add-form" id="addPhotoForm">
         <div class="add-form-title">New Photo</div>
-        <div class="field-group">
-          <label class="field-label">Caption</label>
-          <input type="text" id="newPhotoCaption" placeholder="e.g. w/Don Omar — Viña del Mar, Chile">
-        </div>
+
+        <!-- IMAGE -->
         <div class="field-group">
           <label class="field-label">Image</label>
           <input type="url" id="newPhotoUrl" placeholder="https://... or upload below" oninput="updatePhotoPreview(this.value)">
@@ -967,25 +965,129 @@
             <img id="photoPreviewImg" src="" style="width:100%;height:100%;object-fit:cover;object-position:top center" onerror="this.parentElement.style.display='none'">
           </div>
         </div>
+
+        <!-- CAPTION + DESCRIPTION -->
+        <div class="field-group">
+          <label class="field-label">Caption <span style="color:var(--gray);font-weight:400">(short title shown on photo)</span></label>
+          <input type="text" id="newPhotoCaption" placeholder="e.g. With Don Omar — King of Kings Concert">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Description <span style="color:var(--gray);font-weight:400">(story / EPK text)</span></label>
+          <textarea id="newPhotoDesc" rows="2" placeholder="e.g. Performing with Don Omar during the Viña del Mar Festival in Chile."></textarea>
+        </div>
+
+        <!-- COLLECTION + CATEGORY -->
         <div class="field-row">
           <div class="field-group">
-            <label class="field-label">Album / Group</label>
-            <input type="text" id="newPhotoGroup" placeholder="e.g. Live Performance">
+            <label class="field-label">Collection <span style="color:var(--gray);font-weight:400">(album group)</span></label>
+            <input type="text" id="newPhotoGroup" placeholder="e.g. King of Kings Tour, Viña Del Mar">
           </div>
           <div class="field-group">
-            <label class="field-label">Category Tag</label>
+            <label class="field-label">Category</label>
             <select id="newPhotoCategory">
-              <option value="">— Select Category —</option>
-              <option value="Press">Press</option>
-              <option value="Live">Live</option>
-              <option value="Studio">Studio</option>
-              <option value="Behind the Scenes">Behind the Scenes</option>
+              <option value="">— Select —</option>
+              <option value="Live Performances">Live Performances</option>
+              <option value="Backstage">Backstage</option>
+              <option value="Awards & Events">Awards & Events</option>
+              <option value="Studio Sessions">Studio Sessions</option>
+              <option value="Personal Moments">Personal Moments</option>
+              <option value="Press & Publications">Press & Publications</option>
+              <option value="Tour Life">Tour Life</option>
+              <option value="Red Carpet">Red Carpet</option>
+              <option value="Television">Television</option>
               <option value="Editorial">Editorial</option>
-              <option value="Event">Event</option>
-              <option value="Personal">Personal</option>
             </select>
           </div>
         </div>
+
+        <!-- YEAR + DATE -->
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Year</label>
+            <input type="number" id="newPhotoYear" placeholder="e.g. 2006" min="1990" max="2030">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Date <span style="color:var(--gray);font-weight:400">(optional)</span></label>
+            <input type="text" id="newPhotoDate" placeholder="e.g. February 14, 2024">
+          </div>
+        </div>
+
+        <!-- LOCATION -->
+        <div class="field-group">
+          <label class="field-label">Location</label>
+          <input type="text" id="newPhotoLocation" placeholder="e.g. Viña del Mar, Chile · Madison Square Garden, NY">
+        </div>
+
+        <!-- PEOPLE FEATURED -->
+        <div class="field-group">
+          <label class="field-label">People Featured <span style="color:var(--gray);font-weight:400">(comma separated)</span></label>
+          <input type="text" id="newPhotoPeople" placeholder="e.g. Don Omar, Natti Natasha, Adam Torres">
+        </div>
+
+        <!-- TAGS -->
+        <div class="field-group">
+          <label class="field-label">Tags <span style="color:var(--gray);font-weight:400">(comma separated)</span></label>
+          <input type="text" id="newPhotoTags" placeholder="e.g. Concert, Award Show, Tour, Billboard">
+        </div>
+
+        <!-- CAREER PHASE + MEDIA TYPE -->
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Career Phase</label>
+            <select id="newPhotoCareerPhase">
+              <option value="">— Select —</option>
+              <option value="Las Nenas del Swing">Las Nenas del Swing</option>
+              <option value="Melina León Era">Melina León Era</option>
+              <option value="Don Omar Era">Don Omar Era</option>
+              <option value="J Álvarez Era">J Álvarez Era</option>
+              <option value="Sony Music Latin">Sony Music Latin</option>
+              <option value="Arrow Management">Arrow Management</option>
+              <option value="Marketing & PR">Marketing & PR</option>
+              <option value="FEMA">FEMA</option>
+              <option value="Student Journey">Student Journey</option>
+              <option value="PortfolioID Era">PortfolioID Era</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Media Type</label>
+            <select id="newPhotoMediaType">
+              <option value="">— Select —</option>
+              <option value="Live Performance">Live Performance</option>
+              <option value="Backstage">Backstage</option>
+              <option value="Press">Press</option>
+              <option value="Interview">Interview</option>
+              <option value="Award Show">Award Show</option>
+              <option value="Red Carpet">Red Carpet</option>
+              <option value="Studio">Studio</option>
+              <option value="Personal">Personal</option>
+              <option value="Television">Television</option>
+              <option value="Tour">Tour</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ACHIEVEMENT + PHOTO CREDIT -->
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Achievement <span style="color:var(--gray);font-weight:400">(optional)</span></label>
+            <select id="newPhotoAchievement">
+              <option value="">— None —</option>
+              <option value="Award">Award</option>
+              <option value="Television Appearance">Television Appearance</option>
+              <option value="Billboard Event">Billboard Event</option>
+              <option value="Platinum Record">Platinum Record</option>
+              <option value="Festival Performance">Festival Performance</option>
+              <option value="International Tour">International Tour</option>
+              <option value="Graduation">Graduation</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Photo Credit</label>
+            <input type="text" id="newPhotoCredit" placeholder="e.g. Personal Collection, Getty Images">
+          </div>
+        </div>
+
+        <!-- VERTICAL POSITION -->
         <div class="field-group">
           <label class="field-label">Vertical Position <span style="color:var(--gray);font-weight:400">(drag to reframe)</span></label>
           <div style="display:flex;align-items:center;gap:1rem;margin-top:0.5rem">
@@ -997,13 +1099,20 @@
           </div>
           <input type="hidden" id="photoPositionValue" value="0% center">
         </div>
-        <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-3);padding:0.85rem 1rem;border:1px solid rgba(201,168,76,0.1);margin-bottom:1.25rem">
+
+        <!-- OPTIONS -->
+        <div style="display:flex;align-items:center;gap:1.5rem;background:var(--dark-3);padding:0.85rem 1rem;border:1px solid rgba(201,168,76,0.1);margin-bottom:1.25rem;flex-wrap:wrap">
           <label style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);flex:1">Options</label>
           <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
             <input type="checkbox" id="newPhotoFeatured" style="accent-color:var(--gold)">
             <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gold)">⭐ Featured</span>
           </label>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="newPhotoCollectionCover" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray-light)">📁 Collection Cover</span>
+          </label>
         </div>
+
         <div class="form-actions">
           <button class="btn-save" onclick="addPhoto()">Add Photo</button>
           <button class="btn-cancel" onclick="toggleAddForm('addPhotoForm')">Cancel</button>
