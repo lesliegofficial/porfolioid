@@ -361,6 +361,9 @@ function loadAllFields() {
   // Video Layout
   loadVideoLayout();
 
+  // Credit Media Layout
+  loadCreditMediaLayout();
+
   // Career Layout
   loadCareerLayout();
 
@@ -1770,6 +1773,16 @@ function saveVideoLayout(val) {
 function loadVideoLayout() {
   const val = epk.videoLayout || 'grid';
   document.querySelectorAll('input[name="videoLayout"]').forEach(r => r.checked = r.value === val);
+}
+
+function saveCreditMediaLayout(val) {
+  epk.creditMediaLayout = val;
+  persistUser(); showSaveBanner();
+}
+
+function loadCreditMediaLayout() {
+  const val = epk.creditMediaLayout || 'grid';
+  document.querySelectorAll('input[name="creditMediaLayout"]').forEach(r => r.checked = r.value === val);
 }
 
 function saveGalleryLayout(val) {

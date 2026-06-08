@@ -1866,8 +1866,8 @@ function openCreditModal(i) {
   collabEl.innerHTML = c.collaborators?.length ? `<div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;color:var(--gray);margin-bottom:1rem">w/ ${c.collaborators.join(', ')}</div>` : '';
 
   // Build unified media grid — videos + photos together, same cell size
-  // mediaLayout: 'grid' (default) | 'stack'
-  const mediaLayout = c.mediaLayout || 'grid';
+  // mediaLayout: read from global epk setting (set in dashboard Credits section)
+  const mediaLayout = (typeof epk !== 'undefined' && epk.creditMediaLayout) ? epk.creditMediaLayout : 'grid';
   const allMediaItems = [];
 
   // Collect videos/docs from mediaItems or legacy fields
@@ -1889,17 +1889,6 @@ function openCreditModal(i) {
 
   if (totalMedia > 0) {
     // Layout toggle — only show if there are both videos and photos
-    const hasVideos = allMediaItems.some(i => i.kind === 'media' || i.kind === 'legacy-video' || i.kind === 'legacy-link');
-    const hasPhotos = allMediaItems.some(i => i.kind === 'photo');
-    const showToggle = hasVideos && hasPhotos;
-
-    if (showToggle) {
-      unifiedHTML += `<div class="credit-media-toggle">
-        <button class="credit-media-toggle-btn${mediaLayout === 'grid' ? ' active' : ''}" onclick="setCreditMediaLayout('${c.id||''}','grid')">⊞ Grid</button>
-        <button class="credit-media-toggle-btn${mediaLayout === 'stack' ? ' active' : ''}" onclick="setCreditMediaLayout('${c.id||''}','stack')">☰ Stacked</button>
-      </div>`;
-    }
-
     if (mediaLayout === 'grid') {
       unifiedHTML += `<div class="credit-media-grid">`;
       allMediaItems.forEach(item => {
@@ -2022,13 +2011,6 @@ function openCreditModal(i) {
 function closeCreditModal() {
   document.getElementById('creditModalOverlay').classList.remove('open');
   document.body.style.overflow = '';
-}
-function setCreditMediaLayout(creditId, layout) {
-  // Rebuild media section with chosen layout for current open credit
-  if (typeof _currentOpenCredit !== 'undefined' && _currentOpenCredit) {
-    _currentOpenCredit.mediaLayout = layout;
-    openCreditModal(_currentOpenCredit);
-  }
 }
 // Lightbox for photos
 function openLightbox(url) {
