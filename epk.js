@@ -783,7 +783,28 @@ function buildEPK(epk) {
     <div class="gallery-section" id="photos">
       <div class="gallery-inner">
         <div class="section-label">Photos</div>
-        <h2 class="section-title" data-editable data-editable-key="photosTitle" data-editable-type="title" style="outline:none">On Stage & Behind the Scenes</h2>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:0.5rem">
+          <div>
+            <h2 class="section-title" data-editable data-editable-key="photosTitle" data-editable-type="title" style="outline:none;margin-bottom:0.25rem">On Stage & Behind the Scenes</h2>
+            <p style="font-family:var(--font-body);font-size:0.9rem;color:var(--gray);margin:0 0 1rem">Explore moments from performances, studio sessions, press events, and more.</p>
+          </div>
+          <div style="display:flex;gap:0.75rem;align-items:center;flex-shrink:0">
+            <div style="position:relative">
+              <select id="galleryLayoutSelect" onchange="setGalleryLayout(this.value)" style="appearance:none;-webkit-appearance:none;background:var(--dark-3);border:1px solid rgba(201,168,76,0.3);color:var(--text);font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 2rem 0.5rem 0.85rem;cursor:pointer;outline:none">
+                <option value="marquee">▶ Auto Scroll</option>
+                <option value="scroll">⟷ Manual Scroll</option>
+                <option value="wall">▦ Wall</option>
+                <option value="collections">⬛ Collections</option>
+                <option value="grid">⊞ Grid</option>
+                <option value="magazine">◧ Magazine</option>
+                <option value="timeline">⏱ Timeline</option>
+                <option value="table">☰ Table</option>
+              </select>
+              <span style="position:absolute;right:0.6rem;top:50%;transform:translateY(-50%);color:var(--gold);pointer-events:none;font-size:0.6rem">▾</span>
+            </div>
+          </div>
+        </div>
+        <div id="galleryCategoryBar"></div>
         <div id="galleryContent"></div>
       </div>
     </div>` : ''}
@@ -979,14 +1000,9 @@ let galleryPhotos = [];
 
 function setGalleryLayout(layout) {
   currentGalleryLayout = layout;
-  const activeStyle = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(201,168,76,0.4);background:rgba(201,168,76,0.1);color:var(--gold);cursor:pointer;transition:all 0.2s';
-  const inactiveStyle = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(255,255,255,0.1);background:none;color:var(--gray);cursor:pointer;transition:all 0.2s';
-  ['btnMarquee','btnScroll','btnWall','btnCollections','btnGrid','btnMagazine','btnTimeline','btnTable'].forEach(id => {
-    const btn = document.getElementById(id);
-    if (btn) btn.style.cssText = inactiveStyle;
-  });
-  const active = document.getElementById('btn' + layout.charAt(0).toUpperCase() + layout.slice(1));
-  if (active) active.style.cssText = activeStyle;
+  // Sync the dropdown
+  const sel = document.getElementById('galleryLayoutSelect');
+  if (sel) sel.value = layout;
   buildGallery(galleryPhotos);
 }
 
@@ -1050,46 +1066,104 @@ function buildWallGallery(photos, container) {
 function buildScrollGallery(photos, container) {
   const wrap = document.createElement('div');
   wrap.className = 'gallery-scroll-wrap';
-  const arrows = document.createElement('div');
-  arrows.className = 'gallery-scroll-arrows';
-  arrows.innerHTML = '<button class="gallery-scroll-arrow" id="scrollPrev">&#8249;</button><button class="gallery-scroll-arrow" id="scrollNext">&#8250;</button>';
+
+  // Header: drag to explore
+  const header = document.createElement('div');
+  header.className = 'gallery-scroll-header';
+  header.innerHTML = `<span class="gallery-scroll-drag">← Drag to explore →</span>`;
+  wrap.appendChild(header);
+
   const strip = document.createElement('div');
   strip.className = 'gallery-scroll';
   strip.id = 'galleryScroll';
-  photos.forEach(photo => {
+
+  photos.forEach((photo, i) => {
     const pos = photo.position || 'center 0%';
     const item = document.createElement('div');
     item.className = 'gallery-scroll-item';
-    item.innerHTML = `<img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onclick="openLightbox('${photo.url}')" onerror="this.style.display='none'" style="object-position:${pos}"><div class="gallery-scroll-caption">${photo.caption || ''}</div>`;
+    item.innerHTML = `
+      <img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onerror="this.style.display='none'" style="object-position:${pos}">
+      ${photo.featured ? `<div class="gallery-scroll-star">★</div>` : ''}
+      <div class="gallery-scroll-overlay">
+        ${photo.collection ? `<div class="gallery-scroll-category">${photo.collection.toUpperCase()}</div>` : ''}
+        ${photo.caption ? `<div class="gallery-scroll-title">${photo.caption}</div>` : ''}
+        ${[photo.location, photo.year ? String(photo.year) : ''].filter(Boolean).length ? `<div class="gallery-scroll-meta">${[photo.location, photo.year].filter(Boolean).join(', ')}</div>` : ''}
+      </div>`;
+    item.onclick = () => openLightbox(photo.url);
     strip.appendChild(item);
   });
+
   // Drag to scroll
   let isDown = false, startX, scrollLeft;
-  strip.addEventListener('mousedown', e => { isDown = true; startX = e.pageX - strip.offsetLeft; scrollLeft = strip.scrollLeft; });
-  strip.addEventListener('mouseleave', () => isDown = false);
-  strip.addEventListener('mouseup', () => isDown = false);
+  strip.addEventListener('mousedown', e => { isDown = true; startX = e.pageX - strip.offsetLeft; scrollLeft = strip.scrollLeft; strip.style.cursor = 'grabbing'; });
+  strip.addEventListener('mouseleave', () => { isDown = false; strip.style.cursor = 'grab'; });
+  strip.addEventListener('mouseup', () => { isDown = false; strip.style.cursor = 'grab'; });
   strip.addEventListener('mousemove', e => { if (!isDown) return; e.preventDefault(); const x = e.pageX - strip.offsetLeft; strip.scrollLeft = scrollLeft - (x - startX) * 1.5; });
-  document.getElementById('scrollPrev') && document.getElementById('scrollPrev').addEventListener('click', () => strip.scrollBy({left:-320,behavior:'smooth'}));
-  document.getElementById('scrollNext') && document.getElementById('scrollNext').addEventListener('click', () => strip.scrollBy({left:320,behavior:'smooth'}));
-  wrap.appendChild(arrows);
+
   wrap.appendChild(strip);
+
+  // Bottom bar: arrows + counter
+  const bottomBar = document.createElement('div');
+  bottomBar.className = 'gallery-scroll-bottom';
+  bottomBar.innerHTML = `
+    <div class="gallery-scroll-arrows">
+      <button class="gallery-scroll-arrow-btn" id="scrollPrev">&#8249;</button>
+      <button class="gallery-scroll-arrow-btn" id="scrollNext">&#8250;</button>
+    </div>
+    <div class="gallery-scroll-counter" id="scrollCounter">01 / ${String(photos.length).padStart(2,'0')}</div>
+    <div class="gallery-scroll-collection-label" id="scrollColLabel">${photos[0]?.collection || ''}</div>
+    <div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);letter-spacing:0.1em;margin-left:auto">Scroll to explore all photos</div>`;
+  wrap.appendChild(bottomBar);
+
   container.appendChild(wrap);
+
+  // Wire up arrows after DOM insertion
+  requestAnimationFrame(() => {
+    const scrollEl = document.getElementById('galleryScroll');
+    const prevBtn = document.getElementById('scrollPrev');
+    const nextBtn = document.getElementById('scrollNext');
+    const counter = document.getElementById('scrollCounter');
+    const colLabel = document.getElementById('scrollColLabel');
+
+    function updateCounter() {
+      if (!scrollEl) return;
+      const itemW = scrollEl.querySelector('.gallery-scroll-item')?.offsetWidth || 1;
+      const idx = Math.round(scrollEl.scrollLeft / (itemW + 12));
+      const photo = photos[Math.min(idx, photos.length - 1)];
+      if (counter) counter.textContent = `${String(idx+1).padStart(2,'0')} / ${String(photos.length).padStart(2,'0')}`;
+      if (colLabel && photo) colLabel.textContent = photo.collection || '';
+    }
+
+    if (prevBtn && scrollEl) prevBtn.onclick = () => { scrollEl.scrollBy({left:-scrollEl.offsetWidth*0.8,behavior:'smooth'}); setTimeout(updateCounter,400); };
+    if (nextBtn && scrollEl) nextBtn.onclick = () => { scrollEl.scrollBy({left:scrollEl.offsetWidth*0.8,behavior:'smooth'}); setTimeout(updateCounter,400); };
+    if (scrollEl) scrollEl.addEventListener('scroll', updateCounter);
+  });
 }
 
 function buildCollectionsGallery(photos, container) {
-  // Group photos by collection field; fallback to single group if none set
+  const collectionMeta = {
+    'Live Performances': { icon: '🎤', desc: 'Concerts, tours, and live shows' },
+    'Backstage': { icon: '🎭', desc: 'Behind the scenes moments' },
+    'Studio Sessions': { icon: '🎙', desc: 'In the studio and recording' },
+    'Press & Media': { icon: '📰', desc: 'Interviews, coverage, and media' },
+    'Awards & Recognition': { icon: '🏆', desc: 'Awards, nominations, and honors' },
+    'Personal Moments': { icon: '❤', desc: 'Personal and candid moments' },
+  };
+
   const groups = {};
   photos.forEach(photo => {
     const col = photo.collection || 'All Photos';
     if (!groups[col]) groups[col] = [];
     groups[col].push(photo);
   });
+
   const wrap = document.createElement('div');
   wrap.className = 'gallery-collections';
+
   Object.entries(groups).forEach(([name, gphotos]) => {
     const card = document.createElement('div');
     card.className = 'gallery-collection-card';
-    // Preview collage: up to 4 photos
+
     const collage = document.createElement('div');
     collage.className = 'gallery-collection-collage gallery-collection-collage-' + Math.min(gphotos.length, 4);
     gphotos.slice(0, 4).forEach(p => {
@@ -1101,53 +1175,70 @@ function buildCollectionsGallery(photos, container) {
       img.onerror = function() { this.style.display = 'none'; };
       collage.appendChild(img);
     });
-    const meta = document.createElement('div');
-    meta.className = 'gallery-collection-meta';
-    meta.innerHTML = `<span class="gallery-collection-name">${name}</span><span class="gallery-collection-count">${gphotos.length} photo${gphotos.length !== 1 ? 's' : ''}</span>`;
+
+    const meta = collectionMeta[name] || { icon: '📁', desc: '' };
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'gallery-collection-info';
+    infoDiv.innerHTML = `
+      <div class="gallery-collection-header">
+        <span class="gallery-collection-icon">${meta.icon}</span>
+        <span class="gallery-collection-name">${name}</span>
+      </div>
+      ${meta.desc ? `<div class="gallery-collection-desc">${meta.desc}</div>` : ''}
+      <div class="gallery-collection-footer">
+        <span class="gallery-collection-count">${gphotos.length} PHOTO${gphotos.length !== 1 ? 'S' : ''}</span>
+        <span class="gallery-collection-cta">View Collection →</span>
+      </div>`;
+
     card.appendChild(collage);
-    card.appendChild(meta);
-    // Click opens a lightbox-style expanded view of this group
+    card.appendChild(infoDiv);
+
     card.onclick = () => {
-      let idx = 0;
-      function showCollectionLightbox() {
-        const existing = document.getElementById('collectionLightbox');
-        if (existing) existing.remove();
-        const lb = document.createElement('div');
-        lb.id = 'collectionLightbox';
-        lb.className = 'gallery-collection-lightbox';
-        lb.innerHTML = `
-          <div class="gallery-collection-lb-inner">
-            <button class="gallery-collection-lb-close" onclick="document.getElementById('collectionLightbox').remove()">✕</button>
-            <div class="gallery-collection-lb-title">${name}</div>
-            <div class="gallery-collection-lb-grid">
-              ${gphotos.map((p,i) => `<div class="gallery-collection-lb-item" onclick="openLightbox('${p.url}')">
-                <img src="${p.url}" alt="${(p.caption||'').replace(/"/g,"'")}" loading="lazy" style="object-position:${p.position||'center 0%'}" onerror="this.style.display='none'">
-                ${p.caption ? `<div class="gallery-collection-lb-cap">${p.caption}</div>` : ''}
-              </div>`).join('')}
-            </div>
-          </div>`;
-        document.body.appendChild(lb);
-        lb.addEventListener('click', e => { if (e.target === lb) lb.remove(); });
-      }
-      showCollectionLightbox();
+      const existing = document.getElementById('collectionLightbox');
+      if (existing) existing.remove();
+      const lb = document.createElement('div');
+      lb.id = 'collectionLightbox';
+      lb.className = 'gallery-collection-lightbox';
+      lb.innerHTML = `
+        <div class="gallery-collection-lb-inner">
+          <button class="gallery-collection-lb-close" onclick="document.getElementById('collectionLightbox').remove()">✕</button>
+          <div class="gallery-collection-lb-title">${meta.icon} ${name}</div>
+          <div class="gallery-collection-lb-grid">
+            ${gphotos.map(p => `<div class="gallery-collection-lb-item" onclick="openLightbox('${p.url}')">
+              <img src="${p.url}" alt="${(p.caption||'').replace(/"/g,"'")}" loading="lazy" style="object-position:${p.position||'center 0%'}" onerror="this.style.display='none'">
+              ${p.caption ? `<div class="gallery-collection-lb-cap">${p.caption}</div>` : ''}
+            </div>`).join('')}
+          </div>
+        </div>`;
+      document.body.appendChild(lb);
+      lb.addEventListener('click', e => { if (e.target === lb) lb.remove(); });
     };
     wrap.appendChild(card);
   });
+
   container.appendChild(wrap);
+
+  // Footer tagline
+  const footer = document.createElement('div');
+  footer.className = 'gallery-collections-footer';
+  footer.innerHTML = `<span style="font-size:1.5rem">📷</span><div><div style="font-family:var(--font-display);font-size:1rem;color:var(--text);font-weight:600">Your Story Through Images</div><div style="font-family:var(--font-body);font-size:0.85rem;color:var(--gray);margin-top:0.25rem">Each collection represents a chapter of the journey. Explore the moments that have shaped this career.</div></div>`;
+  container.appendChild(footer);
 }
 
 function buildGridGallery(photos, container) {
-  const PAGE_SIZE = 12;
+  let PAGE_SIZE = 20;
   let page = 0;
   const wrap = document.createElement('div');
   wrap.className = 'gallery-grid-wrap';
 
   function renderPage() {
     wrap.innerHTML = '';
+    const start = page * PAGE_SIZE;
+    const end = Math.min(start + PAGE_SIZE, photos.length);
+
     const grid = document.createElement('div');
     grid.className = 'gallery-grid';
-    const start = page * PAGE_SIZE;
-    photos.slice(start, start + PAGE_SIZE).forEach(photo => {
+    photos.slice(start, end).forEach(photo => {
       const item = document.createElement('div');
       item.className = 'gallery-grid-item';
       const img = document.createElement('img');
@@ -1156,33 +1247,93 @@ function buildGridGallery(photos, container) {
       img.loading = 'lazy';
       img.style.objectPosition = photo.position || 'center 0%';
       img.onerror = function() { this.style.display = 'none'; };
+      item.appendChild(img);
       if (photo.caption) {
         const cap = document.createElement('div');
         cap.className = 'gallery-grid-caption';
         cap.textContent = photo.caption;
-        item.appendChild(img);
         item.appendChild(cap);
-      } else {
-        item.appendChild(img);
       }
       item.onclick = () => openLightbox(photo.url);
       grid.appendChild(item);
     });
     wrap.appendChild(grid);
-    // Pagination
+
+    // Pagination bar
     const totalPages = Math.ceil(photos.length / PAGE_SIZE);
+    const pagBar = document.createElement('div');
+    pagBar.className = 'gallery-grid-pagbar';
+
+    // Count label
+    const countLabel = document.createElement('div');
+    countLabel.className = 'gallery-grid-count';
+    countLabel.textContent = `Showing ${start + 1} to ${end} of ${photos.length} photos`;
+    pagBar.appendChild(countLabel);
+
+    // Page buttons
+    const pagBtns = document.createElement('div');
+    pagBtns.className = 'gallery-grid-pagination';
     if (totalPages > 1) {
-      const pag = document.createElement('div');
-      pag.className = 'gallery-grid-pagination';
-      for (let i = 0; i < totalPages; i++) {
-        const btn = document.createElement('button');
-        btn.textContent = i + 1;
-        btn.className = 'gallery-grid-pag-btn' + (i === page ? ' active' : '');
-        btn.onclick = () => { page = i; renderPage(); };
-        pag.appendChild(btn);
+      // Prev
+      const prev = document.createElement('button');
+      prev.innerHTML = '&#8249;';
+      prev.className = 'gallery-grid-pag-btn' + (page === 0 ? ' disabled' : '');
+      prev.disabled = page === 0;
+      prev.onclick = () => { if (page > 0) { page--; renderPage(); } };
+      pagBtns.appendChild(prev);
+
+      // Page numbers with ellipsis
+      const pageNums = [];
+      if (totalPages <= 7) {
+        for (let i = 0; i < totalPages; i++) pageNums.push(i);
+      } else {
+        pageNums.push(0);
+        if (page > 2) pageNums.push('...');
+        for (let i = Math.max(1, page-1); i <= Math.min(totalPages-2, page+1); i++) pageNums.push(i);
+        if (page < totalPages - 3) pageNums.push('...');
+        pageNums.push(totalPages - 1);
       }
-      wrap.appendChild(pag);
+      pageNums.forEach(n => {
+        if (n === '...') {
+          const ell = document.createElement('span');
+          ell.textContent = '...';
+          ell.style.cssText = 'font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);padding:0 0.25rem';
+          pagBtns.appendChild(ell);
+        } else {
+          const btn = document.createElement('button');
+          btn.textContent = n + 1;
+          btn.className = 'gallery-grid-pag-btn' + (n === page ? ' active' : '');
+          btn.onclick = () => { page = n; renderPage(); };
+          pagBtns.appendChild(btn);
+        }
+      });
+
+      // Next
+      const next = document.createElement('button');
+      next.innerHTML = '&#8250;';
+      next.className = 'gallery-grid-pag-btn' + (page === totalPages - 1 ? ' disabled' : '');
+      next.disabled = page === totalPages - 1;
+      next.onclick = () => { if (page < totalPages - 1) { page++; renderPage(); } };
+      pagBtns.appendChild(next);
     }
+    pagBar.appendChild(pagBtns);
+
+    // Photos per page selector
+    const perPageWrap = document.createElement('div');
+    perPageWrap.className = 'gallery-grid-perpage';
+    perPageWrap.innerHTML = `<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.05em">Photos per page:</span>
+      <select onchange="this.closest('.gallery-grid-wrap') && (arguments[0].target.closest('.gallery-grid-wrap'))" style="background:var(--dark-3);border:1px solid rgba(201,168,76,0.2);color:var(--text);font-family:var(--font-mono);font-size:0.55rem;padding:0.2rem 0.4rem;cursor:pointer;outline:none">
+        <option value="12" ${PAGE_SIZE===12?'selected':''}>12</option>
+        <option value="20" ${PAGE_SIZE===20?'selected':''}>20</option>
+        <option value="40" ${PAGE_SIZE===40?'selected':''}>40</option>
+      </select>`;
+    perPageWrap.querySelector('select').onchange = e => {
+      PAGE_SIZE = parseInt(e.target.value);
+      page = 0;
+      renderPage();
+    };
+    pagBar.appendChild(perPageWrap);
+    wrap.appendChild(pagBar);
   }
   renderPage();
   container.appendChild(wrap);
@@ -1191,10 +1342,12 @@ function buildGridGallery(photos, container) {
 function buildMagazineGallery(photos, container) {
   const wrap = document.createElement('div');
   wrap.className = 'gallery-magazine';
-  // First featured photo large, rest in smaller panels
+  if (!photos.length) { container.appendChild(wrap); return; }
+
   const featured = photos.find(p => p.featured) || photos[0];
   const rest = photos.filter(p => p !== featured);
 
+  // Hero
   const heroWrap = document.createElement('div');
   heroWrap.className = 'gallery-magazine-hero';
   const heroImg = document.createElement('img');
@@ -1204,10 +1357,15 @@ function buildMagazineGallery(photos, container) {
   heroImg.style.objectPosition = featured.position || 'center 0%';
   heroImg.onerror = function() { this.style.display = 'none'; };
   heroImg.onclick = () => openLightbox(featured.url);
+  heroImg.style.cursor = 'pointer';
+
   const heroOverlay = document.createElement('div');
   heroOverlay.className = 'gallery-magazine-hero-overlay';
-  const metaParts = [featured.caption, featured.location, featured.year].filter(Boolean);
-  heroOverlay.innerHTML = metaParts.map((m, i) => `<span class="${i===0 ? 'gallery-magazine-hero-caption' : 'gallery-magazine-hero-meta'}">${m}</span>`).join('');
+  heroOverlay.innerHTML = `
+    ${featured.collection ? `<span class="gallery-magazine-badge">${featured.collection.toUpperCase()}</span>` : ''}
+    ${featured.caption ? `<div class="gallery-magazine-hero-caption">${featured.caption}</div>` : ''}
+    ${[featured.location, featured.year ? String(featured.year) : ''].filter(Boolean).length ? `<div class="gallery-magazine-hero-meta">${[featured.location, featured.year].filter(Boolean).join(' · ')}</div>` : ''}`;
+
   heroWrap.appendChild(heroImg);
   heroWrap.appendChild(heroOverlay);
   wrap.appendChild(heroWrap);
@@ -1218,6 +1376,7 @@ function buildMagazineGallery(photos, container) {
     rest.forEach(photo => {
       const item = document.createElement('div');
       item.className = 'gallery-magazine-item';
+      item.style.cursor = 'pointer';
       const img = document.createElement('img');
       img.src = photo.url;
       img.alt = photo.caption || '';
@@ -1226,13 +1385,13 @@ function buildMagazineGallery(photos, container) {
       img.onerror = function() { this.style.display = 'none'; };
       img.onclick = () => openLightbox(photo.url);
       item.appendChild(img);
-      const metaParts = [photo.caption, photo.location, photo.year].filter(Boolean);
-      if (metaParts.length) {
-        const cap = document.createElement('div');
-        cap.className = 'gallery-magazine-caption';
-        cap.textContent = metaParts.join(' · ');
-        item.appendChild(cap);
-      }
+      const overlay = document.createElement('div');
+      overlay.className = 'gallery-magazine-item-overlay';
+      overlay.innerHTML = `
+        ${photo.collection ? `<span class="gallery-magazine-badge">${photo.collection.toUpperCase()}</span>` : ''}
+        ${photo.caption ? `<div class="gallery-magazine-item-caption">${photo.caption}</div>` : ''}
+        ${[photo.location, photo.year ? String(photo.year) : ''].filter(Boolean).length ? `<div class="gallery-magazine-item-meta">${[photo.location, photo.year].filter(Boolean).join(' · ')}</div>` : ''}`;
+      item.appendChild(overlay);
       grid.appendChild(item);
     });
     wrap.appendChild(grid);
@@ -1241,14 +1400,12 @@ function buildMagazineGallery(photos, container) {
 }
 
 function buildTimelineGallery(photos, container) {
-  // Group by year; fallback label 'Undated'
   const groups = {};
   photos.forEach(photo => {
     const yr = photo.year ? String(photo.year) : 'Undated';
     if (!groups[yr]) groups[yr] = [];
     groups[yr].push(photo);
   });
-  // Sort years descending; 'Undated' last
   const sorted = Object.keys(groups).sort((a, b) => {
     if (a === 'Undated') return 1;
     if (b === 'Undated') return -1;
@@ -1256,15 +1413,24 @@ function buildTimelineGallery(photos, container) {
   });
   const wrap = document.createElement('div');
   wrap.className = 'gallery-timeline';
-  sorted.forEach(year => {
+
+  sorted.forEach((year, yi) => {
     const section = document.createElement('div');
     section.className = 'gallery-timeline-year';
+
     const header = document.createElement('div');
     header.className = 'gallery-timeline-year-header';
+    const isFirst = yi === 0;
+    header.innerHTML = `
+      <div class="gallery-timeline-dot${isFirst ? ' active' : ''}"></div>
+      <span class="gallery-timeline-year-label">${year}</span>
+      <span class="gallery-timeline-year-count">${groups[year].length} Photo${groups[year].length !== 1 ? 's' : ''}</span>
+      <span class="gallery-timeline-toggle">▾</span>`;
+
     let collapsed = false;
-    header.innerHTML = `<span class="gallery-timeline-year-label">${year}</span><span class="gallery-timeline-year-count">${groups[year].length} photo${groups[year].length !== 1 ? 's' : ''}</span><span class="gallery-timeline-toggle">▲</span>`;
     const photoRow = document.createElement('div');
     photoRow.className = 'gallery-timeline-row';
+
     groups[year].forEach(photo => {
       const item = document.createElement('div');
       item.className = 'gallery-timeline-item';
@@ -1284,11 +1450,13 @@ function buildTimelineGallery(photos, container) {
       }
       photoRow.appendChild(item);
     });
+
     header.onclick = () => {
       collapsed = !collapsed;
       photoRow.style.display = collapsed ? 'none' : '';
-      header.querySelector('.gallery-timeline-toggle').textContent = collapsed ? '▼' : '▲';
+      header.querySelector('.gallery-timeline-toggle').textContent = collapsed ? '▸' : '▾';
     };
+
     section.appendChild(header);
     section.appendChild(photoRow);
     wrap.appendChild(section);
@@ -1382,46 +1550,100 @@ function buildTableGallery(photos, container) {
   container.appendChild(wrap);
 }
 
+let _galleryCategoryFilter = 'all';
+
+function buildCategoryBar(photos) {
+  const bar = document.getElementById('galleryCategoryBar');
+  if (!bar) return;
+  // Layouts that use category bar
+  const showBar = ['collections','grid','magazine','timeline','wall'].includes(currentGalleryLayout);
+  if (!showBar) { bar.innerHTML = ''; return; }
+
+  // Build category counts
+  const counts = { 'all': photos.length };
+  photos.forEach(p => {
+    if (p.collection) {
+      counts[p.collection] = (counts[p.collection] || 0) + 1;
+    }
+  });
+
+  const collectionIcons = {
+    'Live Performances': '🎤', 'Backstage': '🎭', 'Studio Sessions': '🎙',
+    'Press & Media': '📰', 'Awards & Recognition': '🏆', 'Personal Moments': '❤',
+    'all': '📷'
+  };
+
+  bar.innerHTML = '';
+  const wrap = document.createElement('div');
+  wrap.className = 'gallery-cat-bar';
+
+  Object.entries(counts).forEach(([cat, count]) => {
+    const btn = document.createElement('button');
+    btn.className = 'gallery-cat-btn' + (cat === _galleryCategoryFilter ? ' active' : '');
+    const icon = collectionIcons[cat] || '📁';
+    const label = cat === 'all' ? 'ALL PHOTOS' : cat.toUpperCase();
+    btn.innerHTML = `<span class="gallery-cat-icon">${icon}</span><span class="gallery-cat-label">${label}</span><span class="gallery-cat-count">${count}</span>`;
+    btn.onclick = () => {
+      _galleryCategoryFilter = cat;
+      buildGallery(galleryPhotos);
+    };
+    wrap.appendChild(btn);
+  });
+  bar.appendChild(wrap);
+}
+
 function buildGallery(photos) {
   galleryPhotos = photos;
   // Use saved layout preference from dashboard
   if (typeof epk !== 'undefined' && epk.galleryLayout) {
     currentGalleryLayout = epk.galleryLayout;
   }
+  // Sync dropdown
+  const sel = document.getElementById('galleryLayoutSelect');
+  if (sel) sel.value = currentGalleryLayout;
+
+  // Filter by category
+  const filtered = _galleryCategoryFilter === 'all'
+    ? photos
+    : photos.filter(p => p.collection === _galleryCategoryFilter);
+
   const container = document.getElementById('galleryContent');
   if (!container) return;
   container.innerHTML = '';
 
+  // Build category bar for applicable layouts
+  buildCategoryBar(photos);
+
   if (currentGalleryLayout === 'marquee') {
-    buildMarqueeGallery(photos, container);
+    buildMarqueeGallery(filtered, container);
     return;
   }
   if (currentGalleryLayout === 'wall') {
-    buildWallGallery(photos, container);
+    buildWallGallery(filtered, container);
     return;
   }
   if (currentGalleryLayout === 'scroll') {
-    buildScrollGallery(photos, container);
+    buildScrollGallery(filtered, container);
     return;
   }
   if (currentGalleryLayout === 'collections') {
-    buildCollectionsGallery(photos, container);
+    buildCollectionsGallery(filtered, container);
     return;
   }
   if (currentGalleryLayout === 'grid') {
-    buildGridGallery(photos, container);
+    buildGridGallery(filtered, container);
     return;
   }
   if (currentGalleryLayout === 'magazine') {
-    buildMagazineGallery(photos, container);
+    buildMagazineGallery(filtered, container);
     return;
   }
   if (currentGalleryLayout === 'timeline') {
-    buildTimelineGallery(photos, container);
+    buildTimelineGallery(filtered, container);
     return;
   }
   if (currentGalleryLayout === 'table') {
-    buildTableGallery(photos, container);
+    buildTableGallery(filtered, container);
     return;
   }
 
