@@ -878,7 +878,7 @@ function buildEPK(epk) {
       </div>
       <div class="collapsible-body" id="assetsBody">
         <div class="collapsible-body-inner" style="max-width:1100px;margin:0 auto;padding:0 2rem 3rem">
-          ${assetsLayout === "cards" ? `<div class="assets-grid">${assetsHTML}</div>` : `<div style="width:100%">${assetsHTML}</div>`}
+          <div style="width:100%">${assetsHTML}</div>
         </div>
       </div>
     </div>` : ''}
