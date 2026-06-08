@@ -2547,7 +2547,7 @@ function triggerAwardPhotoUpload() {
         const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
         const data = await res.json();
         if (data.secure_url) {
-          pendingAwardPhotos.push(data.secure_url);
+          pendingAwardPhotos.push({url: data.secure_url, caption: ''});
           renderAwardPhotosPreview();
         }
       } catch(e) { console.error('Upload failed', e); }
@@ -2559,11 +2559,17 @@ function triggerAwardPhotoUpload() {
 function renderAwardPhotosPreview() {
   const preview = document.getElementById('awardPhotosPreview');
   if (!preview) return;
-  preview.innerHTML = pendingAwardPhotos.map((url, i) => `
-    <div style="position:relative;display:inline-block">
-      <img src="${url}" style="width:80px;height:60px;object-fit:cover;border:1px solid rgba(201,168,76,0.3);display:block" onerror="this.style.display='none'">
-      <button onclick="pendingAwardPhotos.splice(${i},1);renderAwardPhotosPreview()" style="position:absolute;top:1px;right:1px;background:rgba(0,0,0,0.75);border:none;color:#fff;font-size:0.55rem;cursor:pointer;padding:1px 3px;line-height:1">✕</button>
-    </div>`).join('');
+  preview.innerHTML = pendingAwardPhotos.map((p, i) => {
+    const url = typeof p === 'object' ? p.url : p;
+    const cap = typeof p === 'object' ? (p.caption || '') : '';
+    return `<div style="display:flex;flex-direction:column;gap:0.25rem;margin-bottom:0.5rem">
+      <div style="position:relative;display:inline-block">
+        <img src="${url}" style="width:120px;height:90px;object-fit:cover;border:1px solid rgba(201,168,76,0.3);display:block" onerror="this.style.display='none'">
+        <button onclick="pendingAwardPhotos.splice(${i},1);renderAwardPhotosPreview()" style="position:absolute;top:1px;right:1px;background:rgba(0,0,0,0.75);border:none;color:#fff;font-size:0.55rem;cursor:pointer;padding:1px 3px;line-height:1">✕</button>
+      </div>
+      <input type="text" value="${cap}" placeholder="Caption (optional)" oninput="if(typeof pendingAwardPhotos[${i}]==='object'){pendingAwardPhotos[${i}].caption=this.value}else{pendingAwardPhotos[${i}]={url:'${url}',caption:this.value}}" style="width:120px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.15);color:var(--white);padding:0.25rem 0.4rem;font-size:0.6rem;font-family:var(--font-mono)">
+    </div>`;
+  }).join('');
 }
 
 function triggerAwardCertUpload() {
