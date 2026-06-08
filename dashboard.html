@@ -988,6 +988,16 @@
     <div class="panel" id="panel-assets">
       <h1 class="panel-title">Assets</h1>
       <p class="panel-sub">Downloadable and linkable resources — resume, press kit, portfolio, etc.</p>
+      <div style="margin-bottom:1.5rem;padding:1rem;background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.15)">
+        <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">Layout Style</div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem" id="assetsLayoutPicker">
+          <button onclick="setAssetsLayout('cards')" id="alayout_cards" class="layout-opt-btn active">Cards</button>
+          <button onclick="setAssetsLayout('list')" id="alayout_list" class="layout-opt-btn">List</button>
+          <button onclick="setAssetsLayout('compact')" id="alayout_compact" class="layout-opt-btn">Compact</button>
+          <button onclick="setAssetsLayout('table')" id="alayout_table" class="layout-opt-btn">Table</button>
+          <button onclick="setAssetsLayout('featured')" id="alayout_featured" class="layout-opt-btn">Featured</button>
+        </div>
+      </div>
       <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding:1rem;background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.15)">
         <div style="flex:1">
           <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);margin-bottom:0.2rem" id="assetsLockLabel">🔒 Assets Locked</div>
