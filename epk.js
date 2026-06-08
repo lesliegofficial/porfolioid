@@ -2248,6 +2248,59 @@ function openCreditModal(i) {
         unifiedHTML += `</div>`;
       }
 
+    } else if (mediaLayout === 'spotlight') {
+      // Spotlight: first photo large featured, rest in supporting grid
+      const photos = allMediaItems.filter(item => item.kind === 'photo');
+      const nonPhotos = allMediaItems.filter(item => item.kind !== 'photo');
+
+      // Non-photo items (videos/docs) render stacked first if any
+      nonPhotos.forEach(item => {
+        if (item.kind === 'legacy-video') {
+          const thumb = fixVideoThumb(item.thumb || '');
+          const label = item.label || '';
+          unifiedHTML += `<div class="credit-media-cell credit-media-cell-video" style="width:100%;aspect-ratio:16/9;margin-bottom:0.75rem" onclick="openVideoPlayer('${item.url}','${thumb}')">
+            ${thumb ? `<img src="${thumb}" style="width:100%;height:100%;object-fit:cover;display:block;object-position:center top" onerror="this.style.display='none'">` : '<div style="width:100%;height:100%;background:#111"></div>'}
+            <div class="credit-media-play">▶</div>
+            ${label ? `<div class="credit-media-label">${label}</div>` : ''}
+          </div>`;
+        } else if (item.kind === 'media') {
+          const m = item.data;
+          if (m.type === 'video' || m.url.includes('.mp4') || m.url.includes('.mov')) {
+            const thumb = fixVideoThumb(m.thumb || '');
+            const label = m.label || '';
+            unifiedHTML += `<div class="credit-media-cell credit-media-cell-video" style="width:100%;aspect-ratio:16/9;margin-bottom:0.75rem" onclick="openVideoPlayer('${m.url}','${thumb}')">
+              ${thumb ? `<img src="${thumb}" style="width:100%;height:100%;object-fit:cover;display:block;object-position:center top" onerror="this.style.background='#111'">` : '<div style="width:100%;height:100%;background:#111"></div>'}
+              <div class="credit-media-play">▶</div>
+              ${label ? `<div class="credit-media-label">${label}</div>` : ''}
+            </div>`;
+          }
+        }
+      });
+
+      if (photos.length === 0) {
+        // No photos — nothing to spotlight
+      } else if (photos.length === 1) {
+        // Single photo — just show it full width
+        unifiedHTML += `<div class="credit-spotlight-solo" onclick="openLightbox('${photos[0].url}')">
+          <img src="${photos[0].url}" alt="" loading="lazy" onerror="this.style.display='none'" style="object-position:center top">
+        </div>`;
+      } else {
+        // Featured (first) + supporting grid
+        const featured = photos[0];
+        const rest = photos.slice(1);
+        unifiedHTML += `<div class="credit-spotlight-wrap">
+          <div class="credit-spotlight-featured" onclick="openLightbox('${featured.url}')">
+            <img src="${featured.url}" alt="" loading="lazy" onerror="this.style.display='none'" style="object-position:center top">
+            <div class="credit-spotlight-badge">★ Featured</div>
+          </div>
+          <div class="credit-spotlight-grid">
+            ${rest.map(p => `<div class="credit-spotlight-item" onclick="openLightbox('${p.url}')">
+              <img src="${p.url}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'" style="object-position:center top">
+            </div>`).join('')}
+          </div>
+        </div>`;
+      }
+
     } else {
       // Stack layout — original full-width behavior
       allMediaItems.forEach(item => {

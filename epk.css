@@ -846,3 +846,19 @@
 .gallery-timeline-year-label { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--gold); letter-spacing: 0.01em; }
 .gallery-timeline-year-count { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); }
 .gallery-timeline-toggle { font-family: var(--font-mono); font-size: 0.7rem; color: rgba(201,168,76,0.5); margin-left: auto; }
+
+/* ── CREDIT MODAL: SPOTLIGHT LAYOUT ── */
+.credit-spotlight-wrap { display: grid; grid-template-columns: 1.6fr 1fr; gap: 0.5rem; margin-top: 0.25rem; align-items: start; }
+.credit-spotlight-featured { position: relative; overflow: hidden; cursor: pointer; border: 2px solid rgba(201,168,76,0.5); transition: border-color 0.3s; }
+.credit-spotlight-featured:hover { border-color: var(--gold); }
+.credit-spotlight-featured img { width: 100%; height: auto; display: block; transition: transform 0.4s; }
+.credit-spotlight-featured:hover img { transform: scale(1.03); }
+.credit-spotlight-badge { position: absolute; top: 0.6rem; left: 0.6rem; background: rgba(201,168,76,0.9); color: #000; font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.25rem 0.6rem; font-weight: 700; }
+.credit-spotlight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; align-content: start; }
+.credit-spotlight-item { position: relative; overflow: hidden; cursor: pointer; border: 1px solid rgba(201,168,76,0.12); transition: border-color 0.3s, transform 0.3s; }
+.credit-spotlight-item:hover { border-color: rgba(201,168,76,0.45); transform: translateY(-2px); }
+.credit-spotlight-item img { width: 100%; height: auto; display: block; transition: transform 0.3s; }
+.credit-spotlight-item:hover img { transform: scale(1.04); }
+.credit-spotlight-solo { position: relative; overflow: hidden; cursor: pointer; border: 1px solid rgba(201,168,76,0.2); }
+.credit-spotlight-solo img { width: 100%; height: auto; display: block; }
+@media (max-width: 600px) { .credit-spotlight-wrap { grid-template-columns: 1fr; } .credit-spotlight-grid { grid-template-columns: repeat(3, 1fr); } }
