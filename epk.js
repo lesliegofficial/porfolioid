@@ -479,7 +479,7 @@ function buildEPK(epk) {
   let assetsHTML = '';
 
   if (assetsLayout === 'list') {
-    assetsHTML = '<div style="display:flex;flex-direction:column;border:1px solid rgba(201,168,76,0.15);width:100%">';
+    assetsHTML = '<div style="display:flex;flex-direction:column;gap:0;border:1px solid rgba(201,168,76,0.15)">';
     for (let i = 0; i < visibleAssets.length; i++) {
       const a = visibleAssets[i];
       const icon = categoryIcons[a.category] || '📄';
@@ -732,7 +732,7 @@ function buildEPK(epk) {
       </div>
       <div class="collapsible-body" id="assetsBody">
         <div class="collapsible-body-inner" style="max-width:1100px;margin:0 auto;padding:0 2rem 3rem">
-          <div class="assets-grid">${assetsHTML}</div>
+          ${assetsLayout === "cards" ? `<div class="assets-grid">${assetsHTML}</div>` : `<div style="width:100%">${assetsHTML}</div>`}
         </div>
       </div>
     </div>` : ''}
@@ -853,9 +853,31 @@ function buildMarqueeGallery(photos, container) {
     const pos = photo.position || 'center 0%';
     const item = document.createElement('div');
     item.className = 'gallery-marquee-item';
-    item.innerHTML = `<img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onerror="this.style.display='none'" style="object-position:${pos}"><div class="gallery-marquee-caption">${photo.caption || ''}</div>`;
+    const img = document.createElement('img');
+    img.src = photo.url;
+    img.alt = photo.caption || '';
+    img.loading = 'lazy';
+    img.style.objectPosition = pos;
+    img.onerror = function() { this.style.display = 'none'; };
+    img.onload = function() {
+      const ratio = this.naturalWidth / this.naturalHeight;
+      if (ratio > 1.1) {
+        const newWidth = Math.min(Math.round(380 * ratio), 700);
+        item.style.width = newWidth + 'px';
+        img.style.objectFit = 'contain';
+        img.style.background = '#0E0E0E';
+      }
+    };
+    const caption = document.createElement('div');
+    caption.className = 'gallery-marquee-caption';
+    caption.textContent = photo.caption || '';
+    item.appendChild(img);
+    item.appendChild(caption);
     const photoIdx = photos.indexOf(photo) % (photos.length / 2);
-    item.innerHTML += `<div class="owner-overlay"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('photos',${photoIdx},-1)">▲</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('photos',${photoIdx},1)">▼</button></div>`;
+    const ownerDiv = document.createElement('div');
+    ownerDiv.className = 'owner-overlay';
+    ownerDiv.innerHTML = `<button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('photos',${photoIdx},-1)">▲</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('photos',${photoIdx},1)">▼</button>`;
+    item.appendChild(ownerDiv);
     item.onclick = () => openLightbox(photo.url);
     track.appendChild(item);
   });
