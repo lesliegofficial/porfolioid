@@ -340,6 +340,7 @@ function loadAllFields() {
   loadBookingToggle();
   epk.assetsLocked = epk.assetsLocked !== undefined ? epk.assetsLocked : true;
   updateAssetsLockUI();
+  setAssetsLayout(epk.assetsLayout || 'cards');
 
   // Availability dropdown
   const availSel = document.getElementById('availabilitySelect');
@@ -738,6 +739,16 @@ document.getElementById('newCredential').addEventListener('keydown', e => { if (
 
 // CREDITS
 let editingCreditIdx = -1;
+
+function setAssetsLayout(layout) {
+  epk.assetsLayout = layout;
+  ['cards','list','compact','table','featured'].forEach(l => {
+    const btn = document.getElementById('alayout_' + l);
+    if (btn) btn.style.background = l === layout ? 'var(--gold)' : 'rgba(255,255,255,0.04)';
+    if (btn) btn.style.color = l === layout ? 'var(--black)' : 'var(--gray)';
+  });
+  persistUser(); showSaveBanner();
+}
 
 function toggleAssetsLock() {
   epk.assetsLocked = !epk.assetsLocked;
