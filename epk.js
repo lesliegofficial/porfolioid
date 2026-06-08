@@ -1050,17 +1050,176 @@ function buildMarqueeGallery(photos, container) {
 }
 
 function buildWallGallery(photos, container) {
-  const wall = document.createElement('div');
-  wall.className = 'gallery-wall';
-  photos.forEach(photo => {
-    const pos = photo.position || 'center 0%';
-    const item = document.createElement('div');
-    item.className = 'gallery-wall-item';
-    item.innerHTML = `<img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onerror="this.style.display='none'" style="object-position:${pos}"><div class="gallery-wall-caption">${photo.caption || ''}</div>`;
-    item.onclick = () => openLightbox(photo.url);
-    wall.appendChild(item);
+  if (!photos.length) return;
+
+  // ── OUTER WRAPPER ──
+  const outer = document.createElement('div');
+  outer.className = 'ew-outer';
+
+  // ── LEFT SIDEBAR ──
+  const sidebar = document.createElement('div');
+  sidebar.className = 'ew-sidebar';
+
+  // Sidebar sections
+  const collections = [...new Set(photos.map(p => p.collection).filter(Boolean))];
+  const sidebarSections = [
+    {
+      heading: 'Photo Wall',
+      items: [
+        { label: 'All Photos', count: photos.length, filter: 'all' },
+        { label: 'Featured', count: photos.filter(p => p.featured).length, filter: 'featured' },
+        { label: 'Recent', count: photos.filter(p => p.year && p.year >= 2020).length, filter: 'recent' },
+      ]
+    },
+    ...(collections.length ? [{
+      heading: 'Collections',
+      items: collections.map(c => ({ label: c, count: photos.filter(p => p.collection === c).length, filter: c }))
+    }] : []),
+    ...(!collections.length ? [{
+      heading: 'Collections',
+      items: [
+        { label: 'Live Performances', count: 0, filter: 'Live Performances' },
+        { label: 'Backstage', count: 0, filter: 'Backstage' },
+        { label: 'Awards & Events', count: 0, filter: 'Awards & Events' },
+        { label: 'Studio Sessions', count: 0, filter: 'Studio Sessions' },
+        { label: 'Personal Moments', count: 0, filter: 'Personal Moments' },
+        { label: 'Press & Publications', count: 0, filter: 'Press & Publications' },
+      ]
+    }] : [])
+  ];
+
+  let activeFilter = 'all';
+
+  sidebarSections.forEach(section => {
+    const heading = document.createElement('div');
+    heading.className = 'ew-sidebar-heading';
+    heading.textContent = section.heading;
+    sidebar.appendChild(heading);
+
+    section.items.forEach(item => {
+      const btn = document.createElement('button');
+      btn.className = 'ew-sidebar-btn' + (item.filter === 'all' ? ' active' : '');
+      btn.innerHTML = `<span class="ew-sidebar-label">${item.label}</span>${item.count ? `<span class="ew-sidebar-count">${item.count}</span>` : ''}`;
+      btn.onclick = () => {
+        activeFilter = item.filter;
+        outer.querySelectorAll('.ew-sidebar-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        // Re-render main area
+        const main = outer.querySelector('.ew-main');
+        if (main) {
+          main.innerHTML = '';
+          renderWallMain(main, filterWallPhotos(photos, activeFilter));
+        }
+      };
+      sidebar.appendChild(btn);
+    });
   });
-  container.appendChild(wall);
+
+  // Quote card
+  const quoteCard = document.createElement('div');
+  quoteCard.className = 'ew-quote-card';
+  quoteCard.innerHTML = `<div class="ew-quote-mark">"</div><div class="ew-quote-text">Every moment has a story. This is mine.</div><div class="ew-quote-sig">— Leslie A. Guerra</div>`;
+  sidebar.appendChild(quoteCard);
+
+  outer.appendChild(sidebar);
+
+  // ── MAIN AREA ──
+  const main = document.createElement('div');
+  main.className = 'ew-main';
+  renderWallMain(main, photos);
+  outer.appendChild(main);
+
+  container.appendChild(outer);
+
+  function filterWallPhotos(photos, filter) {
+    if (filter === 'all') return photos;
+    if (filter === 'featured') return photos.filter(p => p.featured);
+    if (filter === 'recent') return photos.filter(p => p.year && p.year >= 2020);
+    return photos.filter(p => p.collection === filter);
+  }
+
+  function renderWallMain(main, filteredPhotos) {
+    if (!filteredPhotos.length) {
+      main.innerHTML = `<div class="ew-empty">No photos in this collection yet.</div>`;
+      return;
+    }
+
+    const hero = filteredPhotos[0];
+    const secondary = filteredPhotos.slice(1, 4);
+    const rest = filteredPhotos.slice(4);
+
+    // ── HERO SECTION ──
+    const heroSection = document.createElement('div');
+    heroSection.className = 'ew-hero-section';
+
+    const heroCard = document.createElement('div');
+    heroCard.className = 'ew-hero-card';
+    heroCard.innerHTML = `
+      <img src="${hero.url}" alt="${hero.caption||''}" loading="lazy" onerror="this.style.display='none'" style="object-position:center top">
+      <div class="ew-hero-overlay">
+        ${hero.collection ? `<div class="ew-overlay-category">${hero.collection.toUpperCase()}</div>` : ''}
+        ${hero.caption ? `<div class="ew-overlay-title">${hero.caption}</div>` : ''}
+        <div class="ew-overlay-meta">${[hero.location, hero.year].filter(Boolean).join(' • ')}</div>
+      </div>`;
+    heroCard.onclick = () => openLightbox(hero.url);
+    heroSection.appendChild(heroCard);
+
+    // Secondary cards stack
+    if (secondary.length) {
+      const secStack = document.createElement('div');
+      secStack.className = 'ew-secondary-stack';
+      secondary.forEach(photo => {
+        const card = document.createElement('div');
+        card.className = 'ew-secondary-card';
+        card.innerHTML = `
+          <img src="${photo.url}" alt="${photo.caption||''}" loading="lazy" onerror="this.style.display='none'" style="object-position:center top">
+          <div class="ew-card-overlay">
+            ${photo.collection ? `<div class="ew-overlay-category">${photo.collection.toUpperCase()}</div>` : ''}
+            ${photo.caption ? `<div class="ew-overlay-title">${photo.caption}</div>` : ''}
+            <div class="ew-overlay-meta">${[photo.location, photo.year].filter(Boolean).join(' • ')}</div>
+          </div>`;
+        card.onclick = () => openLightbox(photo.url);
+        secStack.appendChild(card);
+      });
+      heroSection.appendChild(secStack);
+    }
+
+    main.appendChild(heroSection);
+
+    // ── MOSAIC SECTION ──
+    if (rest.length) {
+      const mosaic = document.createElement('div');
+      mosaic.className = 'ew-mosaic';
+
+      // Assign sizes: large / medium / small in editorial pattern
+      const patterns = ['large','medium','small','small','medium','large','small','medium','small','small','medium','large'];
+      rest.forEach((photo, i) => {
+        const size = patterns[i % patterns.length];
+        const card = document.createElement('div');
+        card.className = `ew-mosaic-card ew-mosaic-${size}`;
+
+        // Milestone card every 7th item if no caption
+        if (i > 0 && i % 7 === 0 && !photo.caption) {
+          card.className = 'ew-mosaic-card ew-mosaic-milestone';
+          card.innerHTML = `<div class="ew-milestone-icon">✦</div><div class="ew-milestone-title">20+ Years in Music</div><div class="ew-milestone-sub">From local stages to international tours.</div>`;
+          mosaic.appendChild(card);
+          return;
+        }
+
+        card.innerHTML = `
+          <img src="${photo.url}" alt="${photo.caption||''}" loading="lazy" onerror="this.style.display='none'" style="object-position:center top">
+          <div class="ew-card-overlay">
+            ${photo.collection ? `<div class="ew-overlay-category">${photo.collection.toUpperCase()}</div>` : ''}
+            ${photo.caption ? `<div class="ew-overlay-title">${photo.caption}</div>` : ''}
+            <div class="ew-overlay-meta">${[photo.location, photo.year].filter(Boolean).join(' • ')}</div>
+          </div>`;
+        card.onclick = () => openLightbox(photo.url);
+        mosaic.appendChild(card);
+      });
+
+      main.appendChild(mosaic);
+    }
+  }
 }
 
 function buildScrollGallery(photos, container) {
