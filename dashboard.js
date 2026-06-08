@@ -2603,6 +2603,7 @@ function editAward(i) {
   document.getElementById('newAwardVerified').checked = a.verified || false;
   document.getElementById('newAwardFeatured').checked = a.featured || false;
   pendingAwardPhotos = [...(a.photos || [])];
+  const psEl = document.getElementById('newAwardPhotoStyle'); if(psEl) psEl.value = a.photoStyle || 'thumbnails';
   renderAwardPhotosPreview();
   document.getElementById('addAwardForm').classList.add('open');
   document.getElementById('addAwardForm').scrollIntoView({ behavior: 'smooth' });
@@ -2621,7 +2622,8 @@ function addAward() {
   const featured = document.getElementById('newAwardFeatured').checked;
   if (!title) return;
   epk.awards = epk.awards || [];
-  const awardData = { title, org, year, type, desc, category, proofLink, certUrl, verified, featured, photos: [...pendingAwardPhotos] };
+  const photoStyle = (document.getElementById('newAwardPhotoStyle') || {}).value || 'thumbnails';
+  const awardData = { title, org, year, type, desc, category, proofLink, certUrl, verified, featured, photoStyle, photos: [...pendingAwardPhotos] };
   if (editingAwardIdx >= 0) {
     epk.awards[editingAwardIdx] = { ...epk.awards[editingAwardIdx], ...awardData };
     editingAwardIdx = -1;
