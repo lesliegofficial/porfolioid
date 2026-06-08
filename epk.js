@@ -981,7 +981,7 @@ function setGalleryLayout(layout) {
   currentGalleryLayout = layout;
   const activeStyle = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(201,168,76,0.4);background:rgba(201,168,76,0.1);color:var(--gold);cursor:pointer;transition:all 0.2s';
   const inactiveStyle = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border:1px solid rgba(255,255,255,0.1);background:none;color:var(--gray);cursor:pointer;transition:all 0.2s';
-  ['btnMarquee','btnScroll','btnGrid'].forEach(id => {
+  ['btnMarquee','btnScroll','btnWall','btnCollections','btnGrid','btnMagazine','btnTimeline','btnTable'].forEach(id => {
     const btn = document.getElementById(id);
     if (btn) btn.style.cssText = inactiveStyle;
   });
@@ -1076,6 +1076,312 @@ function buildScrollGallery(photos, container) {
   container.appendChild(wrap);
 }
 
+function buildCollectionsGallery(photos, container) {
+  // Group photos by collection field; fallback to single group if none set
+  const groups = {};
+  photos.forEach(photo => {
+    const col = photo.collection || 'All Photos';
+    if (!groups[col]) groups[col] = [];
+    groups[col].push(photo);
+  });
+  const wrap = document.createElement('div');
+  wrap.className = 'gallery-collections';
+  Object.entries(groups).forEach(([name, gphotos]) => {
+    const card = document.createElement('div');
+    card.className = 'gallery-collection-card';
+    // Preview collage: up to 4 photos
+    const collage = document.createElement('div');
+    collage.className = 'gallery-collection-collage gallery-collection-collage-' + Math.min(gphotos.length, 4);
+    gphotos.slice(0, 4).forEach(p => {
+      const img = document.createElement('img');
+      img.src = p.url;
+      img.alt = p.caption || '';
+      img.loading = 'lazy';
+      img.style.objectPosition = p.position || 'center 0%';
+      img.onerror = function() { this.style.display = 'none'; };
+      collage.appendChild(img);
+    });
+    const meta = document.createElement('div');
+    meta.className = 'gallery-collection-meta';
+    meta.innerHTML = `<span class="gallery-collection-name">${name}</span><span class="gallery-collection-count">${gphotos.length} photo${gphotos.length !== 1 ? 's' : ''}</span>`;
+    card.appendChild(collage);
+    card.appendChild(meta);
+    // Click opens a lightbox-style expanded view of this group
+    card.onclick = () => {
+      let idx = 0;
+      function showCollectionLightbox() {
+        const existing = document.getElementById('collectionLightbox');
+        if (existing) existing.remove();
+        const lb = document.createElement('div');
+        lb.id = 'collectionLightbox';
+        lb.className = 'gallery-collection-lightbox';
+        lb.innerHTML = `
+          <div class="gallery-collection-lb-inner">
+            <button class="gallery-collection-lb-close" onclick="document.getElementById('collectionLightbox').remove()">✕</button>
+            <div class="gallery-collection-lb-title">${name}</div>
+            <div class="gallery-collection-lb-grid">
+              ${gphotos.map((p,i) => `<div class="gallery-collection-lb-item" onclick="openLightbox('${p.url}')">
+                <img src="${p.url}" alt="${(p.caption||'').replace(/"/g,"'")}" loading="lazy" style="object-position:${p.position||'center 0%'}" onerror="this.style.display='none'">
+                ${p.caption ? `<div class="gallery-collection-lb-cap">${p.caption}</div>` : ''}
+              </div>`).join('')}
+            </div>
+          </div>`;
+        document.body.appendChild(lb);
+        lb.addEventListener('click', e => { if (e.target === lb) lb.remove(); });
+      }
+      showCollectionLightbox();
+    };
+    wrap.appendChild(card);
+  });
+  container.appendChild(wrap);
+}
+
+function buildGridGallery(photos, container) {
+  const PAGE_SIZE = 12;
+  let page = 0;
+  const wrap = document.createElement('div');
+  wrap.className = 'gallery-grid-wrap';
+
+  function renderPage() {
+    wrap.innerHTML = '';
+    const grid = document.createElement('div');
+    grid.className = 'gallery-grid';
+    const start = page * PAGE_SIZE;
+    photos.slice(start, start + PAGE_SIZE).forEach(photo => {
+      const item = document.createElement('div');
+      item.className = 'gallery-grid-item';
+      const img = document.createElement('img');
+      img.src = photo.url;
+      img.alt = photo.caption || '';
+      img.loading = 'lazy';
+      img.style.objectPosition = photo.position || 'center 0%';
+      img.onerror = function() { this.style.display = 'none'; };
+      if (photo.caption) {
+        const cap = document.createElement('div');
+        cap.className = 'gallery-grid-caption';
+        cap.textContent = photo.caption;
+        item.appendChild(img);
+        item.appendChild(cap);
+      } else {
+        item.appendChild(img);
+      }
+      item.onclick = () => openLightbox(photo.url);
+      grid.appendChild(item);
+    });
+    wrap.appendChild(grid);
+    // Pagination
+    const totalPages = Math.ceil(photos.length / PAGE_SIZE);
+    if (totalPages > 1) {
+      const pag = document.createElement('div');
+      pag.className = 'gallery-grid-pagination';
+      for (let i = 0; i < totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i + 1;
+        btn.className = 'gallery-grid-pag-btn' + (i === page ? ' active' : '');
+        btn.onclick = () => { page = i; renderPage(); };
+        pag.appendChild(btn);
+      }
+      wrap.appendChild(pag);
+    }
+  }
+  renderPage();
+  container.appendChild(wrap);
+}
+
+function buildMagazineGallery(photos, container) {
+  const wrap = document.createElement('div');
+  wrap.className = 'gallery-magazine';
+  // First featured photo large, rest in smaller panels
+  const featured = photos.find(p => p.featured) || photos[0];
+  const rest = photos.filter(p => p !== featured);
+
+  const heroWrap = document.createElement('div');
+  heroWrap.className = 'gallery-magazine-hero';
+  const heroImg = document.createElement('img');
+  heroImg.src = featured.url;
+  heroImg.alt = featured.caption || '';
+  heroImg.loading = 'lazy';
+  heroImg.style.objectPosition = featured.position || 'center 0%';
+  heroImg.onerror = function() { this.style.display = 'none'; };
+  heroImg.onclick = () => openLightbox(featured.url);
+  const heroOverlay = document.createElement('div');
+  heroOverlay.className = 'gallery-magazine-hero-overlay';
+  const metaParts = [featured.caption, featured.location, featured.year].filter(Boolean);
+  heroOverlay.innerHTML = metaParts.map((m, i) => `<span class="${i===0 ? 'gallery-magazine-hero-caption' : 'gallery-magazine-hero-meta'}">${m}</span>`).join('');
+  heroWrap.appendChild(heroImg);
+  heroWrap.appendChild(heroOverlay);
+  wrap.appendChild(heroWrap);
+
+  if (rest.length) {
+    const grid = document.createElement('div');
+    grid.className = 'gallery-magazine-grid';
+    rest.forEach(photo => {
+      const item = document.createElement('div');
+      item.className = 'gallery-magazine-item';
+      const img = document.createElement('img');
+      img.src = photo.url;
+      img.alt = photo.caption || '';
+      img.loading = 'lazy';
+      img.style.objectPosition = photo.position || 'center 0%';
+      img.onerror = function() { this.style.display = 'none'; };
+      img.onclick = () => openLightbox(photo.url);
+      item.appendChild(img);
+      const metaParts = [photo.caption, photo.location, photo.year].filter(Boolean);
+      if (metaParts.length) {
+        const cap = document.createElement('div');
+        cap.className = 'gallery-magazine-caption';
+        cap.textContent = metaParts.join(' · ');
+        item.appendChild(cap);
+      }
+      grid.appendChild(item);
+    });
+    wrap.appendChild(grid);
+  }
+  container.appendChild(wrap);
+}
+
+function buildTimelineGallery(photos, container) {
+  // Group by year; fallback label 'Undated'
+  const groups = {};
+  photos.forEach(photo => {
+    const yr = photo.year ? String(photo.year) : 'Undated';
+    if (!groups[yr]) groups[yr] = [];
+    groups[yr].push(photo);
+  });
+  // Sort years descending; 'Undated' last
+  const sorted = Object.keys(groups).sort((a, b) => {
+    if (a === 'Undated') return 1;
+    if (b === 'Undated') return -1;
+    return Number(b) - Number(a);
+  });
+  const wrap = document.createElement('div');
+  wrap.className = 'gallery-timeline';
+  sorted.forEach(year => {
+    const section = document.createElement('div');
+    section.className = 'gallery-timeline-year';
+    const header = document.createElement('div');
+    header.className = 'gallery-timeline-year-header';
+    let collapsed = false;
+    header.innerHTML = `<span class="gallery-timeline-year-label">${year}</span><span class="gallery-timeline-year-count">${groups[year].length} photo${groups[year].length !== 1 ? 's' : ''}</span><span class="gallery-timeline-toggle">▲</span>`;
+    const photoRow = document.createElement('div');
+    photoRow.className = 'gallery-timeline-row';
+    groups[year].forEach(photo => {
+      const item = document.createElement('div');
+      item.className = 'gallery-timeline-item';
+      const img = document.createElement('img');
+      img.src = photo.url;
+      img.alt = photo.caption || '';
+      img.loading = 'lazy';
+      img.style.objectPosition = photo.position || 'center 0%';
+      img.onerror = function() { this.style.display = 'none'; };
+      img.onclick = () => openLightbox(photo.url);
+      item.appendChild(img);
+      if (photo.caption || photo.location) {
+        const cap = document.createElement('div');
+        cap.className = 'gallery-timeline-cap';
+        cap.textContent = [photo.caption, photo.location].filter(Boolean).join(' · ');
+        item.appendChild(cap);
+      }
+      photoRow.appendChild(item);
+    });
+    header.onclick = () => {
+      collapsed = !collapsed;
+      photoRow.style.display = collapsed ? 'none' : '';
+      header.querySelector('.gallery-timeline-toggle').textContent = collapsed ? '▼' : '▲';
+    };
+    section.appendChild(header);
+    section.appendChild(photoRow);
+    wrap.appendChild(section);
+  });
+  container.appendChild(wrap);
+}
+
+function buildTableGallery(photos, container) {
+  let sortField = 'position';
+  let sortDir = 1;
+  let filterText = '';
+
+  const wrap = document.createElement('div');
+  wrap.className = 'gallery-table-wrap';
+
+  function render() {
+    wrap.innerHTML = '';
+    // Search bar
+    const searchBar = document.createElement('div');
+    searchBar.className = 'gallery-table-search-bar';
+    const searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.placeholder = 'Search photos…';
+    searchInput.value = filterText;
+    searchInput.className = 'gallery-table-search';
+    searchInput.oninput = e => { filterText = e.target.value; render(); };
+    searchBar.appendChild(searchInput);
+    wrap.appendChild(searchBar);
+
+    // Filter + sort
+    let filtered = photos.filter(p => {
+      const q = filterText.toLowerCase();
+      return !q || (p.caption||'').toLowerCase().includes(q) || (p.collection||'').toLowerCase().includes(q) || (p.location||'').toLowerCase().includes(q) || String(p.year||'').includes(q);
+    });
+    filtered = filtered.slice().sort((a, b) => {
+      const av = a[sortField] || (sortField === 'position' ? 0 : '');
+      const bv = b[sortField] || (sortField === 'position' ? 0 : '');
+      if (typeof av === 'number') return (av - bv) * sortDir;
+      return String(av).localeCompare(String(bv)) * sortDir;
+    });
+
+    const table = document.createElement('table');
+    table.className = 'gallery-table';
+    const head = document.createElement('thead');
+    const headRow = document.createElement('tr');
+    const cols = [
+      { key: 'url', label: 'Photo' },
+      { key: 'caption', label: 'Caption' },
+      { key: 'collection', label: 'Collection' },
+      { key: 'year', label: 'Year' },
+      { key: 'location', label: 'Location' },
+    ];
+    cols.forEach(col => {
+      const th = document.createElement('th');
+      th.innerHTML = col.label + (col.key !== 'url' ? ` <span class="gallery-table-sort-icon">${sortField === col.key ? (sortDir === 1 ? '↑' : '↓') : '↕'}</span>` : '');
+      if (col.key !== 'url') {
+        th.style.cursor = 'pointer';
+        th.onclick = () => {
+          if (sortField === col.key) sortDir *= -1;
+          else { sortField = col.key; sortDir = 1; }
+          render();
+        };
+      }
+      headRow.appendChild(th);
+    });
+    head.appendChild(headRow);
+    table.appendChild(head);
+
+    const body = document.createElement('tbody');
+    filtered.forEach(photo => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="gallery-table-thumb"><img src="${photo.url}" alt="${(photo.caption||'').replace(/"/g,"'")}" onclick="openLightbox('${photo.url}')" onerror="this.style.display='none'"></td>
+        <td>${photo.caption || '<span style="opacity:0.3">—</span>'}</td>
+        <td>${photo.collection || '<span style="opacity:0.3">—</span>'}</td>
+        <td>${photo.year || '<span style="opacity:0.3">—</span>'}</td>
+        <td>${photo.location || '<span style="opacity:0.3">—</span>'}</td>`;
+      body.appendChild(tr);
+    });
+    table.appendChild(body);
+    wrap.appendChild(table);
+
+    if (filtered.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'gallery-table-empty';
+      empty.textContent = 'No photos match your search.';
+      wrap.appendChild(empty);
+    }
+  }
+  render();
+  container.appendChild(wrap);
+}
+
 function buildGallery(photos) {
   galleryPhotos = photos;
   // Use saved layout preference from dashboard
@@ -1096,6 +1402,26 @@ function buildGallery(photos) {
   }
   if (currentGalleryLayout === 'scroll') {
     buildScrollGallery(photos, container);
+    return;
+  }
+  if (currentGalleryLayout === 'collections') {
+    buildCollectionsGallery(photos, container);
+    return;
+  }
+  if (currentGalleryLayout === 'grid') {
+    buildGridGallery(photos, container);
+    return;
+  }
+  if (currentGalleryLayout === 'magazine') {
+    buildMagazineGallery(photos, container);
+    return;
+  }
+  if (currentGalleryLayout === 'timeline') {
+    buildTimelineGallery(photos, container);
+    return;
+  }
+  if (currentGalleryLayout === 'table') {
+    buildTableGallery(photos, container);
     return;
   }
 
