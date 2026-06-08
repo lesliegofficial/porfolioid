@@ -951,8 +951,8 @@
     }
   ],
   "videoLayout": "spotlight",
-  "assetsLayout": "featured",
-  "assetsLocked": false,
+  "assetsLayout": "cards",
+  "assetsLocked": true,
   "availability": "Available for tours & studio sessions",
   "bioImageZoom": 93,
   "bookingEmail": "leslieannguerra@gmail.com",
