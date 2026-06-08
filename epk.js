@@ -489,26 +489,31 @@ function buildEPK(epk) {
     return categoryIcons[a.category] || '📄';
   }
 
+  // Returns "Category • Detail1 • Detail2 • Year" from title+desc
   function getAssetMeta(a) {
     const parts = [];
     if (a.category) parts.push(a.category);
     if (a.desc) {
-      // Pull key facts from desc — split on common separators
-      const bits = a.desc.split(/[•·,—–]/).map(s => s.trim()).filter(s => s.length > 0 && s.length < 40);
-      bits.slice(0,3).forEach(b => parts.push(b));
+      const bits = a.desc.split(/[•·,—–]/).map(s => s.trim()).filter(s => s.length > 0 && s.length < 50);
+      bits.slice(0, 3).forEach(b => parts.push(b));
     }
     return parts.join(' • ');
   }
 
+  // Only show PRIVATE badge when there is a mix of public/private; show VERIFIED/FEATURED always
   function getVerificationBadge(a) {
     let badges = '';
     if (a.verified) badges += '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(126,201,126,0.12);color:#7ec97e;border:1px solid rgba(126,201,126,0.25);padding:0.15rem 0.5rem;margin-right:0.3rem">✓ VERIFIED</span>';
     if (a.featured) badges += '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.25);padding:0.15rem 0.5rem;margin-right:0.3rem">⭐ FEATURED</span>';
-    const isPublic = !epk.assetsLocked;
-    badges += isPublic
-      ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(74,127,165,0.12);color:#4A7FA5;border:1px solid rgba(74,127,165,0.25);padding:0.15rem 0.5rem">🌎 PUBLIC</span>'
-      : '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(255,255,255,0.04);color:var(--gray);border:1px solid rgba(255,255,255,0.08);padding:0.15rem 0.5rem">🔒 PRIVATE</span>';
-    return badges ? '<div style="display:flex;flex-wrap:wrap;gap:0.25rem;margin-bottom:0.6rem">' + badges + '</div>' : '';
+    // Only show PUBLIC/PRIVATE if there is a mix — all-locked means no badge needed
+    const hasMix = (epk.assets || []).some(x => x.publicOverride) && (epk.assets || []).some(x => !x.publicOverride);
+    if (hasMix) {
+      const isItemPublic = a.publicOverride || !epk.assetsLocked;
+      badges += isItemPublic
+        ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(74,127,165,0.12);color:#4A7FA5;border:1px solid rgba(74,127,165,0.25);padding:0.15rem 0.5rem">🌎 PUBLIC</span>'
+        : '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(255,255,255,0.04);color:var(--gray);border:1px solid rgba(255,255,255,0.08);padding:0.15rem 0.5rem">🔒 PRIVATE</span>';
+    }
+    return badges ? '<div style="display:flex;flex-wrap:wrap;gap:0.25rem;margin-bottom:0.5rem">' + badges + '</div>' : '';
   }
 
   const assetsLocked = epk.assetsLocked === true;
@@ -524,80 +529,93 @@ function buildEPK(epk) {
   let assetsHTML = '';
 
   if (assetsLayout === 'list') {
-    assetsHTML = '<div style="display:flex;flex-direction:column;gap:0;border:1px solid rgba(201,168,76,0.15)">';
+    // STYLE 2 — LIST: compact rows, category+badge on same line, full row hover
+    assetsHTML = '<div style="border:1px solid rgba(201,168,76,0.15)">';
     for (let i = 0; i < visibleAssets.length; i++) {
       const a = visibleAssets[i];
-      const icon = categoryIcons[a.category] || '📄';
-      const _icon = getAssetIcon(a);
-      const _meta = getAssetMeta(a);
-      const _badges = getVerificationBadge(a);
-      assetsHTML += '<div style="display:flex;align-items:center;gap:2rem;padding:1.5rem 2rem;border-bottom:1px solid rgba(201,168,76,0.08)">'
-        + '<span style="font-size:2rem;flex-shrink:0">' + _icon + '</span>'
+      const ic = getAssetIcon(a);
+      const meta = getAssetMeta(a).replace(a.category + ' • ', ''); // strip leading category since shown separately
+      const verBadge = a.verified ? ' <span style="font-family:var(--font-mono);font-size:0.45rem;color:#7ec97e;border:1px solid rgba(126,201,126,0.3);padding:0.1rem 0.4rem;vertical-align:middle">✓</span>' : '';
+      const featBadge = a.featured ? ' <span style="font-family:var(--font-mono);font-size:0.45rem;color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.1rem 0.4rem;vertical-align:middle">⭐</span>' : '';
+      assetsHTML += '<div class="asset-list-row" style="display:flex;align-items:center;gap:1.5rem;padding:1.1rem 1.75rem;border-bottom:1px solid rgba(201,168,76,0.07);cursor:pointer" onmouseover=\"this.style.background=\'rgba(201,168,76,0.04)\';\" onmouseout=\"this.style.background=\'\'\">'
+        + '<span style="font-size:1.6rem;flex-shrink:0">' + ic + '</span>'
         + '<div style="flex:1;min-width:0">'
-        + _badges
-        + '<div style="font-family:var(--font-display);font-size:1.2rem;color:var(--white);margin-bottom:0.2rem">' + a.title + '</div>'
-        + (_meta ? '<div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);letter-spacing:0.05em">' + _meta + '</div>' : '')
+        + '<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.2rem">'
+        + (a.category ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);opacity:0.8">' + a.category + '</span>' : '')
+        + verBadge + featBadge
         + '</div>'
-        + '<div style="flex-shrink:0;margin-left:1rem">' + makeBtn(a, i) + '</div>'
+        + '<div style="font-family:var(--font-display);font-size:1.1rem;color:var(--white);margin-bottom:0.2rem">' + a.title + '</div>'
+        + (meta ? '<div style="font-family:var(--font-mono);font-size:0.58rem;color:rgba(187,187,187,0.85);letter-spacing:0.04em">' + meta + '</div>' : '')
+        + '</div>'
+        + '<div style="flex-shrink:0">' + makeBtn(a, i) + '</div>'
         + '</div>';
     }
     assetsHTML += '</div>';
 
   } else if (assetsLayout === 'compact') {
-    assetsHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem">';
+    // STYLE 3 — COMPACT: centered tiles with meta, hover glow
+    assetsHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:0.85rem">';
     for (let i = 0; i < visibleAssets.length; i++) {
       const a = visibleAssets[i];
-      const icon = categoryIcons[a.category] || '📄';
-      assetsHTML += '<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.15);padding:2rem 1.5rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.75rem">'
-        + '<span style="font-size:2.5rem">' + icon + '</span>'
-        + (a.category ? '<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);opacity:0.7">' + a.category + '</div>' : '')
-        + '<div style="font-family:var(--font-display);font-size:1.1rem;color:var(--white);line-height:1.3">' + a.title + '</div>'
-        + makeBtn(a, i) + '</div>';
+      const ic = getAssetIcon(a);
+      const meta = getAssetMeta(a);
+      const verBadge = a.verified ? '<span style="font-family:var(--font-mono);font-size:0.45rem;color:#7ec97e;border:1px solid rgba(126,201,126,0.3);padding:0.1rem 0.4rem">✓ VERIFIED</span>' : '';
+      const featBadge = a.featured ? '<span style="font-family:var(--font-mono);font-size:0.45rem;color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.1rem 0.4rem">⭐ FEATURED</span>' : '';
+      const badgeRow = (verBadge || featBadge) ? '<div style="display:flex;gap:0.25rem;justify-content:center;flex-wrap:wrap;margin-bottom:0.4rem">' + verBadge + featBadge + '</div>' : '';
+      assetsHTML += '<div class="asset-card-hover" style="background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.12);padding:1.6rem 1.25rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.4rem">'
+        + '<span style="font-size:2.2rem;margin-bottom:0.3rem">' + ic + '</span>'
+        + (a.category ? '<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(201,168,76,0.85);margin-bottom:0.1rem">' + a.category + '</div>' : '')
+        + '<div style="font-family:var(--font-display);font-size:1rem;color:var(--white);line-height:1.3;margin-bottom:0.2rem">' + a.title + '</div>'
+        + (meta ? '<div style="font-family:var(--font-mono);font-size:0.52rem;color:rgba(187,187,187,0.8);line-height:1.5;margin-bottom:0.4rem">' + meta.replace(a.category + ' • ', '') + '</div>' : '')
+        + badgeRow
+        + '<div style="margin-top:0.5rem">' + makeBtn(a, i) + '</div>'
+        + '</div>';
     }
     assetsHTML += '</div>';
 
   } else if (assetsLayout === 'table') {
+    // STYLE 4 — TABLE: no Status column, wider Description, row hover, clickable titles
     assetsHTML = '<table style="width:100%;border-collapse:collapse">'
       + '<thead><tr style="border-bottom:2px solid rgba(201,168,76,0.3)">'
-      + '<th style="text-align:left;padding:0.9rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;font-weight:400">DOCUMENT</th>'
-      + '<th style="text-align:left;padding:0.9rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;font-weight:400">CATEGORY</th>'
-      + '<th style="text-align:left;padding:0.9rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;font-weight:400">STATUS</th>'
-      + '<th style="text-align:left;padding:0.9rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;font-weight:400">DESCRIPTION</th>'
-      + '<th style="text-align:right;padding:0.9rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;font-weight:400">ACCESS</th>'
+      + '<th style="text-align:left;padding:0.85rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;font-weight:400;width:30%">DOCUMENT</th>'
+      + '<th style="text-align:left;padding:0.85rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;font-weight:400;width:15%">CATEGORY</th>'
+      + '<th style="text-align:left;padding:0.85rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;font-weight:400">DESCRIPTION</th>'
+      + '<th style="text-align:right;padding:0.85rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;font-weight:400;width:180px">ACCESS</th>'
       + '</tr></thead><tbody>';
     for (let i = 0; i < visibleAssets.length; i++) {
       const a = visibleAssets[i];
-      const icon = categoryIcons[a.category] || '📄';
-      const _tic = getAssetIcon(a);
-      const _tbadge = a.verified ? '<span style="color:#7ec97e;font-size:0.6rem">✓ Verified</span>' : (a.featured ? '<span style="color:var(--gold);font-size:0.6rem">⭐ Featured</span>' : '<span style="color:var(--gray);font-size:0.6rem">—</span>');
-      assetsHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.05)">'
-        + '<td style="padding:1.1rem 1.25rem;font-family:var(--font-display);font-size:1rem;color:var(--white)">' + _tic + '  ' + a.title + '</td>'
-        + '<td style="padding:1.1rem 1.25rem;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em">' + (a.category || '—') + '</td>'
-        + '<td style="padding:1.1rem 1.25rem;font-family:var(--font-mono)">' + _tbadge + '</td>'
-        + '<td style="padding:1.1rem 1.25rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--gray-light)">' + (a.desc || '—') + '</td>'
-        + '<td style="padding:1.1rem 1.25rem;text-align:right">' + makeBtn(a, i) + '</td>'
+      const ic = getAssetIcon(a);
+      const verBadge = a.verified ? ' <span style="font-family:var(--font-mono);font-size:0.45rem;color:#7ec97e;border:1px solid rgba(126,201,126,0.3);padding:0.1rem 0.35rem">✓</span>' : '';
+      assetsHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.05);cursor:pointer" onmouseover=\"this.style.background=\'rgba(201,168,76,0.04)\';\" onmouseout=\"this.style.background=\'\'\">'
+        + '<td style="padding:1rem 1.25rem;font-family:var(--font-display);font-size:1.05rem;color:var(--white)">' + ic + ' ' + a.title + verBadge + '</td>'
+        + '<td style="padding:1rem 1.25rem;font-family:var(--font-mono);font-size:0.58rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em">' + (a.category || '—') + '</td>'
+        + '<td style="padding:1rem 1.25rem;font-family:var(--font-mono);font-size:0.63rem;color:rgba(187,187,187,0.85);line-height:1.6">' + (a.desc || '—') + '</td>'
+        + '<td style="padding:1rem 1.25rem;text-align:right">' + makeBtn(a, i) + '</td>'
         + '</tr>';
     }
     assetsHTML += '</tbody></table>';
 
   } else {
-    // Default: cards
+    // STYLE 1 — CARDS: tighter height, metadata line, no PRIVATE badge when all locked, hover glow
+    const allLocked = epk.assetsLocked === true;
     assetsHTML = visibleAssets.map(function(a, i) {
-      const icon = getAssetIcon(a);
+      const ic = getAssetIcon(a);
       const meta = getAssetMeta(a);
-      const badges = getVerificationBadge(a);
-      return '<div class="asset-card asset-card-hover">'
-        + '<div style="font-size:2.5rem;margin-bottom:1rem">' + icon + '</div>'
-        + badges
-        + (a.category ? '<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.5rem">' + a.category + '</div>' : '')
-        + '<div class="asset-title">' + a.title + '</div>'
-        + (meta ? '<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.35rem;margin-bottom:0.75rem;line-height:1.5">' + meta + '</div>' : '<div style="margin-bottom:0.75rem"></div>')
+      const verBadge = a.verified ? '<span style="font-family:var(--font-mono);font-size:0.45rem;letter-spacing:0.08em;background:rgba(126,201,126,0.12);color:#7ec97e;border:1px solid rgba(126,201,126,0.25);padding:0.12rem 0.45rem;margin-right:0.25rem">✓ VERIFIED</span>' : '';
+      const featBadge = a.featured ? '<span style="font-family:var(--font-mono);font-size:0.45rem;letter-spacing:0.08em;background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.25);padding:0.12rem 0.45rem">⭐ FEATURED</span>' : '';
+      const badgeRow = (verBadge || featBadge) ? '<div style="display:flex;flex-wrap:wrap;gap:0.2rem;margin-bottom:0.45rem">' + verBadge + featBadge + '</div>' : '';
+      return '<div class="asset-card asset-card-hover" style="padding:1.5rem">'
+        + '<div style="font-size:2rem;margin-bottom:0.75rem">' + ic + '</div>'
+        + badgeRow
+        + (a.category ? '<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.4rem">' + a.category + '</div>' : '')
+        + '<div class="asset-title" style="font-size:1.05rem;margin-bottom:0.3rem">' + a.title + '</div>'
+        + (meta ? '<div style="font-family:var(--font-mono);font-size:0.55rem;color:rgba(187,187,187,0.8);margin-bottom:0.75rem;line-height:1.5">' + meta.replace(a.category + ' • ', '') + '</div>' : '<div style="margin-bottom:0.75rem"></div>')
         + makeBtn(a, i)
         + '</div>';
     }).join('');
   }
 
-  const bookingEmail = epk.bookingEmail || '';
+    const bookingEmail = epk.bookingEmail || '';
   const bookingPhone = epk.bookingPhone || '';
   const bookingTagline = epk.bookingTagline || 'Now booking live performances, studio sessions, and creative collaborations.';
   const bookingNote = epk.bookingNote || '';
