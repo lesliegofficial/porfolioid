@@ -479,48 +479,49 @@ function buildEPK(epk) {
   let assetsHTML = '';
 
   if (assetsLayout === 'list') {
-    assetsHTML = '<div style="display:flex;flex-direction:column;border:1px solid rgba(201,168,76,0.12)">';
+    assetsHTML = '<div style="display:flex;flex-direction:column;border:1px solid rgba(201,168,76,0.15);width:100%">';
     for (let i = 0; i < visibleAssets.length; i++) {
       const a = visibleAssets[i];
       const icon = categoryIcons[a.category] || '📄';
-      assetsHTML += '<div style="display:flex;align-items:center;gap:1.5rem;padding:1.1rem 1.5rem;border-bottom:1px solid rgba(201,168,76,0.08)">'
-        + '<span style="font-size:1.4rem;flex-shrink:0">' + icon + '</span>'
-        + '<div style="flex:1"><div style="font-family:var(--font-display);font-size:1rem;color:var(--white)">' + a.title + '</div>'
-        + (a.desc ? '<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.2rem">' + a.desc + '</div>' : '') + '</div>'
-        + (a.category ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);background:rgba(255,255,255,0.04);padding:0.2rem 0.6rem;flex-shrink:0">' + a.category + '</span>' : '')
-        + '<div style="flex-shrink:0">' + makeBtn(a, i) + '</div>'
+      assetsHTML += '<div style="display:flex;align-items:center;gap:2rem;padding:1.5rem 2rem;border-bottom:1px solid rgba(201,168,76,0.08);width:100%;box-sizing:border-box">'
+        + '<span style="font-size:2rem;flex-shrink:0">' + icon + '</span>'
+        + '<div style="flex:1;min-width:0"><div style="font-family:var(--font-display);font-size:1.2rem;color:var(--white);margin-bottom:0.25rem">' + a.title + '</div>'
+        + (a.desc ? '<div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--gray);letter-spacing:0.05em">' + a.desc + '</div>' : '') + '</div>'
+        + (a.category ? '<span style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);background:rgba(255,255,255,0.04);padding:0.3rem 0.75rem;flex-shrink:0">' + a.category + '</span>' : '')
+        + '<div style="flex-shrink:0;margin-left:1rem">' + makeBtn(a, i) + '</div>'
         + '</div>';
     }
     assetsHTML += '</div>';
 
   } else if (assetsLayout === 'compact') {
-    assetsHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.75rem">';
+    assetsHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem">';
     for (let i = 0; i < visibleAssets.length; i++) {
       const a = visibleAssets[i];
       const icon = categoryIcons[a.category] || '📄';
-      assetsHTML += '<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.12);padding:1.25rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.5rem">'
-        + '<span style="font-size:1.8rem">' + icon + '</span>'
-        + '<div style="font-family:var(--font-display);font-size:0.85rem;color:var(--white);line-height:1.3">' + a.title + '</div>'
+      assetsHTML += '<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.15);padding:2rem 1.5rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.75rem">'
+        + '<span style="font-size:2.5rem">' + icon + '</span>'
+        + (a.category ? '<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);opacity:0.7">' + a.category + '</div>' : '')
+        + '<div style="font-family:var(--font-display);font-size:1.1rem;color:var(--white);line-height:1.3">' + a.title + '</div>'
         + makeBtn(a, i) + '</div>';
     }
     assetsHTML += '</div>';
 
   } else if (assetsLayout === 'table') {
-    assetsHTML = '<table style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:0.6rem">'
-      + '<thead><tr style="border-bottom:1px solid rgba(201,168,76,0.3)">'
-      + '<th style="text-align:left;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">DOCUMENT</th>'
-      + '<th style="text-align:left;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">CATEGORY</th>'
-      + '<th style="text-align:left;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">DESCRIPTION</th>'
-      + '<th style="text-align:right;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">ACCESS</th>'
+    assetsHTML = '<table style="width:100%;border-collapse:collapse">'
+      + '<thead><tr style="border-bottom:2px solid rgba(201,168,76,0.3)">'
+      + '<th style="text-align:left;padding:0.9rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;font-weight:400">DOCUMENT</th>'
+      + '<th style="text-align:left;padding:0.9rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;font-weight:400">CATEGORY</th>'
+      + '<th style="text-align:left;padding:0.9rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;font-weight:400">DESCRIPTION</th>'
+      + '<th style="text-align:right;padding:0.9rem 1.25rem;color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;font-weight:400">ACCESS</th>'
       + '</tr></thead><tbody>';
     for (let i = 0; i < visibleAssets.length; i++) {
       const a = visibleAssets[i];
       const icon = categoryIcons[a.category] || '📄';
-      assetsHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.04)">'
-        + '<td style="padding:0.85rem 1rem;color:var(--white)">' + icon + ' ' + a.title + '</td>'
-        + '<td style="padding:0.85rem 1rem;color:var(--gray);text-transform:uppercase;font-size:0.5rem">' + (a.category || '—') + '</td>'
-        + '<td style="padding:0.85rem 1rem;color:var(--gray)">' + (a.desc || '—') + '</td>'
-        + '<td style="padding:0.85rem 1rem;text-align:right">' + makeBtn(a, i) + '</td>'
+      assetsHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.05)">'
+        + '<td style="padding:1.1rem 1.25rem;font-family:var(--font-display);font-size:1rem;color:var(--white)">' + icon + '  ' + a.title + '</td>'
+        + '<td style="padding:1.1rem 1.25rem;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em">' + (a.category || '—') + '</td>'
+        + '<td style="padding:1.1rem 1.25rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--gray-light)">' + (a.desc || '—') + '</td>'
+        + '<td style="padding:1.1rem 1.25rem;text-align:right">' + makeBtn(a, i) + '</td>'
         + '</tr>';
     }
     assetsHTML += '</tbody></table>';
