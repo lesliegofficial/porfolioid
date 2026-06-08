@@ -1869,8 +1869,13 @@ function openCreditModal(i) {
   document.getElementById('creditModalArtist').textContent = c.company || c.artist;
   document.getElementById('creditModalMeta').textContent = [c.role, c.contractType, c.years].filter(Boolean).join(' · ');
   const rawDesc = (_currentLang === 'es' && c.fullDescEs) ? c.fullDescEs : (c.fullDesc || c.desc || '');
-  // Convert newlines to <br> tags so paragraphs display correctly without white-space:pre-line
-  const formattedDesc = rawDesc.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+  // Convert newlines to <br> tags
+  let formattedDesc = rawDesc.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+  // Style "View Campaign Portfolio: <url>" as a bold headline CTA — works for any credit
+  formattedDesc = formattedDesc.replace(
+    /View Campaign Portfolio:\s*<a href="([^"]+)"[^>]*>[^<]*<\/a>/gi,
+    `<a href="$1" target="_blank" style="display:block;margin:1.5rem 0 0.5rem;text-decoration:none"><span style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--text);letter-spacing:0.01em">View Campaign</span> <span style="font-family:var(--font-display);font-size:1.5rem;font-style:italic;font-weight:700;color:var(--gold)">Portfolio →</span></a>`
+  );
   document.getElementById('creditModalDesc').innerHTML = formattedDesc;
 
   // Collaborators
@@ -1899,7 +1904,12 @@ function openCreditModal(i) {
   const totalMedia = allMediaItems.length;
   let unifiedHTML = '';
 
+  // Add teaser label above media grid if there's a campaign/portfolio link in the description
+  const hasCampaignLink = (c.fullDesc || c.desc || '').match(/View Campaign Portfolio/i);
   if (totalMedia > 0) {
+    if (hasCampaignLink) {
+      unifiedHTML += `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:0.6rem">Inside the Campaign</div>`;
+    }
     // Layout toggle — only show if there are both videos and photos
     if (mediaLayout === 'grid') {
       unifiedHTML += `<div class="credit-media-grid">`;
