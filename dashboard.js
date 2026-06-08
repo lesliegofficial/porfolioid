@@ -918,6 +918,19 @@ function dropCreditPhoto(e, i) {
   draggedCreditPhotoIdx = null;
   renderCreditPhotosPreview();
 }
+let draggedCreditMediaIdx = null;
+function dragCreditMedia(e, i) {
+  draggedCreditMediaIdx = i;
+  e.dataTransfer.effectAllowed = 'move';
+}
+function dropCreditMedia(e, i) {
+  e.preventDefault();
+  if (draggedCreditMediaIdx === null || draggedCreditMediaIdx === i) return;
+  const moved = pendingCreditMedia.splice(draggedCreditMediaIdx, 1)[0];
+  pendingCreditMedia.splice(i, 0, moved);
+  draggedCreditMediaIdx = null;
+  renderCreditMediaList();
+}
 function triggerCreditPhotoUpload() {
   const input = document.getElementById('creditPhotoInput');
   input.value = '';
@@ -1224,8 +1237,9 @@ function renderCreditMediaList() {
         </div>
       </div>` : '';
     return `
-    <div style="background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);padding:0.75rem">
+    <div draggable="true" ondragstart="dragCreditMedia(event,${i})" ondragover="event.preventDefault();this.style.borderColor='rgba(201,168,76,0.5)'" ondragleave="this.style.borderColor='rgba(201,168,76,0.12)'" ondrop="dropCreditMedia(event,${i});this.style.borderColor='rgba(201,168,76,0.12)'" style="background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);padding:0.75rem;cursor:grab;transition:border-color 0.2s">
       <div style="display:flex;gap:0.5rem;align-items:center">
+        <span style="font-family:var(--font-mono);font-size:0.7rem;color:rgba(201,168,76,0.3);cursor:grab;padding-right:0.25rem;user-select:none">⠿</span>
         <span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);min-width:40px">${typeLabel}</span>
         <input type="url" value="${m.url}" placeholder="URL" oninput="pendingCreditMedia[${i}].url=this.value"
           style="flex:1;background:transparent;border:none;color:var(--white);font-family:var(--font-body);font-size:0.8rem;outline:none">
