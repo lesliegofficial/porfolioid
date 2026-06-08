@@ -537,32 +537,38 @@ function buildEPK(epk) {
       }).join('') +
       `</tbody></table>`;
   } else if (assetsLayout === 'featured') {
-    // Option E: Featured hero left, list right
-    const first = visibleAssets[0];
-    const rest = visibleAssets.slice(1);
-    const heroIcon = first ? (categoryIcons[first.category] || '📄') : '';
-    let heroHTML = first ? `
-      <div style="background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.02));border-right:1px solid rgba(201,168,76,0.15);padding:2.5rem 2rem;display:flex;flex-direction:column;justify-content:center;gap:1rem;min-height:320px">
-        <span style="font-size:3rem">${heroIcon}</span>
-        ${first.category ? `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">${first.category}</div>` : ''}
-        <div style="font-family:var(--font-display);font-size:1.5rem;color:var(--white);line-height:1.2">${first.title}</div>
-        ${first.desc ? `<p style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);line-height:1.6">${first.desc}</p>` : ''}
-        ${makeAssetBtn(first, 0)}
-      </div>` : '<div></div>';
-    let listHTML = rest.length ? `
-      <div style="display:flex;flex-direction:column">` +
-      rest.map((a, i) => {
-        const icon = categoryIcons[a.category] || '📄';
-        return `<div style="display:flex;align-items:center;gap:1.25rem;padding:1rem 1.5rem;border-bottom:1px solid rgba(201,168,76,0.08);flex:1;transition:background 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.04)'" onmouseout="this.style.background=''">
-          <span style="font-size:1.4rem;flex-shrink:0">${icon}</span>
-          <div style="flex:1;min-width:0">
-            <div style="font-family:var(--font-display);font-size:1rem;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.title}</div>
-            ${a.desc ? `<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.desc}</div>` : ''}
-          </div>
-          <div style="flex-shrink:0;margin-left:1rem">${makeAssetBtn(a, i+1)}</div>
-        </div>`;
-      }).join('') + `</div>` : '<div></div>';
-    assetsHTML = `<div style="display:grid;grid-template-columns:300px 1fr;border:1px solid rgba(201,168,76,0.2);overflow:hidden">${heroHTML}${listHTML}</div>`;
+    const _first = visibleAssets[0];
+    const _rest = visibleAssets.slice(1);
+    let _heroHTML = '';
+    if (_first) {
+      const _hi = categoryIcons[_first.category] || '📄';
+      const _hbtn = makeAssetBtn(_first, 0);
+      _heroHTML = '<div style="background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.02));border-right:1px solid rgba(201,168,76,0.15);padding:2.5rem 2rem;display:flex;flex-direction:column;justify-content:center;gap:1rem;min-height:320px">'
+        + '<span style="font-size:3rem">' + _hi + '</span>'
+        + (_first.category ? '<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">' + _first.category + '</div>' : '')
+        + '<div style="font-family:var(--font-display);font-size:1.5rem;color:var(--white);line-height:1.2">' + _first.title + '</div>'
+        + (_first.desc ? '<p style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);line-height:1.6">' + _first.desc + '</p>' : '')
+        + _hbtn
+        + '</div>';
+    }
+    let _listHTML = '<div></div>';
+    if (_rest.length) {
+      _listHTML = '<div style="display:flex;flex-direction:column;width:100%">';
+      _rest.forEach(function(a, i) {
+        const _icon = categoryIcons[a.category] || '📄';
+        const _btn = makeAssetBtn(a, i + 1);
+        _listHTML += '<div style="display:flex;align-items:center;gap:1.25rem;padding:1rem 1.5rem;border-bottom:1px solid rgba(201,168,76,0.08);transition:background 0.2s" onmouseover="this.style.background=\'rgba(201,168,76,0.04)\'" onmouseout="this.style.background=\'\'">';
+          + '<span style="font-size:1.4rem;flex-shrink:0">' + _icon + '</span>'
+          + '<div style="flex:1;min-width:0">'
+          + '<div style="font-family:var(--font-display);font-size:1rem;color:var(--white)">' + a.title + '</div>'
+          + (a.desc ? '<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);margin-top:0.2rem">' + a.desc + '</div>' : '')
+          + '</div>'
+          + '<div style="flex-shrink:0;margin-left:1rem">' + _btn + '</div>'
+          + '</div>';
+      });
+      _listHTML += '</div>';
+    }
+    assetsHTML = '<div style="display:grid;grid-template-columns:300px 1fr;border:1px solid rgba(201,168,76,0.2);overflow:hidden">' + _heroHTML + _listHTML + '</div>';
   }
 
   const bookingEmail = epk.bookingEmail || '';
