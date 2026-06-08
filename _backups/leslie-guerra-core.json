@@ -71,7 +71,12 @@
       "type": "degree",
       "year": "2025",
       "title": "Computer Support Technician Diploma",
-      "photos": [],
+      "photos": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780878204/awards-degrees/leslie_ftc_graduation.jpg",
+          "caption": "Graduation — Florida Technical College"
+        }
+      ],
       "certUrl": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778790944/p0npavwpllen9vfqceiq.ai"
     },
     {
