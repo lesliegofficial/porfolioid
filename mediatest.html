@@ -1,34 +1,44 @@
 <!DOCTYPE html>
 <html>
-<head><title>Test</title></head>
-<body style="background:#111;color:white;font-family:monospace">
+<head><title>Media Test</title></head>
+<body style="background:#111;color:white;font-family:monospace;padding:20px">
+<h2>NV Credit — All Media Items</h2>
 <div id="out"></div>
 <script>
-fetch('https://porfolioid.com/api/epk?slug=leslie-guerra')
+fetch('/api/epk?slug=leslie-guerra')
   .then(r=>r.json())
   .then(d=>{
     const c = d.credits.find(c=>c.company&&c.company.includes('NV'));
     const photos = c.photos||[];
     const mediaItems = c.mediaItems||[];
-    const allItems = [];
-    mediaItems.forEach(m=>allItems.push({kind:'media',data:m}));
-    photos.forEach(url=>allItems.push({kind:'photo',url}));
     
-    let html = `<p>Total: ${allItems.length} (${mediaItems.length} videos, ${photos.length} photos)</p>`;
-    html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">';
-    allItems.forEach((item,i)=>{
-      if(item.kind==='photo'){
-        html += `<div style="border:1px solid gold;padding:4px">
-          <p style="font-size:10px;margin:0">PHOTO ${i}</p>
-          <img src="${item.url}" style="width:100%;height:auto" onerror="this.parentElement.style.background='red';this.parentElement.innerHTML+='<p>FAILED</p>'">
-        </div>`;
-      } else {
-        html += `<div style="border:1px solid #444;padding:4px">
-          <p style="font-size:10px;margin:0">VIDEO ${i}: ${item.data.label||''}</p>
-          <img src="${item.data.thumb||''}" style="width:100%;height:auto" onerror="this.parentElement.style.background='#222'">
-        </div>`;
-      }
+    let html = `<p style="color:yellow">Videos: ${mediaItems.length} | Photos: ${photos.length}</p>`;
+    html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px">';
+    
+    mediaItems.forEach((m,i)=>{
+      html += `<div style="border:2px solid orange;padding:4px">
+        <p style="font-size:11px;margin:2px;color:orange">VIDEO ${i+1}: ${m.label}</p>
+        <p style="font-size:9px;margin:2px;color:#888">thumb: ${(m.thumb||'').slice(-50)}</p>
+        <div style="position:relative">
+          <img src="${m.thumb||''}" style="width:100%;height:auto;display:block" 
+            onload="this.parentElement.nextElementSibling.textContent='Loaded: '+this.naturalWidth+'x'+this.naturalHeight"
+            onerror="this.parentElement.nextElementSibling.textContent='FAILED TO LOAD'">
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,0.7);border:2px solid gold;display:flex;align-items:center;justify-content:center;color:gold">▶</div>
+        </div>
+        <p style="font-size:9px;color:lime;margin:2px"></p>
+      </div>`;
     });
+    
+    photos.forEach((url,i)=>{
+      html += `<div style="border:2px solid cyan;padding:4px">
+        <p style="font-size:11px;margin:2px;color:cyan">PHOTO ${i+1}</p>
+        <img src="${url}" style="width:100%;height:auto;display:block"
+          onload="this.nextElementSibling.textContent='Loaded: '+this.naturalWidth+'x'+this.naturalHeight"
+          onerror="this.nextElementSibling.textContent='FAILED'">
+        <p style="font-size:9px;color:lime;margin:2px"></p>
+      </div>`;
+    });
+    
     html += '</div>';
     document.getElementById('out').innerHTML = html;
   });
