@@ -1,0 +1,991 @@
+{
+  "bio": "Leslie A. Guerra is a vocalist, recording artist, and music industry professional with more than twenty-five years of experience spanning live performance, recording, artist development, label operations, A&R, marketing, and entertainment management.",
+  "name": "Leslie Ann Guerra",
+  "slug": "leslie-guerra",
+  "stats": [
+    {
+      "label": "Years Active",
+      "number": "25+"
+    },
+    {
+      "label": "Live Shows",
+      "number": "500+"
+    },
+    {
+      "label": "Continents",
+      "number": "5"
+    }
+  ],
+  "assets": [
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780848724/Leslie_Ann_Guerra_Resume_General_gqxywa.pdf",
+      "title": "Resume — Leslie Ann Guerra",
+      "visible": true,
+      "btnLabel": "↓ Download Resume →",
+      "category": "Professional Assets"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778790944/p0npavwpllen9vfqceiq.ai",
+      "desc": "High Honors, GPA 4.0 — Florida Technical College (NUC University), 2025",
+      "title": "Computer Support Technician Diploma",
+      "visible": true,
+      "btnLabel": "↓ Download Diploma →",
+      "category": "Education"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778790963/zjz3grw21r7nqtwgajh8.pdf",
+      "desc": "Florida Technical College (NUC University), 2025",
+      "title": "President's List Certificate",
+      "visible": true,
+      "btnLabel": "↓ Download Certificate →",
+      "category": "Education"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778790962/npjxzfwiyguoi2mo7syv.pdf",
+      "desc": "Google, 2026",
+      "title": "Google Analytics Certification",
+      "visible": true,
+      "btnLabel": "↓ Download Certificate →",
+      "category": "Certification"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778790945/epkrox93k924u62rppv6.pdf",
+      "desc": "Microsoft / Simplilearn, 2026",
+      "title": "Business Analytics with Excel",
+      "visible": true,
+      "btnLabel": "↓ Download Certificate →",
+      "category": "Certification"
+    }
+  ],
+  "awards": [
+    {
+      "org": "Polk State College",
+      "type": "degree",
+      "year": "2026",
+      "title": "A.S. Business Administration (In Progress)",
+      "photos": []
+    },
+    {
+      "org": "Florida Technical College (NUC University)",
+      "note": "High Honors, GPA 4.0",
+      "type": "degree",
+      "year": "2025",
+      "title": "Computer Support Technician Diploma",
+      "photos": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780878204/awards-degrees/leslie_ftc_graduation.jpg",
+          "caption": "Graduation — Florida Technical College"
+        }
+      ],
+      "certUrl": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778790944/p0npavwpllen9vfqceiq.ai"
+    },
+    {
+      "org": "Florida Technical College (NUC University)",
+      "type": "recognition",
+      "year": "2025",
+      "title": "President's List",
+      "photos": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778792056/rypcc7shqcz7rt4kyhny.jpg",
+          "caption": "Receiving President's List Award — Florida Technical College"
+        },
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778792051/apw3zngzif4uxweqfn9a.jpg",
+          "caption": "Graduation Ceremony — NUC University"
+        }
+      ],
+      "certUrl": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778790963/zjz3grw21r7nqtwgajh8.pdf"
+    },
+    {
+      "org": "Google",
+      "type": "certification",
+      "year": "2026",
+      "title": "Google Analytics Certification",
+      "photos": [],
+      "certUrl": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778790962/npjxzfwiyguoi2mo7syv.pdf"
+    },
+    {
+      "org": "Microsoft",
+      "type": "certification",
+      "year": "2026",
+      "title": "Business Analytics with Excel",
+      "photos": [],
+      "certUrl": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778790945/epkrox93k924u62rppv6.pdf"
+    }
+  ],
+  "photos": [
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780095510/leslie_concert_blue.jpg",
+      "caption": "With J Balvin",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780095510/leslie_jalvarez_selfie.jpg",
+      "caption": "With Rauw Alejandro",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1779064319/fcuh5fopximnxoz3ue0g.jpg",
+      "caption": "With Luis Fonsi",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778697158/w7ggvn49z18lhavzht1u.jpg",
+      "caption": "With Chris Mercedes and Gio Williams",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778629271/g9jwktzynq9yxlu4jsc1.jpg",
+      "caption": "With Don Omar",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778629124/ekfdjyawqz9m3ixwz37d.png",
+      "caption": "With Adam Torres",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778613766/ewm8lcxopo7ybkkts7mk.jpg",
+      "caption": "With Don Omar — Viña del Mar",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778612180/lik9rzoezrabdhf4tflw.jpg",
+      "caption": "With Kiara and Natti Natasha",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778612139/zht7vuseuz6gwc5fvhon.jpg",
+      "caption": "J Álvarez Show",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778612102/g7d22rfmdgczl07yueyc.jpg",
+      "caption": "With J Álvarez",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778611958/belq6epfwatfxki2ujyt.jpg",
+      "caption": "With Don Omar — King of Kings Concert",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778611946/dposa8bmaw9gbpzpm8u9.jpg",
+      "caption": "With Backup Singer Angel Eric Rios",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778611933/zx4rezwxxemi2iy66qcf.jpg",
+      "caption": "Backstage with Angel Eric — Hecho en Puerto Rico Concert",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778611908/kaxabjdrhafbceygxyfo.jpg",
+      "caption": "Backstage with Angel Eric — Hecho en Puerto Rico Concert",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778611895/tq1lseuchmmnhc5xjhke.webp",
+      "caption": "Backstage — Viña del Mar Festival with Don Omar's Gaviotas",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778611880/wi8wryhun0x69mpy1omj.jpg",
+      "caption": "With Robert Santiago — Backstage Viña del Mar Festival",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778611864/cxpwqlu9rkwp6vusj393.jpg",
+      "caption": "With AJ Ramos",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778443357/vps4myvnifs8gfzhybtt.jpg",
+      "caption": "With Angel Eric Rios",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778443300/oiglaxgsmna97yrqw5z1.jpg",
+      "caption": "Gallery Photo 19",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778443071/bmbvaqsmuzt4rqsw05ia.jpg",
+      "caption": "Gallery Photo 20",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778443008/rfgqlp1j0qs0gjdyki53.jpg",
+      "caption": "On Stage with Don Omar and Natti Natasha — Dutty Love",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778442969/gpdkrnybqxokkubhutqq.jpg",
+      "caption": "On Stage with Don Omar and Natti Natasha — Dutty Love",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778442824/qwvvzb0rvdijia9vteyw.webp",
+      "caption": "On Stage — Puerto Rico Sinfónico Concert",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778442809/tzkfljsf6qmmgrerq8an.jpg",
+      "caption": "On Stage — Puerto Rico Sinfónico Concert",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778374822/aylyji2mn4cdmwzmkcgb.png",
+      "caption": "With Adam Torres",
+      "position": "center"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778190019/kz1ti0u2tqqvqmxhhvzr.jpg",
+      "caption": "Leslie Ann Guerra",
+      "position": "center"
+    }
+  ],
+  "tracks": [
+    {
+      "tag": "LIVE CREDIT",
+      "desc": "",
+      "isrc": "",
+      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/yiwmdypo89q64aqqvnqh.mp3",
+      "role": "Touring Vocalist",
+      "type": "Live Performance",
+      "year": "",
+      "album": "",
+      "title": "Yo Soy de Aqui",
+      "artist": "Don Omar, Yankee, Yandel, Arcangel",
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
+    },
+    {
+      "tag": "LIVE CREDIT",
+      "desc": "",
+      "isrc": "",
+      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/c66ijcnoclmmtcpfhnrd.mp3",
+      "role": "Touring Vocalist",
+      "type": "Live Performance",
+      "year": "",
+      "album": "",
+      "title": "Hasta Abajo",
+      "artist": "Don Omar, Yankee, Yandel",
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
+    },
+    {
+      "tag": "LIVE CREDIT",
+      "desc": "",
+      "isrc": "",
+      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/aujsq6b2vdyhgi4whbwk.mp3",
+      "role": "Touring Vocalist",
+      "type": "Live Performance",
+      "year": "2007",
+      "album": "",
+      "title": "Nadie Mejor Que Tú",
+      "artist": "Wisin, Yandel, Don Omar",
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
+    },
+    {
+      "tag": "RECORDING CREDIT",
+      "desc": "",
+      "isrc": "",
+      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/uoqnc3bdokfb1ajw1cc4.mp3",
+      "role": "Backing Vocalist",
+      "type": "Session Recording",
+      "year": "2018",
+      "album": "",
+      "title": "Te Necesito",
+      "artist": "J Alvarez",
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
+    },
+    {
+      "tag": "RECORDING CREDIT",
+      "desc": "",
+      "isrc": "",
+      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/achkcubwu4dcmb0c0equ.mp3",
+      "role": "Backing Vocalist",
+      "type": "Session Recording",
+      "year": "2018",
+      "album": "",
+      "title": "Le Llegare",
+      "artist": "J Alvarez",
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
+    },
+    {
+      "tag": "RECORDING CREDIT",
+      "desc": "",
+      "isrc": "",
+      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/bczdroudlbv8dcps0zfz.mp3",
+      "role": "Backing Vocalist",
+      "type": "Session Recording",
+      "year": "",
+      "album": "",
+      "title": "Siempre Fly",
+      "artist": "J Alvarez ft. Mestiza",
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
+    },
+    {
+      "tag": "RECORDING CREDIT",
+      "desc": "",
+      "isrc": "",
+      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/lumrltvndmolhqtcp54y.mp3",
+      "role": "Backing Vocalist",
+      "type": "Session Recording",
+      "year": "2016",
+      "album": "",
+      "title": "Entre Gritos y Balas",
+      "artist": "J Alvarez",
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
+    },
+    {
+      "tag": "RECORDING CREDIT",
+      "desc": "",
+      "isrc": "",
+      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/rj2ectbjhtska6aloacj.mp3",
+      "role": "Lead Vocalist",
+      "type": "Album Track",
+      "year": "1998",
+      "album": "Rompe Corazones",
+      "title": "Desearía",
+      "artist": "Las Nenas del Swing",
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
+    },
+    {
+      "tag": "RECORDING CREDIT",
+      "desc": "",
+      "isrc": "",
+      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/jenbs1ag6hy7mvwr2ntp.mp3",
+      "role": "Lead Vocalist",
+      "type": "Album Track",
+      "year": "1998",
+      "album": "Rompe Corazones",
+      "title": "Chicle Bomba",
+      "artist": "Las Nenas del Swing",
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
+    },
+    {
+      "tag": "RECORDING CREDIT",
+      "desc": "",
+      "isrc": "",
+      "link": "https://res.cloudinary.com/djj8xe3gx/video/upload/tl0h5vmckvueifo54qrq.mp3",
+      "role": "Lead Vocalist",
+      "type": "Album Track",
+      "year": "1998",
+      "album": "Rompe Corazones",
+      "title": "Me Faltas Tú",
+      "artist": "Las Nenas del Swing",
+      "lyrics": "",
+      "rights": "",
+      "visible": true,
+      "unreleased": false,
+      "releaseDate": ""
+    }
+  ],
+  "videos": [
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780789930/fuu8vl8j0n9ppqjpmsmh.mp4",
+      "desc": "",
+      "year": "2013",
+      "album": "Hecho En Puerto Rico",
+      "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780541625/thumb_mayor_que_yo.jpg",
+      "title": "Mayor Que Yo",
+      "visible": true,
+      "_origIdx": 0,
+      "category": "Live Performance",
+      "featured": false,
+      "thumbnail": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780541625/thumb_mayor_que_yo.jpg"
+    },
+    {
+      "url": "https://youtu.be/yGFuLtOlmRo?si=wGQDeDwI0XkfCkUN",
+      "desc": "",
+      "year": "2006",
+      "album": "King of Kings En DIrecto",
+      "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780701532/ffqvzkdrmx7rbt9utomg.png",
+      "title": "Vuelve & Tu No Sabes",
+      "visible": true,
+      "_origIdx": 1,
+      "category": "Live Performance",
+      "featured": false,
+      "thumbnail": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780701532/ffqvzkdrmx7rbt9utomg.png"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780701604/ketzb6abi5bgw4koocb9.mov",
+      "desc": "",
+      "year": "2008",
+      "album": "Concierto de Los Extraterrestres",
+      "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780542120/thumb_donde_esta_el_amor.jpg",
+      "title": "Donde Esta El Amor",
+      "visible": true,
+      "_origIdx": 2,
+      "category": "Live Performance",
+      "featured": false,
+      "thumbnail": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780542120/thumb_donde_esta_el_amor.jpg"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780790027/efxcq9ga9jjxgdnainlj.mp4",
+      "desc": "",
+      "year": "2018",
+      "album": "La Fama Que Camina Unplugged",
+      "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780796512/luekv769sblqyyoetxwh.png",
+      "title": "Le Llegare",
+      "visible": true,
+      "_origIdx": 3,
+      "category": "Acoustic / Unplugged",
+      "featured": false,
+      "thumbnail": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780796512/luekv769sblqyyoetxwh.png"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/f_mp4,vc_h264/xctvnenwfkunfagdyihz.mp4",
+      "desc": "",
+      "year": "2013",
+      "album": "Hecho En Puerto Rico",
+      "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780542121/thumb_my_space.jpg",
+      "title": "My Space",
+      "visible": true,
+      "_origIdx": 4,
+      "category": "Live Performance",
+      "featured": false,
+      "thumbnail": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780542121/thumb_my_space.jpg"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/fsjmx13ajtrookzp7oab.mp4",
+      "desc": "",
+      "year": "2008",
+      "album": "Concierto de Los Extraterrestres",
+      "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780542122/thumb_nadie_mejor_que_tu.jpg",
+      "title": "Nadie Mejor Que Tu",
+      "visible": true,
+      "_origIdx": 5,
+      "category": "Live Performance",
+      "featured": false,
+      "thumbnail": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780542122/thumb_nadie_mejor_que_tu.jpg"
+    },
+    {
+      "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780790074/zuh3u6mj66kwnixj4v3p.mp4",
+      "desc": "",
+      "year": "2018",
+      "album": "La Fama Que Camina Unplugged",
+      "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780797129/nipffqctwmwblumjbkvu.png",
+      "title": "Te Necesito",
+      "visible": true,
+      "_origIdx": 6,
+      "category": "Acoustic / Unplugged",
+      "featured": false,
+      "thumbnail": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780797129/nipffqctwmwblumjbkvu.png"
+    }
+  ],
+  "bioFull": "Her performance credits include touring as a supporting vocalist for reggaeton icons Don Omar (2006–2015) and J Álvarez (2015–2020), appearing before audiences throughout the United States, Latin America, and Europe. She is featured on the live release King of Kings: En Directo, recorded during Don Omar’s King of Kings World Tour and released by Machete Music.\n\nGuerra began her recording career as a member of Las Nenas del Swing, contributing to recordings including Rompe Corazones, Chicle Bomba, Desearía, and Me Faltas Tú. Throughout her touring career, she also performed on productions featuring artists such as Wisin & Yandel, Arcángel, Daddy Yankee, Natti Natasha, and Melina León.\n\nBeyond the stage, Guerra has held leadership and operational roles throughout the entertainment industry. She served as A&R Coordinator at Sony Music Latin, supporting executive A&R operations and artist development initiatives. She also coordinated artist and management operations for Orfanato Music Group and Arrow Management, managed artist logistics for Adam Torres Concerts, and led marketing and public relations initiatives through NV Marketing & Public Relations.\n\nToday, Guerra combines her experience in performance, artist development, operations, marketing, and business strategy through creative and entrepreneurial ventures, including PortfolioID, a professional platform designed to help artists, creators, and professionals showcase their work, accomplishments, and career journeys.",
+  "credits": [
+    {
+      "desc": "Founder and product architect of two original SaaS platforms built from concept to deployment.",
+      "role": "Founder & Product Architect",
+      "media": [],
+      "press": [],
+      "years": "2025–Present",
+      "artist": "PortfolioID / IDPressDrop",
+      "descEs": "",
+      "photos": [
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780875254/wxupgzrpfz6aso1tsvnt.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780875255/yyn8z1q22h0zhouqlffs.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780875256/z2wmhyyzcho8f60x96gj.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780875258/d6lpcxnldzgtyzyb9qeu.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780875259/glss61up55za5ypdl1pa.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780875260/vyxv5tsmui7sd3cpicfg.png"
+      ],
+      "pinned": false,
+      "company": "PortfolioID / IDPressDrop",
+      "visible": true,
+      "category": "Professional",
+      "featured": true,
+      "fullDesc": "Conceived, designed, and built two original SaaS platforms from the ground up — PortfolioID, a professional identity and portfolio platform for artists, creators, and multi-career professionals, and IDPressDrop, a press tracking and media relations management platform for publicists and label teams.\n\nDirected all product architecture, feature development, UX decision-making, content strategy, and deployment infrastructure across a full modern stack including JavaScript, Netlify serverless functions, Cloudinary media management, GitHub version control, and Supabase database architecture.\n\nDefined every feature, user flow, and design system — including bilingual (EN/ES) content support, Cloudinary media organization, QR Smart Share, video and music showcase, credit card documentation system, and professional assets management.\n\nBoth platforms were built while simultaneously navigating career development, higher education, royalty recovery, and ongoing business operations — demonstrating the same operational discipline, systems thinking, and execution capacity that defines the full arc of this career.",
+      "verified": true,
+      "videoUrl": "",
+      "mediaLink": "",
+      "proofLink": "",
+      "fullDescEs": "Concibió, diseñó y desarrolló dos plataformas SaaS originales desde cero — PortfolioID, una plataforma de identidad profesional y portafolio para artistas, creadores y profesionales multidisciplinarios, e IDPressDrop, una plataforma de seguimiento de prensa y gestión de relaciones con medios para publicistas y equipos de sellos discográficos.\n\nDirigió toda la arquitectura de producto, desarrollo de funcionalidades, decisiones de experiencia de usuario, estrategia de contenido e infraestructura de despliegue utilizando un stack moderno que incluye JavaScript, funciones serverless de Netlify, gestión de medios con Cloudinary, control de versiones con GitHub y arquitectura de base de datos con Supabase.\n\nDefinió cada funcionalidad, flujo de usuario y sistema de diseño — incluyendo soporte de contenido bilingüe (EN/ES), organización de medios en Cloudinary, QR Smart Share, presentación de video y música, sistema de documentación de créditos y gestión de activos profesionales.\n\nAmbas plataformas fueron desarrolladas simultáneamente con el desarrollo de carrera, educación superior, recuperación de regalías y operaciones comerciales en curso.",
+      "mediaItems": [],
+      "mediaLabel": "",
+      "projectType": "Platform Development · Product Strategy · UX Direction",
+      "contractType": "",
+      "collaborators": []
+    },
+    {
+      "id": "credit_06_nv_marketing",
+      "desc": "Remote | 2019–2023. Coordinated marketing operations and digital content support for artist branding, publicity campaigns, and entertainment marketing initiatives.",
+      "role": "Marketing & Content Coordinator",
+      "color": "steel_blue",
+      "years": "2019–2023",
+      "descEs": "Remoto | 2019–2023. Coordinó operaciones de mercadeo y apoyo de contenido digital para branding artístico, campañas de publicidad e iniciativas de mercadeo de entretenimiento.",
+      "photos": [],
+      "pinned": false,
+      "company": "NV Marketing & PR",
+      "visible": true,
+      "category": "Professional",
+      "fullDesc": "NV Marketing & Public Relations — Marketing & Content Coordinator\nRemote | 2019–2023\n\nLeslie A. Guerra conceptualized, launched, and ran NV Marketing & Public Relations’ entire Instagram presence — building the agency’s social media operation from the ground up during the pandemic while coordinating digital content campaigns for major Latin music artists.\n\nWorking remotely, she managed digital content production, social media strategy, and campaign coordination for a high-volume multi-artist roster. Artists supported include Nicky Jam, Anuel AA, Manuel Turizo, Olga Tañón, Jay Wheeler, Nio García, and Chocquibtown, among others. Her role required balancing creative execution with operational organization to ensure campaigns remained on schedule and aligned with client objectives.\n\nThroughout her tenure, Leslie coordinated marketing assets, managed content workflows, tracked campaign deliverables, and supported audience engagement initiatives across digital platforms. She served as a liaison between creative teams, clients, and project stakeholders, helping maintain consistent communication and project momentum.\n\nCampaign work generated coverage across Billboard, Rolling Stone, People en Español, Telemundo, Univision, and SiriusXM.\n\nKey Responsibilities:\n• Conceptualized and built NV Marketing’s Instagram presence from the ground up\n• Produced and managed full digital content campaigns for Nicky Jam, Anuel AA, Manuel Turizo, Olga Tañón, Jay Wheeler, Nio García, and Chocquibtown\n• Created release rollouts, Billboard chart announcements, press placement graphics, and award campaign content\n• Managed Premio Lo Nuestro voting campaigns, new music Friday launches, and concert/tour announcements\n• Organized campaign timelines, deliverables, and marketing asset distribution\n• Managed content scheduling and social media coordination across platforms\n• Facilitated communication between project stakeholders, artists, and campaign teams\n• Ensured operational accuracy across multiple simultaneous projects\n\nCareer Significance:\nNV Marketing & Public Relations represented a natural evolution in Leslie’s career, combining her background in artist development, live entertainment, management operations, and label experience with modern digital marketing and brand strategy. The role strengthened the business, marketing, and communications foundation that would later contribute to entrepreneurial ventures, creative consulting, and the development of PortfolioID and IDPressDrop.\n\nView Campaign Portfolio: <a href=\"https://nvmarketingassets.my.canva.site/\" target=\"_blank\">https://nvmarketingassets.my.canva.site/</a>\n\n<strong>Special thanks to the NV Marketing & Public Relations family for the unforgettable learning experience.</strong>",
+      "verified": true,
+      "videoUrl": "",
+      "fullDescEs": "NV Marketing & Public Relations — Coordinadora de Mercadeo y Contenido\nRemoto | 2019–2023\n\nLeslie A. Guerra conceptualizó, lanzó y administró toda la presencia en Instagram de NV Marketing & Public Relations — construyendo la operación de redes sociales de la agencia desde cero durante la pandemia, mientras coordinaba campañas de contenido digital para importantes artistas de la música latina.\n\nTrabajando de forma remota, gestionó la producción de contenido digital, la estrategia en redes sociales y la coordinación de campañas para una lista de artistas de alto volumen. Entre los artistas apoyados se encuentran Nicky Jam, Anuel AA, Manuel Turizo, Olga Tañón, Jay Wheeler, Nio García y Chocquibtown, entre otros.\n\nEl trabajo de campaña generó cobertura en Billboard, Rolling Stone, People en Español, Telemundo, Univision y SiriusXM.\n\nResponsabilidades Principales:\n• Conceptualizó y construyó la presencia en Instagram de NV Marketing desde cero\n• Produjo y gestionó campañas de contenido digital completas para Nicky Jam, Anuel AA, Manuel Turizo, Olga Tañón, Jay Wheeler, Nio García y Chocquibtown\n• Creó lanzamientos de sencillos, anuncios de posiciones en Billboard y contenido de campañas de premios\n• Gestionó campañas de Premio Lo Nuestro, New Music Friday y anuncios de conciertos\n• Facilitó la comunicación entre partes interesadas, artistas y equipos de campaña\n\nSignificado en la Carrera:\nNV Marketing & Public Relations representó una evolución natural en la carrera de Leslie, combinando su experiencia en desarrollo artístico y entretenimiento en vivo con marketing digital moderno. El rol fortalecció la base que contribuiría al desarrollo de PortfolioID e IDPressDrop.\n\nVer Portafolio de Campañas: <a href=\"https://nvmarketingassets.my.canva.site/\" target=\"_blank\">https://nvmarketingassets.my.canva.site/</a>\n\n<strong>Un agradecimiento especial a la familia de NV Marketing & Public Relations por la inolvidable experiencia de aprendizaje.</strong>",
+      "mediaItems": [],
+      "sort_order": 5
+    },
+    {
+      "id": "credit_10_urban_latino",
+      "desc": "Supported artist development, creative coordination, and release execution. MOMO project: Tumba feat. Konshens (July 26, 2019). Coverage: Billboard, People en Español, BET, Rolling Stone, La Musica.",
+      "role": "A&R & Project Coordinator",
+      "color": "steel_blue",
+      "press": [],
+      "years": "2018–2019",
+      "artist": "Urban Latino Music",
+      "descEs": "Apoyó el desarrollo artístico, coordinación creativa y ejecución de lanzamientos. Proyecto MOMO: Tumba con Konshens (26 de julio de 2019). Cobertura: Billboard, People en Español, BET, Rolling Stone.",
+      "photos": [
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778646420/ab1pvcvdmlv59vcofvzy.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778676551/dz44nmja95mudzywedwy.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778676597/w6hgwncmok2zozc1l99h.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778677558/vbcxlg31csuo5mvqolha.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778646275/poinnyezjyrygdekmyow.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778645976/nss206xoq4c5bnybgjli.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778646292/rn6pnmn3rxmpkvhe2zvv.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778646221/tesgo35s3gojxrrnyqix.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778675057/w4hosvlww0e1lw5nojmo.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/video/upload/v1778675097/c9zc0qxrnpioy6ai96mb.mp4",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778676529/nqezt4sgzuytr0zxsh0u.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778677669/w08rb7wtlwysh6uc1k5h.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778677915/sfhnce24bevopiemambg.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778677968/qhedvdwb7vjsicon9m26.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778678054/wnxzv3cg2pzfdd6ycfzz.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778677684/bxsvxtbkxg76zcoawcvh.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778678588/zxdysno2e5iyehr3lrts.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778679458/awvtvqbjglbsxjovxkj9.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778679481/jioyvzn0gl9qge15kax6.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778679214/uoaa24etusmuy2rwaw4s.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778679530/kqkf66n6qxvzhrotrihq.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778679957/rdsjdem9etsfbl5smcix.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778680522/ksuwzl16xk9xp174t2lb.jpg"
+      ],
+      "pinned": false,
+      "company": "Urban Latino Music",
+      "visible": true,
+      "category": "",
+      "fullDesc": "Urban Latino Music — A&R & Project Coordinator\nNew York, NY | 2018–2019\n\nUrban Latino Music is an independent Latin music label founded by Adam Torres — Founder and CEO of Urban Latino MGMT Group and Adam Torres Concerts, a concert promotions and marketing company. Torres is a prominent figure in the music industry, known for successful concerts in major venues across the United States and as the former manager of reggaetón icon Don Omar.\n\nAs A&R & Project Coordinator, Leslie Ann Guerra oversaw artist development and release execution for emerging Latin artist MoMo (Monique González) — a Cuban singer-songwriter described as an ascending force in the Latin music industry, with a perfect combination of talent, dance, and vocal performance.\n\nShe assisted Torres on the release of the single “Tumba” — a bilingual Latin-pop and dancehall summer anthem featuring internationally acclaimed Jamaican artist Konshens. Produced by Víctor Moore a.k.a. Jumbo, mixed and co-produced by Juan G. Rivera Vázquez (Gaby Music), and mastered by Mike Fuller (Fuller Sound Mastering), released July 26, 2019.\n\n“Tumba” obtained placements in important streaming playlists including Spotify New Music Friday Latin, Spotify New Music Friday Norway, Novedades Viernes Argentina, TIDAL Rising: Latin, and La Musica. Given the single’s positive reception, it received coverage in major platforms including Billboard and People en Español. “Tumba” also entered the HTV voting bracket alongside major Latin artists, with additional visibility across Telemundo and Univision.\n\nSoon after its release, MoMo attended and presented at the 2019 Latin American Music Awards at the Dolby Theatre in Los Angeles, where she was recognized among the best dressed on the red carpet. Simultaneously, she was also advancing her acting career, landing the role of Alysha in BET’s “Tales” Season 2, Episode 5 “Bodak Yellow” — a pivotal moment that coincided with Tumba’s release and expanded her visibility across US mainstream audiences.\n\nResponsibilities included overseeing communication across artist, production, and marketing teams, supporting full creative direction and promotional rollout, and coordinating award show representation and logistics.\n\n<strong>Special thanks to Adam Torres and Monique González for the incredible opportunity. To AJ Ramos for the immense support throughout this campaign, NV Marketing & Public Relations, and The Artistry Records.</strong>",
+      "verified": true,
+      "videoUrl": "",
+      "mediaLink": "",
+      "proofLink": "",
+      "fullDescEs": "Urban Latino Music — Coordinadora de A&R y Proyectos\nNueva York, NY | 2018–2019\n\nUrban Latino Music es un sello de música latina independiente fundado por Adam Torres — Fundador y CEO de Urban Latino MGMT Group y Adam Torres Concerts, una empresa de promoción y mercadeo de conciertos. Torres es una figura prominente en la industria musical, conocido por conciertos exitosos en importantes venues de los Estados Unidos y como ex mánager del icono del reggaetón Don Omar.\n\nComo Coordinadora de A&R y Proyectos, Leslie Ann Guerra supervisó el desarrollo artístico y la ejecución de lanzamientos para la emergente artista latina MoMo (Monique González) — una cantautora cubana descrita como una fuerza ascendente en la industria musical latina.\n\nAsistió a Torres en el lanzamiento del sencillo “Tumba” — un anthem bilingüe de Latin-pop y dancehall veraniego con la participación del internacionalmente aclamado artista jamaicano Konshens. Producido por Víctor Moore a.k.a. Jumbo, mezclado y co-producido por Juan G. Rivera Vázquez (Gaby Music), y masterizado por Mike Fuller (Fuller Sound Mastering), lanzado el 26 de julio de 2019.\n\n“Tumba” obtuvo colocaciones en importantes playlists de streaming incluyendo Spotify New Music Friday Latin, Spotify New Music Friday Norway, Novedades Viernes Argentina, TIDAL Rising: Latin y La Musica. Dada la positiva recepción del sencillo, recibió cobertura en importantes plataformas incluyendo Billboard y People en Español, además de entrar en el bracket de votación de HTV junto a importantes artistas latinos, con visibilidad adicional en Telemundo y Univision.\n\nPoco después de su lanzamiento, MoMo asistió y presentó en los Latin American Music Awards 2019 en el Dolby Theatre de Los Ángeles, donde fue reconocida entre las mejor vestidas de la alfombra roja. Simultáneamente, también avanzaba en su carrera actoral, obteniendo el papel de Alysha en “Tales” de BET, Temporada 2, Episodio 5 “Bodak Yellow”.\n\n<strong>Un agradecimiento especial a Adam Torres y Monique González por la increíble oportunidad. A AJ Ramos por el inmenso apoyo durante esta campaña, a NV Marketing & Public Relations y a The Artistry Records.</strong>",
+      "mediaItems": [],
+      "mediaLabel": "",
+      "sort_order": 9,
+      "projectType": "",
+      "contractType": "",
+      "collaborators": []
+    },
+    {
+      "id": "credit_07_sony_music",
+      "desc": "Coconut Grove, FL | 2017–2018. Supported executive-level A&R operations under senior leadership. Managed artist travel logistics, purchase orders, vendor documentation, invoices, budget tracking.",
+      "role": "A&R Coordinator",
+      "color": "steel_blue",
+      "years": "2017–2018",
+      "descEs": "Coconut Grove, FL | 2017–2018. Apoyó operaciones de A&R a nivel ejecutivo bajo liderazgo senior. Gestionó logística de viajes artísticos, órdenes de compra, documentación de proveedores, facturas y seguimiento de presupuesto.",
+      "photos": [],
+      "pinned": false,
+      "company": "Sony Music Latin",
+      "visible": true,
+      "category": "Professional",
+      "fullDesc": "A&R Coordinator | Artist & Label Operations\nSony Music Latin | Coconut Grove, FL | 2017–2018\n\nLeslie Guerra served as A&R Coordinator at Sony Music Latin under Luis Alejandro Gallardo González — then Senior Vice President of A&R, now President of Sony Music US Latin — supporting one of the most prolific Latin music rosters in the industry.\n\nIn this role, Leslie operated as an operational anchor across A&R, marketing, production, legal, finance, and creative teams — managing executive and artist travel, studio logistics, vendor relationships, purchase orders, budgeting, and invoice processing. She supported release preparation and major campaign coordination, working directly at the intersection of executive strategy and day-to-day label operations.\n\nThis experience gave Leslie an insider view of how world-class Latin music is built — from the earliest A&R decisions to release execution — and established the cross-functional fluency she brings to every project today.\n\n<strong>Special thanks to Sony Music Latin, Alex Gallardo, Daniel Restrepo, and Isabel de Jesús for the opportunity and the invaluable experience within one of the most respected labels in the Latin music industry.</strong>",
+      "verified": true,
+      "videoUrl": "",
+      "fullDescEs": "Coordinadora de A&R | Operaciones Artísticas y de Sello\nSony Music Latin | Coconut Grove, FL | 2017–2018\n\nLeslie Guerra se desempeñó como Coordinadora de A&R en Sony Music Latin bajo la dirección de Luis Alejandro Gallardo González — entonces Senior Vice President de A&R y hoy Presidente de Sony Music US Latin — brindando soporte a uno de los catálogos de música latina más prolíficos de la industria.\n\nEn este rol, Leslie funcionó como eje operativo entre los departamentos de A&R, mercadeo, producción, legal, finanzas y equipos creativos — gestionando viajes ejecutivos y de artistas, logística de estudios, relaciones con proveedores, órdenes de compra, presupuestos y procesamiento de facturas. Participó activamente en la preparación de lanzamientos y la coordinación de campañas de alto perfil, operando en el punto de encuentro entre la estrategia ejecutiva y las operaciones diarias de la disquera.\n\nEsta experiencia le permitió a Leslie entender desde adentro cómo se construye la música latina de clase mundial — desde las primeras decisiones de A&R hasta la ejecución del lanzamiento — y es la base de la versatilidad que hoy lleva a cada proyecto.\n\n<strong>Un agradecimiento especial a Sony Music Latin, Alex Gallardo, Daniel Restrepo e Isabel de Jesús por la oportunidad y la invaluable experiencia dentro de uno de los sellos más respetados de la industria musical latina.</strong>",
+      "mediaItems": [],
+      "sort_order": 6
+    },
+    {
+      "id": "credit_11_adam_torres",
+      "desc": "Florida / New York | Contract. Direct artist support for high-profile live concerts. Artists: Bad Bunny, J Balvin, Luis Fonsi, Snoop Dogg, DMX, Cardi B, Maxwell. Venues: Barclays Center, Radio City Music Hall, Apollo Theater.",
+      "role": "Artist Logistics & Event Coordination",
+      "color": "steel_blue",
+      "years": "2017–2019",
+      "descEs": "Florida / Nueva York | Contrato. Apoyo artístico directo para conciertos de alto perfil. Artistas: Bad Bunny, J Balvin, Luis Fonsi, Snoop Dogg, DMX, Cardi B, Maxwell. Venues: Barclays Center, Radio City Music Hall, Apollo Theater.",
+      "photos": [
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780712578/kxc4vvfs0a05cmrklgot.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780712579/xrbdfdkosgmlaxkwffc1.webp",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780712580/crazxqnl0veqxgrpzqwx.webp",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780712581/zqizud7a2gliue2fuwz3.webp",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780712581/l9d7tpdxfrqvtsslif8h.webp",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780712582/shqikp0d9zdiysalsxnx.webp",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780712582/jov6g1obz4vaod4r47wl.webp",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780712583/bseds9vdvrtrhj92afi1.webp",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780712585/fce2jpcigtzbxqglyfcy.webp",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780712585/ejguufixynexddrpm9gy.webp",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780712586/g5gkcbplmup0ws8bktbl.webp",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780712586/k8mv9ll1xgmhewd4dtq2.webp"
+      ],
+      "pinned": false,
+      "company": "Adam Torres Concerts",
+      "visible": true,
+      "category": "Professional",
+      "fullDesc": "Adam Torres Concerts — Artist Logistics Coordinator\nNew York, NY | 2017–2020\n\nAdam Torres Concerts, founded by industry veteran Adam Torres, CEO of Urban Latino MGMT Group, is a New York-based concert promotion company known for producing large-scale live entertainment events at premier venues including Barclays Center, Radio City Music Hall, and the Apollo Theater.\n\nReporting to Director of Event Logistics Jeanette Rivera, Leslie A. Guerra served as a key liaison between artists, management teams, transportation personnel, and production staff, helping ensure smooth artist movement and communication throughout all phases of live event execution.\n\nWorking closely with Adam Torres, Jeanette Rivera, Head of Transportation Larry Quito, and Production Manager Vince Galis-Menendez, Leslie was brought in for concert productions to oversee artist logistics from arrival through departure. Her role focused on coordinating artist movement, maintaining communication between departments, and ensuring artists received timely support throughout each event.\n\nKey Responsibilities:\n• Coordinated artist arrival and departure logistics for live event productions\n• Maintained communication with artist management teams regarding schedules, call times, and event-day logistics\n• Coordinated transportation schedules with the event transportation department\n• Monitored artist arrivals at airports, hotels, venues, and performance locations\n• Escorted artists to designated backstage and dressing-room areas when required\n• Communicated artist status updates to production and event operations personnel\n• Coordinated movement between dressing rooms, backstage areas, and performance stages\n• Assisted with venue-to-hotel departures and end-of-event logistics\n• Helped ensure accurate artist accountability and operational readiness throughout event execution\n• Supported communication between artists, management, transportation, and production teams in fast-paced live-event environments\n\nNotable Productions:\nSupported events at premier venues including Barclays Center, Radio City Music Hall, and the Apollo Theater, working with productions featuring artists such as Bad Bunny, J Balvin, Luis Fonsi, Snoop Dogg, DMX, Cardi B, Maxwell, Ozuna, Farruko, Willie Colón, India, and other leading performers across Latin, Hip-Hop, R&B, and classic urban music genres.\n\nCareer Significance:\nThis role expanded Leslie’s expertise in artist services, concert operations, transportation logistics, stakeholder coordination, and large-scale event execution. It provided firsthand experience supporting major concert productions and reinforced the operational skills that later complemented her work in artist management, A&R, marketing, and entertainment business operations.\n\n<strong>Special thanks to the entire ATS team for entrusting me with such a trusted position, for your professionalism, and for a priceless experience. Grateful beyond words.</strong>",
+      "verified": true,
+      "videoUrl": "",
+      "fullDescEs": "Adam Torres Concerts — Coordinadora de Logística Artística\nNueva York, NY | 2017–2020\n\nAdam Torres Concerts, fundada por el veterano de la industria Adam Torres, CEO de Urban Latino MGMT Group, es una empresa de promoción de conciertos con sede en Nueva York, conocida por producir eventos de entretenimiento en vivo a gran escala en venues de primer nivel incluyendo el Barclays Center, Radio City Music Hall y el Apollo Theater.\n\nReportando a la Directora de Logística de Eventos Jeanette Rivera, Leslie A. Guerra fungió como enlace clave entre artistas, equipos de manejo, personal de transporte y el equipo de producción, garantizando el movimiento fluido de artistas y la comunicación durante todas las fases de la ejecución del evento.\n\nTrabajando de cerca con Adam Torres, Jeanette Rivera, el Jefe de Transporte Larry Quito y el Gerente de Producción Vince Galis-Menendez, Leslie era convocada para las producciones de conciertos a supervisar la logística artística desde la llegada hasta la salida.\n\nResponsabilidades Principales:\n• Coordinó la logística de llegada y salida de artistas\n• Mantuvo comunicación con los equipos de manejo artístico\n• Coordinó horarios de transporte con el departamento correspondiente\n• Monitoreó llegadas de artistas en aeropuertos, hoteles y venues\n• Escoltó artistas a áreas de backstage y camerinos\n• Comunicó actualizaciones de estado a producción y operaciones\n• Coordinó movimiento entre camerinos, backstage y escenario\n• Asistió con logística de salida del venue al hotel\n\nProducciones Notables:\nApoyó eventos en Barclays Center, Radio City Music Hall y el Apollo Theater, con producciones que incluyeron a Bad Bunny, J Balvin, Luis Fonsi, Snoop Dogg, DMX, Cardi B, Maxwell, Ozuna, Farruko, Willie Colón, India y otros artistas destacados de los géneros latino, Hip-Hop, R&B y urbano.\n\n<strong>Un agradecimiento especial a todo el equipo de ATS por confiarme una posición de tal responsabilidad y confianza, por su profesionalismo y por una experiencia invaluable. Agradecida más allá de las palabras.</strong>",
+      "mediaItems": [],
+      "sort_order": 10
+    },
+    {
+      "id": "credit_02_j_alvarez",
+      "desc": "Performed as a supporting vocalist for live performance engagements, contributing vocal harmonies, stage execution, and collaborative performance support within professional touring and large-scale Latin urban music productions.",
+      "role": "Exclusive Touring Vocalist",
+      "color": "gold",
+      "press": [],
+      "years": "2015–2020",
+      "artist": "J Álvarez",
+      "descEs": "Participé como vocalista de apoyo en presentaciones en vivo, aportando armonías, ejecución escénica y soporte colaborativo dentro de producciones profesionales de música urbana latina.",
+      "photos": [
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780694244/ngygwrznpdj6lu3gngyh.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780694300/wuhii9wvfylleds1p6vz.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780697913/yw5taad7slxsywenjpnd.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780698160/atjzbiwtjc6fsg467kxy.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780698329/ytvjrw1k95aohozcgin2.png"
+      ],
+      "pinned": true,
+      "company": "J Álvarez",
+      "visible": true,
+      "category": "",
+      "fullDesc": "J Álvarez — Touring Vocalist / Live Performance Collaboration\n\nLeslie was recruited into J Álvarez’s touring production by Robert Santiago, J Álvarez’s production manager, who had previously worked with Don Omar’s touring team.\n\nCollaborated as a touring supporting vocalist in live performance environments, contributing background vocal execution, harmonic support, and stage performance coordination as part of professional Latin urban music productions.\n\nKey Contributions:\n- Live supporting vocal performance\n- Harmony execution and vocal blending\n- Stage synchronization and live performance coordination\n- Musical timing and performance precision\n- Adaptability within dynamic touring environments\n- Collaborative execution with artists, musicians, and production teams\n- Consistent delivery across live performance settings\n- Professional stage presence and performance support\n\n<strong>Special thanks to J Álvarez for the opportunity and for welcoming me into his world. And to Robert Santiago, whose call made it all possible.</strong>",
+      "verified": true,
+      "videoUrl": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780694563/yrwkdcg5n8su1zi8eait.mp4",
+      "mediaLink": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780694563/yrwkdcg5n8su1zi8eait.mp4",
+      "proofLink": "",
+      "fullDescEs": "J Álvarez — Vocalista de Gira / Colaboración en Presentaciones en Vivo\n\nLeslie fue reclutada para la producción de gira de J Álvarez por Robert Santiago, el mánager de producción de J Álvarez, quien anteriormente formó parte del equipo de gira de Don Omar.\n\nColaboré como vocalista de apoyo dentro de entornos profesionales de gira y presentaciones en vivo, aportando ejecución vocal, soporte armónico y coordinación escénica en producciones de música urbana latina.\n\nContribuciones Principales:\n- Apoyo vocal en presentaciones en vivo\n- Ejecución de armonías y acople vocal\n- Coordinación escénica y sincronización musical\n- Precisión interpretativa en entornos de gira\n- Adaptabilidad dentro de producciones dinámicas\n- Colaboración con artistas, músicos y producción\n- Consistencia profesional en múltiples presentaciones\n- Presencia escénica y soporte interpretativo\n\n<strong>Un agradecimiento especial a J Álvarez por la oportunidad y por abrirme las puertas a su mundo. Y a Robert Santiago, cuya llamada lo hizo todo posible.</strong>",
+      "mediaItems": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780694563/yrwkdcg5n8su1zi8eait.mp4",
+          "type": "video",
+          "label": "J Alvarez Medley",
+          "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780697273/mziu3vnvvbrrvolrrcms.png"
+        }
+      ],
+      "mediaLabel": "J Alvarez Medley",
+      "sort_order": 1,
+      "projectType": "",
+      "contractType": "",
+      "collaborators": []
+    },
+    {
+      "id": "credit_05_arrow_orfanato",
+      "desc": "Garfield, NJ | Hybrid | 2013–2015. Operational and administrative support for artist management. Payroll for ~30 staff via check and wire transfer across US and Puerto Rico.",
+      "role": "Artist Support & Operations Coordinator",
+      "color": "steel_blue",
+      "years": "2013–2015",
+      "descEs": "Garfield, NJ | Híbrido | 2013–2015. Apoyo operacional y administrativo para manejo artístico. Nómina para ~30 empleados mediante cheque y transferencia bancaria en EE.UU. y Puerto Rico.",
+      "photos": [],
+      "pinned": false,
+      "company": "Arrow Management",
+      "visible": true,
+      "category": "Professional",
+      "fullDesc": "Arrow Management — Artist Operations & Management Coordinator\nGarfield, New Jersey | 2013–2015\n\nFollowing years of experience in live performance and touring, Leslie A. Guerra transitioned into artist management and business operations through Arrow Management, the management company founded by William Omar Landrón Rivera.\n\nIn this role, Leslie supported the day-to-day operational and administrative functions associated with artist management, business affairs, and entertainment operations. Working closely with management personnel, artists, vendors, and business partners, she helped coordinate internal processes essential to the successful execution of artist-related activities and organizational objectives.\n\nHer responsibilities included managing schedules, coordinating communications, organizing documentation, supporting logistical planning, and assisting with operational workflows across multiple projects. The position required exceptional organization, discretion, adaptability, and the ability to manage competing priorities within a fast-paced entertainment environment.\n\nThis experience provided Leslie with valuable exposure to the business and operational side of the music industry, expanding her expertise beyond performance and touring into artist management, administration, organizational leadership, and entertainment business operations.\n\nKey Responsibilities:\n• Coordinated artist management and operational support activities\n• Managed calendars, scheduling, and administrative workflows\n• Facilitated communication between management, artists, vendors, and business partners\n• Organized operational records, documentation, and internal processes\n• Supported logistical planning and project coordination\n• Assisted with day-to-day business operations and management initiatives\n• Maintained confidential information and sensitive documentation\n• Tracked priorities, deadlines, and organizational deliverables\n• Supported multiple concurrent projects within a high-volume environment\n• Contributed to efficient execution of artist-related business activities\n\nCareer Significance:\nArrow Management marked Leslie’s transition from primarily performing on stage to understanding the operational infrastructure that supports successful artists and entertainment brands. The experience provided a foundation in artist management, business administration, and organizational operations that would later support her work in A&R, marketing, artist development, and executive coordination roles throughout the music industry.\n\n<strong>Special thanks to William Omar Landrón Rivera, Héctor Luis Landrón Rivera, Rebeca López, and Milton Johan Restituyo for the life-altering experience I will never, ever forget.</strong>",
+      "verified": true,
+      "videoUrl": "",
+      "fullDescEs": "Arrow Management — Coordinadora de Operaciones y Manejo Artístico\nGarfield, Nueva Jersey | 2013–2015\n\nTras años de experiencia en presentaciones en vivo y giras, Leslie A. Guerra realizó la transición hacia el manejo artístico y las operaciones empresariales a través de Arrow Management, la compañía de manejo fundada por William Omar Landrón Rivera.\n\nEn este rol, Leslie apoyó las funciones operacionales y administrativas diarias asociadas al manejo artístico, los asuntos empresariales y las operaciones de entretenimiento. Trabajando de cerca con el personal de manejo, artistas, proveedores y socios comerciales, ayudó a coordinar los procesos internos esenciales para la ejecución exitosa de actividades relacionadas con artistas y los objetivos organizacionales.\n\nSus responsabilidades incluían gestionar agendas, coordinar comunicaciones, organizar documentación, apoyar la planificación logística y asistir con los flujos de trabajo operacionales en múltiples proyectos. El puesto requería organización excepcional, discreción, adaptabilidad y la capacidad de gestionar prioridades en competencia dentro de un entorno dinámico del entretenimiento.\n\nResponsabilidades Principales:\n• Coordinó actividades de apoyo operacional y de manejo artístico\n• Gestionó calendarios, programación y flujos de trabajo administrativos\n• Facilitó la comunicación entre manejo, artistas, proveedores y socios comerciales\n• Organizó registros operacionales, documentación y procesos internos\n• Apoyó la planificación logística y la coordinación de proyectos\n• Asistió con operaciones comerciales diarias e iniciativas de manejo\n• Mantuvo información confidencial y documentación sensible\n• Rastreó prioridades, plazos y entregables organizacionales\n• Apoyó múltiples proyectos simultáneos en un entorno de alto volumen\n\nSignificado en la Carrera:\nArrow Management marcó la transición de Leslie desde las presentaciones en escenario hacia la comprensión de la infraestructura operacional que sostiene a los artistas y marcas de entretenimiento exitosas. La experiencia proporcionó una base en manejo artístico, administración empresarial y operaciones organizacionales que apoyaría posteriormente su trabajo en A&R, mercadeo, desarrollo artístico y roles de coordinación ejecutiva en la industria musical.\n\n<strong>Un agradecimiento especial a William Omar Landrón Rivera, Héctor Luis Landrón Rivera, Rebeca López y Milton Johan Restituyo por la experiencia que alteró mi vida y que nunca, jamás olvidaré.</strong>",
+      "mediaItems": [],
+      "sort_order": 4
+    },
+    {
+      "id": "credit_09_venetian",
+      "desc": "Doral, FL | 2006–2013. Led compliance-focused operational support across administrative, legal documentation, and internal coordination functions.",
+      "role": "Head of Compliance",
+      "color": "steel_blue",
+      "years": "2006–2013",
+      "descEs": "Doral, FL | 2006–2013. Lideró apoyo operacional enfocado en cumplimiento en funciones administrativas, documentación legal y coordinación interna.",
+      "photos": [],
+      "pinned": false,
+      "company": "Venetian Productions (KLMA)",
+      "visible": true,
+      "category": "Professional",
+      "fullDesc": "Venetian Productions (KLMA) — Head of Compliance\nDoral, FL | 2006–2013\n\nLeslie joined Venetian Productions having been recruited for a coordinator position — and was immediately placed as Web Producer instead. From day one she managed 7 concurrent website productions working alongside 3 directors. Within six months that grew to 18 simultaneous productions with 8 directors.\n\nAs Web Producer, she managed the full production lifecycle independently across all projects — overseeing creative direction, set design, scripting, talent selection, location coordination, props, wardrobe, transportation, and production support from pre-production through final delivery.\n\nShe was then offered and accepted the role of Head of Compliance, leading compliance-focused operational support across administrative, legal documentation, and internal coordination functions, managing a staff of 4 with additional support brought in for large-scale productions.\n\nThe role required exceptional accuracy, confidentiality, procedural consistency, and operational oversight — ensuring all internal workflows aligned with business requirements and compliance standards.\n\nKey Responsibilities:\n• Oversaw compliance documentation and administrative record management\n• Maintained legal and operational filing systems with strict accuracy standards\n• Coordinated contract-related documentation and internal processing workflows\n• Managed confidential records and sensitive operational information\n• Built and structured the customer service department from the ground up\n• Supervised compliance staff across standard and large-scale productions\n• Ensured adherence to company policies and procedural requirements\n• Maintained precision across high-volume administrative priorities\n\n<strong>Special thanks to Carol Santiago (now Carol Crews) and Olivier Caudron for the various opportunities extended — from Head Producer to Head of Compliance. This chapter of my career shaped a discipline and a standard I carry to this day.</strong>",
+      "verified": true,
+      "videoUrl": "",
+      "fullDescEs": "Venetian Productions (KLMA) — Jefa de Cumplimiento\nDoral, FL | 2006–2013\n\nLeslie se unió a Venetian Productions habiendo sido reclutada para una posición de coordinadora — y fue colocada de inmediato como Productora Web. Desde el primer día gestionó 7 producciones web simultáneas trabajando junto a 3 directores. En seis meses eso creció a 18 producciones simultáneas con 8 directores.\n\nComo Productora Web, gestionó de forma independiente el ciclo completo de producción en todos los proyectos — supervisando dirección creativa, diseño de sets, guión, selección de talento, coordinación de locaciones, utilería, vestuario, transporte y apoyo de producción desde la preproducción hasta la entrega final.\n\nPosteriormente fue invitada a asumir el rol de Jefa de Cumplimiento, liderando el apoyo operacional enfocado en cumplimiento a través de funciones administrativas, documentación legal y coordinación interna, gestionando un equipo de 4 empleados con apoyo adicional en producciones de gran escala.\n\nEl rol requirió precisión excepcional, confidencialidad, consistencia procedimental y supervisión operativa — asegurando que todos los flujos de trabajo internos estuvieran alineados con los requisitos empresariales y los estándares de cumplimiento.\n\nResponsabilidades Principales:\n• Supervisió documentación de cumplimiento y gestión de registros administrativos\n• Mantuvo sistemas de archivo legal y operacional con estrictos estándares de precisión\n• Coordinó documentación contractual y flujos de procesamiento interno\n• Gestionó registros confidenciales e información operacional sensible\n• Construyó y estructuró el departamento de servicio al cliente desde cero\n• Supervisó personal de cumplimiento en producciones estándar y a gran escala\n• Garantizó el cumplimiento de políticas y requisitos de la empresa\n• Mantuvo precisión en prioridades administrativas de alto volumen\n\n<strong>Un agradecimiento especial a Carol Santiago (ahora Carol Crews) y Olivier Caudron por las múltiples oportunidades extendidas — desde Productora Principal hasta Jefa de Cumplimiento. Este capítulo de mi carrera forjó una disciplina y un estándar que llevo conmigo hasta el día de hoy.</strong>",
+      "mediaItems": [],
+      "sort_order": 8
+    },
+    {
+      "id": "credit_01_don_omar",
+      "desc": "Exclusive touring female vocalist across multiple international productions spanning nearly a decade. Featured on King of Kings: En Directo (Machete Music, 2007). Venues: Madison Square Garden, Radio City Music Hall, Luna Park Stadium, Viña del Mar, Coliseo de Puerto Rico, Kaseya Center.",
+      "role": "Exclusive Touring Vocalist",
+      "color": "gold",
+      "press": [],
+      "years": "2006–2015",
+      "artist": "Don Omar",
+      "descEs": "Vocalista femenina exclusiva de gira en múltiples producciones internacionales durante casi una década. Aparece en King of Kings: En Directo (Machete Music, 2007). Venues: Madison Square Garden, Radio City Music Hall, Luna Park Stadium, Viña del Mar, Coliseo de Puerto Rico, Kaseya Center.",
+      "photos": [
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780691546/z1gszcskhc3tegcjeesz.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780691557/bgyrrntc0dqcxxm5oelp.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780691626/dkkmur4sfnorrjhgkide.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696623/dizanbnk90ysgkqfyv72.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696624/rz5mkfjlo4guk5ijnpgu.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696789/dig8u5psfj62csjjrcv3.webp",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696862/xs6reobuxk3ml4cgen74.jpg"
+      ],
+      "pinned": true,
+      "company": "Don Omar",
+      "visible": true,
+      "category": "",
+      "fullDesc": "Leslie served as the exclusive touring female vocalist for Don Omar across multiple international productions and live tours spanning nearly a decade.\n\nHer live performance work appears on King of Kings: En Directo, released through Machete Music in 2007 — a large-scale live production distributed internationally in CD and DVD formats and broadcast through DirecTV.\n\nThroughout her touring career with Don Omar, Leslie participated in hundreds of performances across five continents, including appearances at Madison Square Garden, Radio City Music Hall, Luna Park Stadium, Viña del Mar International Song Festival, Coliseo de Puerto Rico José Miguel Agrelot, and Kaseya Center, along with televised appearances and international broadcast productions.\n\nHer introduction into reggaetón touring began during the genre’s early commercial expansion after being recruited by musical director Félix Márquez for live performances with Héctor & Tito. Prior to joining Don Omar’s touring productions, she also performed as a backup vocalist for Melina León. Approximately one year later, she was invited by sound engineer Ramón Pabón to join Don Omar’s first major live touring production, eventually becoming one of the few prominently featured female touring vocalists within large-scale international reggaetón productions during the genre’s global crossover era.\n\n<strong>Special thanks to William Omar Landrón for the opportunity of a lifetime — and for that midnight call that changed everything. To Ramón Pabón and Carlos Martínez, sound engineers for Don Omar and former engineers for Melina León, whose referral opened the door. It was Ramón who made the call that night, with Don on the line, and nothing was ever the same after that. To Adam Torres, Abraham Quiñones, and Miguel Márquez for their support and unwavering presence throughout this journey. And to fellow colleagues Ángel Eric Ríos, Mario VI, DJ Robin, and DJ Eliel — the team behind the scenes that made every show feel like family coming home.</strong>",
+      "verified": true,
+      "videoUrl": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780691676/uotjg56wip0kzed5entx.mp4",
+      "mediaLink": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780691676/uotjg56wip0kzed5entx.mp4",
+      "proofLink": "",
+      "fullDescEs": "Leslie se desempeñó como vocalista femenina exclusiva de gira para Don Omar en múltiples producciones y giras internacionales durante casi una década.\n\nSu trabajo en vivo forma parte de King of Kings: En Directo, lanzado por Machete Music en 2007, una producción en vivo distribuida internacionalmente en formatos CD y DVD y transmitida a través de DirecTV.\n\nA lo largo de su carrera de giras con Don Omar, Leslie participó en cientos de presentaciones en cinco continentes, incluyendo el Madison Square Garden, Radio City Music Hall, Luna Park Stadium, el Festival Internacional de la Canción de Viña del Mar, el Coliseo de Puerto Rico José Miguel Agrelot y el Kaseya Center, además de apariciones televisadas y producciones de transmisión internacional.\n\nSu entrada al mundo de las giras de reggaetón comenzó durante la expansión comercial temprana del género, cuando fue reclutada por el director musical Félix Márquez para presentaciones en vivo con Héctor & Tito. Antes de unirse a las producciones de gira de Don Omar, también se desempeñó como vocalista de apoyo para Melina León. Aproximadamente un año después, fue invitada por el ingeniero de sonido Ramón Pabón a integrarse a la primera gran producción de gira en vivo de Don Omar.\n\n<strong>Un agradecimiento especial a William Omar Landrón por la oportunidad de una vida — y por esa llamada a medianoche que lo cambió todo. A Ramón Pabón y Carlos Martínez, ingenieros de sonido de Don Omar y ex ingenieros de Melina León, cuya recomendación abrió la puerta. Fue Ramón quien hizo esa llamada aquella noche, con Don al teléfono, y nada volvió a ser igual después de eso. A Adam Torres, Abraham Quiñones y Miguel Márquez por su apoyo y presencia a lo largo de este camino. Y a los colegas Ángel Eric Ríos, Mario VI, DJ Robin y DJ Eliel — el equipo detrás del escenario que hizo que cada show se sintiera como volver a casa en familia.</strong>",
+      "mediaItems": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780691676/uotjg56wip0kzed5entx.mp4",
+          "type": "video",
+          "label": "Don Omar Medley Hecho en PR",
+          "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780696327/heuuadjnzi1mpoihaw1h.png"
+        }
+      ],
+      "mediaLabel": "Don Omar Medley Hecho en PR",
+      "sort_order": 0,
+      "projectType": "",
+      "contractType": "",
+      "collaborators": []
+    },
+    {
+      "id": "credit_04_melina_leon",
+      "desc": "Live supporting vocalist during performance engagements. This experience led to her invitation to join Don Omar’s first major live touring production.",
+      "role": "Live Performance Collaboration",
+      "color": "gold",
+      "press": [],
+      "years": "2000–2006",
+      "artist": "Melina León",
+      "descEs": "Vocalista de apoyo en vivo durante compromisos de presentación. Esta experiencia la llevó a ser invitada a unirse a la primera producción mayor de gira en vivo de Don Omar.",
+      "photos": [
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780710185/lydovbwv4o2qf9jxgnsh.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780710186/tseqoeqnrodjane34ukl.jpg"
+      ],
+      "pinned": false,
+      "company": "Melina León",
+      "visible": true,
+      "category": "",
+      "fullDesc": "Melina León — Touring Vocalist / Live Performance Artist\n2000–2006\n\nFollowing her recording debut as a founding member of Las Nenas del Swing, Leslie A. Guerra continued building her career within Puerto Rico’s tropical music scene, joining the touring and performance team of renowned Puerto Rican singer Melina León.\n\nFrom 2000 through 2006, Leslie served as a supporting vocalist, an opportunity that significantly expanded her professional touring experience and allowed her to perform regularly before large audiences throughout Puerto Rico and beyond.\n\nAs a member of Melina León’s live performance team, Leslie participated in concerts, festivals, television appearances, promotional events, and special productions — contributing background vocals, vocal harmonies, stage performance support, rehearsals, and live production execution. These experiences refined the skills and professionalism required to succeed in large-scale touring environments.\n\nSix years alongside Melina León provided invaluable experience in professional touring, artist support, stagecraft, production coordination, and live entertainment operations. The relationships and industry knowledge gained during this chapter became a critical bridge between her early recording career and the international touring opportunities that would follow — ultimately leading to her selection as a touring vocalist for Don Omar.\n\nKey Contributions:\n• Touring and Supporting Vocalist (2000–2006)\n• Concerts, festivals, promotional events, television appearances, and live productions throughout Puerto Rico\n• Harmony vocals and live performance support\n• Developed the professional foundation that led to international touring with Don Omar\n\n<strong>Special thanks to Yamillette Aponte Yunqué (Melina León) for the opportunity and for the years of unforgettable stages shared together. To Félix “Felito El Ronko” Márquez, whose invitation opened this door. And to José Hiram Villanueva — for pushing me to walk through it. To every musician and colleague who shared those stages — thank you for making it feel like family.</strong>",
+      "verified": true,
+      "videoUrl": "",
+      "mediaLink": "",
+      "proofLink": "",
+      "fullDescEs": "Melina León — Vocalista de Gira / Artista de Presentaciones en Vivo\n2000–2006\n\nTras su debut discográfico como miembro fundadora de Las Nenas del Swing, Leslie A. Guerra continuó construyendo su carrera dentro de la escena de la música tropical de Puerto Rico, uniéndose al equipo de giras y presentaciones de la reconocida cantante puertorriqueña Melina León.\n\nDesde el año 2000 hasta 2006, Leslie se desempeñó como vocalista de apoyo, una oportunidad que expandió significativamente su experiencia en giras profesionales y le permitió presentarse regularmente ante grandes audiencias en Puerto Rico y más allá.\n\nComo parte del equipo de presentaciones en vivo de Melina León, Leslie participó en conciertos, festivales, apariciones televisivas, eventos promocionales y producciones especiales — aportando voces de fondo, armonías vocales, soporte escénico, ensayos y ejecución de producción en vivo. Estas experiencias refinaron las habilidades y el profesionalismo necesarios para triunfar en entornos de gira a gran escala.\n\nSeis años junto a Melina León brindaron una experiencia invaluable en giras profesionales, apoyo artístico, técnicas escénicas, coordinación de producción y operaciones de entretenimiento en vivo. Las relaciones y el conocimiento de la industria adquiridos durante este capítulo se convirtieron en un puente fundamental entre su temprana carrera discográfica y las oportunidades de gira internacional que vendrían — lo que finalmente llevó a su selección como vocalista de gira para Don Omar.\n\nContribuciones Principales:\n• Vocalista de Gira y de Apoyo (2000–2006)\n• Conciertos, festivales, eventos promocionales, apariciones televisivas y producciones en vivo en todo Puerto Rico\n• Armonías vocales y soporte en presentaciones en vivo\n• Desarrolló la base profesional que llevó a giras internacionales con Don Omar\n\n<strong>Un agradecimiento especial a Yamillette Aponte Yunqué (Melina León) por la oportunidad y por los años de escenarios inolvidables compartidos. A Félix “Felito El Ronko” Márquez, cuya invitación abrió esta puerta. Y a José Hiram Villanueva — por impulsarme a cruzarla. A cada músico y colega que compartió esos escenarios — gracias por hacer que todo se sintiera como familia.</strong>",
+      "mediaItems": [],
+      "mediaLabel": "",
+      "sort_order": 3,
+      "projectType": "",
+      "contractType": "",
+      "collaborators": []
+    },
+    {
+      "id": "credit_08_fema",
+      "desc": "Federal Emergency Management Agency | Trujillo Alto, PR | 2001–2006. Bilingual Human Services Specialist. Progressed from frontline bilingual customer support to case management. Promoted based on performance and accuracy.",
+      "role": "Human Services Specialist (GS-9)",
+      "color": "steel_blue",
+      "years": "2001–2006",
+      "descEs": "Agencia Federal para el Manejo de Emergencias | Trujillo Alto, PR | 2001–2006. Especialista bilingüe en Servicios Humanos. Progresó desde soporte al cliente en primera línea hasta gestión de casos.",
+      "photos": [
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780710530/rhixeyyxcezspzutu3kx.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780710531/i0xzdlyuluu6ptz6xubd.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780710532/f2llihxceckksiysijht.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780710575/uzkkleu5mcbw6qmxmb5x.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780710629/fvqhpttzar6dpjcgreuq.jpg"
+      ],
+      "pinned": false,
+      "company": "FEMA",
+      "visible": true,
+      "category": "Professional",
+      "fullDesc": "FEMA — Human Services Specialist (GS-9)\nFederal Emergency Management Agency | Trujillo Alto, Puerto Rico | 2001–2006\n\nJoined FEMA as a Bilingual Customer Service Agent, providing English and Spanish language support to disaster-affected applicants navigating the federal assistance process. Progressed to Translation Specialist, then advanced to Case Worker — responsible for reviewing, evaluating, and adjudicating federal disaster assistance applications in accordance with federal compliance standards.\n\nAs Case Worker, determined applicant eligibility for federal disaster relief, maintained detailed and accurate case documentation, and managed a high-volume caseload across sustained disaster response operations. Work required strict adherence to federal guidelines, careful attention to documentation integrity, and consistent professionalism when working with applicants in vulnerable circumstances.\n\nIn addition to processing federal assistance applications, Leslie connected disaster victims with a broader network of recovery resources — including U.S. Small Business Administration (SBA) disaster loans for homeowners and businesses, American Red Cross shelter and emergency services, Salvation Army relief programs, HUD housing assistance, and USDA food and nutrition support programs. This comprehensive service approach ensured that applicants received guidance beyond FEMA’s direct assistance programs and were connected to every available resource for their recovery.\n\nThis role established the foundation for a professional discipline in compliance, case management, federal documentation standards, and bilingual public service that carried through subsequent career positions.\n\n<strong>It was an honor and a privilege to have served during two of the most impactful disasters in modern American history — September 11, 2001 and Hurricane Katrina August 29, 2005. Bearing witness to the resilience of those affected deepened my empathy, my sense of purpose, and my appreciation for the life I had been given. Serving others in their most vulnerable moments changed me profoundly.\n\nTo my FEMA family — the M.F.O. Crew — you were never just colleagues. You were community. You still hold a special place in my heart, and you always will. Thank you.</strong>",
+      "verified": true,
+      "videoUrl": "",
+      "fullDescEs": "FEMA — Especialista en Servicios Humanos (GS-9)\nAgencia Federal para el Manejo de Emergencias | Trujillo Alto, Puerto Rico | 2001–2006\n\nSe incorporó a FEMA como Agente de Servicio al Cliente Bilingüe, brindando apoyo en inglés y español a solicitantes afectados por desastres que navegaban el proceso de asistencia federal. Avanzó a Especialista en Traducción y luego a Trabajadora de Casos — responsable de revisar, evaluar y adjudicar solicitudes de asistencia federal por desastre conforme a los estándares de cumplimiento federal.\n\nComo Trabajadora de Casos, determinó la elegibilidad de solicitantes para asistencia federal por desastre, mantuvo documentación de casos detallada y precisa, y gestionó una carga de trabajo de alto volumen durante operaciones de respuesta sostenida a desastres.\n\nAdemás de procesar solicitudes de asistencia federal, Leslie conectaba a las víctimas de desastres con una red más amplia de recursos de recuperación — incluyendo préstamos por desastre de la Administración de Pequeños Negocios (SBA), servicios de refugio y emergencia de la Cruz Roja Americana, programas de alivio del Ejército de Salvación, asistencia de vivienda de HUD y programas de asistencia alimentaria del USDA.\n\nEste rol estableció la base para una disciplina profesional en cumplimiento, manejo de casos, estándares de documentación federal y servicio público bilingüe que se mantuvo a lo largo de su carrera.\n\n<strong>Fue un honor y un privilegio haber servido durante dos de los desastres más impactantes de la historia moderna de los Estados Unidos — el 11 de septiembre de 2001 y el Huracán Katrina el 29 de agosto de 2005. Ser testigo de la resiliencia de quienes fueron afectados profundizó mi empatía, mi sentido de propósito y mi gratitud por la vida que me había sido dada. Servir a otros en sus momentos más vulnerables me transformó profundamente.\n\nA mi familia de FEMA — el M.F.O. Crew — nunca fueron solo colegas. Fueron comunidad. Todavía ocupan un lugar muy especial en mi corazón, y siempre lo harán. Gracias.</strong>",
+      "mediaItems": [],
+      "sort_order": 7
+    },
+    {
+      "id": "credit_03_las_nenas",
+      "desc": "Founding member. Released album Rompe Corazones on September 10, 1998 on R&R Music. 11-track tropical and merengue album. Lead vocals on Chicle Bomba (first single), Desearía, Me Faltas Tú.",
+      "role": "Recording Artist",
+      "color": "gold",
+      "press": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700279/rvacefp3hq5pjbjveacg.pdf",
+          "year": "2000",
+          "summary": "Las Nenas del Swing featured as a performing merengue group at the Miss Puerto Rico of Lancaster Scholarship Gala on April 22, 2000, alongside Sabor Tropical.",
+          "location": "Lancaster, PA",
+          "publication": "Sunday News"
+        },
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700290/nfzfytdtlunzskckcrkt.pdf",
+          "year": "1999",
+          "summary": "Las Nenas del Swing listed among featured artists performing at Puerto Rico's Third AIDS Awareness Walk alongside Marc Anthony, Tony Vega, and Domingo Quiñones.",
+          "location": "Miami, FL",
+          "publication": "El Nuevo Herald"
+        }
+      ],
+      "years": "1998",
+      "artist": "Las Nenas del Swing",
+      "descEs": "Miembro fundadora. Lanzó el álbum Rompe Corazones el 10 de septiembre de 1998 bajo R&R Music. Álbum de 11 pistas de tropical y merengue. Voces principales en Chicle Bomba, Desearía y Me Faltas Tú.",
+      "photos": [
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780698796/mix76xfq2m2fx4kwjnav.jpg",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780699035/ua162dyr4kpl6evojklo.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700250/kivjqfsplahof1bwrjvm.png",
+        "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780700259/ipyu5ypddudo9gmd8xxk.png"
+      ],
+      "pinned": true,
+      "company": "Las Nenas del Swing",
+      "visible": true,
+      "category": "Other",
+      "fullDesc": "Las Nenas del Swing — Recording Artist / Founding Member\n\nBefore Las Nenas del Swing was formed, Leslie A. Guerra was already establishing herself as a performer throughout Puerto Rico, appearing at venues including Hotel Intercontinental and Hotel San Juan. It was during a Sunday performance at Rancho de los Trovadores in Cayey that Elvis Crespo and Wilfredo Ortiz walked in — and everything changed. That night led to an audition with producer Luis Corporán and her selection as a founding member of Las Nenas del Swing.\n\nOn September 10, 1998, Las Nenas del Swing released Rompe Corazones, an 11-track tropical and merengue album released through R&R Music, distributed in Puerto Rico by Combo Records and in the United States through Rimas Records in New York. Managed by Ramón Rivera, who also managed Grupo Karis, the group developed a growing fan base throughout Puerto Rico, the Caribbean, and major East Coast Latino markets.\n\nAs a founding member and featured vocalist, Leslie contributed to several of the album’s best-known recordings, including Chicle Bomba, Desearía, and Me Faltas Tú. The project featured contributions from respected musicians and vocalists within the tropical music genre, including backing vocal participation by Elvis Crespo, Juan Castro (Tony Tun Tun), and Juan Luis Guzmán. Production credits included Freddy Méndez on piano and Luis Corporán on saxophone.\n\nDuring the promotional cycle for Rompe Corazones, Las Nenas del Swing shared stages with prominent tropical and merengue acts including Los Hermanos Rosario, El Gran Combo de Puerto Rico, Grupo Karis, Grupo Manía, Grupo Mambo, Manny Manuel, Tony Tun Tun, Melina León, and Gisselle. The group also participated in performances associated with the New York Puerto Rican Day Parade and appeared throughout Puerto Rico, Connecticut, Pennsylvania, Massachusetts, and the Dominican Republic.\n\nRompe Corazones represents Leslie Guerra’s earliest documented commercial recording credit and the beginning of a professional music career that would later expand into international touring, artist development, label operations, marketing, A&R, and entertainment management.\n\nToday, the album remains available through major digital streaming platforms, preserving an important chapter in Puerto Rican tropical music and serving as the foundation of Leslie’s decades-long career in the music industry.\n\n<strong>Special thanks to Melissa, Marie, and Kadmara — and to Elvis Crespo, Wilfredo Ortiz, Ramón Rivera, Luis Corporán, Freddie Méndez, and Raúl Armando Del Valle for their guidance, support, and belief during the formative years of this journey.</strong>",
+      "verified": true,
+      "videoUrl": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780800128/wg1vtldzko9dib2h5stk.mp4",
+      "mediaLink": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780800128/wg1vtldzko9dib2h5stk.mp4",
+      "proofLink": "",
+      "fullDescEs": "Las Nenas del Swing — Artista de Grabación / Miembro Fundadora\n\nAntes de que Las Nenas del Swing se formara, Leslie A. Guerra ya se estaba estableciendo como artista en Puerto Rico, presentándose en venues como el Hotel Intercontinental y el Hotel San Juan. Fue durante una actuación dominical en el Rancho de los Trovadores en Cayey que Elvis Crespo y Wilfredo Ortiz entraron al lugar — y todo cambió. Esa noche llevó a una audición con el productor Luis Corporán y a su selección como miembro fundadora de Las Nenas del Swing.\n\nEl 10 de septiembre de 1998, Las Nenas del Swing lanzaron Rompe Corazones, un álbum de 11 pistas de tropical y merengue bajo R&R Music, distribuido en Puerto Rico por Combo Records y en Estados Unidos por Rimas Records en Nueva York. Bajo la gestión de Ramón Rivera, quien también representaba a Grupo Karis, el grupo desarrolló una creciente base de seguidores en Puerto Rico, el Caribe y los principales mercados latinos de la Costa Este.\n\nComo miembro fundadora y vocalista destacada, Leslie contribuyó a algunas de las grabaciones más reconocidas del álbum, incluyendo Chicle Bomba, Desearía y Me Faltas Tú. El proyecto contó con la participación de reconocidos músicos y vocalistas del género tropical, incluyendo coros de Elvis Crespo, Juan Castro (Tony Tun Tun) y Juan Luis Guzmán. Los créditos de producción incluyen a Freddy Méndez en piano y Luis Corporán en saxofón.\n\nDurante el ciclo promocional de Rompe Corazones, Las Nenas del Swing compartieron escenarios con destacadas figuras del tropical y el merengue, incluyendo a Los Hermanos Rosario, El Gran Combo de Puerto Rico, Grupo Karis, Grupo Manía, Grupo Mambo, Manny Manuel, Tony Tun Tun, Melina León y Gisselle. El grupo también participó en presentaciones asociadas al Desfile Puertorriqueño de Nueva York y se presentó en Puerto Rico, Connecticut, Pensilvania, Massachusetts y la República Dominicana.\n\nRompe Corazones representa el primer crédito comercial de grabación documentado de Leslie Guerra y el inicio de una carrera musical profesional que se expandiría hacia giras internacionales, desarrollo artístico, operaciones discográficas, mercadeo, A&R y gestión del entretenimiento.\n\nHoy, el álbum sigue disponible en las principales plataformas digitales de streaming, preservando un capítulo importante de la música tropical puertorriqueña y sirviendo como la base de la carrera de Leslie en la industria musical.\n\n<strong>Un agradecimiento especial a mis compañeras Melissa, Marie y Kadmara — y a Elvis Crespo, Wilfredo Ortiz, Ramón Rivera, Luis Corporán, Freddie Méndez y Raúl Armando Del Valle por su guía, apoyo y confianza durante los años formativos de este camino.</strong>",
+      "mediaItems": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1780800128/wg1vtldzko9dib2h5stk.mp4",
+          "type": "video",
+          "label": "Chicle_Bomba_Show De las 12_Compressed",
+          "thumb": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780800560/faw6bmwifh1qwhrumyug.png"
+        }
+      ],
+      "mediaLabel": "Chicle_Bomba_Show De las 12_Compressed",
+      "sort_order": 2,
+      "projectType": "",
+      "contractType": "",
+      "collaborators": []
+    }
+  ],
+  "socials": {
+    "tiktok": "https://www.tiktok.com/@officiallyleslieann?_r=1&_t=ZP-96IhluNxFrq",
+    "spotify": "https://open.spotify.com/user/e62qg132bv862sjyfwor3iaq1?si=QzzPJ-q9SjmPfkkhWv9gIA",
+    "website": [],
+    "youtube": "https://youtube.com/@hearmynoise?si=Kl45ERrxrVE5xk37",
+    "facebook": [
+      "https://www.facebook.com/share/1Eb6JyPUTk/?mibextid=wwXIfr"
+    ],
+    "linkedin": "https://www.linkedin.com/in/lesliegofficial",
+    "instagram": [
+      "https://www.instagram.com/officiallyleslie",
+      "https://www.instagram.com/leslieaguerra"
+    ]
+  },
+  "bioImage": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778780770/yrtf3dmkcyxjtbxj5wz0.jpg",
+  "location": "Florida, USA",
+  "shortBio": "Leslie A. Guerra is a vocalist, recording artist, and music industry professional with more than twenty-five years of experience spanning live performance, recording, artist development, label operations, A&R, marketing, and entertainment management.",
+  "taglines": [
+    "International Vocalist",
+    "Recording Artist",
+    "Creative Professional"
+  ],
+  "bioFullES": "Sus créditos artísticos incluyen giras como vocalista de apoyo junto a los íconos del reggaetón Don Omar (2006–2015) y J Álvarez (2015–2020), presentándose ante audiencias en Estados Unidos, América Latina y Europa. También aparece en el lanzamiento en vivo King of Kings: En Directo, grabado durante la gira mundial King of Kings World Tour de Don Omar y publicado por Machete Music.\n\nGuerra inició su carrera discográfica como integrante de Las Nenas del Swing, participando en producciones y grabaciones como Rompe Corazones, Chicle Bomba, Desearía y Me Faltas Tú. A lo largo de su trayectoria en giras y espectáculos, también participó en producciones que incluyeron artistas como Wisin & Yandel, Arcángel, Daddy Yankee, Natti Natasha y Melina León.\n\nMás allá de los escenarios, Guerra ha ocupado posiciones de liderazgo, coordinación y operaciones dentro de la industria del entretenimiento. Se desempeñó como Coordinadora de A&R en Sony Music Latin, brindando apoyo a operaciones ejecutivas de A&R e iniciativas de desarrollo artístico. También coordinó operaciones artísticas y de manejo para Orfanato Music Group y Arrow Management, gestionó logística artística para Adam Torres Concerts y lideró iniciativas de mercadeo y relaciones públicas a través de NV Marketing & Public Relations.\n\nActualmente, Guerra combina su experiencia en interpretación, desarrollo artístico, operaciones, mercadeo y estrategia empresarial a través de proyectos creativos y empresariales, incluyendo PortfolioID, una plataforma profesional diseñada para ayudar a artistas, creadores y profesionales a presentar su trayectoria, logros y portafolio de manera moderna y organizada.",
+  "heroImage": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778791795/cjf97fij5yxobgggvlux.png",
+  "shortBioES": "Leslie A. Guerra es vocalista, artista de grabación y profesional de la industria musical con más de veinticinco años de experiencia que abarcan presentaciones en vivo, grabación, desarrollo artístico, operaciones discográficas, A&R, mercadeo y gestión dentro de la industria del entretenimiento.",
+  "bioImageFit": "contain",
+  "bookingNote": "Serious inquiries only",
+  "credentials": [
+    "ASCAP",
+    "SAG-AFTRA",
+    "SoundExchange"
+  ],
+  "resumeCards": [
+    {
+      "desc": "Bilingual Operations & Artist Relations professional with 20+ years of experience spanning live entertainment, business operations, compliance, and A&R coordination.",
+      "color": "gold",
+      "label": "OPERATIONS & ARTIST RELATIONS",
+      "title": "Operations & Artist Relations Resume",
+      "skills": [
+        "OPERATIONS & WORKFLOW MANAGEMENT",
+        "REGULATORY COMPLIANCE",
+        "ARTIST RELATIONS",
+        "A&R COORDINATION",
+        "MARKETING & CAMPAIGN STRATEGY",
+        "PROJECT COORDINATION",
+        "CASE MANAGEMENT",
+        "BILINGUAL EN/ES"
+      ],
+      "visible": true,
+      "btnLabel": "↓ DOWNLOAD RESUME →",
+      "subtitle": "Digital Campaigns | Live Experiences | A&R",
+      "resumeUrl": "https://porfolioid.com/press/resume-marketing-artist-relations.pdf"
+    }
+  ],
+  "videoLayout": "spotlight",
+  "assetsLayout": "cards",
+  "assetsLocked": true,
+  "availability": "Available for tours & studio sessions",
+  "bioImageZoom": 93,
+  "bookingEmail": "leslieannguerra@gmail.com",
+  "bookingPhone": "+13057424013",
+  "careerLayout": "stacked",
+  "heroImageFit": "cover",
+  "sectionOrder": [
+    "bio",
+    "credits",
+    "photos",
+    "videos",
+    "music",
+    "awards",
+    "assets",
+    "booking"
+  ],
+  "bookingRegion": "",
+  "galleryLayout": "grid",
+  "heroImageZoom": 101,
+  "identityBlock": {
+    "timeline": [],
+    "languages": [],
+    "industryRoles": [],
+    "availabilityBadges": []
+  },
+  "resumeEnabled": true,
+  "bookingEnabled": false,
+  "bookingTagline": "Now booking live performances, studio sessions, and creative collaborations.",
+  "bioImageCropTop": 36,
+  "bioImagePosition": 33,
+  "heroImageCropTop": 51,
+  "bookingCategories": [],
+  "heroImagePosition": 26,
+  "sectionVisibility": {},
+  "bookingAvailability": ""
+}
