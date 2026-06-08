@@ -1911,7 +1911,10 @@ function openCreditModal(i) {
   const hasCampaignLink = !!campaignLink;
   if (totalMedia > 0) {
     if (hasCampaignLink) {
-      unifiedHTML += `<a href="${campaignLink}" target="_blank" style="display:inline-flex;align-items:center;gap:0.75rem;margin:0 0 0.75rem;text-decoration:none;border:1px solid #C9A84C;padding:0.6rem 1.25rem;background:rgba(201,168,76,0.08);transition:background 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.18)'" onmouseout="this.style.background='rgba(201,168,76,0.08)'"><span style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:#F5F3EE;letter-spacing:0.01em">View Campaign</span> <span style="font-family:var(--font-display);font-size:1.3rem;font-style:italic;font-weight:700;color:#C9A84C">Portfolio →</span></a>`;
+      unifiedHTML += `<div style="margin:0 0 0.75rem">
+        <a href="${campaignLink}" target="_blank" style="display:inline-flex;align-items:center;gap:0.75rem;text-decoration:none;border:1px solid #C9A84C;padding:0.6rem 1.25rem;background:rgba(201,168,76,0.08);transition:background 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.18)'" onmouseout="this.style.background='rgba(201,168,76,0.08)'"><span style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:#F5F3EE;letter-spacing:0.01em">View Campaign</span> <span style="font-family:var(--font-display);font-size:1.3rem;font-style:italic;font-weight:700;color:#C9A84C">Portfolio →</span></a>
+        <div style="margin-top:0.35rem"><a href="${campaignLink}" target="_blank" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.05em;color:#C9A84C;text-decoration:underline;opacity:0.8">${campaignLink}</a></div>
+      </div>`;
       unifiedHTML += `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;opacity:0.7;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.75rem">Inside the Campaign <span style="flex:1;height:1px;background:rgba(201,168,76,0.2)"></span></div>`;
     }
     // Layout toggle — only show if there are both videos and photos
