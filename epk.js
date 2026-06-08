@@ -536,7 +536,9 @@ function buildEPK(epk) {
     const t = (a.title||'').toLowerCase();
     if (t.includes('resume')) return 'Professional Resume';
     if (a.desc) {
-      const bits = a.desc.split(/[,—–]/).map(s=>s.trim()).filter(s=>s.length>0);
+      // Strip trailing year since it's shown in the "Issued" line
+      const cleaned = a.desc.replace(/[,\s]*\d{4}\s*$/, '').trim();
+      const bits = cleaned.split(/[,—–]/).map(s=>s.trim()).filter(s=>s.length>0 && !/^\d{4}$/.test(s));
       return bits.slice(0,2).join(' • ');
     }
     return '';
@@ -560,23 +562,23 @@ function buildEPK(epk) {
   // ── CARDS layout ────────────────────────────────────────────────────────────
   let assetsHTML = '';
   if (assetsLayout === 'cards') {
-    assetsHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:rgba(201,168,76,0.1)">';
+    assetsHTML = '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(201,168,76,0.1)">';
     visibleAssets.forEach(function(a, i) {
       const svg = getAssetSVG(a);
       const cat = getCatColor(a.category);
       const sub = getAssetSubtitle(a);
       const year = getAssetYear(a);
       const isFeat = a.featured || i === 0;
-      assetsHTML += '<div style="background:#0E0E0E;padding:1.75rem 1.5rem;display:flex;flex-direction:column;gap:0;position:relative;transition:background 0.2s" onmouseover="this.style.background=\'#141414\'" onmouseout="this.style.background=\'#0E0E0E\'">'
+      assetsHTML += '<div style="background:#0E0E0E;padding:1.75rem 1.5rem;display:flex;flex-direction:column;gap:0;position:relative;transition:background 0.2s;min-height:280px" onmouseover="this.style.background=\'#141414\'" onmouseout="this.style.background=\'#0E0E0E\'">'
         + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.25rem">'
         + (isFeat ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.15rem 0.5rem">⭐ FEATURED</span>' : '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;background:rgba(255,255,255,0.04);color:var(--gray);border:1px solid rgba(255,255,255,0.08);padding:0.15rem 0.5rem">🔒 PRIVATE</span>')
         + (a.verified ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(126,201,126,0.1);color:#7ec97e;border:1px solid rgba(126,201,126,0.25);padding:0.15rem 0.5rem">✓ VERIFIED</span>' : '')
         + '</div>'
         + '<div style="margin-bottom:1rem">' + svg + '</div>'
-        + '<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;display:inline-block;margin-bottom:0.75rem;background:'+cat.bg+';color:'+cat.color+';border:1px solid '+cat.border+'">' + (a.category||'') + '</div>'
+        + '<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.75rem;display:inline-block;margin-bottom:0.75rem;background:'+cat.bg+';color:'+cat.color+';border:1px solid '+cat.border+'">' + (a.category||'') + '</div>'
         + '<div style="font-family:var(--font-display);font-size:1.1rem;color:var(--white);line-height:1.3;margin-bottom:0.4rem">' + a.title + '</div>'
         + (sub ? '<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);line-height:1.5;margin-bottom:1rem">' + sub + (year ? ' • ' + year : '') + '</div>' : '<div style="margin-bottom:1rem"></div>')
-        + '<div style="display:flex;gap:0.5rem;margin-bottom:0.75rem">' + makePreviewBtn(a,i) + makeAccessBtn(a,i) + '</div>'
+        + '<div style="display:flex;gap:0.5rem;margin-top:auto;padding-top:1rem">' + makePreviewBtn(a,i) + makeAccessBtn(a,i) + '</div>'
         + (year ? '<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);opacity:0.6">📅 Issued: ' + year + '</div>' : '')
         + (isFeat ? '<div style="position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold)"></div>' : '')
         + '</div>';
