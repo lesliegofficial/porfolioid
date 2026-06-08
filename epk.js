@@ -1228,7 +1228,7 @@ function expandSection(sectionId) {
 function buildAwardPhotos(photos, style) {
   if (!photos || !photos.length) return '';
   const st = style || 'thumbnails';
-  const minWidth = st === 'thumbnails' ? '100px' : st === 'grid' ? '180px' : '100%';
+  const minWidth = st === 'thumbnails' ? '200px' : st === 'grid' ? '280px' : '100%';
   const cols = st === 'full' ? '1fr' : 'repeat(auto-fill, minmax(' + minWidth + ', 1fr))';
   const rows = photos.map(function(p) {
     const pu = typeof p === 'object' ? p.url : p;
