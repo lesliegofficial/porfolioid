@@ -466,21 +466,78 @@ function buildEPK(epk) {
 
   const categoryIcons = { 'Resume':'📋', 'Press Kit':'📦', 'Tech Rider':'🎛', 'Stage Plot':'🎭', 'Bio':'📝', 'Photo Pack':'📸', 'Contract Template':'📜', 'Certificate':'🏅', 'Other':'📄' };
 
-  const assetsHTML = (epk.assets || [])
-    .filter(a => a.visible !== false && a.category !== 'Resume')
-    .map((a, i) => {
+  const assetsLocked = epk.assetsLocked === true;
+  const assetsLayout = epk.assetsLayout || 'cards';
+  const visibleAssets = (epk.assets || []).filter(a => a.visible !== false && a.category !== 'Resume');
+
+  function makeBtn(a, i) {
+    if (assetsLocked) return '<button onclick="openAssetRequest()" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.3);background:none;color:var(--gold);padding:0.5rem 1rem;white-space:nowrap">🔒 Request Access</button>';
+    if (a.url) return '<a href="' + a.url + '" target="_blank" onclick="trackAssetDownload(' + i + ')" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1rem;white-space:nowrap">' + (a.btnLabel || 'Download →') + '</a>';
+    return '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);opacity:0.4">Coming Soon</span>';
+  }
+
+  let assetsHTML = '';
+
+  if (assetsLayout === 'list') {
+    assetsHTML = '<div style="display:flex;flex-direction:column;border:1px solid rgba(201,168,76,0.12)">';
+    for (let i = 0; i < visibleAssets.length; i++) {
+      const a = visibleAssets[i];
       const icon = categoryIcons[a.category] || '📄';
-      const categoryTag = a.category ? `<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.75rem">${a.category}</div>` : '';
-      const downloadAttr = a.url ? `onclick="trackAssetDownload(${epk.assets.indexOf(a)})"` : '';
-      return `
-    <div class="asset-card">
-      <div class="asset-icon">${icon}</div>
-      ${categoryTag}
-      <div class="asset-title">${a.title}</div>
-      <p class="asset-desc">${a.desc || ''}</p>
-      ${a.url ? `<a href="${a.url}" class="asset-btn" target="_blank" ${downloadAttr}>${a.btnLabel || 'Download →'}</a>` : `<span class="asset-btn" style="opacity:0.4">${a.btnLabel || 'Coming Soon'}</span>`}
-    </div>`;
+      assetsHTML += '<div style="display:flex;align-items:center;gap:1.5rem;padding:1.1rem 1.5rem;border-bottom:1px solid rgba(201,168,76,0.08)">'
+        + '<span style="font-size:1.4rem;flex-shrink:0">' + icon + '</span>'
+        + '<div style="flex:1"><div style="font-family:var(--font-display);font-size:1rem;color:var(--white)">' + a.title + '</div>'
+        + (a.desc ? '<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.2rem">' + a.desc + '</div>' : '') + '</div>'
+        + (a.category ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);background:rgba(255,255,255,0.04);padding:0.2rem 0.6rem;flex-shrink:0">' + a.category + '</span>' : '')
+        + '<div style="flex-shrink:0">' + makeBtn(a, i) + '</div>'
+        + '</div>';
+    }
+    assetsHTML += '</div>';
+
+  } else if (assetsLayout === 'compact') {
+    assetsHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.75rem">';
+    for (let i = 0; i < visibleAssets.length; i++) {
+      const a = visibleAssets[i];
+      const icon = categoryIcons[a.category] || '📄';
+      assetsHTML += '<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.12);padding:1.25rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.5rem">'
+        + '<span style="font-size:1.8rem">' + icon + '</span>'
+        + '<div style="font-family:var(--font-display);font-size:0.85rem;color:var(--white);line-height:1.3">' + a.title + '</div>'
+        + makeBtn(a, i) + '</div>';
+    }
+    assetsHTML += '</div>';
+
+  } else if (assetsLayout === 'table') {
+    assetsHTML = '<table style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:0.6rem">'
+      + '<thead><tr style="border-bottom:1px solid rgba(201,168,76,0.3)">'
+      + '<th style="text-align:left;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">DOCUMENT</th>'
+      + '<th style="text-align:left;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">CATEGORY</th>'
+      + '<th style="text-align:left;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">DESCRIPTION</th>'
+      + '<th style="text-align:right;padding:0.6rem 1rem;color:var(--gold);letter-spacing:0.15em;font-weight:400">ACCESS</th>'
+      + '</tr></thead><tbody>';
+    for (let i = 0; i < visibleAssets.length; i++) {
+      const a = visibleAssets[i];
+      const icon = categoryIcons[a.category] || '📄';
+      assetsHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.04)">'
+        + '<td style="padding:0.85rem 1rem;color:var(--white)">' + icon + ' ' + a.title + '</td>'
+        + '<td style="padding:0.85rem 1rem;color:var(--gray);text-transform:uppercase;font-size:0.5rem">' + (a.category || '—') + '</td>'
+        + '<td style="padding:0.85rem 1rem;color:var(--gray)">' + (a.desc || '—') + '</td>'
+        + '<td style="padding:0.85rem 1rem;text-align:right">' + makeBtn(a, i) + '</td>'
+        + '</tr>';
+    }
+    assetsHTML += '</tbody></table>';
+
+  } else {
+    // Default: cards
+    assetsHTML = visibleAssets.map(function(a, i) {
+      const icon = categoryIcons[a.category] || '📄';
+      return '<div class="asset-card">'
+        + '<div class="asset-icon">' + icon + '</div>'
+        + (a.category ? '<div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.75rem">' + a.category + '</div>' : '')
+        + '<div class="asset-title">' + a.title + '</div>'
+        + '<p class="asset-desc">' + (a.desc || '') + '</p>'
+        + makeBtn(a, i)
+        + '</div>';
     }).join('');
+  }
 
   const bookingEmail = epk.bookingEmail || '';
   const bookingPhone = epk.bookingPhone || '';
