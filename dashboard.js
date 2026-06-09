@@ -1758,6 +1758,35 @@ function addPhoto() {
   } else {
     epk.photos.push(photoData);
   }
+
+  // Apply all saved drafts to epk.photos before saving
+  // This ensures metadata entered in previous edits (stored in localStorage) is preserved
+  epk.photos.forEach((p, idx) => {
+    const draftRaw = localStorage.getItem(`porfolioid_draft_addPhotoForm_${idx}`);
+    if (draftRaw) {
+      try {
+        const draft = JSON.parse(draftRaw);
+        const merged = { ...p };
+        if (draft.newPhotoCaption) merged.caption = draft.newPhotoCaption;
+        if (draft.newPhotoGroup) { merged.group = draft.newPhotoGroup; merged.collection = draft.newPhotoGroup; }
+        if (draft.newPhotoCategory) merged.category = draft.newPhotoCategory;
+        if (draft.newPhotoYear) merged.year = parseInt(draft.newPhotoYear);
+        if (draft.newPhotoDate) merged.date = draft.newPhotoDate;
+        if (draft.newPhotoLocation) merged.location = draft.newPhotoLocation;
+        if (draft.newPhotoPeople) merged.people = draft.newPhotoPeople;
+        if (draft.newPhotoTags) merged.tags = draft.newPhotoTags.split(',').map(t=>t.trim()).filter(Boolean);
+        if (draft.newPhotoDesc) merged.desc = draft.newPhotoDesc;
+        if (draft.newPhotoCareerPhase) merged.careerPhase = draft.newPhotoCareerPhase;
+        if (draft.newPhotoMediaType) merged.mediaType = draft.newPhotoMediaType;
+        if (draft.newPhotoAchievement) merged.achievement = draft.newPhotoAchievement;
+        if (draft.newPhotoCredit) merged.credit = draft.newPhotoCredit;
+        if (draft.newPhotoFeatured !== undefined) merged.featured = draft.newPhotoFeatured;
+        if (draft.newPhotoCollectionCover !== undefined) merged.collectionCover = draft.newPhotoCollectionCover;
+        epk.photos[idx] = merged;
+      } catch(e) { console.error('Draft merge failed for photo', idx, e); }
+    }
+  });
+
   ['newPhotoCaption','newPhotoUrl','newPhotoGroup','newPhotoYear','newPhotoDate','newPhotoLocation','newPhotoPeople','newPhotoTags','newPhotoDesc','newPhotoCredit'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
   ['newPhotoCategory','newPhotoCareerPhase','newPhotoMediaType','newPhotoAchievement'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
   ['newPhotoFeatured','newPhotoCollectionCover'].forEach(id => { const el = document.getElementById(id); if(el) el.checked = false; });
@@ -1765,7 +1794,8 @@ function addPhoto() {
   document.getElementById('photoPositionValue').value = 'center 0%';
   document.getElementById('photoPreviewBox').style.display = 'none';
   toggleAddForm('addPhotoForm');
-  clearDraft('addPhotoForm', editingPhotoIdx >= 0 ? editingPhotoIdx : -1);
+  // Clear all photo drafts after successful save
+  epk.photos.forEach((p, idx) => clearDraft('addPhotoForm', idx));
   const submitBtn = document.getElementById('photoSubmitBtn');
   if (submitBtn) submitBtn.textContent = 'Add Photo';
   renderPhotos(); persistUser(); showSaveBanner();
