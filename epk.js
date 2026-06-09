@@ -101,7 +101,9 @@ function buildEPK(epk) {
 
   // Build featured videos (first 3)
 
-  // Build connect section — Connect Hub v9 (editorial refinement)
+  // Build connect section — Connect Hub v10 (final premium)
+  const CONNECT_BANNER_IMG = 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1778249568/zm8wp2nicwmnzst4gbm2.jpg';
+
   const svgIcons = {
     instagram: '<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
     facebook: '<svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
@@ -119,9 +121,11 @@ function buildEPK(epk) {
   const labels = { instagram:'Instagram', facebook:'Facebook', tiktok:'TikTok', linkedin:'LinkedIn', website:'Website', spotify:'Spotify', appleMusic:'Apple Music', youtube:'YouTube', soundcloud:'SoundCloud', tidal:'Tidal', bandcamp:'Bandcamp' };
   const platformColors = { instagram:'#E1306C', facebook:'#1877F2', tiktok:'#ffffff', linkedin:'#0A66C2', website:'#C9A84C', spotify:'#1DB954', appleMusic:'#FC3C44', youtube:'#FF0000', soundcloud:'#FF5500', tidal:'#aaaaaa', bandcamp:'#1DA0C3' };
   const platformBg = { instagram:'rgba(225,48,108,0.15)', facebook:'rgba(24,119,242,0.15)', tiktok:'rgba(255,255,255,0.08)', linkedin:'rgba(10,102,194,0.15)', website:'rgba(201,168,76,0.15)', spotify:'rgba(29,185,84,0.15)', appleMusic:'rgba(252,60,68,0.15)', youtube:'rgba(255,0,0,0.12)', soundcloud:'rgba(255,85,0,0.15)', tidal:'rgba(255,255,255,0.06)', bandcamp:'rgba(29,160,195,0.15)' };
-  // Editorial descriptions — personality over category labels
-  const platformDesc = { instagram:'Official Profile', facebook:'Community Updates', tiktok:'Short Form Content', linkedin:'Professional Network', website:'Official Website', spotify:'Music Catalog', appleMusic:'Streaming Platform', youtube:'Video Content', soundcloud:'Audio Archive', tidal:'Hi-Fi Streaming', bandcamp:'Independent Music', booking:'Work With Me' };
-  const featuredActions = { website:'Visit Website', spotify:'Listen Now', youtube:'Watch Now', instagram:'Follow Me', appleMusic:'Listen Now', soundcloud:'Listen Now', tidal:'Listen Now', bandcamp:'Listen Now', facebook:'Follow Me', tiktok:'Follow Me', linkedin:'Connect', booking:'Work With Me' };
+  // Category labels per reference image
+  const platformCat = { instagram:'Social', facebook:'Social', tiktok:'Social', linkedin:'Professional', website:'Website', spotify:'Music', appleMusic:'Music', youtube:'Video', soundcloud:'Music', tidal:'Music', bandcamp:'Music', booking:'Booking' };
+  // Editorial descriptions
+  const platformDesc = { instagram:'Official Profile', facebook:'Community Updates', tiktok:'Short Form Content', linkedin:'Professional Network', website:'View Portfolio', spotify:'Listen to Official Releases', appleMusic:'Streaming Platform', youtube:'Watch Live Performances', soundcloud:'Audio Archive', tidal:'Hi-Fi Streaming', bandcamp:'Independent Music' };
+  const featuredDescs = { website:'View Portfolio', spotify:'Listen to Official Releases', youtube:'Watch Live Performances', instagram:'Behind The Scenes Content', booking:'Work With Me' };
 
   const s = epk.socials || {};
   const showMetrics = s.showMetrics === true || s.showMetrics === 'true';
@@ -147,30 +151,22 @@ function buildEPK(epk) {
   const hasAnyLinks = hasSocials || hasMusic || hasValue(s.website);
   const getSvgPath = (key) => svgIcons[key] ? svgIcons[key].replace('<svg viewBox="0 0 24 24">','').replace('</svg>','') : '';
 
-  // ── HERO PANEL ──
-  const portraitImg = epk.bioImage || epk.heroImage || '';
-  const personName = epk.name || '';
-  const personRole = (epk.taglines || []).slice(0,2).join(' • ') || '';
-
+  // ── HERO (no portrait — removed per spec) ──
   const heroPanelHTML = `
     <div class="ch-hero">
-      <div class="ch-hero-copy">
-        <p class="ch-eyebrow">Connect</p>
-        <h2 class="ch-hero-title">Connect <em>With Me</em></h2>
-        <p class="ch-hero-sub">Explore my official platforms, music channels, social media profiles, and booking information.</p>
-        <div class="ch-hero-btns">
-          <a href="#booking" class="ch-btn-gold">Booking &amp; Contact</a>
-          <a href="#booking" class="ch-btn-outline">Save to Contacts</a>
-        </div>
-      </div>
-      <div class="ch-portrait-wrap">
-        ${portraitImg ? `<img class="ch-portrait" src="${portraitImg}" alt="${personName}">` : ''}
-        ${personName ? `<p class="ch-person-name">${personName}</p>` : ''}
-        ${personRole ? `<p class="ch-person-role">${personRole}</p>` : ''}
+      <p class="ch-eyebrow">Connect</p>
+      <h2 class="ch-hero-title">Connect <em>With Me</em></h2>
+      <p class="ch-hero-sub">Explore my official platforms, music channels, social media profiles, and booking information.</p>
+      <div class="ch-hero-btns">
+        <a href="#booking" class="ch-btn-gold">Booking &amp; Contact →</a>
+        <a href="#booking" class="ch-btn-outline">
+          <svg viewBox="0 0 24 24" style="fill:currentColor;width:13px;height:13px;margin-right:6px"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+          Save to Contacts
+        </a>
       </div>
     </div>`;
 
-  // ── FEATURED CARDS — no category labels, just name + action ──
+  // ── FEATURED CARDS — category label + name + description + arrow (per reference) ──
   const websiteUrl = getFirstUrl(s.website);
   const buildFeatCard = (key, nameOverride, isPrimary) => {
     const isBooking = key === 'booking';
@@ -180,34 +176,41 @@ function buildEPK(epk) {
     if (!url && !isBooking) return '';
     const color = platformColors[key] || '#C9A84C';
     const bg = platformBg[key] || 'rgba(201,168,76,0.15)';
+    const cat = platformCat[key] || '';
     const name = nameOverride || labels[key] || key;
-    const action = featuredActions[key] || 'Visit';
+    const desc = featuredDescs[key] || platformDesc[key] || '';
     const metric = s[key+'_followers'] || '';
     return `<a href="${url}" class="ch-card${isPrimary?' ch-card--primary':''}" target="${isBooking?'_self':'_blank'}" rel="noopener">
+      <small class="ch-card-cat">${cat}</small>
       <span class="ch-card-icon" style="background:${bg}">
-        <svg viewBox="0 0 24 24" style="fill:${color};width:26px;height:26px">${getSvgPath(key)}</svg>
+        <svg viewBox="0 0 24 24" style="fill:${color};width:32px;height:32px">${getSvgPath(key)}</svg>
       </span>
       <span class="ch-card-name">${name}</span>
-      <span class="ch-card-action">${action} →</span>
+      <span class="ch-card-desc">${desc}</span>
       ${(showMetrics && metric) ? `<span class="ch-metric">${metric}</span>` : ''}
+      <span class="ch-card-arrow">→</span>
     </a>`;
   };
 
   const featuredHTML = [
     websiteUrl
       ? `<a href="${websiteUrl}" class="ch-card ch-card--primary" target="_blank" rel="noopener">
+          <small class="ch-card-cat">Website</small>
           <span class="ch-card-icon" style="background:rgba(201,168,76,0.15)">
-            <svg viewBox="0 0 24 24" style="fill:#C9A84C;width:26px;height:26px">${getSvgPath('website')}</svg>
+            <svg viewBox="0 0 24 24" style="fill:#C9A84C;width:32px;height:32px">${getSvgPath('website')}</svg>
           </span>
-          <span class="ch-card-name">${getDomain(websiteUrl)}</span>
-          <span class="ch-card-action">Visit Website →</span>
+          <span class="ch-card-name">Official Website</span>
+          <span class="ch-card-desc">View Portfolio</span>
+          <span class="ch-card-arrow">→</span>
         </a>`
       : `<a class="ch-card ch-card--primary ch-card--empty">
+          <small class="ch-card-cat">Website</small>
           <span class="ch-card-icon" style="background:rgba(201,168,76,0.08)">
-            <svg viewBox="0 0 24 24" style="fill:rgba(201,168,76,0.4);width:26px;height:26px">${getSvgPath('website')}</svg>
+            <svg viewBox="0 0 24 24" style="fill:rgba(201,168,76,0.35);width:32px;height:32px">${getSvgPath('website')}</svg>
           </span>
-          <span class="ch-card-name" style="opacity:0.35">Official Website</span>
-          <span class="ch-card-action" style="opacity:0.25">Add URL in dashboard</span>
+          <span class="ch-card-name" style="opacity:0.3">Official Website</span>
+          <span class="ch-card-desc" style="opacity:0.2">Add URL in dashboard</span>
+          <span class="ch-card-arrow" style="opacity:0.15">→</span>
         </a>`,
     buildFeatCard('spotify','Spotify', false),
     buildFeatCard('youtube','YouTube', false),
@@ -215,14 +218,13 @@ function buildEPK(epk) {
     buildFeatCard('booking','Booking &amp; Contact', false),
   ].filter(Boolean).join('');
 
-  // ── PLATFORM ROWS — editorial descriptions ──
+  // ── PLATFORM ROWS — no badges per spec ──
   const buildPlatRow = (key, urls) => urls.map((url, i) => {
     const color = platformColors[key] || '#C9A84C';
     const bg = platformBg[key] || 'rgba(255,255,255,0.06)';
     const suffix = urls.length > 1 ? ` ${i+1}` : '';
-    const desc = platformDesc[key] || getHandle(url, key);
+    const desc = platformDesc[key] || getDomain(url);
     const metric = i===0 ? (s[key+'_followers']||'') : '';
-    const badge = i===0 ? (key==='linkedin' ? 'Verified' : 'Official') : '';
     return `<a href="${url}" class="ch-row" target="_blank" rel="noopener" style="--ch-pc:${color}">
       <span class="ch-row-icon" style="background:${bg}">
         <svg viewBox="0 0 24 24" style="fill:${color};width:20px;height:20px">${getSvgPath(key)}</svg>
@@ -232,7 +234,6 @@ function buildEPK(epk) {
         <span class="ch-row-desc">${desc}</span>
         ${(showMetrics && metric) ? `<span class="ch-metric">${metric}</span>` : ''}
       </span>
-      ${badge ? `<span class="ch-badge">${badge}</span>` : ''}
       <span class="ch-row-arrow">→</span>
     </a>`;
   }).join('');
@@ -247,27 +248,29 @@ function buildEPK(epk) {
   const socialRowsHTML = buildPlatRows(socialKeys);
   const musicRowsHTML = buildPlatRows(musicKeys);
 
-  // ── STAY CONNECTED — compact CTA under music column ──
-  const bannerImg = epk.heroImage || epk.bioImage || '';
-  const allBannerKeys = [...socialKeys,'spotify','youtube'].filter(k => hasValue(s[k]));
-  const stayHTML = `
-    <div class="ch-stay">
-      ${bannerImg ? `<div class="ch-stay-img-wrap"><img src="${bannerImg}" alt="${personName}" class="ch-stay-img"></div>` : ''}
-      <div class="ch-stay-body">
-        <p class="ch-eyebrow">Stay Connected</p>
-        <h4 class="ch-stay-title">New Music. Updates.<br><em>Exclusive Content.</em></h4>
-        <p class="ch-stay-sub">Follow me across my official platforms for releases, performances, projects, and behind-the-scenes content.</p>
-        <div class="ch-stay-icons">
-          ${allBannerKeys.map(k => {
+  // ── FOLLOW EVERYWHERE — thin strip ──
+  const allFollowKeys = [...socialKeys,'spotify','youtube'].filter(k => hasValue(s[k]));
+  const followStripHTML = allFollowKeys.length ? `
+    <div class="ch-follow-strip">
+      <div class="ch-follow-inner">
+        <svg viewBox="0 0 24 24" style="fill:rgba(201,168,76,0.6);width:18px;height:18px;flex-shrink:0"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        <span class="ch-follow-label">Follow Everywhere</span>
+        <span class="ch-follow-divider">|</span>
+        <div class="ch-follow-icons">
+          ${allFollowKeys.map(k => {
             const url = getFirstUrl(s[k]);
             const color = platformColors[k];
-            return `<a href="${url}" target="_blank" rel="noopener" class="ch-stay-icon" title="${labels[k]}">
+            return `<a href="${url}" target="_blank" rel="noopener" class="ch-follow-icon" title="${labels[k]}">
               <svg viewBox="0 0 24 24" style="fill:${color};width:18px;height:18px">${getSvgPath(k)}</svg>
             </a>`;
           }).join('')}
         </div>
       </div>
-    </div>`;
+      <p class="ch-follow-footer">
+        <svg viewBox="0 0 24 24" style="fill:rgba(201,168,76,0.5);width:12px;height:12px;margin-right:4px"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+        All platforms are official.
+      </p>
+    </div>` : '';
 
   const connectSectionHTML = hasAnyLinks ? `
     <div class="connect-hub">
@@ -284,9 +287,9 @@ function buildEPK(epk) {
         ${hasMusic ? `<div class="ch-col">
           <p class="ch-section-label">Music Platforms</p>
           <div class="ch-rows">${musicRowsHTML}</div>
-          ${stayHTML}
         </div>` : ''}
       </div>
+      ${followStripHTML}
     </div>
     <div class="divider"></div>` : '';
 
