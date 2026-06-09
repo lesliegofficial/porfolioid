@@ -1152,11 +1152,18 @@ function buildEPK(epk) {
           <div class="collapsible-icon">◎</div>
           <div>
             <div class="collapsible-header-label">Connect</div>
-            <div class="collapsible-header-title">Find Me Online</div>
-            <div class="collapsible-header-meta">Social & music platforms</div>
+            <div class="collapsible-header-title">My Digital Presence</div>
+            <div class="collapsible-header-meta">Social Platforms &bull; Music &bull; Video &bull; Recommendations &bull; Booking</div>
+            <div class="ch-preview-icons">
+              <span class="ch-preview-dot" style="background:#E1306C" title="Instagram"></span>
+              <span class="ch-preview-dot" style="background:#1DB954" title="Spotify"></span>
+              <span class="ch-preview-dot" style="background:#FF0000" title="YouTube"></span>
+              <span class="ch-preview-dot" style="background:#232F3E" title="Amazon"></span>
+              <span class="ch-preview-dot" style="background:#C9A84C" title="Booking"></span>
+            </div>
           </div>
         </div>
-        <div class="collapsible-toggle"><span class="toggle-label">Expand</span> ＋</div>
+        <div class="collapsible-toggle"><span class="toggle-label">Explore</span> →</div>
       </div>
       <div class="collapsible-body" id="connectBody">
         <div class="collapsible-body-inner">
@@ -2371,7 +2378,10 @@ function toggleSection(bodyId, header) {
   body.classList.toggle('open', !isOpen);
   const toggle = header.querySelector('.collapsible-toggle');
   const label = header.querySelector('.toggle-label');
-  if (toggle) toggle.innerHTML = isOpen ? '<span class="toggle-label">Expand</span> ＋' : '<span class="toggle-label">Collapse</span> －';
+  const isConnect = bodyId === 'connectBody';
+  if (toggle) toggle.innerHTML = isOpen
+    ? (isConnect ? '<span class="toggle-label">Explore</span> →' : '<span class="toggle-label">Expand</span> ＋')
+    : '<span class="toggle-label">Collapse</span> －';
 }
 
 function expandSection(sectionId) {
