@@ -101,9 +101,7 @@ function buildEPK(epk) {
 
   // Build featured videos (first 3)
 
-  // Build connect section — Connect Hub v10 (final premium)
-  const CONNECT_BANNER_IMG = 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1778249568/zm8wp2nicwmnzst4gbm2.jpg';
-
+  // Build connect section — Connect Hub v12 (reference exact)
   const svgIcons = {
     instagram: '<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
     facebook: '<svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
@@ -117,78 +115,152 @@ function buildEPK(epk) {
     tidal: '<svg viewBox="0 0 24 24"><path d="M12.012 3.992L8.008 7.996 4.004 3.992 0 7.996l4.004 4.004 4.004-4.004 4.004 4.004 4.004-4.004zM8.008 16.004l4.004-4.004 4.004 4.004L20.02 12l-4.004-4.004-4.004 4.004-4.004-4.004L4.004 12z"/></svg>',
     bandcamp: '<svg viewBox="0 0 24 24"><path d="M0 18.75l7.437-13.5H24l-7.438 13.5z"/></svg>',
     booking: '<svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>',
+    threads: '<svg viewBox="0 0 24 24"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.5 12.068c0-3.52.85-6.374 2.495-8.423C5.845 1.341 8.598.16 12.18.136h.014c3.582.024 6.335 1.205 8.185 3.509C22.024 5.694 22.5 8.548 22.5 12.068c0 3.52-.476 6.374-2.121 8.423-1.85 2.304-4.603 3.485-8.185 3.509zM12.18 2.127c-3.046.02-5.358 1.01-6.877 2.943-1.375 1.754-2.076 4.26-2.076 7.448 0 3.188.701 5.694 2.076 7.448 1.519 1.933 3.831 2.923 6.877 2.943 3.046-.02 5.358-1.01 6.877-2.943 1.375-1.754 2.076-4.26 2.076-7.448 0-3.188-.701-5.694-2.076-7.448-1.519-1.933-3.831-2.923-6.877-2.943zm.64 13.29c-1.86 0-3.198-.87-3.198-2.1 0-.98.765-1.74 2.228-2.04l1.718-.36c.47-.1.67-.32.67-.64 0-.48-.44-.82-1.11-.82-.7 0-1.18.34-1.33.93l-1.81-.39c.35-1.43 1.63-2.34 3.22-2.34 1.76 0 2.93.9 2.93 2.3v3.18c0 .46.02.82.06 1.1h-1.73c-.03-.2-.04-.44-.04-.74-.36.56-1.05.92-1.62.92zm.45-1.29c.76 0 1.4-.54 1.4-1.26v-.5l-1.46.31c-.64.14-.94.42-.94.78 0 .41.42.67 1 .67z"/></svg>',
+    x: '<svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
+    snapchat: '<svg viewBox="0 0 24 24"><path d="M12.065.001c1.587.007 6.585.38 8.944 5.233.916 1.877.697 5.049.536 7.485l-.01.161c-.01.109.066.232.168.296.52.324 1.63.69 3.255.972.107.019.146.1.112.184-.162.388-.782 1.26-2.472 1.535-.104.016-.133.091-.093.198.073.198.15.546.176.927.025.346-.07.557-.372.557a2.43 2.43 0 00-.617.09c-.59.175-1.195.768-2.13 1.329-1.01.61-2.15.82-3.238.573-.578-.133-1.092-.432-1.573-.715-.43-.254-.829-.49-1.205-.547a1.45 1.45 0 00-.236-.019c-.079 0-.157.006-.234.019-.378.057-.777.293-1.206.547-.48.283-.995.582-1.572.715-1.089.247-2.229.037-3.238-.573-.936-.561-1.54-1.154-2.13-1.329a2.43 2.43 0 00-.617-.09c-.303 0-.397-.211-.372-.557.026-.381.103-.729.176-.927.04-.107.011-.182-.093-.198C.782 15.418.162 14.546 0 14.158c-.034-.084.005-.165.112-.184 1.625-.282 2.735-.648 3.255-.972.102-.064.178-.187.168-.296l-.01-.161c-.16-2.436-.38-5.608.536-7.485C6.41.381 11.408.008 12.065.001z"/></svg>',
+    pinterest: '<svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>',
+    reddit: '<svg viewBox="0 0 24 24"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>',
+    discord: '<svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.08.114 18.1.133 18.113a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>',
+    twitch: '<svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>',
+    bluesky: '<svg viewBox="0 0 24 24"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.299-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/></svg>',
+    mastodon: '<svg viewBox="0 0 24 24"><path d="M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.02-.041.053.053 0 0 0-.046-.01 20.282 20.282 0 0 1-4.709.545c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.167-3.63-.024-5.545zm-3.748 9.195h-2.561V8.29c0-1.309-.55-1.976-1.67-1.976-1.23 0-1.846.79-1.846 2.35v3.403h-2.546V8.663c0-1.56-.617-2.35-1.848-2.35-1.112 0-1.668.668-1.67 1.977v6.218H4.822V8.102c0-1.31.337-2.35 1.011-3.12.696-.77 1.608-1.164 2.74-1.164 1.311 0 2.302.5 2.962 1.498l.638 1.06.638-1.06c.66-.999 1.65-1.498 2.96-1.498 1.13 0 2.043.395 2.74 1.164.675.77 1.012 1.81 1.012 3.12z"/></svg>',
+    telegram: '<svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>',
+    wechat: '<svg viewBox="0 0 24 24"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-7.064-6.088v.006zm-2.772 2.Collections.25c.535 0 .969.44.969.983a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.544.434-.983.969-.983zm5.505 0c.535 0 .969.44.969.983a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.544.434-.983.969-.983z"/></svg>',
+    tumblr: '<svg viewBox="0 0 24 24"><path d="M14.563 24c-5.093 0-7.031-3.756-7.031-6.411V9.747H5.116V6.648c3.63-1.313 4.512-4.596 4.71-6.469C9.84.051 9.941 0 9.96 0h3.Controllers.156v6.248h4.027v3.499h-4.048v7.441c.03 1.209.684 2.136 2.523 2.136a4.685 4.685 0 0 0 1.523-.228v3.396a9.039 9.039 0 0 1-2.578.508z"/></svg>',
+    clubhouse: '<svg viewBox="0 0 24 24"><path d="M1.191 6.32c1.956-5.619 9.766-8.003 13.468-5.817 3.702 2.186 4.047 8.047 4.047 8.047s1.735-.576 2.56.231c.825.806.765 2.79-.346 4.284-1.111 1.493-2.618 1.697-2.618 1.697s-1.072 4.438-4.47 6.57c-3.397 2.132-7.81.892-9.307-.857-1.498-1.749-1.128-5.296-1.128-5.296S.482 13.756.38 11.7c-.103-2.056.855-4.762.811-5.38zm9.434 11.39c3.267 0 5.914-2.909 5.914-6.498 0-3.588-2.647-6.497-5.914-6.497-3.267 0-5.914 2.909-5.914 6.497s2.647 6.497 5.914 6.497z"/></svg>',
+    dribbble: '<svg viewBox="0 0 24 24"><path d="M12 24C5.385 24 0 18.615 0 12S5.385 0 12 0s12 5.385 12 12-5.385 12-12 12zm10.12-10.358c-.35-.11-3.17-.953-6.384-.438 1.34 3.684 1.887 6.684 1.992 7.308 2.3-1.555 3.936-4.02 4.395-6.87zm-6.115 7.808c-.153-.9-.75-4.032-2.19-7.77l-.066.02c-5.79 2.015-7.86 6.025-8.048 6.409 1.73 1.35 3.92 2.166 6.298 2.166 1.42 0 2.77-.29 4.006-.825zm-11.62-2.estimating c.232-.4 3.045-5.055 8.332-6.765.135-.045.27-.084.405-.12-.26-.585-.54-1.167-.832-1.74C7.17 11.775 2.206 11.71 1.756 11.7l-.004.312c0 2.633.998 5.037 2.634 6.838zm-2.42-8.955c.46.008 4.683.026 9.477-1.248-1.698-3.018-3.53-5.558-3.8-5.928-2.868 1.35-5.01 3.99-5.676 7.176zM9.6 2.052c.282.38 2.145 2.914 3.822 6 3.645-1.365 5.19-3.44 5.373-3.702-1.81-1.61-4.19-2.586-6.795-2.586-.477 0-.945.04-1.4.113zm8.864 13.28c.04-.01.08-.02.12-.02-1.5-3.855-2.048-6.864-2.15-7.476-.43.07-.865.11-1.3.11-.36 0-.712-.024-1.06-.065-.045.012-.09.025-.13.04 1.44 3.756 1.982 6.778 2.115 7.395.84-.073 1.67-.18 2.405-.33z"/></svg>',
+    strava: '<svg viewBox="0 0 24 24"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>',
+    letterboxd: '<svg viewBox="0 0 24 24"><path d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12S18.627 0 12 0 0 5.373 0 12zm9.623 4.5L12 8.997l2.377 7.503H9.623zm-2.218 0H4l1.944-2.615.716.483.744-2.368-2.432-1.633h3.527L9.448 7.5 12 16.5l2.552-9h3.45l-1.943 3.367.744 2.368.716-.483L19.461 16.5h-3.405L12 5.985 8.395 16.5H7.405z"/></svg>',
+    nextdoor: '<svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.389 16.99c-.88.042-1.755-.124-2.565-.485L7.91 17.5c-.186.096-.4-.062-.37-.27l.395-2.47a5.57 5.57 0 0 1-1.468-4.437c.266-2.694 2.494-4.864 5.193-5.063a5.57 5.57 0 0 1 5.936 5.539c0 2.957-2.296 5.382-5.184 5.49z"/></svg>',
+    quora: '<svg viewBox="0 0 24 24"><path d="M12.555 18.858c-.598-1.393-1.309-2.832-2.835-2.832-.301 0-.631.06-.93.195l-.508-1.125c.69-.464 1.695-.763 2.727-.763 2.064 0 3.296 1.035 4.161 2.832h.043a4.574 4.574 0 0 0 .547-2.181c0-2.573-1.884-4.53-4.756-4.53-2.87 0-4.757 1.957-4.757 4.53 0 2.574 1.887 4.531 4.757 4.531.507 0 .993-.064 1.551-.658zM23.5 15.144c0 4.93-4.552 8.856-10.254 8.856h-.492C7.052 24 2.5 20.074 2.5 15.144c0-4.931 4.552-8.884 10.254-8.884.182 0 .358.008.538.016-1.069.8-1.783 2.104-1.783 3.614 0 2.553 1.906 4.635 4.267 4.635.338 0 .671-.044.984-.128-.6 1.254-1.602 2.202-2.784 2.597-.38.129-.552.45-.406.748l.367.773c.128.268.461.374.745.246 2.822-1.255 4.818-4.005 4.818-7.12 0-.155-.008-.308-.02-.46 2.686 1.554 4.02 4.038 4.02 6.963z"/></svg>',
   };
 
-  const labels = { instagram:'Instagram', facebook:'Facebook', tiktok:'TikTok', linkedin:'LinkedIn', website:'Website', spotify:'Spotify', appleMusic:'Apple Music', youtube:'YouTube', soundcloud:'SoundCloud', tidal:'Tidal', bandcamp:'Bandcamp' };
-  const platformColors = { instagram:'#E1306C', facebook:'#1877F2', tiktok:'#010101', linkedin:'#0A66C2', website:'#C9A84C', spotify:'#1DB954', appleMusic:'#FC3C44', youtube:'#FF0000', soundcloud:'#FF5500', tidal:'#aaaaaa', bandcamp:'#1DA0C3', booking:'#C9A84C' };
-  const platformBg = { instagram:'rgba(225,48,108,0.15)', facebook:'rgba(24,119,242,0.15)', tiktok:'rgba(255,255,255,0.08)', linkedin:'rgba(10,102,194,0.15)', website:'rgba(201,168,76,0.15)', spotify:'rgba(29,185,84,0.15)', appleMusic:'rgba(252,60,68,0.15)', youtube:'rgba(255,0,0,0.12)', soundcloud:'rgba(255,85,0,0.15)', tidal:'rgba(255,255,255,0.06)', bandcamp:'rgba(29,160,195,0.15)' };
-  // Category labels per reference image
-  const platformCat = { instagram:'Social', facebook:'Social', tiktok:'Social', linkedin:'Professional', website:'Website', spotify:'Music', appleMusic:'Music', youtube:'Video', soundcloud:'Music', tidal:'Music', bandcamp:'Music', booking:'Booking' };
-  // Editorial descriptions
-  const platformDesc = { instagram:'Official Profile', facebook:'Community Updates', tiktok:'Short Form Content', linkedin:'Professional Network', website:'View Portfolio', spotify:'Listen to Official Releases', appleMusic:'Streaming Platform', youtube:'Watch Live Performances', soundcloud:'Audio Archive', tidal:'Hi-Fi Streaming', bandcamp:'Independent Music' };
-  const featuredDescs = { website:'View Portfolio', spotify:'Listen to Official Releases', youtube:'Watch Live Performances', instagram:'Behind The Scenes Content', booking:'Work With Me' };
+  const labels = {
+    instagram:'Instagram', facebook:'Facebook', tiktok:'TikTok', linkedin:'LinkedIn',
+    website:'Website', spotify:'Spotify', appleMusic:'Apple Music', youtube:'YouTube',
+    soundcloud:'SoundCloud', tidal:'Tidal', bandcamp:'Bandcamp', booking:'Booking & Contact',
+    threads:'Threads', x:'X (Twitter)', snapchat:'Snapchat', pinterest:'Pinterest',
+    reddit:'Reddit', discord:'Discord', twitch:'Twitch', bluesky:'Bluesky',
+    mastodon:'Mastodon', telegram:'Telegram', wechat:'WeChat', tumblr:'Tumblr',
+    clubhouse:'Clubhouse', dribbble:'Dribbble', strava:'Strava', letterboxd:'Letterboxd',
+    nextdoor:'Nextdoor', quora:'Quora',
+  };
+
+  const platformColors = {
+    instagram:'#E1306C', facebook:'#1877F2', tiktok:'#010101', linkedin:'#0A66C2',
+    website:'#C9A84C', spotify:'#1DB954', appleMusic:'#FC3C44', youtube:'#FF0000',
+    soundcloud:'#FF5500', tidal:'#000000', bandcamp:'#1DA0C3', booking:'#C9A84C',
+    threads:'#000000', x:'#000000', snapchat:'#FFFC00', pinterest:'#E60023',
+    reddit:'#FF4500', discord:'#5865F2', twitch:'#9146FF', bluesky:'#0085FF',
+    mastodon:'#6364FF', telegram:'#26A5E4', wechat:'#07C160', tumblr:'#35465C',
+    clubhouse:'#F3EFE7', dribbble:'#EA4C89', strava:'#FC4C02', letterboxd:'#00C030',
+    nextdoor:'#8DC63F', quora:'#B92B27',
+  };
+
+  const platformBg = {
+    instagram:'rgba(225,48,108,0.15)', facebook:'rgba(24,119,242,0.15)',
+    tiktok:'rgba(1,1,1,0.9)', linkedin:'rgba(10,102,194,0.15)',
+    website:'rgba(201,168,76,0.15)', spotify:'rgba(29,185,84,0.15)',
+    appleMusic:'rgba(252,60,68,0.15)', youtube:'rgba(255,0,0,0.12)',
+    soundcloud:'rgba(255,85,0,0.15)', tidal:'rgba(0,0,0,0.8)',
+    bandcamp:'rgba(29,160,195,0.15)', booking:'rgba(201,168,76,0.15)',
+    threads:'rgba(0,0,0,0.85)', x:'rgba(0,0,0,0.85)',
+    snapchat:'rgba(255,252,0,0.15)', pinterest:'rgba(230,0,35,0.15)',
+    reddit:'rgba(255,69,0,0.15)', discord:'rgba(88,101,242,0.15)',
+    twitch:'rgba(145,70,255,0.15)', bluesky:'rgba(0,133,255,0.15)',
+    mastodon:'rgba(99,100,255,0.15)', telegram:'rgba(38,165,228,0.15)',
+    wechat:'rgba(7,193,96,0.15)', tumblr:'rgba(53,70,92,0.8)',
+    clubhouse:'rgba(243,239,231,0.15)', dribbble:'rgba(234,76,137,0.15)',
+    strava:'rgba(252,76,2,0.15)', letterboxd:'rgba(0,192,48,0.15)',
+    nextdoor:'rgba(141,198,63,0.15)', quora:'rgba(185,43,39,0.15)',
+  };
+
+  const platformCat = {
+    instagram:'Social', facebook:'Social', tiktok:'Social', linkedin:'Professional',
+    website:'Website', spotify:'Music', appleMusic:'Music', youtube:'Video',
+    soundcloud:'Music', tidal:'Music', bandcamp:'Music', booking:'Booking',
+    threads:'Social', x:'Social', snapchat:'Social', pinterest:'Social',
+    reddit:'Social', discord:'Community', twitch:'Live', bluesky:'Social',
+    mastodon:'Social', telegram:'Messaging', wechat:'Messaging', tumblr:'Social',
+    clubhouse:'Audio', dribbble:'Design', strava:'Fitness', letterboxd:'Film',
+    nextdoor:'Local', quora:'Knowledge',
+  };
+
+  const platformDesc = {
+    instagram:'Official Profile', facebook:'Community Updates', tiktok:'Short Form Content',
+    linkedin:'Professional Network', website:'View Portfolio', spotify:'Listen to Official Releases',
+    appleMusic:'Streaming Platform', youtube:'Watch Live Performances', soundcloud:'Audio Archive',
+    tidal:'Hi-Fi Streaming', bandcamp:'Independent Music', booking:'Work With Me',
+    threads:'Threads Profile', x:'X Profile', snapchat:'Snapchat Stories',
+    pinterest:'Pinterest Boards', reddit:'Reddit Profile', discord:'Discord Community',
+    twitch:'Live Streams', bluesky:'Bluesky Profile', mastodon:'Mastodon Profile',
+    telegram:'Telegram Channel', wechat:'WeChat Account', tumblr:'Tumblr Blog',
+    clubhouse:'Clubhouse Rooms', dribbble:'Design Portfolio', strava:'Activity Profile',
+    letterboxd:'Film Journal', nextdoor:'Neighborhood', quora:'Answers & Insights',
+  };
+
+  const featuredDescs = {
+    website:'View Portfolio', spotify:'Listen to Official Releases',
+    youtube:'Watch Live Performances', instagram:'Behind The Scenes Content',
+    booking:'Work With Me',
+  };
 
   const s = epk.socials || {};
   const showMetrics = s.showMetrics === true || s.showMetrics === 'true';
   const hasValue = (v) => Array.isArray(v) ? v.some(Boolean) : !!v;
   const getFirstUrl = (v) => Array.isArray(v) ? (v.find(Boolean)||'') : (v||'');
   const getDomain = (url) => { try { return new URL(url).hostname.replace('www.',''); } catch { return url; } };
-  const getHandle = (url, key) => {
-    try {
-      const p = new URL(url).pathname.replace(/^\/|\/$/g,'');
-      if (!p) return getDomain(url);
-      const parts = p.split('/').filter(Boolean);
-      const h = parts[parts.length-1];
-      if (key==='instagram'||key==='tiktok') return '@'+h;
-      if (key==='linkedin') return '/'+parts.join('/');
-      return '/'+h;
-    } catch { return getDomain(url); }
-  };
 
-  const socialKeys = ['instagram','tiktok','facebook','linkedin'];
+  const socialKeys = ['instagram','tiktok','facebook','linkedin','threads','x','snapchat','pinterest','reddit','discord','twitch','bluesky','mastodon','telegram','wechat','tumblr','clubhouse','dribbble','strava','letterboxd','nextdoor','quora'];
   const musicKeys = ['spotify','appleMusic','youtube','soundcloud','tidal','bandcamp'];
   const hasSocials = socialKeys.some(k => hasValue(s[k]));
   const hasMusic = musicKeys.some(k => hasValue(s[k]));
   const hasAnyLinks = hasSocials || hasMusic || hasValue(s.website);
   const getSvgPath = (key) => svgIcons[key] ? svgIcons[key].replace('<svg viewBox="0 0 24 24">','').replace('</svg>','') : '';
 
-  // ── HERO (no portrait — removed per spec) ──
+  // ── HERO — two-column, typography-driven ──
   const heroPanelHTML = `
     <div class="ch-hero">
-      <p class="ch-eyebrow">Connect</p>
-      <h2 class="ch-hero-title">Connect <em>With Me</em></h2>
-      <p class="ch-hero-sub">Explore my official platforms, music channels, social media profiles, and booking information.</p>
-      <div class="ch-hero-btns">
-        <a href="#booking" class="ch-btn-gold">Booking &amp; Contact →</a>
-        <a href="#booking" class="ch-btn-outline">
-          <svg viewBox="0 0 24 24" style="fill:currentColor;width:13px;height:13px;margin-right:6px"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
-          Save to Contacts
-        </a>
+      <div class="ch-hero-left">
+        <p class="ch-eyebrow">Connect <span class="ch-eyebrow-line"></span></p>
+        <h2 class="ch-hero-title">Connect <em>With Me</em></h2>
+      </div>
+      <div class="ch-hero-divider"></div>
+      <div class="ch-hero-right">
+        <p class="ch-hero-sub">Explore my official platforms, music channels, social media profiles, and booking information.</p>
+        <div class="ch-hero-btns">
+          <a href="#booking" class="ch-btn-gold">Booking &amp; Contact →</a>
+          <a href="#booking" class="ch-btn-outline">
+            <svg viewBox="0 0 24 24" style="fill:currentColor;width:14px;height:14px"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+            Save to Contacts
+          </a>
+        </div>
       </div>
     </div>`;
 
-  // ── FEATURED CARDS — category label + name + description + arrow (per reference) ──
+  // ── FEATURED CARDS — horizontal layout, icon left, text right ──
   const websiteUrl = getFirstUrl(s.website);
-  const buildFeatCard = (key, nameOverride, isPrimary) => {
+  const buildFeatCard = (key, nameOverride) => {
     const isBooking = key === 'booking';
     const val = s[key];
     if (!val && !isBooking) return '';
     const url = isBooking ? '#booking' : getFirstUrl(val);
     if (!url && !isBooking) return '';
     const color = platformColors[key] || '#C9A84C';
-    const bg = platformBg[key] || 'rgba(201,168,76,0.15)';
     const cat = platformCat[key] || '';
     const name = nameOverride || labels[key] || key;
     const desc = featuredDescs[key] || platformDesc[key] || '';
     const metric = s[key+'_followers'] || '';
-    return `<a href="${url}" class="ch-card${isPrimary?' ch-card--primary':''}" target="${isBooking?'_self':'_blank'}" rel="noopener">
-      <small class="ch-card-cat">${cat}</small>
-      <span class="ch-card-icon-wrap" style="background:${color}">
-        <svg viewBox="0 0 24 24" style="fill:#fff;width:30px;height:30px">${getSvgPath(key)}</svg>
+    return `<a href="${url}" class="ch-card" target="${isBooking?'_self':'_blank'}" rel="noopener">
+      <span class="ch-card-icon" style="background:${color}">
+        <svg viewBox="0 0 24 24" style="fill:#fff;width:26px;height:26px">${getSvgPath(key)}</svg>
       </span>
-      <span class="ch-card-name">${name}</span>
-      <span class="ch-card-desc">${desc}</span>
-      ${(showMetrics && metric) ? `<span class="ch-metric">${metric}</span>` : ''}
+      <span class="ch-card-body">
+        <small class="ch-card-cat">${cat}</small>
+        <span class="ch-card-name">${name}</span>
+        <span class="ch-card-desc">${desc}</span>
+        ${(showMetrics && metric) ? `<span class="ch-metric">${metric}</span>` : ''}
+      </span>
       <span class="ch-card-arrow">→</span>
     </a>`;
   };
@@ -196,45 +268,46 @@ function buildEPK(epk) {
   const featuredHTML = [
     websiteUrl
       ? `<a href="${websiteUrl}" class="ch-card ch-card--primary" target="_blank" rel="noopener">
-          <small class="ch-card-cat">Website</small>
-          <span class="ch-card-icon-wrap" style="background:#C9A84C">
-            <svg viewBox="0 0 24 24" style="fill:#fff;width:30px;height:30px">${getSvgPath('website')}</svg>
+          <span class="ch-card-icon" style="background:#C9A84C">
+            <svg viewBox="0 0 24 24" style="fill:#fff;width:26px;height:26px">${getSvgPath('website')}</svg>
           </span>
-          <span class="ch-card-name">Official Website</span>
-          <span class="ch-card-desc">View Portfolio</span>
+          <span class="ch-card-body">
+            <small class="ch-card-cat">Website</small>
+            <span class="ch-card-name">Official Website</span>
+            <span class="ch-card-desc">View Portfolio</span>
+          </span>
           <span class="ch-card-arrow">→</span>
         </a>`
-      : `<a class="ch-card ch-card--primary ch-card--empty">
-          <small class="ch-card-cat">Website</small>
-          <span class="ch-card-icon-wrap" style="background:rgba(201,168,76,0.2)">
-            <svg viewBox="0 0 24 24" style="fill:rgba(201,168,76,0.5);width:30px;height:30px">${getSvgPath('website')}</svg>
+      : `<a class="ch-card ch-card--primary ch-card--empty" style="pointer-events:none">
+          <span class="ch-card-icon" style="background:rgba(201,168,76,0.25)">
+            <svg viewBox="0 0 24 24" style="fill:rgba(255,255,255,0.4);width:26px;height:26px">${getSvgPath('website')}</svg>
           </span>
-          <span class="ch-card-name" style="opacity:0.3">Official Website</span>
-          <span class="ch-card-desc" style="opacity:0.2">Add URL in dashboard</span>
+          <span class="ch-card-body">
+            <small class="ch-card-cat">Website</small>
+            <span class="ch-card-name" style="opacity:0.3">Official Website</span>
+            <span class="ch-card-desc" style="opacity:0.2">Add URL in dashboard</span>
+          </span>
           <span class="ch-card-arrow" style="opacity:0.15">→</span>
         </a>`,
-    buildFeatCard('spotify','Spotify', false),
-    buildFeatCard('youtube','YouTube', false),
-    buildFeatCard('instagram','Instagram', false),
-    buildFeatCard('booking','Booking &amp; Contact', false),
+    buildFeatCard('spotify','Spotify'),
+    buildFeatCard('youtube','YouTube'),
+    buildFeatCard('instagram','Instagram'),
+    buildFeatCard('booking','Booking & Contact'),
   ].filter(Boolean).join('');
 
-  // ── PLATFORM ROWS — no badges per spec ──
+  // ── PLATFORM ROWS — compact, inline name + desc ──
   const buildPlatRow = (key, urls) => urls.map((url, i) => {
     const color = platformColors[key] || '#C9A84C';
-    const bg = platformBg[key] || 'rgba(255,255,255,0.06)';
     const suffix = urls.length > 1 ? ` ${i+1}` : '';
     const desc = platformDesc[key] || getDomain(url);
     const metric = i===0 ? (s[key+'_followers']||'') : '';
     return `<a href="${url}" class="ch-row" target="_blank" rel="noopener" style="--ch-pc:${color}">
       <span class="ch-row-icon" style="background:${color}">
-        <svg viewBox="0 0 24 24" style="fill:#fff;width:20px;height:20px">${getSvgPath(key)}</svg>
+        <svg viewBox="0 0 24 24" style="fill:#fff;width:18px;height:18px">${getSvgPath(key)}</svg>
       </span>
-      <span class="ch-row-info">
-        <span class="ch-row-name">${labels[key]}${suffix}</span>
-        <span class="ch-row-desc">${desc}</span>
-        ${(showMetrics && metric) ? `<span class="ch-metric">${metric}</span>` : ''}
-      </span>
+      <span class="ch-row-name">${labels[key]}${suffix}</span>
+      <span class="ch-row-desc">${desc}</span>
+      ${(showMetrics && metric) ? `<span class="ch-metric ch-metric--row">${metric}</span>` : ''}
       <span class="ch-row-arrow">→</span>
     </a>`;
   }).join('');
@@ -249,28 +322,32 @@ function buildEPK(epk) {
   const socialRowsHTML = buildPlatRows(socialKeys);
   const musicRowsHTML = buildPlatRows(musicKeys);
 
-  // ── FOLLOW EVERYWHERE — thin strip ──
-  const allFollowKeys = [...socialKeys,'spotify','youtube'].filter(k => hasValue(s[k]));
+  // ── FOLLOW EVERYWHERE — minimal centered strip ──
+  const allFollowKeys = [...socialKeys.slice(0,6),'spotify','youtube'].filter(k => hasValue(s[k]));
   const followStripHTML = allFollowKeys.length ? `
-    <div class="ch-follow-strip">
+    <div class="ch-follow">
       <div class="ch-follow-inner">
-        <svg viewBox="0 0 24 24" style="fill:rgba(201,168,76,0.6);width:18px;height:18px;flex-shrink:0"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        <span class="ch-follow-group-icon">
+          <svg viewBox="0 0 24 24" style="fill:#d7b84f;width:16px;height:16px"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        </span>
+        <span class="ch-follow-pipe">|</span>
         <span class="ch-follow-label">Follow Everywhere</span>
-        <span class="ch-follow-divider">|</span>
+        <span class="ch-follow-pipe">|</span>
         <div class="ch-follow-icons">
           ${allFollowKeys.map(k => {
             const url = getFirstUrl(s[k]);
             const color = platformColors[k];
             return `<a href="${url}" target="_blank" rel="noopener" class="ch-follow-icon" title="${labels[k]}">
-              <svg viewBox="0 0 24 24" style="fill:${color};width:20px;height:20px">${getSvgPath(k)}</svg>
+              <svg viewBox="0 0 24 24" style="fill:${color};width:18px;height:18px">${getSvgPath(k)}</svg>
             </a>`;
           }).join('')}
         </div>
+        <span class="ch-follow-pipe">|</span>
+        <span class="ch-follow-official">
+          <svg viewBox="0 0 24 24" style="fill:rgba(201,168,76,0.5);width:12px;height:12px"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+          All platforms are official.
+        </span>
       </div>
-      <p class="ch-follow-footer">
-        <svg viewBox="0 0 24 24" style="fill:rgba(201,168,76,0.5);width:12px;height:12px;margin-right:4px"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-        All platforms are official.
-      </p>
     </div>` : '';
 
   const connectSectionHTML = hasAnyLinks ? `

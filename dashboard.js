@@ -3045,6 +3045,12 @@ function saveSocials() {
   epk.socials.soundcloud = document.getElementById('socialSoundcloud').value.trim();
   epk.socials.tidal = document.getElementById('socialTidal').value.trim();
   epk.socials.bandcamp = document.getElementById('socialBandcamp').value.trim();
+  // Additional platforms
+  const newPlatforms = ['threads','x','snapchat','pinterest','reddit','discord','twitch','bluesky','telegram','tumblr','mastodon','wechat','clubhouse','dribbble','strava','letterboxd','quora'];
+  newPlatforms.forEach(p => {
+    const el = document.getElementById('social' + p.charAt(0).toUpperCase() + p.slice(1));
+    if (el) epk.socials[p] = el.value.trim() || undefined;
+  });
   epk.socials.instagram_followers = document.getElementById('socialInstagram_followers') ? document.getElementById('socialInstagram_followers').value.trim() : (epk.socials.instagram_followers || '');
   const metricsEl = document.getElementById('socialShowMetrics');
   if (metricsEl) epk.socials.showMetrics = metricsEl.checked;
@@ -3065,7 +3071,7 @@ function loadSocials() {
     epk.socials[p] = Array.isArray(val) ? val : (val ? [val] : []);
     renderSocialList(p, placeholders[p]);
   });
-  const singles = { tiktok:'socialTiktok', linkedin:'socialLinkedin', spotify:'socialSpotify', appleMusic:'socialAppleMusic', youtube:'socialYoutube', soundcloud:'socialSoundcloud', tidal:'socialTidal', bandcamp:'socialBandcamp' };
+  const singles = { tiktok:'socialTiktok', linkedin:'socialLinkedin', spotify:'socialSpotify', appleMusic:'socialAppleMusic', youtube:'socialYoutube', soundcloud:'socialSoundcloud', tidal:'socialTidal', bandcamp:'socialBandcamp', threads:'socialThreads', x:'socialX', snapchat:'socialSnapchat', pinterest:'socialPinterest', reddit:'socialReddit', discord:'socialDiscord', twitch:'socialTwitch', bluesky:'socialBluesky', telegram:'socialTelegram', tumblr:'socialTumblr', mastodon:'socialMastodon', wechat:'socialWechat', clubhouse:'socialClubhouse', dribbble:'socialDribbble', strava:'socialStrava', letterboxd:'socialLetterboxd', quora:'socialQuora' };
   ['tiktok','linkedin','spotify','youtube'].forEach(k => {
     const el = document.getElementById('social' + k.charAt(0).toUpperCase() + k.slice(1) + '_followers');
     if (el) el.value = s[k + '_followers'] || '';
