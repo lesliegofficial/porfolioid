@@ -120,7 +120,9 @@ function buildEPK(epk) {
   const platformColors = { instagram:'#E1306C', facebook:'#1877F2', tiktok:'#ffffff', linkedin:'#0A66C2', website:'#C9A84C', spotify:'#1DB954', appleMusic:'#FC3C44', youtube:'#FF0000', soundcloud:'#FF5500', tidal:'#aaaaaa', bandcamp:'#1DA0C3' };
   const platformBg = { instagram:'rgba(225,48,108,0.12)', facebook:'rgba(24,119,242,0.12)', tiktok:'rgba(255,255,255,0.07)', linkedin:'rgba(10,102,194,0.12)', website:'rgba(201,168,76,0.12)', spotify:'rgba(29,185,84,0.12)', appleMusic:'rgba(252,60,68,0.12)', youtube:'rgba(255,0,0,0.1)', soundcloud:'rgba(255,85,0,0.12)', tidal:'rgba(255,255,255,0.05)', bandcamp:'rgba(29,160,195,0.12)' };
   // Action labels for featured cards
-  const featuredActions = { website:'Visit Website', spotify:'Listen Now', youtube:'Watch Now', instagram:'Follow Me', appleMusic:'Listen Now', soundcloud:'Listen Now', tidal:'Listen Now', bandcamp:'Listen Now', facebook:'Follow Me', tiktok:'Follow Me', linkedin:'Connect', booking:'Work With Me' };
+  const featuredActions = { website:'Visit My Website', spotify:'Listen Now', youtube:'Watch Now', instagram:'Follow Me', appleMusic:'Listen Now', soundcloud:'Listen Now', tidal:'Listen Now', bandcamp:'Listen Now', facebook:'Follow Me', tiktok:'Follow Me', linkedin:'Connect', booking:'Work With Me' };
+  // Clean sub-labels for link rows
+  const platformSub = { instagram:'Follow on Instagram', facebook:'Follow on Facebook', tiktok:'Follow on TikTok', linkedin:'Connect on LinkedIn', website:'Visit Website', spotify:'Listen on Spotify', appleMusic:'Listen on Apple Music', youtube:'Watch on YouTube', soundcloud:'Listen on SoundCloud', tidal:'Listen on Tidal', bandcamp:'Listen on Bandcamp' };
   // Badge labels for link rows
   const platformBadge = { instagram:'Official', facebook:'Official', tiktok:'Official', linkedin:'Verified', website:'Official', spotify:'Official', appleMusic:'Official', youtube:'Official', soundcloud:'Official', tidal:'Official', bandcamp:'Official' };
 
@@ -180,6 +182,7 @@ function buildEPK(epk) {
       const bg = platformBg[key] || 'rgba(255,255,255,0.05)';
       const suffix = urls.length > 1 ? ` ${i + 1}` : '';
       const handle = getHandle(url, key);
+      const subText = platformSub[key] || handle;
       const badge = i === 0 ? (key === 'linkedin' ? 'Verified' : 'Official') : '';
       const svgPath = svgIcons[key] ? svgIcons[key].replace('<svg viewBox="0 0 24 24">','').replace('</svg>','') : '';
       return `<a href="${url}" class="ch-link-row" target="_blank" rel="noopener" style="--ch-pc:${color}">
@@ -188,7 +191,7 @@ function buildEPK(epk) {
         </div>
         <div class="ch-link-info">
           <span class="ch-link-name">${labels[key]}${suffix}</span>
-          <span class="ch-link-sub">${handle}</span>
+          <span class="ch-link-sub">${subText}</span>
         </div>
         ${badge ? `<span class="ch-link-badge">${badge}</span>` : ''}
         <span class="ch-link-arrow">→</span>
@@ -205,10 +208,17 @@ function buildEPK(epk) {
             <svg viewBox="0 0 24 24" style="fill:#C9A84C;width:22px;height:22px">${svgIcons.website.replace('<svg viewBox="0 0 24 24">','').replace('</svg>','')}</svg>
           </div>
           <span class="ch-feat-eyebrow">Official Website</span>
-          <h3 class="ch-feat-name">porfolioid.com/<br>leslie-guerra</h3>
+          <h3 class="ch-feat-name">${getDomain(websiteUrl)}</h3>
           <p class="ch-feat-action">Visit My Website →</p>
         </a>`
-      : '',
+      : `<a href="#" class="ch-feat-card ch-feat-card--active" style="pointer-events:none;opacity:0.5">
+          <div class="ch-feat-icon" style="background:rgba(201,168,76,0.12)">
+            <svg viewBox="0 0 24 24" style="fill:#C9A84C;width:22px;height:22px">${svgIcons.website.replace('<svg viewBox="0 0 24 24">','').replace('</svg>','')}</svg>
+          </div>
+          <span class="ch-feat-eyebrow">Official Website</span>
+          <h3 class="ch-feat-name">Add your website URL</h3>
+          <p class="ch-feat-action">Visit My Website →</p>
+        </a>`,
     buildFeaturedCard('spotify', 'Music', 'Spotify', false),
     buildFeaturedCard('youtube', 'Video', 'YouTube Channel', false),
     buildFeaturedCard('instagram', 'Social', 'Instagram', false),
