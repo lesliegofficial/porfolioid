@@ -443,7 +443,7 @@
 
   /* ── FEATURED CARDS — horizontal ── */
   .ch-feat-wrap { margin-bottom: 24px; }
-  .ch-feat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .ch-feat-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
   .ch-card { position: relative; display: grid; grid-template-columns: 52px 1fr 20px; align-items: center; gap: 12px; padding: 14px 16px; background: #0c0c0c; border: 1px solid rgba(255,255,255,0.07); color: #f5f1e8; text-decoration: none; transition: all 0.2s ease; min-height: 90px; overflow: hidden; }
   .ch-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at left, rgba(201,168,76,0.06), transparent 60%); opacity: 0; transition: opacity 0.2s; }
   .ch-card--primary::before, .ch-card:hover::before { opacity: 1; }

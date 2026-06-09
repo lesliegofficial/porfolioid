@@ -115,6 +115,7 @@ function buildEPK(epk) {
     tidal: '<svg viewBox="0 0 24 24"><path d="M12.012 3.992L8.008 7.996 4.004 3.992 0 7.996l4.004 4.004 4.004-4.004 4.004 4.004 4.004-4.004zM8.008 16.004l4.004-4.004 4.004 4.004L20.02 12l-4.004-4.004-4.004 4.004-4.004-4.004L4.004 12z"/></svg>',
     bandcamp: '<svg viewBox="0 0 24 24"><path d="M0 18.75l7.437-13.5H24l-7.438 13.5z"/></svg>',
     booking: '<svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>',
+    amazon: '<svg viewBox="0 0 24 24"><path d="M.045 18.02c.072-.116.187-.124.348-.022 3.636 2.11 7.594 3.166 11.87 3.166 2.852 0 5.668-.533 8.447-1.595l.315-.14c.138-.06.234-.1.293-.13.226-.088.39-.046.525.13.12.174.09.336-.12.48-.256.19-.6.41-1.006.654-1.244.743-2.64 1.316-4.185 1.726a18.3 18.3 0 01-4.342.535 18.7 18.7 0 01-9.69-2.65c-.278-.17-.33-.356-.155-.59zm21.02-2.11c.17.016.27.124.32.326l.027.153v.076c0 .31-.078.525-.235.64-.157.115-.43.172-.82.172h-.32c-.252 0-.44-.065-.563-.194l-.068-.1-.5-1.96-.5 1.96c-.08.195-.19.295-.34.3l-.063.003h-.32c-.39 0-.663-.057-.82-.172-.158-.115-.235-.33-.235-.64v-.077l.027-.152c.05-.202.15-.31.32-.326h.063c.17 0 .27.1.32.31l.22.99.55-2.32c.05-.22.16-.32.33-.32h.13c.17 0 .28.1.33.32l.55 2.32.22-.99c.05-.21.15-.31.32-.31h.063zm-3.96-1.44v2.45c0 .18-.15.31-.34.31h-.19c-.19 0-.34-.13-.34-.31V14.47c0-.18.15-.31.34-.31h.19c.19 0 .34.13.34.31zm-1.75-.31c.19 0 .34.13.34.31v.3c-.22.08-.48.18-.77.32-.56.27-.84.57-.84.89 0 .19.09.35.27.47.18.12.4.18.66.18.16 0 .34-.03.54-.1v.52c0 .18-.15.31-.34.31h-.08c-.43 0-.79-.1-1.07-.31-.28-.21-.42-.5-.42-.87 0-.24.07-.46.21-.67.14-.2.37-.4.7-.58.19-.1.41-.2.64-.28v-.13c0-.15-.04-.27-.11-.36-.07-.09-.18-.13-.31-.13-.18 0-.38.08-.6.24l-.19.15c-.12.1-.24.1-.35 0l-.14-.15c-.11-.13-.1-.26.03-.38.28-.25.64-.37 1.07-.37h.08c.41 0 .73.12.95.35.22.23.33.55.33.96z"/></svg>',
     threads: '<svg viewBox="0 0 24 24"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.5 12.068c0-3.52.85-6.374 2.495-8.423C5.845 1.341 8.598.16 12.18.136h.014c3.582.024 6.335 1.205 8.185 3.509C22.024 5.694 22.5 8.548 22.5 12.068c0 3.52-.476 6.374-2.121 8.423-1.85 2.304-4.603 3.485-8.185 3.509zM12.18 2.127c-3.046.02-5.358 1.01-6.877 2.943-1.375 1.754-2.076 4.26-2.076 7.448 0 3.188.701 5.694 2.076 7.448 1.519 1.933 3.831 2.923 6.877 2.943 3.046-.02 5.358-1.01 6.877-2.943 1.375-1.754 2.076-4.26 2.076-7.448 0-3.188-.701-5.694-2.076-7.448-1.519-1.933-3.831-2.923-6.877-2.943zm.64 13.29c-1.86 0-3.198-.87-3.198-2.1 0-.98.765-1.74 2.228-2.04l1.718-.36c.47-.1.67-.32.67-.64 0-.48-.44-.82-1.11-.82-.7 0-1.18.34-1.33.93l-1.81-.39c.35-1.43 1.63-2.34 3.22-2.34 1.76 0 2.93.9 2.93 2.3v3.18c0 .46.02.82.06 1.1h-1.73c-.03-.2-.04-.44-.04-.74-.36.56-1.05.92-1.62.92zm.45-1.29c.76 0 1.4-.54 1.4-1.26v-.5l-1.46.31c-.64.14-.94.42-.94.78 0 .41.42.67 1 .67z"/></svg>',
     x: '<svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
     snapchat: '<svg viewBox="0 0 24 24"><path d="M12.065.001c1.587.007 6.585.38 8.944 5.233.916 1.877.697 5.049.536 7.485l-.01.161c-.01.109.066.232.168.296.52.324 1.63.69 3.255.972.107.019.146.1.112.184-.162.388-.782 1.26-2.472 1.535-.104.016-.133.091-.093.198.073.198.15.546.176.927.025.346-.07.557-.372.557a2.43 2.43 0 00-.617.09c-.59.175-1.195.768-2.13 1.329-1.01.61-2.15.82-3.238.573-.578-.133-1.092-.432-1.573-.715-.43-.254-.829-.49-1.205-.547a1.45 1.45 0 00-.236-.019c-.079 0-.157.006-.234.019-.378.057-.777.293-1.206.547-.48.283-.995.582-1.572.715-1.089.247-2.229.037-3.238-.573-.936-.561-1.54-1.154-2.13-1.329a2.43 2.43 0 00-.617-.09c-.303 0-.397-.211-.372-.557.026-.381.103-.729.176-.927.04-.107.011-.182-.093-.198C.782 15.418.162 14.546 0 14.158c-.034-.084.005-.165.112-.184 1.625-.282 2.735-.648 3.255-.972.102-.064.178-.187.168-.296l-.01-.161c-.16-2.436-.38-5.608.536-7.485C6.41.381 11.408.008 12.065.001z"/></svg>',
@@ -139,6 +140,7 @@ function buildEPK(epk) {
     instagram:'Instagram', facebook:'Facebook', tiktok:'TikTok', linkedin:'LinkedIn',
     website:'Website', spotify:'Spotify', appleMusic:'Apple Music', youtube:'YouTube',
     soundcloud:'SoundCloud', tidal:'Tidal', bandcamp:'Bandcamp', booking:'Booking & Contact',
+    amazon:'Amazon Storefront',
     threads:'Threads', x:'X (Twitter)', snapchat:'Snapchat', pinterest:'Pinterest',
     reddit:'Reddit', discord:'Discord', twitch:'Twitch', bluesky:'Bluesky',
     mastodon:'Mastodon', telegram:'Telegram', wechat:'WeChat', tumblr:'Tumblr',
@@ -154,7 +156,7 @@ function buildEPK(epk) {
     reddit:'#FF4500', discord:'#5865F2', twitch:'#9146FF', bluesky:'#0085FF',
     mastodon:'#6364FF', telegram:'#26A5E4', wechat:'#07C160', tumblr:'#35465C',
     clubhouse:'#F3EFE7', dribbble:'#EA4C89', strava:'#FC4C02', letterboxd:'#00C030',
-    nextdoor:'#8DC63F', quora:'#B92B27',
+    nextdoor:'#8DC63F', quora:'#B92B27', amazon:'#C9A84C',
   };
 
   const platformBg = {
@@ -172,7 +174,7 @@ function buildEPK(epk) {
     wechat:'rgba(7,193,96,0.15)', tumblr:'rgba(53,70,92,0.8)',
     clubhouse:'rgba(243,239,231,0.15)', dribbble:'rgba(234,76,137,0.15)',
     strava:'rgba(252,76,2,0.15)', letterboxd:'rgba(0,192,48,0.15)',
-    nextdoor:'rgba(141,198,63,0.15)', quora:'rgba(185,43,39,0.15)',
+    nextdoor:'rgba(141,198,63,0.15)', quora:'rgba(185,43,39,0.15)', amazon:'rgba(201,168,76,0.12)',
   };
 
   const platformCat = {
@@ -183,7 +185,7 @@ function buildEPK(epk) {
     reddit:'Social', discord:'Community', twitch:'Live', bluesky:'Social',
     mastodon:'Social', telegram:'Messaging', wechat:'Messaging', tumblr:'Social',
     clubhouse:'Audio', dribbble:'Design', strava:'Fitness', letterboxd:'Film',
-    nextdoor:'Local', quora:'Knowledge',
+    nextdoor:'Local', quora:'Knowledge', amazon:'Curated',
   };
 
   const platformDesc = {
@@ -203,6 +205,7 @@ function buildEPK(epk) {
     website:'View Portfolio', spotify:'Listen to Official Releases',
     youtube:'Watch Live Performances', instagram:'Behind The Scenes Content',
     booking:'Work With Me',
+    amazon:'Products I Personally Use & Recommend',
   };
 
   const s = epk.socials || {};
@@ -265,6 +268,7 @@ function buildEPK(epk) {
     </a>`;
   };
 
+  const amazonUrl = getFirstUrl(s.amazon || '');
   const featuredHTML = [
     websiteUrl
       ? `<a href="${websiteUrl}" class="ch-card ch-card--primary" target="_blank" rel="noopener">
@@ -289,9 +293,10 @@ function buildEPK(epk) {
           </span>
           <span class="ch-card-arrow" style="opacity:0.15">→</span>
         </a>`,
+    buildFeatCard('instagram','Instagram'),
     buildFeatCard('spotify','Spotify'),
     buildFeatCard('youtube','YouTube'),
-    buildFeatCard('instagram','Instagram'),
+    amazonUrl ? buildFeatCard('amazon','Amazon Storefront') : null,
     buildFeatCard('booking','Booking & Contact'),
   ].filter(Boolean).join('');
 
