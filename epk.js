@@ -221,6 +221,19 @@ function buildEPK(epk) {
   const hasAnyLinks = hasSocials || hasMusic || hasValue(s.website);
   const getSvgPath = (key) => svgIcons[key] ? svgIcons[key].replace('<svg viewBox="0 0 24 24">','').replace('</svg>','') : '';
 
+  // Helper: normalize website entries (supports both plain strings and rich objects)
+  const normalizeWebsiteEntry = (v) => {
+    if (!v) return null;
+    if (typeof v === 'string') return { url: v, title: '', description: '', icon: '' };
+    return { url: v.url||'', title: v.title||'', description: v.description||'', icon: v.icon||'' };
+  };
+  const getWebsites = () => {
+    const raw = s.website;
+    if (!raw) return [];
+    const arr = Array.isArray(raw) ? raw : [raw];
+    return arr.map(normalizeWebsiteEntry).filter(w => w && w.url && w.url.trim());
+  };
+
   // ── HERO — two-column, typography-driven ──
   const heroPanelHTML = `
     <div class="ch-hero">
@@ -242,7 +255,6 @@ function buildEPK(epk) {
     </div>`;
 
   // ── FEATURED CARDS — horizontal layout, icon left, text right ──
-  const websiteUrl = getFirstUrl(s.website);
   const buildFeatCard = (key, nameOverride) => {
     const isBooking = key === 'booking';
     const val = s[key];
@@ -270,19 +282,24 @@ function buildEPK(epk) {
 
   const amazonUrl = getFirstUrl(s.amazon || '');
   const featuredHTML = [
-    websiteUrl
-      ? `<a href="${websiteUrl}" class="ch-card ch-card--primary" target="_blank" rel="noopener">
-          <span class="ch-card-icon" style="background:#C9A84C">
-            <svg viewBox="0 0 24 24" style="fill:#fff;width:26px;height:26px">${getSvgPath('website')}</svg>
-          </span>
+    (() => {
+      const ws = getWebsites();
+      const w = ws[0];
+      if (w) {
+        const iconHtml = w.icon
+          ? `<img src="${w.icon}" style="width:28px;height:28px;object-fit:contain;border-radius:50%" onerror="this.style.display='none'">`
+          : `<svg viewBox="0 0 24 24" style="fill:#fff;width:26px;height:26px">${getSvgPath('website')}</svg>`;
+        return `<a href="${w.url}" class="ch-card ch-card--primary" target="_blank" rel="noopener">
+          <span class="ch-card-icon" style="background:#C9A84C">${iconHtml}</span>
           <span class="ch-card-body">
             <small class="ch-card-cat">Website</small>
-            <span class="ch-card-name">Official Website</span>
-            <span class="ch-card-desc">View Portfolio</span>
+            <span class="ch-card-name">${w.title || 'Official Website'}</span>
+            <span class="ch-card-desc">${w.description || 'View Portfolio'}</span>
           </span>
           <span class="ch-card-arrow">→</span>
-        </a>`
-      : `<a class="ch-card ch-card--primary ch-card--empty" style="pointer-events:none">
+        </a>`;
+      }
+      return `<a class="ch-card ch-card--primary ch-card--empty" style="pointer-events:none">
           <span class="ch-card-icon" style="background:rgba(201,168,76,0.25)">
             <svg viewBox="0 0 24 24" style="fill:rgba(255,255,255,0.4);width:26px;height:26px">${getSvgPath('website')}</svg>
           </span>
@@ -292,7 +309,8 @@ function buildEPK(epk) {
             <span class="ch-card-desc" style="opacity:0.2">Add URL in dashboard</span>
           </span>
           <span class="ch-card-arrow" style="opacity:0.15">→</span>
-        </a>`,
+        </a>`;
+    })(),
     buildFeatCard('instagram','Instagram'),
     buildFeatCard('spotify','Spotify'),
     buildFeatCard('youtube','YouTube'),

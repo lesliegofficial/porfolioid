@@ -2990,6 +2990,84 @@ function addAward() {
 function removeAward(i) { epk.awards.splice(i, 1); renderAwards(); persistUser(); showSaveBanner(); }
 
 // SOCIAL LINKS — Connect Hub dashboard
+
+// ── RICH WEBSITE ENTRIES (title, url, description, icon) ──
+function normalizeWebsites(val) {
+  if (!val || (Array.isArray(val) && val.length === 0)) return [];
+  const arr = Array.isArray(val) ? val : [val];
+  return arr.map(v => {
+    if (typeof v === 'string') return { url: v, title: '', description: '', icon: '' };
+    return { url: v.url||'', title: v.title||'', description: v.description||'', icon: v.icon||'' };
+  });
+}
+
+function renderWebsiteList() {
+  const container = document.getElementById('websiteList');
+  if (!container) return;
+  const sites = normalizeWebsites(epk.socials && epk.socials.website);
+  if (sites.length === 0) { container.innerHTML = ''; return; }
+  container.innerHTML = sites.map((site, i) => `
+    <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.12);padding:1rem;margin-bottom:0.75rem;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;">
+        <div>
+          <label style="font-family:var(--font-mono);font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);opacity:0.7;display:block;margin-bottom:0.3rem;">Title</label>
+          <input type="text" value="${site.title || ''}" placeholder="e.g. My Portfolio"
+            style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.65rem 0.85rem;font-family:var(--font-body);font-size:0.85rem;outline:none;box-sizing:border-box"
+            oninput="updateWebsite(${i},'title',this.value)">
+        </div>
+        <div>
+          <label style="font-family:var(--font-mono);font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);opacity:0.7;display:block;margin-bottom:0.3rem;">URL</label>
+          <input type="url" value="${site.url || ''}" placeholder="https://yourwebsite.com"
+            style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.65rem 0.85rem;font-family:var(--font-body);font-size:0.85rem;outline:none;box-sizing:border-box"
+            oninput="updateWebsite(${i},'url',this.value)">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;">
+        <div>
+          <label style="font-family:var(--font-mono);font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);opacity:0.7;display:block;margin-bottom:0.3rem;">Description <span style="opacity:0.5;font-size:0.45rem">(optional)</span></label>
+          <input type="text" value="${site.description || ''}" placeholder="e.g. Official Portfolio & Profile"
+            style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.65rem 0.85rem;font-family:var(--font-body);font-size:0.85rem;outline:none;box-sizing:border-box"
+            oninput="updateWebsite(${i},'description',this.value)">
+        </div>
+        <div>
+          <label style="font-family:var(--font-mono);font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);opacity:0.7;display:block;margin-bottom:0.3rem;">Icon URL <span style="opacity:0.5;font-size:0.45rem">(optional — favicon or logo)</span></label>
+          <input type="url" value="${site.icon || ''}" placeholder="https://yoursite.com/favicon.ico"
+            style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.65rem 0.85rem;font-family:var(--font-body);font-size:0.85rem;outline:none;box-sizing:border-box"
+            oninput="updateWebsite(${i},'icon',this.value)">
+        </div>
+      </div>
+      <button onclick="removeWebsite(${i})"
+        style="background:none;border:1px solid rgba(255,100,100,0.3);color:#ff6b6b;padding:0.4rem 0.75rem;cursor:pointer;font-family:var(--font-mono);font-size:0.55rem;transition:all 0.2s"
+        onmouseover="this.style.borderColor='#ff6b6b'" onmouseout="this.style.borderColor='rgba(255,100,100,0.3)'">✕ Remove</button>
+    </div>`).join('');
+}
+
+function addWebsite() {
+  epk.socials = epk.socials || {};
+  const sites = normalizeWebsites(epk.socials.website);
+  sites.push({ url: '', title: '', description: '', icon: '' });
+  epk.socials.website = sites;
+  renderWebsiteList();
+}
+
+function updateWebsite(idx, field, value) {
+  epk.socials = epk.socials || {};
+  const sites = normalizeWebsites(epk.socials.website);
+  if (sites[idx]) {
+    sites[idx][field] = value;
+    epk.socials.website = sites;
+  }
+}
+
+function removeWebsite(idx) {
+  epk.socials = epk.socials || {};
+  const sites = normalizeWebsites(epk.socials.website);
+  sites.splice(idx, 1);
+  epk.socials.website = sites;
+  renderWebsiteList();
+  persistUser(); showSaveBanner();
+}
+
 function renderSocialList(platform, placeholder) {
   const container = document.getElementById(platform + 'List');
   if (!container) return;
@@ -3056,23 +3134,34 @@ function saveSocials() {
   epk.socials.instagram_followers = document.getElementById('socialInstagram_followers') ? document.getElementById('socialInstagram_followers').value.trim() : (epk.socials.instagram_followers || '');
   const metricsEl = document.getElementById('socialShowMetrics');
   if (metricsEl) epk.socials.showMetrics = metricsEl.checked;
-  ['instagram','facebook','website'].forEach(p => {
+  ['instagram','facebook'].forEach(p => {
     if (Array.isArray(epk.socials[p])) {
-      epk.socials[p] = epk.socials[p].filter(v => v.trim());
+      epk.socials[p] = epk.socials[p].filter(v => v && v.trim());
     }
   });
+  // Normalize website as rich objects, filter empty URLs
+  if (epk.socials.website) {
+    const wSites = normalizeWebsites(epk.socials.website).filter(w => w.url && w.url.trim());
+    epk.socials.website = wSites.length ? wSites : [];
+  }
   persistUser(); showSaveBanner();
 }
 
 function loadSocials() {
   const s = epk.socials || {};
-  ['instagram','facebook','website'].forEach(p => {
-    const placeholders = { instagram:'https://instagram.com/yourhandle', facebook:'https://facebook.com/yourpage', website:'https://yourwebsite.com' };
+  ['instagram','facebook'].forEach(p => {
+    const placeholders = { instagram:'https://instagram.com/yourhandle', facebook:'https://facebook.com/yourpage' };
     const val = s[p];
     epk.socials = epk.socials || {};
     epk.socials[p] = Array.isArray(val) ? val : (val ? [val] : []);
     renderSocialList(p, placeholders[p]);
   });
+  // Load website as rich objects
+  if (s.website !== undefined) {
+    epk.socials = epk.socials || {};
+    epk.socials.website = normalizeWebsites(s.website);
+  }
+  renderWebsiteList();
   const singles = { tiktok:'socialTiktok', linkedin:'socialLinkedin', spotify:'socialSpotify', appleMusic:'socialAppleMusic', youtube:'socialYoutube', soundcloud:'socialSoundcloud', tidal:'socialTidal', bandcamp:'socialBandcamp', amazon:'socialAmazon', threads:'socialThreads', x:'socialX', snapchat:'socialSnapchat', pinterest:'socialPinterest', reddit:'socialReddit', discord:'socialDiscord', twitch:'socialTwitch', bluesky:'socialBluesky', telegram:'socialTelegram', tumblr:'socialTumblr', mastodon:'socialMastodon', wechat:'socialWechat', clubhouse:'socialClubhouse', dribbble:'socialDribbble', strava:'socialStrava', letterboxd:'socialLetterboxd', quora:'socialQuora' };
   ['tiktok','linkedin','spotify','youtube'].forEach(k => {
     const el = document.getElementById('social' + k.charAt(0).toUpperCase() + k.slice(1) + '_followers');
