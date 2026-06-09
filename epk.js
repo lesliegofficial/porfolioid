@@ -176,6 +176,12 @@ function buildEPK(epk) {
     nextdoor:'rgba(141,198,63,0.15)', quora:'rgba(185,43,39,0.15)',
   };
 
+  // Custom image icons (overrides SVG for specific platforms)
+  const platformImg = {
+    amazon: 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1781034044/icons/amazon-icon-white.jpg',
+    tiktok: 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1781034045/icons/tiktok-icon-white.jpg',
+  };
+
   const platformCat = {
     instagram:'Social', facebook:'Social', tiktok:'Social', linkedin:'Professional',
     website:'Website', spotify:'Music', appleMusic:'Music', youtube:'Video',
@@ -268,9 +274,10 @@ function buildEPK(epk) {
     const name = nameOverride || labels[key] || key;
     const desc = descOverride || platformDesc[key] || '';
     const cta = featuredCTA[key] || 'Visit';
+    const imgIcon = platformImg[key];
     return `<a href="${url}" class="ch-pcard" target="${isBooking?'_self':'_blank'}" rel="noopener">
       <span class="ch-pcard-icon" style="background:${color}">
-        <svg viewBox="0 0 24 24" style="fill:#fff;width:26px;height:26px">${getSvgPath(key)}</svg>
+        ${imgIcon ? `<img src="${imgIcon}" style="width:30px;height:30px;object-fit:contain" alt="${key}">` : `<svg viewBox="0 0 24 24" style="fill:#fff;width:26px;height:26px">${getSvgPath(key)}</svg>`}
       </span>
       <span class="ch-pcard-body">
         <small class="ch-pcard-cat">${cat}</small>
@@ -338,9 +345,12 @@ function buildEPK(epk) {
     const suffix = urls.length > 1 ? ` ${i+1}` : '';
     const desc = platformDesc[key] || getDomain(url);
     const metric = i===0 ? (s[key+'_followers']||'') : '';
+    const rowImgIcon = platformImg[key];
     return `<a href="${url}" class="ch-row" target="_blank" rel="noopener" style="--ch-pc:${color}">
       <span class="ch-row-icon" style="background:${color}">
-        <svg viewBox="0 0 24 24" style="fill:#fff;width:18px;height:18px">${getSvgPath(key)}</svg>
+        ${rowImgIcon
+          ? `<img src="${rowImgIcon}" style="width:20px;height:20px;object-fit:contain" alt="${key}">`
+          : `<svg viewBox="0 0 24 24" style="fill:#fff;width:18px;height:18px">${getSvgPath(key)}</svg>`}
       </span>
       <span class="ch-row-name">${labels[key]}${suffix}</span>
       <span class="ch-row-desc">${desc}</span>
@@ -368,7 +378,7 @@ function buildEPK(epk) {
           const url = getFirstUrl(s[k]);
           const color = platformColors[k];
           return `<a href="${url}" target="_blank" rel="noopener" class="ch-follow-sq" title="${labels[k]}">
-            <svg viewBox="0 0 24 24" style="fill:${color};width:22px;height:22px">${getSvgPath(k)}</svg>
+            ${platformImg[k] ? `<img src="${platformImg[k]}" style="width:22px;height:22px;object-fit:contain" alt="${k}">` : `<svg viewBox="0 0 24 24" style="fill:${color};width:22px;height:22px">${getSvgPath(k)}</svg>`}
           </a>`;
         }).join('')}
       </div>
