@@ -1992,6 +1992,152 @@ function updatePreviewPositionSlider(val) {
 
 function removePhoto(i) { epk.photos.splice(i, 1); renderPhotos(); persistUser(); showSaveBanner(); }
 
+// ─── BULK PHOTO METADATA EDITOR ────────────────────────────────────────────
+let photoBulkMode = false;
+let photoBulkSaveTimer = null;
+
+function togglePhotoBulkEdit() {
+  photoBulkMode = !photoBulkMode;
+  const btn = document.getElementById('photoBulkToggle');
+  const cardsList = document.getElementById('photosList');
+  const bulkEditor = document.getElementById('photoBulkEditor');
+  if (photoBulkMode) {
+    btn.textContent = '✕ Exit Bulk Edit';
+    btn.style.background = 'rgba(255,80,80,0.08)';
+    btn.style.borderColor = 'rgba(255,80,80,0.3)';
+    btn.style.color = '#ff8080';
+    cardsList.style.display = 'none';
+    bulkEditor.style.display = 'block';
+    renderPhotoBulkEditor();
+  } else {
+    btn.textContent = '📊 Bulk Edit All Photos';
+    btn.style.background = 'rgba(201,168,76,0.08)';
+    btn.style.borderColor = 'rgba(201,168,76,0.3)';
+    btn.style.color = 'var(--gold)';
+    cardsList.style.display = '';
+    bulkEditor.style.display = 'none';
+    renderPhotos();
+  }
+}
+
+function renderPhotoBulkEditor() {
+  const container = document.getElementById('photoBulkEditor');
+  const photos = epk.photos || [];
+
+  const categoryOptions = [
+    '', 'Personal Pictures', 'Family', 'Friends', 'Colleagues',
+    'Festival', 'Concert', 'Graduation', 'Travel', 'Work & Career', 'Celebration'
+  ].map(c => `<option value="${c}">${c || '— Category —'}</option>`).join('');
+
+  const careerPhaseOptions = [
+    '', 'Personal/Personal', 'Personal/Family', 'Personal/Friends',
+    'Career/Music', 'Career/Corporate', 'Career/Education', 'Career/Government',
+    'General/Event', 'General/Travel', 'General/Milestone'
+  ].map(c => `<option value="${c}">${c || '— Career Phase —'}</option>`).join('');
+
+  const mediaTypeOptions = [
+    '', 'Concert', 'Family', 'Friends', 'Colleagues', 'Festival',
+    'Graduation', 'Travel', 'Studio', 'Press', 'Event', 'Documentary'
+  ].map(m => `<option value="${m}">${m || '— Media Type —'}</option>`).join('');
+
+  const colStyle = (w) => `style="min-width:${w};padding:0.4rem 0.5rem;vertical-align:top;border-right:1px solid rgba(201,168,76,0.06)"`;
+  const inputStyle = `style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.15);color:var(--warm-white);font-family:var(--font-mono);font-size:0.65rem;padding:0.3rem 0.4rem;box-sizing:border-box"`;
+  const selectStyle = `style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.15);color:var(--gray-light);font-family:var(--font-mono);font-size:0.6rem;padding:0.3rem 0.4rem;box-sizing:border-box"`;
+
+  const headerCols = [
+    ['#', '32px'], ['Photo', '100px'], ['Caption', '160px'], ['Year', '70px'],
+    ['Location', '130px'], ['Collection', '120px'], ['Category', '140px'],
+    ['Career Phase', '160px'], ['Media Type', '130px'], ['People', '130px'],
+    ['Tags', '120px'], ['Featured', '60px'], ['Del', '44px']
+  ];
+
+  const headers = headerCols.map(([label, w]) =>
+    `<th style="min-width:${w};padding:0.4rem 0.5rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gold);text-transform:uppercase;border-right:1px solid rgba(201,168,76,0.06);white-space:nowrap;font-weight:400;background:var(--dark-3);border-bottom:1px solid rgba(201,168,76,0.2)">${label}</th>`
+  ).join('');
+
+  const rows = photos.map((p, i) => `
+    <tr id="bulkRow_${i}" style="border-bottom:1px solid rgba(255,255,255,0.04)">
+      <td ${colStyle('32px')} style="min-width:32px;padding:0.4rem 0.5rem;vertical-align:middle;text-align:center;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray)">${i + 1}</td>
+      <td ${colStyle('100px')} style="min-width:100px;padding:0.4rem 0.5rem;vertical-align:middle">
+        <img src="${p.url || ''}" style="width:80px;height:60px;object-fit:cover;object-position:${p.position||'top center'};border:1px solid rgba(201,168,76,0.1)" onerror="this.style.opacity=0.2">
+      </td>
+      <td ${colStyle('160px')} style="min-width:160px;padding:0.4rem 0.5rem;vertical-align:top">
+        <input ${inputStyle} type="text" value="${(p.caption || '').replace(/"/g,'&quot;')}" placeholder="Caption" oninput="bulkFieldChange(${i},'caption',this.value)" onchange="bulkFieldChange(${i},'caption',this.value)">
+      </td>
+      <td ${colStyle('70px')} style="min-width:70px;padding:0.4rem 0.5rem;vertical-align:top">
+        <input ${inputStyle} type="number" value="${p.year || ''}" placeholder="Year" min="1990" max="2030" oninput="bulkFieldChange(${i},'year',this.value?parseInt(this.value):null)">
+      </td>
+      <td ${colStyle('130px')} style="min-width:130px;padding:0.4rem 0.5rem;vertical-align:top">
+        <input ${inputStyle} type="text" value="${(p.location || '').replace(/"/g,'&quot;')}" placeholder="City, State" oninput="bulkFieldChange(${i},'location',this.value)">
+      </td>
+      <td ${colStyle('120px')} style="min-width:120px;padding:0.4rem 0.5rem;vertical-align:top">
+        <input ${inputStyle} type="text" value="${(p.group || p.collection || '').replace(/"/g,'&quot;')}" placeholder="Collection name" oninput="bulkFieldChange(${i},'group',this.value);bulkFieldChange(${i},'collection',this.value)">
+      </td>
+      <td ${colStyle('140px')} style="min-width:140px;padding:0.4rem 0.5rem;vertical-align:top">
+        <select ${selectStyle} onchange="bulkFieldChange(${i},'category',this.value)">
+          ${categoryOptions.replace(`value="${p.category || ''}"`, `value="${p.category || ''}" selected`)}
+        </select>
+      </td>
+      <td ${colStyle('160px')} style="min-width:160px;padding:0.4rem 0.5rem;vertical-align:top">
+        <select ${selectStyle} onchange="bulkFieldChange(${i},'careerPhase',this.value)">
+          ${careerPhaseOptions.replace(`value="${p.careerPhase || ''}"`, `value="${p.careerPhase || ''}" selected`)}
+        </select>
+      </td>
+      <td ${colStyle('130px')} style="min-width:130px;padding:0.4rem 0.5rem;vertical-align:top">
+        <select ${selectStyle} onchange="bulkFieldChange(${i},'mediaType',this.value)">
+          ${mediaTypeOptions.replace(`value="${p.mediaType || ''}"`, `value="${p.mediaType || ''}" selected`)}
+        </select>
+      </td>
+      <td ${colStyle('130px')} style="min-width:130px;padding:0.4rem 0.5rem;vertical-align:top">
+        <input ${inputStyle} type="text" value="${(p.people || '').replace(/"/g,'&quot;')}" placeholder="Names" oninput="bulkFieldChange(${i},'people',this.value)">
+      </td>
+      <td ${colStyle('120px')} style="min-width:120px;padding:0.4rem 0.5rem;vertical-align:top">
+        <input ${inputStyle} type="text" value="${(Array.isArray(p.tags)?p.tags.join(', '):(p.tags||'')).replace(/"/g,'&quot;')}" placeholder="tag1, tag2" oninput="bulkFieldChange(${i},'tags',this.value.split(',').map(t=>t.trim()).filter(Boolean))">
+      </td>
+      <td ${colStyle('60px')} style="min-width:60px;padding:0.4rem 0.5rem;vertical-align:middle;text-align:center">
+        <input type="checkbox" ${p.featured ? 'checked' : ''} style="accent-color:var(--gold);width:16px;height:16px;cursor:pointer" onchange="bulkFieldChange(${i},'featured',this.checked)">
+      </td>
+      <td style="min-width:44px;padding:0.4rem 0.5rem;vertical-align:middle;text-align:center">
+        <button onclick="bulkDeletePhoto(${i})" style="background:rgba(255,60,60,0.08);border:1px solid rgba(255,60,60,0.25);color:#ff8080;font-size:0.65rem;cursor:pointer;padding:0.2rem 0.45rem;font-family:var(--font-mono)">✕</button>
+      </td>
+    </tr>`).join('');
+
+  container.innerHTML = `
+    <div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-bottom:0.5rem;letter-spacing:0.08em">
+      EDITING ${photos.length} PHOTOS — EVERY CHANGE SAVES INSTANTLY &nbsp;·&nbsp; SCROLL RIGHT FOR MORE COLUMNS
+    </div>
+    <table style="border-collapse:collapse;width:100%;min-width:1200px;background:var(--dark-2)">
+      <thead><tr>${headers}</tr></thead>
+      <tbody id="photoBulkBody">${rows}</tbody>
+    </table>`;
+}
+
+function bulkFieldChange(idx, field, value) {
+  if (!epk.photos || !epk.photos[idx]) return;
+  epk.photos[idx][field] = value;
+  // Debounce save: reset timer on every keystroke, fire after 800ms of silence
+  clearTimeout(photoBulkSaveTimer);
+  photoBulkSaveTimer = setTimeout(() => {
+    persistUser();
+    // Show "Saved ✓" indicator
+    const status = document.getElementById('photoBulkStatus');
+    if (status) {
+      status.style.opacity = '1';
+      setTimeout(() => { status.style.opacity = '0'; }, 2000);
+    }
+  }, 800);
+}
+
+function bulkDeletePhoto(idx) {
+  if (!confirm(`Delete photo "${epk.photos[idx]?.caption || 'photo ' + (idx+1)}"? This cannot be undone.`)) return;
+  epk.photos.splice(idx, 1);
+  persistUser();
+  renderPhotoBulkEditor(); // re-render table with updated indices
+  // Also update card view in background
+  renderPhotos();
+}
+// ─── END BULK PHOTO EDITOR ──────────────────────────────────────────────────
+
 // ASSETS
 let editingAssetIdx = -1;
 function renderAssets() {

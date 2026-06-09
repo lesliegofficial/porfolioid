@@ -944,7 +944,13 @@
         </div>
       </div>
 
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+        <span id="photoBulkStatus" style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gold);opacity:0;transition:opacity 0.4s">✓ Saved</span>
+        <button id="photoBulkToggle" onclick="togglePhotoBulkEdit()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);color:var(--gold);padding:0.35rem 0.9rem;cursor:pointer">📊 Bulk Edit All Photos</button>
+      </div>
+
       <div class="cards-list" id="photosList"></div>
+      <div id="photoBulkEditor" style="display:none;overflow-x:auto;margin-bottom:1.5rem"></div>
 
       <button class="btn-add-new" onclick="toggleAddForm('addPhotoForm')">+ Add Photo</button>
 
@@ -1841,6 +1847,6 @@
 
 <div class="save-banner" id="saveBanner">✓ Saved</div>
 
-<script src="/dashboard.js?v=20260608-d3" defer></script>
+<script src="/dashboard.js?v=20260609-d4" defer></script>
 </body>
 </html>
