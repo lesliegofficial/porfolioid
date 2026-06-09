@@ -151,7 +151,7 @@ function buildEPK(epk) {
     instagram:'#E1306C', facebook:'#1877F2', tiktok:'#010101', linkedin:'#0A66C2',
     website:'#C9A84C', spotify:'#1DB954', appleMusic:'#FC3C44', youtube:'#FF0000',
     soundcloud:'#FF5500', tidal:'#000000', bandcamp:'#1DA0C3', booking:'#C9A84C',
-    amazon:'#131313', threads:'#000000', x:'#000000', snapchat:'#FFFC00',
+    amazon:'#000000', threads:'#000000', x:'#000000', snapchat:'#FFFC00',
     pinterest:'#E60023', reddit:'#FF4500', discord:'#5865F2', twitch:'#9146FF',
     bluesky:'#0085FF', mastodon:'#6364FF', telegram:'#26A5E4', wechat:'#07C160',
     tumblr:'#35465C', clubhouse:'#F3EFE7', dribbble:'#EA4C89', strava:'#FC4C02',
@@ -165,7 +165,7 @@ function buildEPK(epk) {
     appleMusic:'rgba(252,60,68,0.15)', youtube:'rgba(255,0,0,0.12)',
     soundcloud:'rgba(255,85,0,0.15)', tidal:'rgba(0,0,0,0.8)',
     bandcamp:'rgba(29,160,195,0.15)', booking:'rgba(201,168,76,0.15)',
-    amazon:'#131313', threads:'rgba(0,0,0,0.85)', x:'rgba(0,0,0,0.85)',
+    amazon:'#000000', threads:'rgba(0,0,0,0.85)', x:'rgba(0,0,0,0.85)',
     snapchat:'rgba(255,252,0,0.15)', pinterest:'rgba(230,0,35,0.15)',
     reddit:'rgba(255,69,0,0.15)', discord:'rgba(88,101,242,0.15)',
     twitch:'rgba(145,70,255,0.15)', bluesky:'rgba(0,133,255,0.15)',
@@ -178,8 +178,8 @@ function buildEPK(epk) {
 
   // Custom image icons (overrides SVG for specific platforms)
   const platformImg = {
-    amazon: 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1781034044/icons/amazon-icon-white.jpg',
-    tiktok: 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1781034045/icons/tiktok-icon-white.jpg',
+    amazon: 'https://res.cloudinary.com/djj8xe3gx/image/upload/e_make_transparent:10,f_png/icons/amazon-icon-white.jpg',
+    tiktok: 'https://res.cloudinary.com/djj8xe3gx/image/upload/e_make_transparent:10,f_png/icons/tiktok-icon-white.jpg',
   };
 
   const platformCat = {
@@ -277,7 +277,7 @@ function buildEPK(epk) {
     const imgIcon = platformImg[key];
     return `<a href="${url}" class="ch-pcard" target="${isBooking?'_self':'_blank'}" rel="noopener">
       <span class="ch-pcard-icon" style="background:${color}">
-        ${imgIcon ? `<img src="${imgIcon}" style="width:30px;height:30px;object-fit:contain" alt="${key}">` : `<svg viewBox="0 0 24 24" style="fill:#fff;width:26px;height:26px">${getSvgPath(key)}</svg>`}
+        ${imgIcon ? `<img src="${imgIcon}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="${key}">` : `<svg viewBox="0 0 24 24" style="fill:#fff;width:26px;height:26px">${getSvgPath(key)}</svg>`}
       </span>
       <span class="ch-pcard-body">
         <small class="ch-pcard-cat">${cat}</small>
@@ -349,7 +349,7 @@ function buildEPK(epk) {
     return `<a href="${url}" class="ch-row" target="_blank" rel="noopener" style="--ch-pc:${color}">
       <span class="ch-row-icon" style="background:${color}">
         ${rowImgIcon
-          ? `<img src="${rowImgIcon}" style="width:20px;height:20px;object-fit:contain" alt="${key}">`
+          ? `<img src="${rowImgIcon}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="${key}">`
           : `<svg viewBox="0 0 24 24" style="fill:#fff;width:18px;height:18px">${getSvgPath(key)}</svg>`}
       </span>
       <span class="ch-row-name">${labels[key]}${suffix}</span>
