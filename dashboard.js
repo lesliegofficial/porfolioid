@@ -3045,6 +3045,8 @@ function saveSocials() {
   epk.socials.tidal = document.getElementById('socialTidal').value.trim();
   epk.socials.bandcamp = document.getElementById('socialBandcamp').value.trim();
   epk.socials.instagram_followers = document.getElementById('socialInstagram_followers') ? document.getElementById('socialInstagram_followers').value.trim() : (epk.socials.instagram_followers || '');
+  const metricsEl = document.getElementById('socialShowMetrics');
+  if (metricsEl) epk.socials.showMetrics = metricsEl.checked;
   ['instagram','facebook','website'].forEach(p => {
     if (Array.isArray(epk.socials[p])) {
       epk.socials[p] = epk.socials[p].filter(v => v.trim());
@@ -3073,6 +3075,9 @@ function loadSocials() {
     const el = document.getElementById(elId);
     if (el) el.value = s[key] || '';
   });
+  // Load metrics toggle — default ON
+  const metricsEl = document.getElementById('socialShowMetrics');
+  if (metricsEl) metricsEl.checked = s.showMetrics !== false && s.showMetrics !== 'false';
 }
 
 // BOOKING TOGGLE
