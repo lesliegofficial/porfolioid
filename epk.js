@@ -182,8 +182,8 @@ function buildEPK(epk) {
     const metric = s[key+'_followers'] || '';
     return `<a href="${url}" class="ch-card${isPrimary?' ch-card--primary':''}" target="${isBooking?'_self':'_blank'}" rel="noopener">
       <small class="ch-card-cat">${cat}</small>
-      <span class="ch-card-icon" style="background:${bg}">
-        <svg viewBox="0 0 24 24" style="fill:${color};width:32px;height:32px">${getSvgPath(key)}</svg>
+      <span class="ch-card-icon-wrap" style="background:${color}">
+        <svg viewBox="0 0 24 24" style="fill:#fff;width:30px;height:30px">${getSvgPath(key)}</svg>
       </span>
       <span class="ch-card-name">${name}</span>
       <span class="ch-card-desc">${desc}</span>
@@ -196,8 +196,8 @@ function buildEPK(epk) {
     websiteUrl
       ? `<a href="${websiteUrl}" class="ch-card ch-card--primary" target="_blank" rel="noopener">
           <small class="ch-card-cat">Website</small>
-          <span class="ch-card-icon" style="background:rgba(201,168,76,0.15)">
-            <svg viewBox="0 0 24 24" style="fill:#C9A84C;width:32px;height:32px">${getSvgPath('website')}</svg>
+          <span class="ch-card-icon-wrap" style="background:#C9A84C">
+            <svg viewBox="0 0 24 24" style="fill:#fff;width:30px;height:30px">${getSvgPath('website')}</svg>
           </span>
           <span class="ch-card-name">Official Website</span>
           <span class="ch-card-desc">View Portfolio</span>
@@ -205,8 +205,8 @@ function buildEPK(epk) {
         </a>`
       : `<a class="ch-card ch-card--primary ch-card--empty">
           <small class="ch-card-cat">Website</small>
-          <span class="ch-card-icon" style="background:rgba(201,168,76,0.08)">
-            <svg viewBox="0 0 24 24" style="fill:rgba(201,168,76,0.35);width:32px;height:32px">${getSvgPath('website')}</svg>
+          <span class="ch-card-icon-wrap" style="background:rgba(201,168,76,0.2)">
+            <svg viewBox="0 0 24 24" style="fill:rgba(201,168,76,0.5);width:30px;height:30px">${getSvgPath('website')}</svg>
           </span>
           <span class="ch-card-name" style="opacity:0.3">Official Website</span>
           <span class="ch-card-desc" style="opacity:0.2">Add URL in dashboard</span>
@@ -226,8 +226,8 @@ function buildEPK(epk) {
     const desc = platformDesc[key] || getDomain(url);
     const metric = i===0 ? (s[key+'_followers']||'') : '';
     return `<a href="${url}" class="ch-row" target="_blank" rel="noopener" style="--ch-pc:${color}">
-      <span class="ch-row-icon" style="background:${bg}">
-        <svg viewBox="0 0 24 24" style="fill:${color};width:20px;height:20px">${getSvgPath(key)}</svg>
+      <span class="ch-row-icon" style="background:${color}">
+        <svg viewBox="0 0 24 24" style="fill:#fff;width:20px;height:20px">${getSvgPath(key)}</svg>
       </span>
       <span class="ch-row-info">
         <span class="ch-row-name">${labels[key]}${suffix}</span>
@@ -261,7 +261,7 @@ function buildEPK(epk) {
             const url = getFirstUrl(s[k]);
             const color = platformColors[k];
             return `<a href="${url}" target="_blank" rel="noopener" class="ch-follow-icon" title="${labels[k]}">
-              <svg viewBox="0 0 24 24" style="fill:${color};width:18px;height:18px">${getSvgPath(k)}</svg>
+              <svg viewBox="0 0 24 24" style="fill:${color};width:20px;height:20px">${getSvgPath(k)}</svg>
             </a>`;
           }).join('')}
         </div>
