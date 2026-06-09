@@ -427,7 +427,7 @@
 
   /* Hero — no portrait */
   .ch-hero { padding: 36px 40px 32px; margin-bottom: 32px; border: 1px solid rgba(201,168,76,0.22); background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.008)), radial-gradient(circle at 80% 50%, rgba(201,168,76,0.08), transparent 50%); }
-  .ch-hero-title { font-family: var(--font-serif); font-size: clamp(2.8rem, 5vw, 4.5rem); line-height: 0.88; letter-spacing: -0.03em; color: #f5f1e8; margin: 0 0 16px; font-weight: 400; }
+  .ch-hero-title { font-family: var(--font-display); font-size: clamp(2.8rem, 5vw, 4.5rem); line-height: 0.88; letter-spacing: -0.03em; color: #f5f1e8; margin: 0 0 16px; font-weight: 400; }
   .ch-hero-title em { font-style: italic; color: #d7b84f; }
   .ch-hero-sub { font-family: var(--font-mono); font-size: 0.6rem; color: #888; max-width: 520px; line-height: 1.65; margin: 0 0 20px; }
   .ch-hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
@@ -446,7 +446,7 @@
   .ch-card--empty { pointer-events: none; }
   .ch-card-cat { font-family: var(--font-mono); font-size: 0.44rem; letter-spacing: 0.2em; text-transform: uppercase; color: #d7b84f; position: relative; }
   .ch-card-icon { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 6px 0 8px; flex-shrink: 0; position: relative; }
-  .ch-card-name { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 400; color: #f5f1e8; line-height: 1.2; position: relative; }
+  .ch-card-name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 400; color: #f5f1e8; line-height: 1.2; position: relative; }
   .ch-card-desc { font-family: var(--font-mono); font-size: 0.46rem; color: #888; position: relative; }
   .ch-card-arrow { color: #d7b84f; position: absolute; right: 16px; bottom: 16px; font-size: 0.8rem; transition: transform 0.22s ease; }
   .ch-card:hover .ch-card-arrow { transform: translateX(5px); }
