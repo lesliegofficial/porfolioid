@@ -414,7 +414,7 @@ async function persistUser() {
     if (!slug) return;
 
     // Separate large paginated arrays from core profile data
-    const PAGINATED_SECTIONS = ['photos', 'assets', 'awards']; // credits, videos, tracks excluded — saved in core data to prevent wipes
+    const PAGINATED_SECTIONS = ['assets', 'awards']; // photos/credits/videos/tracks saved in core to preserve all fields
     const coreData = {};
     const sectionData = {};
 
@@ -1724,6 +1724,8 @@ function editPhoto(i) {
   document.getElementById('addPhotoForm').classList.add('open');
   document.getElementById('addPhotoForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addPhotoForm .add-form-title').textContent = 'Edit Photo';
+  const submitBtn = document.getElementById('photoSubmitBtn');
+  if (submitBtn) submitBtn.textContent = 'Save Photo';
   // Restore any unsaved draft for this photo
   if (restoreDraft('addPhotoForm', i)) showDraftBanner('addPhotoForm');
 }
@@ -1764,6 +1766,8 @@ function addPhoto() {
   document.getElementById('photoPreviewBox').style.display = 'none';
   toggleAddForm('addPhotoForm');
   clearDraft('addPhotoForm', editingPhotoIdx >= 0 ? editingPhotoIdx : -1);
+  const submitBtn = document.getElementById('photoSubmitBtn');
+  if (submitBtn) submitBtn.textContent = 'Add Photo';
   renderPhotos(); persistUser(); showSaveBanner();
 }
 function updateHeroPreview(url) {
