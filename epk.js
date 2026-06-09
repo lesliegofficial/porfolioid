@@ -178,8 +178,8 @@ function buildEPK(epk) {
 
   // Custom image icons (overrides SVG for specific platforms)
   const platformImg = {
-    amazon: 'https://res.cloudinary.com/djj8xe3gx/image/upload/e_make_transparent:10,f_png/icons/amazon-icon-white.jpg',
-    tiktok: 'https://res.cloudinary.com/djj8xe3gx/image/upload/e_make_transparent:10,f_png/icons/tiktok-icon-white.jpg',
+    amazon: 'https://res.cloudinary.com/djj8xe3gx/image/upload/x_234,y_211,w_541,h_551,c_crop,e_make_transparent:10,f_png/icons/amazon-icon-white.jpg',
+    tiktok: 'https://res.cloudinary.com/djj8xe3gx/image/upload/c_trim,e_make_transparent:10,f_png/icons/tiktok-icon-white.jpg',
   };
 
   const platformCat = {
@@ -277,7 +277,7 @@ function buildEPK(epk) {
     const imgIcon = platformImg[key];
     return `<a href="${url}" class="ch-pcard" target="${isBooking?'_self':'_blank'}" rel="noopener">
       <span class="ch-pcard-icon" style="background:${color}">
-        ${imgIcon ? `<img src="${imgIcon}" style="width:80%;height:80%;object-fit:contain" alt="${key}">` : `<svg viewBox="0 0 24 24" style="fill:#fff;width:26px;height:26px">${getSvgPath(key)}</svg>`}
+        ${imgIcon ? `<img src="${imgIcon}" style="width:100%;height:100%;object-fit:cover" alt="${key}">` : `<svg viewBox="0 0 24 24" style="fill:#fff;width:26px;height:26px">${getSvgPath(key)}</svg>`}
       </span>
       <span class="ch-pcard-body">
         <small class="ch-pcard-cat">${cat}</small>
@@ -328,7 +328,7 @@ function buildEPK(epk) {
   const amazonBannerHTML = amazonUrl ? `
     <a href="${amazonUrl}" class="ch-amazon-banner" target="_blank" rel="noopener">
       <span class="ch-amazon-icon">
-        <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/e_make_transparent:10,f_png/icons/amazon-icon-white.jpg" style="width:80%;height:80%;object-fit:contain" alt="amazon">
+        <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/x_234,y_211,w_541,h_551,c_crop,e_make_transparent:10,f_png/icons/amazon-icon-white.jpg" style="width:100%;height:100%;object-fit:cover" alt="amazon">
       </span>
       <span class="ch-amazon-left">
         <small class="ch-amazon-cat">Curated Picks</small>
@@ -349,7 +349,7 @@ function buildEPK(epk) {
     return `<a href="${url}" class="ch-row" target="_blank" rel="noopener" style="--ch-pc:${color}">
       <span class="ch-row-icon" style="background:${color}">
         ${rowImgIcon
-          ? `<img src="${rowImgIcon}" style="width:80%;height:80%;object-fit:contain" alt="${key}">`
+          ? `<img src="${rowImgIcon}" style="width:100%;height:100%;object-fit:cover" alt="${key}">`
           : `<svg viewBox="0 0 24 24" style="fill:#fff;width:18px;height:18px">${getSvgPath(key)}</svg>`}
       </span>
       <span class="ch-row-name">${labels[key]}${suffix}</span>
