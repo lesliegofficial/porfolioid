@@ -554,6 +554,21 @@ exports.handler = async (event) => {
           return ok({ success: true });
         }
 
+        // For photos: save full rich data into epk_profiles core (not just the photos table)
+        // This ensures all metadata fields (year, location, people, tags, etc.) survive the round trip
+        if (section === 'photos') {
+          const profileRes = await sbGet('epk_profiles', `slug=eq.${slug}&select=data`);
+          if (profileRes.ok && profileRes.data.length) {
+            const coreData = profileRes.data[0].data || {};
+            coreData.photos = items;
+            const updateRes = await sb('epk_profiles', 'POST', { slug, data: coreData, updated_at: new Date().toISOString() }, {
+              headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' }
+            });
+            if (!updateRes.ok) console.error('Photos core save error:', updateRes.data);
+          }
+          return ok({ success: true });
+        }
+
         // Delete existing and reinsert with new sort order
         await sbDelete(table, { slug });
         if (items && items.length) {
