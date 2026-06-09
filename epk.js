@@ -941,63 +941,84 @@ function buildEPK(epk) {
   const catBadges = bookingCategories.length ? `<div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:2rem">${bookingCategories.map(c => `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(201,168,76,0.2);color:var(--gray);padding:0.25rem 0.6rem">${categoryLabels[c]||c}</span>`).join('')}</div>` : '';
 
   document.getElementById('epkContent').innerHTML = `
-    <!-- HERO -->
+    <!-- HERO v2 — 3 column -->
     <div class="hero">
       <div class="hero-image-panel">${heroImgHTML}</div>
       <div class="hero-content">
-        <p class="hero-eyebrow">PorfolioID — Professional Identity Platform</p>
         <h1 class="hero-name">${firstName}<br><em>${lastName}</em></h1>
         ${taglinesHTML ? `<p class="hero-tagline">${taglinesHTML}</p>` : ''}
-        <div class="hero-ctas">
-          ${epk.bookingEnabled !== false ? `<a href="#booking" class="btn-secondary">Book Now →</a>` : ""}
-          <button onclick="openShareModal()" class="btn-secondary" style="display:inline-flex;align-items:center;gap:0.5rem">⬛ Share Portfolio</button>
+        <div class="hero-rule"></div>
+        <div class="hero-intro">
+          <p>With more than 25 years in the music industry, Leslie A. Guerra bridges the stage, the studio, and the business side of entertainment.</p>
+          <p>Her career spans live performance, recording, artist development, operations, marketing, and digital portfolio innovation across multiple industries and continents.</p>
+          <p>Explore her verified credits, projects, performances, and professional journey below.</p>
         </div>
-        ${statsHTML ? `<div class="hero-stats">${statsHTML}</div>` : ''}
-        ${(() => {
-          const ib = epk.identityBlock || {};
-          let blocks = '';
-
-          // Availability Badges
-          if (ib.availabilityEnabled && ib.availabilityBadges?.length) {
-            blocks += `<div class="identity-block"><div class="identity-block-label">Availability</div><div class="identity-tags">${ib.availabilityBadges.map(b=>`<span class="identity-tag">${b}</span>`).join('')}</div></div>`;
-          }
-          // Industry Roles
-          if (ib.rolesEnabled && ib.industryRoles?.length) {
-            blocks += `<div class="identity-block"><div class="identity-block-label">Industry Roles</div><div class="identity-tags">${ib.industryRoles.map(r=>`<span class="identity-tag">${r}</span>`).join('')}</div></div>`;
-          }
-          // Featured Credit
-          if (ib.featuredEnabled && ib.featuredCreditIdx !== '' && epk.credits?.[ib.featuredCreditIdx]) {
-            const fc = epk.credits[ib.featuredCreditIdx];
-            blocks += `<div class="identity-block"><div class="identity-block-label">Featured Credit</div><div class="identity-featured-credit"><span class="identity-featured-artist">${fc.company || fc.artist}</span><span class="identity-featured-role">${fc.role}${fc.years ? ' · ' + fc.years : ''}</span></div></div>`;
-          }
-          // Verification
-          if (ib.verifiedEnabled && ib.verificationStatus) {
-            blocks += `<div class="identity-block"><div class="identity-block-label">Verification</div><div class="identity-verified">✦ ${ib.verificationStatus}</div></div>`;
-          }
-          // Languages
-          if (ib.languagesEnabled && ib.languages?.length) {
-            blocks += `<div class="identity-block"><div class="identity-block-label">Languages</div><div class="identity-langs">${ib.languages.join(' · ')}</div></div>`;
-          }
-          // Representation
-          if (ib.repEnabled && ib.repName) {
-            blocks += `<div class="identity-block"><div class="identity-block-label">Representation</div><div class="identity-rep"><span class="identity-rep-name">${ib.repName}</span>${ib.repRole ? `<span class="identity-rep-role">${ib.repRole}</span>` : ''}${ib.repContact ? `<span class="identity-rep-contact">${ib.repContact}</span>` : ''}</div></div>`;
-          }
-          // Timeline
-          if (ib.timelineEnabled && ib.timeline?.length) {
-            const items = ib.timeline.map(m=>`<div class="timeline-item"><span class="timeline-year">${m.year}</span><span class="timeline-milestone">${m.milestone}</span></div>`).join('');
-            blocks += `<div class="identity-block"><div class="identity-block-label">Career Timeline</div><div class="identity-timeline">${items}</div></div>`;
-          }
-          return blocks ? `<div class="identity-blocks">${blocks}</div>` : '';
-        })()}
+        <div class="hero-ctas">
+          <a href="#credits" onclick="expandSection('credits')" class="btn-primary" style="display:inline-flex;align-items:center;gap:0.75rem">
+            <svg viewBox="0 0 24 24" style="fill:currentColor;width:14px;height:14px;flex-shrink:0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            Explore The Record
+          </a>
+          <a href="#connect" onclick="expandSection('connect')" class="btn-secondary">Connect →</a>
+        </div>
+      </div>
+      <div class="hero-stats-col">
+        ${(epk.stats||[]).filter(s=>s.number).length ? (epk.stats||[]).filter(s=>s.number).map(s=>`
+        <div class="hero-stat-card">
+          <div class="hero-stat-icon">${s.icon||'◎'}</div>
+          <div><span class="hero-stat-number">${s.number}</span><span class="hero-stat-label">${s.label}</span></div>
+        </div>`).join('') : `
+        <div class="hero-stat-card"><div class="hero-stat-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:16px;height:16px"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div><div><span class="hero-stat-number">25+</span><span class="hero-stat-label">Years Active</span></div></div>
+        <div class="hero-stat-card"><div class="hero-stat-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:16px;height:16px"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div><div><span class="hero-stat-number">500+</span><span class="hero-stat-label">Live Shows</span></div></div>
+        <div class="hero-stat-card"><div class="hero-stat-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:16px;height:16px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div><div><span class="hero-stat-number">5</span><span class="hero-stat-label">Continents</span></div></div>
+        <div class="hero-stat-card"><div class="hero-stat-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:16px;height:16px"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div><div><span class="hero-stat-number">Multiple</span><span class="hero-stat-label">Genres &amp; Industries</span></div></div>`}
       </div>
     </div>
 
-    <!-- CAREER PROFILE (Bio + Resume unified) -->
+    <!-- CAREER HIGHLIGHTS -->
     <section class="career-profile-section" id="bio">
-      <div class="career-profile-inner">
-        <div class="section-label">Career Profile</div>
-        <h2 class="section-title" data-editable data-editable-key="careerTitle" data-editable-type="title" style="outline:none">Professional <em>Identity</em></h2>
-        ${careerProfileHTML}
+      <div class="ch-highlights-wrap">
+        <div class="ch-highlights-header">
+          <span class="ch-highlights-label">Career Highlights</span>
+          <a href="#credits" onclick="expandSection('credits')" class="ch-highlights-viewall">View All Credits →</a>
+        </div>
+        <div class="ch-highlights-grid">
+          <div class="ch-hl-card" onclick="expandSection('credits')">
+            <div class="ch-hl-bg" style="background-image:url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80')"></div>
+            <div class="ch-hl-overlay"></div>
+            <div class="ch-hl-icon"><svg viewBox="0 0 24 24" style="fill:#C9A84C;width:14px;height:14px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
+            <div class="ch-hl-body"><h3 class="ch-hl-title">Live Performance</h3><p class="ch-hl-desc">International touring vocalist with hundreds of shows across five continents.</p><span class="ch-hl-link">View Credits →</span></div>
+          </div>
+          <div class="ch-hl-card" onclick="expandSection('credits')">
+            <div class="ch-hl-bg" style="background-image:url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&q=80')"></div>
+            <div class="ch-hl-overlay"></div>
+            <div class="ch-hl-icon"><svg viewBox="0 0 24 24" style="fill:#C9A84C;width:14px;height:14px"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
+            <div class="ch-hl-body"><h3 class="ch-hl-title">Recording Artist</h3><p class="ch-hl-desc">Professional recording artist with original releases and live recording credits.</p><span class="ch-hl-link">View Credits →</span></div>
+          </div>
+          <div class="ch-hl-card" onclick="expandSection('credits')">
+            <div class="ch-hl-bg" style="background-image:url('https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=600&q=80')"></div>
+            <div class="ch-hl-overlay"></div>
+            <div class="ch-hl-icon"><svg viewBox="0 0 24 24" style="fill:#C9A84C;width:14px;height:14px"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg></div>
+            <div class="ch-hl-body"><h3 class="ch-hl-title">Creative Professional</h3><p class="ch-hl-desc">A&amp;R, creative operations, project management, and content strategy.</p><span class="ch-hl-link">View Credits →</span></div>
+          </div>
+          <div class="ch-hl-card" onclick="expandSection('credits')">
+            <div class="ch-hl-bg" style="background-image:url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80')"></div>
+            <div class="ch-hl-overlay"></div>
+            <div class="ch-hl-icon"><svg viewBox="0 0 24 24" style="fill:#C9A84C;width:14px;height:14px"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
+            <div class="ch-hl-body"><h3 class="ch-hl-title">Marketing &amp; PR</h3><p class="ch-hl-desc">Campaigns, media relations, and digital strategy for major Latin artists.</p><span class="ch-hl-link">View Credits →</span></div>
+          </div>
+          <div class="ch-hl-card" onclick="expandSection('credits')">
+            <div class="ch-hl-bg" style="background-image:url('https://images.unsplash.com/photo-1598653222000-6b7b7a552625?w=600&q=80')"></div>
+            <div class="ch-hl-overlay"></div>
+            <div class="ch-hl-icon"><svg viewBox="0 0 24 24" style="fill:#C9A84C;width:14px;height:14px"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div>
+            <div class="ch-hl-body"><h3 class="ch-hl-title">Industry Operations</h3><p class="ch-hl-desc">Artist management support, tour operations, and production logistics.</p><span class="ch-hl-link">View Credits →</span></div>
+          </div>
+          <div class="ch-hl-card" onclick="expandSection('credits')">
+            <div class="ch-hl-bg" style="background-image:url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80')"></div>
+            <div class="ch-hl-overlay"></div>
+            <div class="ch-hl-icon"><svg viewBox="0 0 24 24" style="fill:#C9A84C;width:14px;height:14px"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+            <div class="ch-hl-body"><h3 class="ch-hl-title">Collaborations</h3><p class="ch-hl-desc">Worked alongside top artists, producers, and industry professionals.</p><span class="ch-hl-link">View Credits →</span></div>
+          </div>
+        </div>
       </div>
     </section>
     <div class="divider"></div>
