@@ -457,9 +457,9 @@
   .ch-pcard:hover .ch-pcard-cta { opacity: 1; }
 
   /* ── Amazon secondary banner ── */
-  .ch-amazon-banner { display: grid; grid-template-columns: 56px auto 1fr auto; align-items: center; gap: 16px; padding: 16px 20px; background: #0c0c0c; border: 1px solid rgba(201,168,76,0.15); color: #f5f1e8; text-decoration: none; transition: all 0.2s; margin-bottom: 0; }
+  .ch-amazon-banner { display: grid; grid-template-columns: 60px minmax(200px, auto) 1fr auto; align-items: center; gap: 20px; padding: 18px 24px; background: #0c0c0c; border: 1px solid rgba(201,168,76,0.15); color: #f5f1e8; text-decoration: none; transition: all 0.2s; margin-bottom: 0; }
   .ch-amazon-banner:hover { border-color: rgba(201,168,76,0.45); background: #0f0f0f; }
-  .ch-amazon-icon { width: 48px; height: 48px; border-radius: 50%; background: rgba(201,168,76,0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .ch-amazon-icon { width: 52px; height: 52px; border-radius: 50%; background: #C9A84C; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .ch-amazon-left { display: flex; flex-direction: column; gap: 2px; }
   .ch-amazon-cat { font-family: var(--font-mono); font-size: 0.42rem; letter-spacing: 0.18em; text-transform: uppercase; color: #d7b84f; }
   .ch-amazon-name { font-family: var(--font-display); font-size: 0.95rem; font-weight: 400; color: #f5f1e8; }

@@ -319,7 +319,7 @@ function buildEPK(epk) {
   const amazonBannerHTML = amazonUrl ? `
     <a href="${amazonUrl}" class="ch-amazon-banner" target="_blank" rel="noopener">
       <span class="ch-amazon-icon">
-        <svg viewBox="0 0 24 24" style="fill:#C9A84C;width:32px;height:32px">${getSvgPath('amazon')}</svg>
+        <svg viewBox="0 0 24 24" style="fill:#050505;width:28px;height:28px">${getSvgPath('amazon')}</svg>
       </span>
       <span class="ch-amazon-left">
         <small class="ch-amazon-cat">Curated Picks</small>
