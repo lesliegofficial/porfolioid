@@ -101,7 +101,7 @@ function buildEPK(epk) {
 
   // Build featured videos (first 3)
 
-  // Build connect section — Connect Hub v8 (premium redesign)
+  // Build connect section — Connect Hub v9 (editorial refinement)
   const svgIcons = {
     instagram: '<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
     facebook: '<svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
@@ -119,8 +119,8 @@ function buildEPK(epk) {
   const labels = { instagram:'Instagram', facebook:'Facebook', tiktok:'TikTok', linkedin:'LinkedIn', website:'Website', spotify:'Spotify', appleMusic:'Apple Music', youtube:'YouTube', soundcloud:'SoundCloud', tidal:'Tidal', bandcamp:'Bandcamp' };
   const platformColors = { instagram:'#E1306C', facebook:'#1877F2', tiktok:'#ffffff', linkedin:'#0A66C2', website:'#C9A84C', spotify:'#1DB954', appleMusic:'#FC3C44', youtube:'#FF0000', soundcloud:'#FF5500', tidal:'#aaaaaa', bandcamp:'#1DA0C3' };
   const platformBg = { instagram:'rgba(225,48,108,0.15)', facebook:'rgba(24,119,242,0.15)', tiktok:'rgba(255,255,255,0.08)', linkedin:'rgba(10,102,194,0.15)', website:'rgba(201,168,76,0.15)', spotify:'rgba(29,185,84,0.15)', appleMusic:'rgba(252,60,68,0.15)', youtube:'rgba(255,0,0,0.12)', soundcloud:'rgba(255,85,0,0.15)', tidal:'rgba(255,255,255,0.06)', bandcamp:'rgba(29,160,195,0.15)' };
-  const platformCat = { instagram:'Social', facebook:'Social', tiktok:'Social', linkedin:'Professional', website:'Official Website', spotify:'Music', appleMusic:'Music', youtube:'Video', soundcloud:'Music', tidal:'Music', bandcamp:'Music' };
-  const platformSub = { instagram:'Follow on Instagram', facebook:'Follow on Facebook', tiktok:'Follow on TikTok', linkedin:'Connect on LinkedIn', website:'Visit Website', spotify:'Listen on Spotify', appleMusic:'Listen on Apple Music', youtube:'Watch on YouTube', soundcloud:'Listen on SoundCloud', tidal:'Listen on Tidal', bandcamp:'Listen on Bandcamp' };
+  // Editorial descriptions — personality over category labels
+  const platformDesc = { instagram:'Official Profile', facebook:'Community Updates', tiktok:'Short Form Content', linkedin:'Professional Network', website:'Official Website', spotify:'Music Catalog', appleMusic:'Streaming Platform', youtube:'Video Content', soundcloud:'Audio Archive', tidal:'Hi-Fi Streaming', bandcamp:'Independent Music', booking:'Work With Me' };
   const featuredActions = { website:'Visit Website', spotify:'Listen Now', youtube:'Watch Now', instagram:'Follow Me', appleMusic:'Listen Now', soundcloud:'Listen Now', tidal:'Listen Now', bandcamp:'Listen Now', facebook:'Follow Me', tiktok:'Follow Me', linkedin:'Connect', booking:'Work With Me' };
 
   const s = epk.socials || {};
@@ -133,10 +133,10 @@ function buildEPK(epk) {
       const p = new URL(url).pathname.replace(/^\/|\/$/g,'');
       if (!p) return getDomain(url);
       const parts = p.split('/').filter(Boolean);
-      const handle = parts[parts.length-1];
-      if (key==='instagram'||key==='tiktok') return '@'+handle;
+      const h = parts[parts.length-1];
+      if (key==='instagram'||key==='tiktok') return '@'+h;
       if (key==='linkedin') return '/'+parts.join('/');
-      return '/'+handle;
+      return '/'+h;
     } catch { return getDomain(url); }
   };
 
@@ -145,7 +145,6 @@ function buildEPK(epk) {
   const hasSocials = socialKeys.some(k => hasValue(s[k]));
   const hasMusic = musicKeys.some(k => hasValue(s[k]));
   const hasAnyLinks = hasSocials || hasMusic || hasValue(s.website);
-
   const getSvgPath = (key) => svgIcons[key] ? svgIcons[key].replace('<svg viewBox="0 0 24 24">','').replace('</svg>','') : '';
 
   // ── HERO PANEL ──
@@ -154,24 +153,24 @@ function buildEPK(epk) {
   const personRole = (epk.taglines || []).slice(0,2).join(' • ') || '';
 
   const heroPanelHTML = `
-    <div class="ch-hero-panel">
+    <div class="ch-hero">
       <div class="ch-hero-copy">
         <p class="ch-eyebrow">Connect</p>
         <h2 class="ch-hero-title">Connect <em>With Me</em></h2>
-        <p class="ch-hero-subtitle">Explore my official platforms, music channels, social media profiles, and booking information.</p>
-        <div class="ch-hero-actions">
-          <a href="#booking" class="ch-btn-primary">Booking &amp; Contact</a>
-          <a href="#booking" class="ch-btn-secondary">Save to Contacts</a>
+        <p class="ch-hero-sub">Explore my official platforms, music channels, social media profiles, and booking information.</p>
+        <div class="ch-hero-btns">
+          <a href="#booking" class="ch-btn-gold">Booking &amp; Contact</a>
+          <a href="#booking" class="ch-btn-outline">Save to Contacts</a>
         </div>
       </div>
       <div class="ch-portrait-wrap">
         ${portraitImg ? `<img class="ch-portrait" src="${portraitImg}" alt="${personName}">` : ''}
-        ${personName ? `<div class="ch-person-name">${personName}</div>` : ''}
-        ${personRole ? `<div class="ch-person-role">${personRole}</div>` : ''}
+        ${personName ? `<p class="ch-person-name">${personName}</p>` : ''}
+        ${personRole ? `<p class="ch-person-role">${personRole}</p>` : ''}
       </div>
     </div>`;
 
-  // ── FEATURED CARDS ──
+  // ── FEATURED CARDS — no category labels, just name + action ──
   const websiteUrl = getFirstUrl(s.website);
   const buildFeatCard = (key, nameOverride, isPrimary) => {
     const isBooking = key === 'booking';
@@ -181,70 +180,60 @@ function buildEPK(epk) {
     if (!url && !isBooking) return '';
     const color = platformColors[key] || '#C9A84C';
     const bg = platformBg[key] || 'rgba(201,168,76,0.15)';
-    const cat = platformCat[key] || '';
     const name = nameOverride || labels[key] || key;
     const action = featuredActions[key] || 'Visit';
     const metric = s[key+'_followers'] || '';
-    return `<a href="${url}" class="ch-feat-card${isPrimary?' ch-feat-primary':''}" target="${isBooking?'_self':'_blank'}" rel="noopener">
-      <span class="ch-feat-icon" style="background:${bg}">
-        <svg viewBox="0 0 24 24" style="fill:${color};width:30px;height:30px">${getSvgPath(key)}</svg>
+    return `<a href="${url}" class="ch-card${isPrimary?' ch-card--primary':''}" target="${isBooking?'_self':'_blank'}" rel="noopener">
+      <span class="ch-card-icon" style="background:${bg}">
+        <svg viewBox="0 0 24 24" style="fill:${color};width:26px;height:26px">${getSvgPath(key)}</svg>
       </span>
-      <small>${cat}</small>
-      <h3>${name}</h3>
-      <p>${action}</p>
+      <span class="ch-card-name">${name}</span>
+      <span class="ch-card-action">${action} →</span>
       ${(showMetrics && metric) ? `<span class="ch-metric">${metric}</span>` : ''}
-      <span class="ch-feat-arrow">→</span>
     </a>`;
   };
 
   const featuredHTML = [
     websiteUrl
-      ? `<a href="${websiteUrl}" class="ch-feat-card ch-feat-primary" target="_blank" rel="noopener">
-          <span class="ch-feat-icon" style="background:rgba(201,168,76,0.15)">
-            <svg viewBox="0 0 24 24" style="fill:#C9A84C;width:30px;height:30px">${getSvgPath('website')}</svg>
+      ? `<a href="${websiteUrl}" class="ch-card ch-card--primary" target="_blank" rel="noopener">
+          <span class="ch-card-icon" style="background:rgba(201,168,76,0.15)">
+            <svg viewBox="0 0 24 24" style="fill:#C9A84C;width:26px;height:26px">${getSvgPath('website')}</svg>
           </span>
-          <small>Official Website</small>
-          <h3>${getDomain(websiteUrl)}</h3>
-          <p>Visit Website</p>
-          <span class="ch-feat-arrow">→</span>
+          <span class="ch-card-name">${getDomain(websiteUrl)}</span>
+          <span class="ch-card-action">Visit Website →</span>
         </a>`
-      : `<a class="ch-feat-card ch-feat-primary" style="opacity:0.35;pointer-events:none">
-          <span class="ch-feat-icon" style="background:rgba(201,168,76,0.1)">
-            <svg viewBox="0 0 24 24" style="fill:#C9A84C;width:30px;height:30px">${getSvgPath('website')}</svg>
+      : `<a class="ch-card ch-card--primary ch-card--empty">
+          <span class="ch-card-icon" style="background:rgba(201,168,76,0.08)">
+            <svg viewBox="0 0 24 24" style="fill:rgba(201,168,76,0.4);width:26px;height:26px">${getSvgPath('website')}</svg>
           </span>
-          <small>Official Website</small>
-          <h3>Add Website URL</h3>
-          <p>Visit Website</p>
-          <span class="ch-feat-arrow">→</span>
+          <span class="ch-card-name" style="opacity:0.35">Official Website</span>
+          <span class="ch-card-action" style="opacity:0.25">Add URL in dashboard</span>
         </a>`,
     buildFeatCard('spotify','Spotify', false),
-    buildFeatCard('youtube','YouTube Channel', false),
+    buildFeatCard('youtube','YouTube', false),
     buildFeatCard('instagram','Instagram', false),
     buildFeatCard('booking','Booking &amp; Contact', false),
   ].filter(Boolean).join('');
 
-  // ── PLATFORM ROWS ──
+  // ── PLATFORM ROWS — editorial descriptions ──
   const buildPlatRow = (key, urls) => urls.map((url, i) => {
     const color = platformColors[key] || '#C9A84C';
     const bg = platformBg[key] || 'rgba(255,255,255,0.06)';
-    const cat = platformCat[key] || '';
     const suffix = urls.length > 1 ? ` ${i+1}` : '';
-    const handle = getHandle(url, key);
-    const sub = platformSub[key] || handle;
+    const desc = platformDesc[key] || getHandle(url, key);
     const metric = i===0 ? (s[key+'_followers']||'') : '';
     const badge = i===0 ? (key==='linkedin' ? 'Verified' : 'Official') : '';
-    return `<a href="${url}" class="ch-plat-row" target="_blank" rel="noopener" style="--ch-pc:${color}">
-      <span class="ch-plat-icon" style="background:${bg}">
-        <svg viewBox="0 0 24 24" style="fill:${color};width:22px;height:22px">${getSvgPath(key)}</svg>
+    return `<a href="${url}" class="ch-row" target="_blank" rel="noopener" style="--ch-pc:${color}">
+      <span class="ch-row-icon" style="background:${bg}">
+        <svg viewBox="0 0 24 24" style="fill:${color};width:20px;height:20px">${getSvgPath(key)}</svg>
       </span>
-      <span class="ch-plat-info">
-        <small>${cat}</small>
-        <strong>${labels[key]}${suffix}</strong>
-        <span>${sub}</span>
+      <span class="ch-row-info">
+        <span class="ch-row-name">${labels[key]}${suffix}</span>
+        <span class="ch-row-desc">${desc}</span>
         ${(showMetrics && metric) ? `<span class="ch-metric">${metric}</span>` : ''}
       </span>
       ${badge ? `<span class="ch-badge">${badge}</span>` : ''}
-      <span class="ch-plat-arrow">→</span>
+      <span class="ch-row-arrow">→</span>
     </a>`;
   }).join('');
 
@@ -258,7 +247,7 @@ function buildEPK(epk) {
   const socialRowsHTML = buildPlatRows(socialKeys);
   const musicRowsHTML = buildPlatRows(musicKeys);
 
-  // ── STAY CONNECTED ──
+  // ── STAY CONNECTED — compact CTA under music column ──
   const bannerImg = epk.heroImage || epk.bioImage || '';
   const allBannerKeys = [...socialKeys,'spotify','youtube'].filter(k => hasValue(s[k]));
   const stayHTML = `
@@ -266,14 +255,14 @@ function buildEPK(epk) {
       ${bannerImg ? `<div class="ch-stay-img-wrap"><img src="${bannerImg}" alt="${personName}" class="ch-stay-img"></div>` : ''}
       <div class="ch-stay-body">
         <p class="ch-eyebrow">Stay Connected</p>
-        <h3 class="ch-stay-title">New Music. Updates.<br><em>Exclusive Content.</em></h3>
-        <p class="ch-stay-sub">Follow me across my official platforms for music releases, performances, projects, industry updates, and behind-the-scenes content.</p>
+        <h4 class="ch-stay-title">New Music. Updates.<br><em>Exclusive Content.</em></h4>
+        <p class="ch-stay-sub">Follow me across my official platforms for releases, performances, projects, and behind-the-scenes content.</p>
         <div class="ch-stay-icons">
           ${allBannerKeys.map(k => {
             const url = getFirstUrl(s[k]);
             const color = platformColors[k];
             return `<a href="${url}" target="_blank" rel="noopener" class="ch-stay-icon" title="${labels[k]}">
-              <svg viewBox="0 0 24 24" style="fill:${color};width:20px;height:20px">${getSvgPath(k)}</svg>
+              <svg viewBox="0 0 24 24" style="fill:${color};width:18px;height:18px">${getSvgPath(k)}</svg>
             </a>`;
           }).join('')}
         </div>
@@ -283,24 +272,21 @@ function buildEPK(epk) {
   const connectSectionHTML = hasAnyLinks ? `
     <div class="connect-hub">
       ${heroPanelHTML}
-
-      <div class="ch-feat-section">
+      <div class="ch-feat-wrap">
         <p class="ch-section-label">Featured Links</p>
         <div class="ch-feat-grid">${featuredHTML}</div>
       </div>
-
-      <div class="ch-plat-columns">
-        ${hasSocials ? `<div>
+      <div class="ch-cols">
+        ${hasSocials ? `<div class="ch-col">
           <p class="ch-section-label">Social Platforms</p>
-          <div class="ch-plat-list">${socialRowsHTML}</div>
+          <div class="ch-rows">${socialRowsHTML}</div>
         </div>` : ''}
-        ${hasMusic ? `<div>
+        ${hasMusic ? `<div class="ch-col">
           <p class="ch-section-label">Music Platforms</p>
-          <div class="ch-plat-list">${musicRowsHTML}</div>
+          <div class="ch-rows">${musicRowsHTML}</div>
+          ${stayHTML}
         </div>` : ''}
       </div>
-
-      ${stayHTML}
     </div>
     <div class="divider"></div>` : '';
 
