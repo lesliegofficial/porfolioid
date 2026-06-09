@@ -515,11 +515,6 @@ async function persistUser() {
   }
 }
 
-function showSaveBanner() {
-  const banner = document.getElementById('saveBanner');
-  banner.classList.add('show');
-  setTimeout(() => banner.classList.remove('show'), 2000);
-}
 
 function showPanel(name) {
   // Warn if credit form is open with unsaved changes
