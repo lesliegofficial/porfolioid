@@ -369,14 +369,14 @@
 
   /* COLLAPSIBLE SECTIONS */
   .collapsible-section { border-top: 1px solid rgba(255,255,255,0.06); }
-  .collapsible-header { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; cursor: pointer; user-select: none; max-width: 1100px; margin: 0 auto; transition: background 0.2s; }
+  .collapsible-header { display: flex; align-items: center; justify-content: space-between; padding: 1.75rem 2rem; cursor: pointer; user-select: none; max-width: 1100px; margin: 0 auto; transition: background 0.2s; }
   .collapsible-header:hover { background: rgba(255,255,255,0.02); }
-  .collapsible-header-left { display: flex; align-items: center; gap: 1.25rem; }
-  .collapsible-header-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; display: block; }
-  .collapsible-header-title { font-family: var(--font-display); font-size: clamp(1.6rem, 2.5vw, 2.2rem); color: var(--white); font-weight: 400; line-height: 1.1; }
-  .collapsible-header-meta { font-family: var(--font-mono); font-size: 0.55rem; color: var(--gray); letter-spacing: 0.08em; }
-  .ch-preview-icons { display: flex; align-items: center; gap: 5px; margin-top: 6px; }
-  .ch-preview-dot { width: 7px; height: 7px; border-radius: 50%; opacity: 0.7; flex-shrink: 0; transition: opacity 0.2s; }
+  .collapsible-header-left { display: flex; align-items: center; gap: 1.75rem; }
+  .collapsible-header-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; display: block; }
+  .collapsible-header-title { font-family: var(--font-display); font-size: clamp(1.6rem, 2.5vw, 2.2rem); color: var(--white); font-weight: 400; line-height: 1.1; margin-bottom: 8px; }
+  .collapsible-header-meta { font-family: var(--font-mono); font-size: 0.55rem; color: var(--gray); letter-spacing: 0.08em; margin-bottom: 10px; display: block; }
+  .ch-preview-icons { display: flex; align-items: center; gap: 7px; margin-top: 2px; }
+  .ch-preview-dot { width: 9px; height: 9px; border-radius: 50%; opacity: 0.75; flex-shrink: 0; transition: opacity 0.2s; }
   .collapsible-header:hover .ch-preview-dot { opacity: 1; }
   .collapsible-icon { width: 52px; height: 52px; border: 1px solid rgba(201,168,76,0.25); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--gold); flex-shrink: 0; background: rgba(201,168,76,0.04); transition: all 0.3s; }
   .collapsible-header:hover .collapsible-icon { border-color: rgba(201,168,76,0.5); background: rgba(201,168,76,0.08); }
