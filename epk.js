@@ -101,7 +101,7 @@ function buildEPK(epk) {
 
   // Build featured videos (first 3)
 
-  // Build connect section — Connect Hub v12 (reference exact)
+  // Build connect section — Connect Hub v13 (executive premium)
   const svgIcons = {
     instagram: '<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
     facebook: '<svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
@@ -116,7 +116,7 @@ function buildEPK(epk) {
     bandcamp: '<svg viewBox="0 0 24 24"><path d="M0 18.75l7.437-13.5H24l-7.438 13.5z"/></svg>',
     booking: '<svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>',
     amazon: '<svg viewBox="0 0 24 24"><path d="M.045 18.02c.072-.116.187-.124.348-.022 3.636 2.11 7.594 3.166 11.87 3.166 2.852 0 5.668-.533 8.447-1.595l.315-.14c.138-.06.234-.1.293-.13.226-.088.39-.046.525.13.12.174.09.336-.12.48-.256.19-.6.41-1.006.654-1.244.743-2.64 1.316-4.185 1.726a18.3 18.3 0 01-4.342.535 18.7 18.7 0 01-9.69-2.65c-.278-.17-.33-.356-.155-.59zm21.02-2.11c.17.016.27.124.32.326l.027.153v.076c0 .31-.078.525-.235.64-.157.115-.43.172-.82.172h-.32c-.252 0-.44-.065-.563-.194l-.068-.1-.5-1.96-.5 1.96c-.08.195-.19.295-.34.3l-.063.003h-.32c-.39 0-.663-.057-.82-.172-.158-.115-.235-.33-.235-.64v-.077l.027-.152c.05-.202.15-.31.32-.326h.063c.17 0 .27.1.32.31l.22.99.55-2.32c.05-.22.16-.32.33-.32h.13c.17 0 .28.1.33.32l.55 2.32.22-.99c.05-.21.15-.31.32-.31h.063zm-3.96-1.44v2.45c0 .18-.15.31-.34.31h-.19c-.19 0-.34-.13-.34-.31V14.47c0-.18.15-.31.34-.31h.19c.19 0 .34.13.34.31zm-1.75-.31c.19 0 .34.13.34.31v.3c-.22.08-.48.18-.77.32-.56.27-.84.57-.84.89 0 .19.09.35.27.47.18.12.4.18.66.18.16 0 .34-.03.54-.1v.52c0 .18-.15.31-.34.31h-.08c-.43 0-.79-.1-1.07-.31-.28-.21-.42-.5-.42-.87 0-.24.07-.46.21-.67.14-.2.37-.4.7-.58.19-.1.41-.2.64-.28v-.13c0-.15-.04-.27-.11-.36-.07-.09-.18-.13-.31-.13-.18 0-.38.08-.6.24l-.19.15c-.12.1-.24.1-.35 0l-.14-.15c-.11-.13-.1-.26.03-.38.28-.25.64-.37 1.07-.37h.08c.41 0 .73.12.95.35.22.23.33.55.33.96z"/></svg>',
-    threads: '<svg viewBox="0 0 24 24"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.5 12.068c0-3.52.85-6.374 2.495-8.423C5.845 1.341 8.598.16 12.18.136h.014c3.582.024 6.335 1.205 8.185 3.509C22.024 5.694 22.5 8.548 22.5 12.068c0 3.52-.476 6.374-2.121 8.423-1.85 2.304-4.603 3.485-8.185 3.509zM12.18 2.127c-3.046.02-5.358 1.01-6.877 2.943-1.375 1.754-2.076 4.26-2.076 7.448 0 3.188.701 5.694 2.076 7.448 1.519 1.933 3.831 2.923 6.877 2.943 3.046-.02 5.358-1.01 6.877-2.943 1.375-1.754 2.076-4.26 2.076-7.448 0-3.188-.701-5.694-2.076-7.448-1.519-1.933-3.831-2.923-6.877-2.943zm.64 13.29c-1.86 0-3.198-.87-3.198-2.1 0-.98.765-1.74 2.228-2.04l1.718-.36c.47-.1.67-.32.67-.64 0-.48-.44-.82-1.11-.82-.7 0-1.18.34-1.33.93l-1.81-.39c.35-1.43 1.63-2.34 3.22-2.34 1.76 0 2.93.9 2.93 2.3v3.18c0 .46.02.82.06 1.1h-1.73c-.03-.2-.04-.44-.04-.74-.36.56-1.05.92-1.62.92zm.45-1.29c.76 0 1.4-.54 1.4-1.26v-.5l-1.46.31c-.64.14-.94.42-.94.78 0 .41.42.67 1 .67z"/></svg>',
+    threads: '<svg viewBox="0 0 24 24"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.5 12.068c0-3.52.85-6.374 2.495-8.423C5.845 1.341 8.598.16 12.18.136h.014c2.764.019 5.152.822 6.904 2.322 1.527 1.312 2.44 3.098 2.638 5.163l-2.089.2c-.327-3.345-2.717-5.525-7.447-5.557-2.697.018-4.757.867-6.121 2.523C4.837 6.38 4.164 8.43 4.164 12.068c0 3.643.738 6.148 2.19 7.822 1.322 1.522 3.27 2.297 5.836 2.312 2.202-.013 3.854-.584 4.91-1.698.97-1.018 1.524-2.508 1.648-4.424L16.66 15.7c-.264 1.697-.83 2.938-1.669 3.687-.93.83-2.283 1.25-3.995 1.25l-.81-.637zm7.093-8.72c-.42-4.463-3.005-7.04-7.294-7.04-2.684 0-4.836 1.094-5.988 3.085-.883 1.534-1.082 3.497-.554 5.46.528 1.964 1.813 3.528 3.6 4.406.738.364 1.55.549 2.387.549 1.578 0 2.897-.573 3.82-1.658.84-.99 1.29-2.343 1.29-3.914 0-.156-.01-.311-.027-.464l-.02-.21.028.019 2.759.406z"/></svg>',
     x: '<svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
     snapchat: '<svg viewBox="0 0 24 24"><path d="M12.065.001c1.587.007 6.585.38 8.944 5.233.916 1.877.697 5.049.536 7.485l-.01.161c-.01.109.066.232.168.296.52.324 1.63.69 3.255.972.107.019.146.1.112.184-.162.388-.782 1.26-2.472 1.535-.104.016-.133.091-.093.198.073.198.15.546.176.927.025.346-.07.557-.372.557a2.43 2.43 0 00-.617.09c-.59.175-1.195.768-2.13 1.329-1.01.61-2.15.82-3.238.573-.578-.133-1.092-.432-1.573-.715-.43-.254-.829-.49-1.205-.547a1.45 1.45 0 00-.236-.019c-.079 0-.157.006-.234.019-.378.057-.777.293-1.206.547-.48.283-.995.582-1.572.715-1.089.247-2.229.037-3.238-.573-.936-.561-1.54-1.154-2.13-1.329a2.43 2.43 0 00-.617-.09c-.303 0-.397-.211-.372-.557.026-.381.103-.729.176-.927.04-.107.011-.182-.093-.198C.782 15.418.162 14.546 0 14.158c-.034-.084.005-.165.112-.184 1.625-.282 2.735-.648 3.255-.972.102-.064.178-.187.168-.296l-.01-.161c-.16-2.436-.38-5.608.536-7.485C6.41.381 11.408.008 12.065.001z"/></svg>',
     pinterest: '<svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>',
@@ -126,10 +126,10 @@ function buildEPK(epk) {
     bluesky: '<svg viewBox="0 0 24 24"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.299-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/></svg>',
     mastodon: '<svg viewBox="0 0 24 24"><path d="M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.02-.041.053.053 0 0 0-.046-.01 20.282 20.282 0 0 1-4.709.545c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.167-3.63-.024-5.545zm-3.748 9.195h-2.561V8.29c0-1.309-.55-1.976-1.67-1.976-1.23 0-1.846.79-1.846 2.35v3.403h-2.546V8.663c0-1.56-.617-2.35-1.848-2.35-1.112 0-1.668.668-1.67 1.977v6.218H4.822V8.102c0-1.31.337-2.35 1.011-3.12.696-.77 1.608-1.164 2.74-1.164 1.311 0 2.302.5 2.962 1.498l.638 1.06.638-1.06c.66-.999 1.65-1.498 2.96-1.498 1.13 0 2.043.395 2.74 1.164.675.77 1.012 1.81 1.012 3.12z"/></svg>',
     telegram: '<svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>',
-    wechat: '<svg viewBox="0 0 24 24"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-7.064-6.088v.006zm-2.772 2.Collections.25c.535 0 .969.44.969.983a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.544.434-.983.969-.983zm5.505 0c.535 0 .969.44.969.983a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.544.434-.983.969-.983z"/></svg>',
-    tumblr: '<svg viewBox="0 0 24 24"><path d="M14.563 24c-5.093 0-7.031-3.756-7.031-6.411V9.747H5.116V6.648c3.63-1.313 4.512-4.596 4.71-6.469C9.84.051 9.941 0 9.96 0h3.Controllers.156v6.248h4.027v3.499h-4.048v7.441c.03 1.209.684 2.136 2.523 2.136a4.685 4.685 0 0 0 1.523-.228v3.396a9.039 9.039 0 0 1-2.578.508z"/></svg>',
+    wechat: '<svg viewBox="0 0 24 24"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18z"/></svg>',
+    tumblr: '<svg viewBox="0 0 24 24"><path d="M14.563 24c-5.093 0-7.031-3.756-7.031-6.411V9.747H5.116V6.648c3.63-1.313 4.512-4.596 4.71-6.469C9.84.051 9.941 0 9.96 0h3.156v6.248h4.027v3.499h-4.048v7.441c.03 1.209.684 2.136 2.523 2.136a4.685 4.685 0 0 0 1.523-.228v3.396a9.039 9.039 0 0 1-2.578.508z"/></svg>',
     clubhouse: '<svg viewBox="0 0 24 24"><path d="M1.191 6.32c1.956-5.619 9.766-8.003 13.468-5.817 3.702 2.186 4.047 8.047 4.047 8.047s1.735-.576 2.56.231c.825.806.765 2.79-.346 4.284-1.111 1.493-2.618 1.697-2.618 1.697s-1.072 4.438-4.47 6.57c-3.397 2.132-7.81.892-9.307-.857-1.498-1.749-1.128-5.296-1.128-5.296S.482 13.756.38 11.7c-.103-2.056.855-4.762.811-5.38zm9.434 11.39c3.267 0 5.914-2.909 5.914-6.498 0-3.588-2.647-6.497-5.914-6.497-3.267 0-5.914 2.909-5.914 6.497s2.647 6.497 5.914 6.497z"/></svg>',
-    dribbble: '<svg viewBox="0 0 24 24"><path d="M12 24C5.385 24 0 18.615 0 12S5.385 0 12 0s12 5.385 12 12-5.385 12-12 12zm10.12-10.358c-.35-.11-3.17-.953-6.384-.438 1.34 3.684 1.887 6.684 1.992 7.308 2.3-1.555 3.936-4.02 4.395-6.87zm-6.115 7.808c-.153-.9-.75-4.032-2.19-7.77l-.066.02c-5.79 2.015-7.86 6.025-8.048 6.409 1.73 1.35 3.92 2.166 6.298 2.166 1.42 0 2.77-.29 4.006-.825zm-11.62-2.estimating c.232-.4 3.045-5.055 8.332-6.765.135-.045.27-.084.405-.12-.26-.585-.54-1.167-.832-1.74C7.17 11.775 2.206 11.71 1.756 11.7l-.004.312c0 2.633.998 5.037 2.634 6.838zm-2.42-8.955c.46.008 4.683.026 9.477-1.248-1.698-3.018-3.53-5.558-3.8-5.928-2.868 1.35-5.01 3.99-5.676 7.176zM9.6 2.052c.282.38 2.145 2.914 3.822 6 3.645-1.365 5.19-3.44 5.373-3.702-1.81-1.61-4.19-2.586-6.795-2.586-.477 0-.945.04-1.4.113zm8.864 13.28c.04-.01.08-.02.12-.02-1.5-3.855-2.048-6.864-2.15-7.476-.43.07-.865.11-1.3.11-.36 0-.712-.024-1.06-.065-.045.012-.09.025-.13.04 1.44 3.756 1.982 6.778 2.115 7.395.84-.073 1.67-.18 2.405-.33z"/></svg>',
+    dribbble: '<svg viewBox="0 0 24 24"><path d="M12 24C5.385 24 0 18.615 0 12S5.385 0 12 0s12 5.385 12 12-5.385 12-12 12zm10.12-10.358c-.35-.11-3.17-.953-6.384-.438 1.34 3.684 1.887 6.684 1.992 7.308 2.3-1.555 3.936-4.02 4.395-6.87zm-6.115 7.808c-.153-.9-.75-4.032-2.19-7.77l-.066.02c-5.79 2.015-7.86 6.025-8.048 6.409 1.73 1.35 3.92 2.166 6.298 2.166 1.42 0 2.77-.29 4.006-.825zm-11.62-2.857c.232-.4 3.045-5.055 8.332-6.765.135-.045.27-.084.405-.12-.26-.585-.54-1.167-.832-1.74C7.17 11.775 2.206 11.71 1.756 11.7l-.004.312c0 2.633.998 5.037 2.634 6.838zm-2.42-8.955c.46.008 4.683.026 9.477-1.248-1.698-3.018-3.53-5.558-3.8-5.928-2.868 1.35-5.01 3.99-5.676 7.176zM9.6 2.052c.282.38 2.145 2.914 3.822 6 3.645-1.365 5.19-3.44 5.373-3.702-1.81-1.61-4.19-2.586-6.795-2.586-.477 0-.945.04-1.4.113zm8.864 13.28c.04-.01.08-.02.12-.02-1.5-3.855-2.048-6.864-2.15-7.476-.43.07-.865.11-1.3.11-.36 0-.712-.024-1.06-.065-.045.012-.09.025-.13.04 1.44 3.756 1.982 6.778 2.115 7.395.84-.073 1.67-.18 2.405-.33z"/></svg>',
     strava: '<svg viewBox="0 0 24 24"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>',
     letterboxd: '<svg viewBox="0 0 24 24"><path d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12S18.627 0 12 0 0 5.373 0 12zm9.623 4.5L12 8.997l2.377 7.503H9.623zm-2.218 0H4l1.944-2.615.716.483.744-2.368-2.432-1.633h3.527L9.448 7.5 12 16.5l2.552-9h3.45l-1.943 3.367.744 2.368.716-.483L19.461 16.5h-3.405L12 5.985 8.395 16.5H7.405z"/></svg>',
     nextdoor: '<svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.389 16.99c-.88.042-1.755-.124-2.565-.485L7.91 17.5c-.186.096-.4-.062-.37-.27l.395-2.47a5.57 5.57 0 0 1-1.468-4.437c.266-2.694 2.494-4.864 5.193-5.063a5.57 5.57 0 0 1 5.936 5.539c0 2.957-2.296 5.382-5.184 5.49z"/></svg>',
@@ -140,23 +140,22 @@ function buildEPK(epk) {
     instagram:'Instagram', facebook:'Facebook', tiktok:'TikTok', linkedin:'LinkedIn',
     website:'Website', spotify:'Spotify', appleMusic:'Apple Music', youtube:'YouTube',
     soundcloud:'SoundCloud', tidal:'Tidal', bandcamp:'Bandcamp', booking:'Booking & Contact',
-    amazon:'Amazon Storefront',
-    threads:'Threads', x:'X (Twitter)', snapchat:'Snapchat', pinterest:'Pinterest',
-    reddit:'Reddit', discord:'Discord', twitch:'Twitch', bluesky:'Bluesky',
-    mastodon:'Mastodon', telegram:'Telegram', wechat:'WeChat', tumblr:'Tumblr',
-    clubhouse:'Clubhouse', dribbble:'Dribbble', strava:'Strava', letterboxd:'Letterboxd',
-    nextdoor:'Nextdoor', quora:'Quora',
+    amazon:'Amazon Storefront', threads:'Threads', x:'X (Twitter)', snapchat:'Snapchat',
+    pinterest:'Pinterest', reddit:'Reddit', discord:'Discord', twitch:'Twitch',
+    bluesky:'Bluesky', mastodon:'Mastodon', telegram:'Telegram', wechat:'WeChat',
+    tumblr:'Tumblr', clubhouse:'Clubhouse', dribbble:'Dribbble', strava:'Strava',
+    letterboxd:'Letterboxd', nextdoor:'Nextdoor', quora:'Quora',
   };
 
   const platformColors = {
     instagram:'#E1306C', facebook:'#1877F2', tiktok:'#010101', linkedin:'#0A66C2',
     website:'#C9A84C', spotify:'#1DB954', appleMusic:'#FC3C44', youtube:'#FF0000',
     soundcloud:'#FF5500', tidal:'#000000', bandcamp:'#1DA0C3', booking:'#C9A84C',
-    threads:'#000000', x:'#000000', snapchat:'#FFFC00', pinterest:'#E60023',
-    reddit:'#FF4500', discord:'#5865F2', twitch:'#9146FF', bluesky:'#0085FF',
-    mastodon:'#6364FF', telegram:'#26A5E4', wechat:'#07C160', tumblr:'#35465C',
-    clubhouse:'#F3EFE7', dribbble:'#EA4C89', strava:'#FC4C02', letterboxd:'#00C030',
-    nextdoor:'#8DC63F', quora:'#B92B27', amazon:'#C9A84C',
+    amazon:'#C9A84C', threads:'#000000', x:'#000000', snapchat:'#FFFC00',
+    pinterest:'#E60023', reddit:'#FF4500', discord:'#5865F2', twitch:'#9146FF',
+    bluesky:'#0085FF', mastodon:'#6364FF', telegram:'#26A5E4', wechat:'#07C160',
+    tumblr:'#35465C', clubhouse:'#F3EFE7', dribbble:'#EA4C89', strava:'#FC4C02',
+    letterboxd:'#00C030', nextdoor:'#8DC63F', quora:'#B92B27',
   };
 
   const platformBg = {
@@ -166,7 +165,7 @@ function buildEPK(epk) {
     appleMusic:'rgba(252,60,68,0.15)', youtube:'rgba(255,0,0,0.12)',
     soundcloud:'rgba(255,85,0,0.15)', tidal:'rgba(0,0,0,0.8)',
     bandcamp:'rgba(29,160,195,0.15)', booking:'rgba(201,168,76,0.15)',
-    threads:'rgba(0,0,0,0.85)', x:'rgba(0,0,0,0.85)',
+    amazon:'rgba(201,168,76,0.12)', threads:'rgba(0,0,0,0.85)', x:'rgba(0,0,0,0.85)',
     snapchat:'rgba(255,252,0,0.15)', pinterest:'rgba(230,0,35,0.15)',
     reddit:'rgba(255,69,0,0.15)', discord:'rgba(88,101,242,0.15)',
     twitch:'rgba(145,70,255,0.15)', bluesky:'rgba(0,133,255,0.15)',
@@ -174,38 +173,38 @@ function buildEPK(epk) {
     wechat:'rgba(7,193,96,0.15)', tumblr:'rgba(53,70,92,0.8)',
     clubhouse:'rgba(243,239,231,0.15)', dribbble:'rgba(234,76,137,0.15)',
     strava:'rgba(252,76,2,0.15)', letterboxd:'rgba(0,192,48,0.15)',
-    nextdoor:'rgba(141,198,63,0.15)', quora:'rgba(185,43,39,0.15)', amazon:'rgba(201,168,76,0.12)',
+    nextdoor:'rgba(141,198,63,0.15)', quora:'rgba(185,43,39,0.15)',
   };
 
   const platformCat = {
     instagram:'Social', facebook:'Social', tiktok:'Social', linkedin:'Professional',
     website:'Website', spotify:'Music', appleMusic:'Music', youtube:'Video',
     soundcloud:'Music', tidal:'Music', bandcamp:'Music', booking:'Booking',
-    threads:'Social', x:'Social', snapchat:'Social', pinterest:'Social',
-    reddit:'Social', discord:'Community', twitch:'Live', bluesky:'Social',
-    mastodon:'Social', telegram:'Messaging', wechat:'Messaging', tumblr:'Social',
-    clubhouse:'Audio', dribbble:'Design', strava:'Fitness', letterboxd:'Film',
-    nextdoor:'Local', quora:'Knowledge', amazon:'Curated',
+    amazon:'Curated Picks', threads:'Social', x:'Social', snapchat:'Social',
+    pinterest:'Social', reddit:'Social', discord:'Community', twitch:'Live',
+    bluesky:'Social', mastodon:'Social', telegram:'Messaging', wechat:'Messaging',
+    tumblr:'Social', clubhouse:'Audio', dribbble:'Design', strava:'Fitness',
+    letterboxd:'Film', nextdoor:'Local', quora:'Knowledge',
   };
 
   const platformDesc = {
     instagram:'Official Profile', facebook:'Community Updates', tiktok:'Short Form Content',
     linkedin:'Professional Network', website:'View Portfolio', spotify:'Listen to Official Releases',
-    appleMusic:'Streaming Platform', youtube:'Watch Live Performances', soundcloud:'Audio Archive',
+    appleMusic:'Official Releases', youtube:'Official Channel', soundcloud:'Listen & Stream',
     tidal:'Hi-Fi Streaming', bandcamp:'Independent Music', booking:'Work With Me',
-    threads:'Threads Profile', x:'X Profile', snapchat:'Snapchat Stories',
-    pinterest:'Pinterest Boards', reddit:'Reddit Profile', discord:'Discord Community',
-    twitch:'Live Streams', bluesky:'Bluesky Profile', mastodon:'Mastodon Profile',
-    telegram:'Telegram Channel', wechat:'WeChat Account', tumblr:'Tumblr Blog',
-    clubhouse:'Clubhouse Rooms', dribbble:'Design Portfolio', strava:'Activity Profile',
-    letterboxd:'Film Journal', nextdoor:'Neighborhood', quora:'Answers & Insights',
+    amazon:'Products I Personally Use & Recommend', threads:'Threads Profile',
+    x:'X Profile', snapchat:'Snapchat Stories', pinterest:'Pinterest Boards',
+    reddit:'Reddit Profile', discord:'Discord Community', twitch:'Live Streams',
+    bluesky:'Bluesky Profile', mastodon:'Mastodon Profile', telegram:'Telegram Channel',
+    wechat:'WeChat Account', tumblr:'Tumblr Blog', clubhouse:'Clubhouse Rooms',
+    dribbble:'Design Portfolio', strava:'Activity Profile', letterboxd:'Film Journal',
+    nextdoor:'Neighborhood', quora:'Answers & Insights',
   };
 
-  const featuredDescs = {
-    website:'View Portfolio', spotify:'Listen to Official Releases',
-    youtube:'Watch Live Performances', instagram:'Behind The Scenes Content',
-    booking:'Work With Me',
-    amazon:'Products I Personally Use & Recommend',
+  // Unique CTA verbs per featured card — creates hierarchy
+  const featuredCTA = {
+    website:'View Portfolio', instagram:'Follow', spotify:'Listen',
+    youtube:'Watch', booking:'Inquire', amazon:'Visit Storefront',
   };
 
   const s = epk.socials || {};
@@ -221,7 +220,7 @@ function buildEPK(epk) {
   const hasAnyLinks = hasSocials || hasMusic || hasValue(s.website);
   const getSvgPath = (key) => svgIcons[key] ? svgIcons[key].replace('<svg viewBox="0 0 24 24">','').replace('</svg>','') : '';
 
-  // Helper: normalize website entries (supports both plain strings and rich objects)
+  // Rich website helper
   const normalizeWebsiteEntry = (v) => {
     if (!v) return null;
     if (typeof v === 'string') return { url: v, title: '', description: '', icon: '' };
@@ -234,7 +233,7 @@ function buildEPK(epk) {
     return arr.map(normalizeWebsiteEntry).filter(w => w && w.url && w.url.trim());
   };
 
-  // ── HERO — two-column, typography-driven ──
+  // ── HERO — two-column ──
   const heroPanelHTML = `
     <div class="ch-hero">
       <div class="ch-hero-left">
@@ -247,78 +246,91 @@ function buildEPK(epk) {
         <div class="ch-hero-btns">
           <a href="#booking" class="ch-btn-gold">Booking &amp; Contact →</a>
           <a href="#booking" class="ch-btn-outline">
-            <svg viewBox="0 0 24 24" style="fill:currentColor;width:14px;height:14px"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+            <svg viewBox="0 0 24 24" style="fill:currentColor;width:13px;height:13px"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
             Save to Contacts
           </a>
         </div>
       </div>
     </div>`;
 
-  // ── FEATURED CARDS — horizontal layout, icon left, text right ──
-  const buildFeatCard = (key, nameOverride) => {
+  // ── PRIMARY FEATURED CARDS — 5 cards, unique CTA verbs ──
+  const ws = getWebsites();
+  const w = ws[0];
+
+  const buildPrimaryCard = (key, catOverride, nameOverride, descOverride) => {
     const isBooking = key === 'booking';
     const val = s[key];
     if (!val && !isBooking) return '';
     const url = isBooking ? '#booking' : getFirstUrl(val);
     if (!url && !isBooking) return '';
     const color = platformColors[key] || '#C9A84C';
-    const cat = platformCat[key] || '';
+    const cat = catOverride || platformCat[key] || '';
     const name = nameOverride || labels[key] || key;
-    const desc = featuredDescs[key] || platformDesc[key] || '';
-    const metric = s[key+'_followers'] || '';
-    return `<a href="${url}" class="ch-card" target="${isBooking?'_self':'_blank'}" rel="noopener">
-      <span class="ch-card-icon" style="background:${color}">
+    const desc = descOverride || platformDesc[key] || '';
+    const cta = featuredCTA[key] || 'Visit';
+    return `<a href="${url}" class="ch-pcard" target="${isBooking?'_self':'_blank'}" rel="noopener">
+      <span class="ch-pcard-icon" style="background:${color}">
         <svg viewBox="0 0 24 24" style="fill:#fff;width:26px;height:26px">${getSvgPath(key)}</svg>
       </span>
-      <span class="ch-card-body">
-        <small class="ch-card-cat">${cat}</small>
-        <span class="ch-card-name">${name}</span>
-        <span class="ch-card-desc">${desc}</span>
-        ${(showMetrics && metric) ? `<span class="ch-metric">${metric}</span>` : ''}
+      <span class="ch-pcard-body">
+        <small class="ch-pcard-cat">${cat}</small>
+        <span class="ch-pcard-name">${name}</span>
+        <span class="ch-pcard-desc">${desc}</span>
       </span>
-      <span class="ch-card-arrow">→</span>
+      <span class="ch-pcard-cta">${cta} →</span>
     </a>`;
   };
 
-  const amazonUrl = getFirstUrl(s.amazon || '');
-  const featuredHTML = [
-    (() => {
-      const ws = getWebsites();
-      const w = ws[0];
-      if (w) {
-        const iconHtml = w.icon
-          ? `<img src="${w.icon}" style="width:28px;height:28px;object-fit:contain;border-radius:50%" onerror="this.style.display='none'">`
-          : `<svg viewBox="0 0 24 24" style="fill:#fff;width:26px;height:26px">${getSvgPath('website')}</svg>`;
-        return `<a href="${w.url}" class="ch-card ch-card--primary" target="_blank" rel="noopener">
-          <span class="ch-card-icon" style="background:#C9A84C">${iconHtml}</span>
-          <span class="ch-card-body">
-            <small class="ch-card-cat">Website</small>
-            <span class="ch-card-name">${w.title || 'Official Website'}</span>
-            <span class="ch-card-desc">${w.description || 'View Portfolio'}</span>
-          </span>
-          <span class="ch-card-arrow">→</span>
-        </a>`;
-      }
-      return `<a class="ch-card ch-card--primary ch-card--empty" style="pointer-events:none">
-          <span class="ch-card-icon" style="background:rgba(201,168,76,0.25)">
-            <svg viewBox="0 0 24 24" style="fill:rgba(255,255,255,0.4);width:26px;height:26px">${getSvgPath('website')}</svg>
-          </span>
-          <span class="ch-card-body">
-            <small class="ch-card-cat">Website</small>
-            <span class="ch-card-name" style="opacity:0.3">Official Website</span>
-            <span class="ch-card-desc" style="opacity:0.2">Add URL in dashboard</span>
-          </span>
-          <span class="ch-card-arrow" style="opacity:0.15">→</span>
-        </a>`;
-    })(),
-    buildFeatCard('instagram','Instagram'),
-    buildFeatCard('spotify','Spotify'),
-    buildFeatCard('youtube','YouTube'),
-    amazonUrl ? buildFeatCard('amazon','Amazon Storefront') : null,
-    buildFeatCard('booking','Booking & Contact'),
+  const websiteCard = w
+    ? `<a href="${w.url}" class="ch-pcard ch-pcard--primary" target="_blank" rel="noopener">
+        <span class="ch-pcard-icon" style="background:#C9A84C">
+          ${w.icon ? `<img src="${w.icon}" style="width:26px;height:26px;object-fit:contain;border-radius:50%" onerror="this.outerHTML='<svg viewBox=\\"0 0 24 24\\" style=\\"fill:#fff;width:26px;height:26px\\">${getSvgPath('website')}</svg>'">`
+                   : `<svg viewBox="0 0 24 24" style="fill:#fff;width:26px;height:26px">${getSvgPath('website')}</svg>`}
+        </span>
+        <span class="ch-pcard-body">
+          <small class="ch-pcard-cat">Website</small>
+          <span class="ch-pcard-name">${w.title || 'PortfolioID'}</span>
+          <span class="ch-pcard-desc">${w.description || 'Professional Identity'}</span>
+        </span>
+        <span class="ch-pcard-cta">View Portfolio →</span>
+      </a>`
+    : `<a class="ch-pcard ch-pcard--primary ch-pcard--empty" style="pointer-events:none">
+        <span class="ch-pcard-icon" style="background:rgba(201,168,76,0.2)">
+          <svg viewBox="0 0 24 24" style="fill:rgba(255,255,255,0.35);width:26px;height:26px">${getSvgPath('website')}</svg>
+        </span>
+        <span class="ch-pcard-body">
+          <small class="ch-pcard-cat">Website</small>
+          <span class="ch-pcard-name" style="opacity:0.3">Official Website</span>
+          <span class="ch-pcard-desc" style="opacity:0.2">Add URL in dashboard</span>
+        </span>
+        <span class="ch-pcard-cta" style="opacity:0.15">View Portfolio →</span>
+      </a>`;
+
+  const primaryCardsHTML = [
+    websiteCard,
+    buildPrimaryCard('instagram','Social','Instagram','Behind The Scenes'),
+    buildPrimaryCard('spotify','Music','Spotify','Official Releases'),
+    buildPrimaryCard('youtube','Video','YouTube','Watch Live Performances'),
+    buildPrimaryCard('booking','Booking','Booking & Contact','Work With Me'),
   ].filter(Boolean).join('');
 
-  // ── PLATFORM ROWS — compact, inline name + desc ──
+  // ── AMAZON — secondary wide banner ──
+  const amazonUrl = getFirstUrl(s.amazon || '');
+  const amazonBannerHTML = amazonUrl ? `
+    <a href="${amazonUrl}" class="ch-amazon-banner" target="_blank" rel="noopener">
+      <span class="ch-amazon-icon">
+        <svg viewBox="0 0 24 24" style="fill:#C9A84C;width:32px;height:32px">${getSvgPath('amazon')}</svg>
+      </span>
+      <span class="ch-amazon-left">
+        <small class="ch-amazon-cat">Curated Picks</small>
+        <span class="ch-amazon-name">My Picks</span>
+        <span class="ch-amazon-desc">Products I Personally Use & Recommend</span>
+      </span>
+      <span class="ch-amazon-mid">Shop my curated favorites and tools I use on a daily basis for work and life.</span>
+      <span class="ch-amazon-cta">Visit Amazon Storefront →</span>
+    </a>` : '';
+
+  // ── PLATFORM ROWS — compact ──
   const buildPlatRow = (key, urls) => urls.map((url, i) => {
     const color = platformColors[key] || '#C9A84C';
     const suffix = urls.length > 1 ? ` ${i+1}` : '';
@@ -330,14 +342,13 @@ function buildEPK(epk) {
       </span>
       <span class="ch-row-name">${labels[key]}${suffix}</span>
       <span class="ch-row-desc">${desc}</span>
-      ${(showMetrics && metric) ? `<span class="ch-metric ch-metric--row">${metric}</span>` : ''}
+      ${(showMetrics && metric) ? `<span class="ch-metric">${metric}</span>` : ''}
       <span class="ch-row-arrow">→</span>
     </a>`;
   }).join('');
 
   const buildPlatRows = (keys) => keys.flatMap(k => {
-    const val = s[k];
-    if (!hasValue(val)) return [];
+    const val = s[k]; if (!hasValue(val)) return [];
     const urls = Array.isArray(val) ? val.filter(Boolean) : [val];
     return [buildPlatRow(k, urls)];
   }).join('');
@@ -345,32 +356,21 @@ function buildEPK(epk) {
   const socialRowsHTML = buildPlatRows(socialKeys);
   const musicRowsHTML = buildPlatRows(musicKeys);
 
-  // ── FOLLOW EVERYWHERE — minimal centered strip ──
-  const allFollowKeys = [...socialKeys.slice(0,6),'spotify','youtube'].filter(k => hasValue(s[k]));
-  const followStripHTML = allFollowKeys.length ? `
-    <div class="ch-follow">
-      <div class="ch-follow-inner">
-        <span class="ch-follow-group-icon">
-          <svg viewBox="0 0 24 24" style="fill:#d7b84f;width:16px;height:16px"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-        </span>
-        <span class="ch-follow-pipe">|</span>
-        <span class="ch-follow-label">Follow Everywhere</span>
-        <span class="ch-follow-pipe">|</span>
-        <div class="ch-follow-icons">
-          ${allFollowKeys.map(k => {
-            const url = getFirstUrl(s[k]);
-            const color = platformColors[k];
-            return `<a href="${url}" target="_blank" rel="noopener" class="ch-follow-icon" title="${labels[k]}">
-              <svg viewBox="0 0 24 24" style="fill:${color};width:18px;height:18px">${getSvgPath(k)}</svg>
-            </a>`;
-          }).join('')}
-        </div>
-        <span class="ch-follow-pipe">|</span>
-        <span class="ch-follow-official">
-          <svg viewBox="0 0 24 24" style="fill:rgba(201,168,76,0.5);width:12px;height:12px"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-          All platforms are official.
-        </span>
+  // ── FOLLOW EVERYWHERE — right column ──
+  const followKeys = ['instagram','tiktok','facebook','linkedin','spotify','youtube'].filter(k => hasValue(s[k]));
+  const followColHTML = followKeys.length ? `
+    <div class="ch-follow-col">
+      <p class="ch-section-label">Follow Everywhere</p>
+      <div class="ch-follow-grid">
+        ${followKeys.map(k => {
+          const url = getFirstUrl(s[k]);
+          const color = platformColors[k];
+          return `<a href="${url}" target="_blank" rel="noopener" class="ch-follow-sq" title="${labels[k]}">
+            <svg viewBox="0 0 24 24" style="fill:${color};width:22px;height:22px">${getSvgPath(k)}</svg>
+          </a>`;
+        }).join('')}
       </div>
+      <p class="ch-follow-tagline">Stay connected across all platforms for the latest updates, content, and releases.</p>
     </div>` : '';
 
   const connectSectionHTML = hasAnyLinks ? `
@@ -378,9 +378,10 @@ function buildEPK(epk) {
       ${heroPanelHTML}
       <div class="ch-feat-wrap">
         <p class="ch-section-label">Featured Links</p>
-        <div class="ch-feat-grid">${featuredHTML}</div>
+        <div class="ch-pcards-grid">${primaryCardsHTML}</div>
+        ${amazonBannerHTML}
       </div>
-      <div class="ch-cols">
+      <div class="ch-bottom-cols">
         ${hasSocials ? `<div class="ch-col">
           <p class="ch-section-label">Social Platforms</p>
           <div class="ch-rows">${socialRowsHTML}</div>
@@ -389,8 +390,12 @@ function buildEPK(epk) {
           <p class="ch-section-label">Music Platforms</p>
           <div class="ch-rows">${musicRowsHTML}</div>
         </div>` : ''}
+        ${followColHTML}
       </div>
-      ${followStripHTML}
+      <p class="ch-footer-note">
+        <svg viewBox="0 0 24 24" style="fill:rgba(201,168,76,0.4);width:12px;height:12px;flex-shrink:0"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+        All platforms are official.
+      </p>
     </div>
     <div class="divider"></div>` : '';
 
