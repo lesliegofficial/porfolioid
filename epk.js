@@ -116,10 +116,11 @@ function buildEPK(epk) {
     soundcloud: '<svg viewBox="0 0 24 24"><path d="M1.175 12.225c-.015 0-.03.002-.044.003C.5 12.28 0 12.84 0 13.516c0 .682.504 1.235 1.124 1.235.02 0 .038-.002.057-.003h.05c.02 0 .038.003.058.003h16.754c.62 0 1.123-.553 1.123-1.235 0-.642-.45-1.17-1.03-1.233a2.95 2.95 0 00.03-.396c0-1.66-1.396-3.005-3.12-3.005-.23 0-.455.026-.67.074C13.74 7.48 12.174 6.5 10.38 6.5c-2.537 0-4.595 1.988-4.595 4.442 0 .08.003.158.008.236-.013-.001-.026-.002-.04-.002-1.326 0-2.4 1.048-2.4 2.342 0 .25.042.49.117.716H1.175z"/></svg>',
     tidal: '<svg viewBox="0 0 24 24"><path d="M12.012 3.992L8.008 7.996 4.004 3.992 0 7.996l4.004 4.004 4.004-4.004 4.004 4.004 4.004-4.004zM8.008 16.004l4.004-4.004 4.004 4.004L20.02 12l-4.004-4.004-4.004 4.004-4.004-4.004L4.004 12z"/></svg>',
     bandcamp: '<svg viewBox="0 0 24 24"><path d="M0 18.75l7.437-13.5H24l-7.438 13.5z"/></svg>',
+    booking: '<svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>',
   };
 
   const labels = { instagram:'Instagram', facebook:'Facebook', tiktok:'TikTok', linkedin:'LinkedIn', website:'Website', spotify:'Spotify', appleMusic:'Apple Music', youtube:'YouTube', soundcloud:'SoundCloud', tidal:'Tidal', bandcamp:'Bandcamp' };
-  const platformColors = { instagram:'#E1306C', facebook:'#1877F2', tiktok:'#ffffff', linkedin:'#0A66C2', website:'#C9A84C', spotify:'#1DB954', appleMusic:'#FC3C44', youtube:'#FF0000', soundcloud:'#FF5500', tidal:'#aaaaaa', bandcamp:'#1DA0C3' };
+  const platformColors = { instagram:'#E1306C', facebook:'#1877F2', tiktok:'#010101', linkedin:'#0A66C2', website:'#C9A84C', spotify:'#1DB954', appleMusic:'#FC3C44', youtube:'#FF0000', soundcloud:'#FF5500', tidal:'#aaaaaa', bandcamp:'#1DA0C3', booking:'#C9A84C' };
   const platformBg = { instagram:'rgba(225,48,108,0.15)', facebook:'rgba(24,119,242,0.15)', tiktok:'rgba(255,255,255,0.08)', linkedin:'rgba(10,102,194,0.15)', website:'rgba(201,168,76,0.15)', spotify:'rgba(29,185,84,0.15)', appleMusic:'rgba(252,60,68,0.15)', youtube:'rgba(255,0,0,0.12)', soundcloud:'rgba(255,85,0,0.15)', tidal:'rgba(255,255,255,0.06)', bandcamp:'rgba(29,160,195,0.15)' };
   // Category labels per reference image
   const platformCat = { instagram:'Social', facebook:'Social', tiktok:'Social', linkedin:'Professional', website:'Website', spotify:'Music', appleMusic:'Music', youtube:'Video', soundcloud:'Music', tidal:'Music', bandcamp:'Music', booking:'Booking' };
