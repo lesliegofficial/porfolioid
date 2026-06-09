@@ -1535,7 +1535,10 @@
       <div class="field-group">
         <label class="field-label">Instagram <span style="color:var(--gray);font-weight:400">(add multiple)</span></label>
         <div id="instagramList"></div>
-        <button class="btn-add-new" style="margin-top:0.5rem;padding:0.6rem 1rem;font-size:0.6rem" onclick="addSocialField('instagram','https://instagram.com/yourhandle')">+ Add Instagram</button>
+        <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
+          <button class="btn-add-new" style="margin-top:0;padding:0.6rem 1rem;font-size:0.6rem" onclick="addSocialField('instagram','https://instagram.com/yourhandle')">+ Add Instagram</button>
+          <input type="text" id="socialInstagram_followers" placeholder="e.g. 12.5K followers" style="flex:1;min-width:140px;font-size:0.75rem;padding:0.5rem 0.75rem" oninput="saveSocials()">
+        </div>
       </div>
 
       <div class="field-group">

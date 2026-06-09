@@ -2988,7 +2988,7 @@ function addAward() {
 }
 function removeAward(i) { epk.awards.splice(i, 1); renderAwards(); persistUser(); showSaveBanner(); }
 
-// SOCIAL LINKS — multi-field support for instagram, facebook, website
+// SOCIAL LINKS — Connect Hub dashboard
 function renderSocialList(platform, placeholder) {
   const container = document.getElementById(platform + 'List');
   if (!container) return;
@@ -3032,8 +3032,6 @@ function updateSocialField(platform, idx, value) {
 
 function saveSocials() {
   epk.socials = epk.socials || {};
-  // Save multi fields (already kept in sync via updateSocialField)
-  // Save single fields
   epk.socials.tiktok = document.getElementById('socialTiktok').value.trim();
   epk.socials.tiktok_followers = document.getElementById('socialTiktok_followers').value.trim();
   epk.socials.linkedin = document.getElementById('socialLinkedin').value.trim();
@@ -3046,7 +3044,7 @@ function saveSocials() {
   epk.socials.soundcloud = document.getElementById('socialSoundcloud').value.trim();
   epk.socials.tidal = document.getElementById('socialTidal').value.trim();
   epk.socials.bandcamp = document.getElementById('socialBandcamp').value.trim();
-  // Clean empty entries from multi fields
+  epk.socials.instagram_followers = document.getElementById('socialInstagram_followers') ? document.getElementById('socialInstagram_followers').value.trim() : (epk.socials.instagram_followers || '');
   ['instagram','facebook','website'].forEach(p => {
     if (Array.isArray(epk.socials[p])) {
       epk.socials[p] = epk.socials[p].filter(v => v.trim());
@@ -3057,7 +3055,6 @@ function saveSocials() {
 
 function loadSocials() {
   const s = epk.socials || {};
-  // Load multi fields
   ['instagram','facebook','website'].forEach(p => {
     const placeholders = { instagram:'https://instagram.com/yourhandle', facebook:'https://facebook.com/yourpage', website:'https://yourwebsite.com' };
     const val = s[p];
@@ -3065,13 +3062,13 @@ function loadSocials() {
     epk.socials[p] = Array.isArray(val) ? val : (val ? [val] : []);
     renderSocialList(p, placeholders[p]);
   });
-  // Load single fields
   const singles = { tiktok:'socialTiktok', linkedin:'socialLinkedin', spotify:'socialSpotify', appleMusic:'socialAppleMusic', youtube:'socialYoutube', soundcloud:'socialSoundcloud', tidal:'socialTidal', bandcamp:'socialBandcamp' };
-  // Load follower counts
   ['tiktok','linkedin','spotify','youtube'].forEach(k => {
     const el = document.getElementById('social' + k.charAt(0).toUpperCase() + k.slice(1) + '_followers');
     if (el) el.value = s[k + '_followers'] || '';
   });
+  const igFollEl = document.getElementById('socialInstagram_followers');
+  if (igFollEl) igFollEl.value = s.instagram_followers || '';
   Object.entries(singles).forEach(([key, elId]) => {
     const el = document.getElementById(elId);
     if (el) el.value = s[key] || '';

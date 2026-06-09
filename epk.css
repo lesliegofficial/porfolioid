@@ -412,27 +412,57 @@
   .timeline-year { font-family: var(--font-mono); font-size: 0.65rem; color: var(--gold); min-width: 36px; }
   .timeline-milestone { font-size: 0.85rem; color: var(--gray-light); }
 
-  /* CONNECT SECTION */
-  .connect-section { padding: 6rem 3rem; max-width: 1400px; margin: 0 auto; }
-  .connect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
-  .connect-card { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.1); padding: 2rem; }
-  .connect-card-title { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
-  .connect-card-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.2), transparent); }
-  .connect-links { display: flex; flex-direction: column; gap: 0.4rem; }
-  .connect-link { display: flex; align-items: center; gap: 0.85rem; padding: 0.75rem 0.85rem; text-decoration: none; color: var(--gray-light); font-size: 0.85rem; transition: all 0.25s; border: 1px solid rgba(255,255,255,0.04); background: rgba(255,255,255,0.02); position: relative; overflow: hidden; }
-  .connect-link::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--platform-color, rgba(201,168,76,0.4)); opacity: 0; transition: opacity 0.25s; }
-  .connect-link:hover { color: var(--white); border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); transform: translateX(3px); }
-  .connect-link:hover::before { opacity: 1; }
-  .connect-link svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; opacity: 0.6; transition: opacity 0.25s; }
-  .connect-link:hover svg { opacity: 1; }
-  .connect-link-info { flex: 1; min-width: 0; }
-  .connect-link-label { font-size: 0.85rem; display: block; }
-  .connect-link-sub { font-family: var(--font-mono); font-size: 0.55rem; color: var(--gray); letter-spacing: 0.05em; display: block; margin-top: 0.1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .connect-link-followers { font-family: var(--font-mono); font-size: 0.55rem; color: var(--gold); opacity: 0.7; flex-shrink: 0; letter-spacing: 0.05em; }
-  .connect-link-arrow { font-size: 0.7rem; opacity: 0; transition: opacity 0.25s; color: var(--gold); flex-shrink: 0; }
-  .connect-link:hover .connect-link-arrow { opacity: 1; }
+  /* CONNECT HUB */
+  .connect-section { padding: 5rem 3rem; max-width: 1400px; margin: 0 auto; }
+  .ch-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2.5rem; gap: 2rem; }
+  .ch-subtitle { font-family: var(--font-mono); font-size: 0.65rem; color: var(--gray); max-width: 380px; line-height: 1.7; margin-top: 0.5rem; }
+  .ch-save-btn { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid rgba(201,168,76,0.5); color: var(--gold); padding: 0.6rem 1.2rem; background: transparent; cursor: pointer; white-space: nowrap; flex-shrink: 0; text-decoration: none; transition: all 0.2s; }
+  .ch-save-btn:hover { background: rgba(201,168,76,0.08); }
+  .ch-section-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+  .ch-section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.25), transparent); }
 
-  @media (max-width: 768px) { .connect-grid { grid-template-columns: 1fr; } }
+  /* Featured cards */
+  .ch-feat-grid { display: grid; grid-template-columns: 1.55fr 1fr 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 2.5rem; }
+  .ch-feat-card { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.1); padding: 1.25rem 1.15rem; display: flex; flex-direction: column; gap: 0.25rem; text-decoration: none; color: inherit; position: relative; transition: border-color 0.2s; }
+  .ch-feat-card--active { border-color: rgba(201,168,76,0.45); border-left: 3px solid var(--gold); }
+  .ch-feat-card:hover { border-color: rgba(201,168,76,0.35); }
+  .ch-feat-icon { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; flex-shrink: 0; }
+  .ch-feat-eyebrow { font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); }
+  .ch-feat-name { font-family: var(--font-serif); font-size: 0.95rem; font-weight: 400; color: var(--warm-white); line-height: 1.2; margin-top: 0.1rem; }
+  .ch-feat-sub { font-family: var(--font-mono); font-size: 0.5rem; color: var(--gray); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ch-feat-stat { font-family: var(--font-mono); font-size: 0.5rem; color: var(--gold); margin-top: auto; padding-top: 0.5rem; }
+  .ch-feat-arrow { position: absolute; bottom: 0.9rem; right: 1rem; font-size: 0.65rem; color: var(--gold); opacity: 0.45; }
+
+  /* Two-column layout */
+  .ch-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .ch-links { display: flex; flex-direction: column; gap: 0.35rem; }
+
+  /* Link rows */
+  .ch-link-row { display: flex; align-items: center; gap: 0.85rem; padding: 0.8rem 0.9rem; background: var(--dark-2); border: 1px solid rgba(255,255,255,0.04); text-decoration: none; color: inherit; position: relative; overflow: hidden; transition: border-color 0.2s; }
+  .ch-link-row::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--ch-pc, rgba(201,168,76,0.5)); opacity: 0; transition: opacity 0.2s; }
+  .ch-link-row:hover { border-color: rgba(255,255,255,0.1); }
+  .ch-link-row:hover::before { opacity: 1; }
+  .ch-link-icon { width: 34px; height: 34px; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .ch-link-info { flex: 1; min-width: 0; }
+  .ch-link-name { font-size: 0.88rem; color: var(--warm-white); display: block; line-height: 1.2; }
+  .ch-link-sub { font-family: var(--font-mono); font-size: 0.5rem; color: var(--gray); display: block; margin-top: 0.1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ch-link-stat { font-family: var(--font-mono); font-size: 0.5rem; color: var(--gold); flex-shrink: 0; margin-right: 0.4rem; }
+  .ch-link-arrow { font-size: 0.65rem; color: var(--gold); opacity: 0; flex-shrink: 0; transition: opacity 0.2s; }
+  .ch-link-row:hover .ch-link-arrow { opacity: 1; }
+
+  /* Stay Connected banner */
+  .ch-stay-banner { background: var(--dark-2); border: 1px solid rgba(201,168,76,0.1); display: flex; align-items: center; gap: 1.25rem; padding: 1.25rem 1.5rem; margin-top: 1rem; }
+  .ch-stay-photo { width: 80px; height: 100px; object-fit: cover; object-position: top center; flex-shrink: 0; filter: brightness(0.85); }
+  .ch-stay-content { flex: 1; min-width: 0; }
+  .ch-stay-eyebrow { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.3rem; }
+  .ch-stay-title { font-family: var(--font-serif); font-size: 1rem; font-weight: 400; color: var(--white); line-height: 1.35; margin-bottom: 0.35rem; }
+  .ch-stay-sub { font-family: var(--font-mono); font-size: 0.52rem; color: var(--gray); margin-bottom: 0.75rem; line-height: 1.5; }
+  .ch-stay-icons { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .ch-stay-icon { width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; text-decoration: none; border: 1px solid rgba(255,255,255,0.08); transition: border-color 0.2s; }
+  .ch-stay-icon:hover { border-color: rgba(201,168,76,0.4); }
+
+  @media (max-width: 900px) { .ch-feat-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 768px) { .ch-columns { grid-template-columns: 1fr; } .ch-feat-grid { grid-template-columns: 1fr 1fr; } .ch-header { flex-direction: column; } }
 
   footer { border-top: 1px solid rgba(201,168,76,0.08); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; }
   .footer-logo { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; color: var(--gray); }
