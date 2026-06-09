@@ -32,7 +32,7 @@
   .nav-edit-btn:hover { background: rgba(201,168,76,0.12); border-color: var(--gold); }
   .nav-edit-btn.visible { display: inline; }
 
-  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
+  .hero { min-height: auto; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
   .hero-image-panel { position: relative; overflow: hidden; }
   .hero-image-panel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, transparent 60%, var(--black) 100%), linear-gradient(to bottom, transparent 70%, var(--black) 100%); }
 
@@ -40,7 +40,7 @@
   .hero-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; filter: grayscale(15%) contrast(1.05); }
   .hero-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, var(--dark-2) 0%, var(--dark-3) 100%); display: flex; align-items: center; justify-content: center; }
   .hero-placeholder-icon { font-size: 5rem; opacity: 0.2; }
-  .hero-content { display: flex; flex-direction: column; justify-content: center; padding: 8rem 4rem 4rem 3rem; position: relative; }
+  .hero-content { display: flex; flex-direction: column; justify-content: center; padding: 8rem 4rem 3rem 3rem; position: relative; }
   .hero-eyebrow { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; opacity: 0.9; }
   .hero-name { font-family: var(--font-display); font-size: clamp(4rem, 7vw, 7.5rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.02em; color: var(--white); margin-bottom: 0.75rem; }
   .hero-name em { font-style: italic; color: var(--gold-light); }
