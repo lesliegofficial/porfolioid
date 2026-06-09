@@ -328,7 +328,7 @@ function buildEPK(epk) {
   const amazonBannerHTML = amazonUrl ? `
     <a href="${amazonUrl}" class="ch-amazon-banner" target="_blank" rel="noopener">
       <span class="ch-amazon-icon">
-        <svg viewBox="0 0 100 100" style="width:34px;height:34px"><text y=".88em" font-size="82" font-family="Arial Black,Arial,sans-serif" font-weight="900" fill="#050505">a</text><path d="M13 84 Q50 97 87 84" stroke="#FF9900" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M84 80 L87 84 L81 85" fill="#FF9900"/></svg>
+        <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/e_make_transparent:10,f_png/icons/amazon-icon-white.jpg" style="width:80%;height:80%;object-fit:contain" alt="amazon">
       </span>
       <span class="ch-amazon-left">
         <small class="ch-amazon-cat">Curated Picks</small>
@@ -378,7 +378,7 @@ function buildEPK(epk) {
           const url = getFirstUrl(s[k]);
           const color = platformColors[k];
           return `<a href="${url}" target="_blank" rel="noopener" class="ch-follow-sq" title="${labels[k]}">
-            ${platformImg[k] ? `<img src="${platformImg[k]}" style="width:22px;height:22px;object-fit:contain" alt="${k}">` : `<svg viewBox="0 0 24 24" style="fill:${color};width:22px;height:22px">${getSvgPath(k)}</svg>`}
+            ${platformImg[k] ? `<img src="${platformImg[k]}" style="width:70%;height:70%;object-fit:contain" alt="${k}">` : `<svg viewBox="0 0 24 24" style="fill:${color};width:28px;height:28px">${getSvgPath(k)}</svg>`}
           </a>`;
         }).join('')}
       </div>
