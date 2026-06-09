@@ -522,6 +522,18 @@ function showSaveBanner() {
 }
 
 function showPanel(name) {
+  // Warn if credit form is open with unsaved changes
+  const creditForm = document.getElementById('addCreditForm');
+  if (creditForm && creditForm.classList.contains('open')) {
+    const titleEl = document.querySelector('#addCreditForm .add-form-title');
+    const isEditing = titleEl && titleEl.textContent === 'Edit Credit';
+    if (isEditing) {
+      if (!confirm('You have unsaved changes in the credit form. Leave without saving?')) return;
+      // Close the form without saving
+      creditForm.classList.remove('open');
+      editingCreditIdx = -1;
+    }
+  }
   if (name === 'qr') setTimeout(initQRPanel, 100);
   if (name === 'sections') setTimeout(initSectionsPanel, 100);
   if (name === 'careertype') setTimeout(initCareerTypePanel, 100);
@@ -3181,39 +3193,6 @@ function updateSidebarProfileInfo() {
 // ── OVERRIDE persistUser to save to active profile slug ──────────
 // (monkey-patch: replace the slug used in saves)
 const _origPersistUser = persistUser;
-async function persistUser() {
-  // Use activeProfileSlug instead of session slug for saves
-  const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
-  const slug = activeProfileSlug || session.slug || epk.slug;
-
-  // credits, videos, tracks excluded from PAGINATED_SECTIONS — saved in core to prevent wipes
-  const PAGINATED_SECTIONS = ['photos', 'assets', 'awards'];
-  const coreData = {};
-  const sectionData = {};
-
-  Object.entries(epk).forEach(([k, v]) => {
-    if (PAGINATED_SECTIONS.includes(k) && Array.isArray(v)) sectionData[k] = v;
-    else coreData[k] = v;
-  });
-
-  try {
-    await fetch('/.netlify/functions/epk', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'save', slug, data: coreData })
-    });
-
-    await Promise.all(
-      Object.entries(sectionData)
-        .filter(([_, items]) => items && items.length > 0)
-        .map(([section, items]) =>
-          fetch('/.netlify/functions/epk', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'saveSection', slug, section, items })
-          }).catch(e => console.error(`Section save failed (${section}):`, e))
-        )
-    );
-  } catch (e) { console.error('Save failed:', e); }
-}
 
 // ── NEW PROFILE MODAL ─────────────────────────────────────────────
 function openNewProfileModal() {
