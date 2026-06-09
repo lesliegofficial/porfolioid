@@ -1518,33 +1518,41 @@ function buildMagazineGallery(photos, container) {
   const featured = photos.find(p => p.featured) || photos[0];
   const rest = photos.filter(p => p !== featured);
 
-  // Hero
+  function makeOverlay(photo, cls) {
+    const o = document.createElement('div');
+    o.className = cls;
+    const meta = [photo.location, photo.year ? String(photo.year) : ''].filter(Boolean).join(' · ');
+    o.innerHTML = `
+      ${photo.collection ? `<span class="gallery-magazine-badge">${photo.collection.toUpperCase()}</span>` : ''}
+      ${photo.caption ? `<div class="gallery-magazine-item-caption">${photo.caption}</div>` : ''}
+      ${meta ? `<div class="gallery-magazine-item-meta">${meta}</div>` : ''}`;
+    return o;
+  }
+
+  // ── ROW 1: Hero left + 3 stacked right ──
+  const row1 = document.createElement('div');
+  row1.className = 'gallery-magazine-row1';
+
   const heroWrap = document.createElement('div');
   heroWrap.className = 'gallery-magazine-hero';
   const heroImg = document.createElement('img');
   heroImg.src = featured.url;
   heroImg.alt = featured.caption || '';
   heroImg.loading = 'lazy';
-  heroImg.style.objectPosition = featured.position || 'center 0%';
+  heroImg.style.objectPosition = (featured.position && featured.position !== 'center') ? featured.position : 'center top';
   heroImg.onerror = function() { this.style.display = 'none'; };
   heroImg.onclick = () => openLightbox(featured.url);
   heroImg.style.cursor = 'pointer';
-
-  const heroOverlay = document.createElement('div');
-  heroOverlay.className = 'gallery-magazine-hero-overlay';
-  heroOverlay.innerHTML = `
-    ${featured.collection ? `<span class="gallery-magazine-badge">${featured.collection.toUpperCase()}</span>` : ''}
-    ${featured.caption ? `<div class="gallery-magazine-hero-caption">${featured.caption}</div>` : ''}
-    ${[featured.location, featured.year ? String(featured.year) : ''].filter(Boolean).length ? `<div class="gallery-magazine-hero-meta">${[featured.location, featured.year].filter(Boolean).join(' · ')}</div>` : ''}`;
-
+  const heroOverlay = makeOverlay(featured, 'gallery-magazine-hero-overlay');
   heroWrap.appendChild(heroImg);
   heroWrap.appendChild(heroOverlay);
-  wrap.appendChild(heroWrap);
+  row1.appendChild(heroWrap);
 
+  // Right column — up to 3 photos
   if (rest.length) {
-    const grid = document.createElement('div');
-    grid.className = 'gallery-magazine-grid';
-    rest.forEach(photo => {
+    const rightCol = document.createElement('div');
+    rightCol.className = 'gallery-magazine-right-col';
+    rest.slice(0, 3).forEach(photo => {
       const item = document.createElement('div');
       item.className = 'gallery-magazine-item';
       item.style.cursor = 'pointer';
@@ -1556,13 +1564,31 @@ function buildMagazineGallery(photos, container) {
       img.onerror = function() { this.style.display = 'none'; };
       img.onclick = () => openLightbox(photo.url);
       item.appendChild(img);
-      const overlay = document.createElement('div');
-      overlay.className = 'gallery-magazine-item-overlay';
-      overlay.innerHTML = `
-        ${photo.collection ? `<span class="gallery-magazine-badge">${photo.collection.toUpperCase()}</span>` : ''}
-        ${photo.caption ? `<div class="gallery-magazine-item-caption">${photo.caption}</div>` : ''}
-        ${[photo.location, photo.year ? String(photo.year) : ''].filter(Boolean).length ? `<div class="gallery-magazine-item-meta">${[photo.location, photo.year].filter(Boolean).join(' · ')}</div>` : ''}`;
-      item.appendChild(overlay);
+      item.appendChild(makeOverlay(photo, 'gallery-magazine-item-overlay'));
+      rightCol.appendChild(item);
+    });
+    row1.appendChild(rightCol);
+  }
+  wrap.appendChild(row1);
+
+  // ── REMAINING: 4-col grid ──
+  const remaining = rest.slice(3);
+  if (remaining.length) {
+    const grid = document.createElement('div');
+    grid.className = 'gallery-magazine-grid';
+    remaining.forEach(photo => {
+      const item = document.createElement('div');
+      item.className = 'gallery-magazine-item';
+      item.style.cursor = 'pointer';
+      const img = document.createElement('img');
+      img.src = photo.url;
+      img.alt = photo.caption || '';
+      img.loading = 'lazy';
+      img.style.objectPosition = (photo.position && photo.position !== 'center') ? photo.position : 'center top';
+      img.onerror = function() { this.style.display = 'none'; };
+      img.onclick = () => openLightbox(photo.url);
+      item.appendChild(img);
+      item.appendChild(makeOverlay(photo, 'gallery-magazine-item-overlay'));
       grid.appendChild(item);
     });
     wrap.appendChild(grid);
