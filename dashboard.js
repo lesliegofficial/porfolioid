@@ -699,7 +699,104 @@ function toggleAddForm(id) {
   form.classList.toggle('open');
 }
 
-// TAGLINES
+// ── DRAFT AUTO-SAVE SYSTEM ──────────────────────────────────────
+// Saves every keystroke to localStorage. Restored on form open.
+// Cleared only on successful save. Survives refresh, navigation, crashes.
+
+const DRAFT_FIELDS = {
+  addCreditForm: [
+    'newCreditArtist','newCreditYears','newCreditCategory','newCreditContractType',
+    'newCreditRole','newCreditProjectType','newCreditDesc','newCreditFullDesc',
+    'newCreditFullDescEs','newCreditProofLink',
+    { id:'newCreditVisible', type:'checkbox' },
+    { id:'newCreditVerified', type:'checkbox' },
+    { id:'newCreditPinned', type:'checkbox' }
+  ],
+  addPhotoForm: [
+    'newPhotoCaption','newPhotoUrl','newPhotoGroup','newPhotoDesc',
+    'newPhotoYear','newPhotoDate','newPhotoLocation','newPhotoPeople',
+    'newPhotoTags','newPhotoCredit','newPhotoCategory','newPhotoCareerPhase',
+    'newPhotoMediaType','newPhotoAchievement',
+    { id:'newPhotoFeatured', type:'checkbox' },
+    { id:'newPhotoCollectionCover', type:'checkbox' }
+  ]
+};
+
+function draftKey(formId, idx) {
+  return `porfolioid_draft_${formId}_${idx >= 0 ? idx : 'new'}`;
+}
+
+function saveDraft(formId, idx) {
+  const fields = DRAFT_FIELDS[formId];
+  if (!fields) return;
+  const draft = {};
+  fields.forEach(f => {
+    const fieldId = typeof f === 'string' ? f : f.id;
+    const isCheckbox = typeof f === 'object' && f.type === 'checkbox';
+    const el = document.getElementById(fieldId);
+    if (el) draft[fieldId] = isCheckbox ? el.checked : el.value;
+  });
+  localStorage.setItem(draftKey(formId, idx), JSON.stringify(draft));
+}
+
+function restoreDraft(formId, idx) {
+  const key = draftKey(formId, idx);
+  const raw = localStorage.getItem(key);
+  if (!raw) return false;
+  try {
+    const draft = JSON.parse(raw);
+    const fields = DRAFT_FIELDS[formId];
+    if (!fields) return false;
+    let restored = false;
+    fields.forEach(f => {
+      const fieldId = typeof f === 'string' ? f : f.id;
+      const isCheckbox = typeof f === 'object' && f.type === 'checkbox';
+      const el = document.getElementById(fieldId);
+      if (el && draft[fieldId] !== undefined) {
+        if (isCheckbox) el.checked = draft[fieldId];
+        else el.value = draft[fieldId];
+        restored = true;
+      }
+    });
+    return restored;
+  } catch(e) { return false; }
+}
+
+function clearDraft(formId, idx) {
+  localStorage.removeItem(draftKey(formId, idx));
+}
+
+function attachDraftListeners(formId, getIdx) {
+  const fields = DRAFT_FIELDS[formId];
+  if (!fields) return;
+  fields.forEach(f => {
+    const fieldId = typeof f === 'string' ? f : f.id;
+    const isCheckbox = typeof f === 'object' && f.type === 'checkbox';
+    const el = document.getElementById(fieldId);
+    if (!el) return;
+    const evt = isCheckbox ? 'change' : 'input';
+    el.addEventListener(evt, () => saveDraft(formId, getIdx()));
+  });
+}
+
+function showDraftBanner(formId) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+  let banner = form.querySelector('.draft-restored-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.className = 'draft-restored-banner';
+    banner.innerHTML = '⚡ Draft restored — your previous work was recovered. <button onclick="this.parentElement.remove()">✕</button>';
+    form.insertBefore(banner, form.firstChild);
+  }
+}
+
+// Wire up draft listeners after DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+  attachDraftListeners('addCreditForm', () => editingCreditIdx);
+  attachDraftListeners('addPhotoForm', () => editingPhotoIdx);
+});
+
 function renderTaglines() {
   const container = document.getElementById('taglinesList');
   container.innerHTML = '';
@@ -898,6 +995,8 @@ function editCredit(i) {
   document.getElementById('addCreditForm').classList.add('open');
   document.getElementById('addCreditForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addCreditForm .add-form-title').textContent = 'Edit Credit';
+  // Restore any unsaved draft for this credit
+  if (restoreDraft('addCreditForm', i)) showDraftBanner('addCreditForm');
 }
 let pendingCreditPhotos = [];
 function renderCreditPhotosPreview() {
@@ -1204,6 +1303,7 @@ function addCredit() {
   document.getElementById('newCreditVerified').checked = false;
   document.getElementById('newCreditPinned').checked = false;
   toggleAddForm('addCreditForm');
+  clearDraft('addCreditForm', editingCreditIdx >= 0 ? editingCreditIdx : -1);
   renderCredits(); persistUser(); showSaveBanner();
 }
 // CREDIT COLLABORATORS
@@ -1624,6 +1724,8 @@ function editPhoto(i) {
   document.getElementById('addPhotoForm').classList.add('open');
   document.getElementById('addPhotoForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addPhotoForm .add-form-title').textContent = 'Edit Photo';
+  // Restore any unsaved draft for this photo
+  if (restoreDraft('addPhotoForm', i)) showDraftBanner('addPhotoForm');
 }
 function addPhoto() {
   const caption = document.getElementById('newPhotoCaption').value.trim();
@@ -1661,6 +1763,7 @@ function addPhoto() {
   document.getElementById('photoPositionValue').value = 'center 0%';
   document.getElementById('photoPreviewBox').style.display = 'none';
   toggleAddForm('addPhotoForm');
+  clearDraft('addPhotoForm', editingPhotoIdx >= 0 ? editingPhotoIdx : -1);
   renderPhotos(); persistUser(); showSaveBanner();
 }
 function updateHeroPreview(url) {
