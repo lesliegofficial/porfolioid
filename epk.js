@@ -37,6 +37,7 @@ function buildEPK(epk) {
   const navLinks = document.getElementById('navLinks');
   navLinks.innerHTML = '';
   const ALL_SECTIONS = [
+    { id: 'connect', label: 'Connect' },
     { id: 'bio', label: 'Career Profile' },
     { id: 'credits', label: 'Credits' },
     { id: 'photos', label: 'Photos' },
@@ -44,7 +45,6 @@ function buildEPK(epk) {
     { id: 'music', label: 'Music' },
     { id: 'awards', label: 'Awards' },
     { id: 'assets', label: 'Assets' },
-    { id: 'connect', label: 'Connect' },
     { id: 'booking', label: 'Booking' },
   ];
   const sectionOrder = epk.sectionOrder || ALL_SECTIONS.map(s => s.id);
@@ -2276,7 +2276,7 @@ function adjustModalFont(dir) {
 
 // Section order and visibility
 function applySectionOrderAndVisibility(epk) {
-  const DEFAULT_ORDER = ['bio','credits','photos','videos','music','awards','assets','connect','booking'];
+  const DEFAULT_ORDER = ['connect','bio','credits','photos','videos','music','awards','assets','booking'];
   const order = epk.sectionOrder || DEFAULT_ORDER;
   const visibility = epk.sectionVisibility || {};
 
