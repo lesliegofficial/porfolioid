@@ -2297,19 +2297,23 @@ function applySectionOrderAndVisibility(epk) {
   });
 
   // Reorder sections in DOM based on sectionOrder
-  // Find the divider after hero as the insertion point
+  // Find the anchor point: insert sections right after the hero
   const hero = container.querySelector('.hero');
   if (!hero) return;
-  let insertAfter = hero.nextElementSibling; // usually a divider or first section
 
+  // Use a reference node — insert each section after the previous one
+  let anchor = hero;
   order.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-    // Also move any sibling divider that follows this section
+    // Move the section to come right after the current anchor
     const nextSib = el.nextElementSibling;
-    container.appendChild(el);
+    anchor.insertAdjacentElement('afterend', el);
+    anchor = el;
+    // Also move any divider that was directly after this section
     if (nextSib && nextSib.classList && nextSib.classList.contains('divider')) {
-      container.appendChild(nextSib);
+      anchor.insertAdjacentElement('afterend', nextSib);
+      anchor = nextSib;
     }
   });
 }
