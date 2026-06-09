@@ -550,6 +550,7 @@ const DEFAULT_SECTIONS = [
   { id: 'music',   label: 'Music',          icon: '🎵' },
   { id: 'awards',  label: 'Awards',         icon: '🏅' },
   { id: 'assets',  label: 'Assets',         icon: '📦' },
+  { id: 'connect', label: 'Connect Hub',    icon: '◎' },
   { id: 'booking', label: 'Booking',        icon: '📅' },
 ];
 

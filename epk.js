@@ -44,6 +44,7 @@ function buildEPK(epk) {
     { id: 'music', label: 'Music' },
     { id: 'awards', label: 'Awards' },
     { id: 'assets', label: 'Assets' },
+    { id: 'connect', label: 'Connect' },
     { id: 'booking', label: 'Booking' },
   ];
   const sectionOrder = epk.sectionOrder || ALL_SECTIONS.map(s => s.id);
@@ -2125,7 +2126,7 @@ function adjustModalFont(dir) {
 
 // Section order and visibility
 function applySectionOrderAndVisibility(epk) {
-  const DEFAULT_ORDER = ['bio','credits','photos','videos','music','awards','assets','booking'];
+  const DEFAULT_ORDER = ['bio','credits','photos','videos','music','awards','assets','connect','booking'];
   const order = epk.sectionOrder || DEFAULT_ORDER;
   const visibility = epk.sectionVisibility || {};
 
