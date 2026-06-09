@@ -306,6 +306,8 @@ function buildEPK(epk) {
         <span class="ch-pcard-cta" style="opacity:0.15">View Portfolio →</span>
       </a>`;
 
+  const amazonUrl = getFirstUrl(s.amazon || '');
+
   const primaryCardsHTML = [
     websiteCard,
     buildPrimaryCard('instagram','Social','Instagram','Behind The Scenes'),
@@ -316,7 +318,6 @@ function buildEPK(epk) {
   ].filter(Boolean).join('');
 
   // ── AMAZON — secondary wide banner ──
-  const amazonUrl = getFirstUrl(s.amazon || '');
   const amazonBannerHTML = amazonUrl ? `
     <a href="${amazonUrl}" class="ch-amazon-banner" target="_blank" rel="noopener">
       <span class="ch-amazon-icon">
