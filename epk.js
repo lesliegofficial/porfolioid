@@ -264,7 +264,7 @@ function buildEPK(epk) {
           <p class="ch-subtitle">Explore my official platforms, music channels, social media profiles, and booking information.</p>
           ${showMetrics ? '' : ''}
         </div>
-        ${stayPhoto ? `<div class="ch-header-portrait"><img src="${stayPhoto}" alt="${epk.name || ''}"></div>` : ''}
+        ${stayPhoto ? `<div class="ch-header-portrait"><img src="${epk.heroImage || stayPhoto}" alt="${epk.name || ''}"></div>` : ''}
         <a href="#booking" class="ch-save-btn">⊕ Save to Contacts</a>
       </div>
       <div class="ch-feat-wrap">
