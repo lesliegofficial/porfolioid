@@ -149,7 +149,7 @@ function buildEPK(epk) {
   const getSvgPath = (key) => svgIcons[key] ? svgIcons[key].replace('<svg viewBox="0 0 24 24">','').replace('</svg>','') : '';
 
   // ── HERO PANEL ──
-  const portraitImg = epk.heroImage || epk.bioImage || '';
+  const portraitImg = epk.bioImage || epk.heroImage || '';
   const personName = epk.name || '';
   const personRole = (epk.taglines || []).slice(0,2).join(' • ') || '';
 
@@ -259,7 +259,7 @@ function buildEPK(epk) {
   const musicRowsHTML = buildPlatRows(musicKeys);
 
   // ── STAY CONNECTED ──
-  const bannerImg = epk.bioImage || epk.heroImage || '';
+  const bannerImg = epk.heroImage || epk.bioImage || '';
   const allBannerKeys = [...socialKeys,'spotify','youtube'].filter(k => hasValue(s[k]));
   const stayHTML = `
     <div class="ch-stay">
