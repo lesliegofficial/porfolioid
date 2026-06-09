@@ -442,7 +442,7 @@
 
   /* ── Primary Featured Cards — 5 col ── */
   .ch-feat-wrap { margin-bottom: 20px; }
-  .ch-pcards-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 8px; }
+  .ch-pcards-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 8px; }
   .ch-pcard { display: grid; grid-template-columns: 52px 1fr; grid-template-rows: auto auto; gap: 0 12px; align-items: start; padding: 14px 14px 12px; background: #0c0c0c; border: 1px solid rgba(255,255,255,0.06); color: #f5f1e8; text-decoration: none; position: relative; transition: all 0.2s ease; overflow: hidden; min-height: 100px; }
   .ch-pcard::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at top left, rgba(201,168,76,0.06), transparent 50%); opacity: 0; transition: opacity 0.2s; }
   .ch-pcard--primary::before, .ch-pcard:hover::before { opacity: 1; }
@@ -459,8 +459,7 @@
   /* ── Amazon secondary banner ── */
   .ch-amazon-banner { display: grid; grid-template-columns: 60px minmax(200px, auto) 1fr auto; align-items: center; gap: 20px; padding: 18px 24px; background: #0c0c0c; border: 1px solid rgba(201,168,76,0.15); color: #f5f1e8; text-decoration: none; transition: all 0.2s; margin-bottom: 0; }
   .ch-amazon-banner:hover { border-color: rgba(201,168,76,0.45); background: #0f0f0f; }
-  .ch-amazon-icon { width: 52px; height: 52px; border-radius: 50%; background: #C9A84C; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .ch-amazon-letter { font-family: "Times New Roman", Georgia, serif; font-size: 1.6rem; font-weight: 700; color: #050505; line-height: 1; display: flex; align-items: center; justify-content: center; position: relative; top: 1px; }
+  .ch-amazon-icon { width: 52px; height: 52px; border-radius: 50%; background: #131313; border: 1px solid rgba(255,153,0,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .ch-amazon-left { display: flex; flex-direction: column; gap: 2px; }
   .ch-amazon-cat { font-family: var(--font-mono); font-size: 0.42rem; letter-spacing: 0.18em; text-transform: uppercase; color: #d7b84f; }
   .ch-amazon-name { font-family: var(--font-display); font-size: 0.95rem; font-weight: 400; color: #f5f1e8; }
