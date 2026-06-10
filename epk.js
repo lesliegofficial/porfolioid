@@ -981,7 +981,7 @@ function buildEPK(epk) {
           }
         </div>
 
-        <div class="hero-presence-bar" onclick="const b=document.getElementById('connectBody'); b.classList.toggle('open');" style="cursor:pointer">
+        <div class="hero-presence-bar" onclick="const c=document.getElementById('connect'); if(c){c.scrollIntoView({behavior:'smooth',block:'start'});}" style="cursor:pointer">
           <p class="hero-presence-eyebrow">
               <svg viewBox="0 0 24 24" style="fill:var(--gold);width:12px;height:12px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
               Connect
@@ -994,34 +994,6 @@ function buildEPK(epk) {
             <span class="hero-presence-dot" style="background:#FF0000"></span>
             <span class="hero-presence-dot" style="background:#0A66C2"></span>
             <span class="hero-presence-dot" style="background:#C9A84C"></span>
-          </div>
-          <span class="hero-presence-label-unused"></span>
-          <div class="hero-connect-body" id="connectBody">
-            <div class="hero-connect-inner">
-              ${(()=>{
-                const s = epk.socials || {};
-                const links = [
-                  s.instagram && {l:'Instagram', u: Array.isArray(s.instagram)?s.instagram[0]:s.instagram, c:'#E1306C'},
-                  s.tiktok    && {l:'TikTok',    u: s.tiktok,    c:'#ffffff'},
-                  s.youtube   && {l:'YouTube',   u: s.youtube,   c:'#FF0000'},
-                  s.spotify   && {l:'Spotify',   u: s.spotify,   c:'#1DB954'},
-                  s.apple     && {l:'Apple Music',u: s.apple,    c:'#FC3C44'},
-                  s.soundcloud&& {l:'SoundCloud',u: s.soundcloud,c:'#FF5500'},
-                  s.amazon    && {l:'Amazon Storefront',u:s.amazon,c:'#FF9900'},
-                  s.facebook  && {l:'Facebook',  u: Array.isArray(s.facebook)?s.facebook[0]:s.facebook, c:'#1877F2'},
-                  s.linkedin  && {l:'LinkedIn',  u: s.linkedin,  c:'#0A66C2'},
-                  s.website   && {l:'Website',   u: Array.isArray(s.website)?s.website[0]:s.website,    c:'#C9A84C'},
-                  s.email     && {l:'Email',     u: 'mailto:'+s.email, c:'#C9A84C'},
-                ].filter(Boolean);
-                if (!links.length) return '';
-                return '<div class="hcl-grid">' + links.map(p =>
-                  '<a href="' + p.u + '" target="_blank" rel="noopener" class="hcl-item">' +
-                  '<span class="hcl-dot" style="background:' + p.c + '"></span>' +
-                  '<span class="hcl-label">' + p.l + '</span>' +
-                  '<span class="hcl-arrow">→</span></a>'
-                ).join('') + '</div>';
-              })()}
-            </div>
           </div>
           <div class="hero-presence-icons">
             ${(()=>{
@@ -1281,7 +1253,7 @@ function buildEPK(epk) {
     </div>` : ''}
 
     <!-- CONNECT PANEL — inline under hero presence bar -->
-    <div id="connect" style="display:none"></div>
+    <div id="connect">${connectSectionHTML}</div>
 
     <!-- BOOKING -->
     ${epk.bookingEnabled !== false ? `<div class="booking-section" id="booking">
