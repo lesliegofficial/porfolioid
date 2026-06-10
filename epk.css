@@ -97,7 +97,7 @@
   .ch3-header { display: flex; flex-direction: column; justify-content: flex-start; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
   .ch3-title-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
   .ch3-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); }
-  .ch3-viewall { font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
+  .ch3-viewall { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); text-decoration: none; opacity: 0.75; vertical-align: middle; margin-left: 0.75rem; transition: opacity 0.2s; }
   .ch3-viewall:hover { opacity: 1; }
   .ch3-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: rgba(201,168,76,0.08); }
   .ch3-card { background: #0c0c0c; cursor: pointer; transition: transform 0.2s; display: flex; flex-direction: column; }

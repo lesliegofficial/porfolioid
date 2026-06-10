@@ -1048,8 +1048,7 @@ function buildEPK(epk) {
         <div class="ch3-header">
           <span class="ch3-label">Career Profile</span>
           <div class="ch3-title-row">
-            <h2 class="section-title" style="margin:0">Career Record Highlights</h2>
-            <a href="#credits" onclick="expandSection('credits')" class="ch3-viewall">View All Credits →</a>
+            <h2 class="section-title" style="margin:0">Career Record Highlights <a href="#credits" onclick="expandSection('credits')" class="ch3-viewall">View All Credits →</a></h2>
           </div>
         </div>
         <div class="ch3-grid">
