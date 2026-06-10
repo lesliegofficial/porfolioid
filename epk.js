@@ -1019,7 +1019,28 @@ function buildEPK(epk) {
               ).join('');
             })()}
           </div>
-          <div class="presence-hub-inline">${connectSectionHTML}</div>
+          <div class="presence-hub-inline">
+            ${(()=>{
+              const s = epk.socials || {};
+              const links = [
+                s.instagram && {l:'Instagram', u: Array.isArray(s.instagram)?s.instagram[0]:s.instagram, c:'#E1306C'},
+                s.tiktok    && {l:'TikTok',    u: s.tiktok,    c:'#ffffff'},
+                s.youtube   && {l:'YouTube',   u: s.youtube,   c:'#FF0000'},
+                s.spotify   && {l:'Spotify',   u: s.spotify,   c:'#1DB954'},
+                s.apple     && {l:'Apple Music',u: s.apple,    c:'#FC3C44'},
+                s.amazon    && {l:'Amazon Storefront',u:s.amazon,c:'#FF9900'},
+                s.facebook  && {l:'Facebook',  u: Array.isArray(s.facebook)?s.facebook[0]:s.facebook, c:'#1877F2'},
+                s.linkedin  && {l:'LinkedIn',  u: s.linkedin,  c:'#0A66C2'},
+                s.website   && {l:'Website',   u: Array.isArray(s.website)?s.website[0]:s.website,    c:'#C9A84C'},
+              ].filter(Boolean);
+              return links.map(p =>
+                '<a href="' + p.u + '" target="_blank" rel="noopener" class="phi-link">' +
+                '<span class="phi-dot" style="background:' + p.c + '"></span>' +
+                '<span class="phi-label">' + p.l + '</span>' +
+                '<span class="phi-arrow">→</span></a>'
+              ).join('');
+            })()}
+          </div>
         </div>
 
         <div class="hero-bio">
