@@ -59,6 +59,7 @@ function buildEPK(epk) {
     .map(id => ALL_SECTIONS.find(s => s.id === id))
     .filter(s => {
       if (!s) return false;
+      if (s.id === 'connect') return false; // Connect Hub is hero-toggle only
       if (sectionVisibility[s.id] === false) return false;
       if (qrAllowed && !qrAllowed.has(s.id)) return false; // QR override
       return true;
