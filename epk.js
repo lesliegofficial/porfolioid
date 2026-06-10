@@ -2387,7 +2387,11 @@ function applySectionOrderAndVisibility(epk) {
   if (!hero) return;
   let insertAfter = hero.nextElementSibling; // usually a divider or first section
 
-  let anchor = hero;
+  // Pin connect div right after hero before reordering other sections
+  const connectEl = document.getElementById('connect');
+  if (connectEl) hero.insertAdjacentElement('afterend', connectEl);
+
+  let anchor = connectEl || hero;
   order.forEach(id => {
     if (id === 'connect') return;
     const el = document.getElementById(id);
