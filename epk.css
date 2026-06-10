@@ -92,7 +92,7 @@
 
   /* ── CAREER HIGHLIGHTS v3 — image top, text bottom ── */
   .career-profile-section { background: var(--black); margin-top: -1px; }
-  .ch3-wrap { max-width: 1200px; margin: 0 auto; padding: 0.25rem 2rem 1.5rem; }
+  .ch3-wrap { max-width: 1200px; margin: -1.5rem auto 0; padding: 0 2rem 1.5rem; }
   .ch3-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
   .ch3-label { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); }
   .ch3-viewall { font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
