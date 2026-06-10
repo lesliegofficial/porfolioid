@@ -1,0 +1,89 @@
+name: PortfolioID Safety Checks
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main]
+
+jobs:
+  safety-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Check epk.js syntax
+        run: |
+          echo "Checking epk.js syntax..."
+          node --check epk.js
+          echo "✅ epk.js syntax OK"
+
+      - name: Check epk.js for duplicate functions
+        run: |
+          echo "Checking for duplicate functions..."
+          python3 -c "
+          import re
+          from collections import Counter
+          content = open('epk.js').read()
+          c = Counter(re.findall(r'function (\w+)\s*\(', content))
+          dupes = {k:v for k,v in c.items() if v>1}
+          if dupes:
+              print('DUPLICATE FUNCTIONS FOUND:', dupes)
+              exit(1)
+          print('✅ No duplicate functions')
+          "
+
+      - name: Check sacred bio fields are not empty
+        run: |
+          echo "Checking epk.js does not contain blank bio overrides..."
+          python3 -c "
+          content = open('epk.js').read()
+          if 'bioFull: \"\"' in content or \"bioFull: ''\" in content:
+              print('ERROR: bioFull is being set to empty string!')
+              exit(1)
+          if 'bioFullES: \"\"' in content or \"bioFullES: ''\" in content:
+              print('ERROR: bioFullES is being set to empty string!')
+              exit(1)
+          print('✅ Bio fields not overridden in code')
+          "
+
+      - name: Check netlify function syntax
+        run: |
+          echo "Checking netlify/functions/epk.js syntax..."
+          node --check netlify/functions/epk.js
+          echo "✅ Function syntax OK"
+
+      - name: Check bookingEnabled is never set to true in code
+        run: |
+          python3 -c "
+          content = open('epk.js').read()
+          if 'bookingEnabled: true' in content:
+              print('ERROR: bookingEnabled is set to true in code!')
+              exit(1)
+          print('✅ bookingEnabled safe')
+          "
+
+      - name: Verify version strings are present
+        run: |
+          python3 -c "
+          html = open('epk.html').read()
+          if 'epk.js?v=' not in html:
+              print('ERROR: epk.js version string missing from epk.html')
+              exit(1)
+          if 'epk.css?v=' not in html:
+              print('ERROR: epk.css version string missing from epk.html')
+              exit(1)
+          print('✅ Version strings present')
+          "
+
+      - name: All checks passed
+        run: |
+          echo ""
+          echo "✅ ALL SAFETY CHECKS PASSED"
+          echo "Safe to deploy to staging for Leslie's review."
