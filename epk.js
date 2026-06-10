@@ -1037,6 +1037,9 @@ function buildEPK(epk) {
       </div>
     </div>
 
+    <!-- CONNECT PANEL — shows/hides via Explore toggle -->
+    <div id="connect" style="display:none">${connectSectionHTML}</div>
+
     <!-- CAREER HIGHLIGHTS -->
     <section class="career-profile-section" id="bio">
       <div class="ch3-wrap">
@@ -1252,9 +1255,6 @@ function buildEPK(epk) {
         </div>
       </div>
     </div>` : ''}
-
-    <!-- CONNECT PANEL — inline under hero presence bar -->
-    <div id="connect" style="display:none">${connectSectionHTML}</div>
 
     <!-- BOOKING -->
     ${epk.bookingEnabled !== false ? `<div class="booking-section" id="booking">
