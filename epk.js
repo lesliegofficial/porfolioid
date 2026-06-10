@@ -981,7 +981,7 @@ function buildEPK(epk) {
           }
         </div>
 
-        <div class="hero-presence-bar" onclick="expandSection('connect'); setTimeout(()=>document.getElementById('connect')?.scrollIntoView({behavior:'smooth',block:'start'}),50);" style="cursor:pointer">
+        <div class="hero-presence-bar" onclick="const b=document.getElementById('connectBody'); b.classList.toggle('open');" style="cursor:pointer">
           <div class="hero-presence-top-row">
             <p class="hero-presence-eyebrow">
               <svg viewBox="0 0 24 24" style="fill:var(--gold);width:12px;height:12px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
@@ -999,6 +999,11 @@ function buildEPK(epk) {
             <span class="hero-presence-dot" style="background:#C9A84C"></span>
           </div>
           <span class="hero-presence-label-unused"></span>
+          <div class="hero-connect-body" id="connectBody">
+            <div class="hero-connect-inner">
+              ${connectSectionHTML}
+            </div>
+          </div>
           <div class="hero-presence-icons">
             ${(()=>{
               const s = epk.socials||{};
@@ -1254,32 +1259,8 @@ function buildEPK(epk) {
       </div>
     </div>` : ''}
 
-    <!-- CONNECT -->
-    <div class="collapsible-section" id="connect">
-      <div class="collapsible-header" onclick="toggleSection('connectBody', this)">
-        <div class="collapsible-header-left">
-          <div class="collapsible-icon">◎</div>
-          <div>
-            <div class="collapsible-header-label">Connect</div>
-            <div class="collapsible-header-title">My Digital Presence</div>
-            <div class="collapsible-header-meta">Social Platforms &bull; Music &bull; Video &bull; Recommendations &bull; Booking</div>
-            <div class="ch-preview-icons">
-              <span class="ch-preview-dot" style="background:#E1306C" title="Instagram"></span>
-              <span class="ch-preview-dot" style="background:#1DB954" title="Spotify"></span>
-              <span class="ch-preview-dot" style="background:#FF0000" title="YouTube"></span>
-              <span class="ch-preview-dot" style="background:#232F3E" title="Amazon"></span>
-              <span class="ch-preview-dot" style="background:#C9A84C" title="Booking"></span>
-            </div>
-          </div>
-        </div>
-        <div class="collapsible-toggle"><span class="toggle-label">Explore</span> →</div>
-      </div>
-      <div class="collapsible-body" id="connectBody">
-        <div class="collapsible-body-inner">
-          ${connectSectionHTML}
-        </div>
-      </div>
-    </div>
+    <!-- CONNECT PANEL — inline under hero presence bar -->
+    <div id="connect" style="display:none"></div>
 
     <!-- BOOKING -->
     ${epk.bookingEnabled !== false ? `<div class="booking-section" id="booking">
