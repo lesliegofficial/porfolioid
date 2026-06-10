@@ -100,7 +100,7 @@
   .ch3-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: rgba(201,168,76,0.08); }
   .ch3-card { background: #0c0c0c; cursor: pointer; transition: transform 0.2s; display: flex; flex-direction: column; }
   .ch3-card:hover { transform: translateY(-3px); z-index: 1; }
-  .ch3-img { aspect-ratio: 4/3; overflow: hidden; position: relative; }
+  .ch3-img { aspect-ratio: 2/3; overflow: hidden; position: relative; }
   .ch3-img img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transition: transform 0.5s ease; display: block; }
   .ch3-card:hover .ch3-img img { transform: scale(1.06); }
   .ch3-body { padding: 0.85rem 0.75rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
