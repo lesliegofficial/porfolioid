@@ -2374,6 +2374,7 @@ function applySectionOrderAndVisibility(epk) {
 
   // Hide/show sections based on visibility + QR override
   DEFAULT_ORDER.forEach(id => {
+    if (id === 'connect') return; // Connect Hub controlled by hero toggle only
     const el = document.getElementById(id);
     if (!el) return;
     const isVisible = visibility[id] !== false && (!qrAllowed || qrAllowed.has(id));
@@ -2388,6 +2389,7 @@ function applySectionOrderAndVisibility(epk) {
 
   let anchor = hero;
   order.forEach(id => {
+    if (id === 'connect') return; // Connect Hub stays below hero, not reordered
     const el = document.getElementById(id);
     if (!el) return;
     const nextSib = el.nextElementSibling;
