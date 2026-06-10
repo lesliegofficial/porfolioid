@@ -91,8 +91,8 @@
   @media (max-width: 640px) { .hero-stats-row { flex-wrap: wrap; gap: 0.75rem; } .hero-stat-item { border-right: none; padding-right: 0; margin-right: 0; } }
 
   /* ── CAREER HIGHLIGHTS v3 — image top, text bottom ── */
-  .career-profile-section { background: var(--black); }
-  .ch3-wrap { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem; }
+  .career-profile-section { background: var(--black); margin-top: 0; }
+  .ch3-wrap { max-width: 1200px; margin: 0 auto; padding: 0.5rem 2rem 2rem; }
   .ch3-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
   .ch3-label { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); }
   .ch3-viewall { font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
@@ -457,7 +457,7 @@
 
   /* CAREER PROFILE SECTION */
   /* ── CAREER HIGHLIGHTS ── */
-  .career-profile-section { background: var(--black); }
+  .career-profile-section { background: var(--black); margin-top: 0; }
   .ch-highlights-wrap { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem; }
   .ch-highlights-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
   .ch-highlights-label { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); }
