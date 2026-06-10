@@ -60,8 +60,8 @@
   /* Digital Presence bar */
   /* ── Hero Digital Presence — editorial weight matching Connect header ── */
   .hero-presence-bar { margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
-  .hero-presence-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-  .hero-presence-explore { font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.12em; color: var(--gold); opacity: 0.7; transition: opacity 0.2s; }
+  .hero-presence-top-row { display: flex; justify-content: flex-start; align-items: center; gap: 0.75rem; margin-bottom: 4px; }
+  .hero-presence-explore { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em; color: var(--gold); opacity: 0.85; transition: opacity 0.2s; }
   .hero-presence-bar:hover .hero-presence-explore { opacity: 1; }
   .hero-presence-eyebrow { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
   .hero-presence-eyebrow svg { flex-shrink: 0; }
