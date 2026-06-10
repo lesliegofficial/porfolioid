@@ -1,21 +1,4 @@
 {
-  "bio": "Leslie A. Guerra is a vocalist, recording artist, and music industry professional with more than twenty-five years of experience spanning live performance, recording, artist development, label operations, A&R, marketing, and entertainment management.",
-  "name": "Leslie Ann Guerra",
-  "slug": "leslie-guerra",
-  "stats": [
-    {
-      "label": "Years Active",
-      "number": "25+"
-    },
-    {
-      "label": "Live Shows",
-      "number": "500+"
-    },
-    {
-      "label": "Continents",
-      "number": "5"
-    }
-  ],
   "assets": [
     {
       "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780848724/Leslie_Ann_Guerra_Resume_General_gqxywa.pdf",
@@ -964,7 +947,6 @@
       "thumbnail": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780797129/nipffqctwmwblumjbkvu.png"
     }
   ],
-  "bioFull": "Her performance credits include touring as a supporting vocalist for reggaeton icons Don Omar (2006–2015) and J Álvarez (2015–2020), appearing before audiences throughout the United States, Latin America, and Europe. She is featured on the live release King of Kings: En Directo, recorded during Don Omar’s King of Kings World Tour and released by Machete Music.\n\nGuerra began her recording career as a member of Las Nenas del Swing, contributing to recordings including Rompe Corazones, Chicle Bomba, Desearía, and Me Faltas Tú. Throughout her touring career, she also performed on productions featuring artists such as Wisin & Yandel, Arcángel, Daddy Yankee, Natti Natasha, and Melina León.\n\nBeyond the stage, Guerra has held leadership and operational roles throughout the entertainment industry. She served as A&R Coordinator at Sony Music Latin, supporting executive A&R operations and artist development initiatives. She also coordinated artist and management operations for Orfanato Music Group and Arrow Management, managed artist logistics for Adam Torres Concerts, and led marketing and public relations initiatives through NV Marketing & Public Relations.\n\nToday, Guerra combines her experience in performance, artist development, operations, marketing, and business strategy through creative and entrepreneurial ventures, including PortfolioID, a professional platform designed to help artists, creators, and professionals showcase their work, accomplishments, and career journeys.",
   "credits": [
     {
       "desc": "Founder and product architect of two original SaaS platforms built from concept to deployment.",
@@ -1362,117 +1344,5 @@
       "contractType": "",
       "collaborators": []
     }
-  ],
-  "socials": {
-    "tidal": "",
-    "amazon": "https://www.amazon.com/shop/leslieaguerra",
-    "tiktok": "https://www.tiktok.com/@officiallyleslieann?_r=1&_t=ZP-96IhluNxFrq",
-    "spotify": "https://open.spotify.com/user/e62qg132bv862sjyfwor3iaq1?si=QzzPJ-q9SjmPfkkhWv9gIA",
-    "website": [
-      {
-        "url": "https://porfolioid.com/",
-        "icon": "",
-        "title": "",
-        "description": ""
-      }
-    ],
-    "youtube": "https://youtube.com/@hearmynoise?si=Kl45ERrxrVE5xk37",
-    "bandcamp": "",
-    "facebook": [
-      "https://www.facebook.com/share/1Eb6JyPUTk/?mibextid=wwXIfr"
-    ],
-    "linkedin": "https://www.linkedin.com/in/lesliegofficial",
-    "instagram": [
-      "https://www.instagram.com/officiallyleslie",
-      "https://www.instagram.com/leslieaguerra"
-    ],
-    "appleMusic": "",
-    "soundcloud": "",
-    "showMetrics": true,
-    "tiktok_followers": "",
-    "spotify_followers": "",
-    "youtube_followers": "",
-    "linkedin_followers": "",
-    "instagram_followers": ""
-  },
-  "bioImage": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778780770/yrtf3dmkcyxjtbxj5wz0.jpg",
-  "location": "Florida, USA",
-  "shortBio": "Leslie A. Guerra is a vocalist, recording artist, and music industry professional with more than twenty-five years of experience spanning live performance, recording, artist development, label operations, A&R, marketing, and entertainment management.",
-  "taglines": [
-    "International Vocalist",
-    "Recording Artist",
-    "Creative Professional"
-  ],
-  "bioFullES": "Sus créditos artísticos incluyen giras como vocalista de apoyo junto a los íconos del reggaetón Don Omar (2006–2015) y J Álvarez (2015–2020), presentándose ante audiencias en Estados Unidos, América Latina y Europa. También aparece en el lanzamiento en vivo King of Kings: En Directo, grabado durante la gira mundial King of Kings World Tour de Don Omar y publicado por Machete Music.\n\nGuerra inició su carrera discográfica como integrante de Las Nenas del Swing, participando en producciones y grabaciones como Rompe Corazones, Chicle Bomba, Desearía y Me Faltas Tú. A lo largo de su trayectoria en giras y espectáculos, también participó en producciones que incluyeron artistas como Wisin & Yandel, Arcángel, Daddy Yankee, Natti Natasha y Melina León.\n\nMás allá de los escenarios, Guerra ha ocupado posiciones de liderazgo, coordinación y operaciones dentro de la industria del entretenimiento. Se desempeñó como Coordinadora de A&R en Sony Music Latin, brindando apoyo a operaciones ejecutivas de A&R e iniciativas de desarrollo artístico. También coordinó operaciones artísticas y de manejo para Orfanato Music Group y Arrow Management, gestionó logística artística para Adam Torres Concerts y lideró iniciativas de mercadeo y relaciones públicas a través de NV Marketing & Public Relations.\n\nActualmente, Guerra combina su experiencia en interpretación, desarrollo artístico, operaciones, mercadeo y estrategia empresarial a través de proyectos creativos y empresariales, incluyendo PortfolioID, una plataforma profesional diseñada para ayudar a artistas, creadores y profesionales a presentar su trayectoria, logros y portafolio de manera moderna y organizada.",
-  "heroImage": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778791795/cjf97fij5yxobgggvlux.png",
-  "shortBioES": "Leslie A. Guerra es vocalista, artista de grabación y profesional de la industria musical con más de veinticinco años de experiencia que abarcan presentaciones en vivo, grabación, desarrollo artístico, operaciones discográficas, A&R, mercadeo y gestión dentro de la industria del entretenimiento.",
-  "bioImageFit": "contain",
-  "bookingNote": "Serious inquiries only",
-  "credentials": [
-    "ASCAP",
-    "SAG-AFTRA",
-    "SoundExchange"
-  ],
-  "resumeCards": [
-    {
-      "desc": "Bilingual Operations & Artist Relations professional with 20+ years of experience spanning live entertainment, business operations, compliance, and A&R coordination.",
-      "color": "gold",
-      "label": "OPERATIONS & ARTIST RELATIONS",
-      "title": "Operations & Artist Relations Resume",
-      "skills": [
-        "OPERATIONS & WORKFLOW MANAGEMENT",
-        "REGULATORY COMPLIANCE",
-        "ARTIST RELATIONS",
-        "A&R COORDINATION",
-        "MARKETING & CAMPAIGN STRATEGY",
-        "PROJECT COORDINATION",
-        "CASE MANAGEMENT",
-        "BILINGUAL EN/ES"
-      ],
-      "visible": true,
-      "btnLabel": "↓ DOWNLOAD RESUME →",
-      "subtitle": "Digital Campaigns | Live Experiences | A&R",
-      "resumeUrl": "https://porfolioid.com/press/resume-marketing-artist-relations.pdf"
-    }
-  ],
-  "videoLayout": "spotlight",
-  "assetsLayout": "cards",
-  "assetsLocked": true,
-  "availability": "Available for tours & studio sessions",
-  "bioImageZoom": 93,
-  "bookingEmail": "leslieannguerra@gmail.com",
-  "bookingPhone": "+13057424013",
-  "careerLayout": "stacked",
-  "heroImageFit": "cover",
-  "sectionOrder": [
-    "connect",
-    "bio",
-    "credits",
-    "photos",
-    "videos",
-    "music",
-    "awards",
-    "assets",
-    "booking"
-  ],
-  "bookingRegion": "",
-  "galleryLayout": "grid",
-  "heroImageZoom": 101,
-  "identityBlock": {
-    "timeline": [],
-    "languages": [],
-    "industryRoles": [],
-    "availabilityBadges": []
-  },
-  "resumeEnabled": true,
-  "bookingEnabled": false,
-  "bookingTagline": "Now booking live performances, studio sessions, and creative collaborations.",
-  "bioImageCropTop": 36,
-  "bioImagePosition": 33,
-  "heroImageCropTop": 51,
-  "bookingCategories": [],
-  "creditMediaLayout": "stack",
-  "heroImagePosition": 26,
-  "sectionVisibility": {},
-  "bookingAvailability": ""
+  ]
 }
