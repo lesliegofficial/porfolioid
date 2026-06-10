@@ -982,7 +982,7 @@ function buildEPK(epk) {
           }
         </div>
 
-        <div class="hero-presence-bar" id="presenceBar" onclick="this.classList.toggle('presence-open');const ex=document.getElementById('presence-explore');if(ex)ex.textContent=this.classList.contains('presence-open')?'Close ←':'Explore →';" style="cursor:pointer">
+        <div class="hero-presence-bar" id="presenceBar" onclick="this.classList.toggle('presence-open');const ex=document.getElementById('presence-explore');if(ex)ex.textContent=this.classList.contains('presence-open')?'Close ←':'Explore →';" style="cursor:pointer"> 0; if(inView){h.scrollIntoView({behavior:'smooth',block:'start'});}else{c.scrollIntoView({behavior:'smooth',block:'start'});}}" style="cursor:pointer">
           <p class="hero-presence-eyebrow">
               <svg viewBox="0 0 24 24" style="fill:var(--gold);width:12px;height:12px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
               Connect
@@ -995,6 +995,28 @@ function buildEPK(epk) {
             <span class="hero-presence-dot" style="background:#FF0000"></span>
             <span class="hero-presence-dot" style="background:#0A66C2"></span>
             <span class="hero-presence-dot" style="background:#C9A84C"></span>
+          </div>
+          <div class="presence-hub-inline">
+            ${(()=>{
+              const s = epk.socials || {};
+              const links = [
+                s.instagram && {l:'Instagram', u: Array.isArray(s.instagram)?s.instagram[0]:s.instagram, c:'#E1306C'},
+                s.tiktok    && {l:'TikTok',    u: s.tiktok,    c:'#ffffff'},
+                s.youtube   && {l:'YouTube',   u: s.youtube,   c:'#FF0000'},
+                s.spotify   && {l:'Spotify',   u: s.spotify,   c:'#1DB954'},
+                s.apple     && {l:'Apple Music',u: s.apple,    c:'#FC3C44'},
+                s.amazon    && {l:'Amazon Storefront',u:s.amazon,c:'#FF9900'},
+                s.facebook  && {l:'Facebook',  u: Array.isArray(s.facebook)?s.facebook[0]:s.facebook, c:'#1877F2'},
+                s.linkedin  && {l:'LinkedIn',  u: s.linkedin,  c:'#0A66C2'},
+                s.website   && {l:'Website',   u: Array.isArray(s.website)?s.website[0]:s.website, c:'#C9A84C'},
+              ].filter(Boolean);
+              return links.map(p =>
+                '<a href="' + p.u + '" target="_blank" rel="noopener" class="phi-link">' +
+                '<span class="phi-dot" style="background:' + p.c + '"></span>' +
+                '<span class="phi-label">' + p.l + '</span>' +
+                '<span class="phi-arrow">→</span></a>'
+              ).join('');
+            })()}
           </div>
           <div class="hero-presence-icons">
             ${(()=>{
@@ -1016,28 +1038,6 @@ function buildEPK(epk) {
                 `<a href="#connect" class="hero-presence-icon" style="--hpi-c:${p.color}">
                   <svg viewBox="0 0 24 24" style="fill:${p.color};width:16px;height:16px"><path d="${p.path}"/></svg>
                 </a>`
-              ).join('');
-            })()}
-          </div>
-          <div class="presence-hub-inline">
-            ${(()=>{
-              const s = epk.socials || {};
-              const links = [
-                s.instagram && {l:'Instagram', u: Array.isArray(s.instagram)?s.instagram[0]:s.instagram, c:'#E1306C'},
-                s.tiktok    && {l:'TikTok',    u: s.tiktok,    c:'#ffffff'},
-                s.youtube   && {l:'YouTube',   u: s.youtube,   c:'#FF0000'},
-                s.spotify   && {l:'Spotify',   u: s.spotify,   c:'#1DB954'},
-                s.apple     && {l:'Apple Music',u: s.apple,    c:'#FC3C44'},
-                s.amazon    && {l:'Amazon Storefront',u:s.amazon,c:'#FF9900'},
-                s.facebook  && {l:'Facebook',  u: Array.isArray(s.facebook)?s.facebook[0]:s.facebook, c:'#1877F2'},
-                s.linkedin  && {l:'LinkedIn',  u: s.linkedin,  c:'#0A66C2'},
-                s.website   && {l:'Website',   u: Array.isArray(s.website)?s.website[0]:s.website,    c:'#C9A84C'},
-              ].filter(Boolean);
-              return links.map(p =>
-                '<a href="' + p.u + '" target="_blank" rel="noopener" class="phi-link">' +
-                '<span class="phi-dot" style="background:' + p.c + '"></span>' +
-                '<span class="phi-label">' + p.l + '</span>' +
-                '<span class="phi-arrow">→</span></a>'
               ).join('');
             })()}
           </div>
