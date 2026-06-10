@@ -61,7 +61,7 @@
   /* ── Hero Digital Presence — editorial weight matching Connect header ── */
   .hero-presence-bar { margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
   .hero-presence-top-row { display: flex; justify-content: flex-start; align-items: center; gap: 0.75rem; margin-bottom: 4px; }
-  .hero-presence-explore { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em; color: var(--gold); opacity: 0.85; transition: opacity 0.2s; }
+  .hero-presence-explore { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; color: var(--gold); opacity: 0.7; vertical-align: middle; transition: opacity 0.2s; }
   .hero-presence-bar:hover .hero-presence-explore { opacity: 1; }
   .hero-connect-body { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.45s ease, opacity 0.3s ease; }
   .hero-connect-body.open { max-height: 3000px; opacity: 1; }
