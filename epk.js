@@ -998,7 +998,29 @@ function buildEPK(epk) {
           <span class="hero-presence-label-unused"></span>
           <div class="hero-connect-body" id="connectBody">
             <div class="hero-connect-inner">
-              ${connectSectionHTML}
+              ${(()=>{
+                const s = epk.socials || {};
+                const links = [
+                  s.instagram && {l:'Instagram', u: Array.isArray(s.instagram)?s.instagram[0]:s.instagram, c:'#E1306C'},
+                  s.tiktok    && {l:'TikTok',    u: s.tiktok,    c:'#ffffff'},
+                  s.youtube   && {l:'YouTube',   u: s.youtube,   c:'#FF0000'},
+                  s.spotify   && {l:'Spotify',   u: s.spotify,   c:'#1DB954'},
+                  s.apple     && {l:'Apple Music',u: s.apple,    c:'#FC3C44'},
+                  s.soundcloud&& {l:'SoundCloud',u: s.soundcloud,c:'#FF5500'},
+                  s.amazon    && {l:'Amazon Storefront',u:s.amazon,c:'#FF9900'},
+                  s.facebook  && {l:'Facebook',  u: Array.isArray(s.facebook)?s.facebook[0]:s.facebook, c:'#1877F2'},
+                  s.linkedin  && {l:'LinkedIn',  u: s.linkedin,  c:'#0A66C2'},
+                  s.website   && {l:'Website',   u: Array.isArray(s.website)?s.website[0]:s.website,    c:'#C9A84C'},
+                  s.email     && {l:'Email',     u: 'mailto:'+s.email, c:'#C9A84C'},
+                ].filter(Boolean);
+                if (!links.length) return '';
+                return '<div class="hcl-grid">' + links.map(p =>
+                  '<a href="' + p.u + '" target="_blank" rel="noopener" class="hcl-item">' +
+                  '<span class="hcl-dot" style="background:' + p.c + '"></span>' +
+                  '<span class="hcl-label">' + p.l + '</span>' +
+                  '<span class="hcl-arrow">→</span></a>'
+                ).join('') + '</div>';
+              })()}
             </div>
           </div>
           <div class="hero-presence-icons">
