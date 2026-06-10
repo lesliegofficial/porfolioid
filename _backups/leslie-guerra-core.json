@@ -1080,7 +1080,7 @@
       "mediaItems": [],
       "mediaLabel": "",
       "sort_order": 9,
-      "mediaLayout": "spotlight",
+      "mediaLayout": "grid",
       "projectType": "",
       "contractType": "",
       "collaborators": []
@@ -1375,7 +1375,12 @@
     "tiktok": "https://www.tiktok.com/@officiallyleslieann?_r=1&_t=ZP-96IhluNxFrq",
     "spotify": "https://open.spotify.com/user/e62qg132bv862sjyfwor3iaq1?si=QzzPJ-q9SjmPfkkhWv9gIA",
     "website": [
-      "https://porfolioid.com/"
+      {
+        "url": "https://porfolioid.com/",
+        "icon": "",
+        "title": "",
+        "description": ""
+      }
     ],
     "youtube": "https://youtube.com/@hearmynoise?si=Kl45ERrxrVE5xk37",
     "bandcamp": "",
