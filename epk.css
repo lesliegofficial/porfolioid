@@ -94,7 +94,8 @@
   /* ── CAREER HIGHLIGHTS v3 — image top, text bottom ── */
   .career-profile-section { background: var(--black); margin-top: -1px; }
   .ch3-wrap { max-width: 1200px; margin: -1.5rem auto 0; padding: 0 2rem 1.5rem; }
-  .ch3-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
+  .ch3-header { display: flex; flex-direction: column; justify-content: flex-start; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
+  .ch3-title-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
   .ch3-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); }
   .ch3-viewall { font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
   .ch3-viewall:hover { opacity: 1; }

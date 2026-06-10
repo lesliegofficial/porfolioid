@@ -1046,11 +1046,11 @@ function buildEPK(epk) {
     <section class="career-profile-section" id="bio">
       <div class="ch3-wrap">
         <div class="ch3-header">
-          <div>
-            <span class="ch3-label">Career Profile</span>
-            <h2 class="section-title" style="margin:0.25rem 0 0">Career Record Highlights</h2>
+          <span class="ch3-label">Career Profile</span>
+          <div class="ch3-title-row">
+            <h2 class="section-title" style="margin:0">Career Record Highlights</h2>
+            <a href="#credits" onclick="expandSection('credits')" class="ch3-viewall">View All Credits →</a>
           </div>
-          <a href="#credits" onclick="expandSection('credits')" class="ch3-viewall">View All Credits →</a>
         </div>
         <div class="ch3-grid">
           <div class="ch3-card" onclick="expandSection('credits')">
