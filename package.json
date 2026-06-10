@@ -3,6 +3,6 @@
   "version": "2.0.0",
   "description": "PorfolioID serverless functions — Phase 6 Supabase",
   "dependencies": {
-    "@netlify/blobs": "^10.7.4"
+    "@netlify/blobs": "^10.7.9"
   }
 }
