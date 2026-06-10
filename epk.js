@@ -946,7 +946,7 @@ function buildEPK(epk) {
       <div class="hero-image-panel">${heroImgHTML}</div>
       <div class="hero-content">
 
-        <h1 class="hero-name">${firstName}<br><em>${lastName}</em></h1>
+        <h1 class="hero-name">${firstName} <em>${lastName}</em></h1>
 
         <div class="hero-roles-row">
           <div class="hero-role-item">
