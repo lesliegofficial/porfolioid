@@ -63,7 +63,7 @@
   .hero-presence-top-row { display: flex; justify-content: flex-start; align-items: center; gap: 0.75rem; margin-bottom: 4px; }
   .hero-presence-explore { font-family: var(--font-display); font-style: italic; font-size: 0.68rem; letter-spacing: 0.02em; color: var(--gold); border: 1px solid var(--gold); padding: 0.1rem 0.4rem; vertical-align: middle; transition: all 0.3s ease; box-shadow: 0 0 0 rgba(201,168,76,0); animation: explore-pulse 2.5s ease-in-out infinite; }
   .hero-presence-bar:hover .hero-presence-explore { background: rgba(201,168,76,0.15); box-shadow: 0 0 12px rgba(201,168,76,0.4); animation: none; }
-  @keyframes explore-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.5); } 50% { box-shadow: 0 0 0 5px rgba(201,168,76,0); } }
+  @keyframes explore-pulse { 0% { box-shadow: 0 0 4px 1px rgba(201,168,76,0.6); border-color: rgba(201,168,76,0.6); } 50% { box-shadow: 0 0 14px 4px rgba(201,168,76,0.9); border-color: rgba(201,168,76,1); color: #fff; } 100% { box-shadow: 0 0 4px 1px rgba(201,168,76,0.6); border-color: rgba(201,168,76,0.6); } }
   .hero-connect-body { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.45s ease, opacity 0.3s ease; }
   .hero-connect-body.open { max-height: 600px; opacity: 1; }
   .hero-connect-inner { padding-top: 0.75rem; }
