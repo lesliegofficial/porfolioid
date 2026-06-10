@@ -1049,7 +1049,7 @@ function buildEPK(epk) {
           </div>
         </div>
         <div class="ch3-grid">
-          <div class="ch3-card" onclick="expandSection('credits')">
+          <div class="ch3-card" onclick="const el=document.getElementById('credits');if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052293/career-highlights/live-performance.jpg" alt="Live Performance" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
@@ -1058,7 +1058,7 @@ function buildEPK(epk) {
               <span class="ch3-link">View Credits →</span>
             </div>
           </div>
-          <div class="ch3-card" onclick="expandSection('credits')">
+          <div class="ch3-card" onclick="const el=document.getElementById('credits');if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052294/career-highlights/recording-artist.jpg" alt="Recording Artist" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
@@ -1067,7 +1067,7 @@ function buildEPK(epk) {
               <span class="ch3-link">View Credits →</span>
             </div>
           </div>
-          <div class="ch3-card" onclick="expandSection('credits')">
+          <div class="ch3-card" onclick="const el=document.getElementById('credits');if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052295/career-highlights/creative-professional.jpg" alt="Creative Professional" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg></div>
@@ -1076,7 +1076,7 @@ function buildEPK(epk) {
               <span class="ch3-link">View Credits →</span>
             </div>
           </div>
-          <div class="ch3-card" onclick="expandSection('credits')">
+          <div class="ch3-card" onclick="const el=document.getElementById('credits');if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}" style="cursor:pointer">
             <div class="ch3-img" style="position:relative;overflow:hidden">
               <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0" poster="https://res.cloudinary.com/djj8xe3gx/video/upload/so_2,f_jpg/v1781052306/career-highlights/marketing-pr.mp4">
                 <source src="https://res.cloudinary.com/djj8xe3gx/video/upload/v1781052306/career-highlights/marketing-pr.mp4" type="video/mp4">
@@ -1089,7 +1089,7 @@ function buildEPK(epk) {
               <span class="ch3-link">View Credits →</span>
             </div>
           </div>
-          <div class="ch3-card" onclick="expandSection('credits')">
+          <div class="ch3-card" onclick="const el=document.getElementById('credits');if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052297/career-highlights/industry-operations.jpg" alt="Industry Operations" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div>
@@ -1098,7 +1098,7 @@ function buildEPK(epk) {
               <span class="ch3-link">View Credits →</span>
             </div>
           </div>
-          <div class="ch3-card" onclick="expandSection('credits')">
+          <div class="ch3-card" onclick="const el=document.getElementById('credits');if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052298/career-highlights/collaborations.jpg" alt="Collaborations" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
