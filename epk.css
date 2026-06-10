@@ -64,6 +64,8 @@
   .hero-presence-explore { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; color: var(--gold); opacity: 0.7; vertical-align: middle; transition: opacity 0.2s; }
   .hero-presence-bar:hover .hero-presence-explore { opacity: 1; }
   .hero-connect-body { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.45s ease, opacity 0.3s ease; }
+  .presence-hub-inline { display: none; margin-top: 1.5rem; }
+  .hero-presence-bar.presence-open .presence-hub-inline { display: block; }
   .hero-connect-body.open { max-height: 600px; opacity: 1; }
   .hero-connect-inner { padding-top: 0.75rem; }
   .hcl-grid { display: flex; flex-direction: column; gap: 0; }
