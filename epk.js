@@ -296,7 +296,7 @@ function buildEPK(epk) {
         </span>
         <span class="ch-pcard-body">
           <small class="ch-pcard-cat">Website</small>
-          <span class="ch-pcard-name">${w.title || 'PortfolioID'}</span>
+          <span class="ch-pcard-name">${w.title || 'PorfolioID'}</span>
           <span class="ch-pcard-desc">${w.description || 'Professional Identity'}</span>
         </span>
         <span class="ch-pcard-cta">View Portfolio →</span>
