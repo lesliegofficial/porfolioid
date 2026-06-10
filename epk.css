@@ -58,9 +58,15 @@
   .hero-stat-l { font-family: var(--font-mono); font-size: 0.44rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray); }
 
   /* Digital Presence bar */
-  .hero-presence-bar { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(201,168,76,0.12); flex-wrap: wrap; }
-  .hero-presence-label { font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 5px; white-space: nowrap; }
-  .hero-presence-icons { display: flex; gap: 8px; align-items: center; }
+  /* ── Hero Digital Presence — editorial weight matching Connect header ── */
+  .hero-presence-bar { margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
+  .hero-presence-eyebrow { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .hero-presence-eyebrow svg { flex-shrink: 0; }
+  .hero-presence-title { font-family: var(--font-display); font-size: clamp(1.4rem, 2.2vw, 1.9rem); color: var(--white); font-weight: 400; line-height: 1.1; margin: 0 0 5px; }
+  .hero-presence-meta { font-family: var(--font-mono); font-size: 0.52rem; color: var(--gray); letter-spacing: 0.08em; margin-bottom: 10px; display: block; }
+  .hero-presence-dots { display: flex; align-items: center; gap: 7px; margin-bottom: 10px; }
+  .hero-presence-dot { width: 9px; height: 9px; border-radius: 50%; opacity: 0.75; flex-shrink: 0; }
+  .hero-presence-icons { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .hero-presence-icon { width: 34px; height: 34px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; text-decoration: none; transition: border-color 0.18s, transform 0.18s; }
   .hero-presence-icon:hover { border-color: var(--hpi-c, var(--gold)); transform: translateY(-2px); }
 
