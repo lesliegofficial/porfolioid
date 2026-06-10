@@ -1036,6 +1036,9 @@ function buildEPK(epk) {
       </div>
     </div>
 
+    <!-- CONNECT PANEL -->
+    <div id="connect" style="display:none">${connectSectionHTML}</div>
+
     <!-- CAREER HIGHLIGHTS -->
     <section class="career-profile-section" id="bio">
       <div class="ch3-wrap">
@@ -1252,8 +1255,6 @@ function buildEPK(epk) {
       </div>
     </div>` : ''}
 
-    <!-- CONNECT PANEL — inline under hero presence bar -->
-    <div id="connect" style="display:none">${connectSectionHTML}</div>
 
     <!-- BOOKING -->
     ${epk.bookingEnabled !== false ? `<div class="booking-section" id="booking">
@@ -2373,6 +2374,7 @@ function applySectionOrderAndVisibility(epk) {
 
   // Hide/show sections based on visibility + QR override
   DEFAULT_ORDER.forEach(id => {
+    if (id === 'connect') return;
     const el = document.getElementById(id);
     if (!el) return;
     const isVisible = visibility[id] !== false && (!qrAllowed || qrAllowed.has(id));
@@ -2387,6 +2389,7 @@ function applySectionOrderAndVisibility(epk) {
 
   let anchor = hero;
   order.forEach(id => {
+    if (id === 'connect') return;
     const el = document.getElementById(id);
     if (!el) return;
     const nextSib = el.nextElementSibling;
