@@ -336,7 +336,7 @@ function loadAllFields() {
   document.getElementById('bookingRegion').value = epk.bookingRegion || '';
   document.getElementById('bookingAutoResponse').value = epk.bookingAutoResponse || '';
   const bcats = epk.bookingCategories || [];
-  ['live','studio','features','touring','hosting','ar','creative','media','marketing','professional','government','entrepreneur','technical','administration','crm','sales','armedforces','other'].forEach(cat => {
+  ['live','studio','features','touring','hosting','ar','creative','media','marketing','professional','government','entrepreneur','technical','administration','crm','sales','personalassistant','executiveassistant','virtualassistant','arcoordinator','artistmanager','tourcoordinator','productioncoordinator','marketingcoordinator','socialmediamanager','brandpartnerships','compliancespecialist','governmentliaison','adminsupport','projectcoordinator','translator','customersuccess','talentscout','consultant','jobhunter','armedforces','other'].forEach(cat => {
     const el = document.getElementById('bcat_' + cat);
     if (el) el.checked = bcats.includes(cat);
   });
@@ -411,7 +411,7 @@ function saveAll() {
   epk.bookingAvailability = document.getElementById('bookingAvailability').value;
   epk.bookingRegion = document.getElementById('bookingRegion').value.trim();
   epk.bookingAutoResponse = document.getElementById('bookingAutoResponse').value.trim();
-  epk.bookingCategories = ['live','studio','features','touring','hosting','ar','creative','media','marketing','professional','government','entrepreneur','technical','administration','crm','sales','armedforces','other'].filter(cat => {
+  epk.bookingCategories = ['live','studio','features','touring','hosting','ar','creative','media','marketing','professional','government','entrepreneur','technical','administration','crm','sales','personalassistant','executiveassistant','virtualassistant','arcoordinator','artistmanager','tourcoordinator','productioncoordinator','marketingcoordinator','socialmediamanager','brandpartnerships','compliancespecialist','governmentliaison','adminsupport','projectcoordinator','translator','customersuccess','talentscout','consultant','jobhunter','armedforces','other'].filter(cat => {
     const el = document.getElementById('bcat_' + cat);
     return el && el.checked;
   });
