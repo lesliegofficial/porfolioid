@@ -336,17 +336,11 @@ function loadAllFields() {
   document.getElementById('bookingRegion').value = epk.bookingRegion || '';
   document.getElementById('bookingAutoResponse').value = epk.bookingAutoResponse || '';
   const bcats = epk.bookingCategories || [];
-  ['live','studio','features','touring','hosting','ar','creative','media','marketing','professional','government','entrepreneur','technical','administration','crm','sales','personalassistant','executiveassistant','virtualassistant','arcoordinator','artistmanager','tourcoordinator','productioncoordinator','marketingcoordinator','socialmediamanager','brandpartnerships','compliancespecialist','governmentliaison','adminsupport','projectcoordinator','translator','customersuccess','talentscout','consultant','jobhunter','armedforces','other'].forEach(cat => {
-    const el = document.getElementById('bcat_' + cat);
-    if (el) el.checked = bcats.includes(cat);
-  });
+  _selectedCategories = [...bcats];
+  renderCategoryCardGroups();
   // Show/hide Other text input
-  const bcatOtherCb = document.getElementById('bcat_other');
   const bcatOtherInp = document.getElementById('bcat_other_input');
-  if (bcatOtherCb && bcatOtherInp) {
-    if (bcats.includes('other')) bcatOtherInp.style.display = 'block';
-    bcatOtherCb.addEventListener('change', function() { bcatOtherInp.style.display = this.checked ? 'block' : 'none'; });
-  }
+  if (bcatOtherInp) bcatOtherInp.style.display = bcats.includes('other') ? 'block' : 'none';
   loadBookingToggle();
   epk.assetsLocked = epk.assetsLocked !== undefined ? epk.assetsLocked : true;
   updateAssetsLockUI();
@@ -411,10 +405,7 @@ function saveAll() {
   epk.bookingAvailability = document.getElementById('bookingAvailability').value;
   epk.bookingRegion = document.getElementById('bookingRegion').value.trim();
   epk.bookingAutoResponse = document.getElementById('bookingAutoResponse').value.trim();
-  epk.bookingCategories = ['live','studio','features','touring','hosting','ar','creative','media','marketing','professional','government','entrepreneur','technical','administration','crm','sales','personalassistant','executiveassistant','virtualassistant','arcoordinator','artistmanager','tourcoordinator','productioncoordinator','marketingcoordinator','socialmediamanager','brandpartnerships','compliancespecialist','governmentliaison','adminsupport','projectcoordinator','translator','customersuccess','talentscout','consultant','jobhunter','armedforces','other'].filter(cat => {
-    const el = document.getElementById('bcat_' + cat);
-    return el && el.checked;
-  });
+  epk.bookingCategories = [..._selectedCategories];
 
   persistUser();
   showSaveBanner();
@@ -3365,6 +3356,93 @@ async function saveSpanish() {
     if (res.ok) showToast('Spanish content saved ✓');
     else showToast('Save failed');
   } catch(e) { showToast('Error saving'); }
+}
+
+// ── AVAILABILITY CATEGORY CARDS (grouped by niche) ──
+const CATEGORY_GROUPS = [
+  { title: '🎵 Music & Entertainment', items: [
+    { id: 'live', label: 'Live Performances' },
+    { id: 'studio', label: 'Studio Sessions' },
+    { id: 'features', label: 'Features / Collabs' },
+    { id: 'touring', label: 'Touring' },
+    { id: 'hosting', label: 'Hosting / MC' },
+    { id: 'ar', label: 'A&R Consulting' },
+    { id: 'arcoordinator', label: 'A&R Coordinator' },
+    { id: 'creative', label: 'Creative Direction' },
+    { id: 'tourcoordinator', label: 'Tour Coordinator' },
+    { id: 'productioncoordinator', label: 'Production Coordinator' },
+    { id: 'artistmanager', label: 'Artist Manager' },
+    { id: 'talentscout', label: 'Talent Scout' },
+  ]},
+  { title: '📣 Media & Marketing', items: [
+    { id: 'media', label: 'Media / Press' },
+    { id: 'marketing', label: 'Marketing / PR' },
+    { id: 'marketingcoordinator', label: 'Marketing Coordinator' },
+    { id: 'socialmediamanager', label: 'Social Media Manager' },
+    { id: 'brandpartnerships', label: 'Brand Partnerships' },
+  ]},
+  { title: '💼 Professional & Admin', items: [
+    { id: 'professional', label: 'Professional' },
+    { id: 'government', label: 'Government' },
+    { id: 'governmentliaison', label: 'Government Liaison' },
+    { id: 'administration', label: 'Administration' },
+    { id: 'adminsupport', label: 'Administrative Support' },
+    { id: 'crm', label: 'CRM' },
+    { id: 'sales', label: 'Sales' },
+    { id: 'compliancespecialist', label: 'Compliance Specialist' },
+    { id: 'projectcoordinator', label: 'Project Coordinator' },
+    { id: 'customersuccess', label: 'Customer Success Rep' },
+    { id: 'consultant', label: 'Consultant' },
+    { id: 'entrepreneur', label: 'Entrepreneur' },
+  ]},
+  { title: '🤝 Assistant & Support Roles', items: [
+    { id: 'personalassistant', label: 'Personal Assistant' },
+    { id: 'executiveassistant', label: 'Executive Assistant' },
+    { id: 'virtualassistant', label: 'Virtual Assistant' },
+    { id: 'translator', label: 'Bilingual Translator / Interpreter' },
+  ]},
+  { title: '💻 Tech & Socials', items: [
+    { id: 'technical', label: 'Technical' },
+  ]},
+  { title: '📌 Other', items: [
+    { id: 'armedforces', label: 'Armed Forces' },
+    { id: 'jobhunter', label: 'Job Hunter / Open to Work' },
+    { id: 'other', label: 'Other' },
+  ]},
+];
+const ALL_CATEGORY_IDS = CATEGORY_GROUPS.flatMap(g => g.items.map(i => i.id));
+let _selectedCategories = [];
+
+function renderCategoryCardGroups() {
+  const container = document.getElementById('categoryCardGroups');
+  if (!container) return;
+  container.innerHTML = CATEGORY_GROUPS.map(group => `
+    <div style="margin-bottom:1.75rem">
+      <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.85rem">${group.title}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:0.75rem">
+        ${group.items.map(item => {
+          const active = _selectedCategories.includes(item.id);
+          return `<div onclick="toggleCategoryCard('${item.id}')" id="catcard_${item.id}"
+            style="background:${active ? 'rgba(201,168,76,0.08)' : 'var(--dark-2)'};border:1px solid ${active ? 'var(--gold)' : 'rgba(201,168,76,0.12)'};
+            padding:0.9rem 1rem;cursor:pointer;transition:all 0.15s;position:relative;display:flex;align-items:center;justify-content:space-between;gap:0.5rem">
+            <span style="font-family:var(--font-mono);font-size:0.78rem;color:${active ? 'var(--white)' : 'var(--gray-light)'}">${item.label}</span>
+            ${active ? '<span style="color:var(--gold);font-size:0.9rem;flex-shrink:0">✓</span>' : ''}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleCategoryCard(id) {
+  if (_selectedCategories.includes(id)) {
+    _selectedCategories = _selectedCategories.filter(c => c !== id);
+  } else {
+    _selectedCategories.push(id);
+  }
+  renderCategoryCardGroups();
+  const otherInp = document.getElementById('bcat_other_input');
+  if (otherInp) otherInp.style.display = _selectedCategories.includes('other') ? 'block' : 'none';
 }
 
 // ── CAREER TYPE PANEL ──

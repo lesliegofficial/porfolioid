@@ -1441,11 +1441,6 @@
         #bookingToggle:checked + span { background: var(--gold); border-color: var(--gold); }
         #bookingToggle:checked + span::before { transform: translateX(20px); }
         #toggleSlider::before { content:''  ; position:absolute; height:16px; width:16px; left:3px; bottom:3px; background:white; transition:0.3s; border-radius:50%; }
-        .cat-group details { margin-bottom: 0.5rem; }
-        .cat-group summary { list-style: none; display: flex; align-items: center; justify-content: space-between; }
-        .cat-group summary::-webkit-details-marker { display: none; }
-        .cat-group summary::after { content: '+'; font-family: var(--font-mono); color: var(--gold); font-size: 0.9rem; }
-        .cat-group details[open] summary::after { content: '−'; }
       </style>
 
       <hr class="section-divider">
@@ -1505,83 +1500,10 @@
 
       <hr class="section-divider">
       <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:1rem;">What You're Available For</h3>
-      <p class="field-hint" style="margin-bottom:1rem">Select all that apply — these appear as tags on your Portfolio.</p>
+      <p class="field-hint" style="margin-bottom:1.25rem">Select all that apply — these appear as tags on your Portfolio.</p>
 
-      <div class="cat-group">
-        <details open>
-          <summary style="cursor:pointer;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);padding:0.6rem 0;border-bottom:1px solid rgba(201,168,76,0.15);margin-bottom:0.75rem">🎵 Music &amp; Entertainment</summary>
-          <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1.5rem">
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_live" style="accent-color:var(--gold)"> Live Performances</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_studio" style="accent-color:var(--gold)"> Studio Sessions</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_features" style="accent-color:var(--gold)"> Features / Collabs</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_touring" style="accent-color:var(--gold)"> Touring</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_hosting" style="accent-color:var(--gold)"> Hosting / MC</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_ar" style="accent-color:var(--gold)"> A&amp;R Consulting</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_arcoordinator" style="accent-color:var(--gold)"> A&amp;R Coordinator</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_creative" style="accent-color:var(--gold)"> Creative Direction</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_tourcoordinator" style="accent-color:var(--gold)"> Tour Coordinator</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_productioncoordinator" style="accent-color:var(--gold)"> Production Coordinator</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_artistmanager" style="accent-color:var(--gold)"> Artist Manager</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_talentscout" style="accent-color:var(--gold)"> Talent Scout</label>
-          </div>
-        </details>
-
-        <details>
-          <summary style="cursor:pointer;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);padding:0.6rem 0;border-bottom:1px solid rgba(201,168,76,0.15);margin-bottom:0.75rem">📣 Media &amp; Marketing</summary>
-          <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1.5rem">
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_media" style="accent-color:var(--gold)"> Media / Press</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_marketing" style="accent-color:var(--gold)"> Marketing / PR</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_marketingcoordinator" style="accent-color:var(--gold)"> Marketing Coordinator</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_socialmediamanager" style="accent-color:var(--gold)"> Social Media Manager</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_brandpartnerships" style="accent-color:var(--gold)"> Brand Partnerships</label>
-          </div>
-        </details>
-
-        <details>
-          <summary style="cursor:pointer;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);padding:0.6rem 0;border-bottom:1px solid rgba(201,168,76,0.15);margin-bottom:0.75rem">💼 Professional &amp; Admin</summary>
-          <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1.5rem">
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_professional" style="accent-color:var(--gold)"> Professional</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_government" style="accent-color:var(--gold)"> Government</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_governmentliaison" style="accent-color:var(--gold)"> Government Liaison</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_administration" style="accent-color:var(--gold)"> Administration</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_adminsupport" style="accent-color:var(--gold)"> Administrative Support</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_crm" style="accent-color:var(--gold)"> CRM</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_sales" style="accent-color:var(--gold)"> Sales</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_compliancespecialist" style="accent-color:var(--gold)"> Compliance Specialist</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_projectcoordinator" style="accent-color:var(--gold)"> Project Coordinator</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_customersuccess" style="accent-color:var(--gold)"> Customer Success Rep</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_consultant" style="accent-color:var(--gold)"> Consultant</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_entrepreneur" style="accent-color:var(--gold)"> Entrepreneur</label>
-          </div>
-        </details>
-
-        <details>
-          <summary style="cursor:pointer;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);padding:0.6rem 0;border-bottom:1px solid rgba(201,168,76,0.15);margin-bottom:0.75rem">🤝 Assistant &amp; Support Roles</summary>
-          <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1.5rem">
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_personalassistant" style="accent-color:var(--gold)"> Personal Assistant</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_executiveassistant" style="accent-color:var(--gold)"> Executive Assistant</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_virtualassistant" style="accent-color:var(--gold)"> Virtual Assistant</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_translator" style="accent-color:var(--gold)"> Bilingual Translator / Interpreter</label>
-          </div>
-        </details>
-
-        <details>
-          <summary style="cursor:pointer;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);padding:0.6rem 0;border-bottom:1px solid rgba(201,168,76,0.15);margin-bottom:0.75rem">💻 Tech &amp; Socials</summary>
-          <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1.5rem">
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_technical" style="accent-color:var(--gold)"> Technical</label>
-          </div>
-        </details>
-
-        <details>
-          <summary style="cursor:pointer;font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);padding:0.6rem 0;border-bottom:1px solid rgba(201,168,76,0.15);margin-bottom:0.75rem">📌 Other</summary>
-          <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1.5rem">
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_armedforces" style="accent-color:var(--gold)"> Armed Forces</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_jobhunter" style="accent-color:var(--gold)"> Job Hunter / Open to Work</label>
-            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--font-mono);font-size:0.6rem;color:var(--gray-light)"><input type="checkbox" id="bcat_other" style="accent-color:var(--gold)"> Other</label>
-          </div>
-        </details>
-      </div>
-      <div id="bcat_other_input" style="display:none;margin-bottom:1rem">
+      <div id="categoryCardGroups"></div>
+      <div id="bcat_other_input" style="display:none;margin-bottom:1rem;margin-top:1rem">
         <input type="text" id="bcat_other_text" placeholder="Describe your availability type" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.6rem;font-family:var(--font-mono);font-size:0.7rem;box-sizing:border-box">
       </div>
 
