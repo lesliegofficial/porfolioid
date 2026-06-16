@@ -2402,19 +2402,26 @@ function applySectionOrderAndVisibility(epk) {
 
 // Credits collapse/expand
 function toggleAllCredits() {
+  const container = document.getElementById('credits');
   const grid = document.getElementById('creditsGrid');
   const btn = document.getElementById('creditsToggleBtn');
   const banner = document.getElementById('creditsFilterBanner');
-  if (!grid || !btn) return;
-  const isExpanded = grid.classList.contains('credits-expanded');
-  grid.classList.toggle('credits-expanded', !isExpanded);
-  if (isExpanded) {
-    // Collapsing back to default view — clear any leftover per-card filter hiding so all cards are eligible again
-    grid.querySelectorAll('.credit-card').forEach(card => { card.style.display = ''; });
-    if (banner) banner.style.display = 'none';
-  }
+  if (!grid || !btn || !container) return;
+
+  // Fully close — re-hide the whole Record section back to its initial state
+  container.style.display = 'none';
+  grid.classList.remove('credits-expanded');
+  grid.querySelectorAll('.credit-card').forEach(card => { card.style.display = ''; });
+  if (banner) banner.style.display = 'none';
   const total = grid.querySelectorAll('.credit-card').length;
-  btn.textContent = isExpanded ? `View All ${total} Credits +` : 'Show Less –';
+  btn.textContent = `View All ${total} Credits +`;
+  btn.style.display = '';
+
+  // Scroll back up to the Career Highlights cards so the page doesn't leave the user staring at empty space
+  const wrap = document.querySelector('.ch3-wrap');
+  if (wrap) {
+    setTimeout(() => { wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
+  }
 }
 
 // Filter credits grid by Career Highlight category, then scroll to it.
@@ -2429,9 +2436,8 @@ function filterCreditsByCategory(tag) {
   if (container) container.style.display = 'block'; // reveal on demand — hidden until a card/button is clicked
   grid.classList.add('credits-expanded'); // bypass the nth-child collapse so filtered results aren't hidden
   if (btn) {
-    const total = grid.querySelectorAll('.credit-card').length;
-    btn.style.display = tag ? 'none' : '';
-    btn.textContent = 'Show Less –'; // grid is now expanded, so button must offer collapse, not re-expand
+    btn.style.display = ''; // Close button stays visible whether filtered or showing everything
+    btn.textContent = 'Close –';
   }
 
   const cards = grid.querySelectorAll('.credit-card');
@@ -2445,7 +2451,7 @@ function filterCreditsByCategory(tag) {
   if (banner) {
     if (tag && matchCount > 0) {
       const labels = { liveperformance:'Live Performance', recordingartist:'Recording Artist', creativeprofessional:'Creative Professional', marketingpr:'Marketing & PR', industryoperations:'Industry Operations', founderbuilder:'Founder & Builder' };
-      banner.innerHTML = `Showing: <strong style="color:var(--gold)">${labels[tag] || tag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">View Complete Record →</a>`;
+      banner.innerHTML = `Showing: <strong style="color:var(--gold)">${labels[tag] || tag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">View Complete Record →</a> &nbsp;<a href="javascript:void(0)" onclick="toggleAllCredits()" style="color:var(--gray);text-decoration:underline">Close –</a>`;
       banner.style.display = 'block';
     } else {
       banner.style.display = 'none';
