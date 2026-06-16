@@ -1449,7 +1449,14 @@
   "bookingCategories": [
     "professional",
     "administration",
-    "crm"
+    "crm",
+    "other",
+    "adminsupport",
+    "projectcoordinator",
+    "personalassistant",
+    "executiveassistant",
+    "virtualassistant",
+    "translator"
   ],
   "heroImagePosition": 26,
   "sectionVisibility": {},
