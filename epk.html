@@ -78,7 +78,7 @@
   <div class="footer-copy">All rights reserved</div>
 </footer>
 
-<script src="/epk.js?v=2.7.29" defer></script>
+<script src="/epk.js?v=2.7.30" defer></script>
 
 <!-- Credit Detail Modal -->
 <div class="credit-modal-overlay" id="creditModalOverlay" onclick="if(event.target===this)closeCreditModal()">
@@ -110,6 +110,14 @@
   <div style="background:#111;border:1px solid rgba(201,168,76,0.2);max-width:860px;width:100%;max-height:90vh;overflow-y:auto;position:relative">
     <button onclick="closeAwardModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:#888;font-size:1rem;cursor:pointer;font-family:monospace;letter-spacing:0.1em;z-index:1">✕ CLOSE</button>
     <div id="awardModalContent" style="padding:2rem"></div>
+  </div>
+</div>
+
+<!-- Inquiry Modal -->
+<div id="inquiryModalOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:1000;align-items:center;justify-content:center;padding:1rem" onclick="if(event.target===this)closeInquiryModal()">
+  <div style="background:#111;border:1px solid rgba(201,168,76,0.2);max-width:640px;width:100%;max-height:90vh;overflow-y:auto;position:relative">
+    <button onclick="closeInquiryModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:#888;font-size:1rem;cursor:pointer;font-family:monospace;letter-spacing:0.1em;z-index:1">✕ CLOSE</button>
+    <div id="inquiryModalContent" style="padding:2.5rem"></div>
   </div>
 </div>
 

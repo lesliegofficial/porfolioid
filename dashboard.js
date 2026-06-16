@@ -565,7 +565,6 @@ const DEFAULT_SECTIONS = [
   { id: 'awards',  label: 'Awards',         icon: '🏅' },
   { id: 'assets',  label: 'Assets',         icon: '📦' },
   { id: 'connect', label: 'Connect Hub',    icon: '◎' },
-  { id: 'booking', label: 'Booking',        icon: '📅' },
 ];
 
 function initSectionsPanel() {
@@ -2352,7 +2351,7 @@ const QR_MODE_CONFIG = {
 
 const SECTION_LABELS = {
   bio: 'Bio', credits: 'Credits', music: 'Music', videos: 'Videos',
-  photos: 'Photos', assets: 'Assets', awards: 'Awards', booking: 'Booking', socials: 'Socials'
+  photos: 'Photos', assets: 'Assets', awards: 'Awards', connect: 'Connect', socials: 'Socials'
 };
 
 function initQRPanel() {

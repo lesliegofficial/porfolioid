@@ -250,7 +250,7 @@ function buildEPK(epk) {
       <div class="ch-hero-right">
         <p class="ch-hero-sub">Explore my official platforms, music channels, social media profiles, and booking information.</p>
         <div class="ch-hero-btns">
-          <a href="#booking" class="ch-btn-gold">${bookingLabel} →</a>
+          <a href="javascript:void(0)" onclick="openInquiryModal()" class="ch-btn-gold">${bookingLabel} →</a>
           <a href="#booking" class="ch-btn-outline">
             <svg viewBox="0 0 24 24" style="fill:currentColor;width:13px;height:13px"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
             Save to Contacts
@@ -267,7 +267,7 @@ function buildEPK(epk) {
     const isBooking = key === 'booking';
     const val = s[key];
     if (!val && !isBooking) return '';
-    const url = isBooking ? '#booking' : getFirstUrl(val);
+    const url = isBooking ? 'javascript:void(0)' : getFirstUrl(val);
     if (!url && !isBooking) return '';
     const color = platformColors[key] || '#C9A84C';
     const cat = catOverride || platformCat[key] || '';
@@ -275,7 +275,7 @@ function buildEPK(epk) {
     const desc = descOverride || platformDesc[key] || '';
     const cta = featuredCTA[key] || 'Visit';
     const imgIcon = platformImg[key];
-    return `<a href="${url}" class="ch-pcard" target="${isBooking?'_self':'_blank'}" rel="noopener">
+    return `<a href="${url}" class="ch-pcard" ${isBooking ? 'onclick="openInquiryModal();return false;"' : ''} target="${isBooking?'_self':'_blank'}" rel="noopener">
       <span class="ch-pcard-icon" style="background:${color}">
         ${imgIcon ? `<img src="${imgIcon}" style="width:100%;height:100%;object-fit:cover" alt="${key}">` : `<svg viewBox="0 0 24 24" style="fill:#fff;width:26px;height:26px">${getSvgPath(key)}</svg>`}
       </span>
@@ -1256,67 +1256,68 @@ function buildEPK(epk) {
     </div>` : ''}
 
 
-    <!-- BOOKING -->
-    ${epk.bookingEnabled !== false ? `<div class="booking-section" id="booking">
-      <div class="booking-inner">
-        <div class="section-label">Connect</div>
-        <h2 class="booking-title">${bookingLabel}</h2>
-        <p class="booking-sub">${bookingTagline}</p>
-        ${availBadge}
-        ${regionBadge}
-        ${catBadges}
-        ${bookingNote ? `<p class="booking-note">${bookingNote}</p>` : ''}
-        <form name="booking-inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field"
-          onsubmit="handleBookingSubmit(event)"
-          style="max-width:560px;margin-top:2rem">
-          <input type="hidden" name="form-name" value="booking-inquiry">
-          <input type="hidden" name="recipient" value="${bookingEmail}">
-          <p style="display:none"><input name="bot-field"></p>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
-            <div>
-              <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Your Name</label>
-              <input type="text" name="name" required placeholder="Full Name"
-                style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box"
-                onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'">
-            </div>
-            <div>
-              <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Your Email</label>
-              <input type="email" name="email" required placeholder="email@example.com"
-                style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box"
-                onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'">
-            </div>
-          </div>
-          <div style="margin-bottom:1rem">
-            <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Booking Type</label>
-            <select name="booking-type"
-              style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;appearance:none">
-              <option value="">— Select Type —</option>
-              <option value="Live Performance">Live Performance</option>
-              <option value="Studio Session">Studio Session</option>
-              <option value="Feature / Collab">Feature / Collab</option>
-              <option value="Touring">Touring</option>
-              <option value="Hosting / MC">Hosting / MC</option>
-              <option value="A&R Consulting">A&R Consulting</option>
-              <option value="Creative Direction">Creative Direction</option>
-              <option value="Media / Press">Media / Press</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div style="margin-bottom:1.5rem">
-            <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Message</label>
-            <textarea name="message" required rows="4" placeholder="Tell me about your project, event date, and any other details..."
-              style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;resize:vertical;box-sizing:border-box"
-              onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'"></textarea>
-          </div>
-          <button type="submit" class="btn-primary" style="width:100%;justify-content:center">✉ Send Inquiry</button>
-          <div id="bookingSuccess" style="display:none;margin-top:1rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--gold);text-align:center;padding:1rem;border:1px solid rgba(201,168,76,0.2)">
-            ✓ Your inquiry has been sent. We'll be in touch soon.
-          </div>
-        </form>
-        ${bookingPhone ? `<p style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);margin-top:1.5rem">Prefer to call? <a href="tel:${bookingPhone}" style="color:var(--gold)">${bookingPhone}</a></p>` : ''}
-      </div>
-    </div>` : '<div id="booking" style="display:none"></div>'}
+    <!-- BOOKING/INQUIRY (now rendered as a modal, triggered from the Connect card) -->
+    <div id="booking" style="display:none"></div>
   `;
+
+  // Build the inquiry form HTML and store it for the modal (openInquiryModal)
+  window._inquiryFormHTML = (epk.bookingEnabled !== false) ? `
+    <div class="section-label">Connect</div>
+    <h2 class="booking-title">${bookingLabel}</h2>
+    <p class="booking-sub">${bookingTagline}</p>
+    ${availBadge}
+    ${regionBadge}
+    ${catBadges}
+    ${bookingNote ? `<p class="booking-note">${bookingNote}</p>` : ''}
+    <form name="booking-inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field"
+      onsubmit="handleBookingSubmit(event)"
+      style="max-width:560px;margin-top:2rem">
+      <input type="hidden" name="form-name" value="booking-inquiry">
+      <input type="hidden" name="recipient" value="${bookingEmail}">
+      <p style="display:none"><input name="bot-field"></p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+        <div>
+          <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Your Name</label>
+          <input type="text" name="name" required placeholder="Full Name"
+            style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box"
+            onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'">
+        </div>
+        <div>
+          <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Your Email</label>
+          <input type="email" name="email" required placeholder="email@example.com"
+            style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box"
+            onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'">
+        </div>
+      </div>
+      <div style="margin-bottom:1rem">
+        <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Booking Type</label>
+        <select name="booking-type"
+          style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;appearance:none">
+          <option value="">— Select Type —</option>
+          <option value="Live Performance">Live Performance</option>
+          <option value="Studio Session">Studio Session</option>
+          <option value="Feature / Collab">Feature / Collab</option>
+          <option value="Touring">Touring</option>
+          <option value="Hosting / MC">Hosting / MC</option>
+          <option value="A&R Consulting">A&R Consulting</option>
+          <option value="Creative Direction">Creative Direction</option>
+          <option value="Media / Press">Media / Press</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div style="margin-bottom:1.5rem">
+        <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Message</label>
+        <textarea name="message" required rows="4" placeholder="Tell me about your project, event date, and any other details..."
+          style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;resize:vertical;box-sizing:border-box"
+          onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'"></textarea>
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%;justify-content:center">✉ Send Inquiry</button>
+      <div id="bookingSuccess" style="display:none;margin-top:1rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--gold);text-align:center;padding:1rem;border:1px solid rgba(201,168,76,0.2)">
+        ✓ Your inquiry has been sent. We'll be in touch soon.
+      </div>
+    </form>
+    ${bookingPhone ? `<p style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);margin-top:1.5rem">Prefer to call? <a href="tel:${bookingPhone}" style="color:var(--gold)">${bookingPhone}</a></p>` : ''}
+  ` : '';
 
   // Apply section order and visibility from epk data
   applySectionOrderAndVisibility(epk);
@@ -2497,7 +2498,7 @@ function expandSection(sectionId) {
     return;
   }
   // Map section IDs to their body IDs
-  const bodyMap = { music:'musicBody', awards:'awardsBody', assets:'assetsBody', booking:'bookingBody' };
+  const bodyMap = { music:'musicBody', awards:'awardsBody', assets:'assetsBody' };
   const bodyId = bodyMap[sectionId];
   if (!bodyId) return;
   const body = document.getElementById(bodyId);
@@ -2563,6 +2564,21 @@ function openAwardModal(idx) {
 
 function closeAwardModal() {
   document.getElementById('awardModalOverlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// Inquiry Modal (lives inside Connect — triggered by the Inquiries card)
+function openInquiryModal() {
+  const content = document.getElementById('inquiryModalContent');
+  if (!content) return;
+  content.innerHTML = window._inquiryFormHTML || '<p style="color:var(--gray);font-family:var(--font-mono);font-size:0.7rem">Inquiries are currently unavailable.</p>';
+  const overlay = document.getElementById('inquiryModalOverlay');
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeInquiryModal() {
+  document.getElementById('inquiryModalOverlay').style.display = 'none';
   document.body.style.overflow = '';
 }
 

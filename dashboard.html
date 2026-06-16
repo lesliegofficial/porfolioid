@@ -123,7 +123,7 @@
         <span class="nav-item-icon">⬛</span><span>Share Card / QR</span>
       </button>
       <button class="nav-item" onclick="showPanel('booking')">
-        <span class="nav-item-icon">📅</span><span>Booking</span>
+        <span class="nav-item-icon">📅</span><span>Connect</span>
       </button>
       <button class="nav-item" onclick="showPanel('socials')">
         <span class="nav-item-icon">🔗</span><span>Social Links</span>
@@ -1426,11 +1426,11 @@
 
     <!-- BOOKING PANEL -->
     <div class="panel" id="panel-booking">
-      <h1 class="panel-title">Booking</h1>
-      <p class="panel-sub">Control how people reach you — or turn this section off entirely.</p>
+      <h1 class="panel-title">Connect</h1>
+      <p class="panel-sub">This lives inside your Connect section — control how people reach you, or turn it off entirely.</p>
 
       <div class="field-group" style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);padding:1rem 1.25rem;border:1px solid rgba(201,168,76,0.15)">
-        <label class="field-label" style="margin:0;flex:1">Show Booking Section on My Portfolio</label>
+        <label class="field-label" style="margin:0;flex:1">Show Inquiries Card in Connect</label>
         <label style="position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0">
           <input type="checkbox" id="bookingToggle" onchange="toggleBooking()" style="opacity:0;width:0;height:0">
           <span style="position:absolute;cursor:pointer;inset:0;background:var(--dark-4);border:1px solid rgba(201,168,76,0.2);transition:0.3s;border-radius:24px" id="toggleSlider"></span>
@@ -1468,9 +1468,9 @@
       <hr class="section-divider">
 
       <div class="field-group">
-        <label class="field-label">Booking Email</label>
+        <label class="field-label">Inquiry Email</label>
         <input type="email" id="bookingEmail" placeholder="booking@youremail.com">
-        <p class="field-hint">Booking inquiries from your Portfolio will be sent to this address.</p>
+        <p class="field-hint">Inquiries submitted from your Portfolio will be sent to this address.</p>
       </div>
       <div class="field-group">
         <label class="field-label">Phone Number (optional)</label>
@@ -1530,7 +1530,7 @@
       <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:1.5rem;">Messaging</h3>
 
       <div class="field-group">
-        <label class="field-label">Booking Tagline</label>
+        <label class="field-label">Inquiry Tagline</label>
         <input type="text" id="bookingTagline" placeholder="Now booking live performances, studio sessions, and creative collaborations.">
       </div>
       <div class="field-group">
