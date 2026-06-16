@@ -45,7 +45,7 @@ function buildEPK(epk) {
     { id: 'awards', label: 'Awards' },
     { id: 'assets', label: 'Assets' },
     { id: 'connect', label: 'Connect' },
-    { id: 'booking', label: 'Booking' },
+    { id: 'booking', label: 'Inquiries' },
   ];
   const sectionOrder = epk.sectionOrder || ALL_SECTIONS.map(s => s.id);
   const sectionVisibility = epk.sectionVisibility || {};
@@ -250,7 +250,7 @@ function buildEPK(epk) {
       <div class="ch-hero-right">
         <p class="ch-hero-sub">Explore my official platforms, music channels, social media profiles, and booking information.</p>
         <div class="ch-hero-btns">
-          <a href="#booking" class="ch-btn-gold">Booking &amp; Contact →</a>
+          <a href="#booking" class="ch-btn-gold">Inquiries →</a>
           <a href="#booking" class="ch-btn-outline">
             <svg viewBox="0 0 24 24" style="fill:currentColor;width:13px;height:13px"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
             Save to Contacts
@@ -321,7 +321,7 @@ function buildEPK(epk) {
     buildPrimaryCard('spotify','Music','Spotify','Official Releases'),
     buildPrimaryCard('youtube','Video','YouTube','Watch Live Performances'),
     amazonUrl ? buildPrimaryCard('amazon','Curated Picks','My Picks','Products I Personally Use & Recommend') : null,
-    buildPrimaryCard('booking','Booking','Booking & Contact','Work With Me'),
+    buildPrimaryCard('booking','Inquiries','Inquiries','Work With Me'),
   ].filter(Boolean).join('');
 
   // ── AMAZON — secondary wide banner ──
@@ -987,7 +987,7 @@ function buildEPK(epk) {
               Connect
             </p>
           <h3 class="hero-presence-title">My Digital Presence &nbsp;<span class="hero-presence-explore">Explore →</span></h3>
-          <span class="hero-presence-meta">Social Platforms • Music • Video • Recommendations • Booking</span>
+          <span class="hero-presence-meta">Social Platforms • Music • Video • Recommendations • Inquiries</span>
           <div class="hero-presence-dots">
             <span class="hero-presence-dot" style="background:#E1306C"></span>
             <span class="hero-presence-dot" style="background:#1DB954"></span>
@@ -1259,7 +1259,7 @@ function buildEPK(epk) {
     <!-- BOOKING -->
     ${epk.bookingEnabled !== false ? `<div class="booking-section" id="booking">
       <div class="booking-inner">
-        <div class="section-label">Booking</div>
+        <div class="section-label">Inquiries</div>
         <h2 class="booking-title">Let's Create Something <em>Unforgettable</em></h2>
         <p class="booking-sub">${bookingTagline}</p>
         ${availBadge}
@@ -1308,7 +1308,7 @@ function buildEPK(epk) {
               style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;resize:vertical;box-sizing:border-box"
               onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'"></textarea>
           </div>
-          <button type="submit" class="btn-primary" style="width:100%;justify-content:center">✉ Send Booking Inquiry</button>
+          <button type="submit" class="btn-primary" style="width:100%;justify-content:center">✉ Send Inquiry</button>
           <div id="bookingSuccess" style="display:none;margin-top:1rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--gold);text-align:center;padding:1rem;border:1px solid rgba(201,168,76,0.2)">
             ✓ Your inquiry has been sent. We'll be in touch soon.
           </div>
@@ -2600,7 +2600,7 @@ async function handleBookingSubmit(e) {
     success.style.display = 'block';
     btn.style.display = 'none';
   } catch(err) {
-    btn.textContent = '✉ Send Booking Inquiry';
+    btn.textContent = '✉ Send Inquiry';
     btn.disabled = false;
     alert('Something went wrong. Please try again.');
   }
@@ -3054,8 +3054,8 @@ function toggleLang(lang) {
   const presenceMeta = document.querySelector('.hero-presence-meta');
   if (presenceMeta) {
     presenceMeta.textContent = lang === 'es'
-      ? 'Plataformas Sociales • Música • Video • Recomendaciones • Reservas'
-      : 'Social Platforms • Music • Video • Recommendations • Booking';
+      ? 'Plataformas Sociales • Música • Video • Recomendaciones • Consultas'
+      : 'Social Platforms • Music • Video • Recommendations • Inquiries';
   }
 
   const presenceEyebrow = document.querySelector('.hero-presence-eyebrow');
