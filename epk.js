@@ -32,6 +32,7 @@ function buildEPK(epk) {
   const nameParts = (epk.name || 'Artist Name').split(' ');
   const firstName = nameParts[0];
   const lastName = nameParts.slice(1).join(' ');
+  const bookingLabel = epk.bookingLabel || 'Inquiries';
 
   // Build nav
   const navLinks = document.getElementById('navLinks');
@@ -45,7 +46,7 @@ function buildEPK(epk) {
     { id: 'awards', label: 'Awards' },
     { id: 'assets', label: 'Assets' },
     { id: 'connect', label: 'Connect' },
-    { id: 'booking', label: 'Inquiries' },
+    { id: 'booking', label: bookingLabel },
   ];
   const sectionOrder = epk.sectionOrder || ALL_SECTIONS.map(s => s.id);
   const sectionVisibility = epk.sectionVisibility || {};
@@ -250,7 +251,7 @@ function buildEPK(epk) {
       <div class="ch-hero-right">
         <p class="ch-hero-sub">Explore my official platforms, music channels, social media profiles, and booking information.</p>
         <div class="ch-hero-btns">
-          <a href="#booking" class="ch-btn-gold">Inquiries →</a>
+          <a href="#booking" class="ch-btn-gold">${bookingLabel} →</a>
           <a href="#booking" class="ch-btn-outline">
             <svg viewBox="0 0 24 24" style="fill:currentColor;width:13px;height:13px"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
             Save to Contacts
@@ -321,7 +322,7 @@ function buildEPK(epk) {
     buildPrimaryCard('spotify','Music','Spotify','Official Releases'),
     buildPrimaryCard('youtube','Video','YouTube','Watch Live Performances'),
     amazonUrl ? buildPrimaryCard('amazon','Curated Picks','My Picks','Products I Personally Use & Recommend') : null,
-    buildPrimaryCard('booking','Inquiries','Inquiries','Work With Me'),
+    buildPrimaryCard('booking',bookingLabel,bookingLabel,'Work With Me'),
   ].filter(Boolean).join('');
 
   // ── AMAZON — secondary wide banner ──
@@ -987,7 +988,7 @@ function buildEPK(epk) {
               Connect
             </p>
           <h3 class="hero-presence-title">My Digital Presence &nbsp;<span class="hero-presence-explore">Explore →</span></h3>
-          <span class="hero-presence-meta">Social Platforms • Music • Video • Recommendations • Inquiries</span>
+          <span class="hero-presence-meta">Social Platforms • Music • Video • Recommendations • ${bookingLabel}</span>
           <div class="hero-presence-dots">
             <span class="hero-presence-dot" style="background:#E1306C"></span>
             <span class="hero-presence-dot" style="background:#1DB954"></span>
@@ -1259,7 +1260,7 @@ function buildEPK(epk) {
     <!-- BOOKING -->
     ${epk.bookingEnabled !== false ? `<div class="booking-section" id="booking">
       <div class="booking-inner">
-        <div class="section-label">Inquiries</div>
+        <div class="section-label">${bookingLabel}</div>
         <h2 class="booking-title">Let's Create Something <em>Unforgettable</em></h2>
         <p class="booking-sub">${bookingTagline}</p>
         ${availBadge}
@@ -3053,9 +3054,10 @@ function toggleLang(lang) {
 
   const presenceMeta = document.querySelector('.hero-presence-meta');
   if (presenceMeta) {
+    const currentBookingLabel = (window._epkData && window._epkData.bookingLabel) || 'Inquiries';
     presenceMeta.textContent = lang === 'es'
-      ? 'Plataformas Sociales • Música • Video • Recomendaciones • Consultas'
-      : 'Social Platforms • Music • Video • Recommendations • Inquiries';
+      ? `Plataformas Sociales • Música • Video • Recomendaciones • ${currentBookingLabel}`
+      : `Social Platforms • Music • Video • Recommendations • ${currentBookingLabel}`;
   }
 
   const presenceEyebrow = document.querySelector('.hero-presence-eyebrow');

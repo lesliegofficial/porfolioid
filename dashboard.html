@@ -1446,6 +1446,28 @@
       <hr class="section-divider">
 
       <div class="field-group">
+        <label class="field-label">Section Label</label>
+        <select id="bookingLabel" onchange="document.getElementById('bookingLabelCustomWrap').style.display = this.value === 'custom' ? 'block' : 'none';">
+          <option value="Inquiries">Inquiries</option>
+          <option value="Bookings">Bookings</option>
+          <option value="Contact Me">Contact Me</option>
+          <option value="Get in Touch">Get in Touch</option>
+          <option value="Speaking Requests">Speaking Requests</option>
+          <option value="Media Requests">Media Requests</option>
+          <option value="Collaboration Requests">Collaboration Requests</option>
+          <option value="Consulting Requests">Consulting Requests</option>
+          <option value="custom">Custom...</option>
+        </select>
+        <p class="field-hint">This is what shows in your nav bar and section header — pick what fits your work.</p>
+      </div>
+      <div class="field-group" id="bookingLabelCustomWrap" style="display:none">
+        <label class="field-label">Custom Label</label>
+        <input type="text" id="bookingLabelCustom" placeholder="e.g. Let's Talk">
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="field-group">
         <label class="field-label">Booking Email</label>
         <input type="email" id="bookingEmail" placeholder="booking@youremail.com">
         <p class="field-hint">Booking inquiries from your Portfolio will be sent to this address.</p>

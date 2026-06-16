@@ -318,6 +318,16 @@ function loadAllFields() {
   // Assets
   renderAssets();
   // Booking
+  const PRESET_BOOKING_LABELS = ['Inquiries','Bookings','Contact Me','Get in Touch','Speaking Requests','Media Requests','Collaboration Requests','Consulting Requests'];
+  const currentBookingLabel = epk.bookingLabel || 'Inquiries';
+  if (PRESET_BOOKING_LABELS.includes(currentBookingLabel)) {
+    document.getElementById('bookingLabel').value = currentBookingLabel;
+    document.getElementById('bookingLabelCustomWrap').style.display = 'none';
+  } else {
+    document.getElementById('bookingLabel').value = 'custom';
+    document.getElementById('bookingLabelCustom').value = currentBookingLabel;
+    document.getElementById('bookingLabelCustomWrap').style.display = 'block';
+  }
   document.getElementById('bookingEmail').value = epk.bookingEmail || '';
   document.getElementById('bookingPhone').value = epk.bookingPhone || '';
   document.getElementById('bookingTagline').value = epk.bookingTagline || '';
@@ -390,6 +400,10 @@ function saveAll() {
   epk.bioImagePosition = parseInt(document.getElementById('bioPositionValue').value || 0);
   epk.bioImageCropTop = parseInt(document.getElementById('bioCropTopValue').value || 0);
   epk.bioImageZoom = parseInt(document.getElementById('bioZoomValue').value || 100);
+  const bookingLabelSelect = document.getElementById('bookingLabel').value;
+  epk.bookingLabel = bookingLabelSelect === 'custom'
+    ? (document.getElementById('bookingLabelCustom').value.trim() || 'Inquiries')
+    : bookingLabelSelect;
   epk.bookingEmail = document.getElementById('bookingEmail').value.trim();
   epk.bookingPhone = document.getElementById('bookingPhone').value.trim();
   epk.bookingTagline = document.getElementById('bookingTagline').value.trim();
