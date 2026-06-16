@@ -44,13 +44,10 @@
   .hero-name em { font-style: italic; color: var(--gold-light); display: block; }
 
   /* Role row */
-  .hero-roles-row { display: flex; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 0.85rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
-  .hero-role-item { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 64px; padding: 10px 12px; background: rgba(201,168,76,0.05); border: 1px solid rgba(201,168,76,0.15); transition: background 0.2s, border-color 0.2s; }
-  .hero-role-item:hover { background: rgba(201,168,76,0.14); border-color: rgba(201,168,76,0.4); }
+  .hero-roles-row { display: flex; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
+  .hero-role-item { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 64px; padding: 10px 12px; background: rgba(201,168,76,0.05); border: 1px solid rgba(201,168,76,0.15); }
   .hero-role-item span { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245,243,238,0.85); text-align: center; line-height: 1.5; }
   .hero-role-icon { fill: var(--gold); width: 20px; height: 20px; flex-shrink: 0; }
-  .hero-expand-link { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(201,168,76,0.3); padding-bottom: 2px; transition: color 0.2s, border-color 0.2s; }
-  .hero-expand-link:hover { color: var(--gold-light); border-color: var(--gold-light); }
 
   /* Stats row */
   .hero-stats-row { display: flex; gap: 0; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(201,168,76,0.12); }

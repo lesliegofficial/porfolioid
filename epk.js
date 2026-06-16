@@ -953,30 +953,26 @@ function buildEPK(epk) {
         <h1 class="hero-name">${firstName} <em>${lastName}</em></h1>
 
         <div class="hero-roles-row">
-          <div class="hero-role-item" onclick="filterCreditsByCategory('liveperformance')" style="cursor:pointer">
+          <div class="hero-role-item">
             <svg viewBox="0 0 24 24" class="hero-role-icon"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
             <span>International<br>Vocalist</span>
           </div>
-          <div class="hero-role-item" onclick="filterCreditsByCategory('recordingartist')" style="cursor:pointer">
+          <div class="hero-role-item">
             <svg viewBox="0 0 24 24" class="hero-role-icon"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
             <span>Recording<br>Artist</span>
           </div>
-          <div class="hero-role-item" onclick="filterCreditsByCategory('creativemarketing')" style="cursor:pointer">
+          <div class="hero-role-item">
             <svg viewBox="0 0 24 24" class="hero-role-icon"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-            <span>Creative &amp;<br>Marketing</span>
+            <span>A&amp;R<br>Coordinator</span>
           </div>
-          <div class="hero-role-item" onclick="filterCreditsByCategory('professionalops')" style="cursor:pointer">
+          <div class="hero-role-item">
             <svg viewBox="0 0 24 24" class="hero-role-icon"><path d="M18 11v2h4v-2h-4zm-2 6.61c.96.71 2.21 1.65 3.2 2.39.4-.53.8-1.07 1.2-1.6-.99-.74-2.24-1.68-3.2-2.4-.4.54-.8 1.08-1.2 1.61zM20.4 5.6c-.4-.53-.8-1.07-1.2-1.6-.99.74-2.24 1.68-3.2 2.4.4.53.8 1.07 1.2 1.6.96-.72 2.21-1.66 3.2-2.4zM4 9c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h1v4h2v-4h1l5 3V6L8 9H4zm11.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-            <span>Professional &amp;<br>Operations</span>
+            <span>Marketing<br>Professional</span>
           </div>
-          <div class="hero-role-item" onclick="filterCreditsByCategory('founderbuilder')" style="cursor:pointer">
+          <div class="hero-role-item">
             <svg viewBox="0 0 24 24" class="hero-role-icon"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
             <span>Founder &amp;<br>Builder</span>
           </div>
-        </div>
-
-        <div style="margin-top:0.85rem">
-          <a href="#credits" onclick="expandEntireRecord()" class="hero-expand-link">⊕ Expand The Record</a>
         </div>
 
         <div class="hero-stats-row">
@@ -1068,7 +1064,16 @@ function buildEPK(epk) {
               <span class="ch3-link">View Credits →</span>
             </div>
           </div>
-          <div class="ch3-card" onclick="filterCreditsByCategory('creativemarketing')" style="cursor:pointer">
+          <div class="ch3-card" onclick="filterCreditsByCategory('creativeprofessional')" style="cursor:pointer">
+            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052295/career-highlights/creative-professional.jpg" alt="Creative Professional" loading="lazy"></div>
+            <div class="ch3-body">
+              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg></div>
+              <h3 class="ch3-title">Creative Professional</h3>
+              <p class="ch3-desc">A&amp;R Coordinator at Sony Music Latin and Urban Latino Music. Artist development, release coordination, and creative operations.</p>
+              <span class="ch3-link">View Credits →</span>
+            </div>
+          </div>
+          <div class="ch3-card" onclick="filterCreditsByCategory('marketingpr')" style="cursor:pointer">
             <div class="ch3-img" style="position:relative;overflow:hidden">
               <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0" poster="https://res.cloudinary.com/djj8xe3gx/video/upload/so_2,f_jpg/v1781052306/career-highlights/marketing-pr.mp4">
                 <source src="https://res.cloudinary.com/djj8xe3gx/video/upload/v1781052306/career-highlights/marketing-pr.mp4" type="video/mp4">
@@ -1076,22 +1081,33 @@ function buildEPK(epk) {
             </div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
-              <h3 class="ch3-title">Creative &amp; Marketing</h3>
-              <p class="ch3-desc">Marketing &amp; Content Coordinator at NV Marketing &amp; PR. A&amp;R &amp; Project Coordinator at Urban Latino Music. Artist Logistics &amp; Event Coordination for Adam Torres Concerts.</p>
+              <h3 class="ch3-title">Marketing &amp; PR</h3>
+              <p class="ch3-desc">Marketing &amp; Content Coordinator at NV Marketing &amp; PR. Digital campaigns, publicity support, and content strategy for major Latin artists.</p>
               <span class="ch3-link">View Credits →</span>
             </div>
           </div>
-          <div class="ch3-card" onclick="filterCreditsByCategory('professionalops')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052297/career-highlights/industry-operations.jpg" alt="Professional & Operations" loading="lazy"></div>
+          <div class="ch3-card" onclick="filterCreditsByCategory('industryoperations')" style="cursor:pointer">
+            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052297/career-highlights/industry-operations.jpg" alt="Industry Operations" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div>
-              <h3 class="ch3-title">Professional &amp; Operations</h3>
-              <p class="ch3-desc">A&amp;R Coordinator at Sony Music Latin. Head of Compliance at Venetian Productions. Artist support at Arrow Management. Human Services Specialist at FEMA.</p>
+              <h3 class="ch3-title">Industry Operations</h3>
+              <p class="ch3-desc">Artist Logistics &amp; Event Coordination for Adam Torres Concerts. Artist support at Arrow Management. Head of Compliance at Venetian Productions.</p>
+              <span class="ch3-link">View Credits →</span>
+            </div>
+          </div>
+          <div class="ch3-card" onclick="filterCreditsByCategory('collaborations')" style="cursor:pointer">
+            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052298/career-highlights/collaborations.jpg" alt="Collaborations" loading="lazy"></div>
+            <div class="ch3-body">
+              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+              <h3 class="ch3-title">Collaborations</h3>
+              <p class="ch3-desc">On stage with Don Omar at King of Kings, Viña del Mar, and Sinfónico. Alongside Natti Natasha, J Álvarez, Luis Fonsi, and more.</p>
               <span class="ch3-link">View Credits →</span>
             </div>
           </div>
           <div class="ch3-card" onclick="filterCreditsByCategory('founderbuilder')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781638246/career-highlights/founder-builder-official.jpg" alt="Founder & Builder" loading="lazy"></div>
+            <div class="ch3-img" style="background:linear-gradient(135deg, rgba(201,168,76,0.18), rgba(20,20,20,1));display:flex;align-items:center;justify-content:center">
+              <svg viewBox="0 0 24 24" style="fill:var(--gold);width:36px;height:36px;opacity:0.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
               <h3 class="ch3-title">Founder &amp; Builder</h3>
@@ -2433,7 +2449,7 @@ function filterCreditsByCategory(tag) {
 
   if (banner) {
     if (tag && matchCount > 0) {
-      const labels = { liveperformance:'International Vocalist', recordingartist:'Recording Artist', creativemarketing:'Creative & Marketing', professionalops:'Professional & Operations', founderbuilder:'Founder & Builder' };
+      const labels = { liveperformance:'Live Performance', recordingartist:'Recording Artist', creativeprofessional:'Creative Professional', marketingpr:'Marketing & PR', industryoperations:'Industry Operations', collaborations:'Collaborations', founderbuilder:'Founder & Builder' };
       banner.innerHTML = `Showing: <strong style="color:var(--gold)">${labels[tag] || tag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">View Complete Record →</a>`;
       banner.style.display = 'block';
     } else {
@@ -2445,11 +2461,6 @@ function filterCreditsByCategory(tag) {
   if (el) {
     setTimeout(() => { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
   }
-}
-
-// "Expand The Record" — shows every credit at once, no filter applied
-function expandEntireRecord() {
-  filterCreditsByCategory('');
 }
 
 
