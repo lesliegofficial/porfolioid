@@ -1091,9 +1091,7 @@ function buildEPK(epk) {
             </div>
           </div>
           <div class="ch3-card" onclick="filterCreditsByCategory('founderbuilder')" style="cursor:pointer">
-            <div class="ch3-img" style="background:linear-gradient(135deg, rgba(201,168,76,0.18), rgba(20,20,20,1));display:flex;align-items:center;justify-content:center">
-              <svg viewBox="0 0 24 24" style="fill:var(--gold);width:36px;height:36px;opacity:0.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            </div>
+            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781638246/career-highlights/founder-builder-official.jpg" alt="Founder & Builder" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
               <h3 class="ch3-title">Founder &amp; Builder</h3>
