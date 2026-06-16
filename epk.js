@@ -937,9 +937,11 @@ function buildEPK(epk) {
   const catBadges = bookingCategories.length ? `<div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:2rem">${bookingCategories.map(c => `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(201,168,76,0.2);color:var(--gray);padding:0.25rem 0.6rem">${categoryLabels[c]||c}</span>`).join('')}</div>` : '';
   // Inquiry type dropdown options — built from the categories the client actually selected.
   // Falls back to a generic list only if they haven't picked any (so the form never ships empty).
+  // "Other" is always appended (unless already present) so visitors can specify a role that isn't listed.
   const inquiryTypeOptions = bookingCategories.length
     ? bookingCategories.map(c => categoryLabels[c] || c)
-    : ['General Inquiry', 'Collaboration', 'Professional', 'Other'];
+    : ['General Inquiry', 'Collaboration', 'Professional'];
+  if (!inquiryTypeOptions.some(l => l.toLowerCase() === 'other')) inquiryTypeOptions.push('Other');
   const inquiryTypeOptionsHTML = inquiryTypeOptions.map(label => `<option value="${label}">${label}</option>`).join('');
 
   document.getElementById('epkContent').innerHTML = `
@@ -1293,11 +1295,18 @@ function buildEPK(epk) {
       </div>
       <div style="margin-bottom:1rem">
         <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Inquiry Type</label>
-        <select name="booking-type"
+        <select name="booking-type" id="inquiryTypeSelect"
+          onchange="document.getElementById('inquiryTypeOtherWrap').style.display = this.value === 'Other' ? 'block' : 'none'; document.getElementById('inquiryTypeOther').required = this.value === 'Other';"
           style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;appearance:none">
           <option value="">— Select Type —</option>
           ${inquiryTypeOptionsHTML}
         </select>
+      </div>
+      <div id="inquiryTypeOtherWrap" style="display:none;margin-bottom:1rem">
+        <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Please Specify</label>
+        <input type="text" name="booking-type-other" id="inquiryTypeOther" placeholder="e.g. Personal Assistant, Coordinator, Website Administrator"
+          style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box"
+          onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'">
       </div>
       <div style="margin-bottom:1.5rem">
         <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Message</label>
