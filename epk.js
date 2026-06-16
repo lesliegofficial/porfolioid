@@ -1040,13 +1040,13 @@ function buildEPK(epk) {
     <section class="career-profile-section" id="bio">
       <div class="ch3-wrap">
         <div class="ch3-header">
-          <span class="ch3-label">Career Profile</span>
+          <span class="ch3-label" id="ch3Eyebrow">Career Profile</span>
           <div class="ch3-title-row">
-            <h2 class="section-title" style="margin:0">Career Record Highlights</h2>
+            <h2 class="section-title" id="ch3Heading" style="margin:0">Career Record Highlights</h2>
           </div>
         </div>
         <div class="ch3-grid">
-          <div class="ch3-card" onclick="filterCreditsByCategory('liveperformance')" style="cursor:pointer">
+          <div class="ch3-card" data-ch3-tag="liveperformance" onclick="filterCreditsByCategory('liveperformance')" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052293/career-highlights/live-performance.jpg" alt="Live Performance" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
@@ -1054,7 +1054,7 @@ function buildEPK(epk) {
               <p class="ch3-desc">Exclusive touring vocalist for Don Omar, J Álvarez, and Melina León — hundreds of performances across five continents.</p>
             </div>
           </div>
-          <div class="ch3-card" onclick="filterCreditsByCategory('recordingartist')" style="cursor:pointer">
+          <div class="ch3-card" data-ch3-tag="recordingartist" onclick="filterCreditsByCategory('recordingartist')" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052294/career-highlights/recording-artist.jpg" alt="Recording Artist" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
@@ -1062,7 +1062,7 @@ function buildEPK(epk) {
               <p class="ch3-desc">Recording artist with Las Nenas del Swing. Original compositions and live concert recordings across multiple releases.</p>
             </div>
           </div>
-          <div class="ch3-card" onclick="filterCreditsByCategory('creativeprofessional')" style="cursor:pointer">
+          <div class="ch3-card" data-ch3-tag="creativeprofessional" onclick="filterCreditsByCategory('creativeprofessional')" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052295/career-highlights/creative-professional.jpg" alt="Creative Professional" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg></div>
@@ -1070,7 +1070,7 @@ function buildEPK(epk) {
               <p class="ch3-desc">A&amp;R Coordinator at Sony Music Latin and Urban Latino Music. Artist development, release coordination, and creative operations.</p>
             </div>
           </div>
-          <div class="ch3-card" onclick="filterCreditsByCategory('marketingpr')" style="cursor:pointer">
+          <div class="ch3-card" data-ch3-tag="marketingpr" onclick="filterCreditsByCategory('marketingpr')" style="cursor:pointer">
             <div class="ch3-img" style="position:relative;overflow:hidden">
               <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0" poster="https://res.cloudinary.com/djj8xe3gx/video/upload/so_2,f_jpg/v1781052306/career-highlights/marketing-pr.mp4">
                 <source src="https://res.cloudinary.com/djj8xe3gx/video/upload/v1781052306/career-highlights/marketing-pr.mp4" type="video/mp4">
@@ -1082,7 +1082,7 @@ function buildEPK(epk) {
               <p class="ch3-desc">Marketing &amp; Content Coordinator at NV Marketing &amp; PR. Digital campaigns, publicity support, and content strategy for major Latin artists.</p>
             </div>
           </div>
-          <div class="ch3-card" onclick="filterCreditsByCategory('industryoperations')" style="cursor:pointer">
+          <div class="ch3-card" data-ch3-tag="industryoperations" onclick="filterCreditsByCategory('industryoperations')" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052297/career-highlights/industry-operations.jpg" alt="Industry Operations" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div>
@@ -1090,7 +1090,7 @@ function buildEPK(epk) {
               <p class="ch3-desc">Artist Logistics &amp; Event Coordination for Adam Torres Concerts. Artist support at Arrow Management. Head of Compliance at Venetian Productions.</p>
             </div>
           </div>
-          <div class="ch3-card" onclick="filterCreditsByCategory('founderbuilder')" style="cursor:pointer">
+          <div class="ch3-card" data-ch3-tag="founderbuilder" onclick="filterCreditsByCategory('founderbuilder')" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781638246/career-highlights/founder-builder-official.jpg" alt="Founder & Builder" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
@@ -1101,7 +1101,7 @@ function buildEPK(epk) {
         </div>
 
         <div style="text-align:center;margin-top:2rem">
-          <p style="font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:0.85rem">Every credit, role, and collaboration in one place — sortable by category, with full details behind each entry.</p>
+          <p id="viewCompleteRecordCaption" style="font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:0.85rem">Every credit, role, and collaboration in one place — sortable by category, with full details behind each entry.</p>
           <a href="#credits" onclick="filterCreditsByCategory('')" id="viewCompleteRecordBtn" class="ch3-viewcomplete">View Complete Record →</a>
         </div>
 
@@ -3159,6 +3159,63 @@ function toggleLang(lang) {
     const el = document.querySelector(`[data-editable-key="${key}"]`);
     if (el) el.innerHTML = val;
   });
+
+  // Swap Career Highlights section (eyebrow, heading, 6 cards, caption, button)
+  const ch3Eyebrow = document.getElementById('ch3Eyebrow');
+  if (ch3Eyebrow) ch3Eyebrow.textContent = lang === 'es' ? 'Perfil Profesional' : 'Career Profile';
+
+  const ch3Heading = document.getElementById('ch3Heading');
+  if (ch3Heading) ch3Heading.textContent = lang === 'es' ? 'Aspectos Destacados de la Trayectoria' : 'Career Record Highlights';
+
+  const ch3Translations = {
+    liveperformance: {
+      title: 'Presentaciones en Vivo',
+      desc: 'Vocalista de gira exclusiva para Don Omar, J Álvarez y Melina León — cientos de presentaciones en cinco continentes.'
+    },
+    recordingartist: {
+      title: 'Artista de Grabación',
+      desc: 'Artista de grabación con Las Nenas del Swing. Composiciones originales y grabaciones de conciertos en vivo en múltiples lanzamientos.'
+    },
+    creativeprofessional: {
+      title: 'Profesional Creativa',
+      desc: 'Coordinadora de A&R en Sony Music Latin y Urban Latino Music. Desarrollo artístico, coordinación de lanzamientos y operaciones creativas.'
+    },
+    marketingpr: {
+      title: 'Mercadeo y Relaciones Públicas',
+      desc: 'Coordinadora de Mercadeo y Contenido en NV Marketing & PR. Campañas digitales, apoyo de publicidad y estrategia de contenido para grandes artistas latinos.'
+    },
+    industryoperations: {
+      title: 'Operaciones de la Industria',
+      desc: 'Logística de Artistas y Coordinación de Eventos para Adam Torres Concerts. Apoyo artístico en Arrow Management. Jefa de Cumplimiento en Venetian Productions.'
+    },
+    founderbuilder: {
+      title: 'Fundadora y Creadora',
+      desc: 'Fundadora y Arquitecta de Producto de PorfolioID e IDPressDrop — plataformas originales construidas desde el concepto hasta el despliegue.'
+    }
+  };
+  document.querySelectorAll('.ch3-card').forEach(card => {
+    const tag = card.getAttribute('data-ch3-tag');
+    const titleEl = card.querySelector('.ch3-title');
+    const descEl = card.querySelector('.ch3-desc');
+    if (!tag || !ch3Translations[tag]) return;
+    if (lang === 'es') {
+      if (titleEl) { if (!titleEl.dataset.enOriginal) titleEl.dataset.enOriginal = titleEl.innerHTML; titleEl.innerHTML = ch3Translations[tag].title; }
+      if (descEl)  { if (!descEl.dataset.enOriginal)  descEl.dataset.enOriginal  = descEl.innerHTML;  descEl.innerHTML  = ch3Translations[tag].desc; }
+    } else {
+      if (titleEl && titleEl.dataset.enOriginal) titleEl.innerHTML = titleEl.dataset.enOriginal;
+      if (descEl && descEl.dataset.enOriginal)  descEl.innerHTML  = descEl.dataset.enOriginal;
+    }
+  });
+
+  const ch3Caption = document.getElementById('viewCompleteRecordCaption');
+  if (ch3Caption) {
+    ch3Caption.textContent = lang === 'es'
+      ? 'Cada crédito, rol y colaboración en un solo lugar — clasificado por categoría, con detalles completos detrás de cada entrada.'
+      : 'Every credit, role, and collaboration in one place — sortable by category, with full details behind each entry.';
+  }
+
+  const ch3ViewBtn = document.getElementById('viewCompleteRecordBtn');
+  if (ch3ViewBtn) ch3ViewBtn.textContent = lang === 'es' ? 'Ver Récord Completo →' : 'View Complete Record →';
 }
 
 // ══════════════════════════════════════════════
