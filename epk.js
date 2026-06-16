@@ -2404,9 +2404,15 @@ function applySectionOrderAndVisibility(epk) {
 function toggleAllCredits() {
   const grid = document.getElementById('creditsGrid');
   const btn = document.getElementById('creditsToggleBtn');
+  const banner = document.getElementById('creditsFilterBanner');
   if (!grid || !btn) return;
   const isExpanded = grid.classList.contains('credits-expanded');
   grid.classList.toggle('credits-expanded', !isExpanded);
+  if (isExpanded) {
+    // Collapsing back to default view — clear any leftover per-card filter hiding so all cards are eligible again
+    grid.querySelectorAll('.credit-card').forEach(card => { card.style.display = ''; });
+    if (banner) banner.style.display = 'none';
+  }
   const total = grid.querySelectorAll('.credit-card').length;
   btn.textContent = isExpanded ? `View All ${total} Credits +` : 'Show Less –';
 }
@@ -2422,7 +2428,11 @@ function filterCreditsByCategory(tag) {
 
   if (container) container.style.display = 'block'; // reveal on demand — hidden until a card/button is clicked
   grid.classList.add('credits-expanded'); // bypass the nth-child collapse so filtered results aren't hidden
-  if (btn) btn.style.display = tag ? 'none' : '';
+  if (btn) {
+    const total = grid.querySelectorAll('.credit-card').length;
+    btn.style.display = tag ? 'none' : '';
+    btn.textContent = 'Show Less –'; // grid is now expanded, so button must offer collapse, not re-expand
+  }
 
   const cards = grid.querySelectorAll('.credit-card');
   let matchCount = 0;
