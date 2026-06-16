@@ -1314,7 +1314,9 @@ function buildEPK(epk) {
           style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;resize:vertical;box-sizing:border-box"
           onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'"></textarea>
       </div>
-      <button type="submit" class="btn-primary" style="width:100%;justify-content:center">✉ Send Inquiry</button>
+      <button type="submit"
+        style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;background:#d7b84f;color:#050505;border:none;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;cursor:pointer;transition:opacity 0.18s"
+        onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">✉ Send Inquiry</button>
       <div id="bookingSuccess" style="display:none;margin-top:1rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--gold);text-align:center;padding:1rem;border:1px solid rgba(201,168,76,0.2)">
         ✓ Your inquiry has been sent. We'll be in touch soon.
       </div>
