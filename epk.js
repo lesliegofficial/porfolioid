@@ -2477,8 +2477,27 @@ function toggleSection(bodyId, header) {
 }
 
 function expandSection(sectionId) {
+  // Connect uses a simple display:none toggle on #connect, not the collapsible-body pattern
+  if (sectionId === 'connect') {
+    const c = document.getElementById('connect');
+    if (!c) return;
+    const isOpen = c.style.display === 'block';
+    c.style.display = isOpen ? 'none' : 'block';
+    const bar = document.querySelector('.hero-presence-bar');
+    if (bar) {
+      const exploreSpan = bar.querySelector('.hero-presence-explore');
+      if (exploreSpan) exploreSpan.textContent = isOpen ? 'Explore →' : 'Close ←';
+    }
+    if (!isOpen) {
+      setTimeout(() => {
+        const top = c.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }, 50);
+    }
+    return;
+  }
   // Map section IDs to their body IDs
-  const bodyMap = { connect:'connectBody', music:'musicBody', awards:'awardsBody', assets:'assetsBody', booking:'bookingBody' };
+  const bodyMap = { music:'musicBody', awards:'awardsBody', assets:'assetsBody', booking:'bookingBody' };
   const bodyId = bodyMap[sectionId];
   if (!bodyId) return;
   const body = document.getElementById(bodyId);
