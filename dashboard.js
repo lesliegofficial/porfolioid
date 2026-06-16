@@ -549,7 +549,6 @@ function showPanel(name) {
 // ── SECTION ORDER & VISIBILITY ──
 const DEFAULT_SECTIONS = [
   { id: 'bio',     label: 'Career Profile', icon: '✦' },
-  { id: 'credits', label: 'Credits',        icon: '🏆' },
   { id: 'photos',  label: 'Photos',         icon: '📸' },
   { id: 'videos',  label: 'Video',          icon: '🎬' },
   { id: 'music',   label: 'Music',          icon: '🎵' },

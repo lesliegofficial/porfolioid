@@ -1042,7 +1042,7 @@ function buildEPK(epk) {
         <div class="ch3-header">
           <span class="ch3-label">Career Profile</span>
           <div class="ch3-title-row">
-            <h2 class="section-title" style="margin:0">Career Record Highlights <a href="#credits" onclick="filterCreditsByCategory('')" class="ch3-viewall">View Complete Record →</a></h2>
+            <h2 class="section-title" style="margin:0">Career Record Highlights</h2>
           </div>
         </div>
         <div class="ch3-grid">
@@ -1052,7 +1052,6 @@ function buildEPK(epk) {
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
               <h3 class="ch3-title">Live Performance</h3>
               <p class="ch3-desc">Exclusive touring vocalist for Don Omar, J Álvarez, and Melina León — hundreds of performances across five continents.</p>
-              <span class="ch3-link">View Credits →</span>
             </div>
           </div>
           <div class="ch3-card" onclick="filterCreditsByCategory('recordingartist')" style="cursor:pointer">
@@ -1061,7 +1060,6 @@ function buildEPK(epk) {
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
               <h3 class="ch3-title">Recording Artist</h3>
               <p class="ch3-desc">Recording artist with Las Nenas del Swing. Original compositions and live concert recordings across multiple releases.</p>
-              <span class="ch3-link">View Credits →</span>
             </div>
           </div>
           <div class="ch3-card" onclick="filterCreditsByCategory('creativeprofessional')" style="cursor:pointer">
@@ -1070,7 +1068,6 @@ function buildEPK(epk) {
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg></div>
               <h3 class="ch3-title">Creative Professional</h3>
               <p class="ch3-desc">A&amp;R Coordinator at Sony Music Latin and Urban Latino Music. Artist development, release coordination, and creative operations.</p>
-              <span class="ch3-link">View Credits →</span>
             </div>
           </div>
           <div class="ch3-card" onclick="filterCreditsByCategory('marketingpr')" style="cursor:pointer">
@@ -1083,7 +1080,6 @@ function buildEPK(epk) {
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
               <h3 class="ch3-title">Marketing &amp; PR</h3>
               <p class="ch3-desc">Marketing &amp; Content Coordinator at NV Marketing &amp; PR. Digital campaigns, publicity support, and content strategy for major Latin artists.</p>
-              <span class="ch3-link">View Credits →</span>
             </div>
           </div>
           <div class="ch3-card" onclick="filterCreditsByCategory('industryoperations')" style="cursor:pointer">
@@ -1092,16 +1088,6 @@ function buildEPK(epk) {
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div>
               <h3 class="ch3-title">Industry Operations</h3>
               <p class="ch3-desc">Artist Logistics &amp; Event Coordination for Adam Torres Concerts. Artist support at Arrow Management. Head of Compliance at Venetian Productions.</p>
-              <span class="ch3-link">View Credits →</span>
-            </div>
-          </div>
-          <div class="ch3-card" onclick="filterCreditsByCategory('collaborations')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052298/career-highlights/collaborations.jpg" alt="Collaborations" loading="lazy"></div>
-            <div class="ch3-body">
-              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
-              <h3 class="ch3-title">Collaborations</h3>
-              <p class="ch3-desc">On stage with Don Omar at King of Kings, Viña del Mar, and Sinfónico. Alongside Natti Natasha, J Álvarez, Luis Fonsi, and more.</p>
-              <span class="ch3-link">View Credits →</span>
             </div>
           </div>
           <div class="ch3-card" onclick="filterCreditsByCategory('founderbuilder')" style="cursor:pointer">
@@ -1112,29 +1098,28 @@ function buildEPK(epk) {
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
               <h3 class="ch3-title">Founder &amp; Builder</h3>
               <p class="ch3-desc">Founder &amp; Product Architect of PorfolioID and IDPressDrop — original platforms built from concept to deployment.</p>
-              <span class="ch3-link">View Credits →</span>
             </div>
           </div>
         </div>
+
+        <div style="text-align:center;margin-top:2rem">
+          <a href="#credits" onclick="filterCreditsByCategory('')" id="viewCompleteRecordBtn" class="ch3-viewcomplete">View Complete Record →</a>
+        </div>
+
+        <!-- THE RECORD — hidden by default, revealed on demand -->
+        ${epk.credits?.length ? `
+        <div id="credits" style="display:none;margin-top:3rem;padding-top:2.5rem;border-top:1px solid rgba(201,168,76,0.15)">
+          <div id="creditsFilterBanner" style="display:none;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.08em;color:var(--gray-light);margin-bottom:1rem"></div>
+          <div class="credits-grid" id="creditsGrid">${creditsHTML}</div>
+          ${visibleCredits.length > 4 ? `
+          <div style="text-align:center;margin-top:1rem">
+            <button onclick="toggleAllCredits()" id="creditsToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.6rem 1.5rem;cursor:pointer;transition:all 0.2s">View All ${visibleCredits.length} Credits +</button>
+          </div>` : ''}
+        </div>` : ''}
       </div>
     </section>
     <div class="divider"></div>
 
-
-    <!-- CREDITS -->
-    ${epk.credits?.length ? `
-    <div class="credits-section" id="credits">
-      <div class="credits-inner">
-        <div class="section-label">Credits & Collaborations</div>
-        <h2 class="section-title" data-editable data-editable-key="creditsTitle" data-editable-type="title" style="outline:none">The Record</h2>
-        <div id="creditsFilterBanner" style="display:none;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.08em;color:var(--gray-light);margin-bottom:1rem"></div>
-        <div class="credits-grid" id="creditsGrid">${creditsHTML}</div>
-        ${visibleCredits.length > 4 ? `
-        <div style="text-align:center;margin-top:1rem">
-          <button onclick="toggleAllCredits()" id="creditsToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.6rem 1.5rem;cursor:pointer;transition:all 0.2s">View All ${visibleCredits.length} Credits +</button>
-        </div>` : ''}
-      </div>
-    </div>` : ''}
 
     <!-- PHOTOS — moved before music for claim→proof sequence — Credits=Claim, Photos=Proof -->
     ${epk.photos?.length ? `
@@ -2371,8 +2356,8 @@ function adjustModalFont(dir) {
 
 // Section order and visibility
 function applySectionOrderAndVisibility(epk) {
-  const DEFAULT_ORDER = ['connect','bio','credits','photos','videos','music','awards','assets','booking'];
-  const order = epk.sectionOrder || DEFAULT_ORDER;
+  const DEFAULT_ORDER = ['connect','bio','photos','videos','music','awards','assets','booking'];
+  const order = (epk.sectionOrder || DEFAULT_ORDER).filter(id => id !== 'credits');
   const visibility = epk.sectionVisibility || {};
 
   // QR mode section override
@@ -2431,11 +2416,13 @@ function toggleAllCredits() {
 // Filter credits grid by Career Highlight category, then scroll to it.
 // Pass '' to clear the filter and show everything.
 function filterCreditsByCategory(tag) {
+  const container = document.getElementById('credits');
   const grid = document.getElementById('creditsGrid');
   const btn = document.getElementById('creditsToggleBtn');
   const banner = document.getElementById('creditsFilterBanner');
   if (!grid) return;
 
+  if (container) container.style.display = 'block'; // reveal on demand — hidden until a card/button is clicked
   grid.classList.add('credits-expanded'); // bypass the nth-child collapse so filtered results aren't hidden
   if (btn) btn.style.display = tag ? 'none' : '';
 
@@ -2449,7 +2436,7 @@ function filterCreditsByCategory(tag) {
 
   if (banner) {
     if (tag && matchCount > 0) {
-      const labels = { liveperformance:'Live Performance', recordingartist:'Recording Artist', creativeprofessional:'Creative Professional', marketingpr:'Marketing & PR', industryoperations:'Industry Operations', collaborations:'Collaborations', founderbuilder:'Founder & Builder' };
+      const labels = { liveperformance:'Live Performance', recordingartist:'Recording Artist', creativeprofessional:'Creative Professional', marketingpr:'Marketing & PR', industryoperations:'Industry Operations', founderbuilder:'Founder & Builder' };
       banner.innerHTML = `Showing: <strong style="color:var(--gold)">${labels[tag] || tag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">View Complete Record →</a>`;
       banner.style.display = 'block';
     } else {
@@ -2524,6 +2511,11 @@ function toggleSection(bodyId, header) {
 }
 
 function expandSection(sectionId) {
+  // Credits now lives hidden inside the Career Highlights block until requested
+  if (sectionId === 'credits') {
+    filterCreditsByCategory('');
+    return;
+  }
   // Connect uses a simple display:none toggle on #connect, not the collapsible-body pattern
   if (sectionId === 'connect') {
     const c = document.getElementById('connect');
