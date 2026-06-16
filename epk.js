@@ -2415,7 +2415,7 @@ function toggleAllCredits() {
   grid.querySelectorAll('.credit-card').forEach(card => { card.style.display = ''; });
   if (banner) banner.style.display = 'none';
   const total = grid.querySelectorAll('.credit-card').length;
-  btn.textContent = `View All ${total} Credits +`;
+  btn.textContent = _currentLang === 'es' ? `Ver los ${total} Créditos +` : `View All ${total} Credits +`;
   btn.style.display = '';
 
   // Scroll back up to the Career Highlights cards so the page doesn't leave the user staring at empty space
@@ -2438,7 +2438,7 @@ function filterCreditsByCategory(tag) {
   grid.classList.add('credits-expanded'); // bypass the nth-child collapse so filtered results aren't hidden
   if (btn) {
     btn.style.display = ''; // Close button stays visible whether filtered or showing everything
-    btn.textContent = 'Close –';
+    btn.textContent = _currentLang === 'es' ? 'Cerrar –' : 'Close –';
   }
 
   const cards = grid.querySelectorAll('.credit-card');
@@ -2451,8 +2451,13 @@ function filterCreditsByCategory(tag) {
 
   if (banner) {
     if (tag && matchCount > 0) {
-      const labels = { liveperformance:'Live Performance', recordingartist:'Recording Artist', creativeprofessional:'Creative Professional', marketingpr:'Marketing & PR', industryoperations:'Industry Operations', founderbuilder:'Founder & Builder' };
-      banner.innerHTML = `Showing: <strong style="color:var(--gold)">${labels[tag] || tag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">View Complete Record →</a> &nbsp;<a href="javascript:void(0)" onclick="toggleAllCredits()" style="color:var(--gray);text-decoration:underline">Close –</a>`;
+      const labels = _currentLang === 'es'
+        ? { liveperformance:'Presentaciones en Vivo', recordingartist:'Artista de Grabación', creativeprofessional:'Profesional Creativa', marketingpr:'Mercadeo y Relaciones Públicas', industryoperations:'Operaciones de la Industria', founderbuilder:'Fundadora y Creadora' }
+        : { liveperformance:'Live Performance', recordingartist:'Recording Artist', creativeprofessional:'Creative Professional', marketingpr:'Marketing & PR', industryoperations:'Industry Operations', founderbuilder:'Founder & Builder' };
+      const showingText = _currentLang === 'es' ? 'Mostrando:' : 'Showing:';
+      const viewAllText = _currentLang === 'es' ? 'Ver Récord Completo →' : 'View Complete Record →';
+      const closeText = _currentLang === 'es' ? 'Cerrar –' : 'Close –';
+      banner.innerHTML = `${showingText} <strong style="color:var(--gold)">${labels[tag] || tag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">${viewAllText}</a> &nbsp;<a href="javascript:void(0)" onclick="toggleAllCredits()" style="color:var(--gray);text-decoration:underline">${closeText}</a>`;
       banner.style.display = 'block';
     } else {
       banner.style.display = 'none';
