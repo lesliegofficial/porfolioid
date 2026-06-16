@@ -1101,6 +1101,7 @@ function buildEPK(epk) {
         </div>
 
         <div style="text-align:center;margin-top:2rem">
+          <p style="font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:0.85rem">Every credit, role, and collaboration in one place — sortable by category, with full details behind each entry.</p>
           <a href="#credits" onclick="filterCreditsByCategory('')" id="viewCompleteRecordBtn" class="ch3-viewcomplete">View Complete Record →</a>
         </div>
 
