@@ -46,7 +46,6 @@ function buildEPK(epk) {
     { id: 'awards', label: 'Awards' },
     { id: 'assets', label: 'Assets' },
     { id: 'connect', label: 'Connect' },
-    { id: 'booking', label: bookingLabel },
   ];
   const sectionOrder = epk.sectionOrder || ALL_SECTIONS.map(s => s.id);
   const sectionVisibility = epk.sectionVisibility || {};
@@ -322,7 +321,7 @@ function buildEPK(epk) {
     buildPrimaryCard('spotify','Music','Spotify','Official Releases'),
     buildPrimaryCard('youtube','Video','YouTube','Watch Live Performances'),
     amazonUrl ? buildPrimaryCard('amazon','Curated Picks','My Picks','Products I Personally Use & Recommend') : null,
-    buildPrimaryCard('booking',bookingLabel,bookingLabel,'Work With Me'),
+    buildPrimaryCard('booking',bookingLabel,'Connect',bookingLabel),
   ].filter(Boolean).join('');
 
   // ── AMAZON — secondary wide banner ──
@@ -1260,8 +1259,8 @@ function buildEPK(epk) {
     <!-- BOOKING -->
     ${epk.bookingEnabled !== false ? `<div class="booking-section" id="booking">
       <div class="booking-inner">
-        <div class="section-label">${bookingLabel}</div>
-        <h2 class="booking-title">Let's Create Something <em>Unforgettable</em></h2>
+        <div class="section-label">Connect</div>
+        <h2 class="booking-title">${bookingLabel}</h2>
         <p class="booking-sub">${bookingTagline}</p>
         ${availBadge}
         ${regionBadge}
