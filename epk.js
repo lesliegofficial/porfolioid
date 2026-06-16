@@ -981,7 +981,7 @@ function buildEPK(epk) {
           }
         </div>
 
-        <div class="hero-presence-bar" onclick="const c=document.getElementById('connect');if(!c)return;const open=c.style.display==='block';c.style.display=open?'none':'block';this.querySelector('.hero-presence-explore').textContent=open?'Explore →':'Close ←';" style="cursor:pointer">
+        <div class="hero-presence-bar" onclick="const c=document.getElementById('connect');if(!c)return;const open=c.style.display==='block';c.style.display=open?'none':'block';this.querySelector('.hero-presence-explore').textContent=open?'Explore →':'Close ←';if(!open){setTimeout(()=>{const top=c.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top,behavior:'smooth'});},50);}" style="cursor:pointer">
           <p class="hero-presence-eyebrow">
               <svg viewBox="0 0 24 24" style="fill:var(--gold);width:12px;height:12px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
               Connect
@@ -3011,6 +3011,61 @@ function toggleLang(lang) {
   if (taglineEl) {
     const taglines = lang === 'es' && es.taglines ? es.taglines : (epk.taglines || []);
     taglineEl.innerHTML = taglines.join('<br>');
+  }
+
+  // Swap hero bio paragraphs (hardcoded English in hero build)
+  const heroBioEls = document.querySelectorAll('.hero-bio p');
+  if (heroBioEls.length >= 3) {
+    if (lang === 'es') {
+      heroBioEls[0].textContent = 'Con más de 25 años en la industria musical, Leslie A. Guerra conecta el escenario, el estudio y el lado empresarial del entretenimiento.';
+      heroBioEls[1].textContent = 'Su trayectoria abarca presentaciones en vivo, grabación, desarrollo artístico, operaciones, mercadeo e innovación en portafolios digitales en múltiples industrias y continentes.';
+      heroBioEls[2].textContent = 'Explora sus créditos verificados, proyectos, presentaciones y trayectoria profesional a continuación.';
+    } else {
+      heroBioEls[0].textContent = 'With more than 25 years in the music industry, Leslie A. Guerra bridges the stage, the studio, and the business side of entertainment.';
+      heroBioEls[1].textContent = 'Her career spans live performance, recording, artist development, operations, marketing, and digital portfolio innovation across multiple industries and continents.';
+      heroBioEls[2].textContent = 'Explore her verified credits, projects, performances, and professional journey below.';
+    }
+  }
+
+  // Swap "Explore The Record" CTA button
+  const ctaBtn = document.querySelector('.hero-cta-primary');
+  if (ctaBtn) {
+    const ctaText = ctaBtn.childNodes[ctaBtn.childNodes.length - 1];
+    if (ctaText && ctaText.nodeType === 3) {
+      ctaText.textContent = lang === 'es' ? ' Explorar El Récord' : ' Explore The Record';
+    }
+  }
+
+  // Swap Connect / My Digital Presence bar labels
+  const presenceTitle = document.querySelector('.hero-presence-title');
+  if (presenceTitle) {
+    const exploreSpan = presenceTitle.querySelector('.hero-presence-explore');
+    const exploreText = exploreSpan ? exploreSpan.textContent : 'Explore →';
+    const isOpen = exploreText === 'Close ←' || exploreText === 'Cerrar ←';
+    if (lang === 'es') {
+      presenceTitle.childNodes[0].textContent = 'Mi Presencia Digital \u00a0';
+      if (exploreSpan) exploreSpan.textContent = isOpen ? 'Cerrar ←' : 'Explorar →';
+    } else {
+      presenceTitle.childNodes[0].textContent = 'My Digital Presence \u00a0';
+      if (exploreSpan) exploreSpan.textContent = isOpen ? 'Close ←' : 'Explore →';
+    }
+  }
+
+  const presenceMeta = document.querySelector('.hero-presence-meta');
+  if (presenceMeta) {
+    presenceMeta.textContent = lang === 'es'
+      ? 'Plataformas Sociales • Música • Video • Recomendaciones • Reservas'
+      : 'Social Platforms • Music • Video • Recommendations • Booking';
+  }
+
+  const presenceEyebrow = document.querySelector('.hero-presence-eyebrow');
+  if (presenceEyebrow) {
+    const svgEl = presenceEyebrow.querySelector('svg');
+    if (svgEl) {
+      presenceEyebrow.innerHTML = '';
+      presenceEyebrow.appendChild(svgEl);
+      presenceEyebrow.appendChild(document.createTextNode(lang === 'es' ? ' Conectar' : ' Connect'));
+    }
   }
 
   // Swap section titles
