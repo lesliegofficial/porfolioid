@@ -931,10 +931,16 @@ function buildEPK(epk) {
   const bookingRegion = epk.bookingRegion || '';
   const bookingCategories = epk.bookingCategories || [];
   const availabilityLabels = { available:'✅ Available for Bookings', limited:'⚡ Limited Availability', touring:'🎤 Currently on Tour', selective:'🎯 Selective Projects Only', unavailable:'❌ Not Currently Available' };
-  const categoryLabels = { live:'Live Performances', studio:'Studio Sessions', features:'Features / Collabs', touring:'Touring', hosting:'Hosting / MC', ar:'A&R Consulting', creative:'Creative Direction', media:'Media / Press' };
+  const categoryLabels = { live:'Live Performances', studio:'Studio Sessions', features:'Features / Collabs', touring:'Touring', hosting:'Hosting / MC', ar:'A&R Consulting', creative:'Creative Direction', media:'Media / Press', marketing:'Marketing / PR', professional:'Professional', government:'Government', entrepreneur:'Entrepreneur', technical:'Technical', administration:'Administration', crm:'CRM', sales:'Sales', armedforces:'Armed Forces', other:'Other' };
   const availBadge = bookingAvailability ? `<div style="display:inline-block;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);color:var(--gold);padding:0.4rem 1rem;margin-bottom:1.5rem">${availabilityLabels[bookingAvailability]||''}</div>` : '';
   const regionBadge = bookingRegion ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;margin-bottom:1rem">📍 ${bookingRegion}</div>` : '';
   const catBadges = bookingCategories.length ? `<div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:2rem">${bookingCategories.map(c => `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(201,168,76,0.2);color:var(--gray);padding:0.25rem 0.6rem">${categoryLabels[c]||c}</span>`).join('')}</div>` : '';
+  // Inquiry type dropdown options — built from the categories the client actually selected.
+  // Falls back to a generic list only if they haven't picked any (so the form never ships empty).
+  const inquiryTypeOptions = bookingCategories.length
+    ? bookingCategories.map(c => categoryLabels[c] || c)
+    : ['General Inquiry', 'Collaboration', 'Professional', 'Other'];
+  const inquiryTypeOptionsHTML = inquiryTypeOptions.map(label => `<option value="${label}">${label}</option>`).join('');
 
   document.getElementById('epkContent').innerHTML = `
     <!-- HERO v3 — 2-col editorial -->
@@ -1286,19 +1292,11 @@ function buildEPK(epk) {
         </div>
       </div>
       <div style="margin-bottom:1rem">
-        <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Booking Type</label>
+        <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Inquiry Type</label>
         <select name="booking-type"
           style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;appearance:none">
           <option value="">— Select Type —</option>
-          <option value="Live Performance">Live Performance</option>
-          <option value="Studio Session">Studio Session</option>
-          <option value="Feature / Collab">Feature / Collab</option>
-          <option value="Touring">Touring</option>
-          <option value="Hosting / MC">Hosting / MC</option>
-          <option value="A&R Consulting">A&R Consulting</option>
-          <option value="Creative Direction">Creative Direction</option>
-          <option value="Media / Press">Media / Press</option>
-          <option value="Other">Other</option>
+          ${inquiryTypeOptionsHTML}
         </select>
       </div>
       <div style="margin-bottom:1.5rem">
