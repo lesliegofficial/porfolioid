@@ -547,7 +547,7 @@ function buildEPK(epk) {
     const collaboratorsRow = c.collaborators?.length ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.3rem;letter-spacing:0.08em">w/ ${c.collaborators.join(', ')}</div>` : '';
     const ownerArrows = `<div class="owner-overlay" style="flex-direction:column;gap:0.2rem"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();moveCreditCard(${i},-1)">&#9650;</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();moveCreditCard(${i},1)">&#9660;</button></div>`;
     return `
-    <div class="credit-card owner-item-wrap" ${hasDetail ? `onclick="openCreditModal(${i})"` : '' } style="border-top:2px solid ${accentColor};position:relative">
+    <div class="credit-card owner-item-wrap" data-highlight="${c.highlightTag || ''}" ${hasDetail ? `onclick="openCreditModal(${i})"` : '' } style="border-top:2px solid ${accentColor};position:relative">
       ${ownerArrows}
       <div style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:${accentColor};opacity:0.6;margin-bottom:0.5rem">${cardTypeLabel}</div>
       ${badgesRow}
@@ -1030,13 +1030,6 @@ function buildEPK(epk) {
           <p>Explore her verified credits, projects, performances, and professional journey below.</p>
         </div>
 
-        <div class="hero-cta-row">
-          <a href="#credits" onclick="expandSection('credits')" class="hero-cta-primary">
-            <svg viewBox="0 0 24 24" style="fill:currentColor;width:13px;height:13px;flex-shrink:0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-            Explore The Record
-          </a>
-        </div>
-
       </div>
     </div>
 
@@ -1049,11 +1042,11 @@ function buildEPK(epk) {
         <div class="ch3-header">
           <span class="ch3-label">Career Profile</span>
           <div class="ch3-title-row">
-            <h2 class="section-title" style="margin:0">Career Record Highlights <a href="#credits" onclick="expandSection('credits')" class="ch3-viewall">View All Credits →</a></h2>
+            <h2 class="section-title" style="margin:0">Career Record Highlights <a href="#credits" onclick="filterCreditsByCategory('')" class="ch3-viewall">View Complete Record →</a></h2>
           </div>
         </div>
         <div class="ch3-grid">
-          <div class="ch3-card" onclick="openCreditModal(8)" style="cursor:pointer">
+          <div class="ch3-card" onclick="filterCreditsByCategory('liveperformance')" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052293/career-highlights/live-performance.jpg" alt="Live Performance" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
@@ -1062,7 +1055,7 @@ function buildEPK(epk) {
               <span class="ch3-link">View Credits →</span>
             </div>
           </div>
-          <div class="ch3-card" onclick="openCreditModal(11)" style="cursor:pointer">
+          <div class="ch3-card" onclick="filterCreditsByCategory('recordingartist')" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052294/career-highlights/recording-artist.jpg" alt="Recording Artist" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
@@ -1071,7 +1064,7 @@ function buildEPK(epk) {
               <span class="ch3-link">View Credits →</span>
             </div>
           </div>
-          <div class="ch3-card" onclick="const el=document.getElementById('credits');if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}" style="cursor:pointer">
+          <div class="ch3-card" onclick="filterCreditsByCategory('creativeprofessional')" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052295/career-highlights/creative-professional.jpg" alt="Creative Professional" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg></div>
@@ -1080,7 +1073,7 @@ function buildEPK(epk) {
               <span class="ch3-link">View Credits →</span>
             </div>
           </div>
-          <div class="ch3-card" onclick="openCreditModal(1)" style="cursor:pointer">
+          <div class="ch3-card" onclick="filterCreditsByCategory('marketingpr')" style="cursor:pointer">
             <div class="ch3-img" style="position:relative;overflow:hidden">
               <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0" poster="https://res.cloudinary.com/djj8xe3gx/video/upload/so_2,f_jpg/v1781052306/career-highlights/marketing-pr.mp4">
                 <source src="https://res.cloudinary.com/djj8xe3gx/video/upload/v1781052306/career-highlights/marketing-pr.mp4" type="video/mp4">
@@ -1093,7 +1086,7 @@ function buildEPK(epk) {
               <span class="ch3-link">View Credits →</span>
             </div>
           </div>
-          <div class="ch3-card" onclick="openCreditModal(3)" style="cursor:pointer">
+          <div class="ch3-card" onclick="filterCreditsByCategory('industryoperations')" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052297/career-highlights/industry-operations.jpg" alt="Industry Operations" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div>
@@ -1102,12 +1095,23 @@ function buildEPK(epk) {
               <span class="ch3-link">View Credits →</span>
             </div>
           </div>
-          <div class="ch3-card" onclick="openCreditModal(5)" style="cursor:pointer">
+          <div class="ch3-card" onclick="filterCreditsByCategory('collaborations')" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052298/career-highlights/collaborations.jpg" alt="Collaborations" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
               <h3 class="ch3-title">Collaborations</h3>
               <p class="ch3-desc">On stage with Don Omar at King of Kings, Viña del Mar, and Sinfónico. Alongside Natti Natasha, J Álvarez, Luis Fonsi, and more.</p>
+              <span class="ch3-link">View Credits →</span>
+            </div>
+          </div>
+          <div class="ch3-card" onclick="filterCreditsByCategory('founderbuilder')" style="cursor:pointer">
+            <div class="ch3-img" style="background:linear-gradient(135deg, rgba(201,168,76,0.18), rgba(20,20,20,1));display:flex;align-items:center;justify-content:center">
+              <svg viewBox="0 0 24 24" style="fill:var(--gold);width:36px;height:36px;opacity:0.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <div class="ch3-body">
+              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+              <h3 class="ch3-title">Founder &amp; Builder</h3>
+              <p class="ch3-desc">Founder &amp; Product Architect of PorfolioID and IDPressDrop — original platforms built from concept to deployment.</p>
               <span class="ch3-link">View Credits →</span>
             </div>
           </div>
@@ -1123,6 +1127,7 @@ function buildEPK(epk) {
       <div class="credits-inner">
         <div class="section-label">Credits & Collaborations</div>
         <h2 class="section-title" data-editable data-editable-key="creditsTitle" data-editable-type="title" style="outline:none">The Record</h2>
+        <div id="creditsFilterBanner" style="display:none;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.08em;color:var(--gray-light);margin-bottom:1rem"></div>
         <div class="credits-grid" id="creditsGrid">${creditsHTML}</div>
         ${visibleCredits.length > 4 ? `
         <div style="text-align:center;margin-top:1rem">
@@ -2423,6 +2428,42 @@ function toggleAllCredits() {
   btn.textContent = isExpanded ? `View All ${total} Credits +` : 'Show Less –';
 }
 
+// Filter credits grid by Career Highlight category, then scroll to it.
+// Pass '' to clear the filter and show everything.
+function filterCreditsByCategory(tag) {
+  const grid = document.getElementById('creditsGrid');
+  const btn = document.getElementById('creditsToggleBtn');
+  const banner = document.getElementById('creditsFilterBanner');
+  if (!grid) return;
+
+  grid.classList.add('credits-expanded'); // bypass the nth-child collapse so filtered results aren't hidden
+  if (btn) btn.style.display = tag ? 'none' : '';
+
+  const cards = grid.querySelectorAll('.credit-card');
+  let matchCount = 0;
+  cards.forEach(card => {
+    const matches = !tag || card.getAttribute('data-highlight') === tag;
+    card.style.display = matches ? '' : 'none';
+    if (matches) matchCount++;
+  });
+
+  if (banner) {
+    if (tag && matchCount > 0) {
+      const labels = { liveperformance:'Live Performance', recordingartist:'Recording Artist', creativeprofessional:'Creative Professional', marketingpr:'Marketing & PR', industryoperations:'Industry Operations', collaborations:'Collaborations', founderbuilder:'Founder & Builder' };
+      banner.innerHTML = `Showing: <strong style="color:var(--gold)">${labels[tag] || tag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">View Complete Record →</a>`;
+      banner.style.display = 'block';
+    } else {
+      banner.style.display = 'none';
+    }
+  }
+
+  const el = document.getElementById('credits');
+  if (el) {
+    setTimeout(() => { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
+  }
+}
+
+
 // Credit card reorder
 function moveCreditCard(idx, dir) {
   const credits = window._epkData && window._epkData.credits;
@@ -3064,15 +3105,6 @@ function toggleLang(lang) {
       heroBioEls[0].textContent = 'With more than 25 years in the music industry, Leslie A. Guerra bridges the stage, the studio, and the business side of entertainment.';
       heroBioEls[1].textContent = 'Her career spans live performance, recording, artist development, operations, marketing, and digital portfolio innovation across multiple industries and continents.';
       heroBioEls[2].textContent = 'Explore her verified credits, projects, performances, and professional journey below.';
-    }
-  }
-
-  // Swap "Explore The Record" CTA button
-  const ctaBtn = document.querySelector('.hero-cta-primary');
-  if (ctaBtn) {
-    const ctaText = ctaBtn.childNodes[ctaBtn.childNodes.length - 1];
-    if (ctaText && ctaText.nodeType === 3) {
-      ctaText.textContent = lang === 'es' ? ' Explorar El Récord' : ' Explore The Record';
     }
   }
 

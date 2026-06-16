@@ -710,7 +710,7 @@ function toggleAddForm(id) {
 
 const DRAFT_FIELDS = {
   addCreditForm: [
-    'newCreditArtist','newCreditYears','newCreditCategory','newCreditContractType',
+    'newCreditArtist','newCreditYears','newCreditCategory','newCreditHighlightTag','newCreditContractType',
     'newCreditRole','newCreditProjectType','newCreditDesc','newCreditFullDesc',
     'newCreditFullDescEs','newCreditProofLink',
     { id:'newCreditVisible', type:'checkbox' },
@@ -975,6 +975,7 @@ function editCredit(i) {
   document.getElementById('newCreditArtist').value = c.company || c.artist || '';
   document.getElementById('newCreditYears').value = c.years || '';
   document.getElementById('newCreditCategory').value = c.category || '';
+  if (document.getElementById('newCreditHighlightTag')) document.getElementById('newCreditHighlightTag').value = c.highlightTag || '';
   document.getElementById('newCreditContractType').value = c.contractType || '';
   document.getElementById('newCreditRole').value = c.role || '';
   document.getElementById('newCreditProjectType').value = c.projectType || '';
@@ -1269,6 +1270,7 @@ function addCredit() {
     ? (document.getElementById('newCreditCategoryOther').value.trim() || 'Other')
     : catSelect.value;
   const contractType = document.getElementById('newCreditContractType').value;
+  const highlightTag = document.getElementById('newCreditHighlightTag')?.value || '';
   const role = document.getElementById('newCreditRole').value.trim();
   const projectType = document.getElementById('newCreditProjectType').value.trim();
   const desc = document.getElementById('newCreditDesc').value.trim();
@@ -1284,7 +1286,7 @@ function addCredit() {
   const pinned = document.getElementById('newCreditPinned').checked;
   if (!artist || !role) return;
   epk.credits = epk.credits || [];
-  const creditData = { company: artist, artist, years, category, contractType, role, projectType, desc, fullDesc, fullDescEs, mediaLink, mediaLabel, videoUrl, mediaItems, proofLink, visible, verified, pinned, mediaLayout: pendingCreditMediaLayout, collaborators: [...pendingCreditCollaborators], photos: [...pendingCreditPhotos], press: pendingPressItems.filter(p => p.publication && p.summary) };
+  const creditData = { company: artist, artist, years, category, highlightTag, contractType, role, projectType, desc, fullDesc, fullDescEs, mediaLink, mediaLabel, videoUrl, mediaItems, proofLink, visible, verified, pinned, mediaLayout: pendingCreditMediaLayout, collaborators: [...pendingCreditCollaborators], photos: [...pendingCreditPhotos], press: pendingPressItems.filter(p => p.publication && p.summary) };
   if (editingCreditIdx >= 0) {
     epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], ...creditData };
     editingCreditIdx = -1;
@@ -1303,6 +1305,7 @@ function addCredit() {
   renderCreditMediaList();
   ['newCreditArtist','newCreditYears','newCreditRole','newCreditProjectType','newCreditDesc','newCreditFullDesc','newCreditFullDescEs','newCreditProofLink'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
   document.getElementById('newCreditCategory').value = '';
+  if (document.getElementById('newCreditHighlightTag')) document.getElementById('newCreditHighlightTag').value = '';
   document.getElementById('newCreditContractType').value = '';
   document.getElementById('newCreditVisible').checked = true;
   document.getElementById('newCreditVerified').checked = false;
