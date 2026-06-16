@@ -1431,7 +1431,7 @@
     "assets",
     "connect"
   ],
-  "bookingRegion": "",
+  "bookingRegion": "Worldwide",
   "galleryLayout": "grid",
   "heroImageZoom": 101,
   "identityBlock": {
@@ -1453,6 +1453,6 @@
   ],
   "heroImagePosition": 26,
   "sectionVisibility": {},
-  "bookingAutoResponse": "",
+  "bookingAutoResponse": "Thank you for your inquiry. I will respond in less than 48 hours.",
   "bookingAvailability": "selective"
 }
