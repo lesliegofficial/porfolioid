@@ -1416,8 +1416,9 @@
   "assetsLocked": true,
   "availability": "Available for tours & studio sessions",
   "bioImageZoom": 93,
-  "bookingEmail": "leslieannguerra@gmail.com",
-  "bookingPhone": "+13057424013",
+  "bookingEmail": "leslie@porfolioid.com",
+  "bookingLabel": "Inquiries",
+  "bookingPhone": "",
   "careerLayout": "stacked",
   "heroImageFit": "cover",
   "sectionOrder": [
@@ -1441,12 +1442,17 @@
   },
   "resumeEnabled": true,
   "bookingEnabled": true,
-  "bookingTagline": "Now booking live performances, studio sessions, and creative collaborations.",
+  "bookingTagline": "",
   "bioImageCropTop": 36,
   "bioImagePosition": 33,
   "heroImageCropTop": 51,
-  "bookingCategories": [],
+  "bookingCategories": [
+    "professional",
+    "administration",
+    "crm"
+  ],
   "heroImagePosition": 26,
   "sectionVisibility": {},
-  "bookingAvailability": ""
+  "bookingAutoResponse": "",
+  "bookingAvailability": "selective"
 }
