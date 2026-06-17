@@ -1209,7 +1209,7 @@ function buildEPK(epk) {
                   <p class="work-card-desc">${w.description || ''}</p>
                   ${audioAsset ? buildWorkAudioPlayer(playerId, audioAsset.url) : ''}
                   <div class="work-card-cta-row">
-                    <span class="work-card-cta" onclick="showWorkComingSoon('${(w.title||'').replace(/'/g,"\\'")}', '${(w.archiveTagline||'').replace(/'/g,"\\'")}')">Enter the Story <span class="work-card-cta-arrow">→</span></span>
+                    <span class="work-card-cta" onclick="showWorkComingSoon('${(w.title||'').replace(/'/g,"\\'")}', '${(w.archiveTagline||'').replace(/'/g,"\\'")}', '${(w.heroImage||'').replace(/'/g,"\\'")}')">Enter the Story <span class="work-card-cta-arrow">→</span></span>
                   </div>
                 </div>
               </div>`;
@@ -2621,9 +2621,9 @@ function workPlayerMute(id) {
   }
 }
 
-// "Enter the Story" — Work detail pages aren't built yet, so show an on-brand "archive is opening"
+// "Enter the Story" — Work detail pages aren't built yet, so show an on-brand "entering the archive"
 // modal instead of a dead click. Creates the modal lazily on first use, reuses it after that.
-function showWorkComingSoon(workTitle, archiveTagline) {
+function showWorkComingSoon(workTitle, archiveTagline, heroImage) {
   let modal = document.getElementById('workComingSoonModal');
   if (!modal) {
     modal = document.createElement('div');
@@ -2631,14 +2631,14 @@ function showWorkComingSoon(workTitle, archiveTagline) {
     modal.className = 'wcs-overlay';
     modal.innerHTML = `
       <div class="wcs-box">
-        <span class="wcs-eyebrow">The Archive Is Opening</span>
+        <div class="wcs-bg-visual" id="wcsBgVisual"></div>
+        <span class="wcs-eyebrow">Entering the Archive</span>
         <h3 class="wcs-title" id="wcsTitle"></h3>
         <p class="wcs-tagline" id="wcsTagline"></p>
-        <p class="wcs-body">Every work on porfolioID is more than a finished piece. Soon you'll be able to explore the complete creative archive — the story behind the work, lyrics, creative notes, inspirations, timeline, original drafts, credits, photographs, and the journey that brought it to life.</p>
-        <p class="wcs-body wcs-body-small">This experience is currently being curated.</p>
+        <p class="wcs-body">Soon you'll be able to explore the complete creative archive — its story, lyrics, creative notes, original drafts, inspirations, credits, photographs, and the moments that brought it to life.</p>
         <div class="wcs-actions">
-          <button class="wcs-btn wcs-btn-primary" onclick="hideWorkComingSoon()">Return</button>
-          <button class="wcs-btn wcs-btn-secondary" disabled title="Coming soon">Notify Me When It Opens</button>
+          <button class="wcs-btn wcs-btn-primary" onclick="hideWorkComingSoon()">← Return to Original Works</button>
+          <button class="wcs-btn wcs-btn-secondary" disabled title="Coming soon">Notify Me When This Archive Opens</button>
         </div>
       </div>`;
     document.body.appendChild(modal);
@@ -2647,6 +2647,8 @@ function showWorkComingSoon(workTitle, archiveTagline) {
   document.getElementById('wcsTitle').textContent = workTitle || '';
   const taglineEl = document.getElementById('wcsTagline');
   if (taglineEl) taglineEl.textContent = archiveTagline || '';
+  const bgVisual = document.getElementById('wcsBgVisual');
+  if (bgVisual) bgVisual.style.backgroundImage = heroImage ? `url('${heroImage}')` : '';
   modal.classList.add('is-visible');
 }
 function hideWorkComingSoon() {
