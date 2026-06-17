@@ -1209,7 +1209,7 @@ function buildEPK(epk) {
                   <p class="work-card-desc">${w.description || ''}</p>
                   ${audioAsset ? buildWorkAudioPlayer(playerId, audioAsset.url) : ''}
                   <div class="work-card-cta-row">
-                    <span class="work-card-cta" onclick="showWorkComingSoon('${(w.title||'').replace(/'/g,"\\'")}')">Enter the Story <span class="work-card-cta-arrow">→</span></span>
+                    <span class="work-card-cta" onclick="showWorkComingSoon('${(w.title||'').replace(/'/g,"\\'")}', '${(w.archiveTagline||'').replace(/'/g,"\\'")}')">Enter the Story <span class="work-card-cta-arrow">→</span></span>
                   </div>
                 </div>
               </div>`;
@@ -2621,9 +2621,9 @@ function workPlayerMute(id) {
   }
 }
 
-// "Enter the Story" — Work detail pages aren't built yet, so show an on-brand Coming Soon modal
-// instead of a dead click. Creates the modal lazily on first use, reuses it after that.
-function showWorkComingSoon(workTitle) {
+// "Enter the Story" — Work detail pages aren't built yet, so show an on-brand "archive is opening"
+// modal instead of a dead click. Creates the modal lazily on first use, reuses it after that.
+function showWorkComingSoon(workTitle, archiveTagline) {
   let modal = document.getElementById('workComingSoonModal');
   if (!modal) {
     modal = document.createElement('div');
@@ -2631,15 +2631,22 @@ function showWorkComingSoon(workTitle) {
     modal.className = 'wcs-overlay';
     modal.innerHTML = `
       <div class="wcs-box">
-        <button class="wcs-close" onclick="hideWorkComingSoon()" aria-label="Close">&times;</button>
-        <span class="wcs-eyebrow">Coming Soon</span>
+        <span class="wcs-eyebrow">The Archive Is Opening</span>
         <h3 class="wcs-title" id="wcsTitle"></h3>
-        <p class="wcs-body">The full Work experience for this piece — its story, lyrics, timeline, and the journey behind it — is currently being crafted. Check back soon to step inside.</p>
+        <p class="wcs-tagline" id="wcsTagline"></p>
+        <p class="wcs-body">Every work on porfolioID is more than a finished piece. Soon you'll be able to explore the complete creative archive — the story behind the work, lyrics, creative notes, inspirations, timeline, original drafts, credits, photographs, and the journey that brought it to life.</p>
+        <p class="wcs-body wcs-body-small">This experience is currently being curated.</p>
+        <div class="wcs-actions">
+          <button class="wcs-btn wcs-btn-primary" onclick="hideWorkComingSoon()">Return</button>
+          <button class="wcs-btn wcs-btn-secondary" disabled title="Coming soon">Notify Me When It Opens</button>
+        </div>
       </div>`;
     document.body.appendChild(modal);
     modal.addEventListener('click', (e) => { if (e.target === modal) hideWorkComingSoon(); });
   }
   document.getElementById('wcsTitle').textContent = workTitle || '';
+  const taglineEl = document.getElementById('wcsTagline');
+  if (taglineEl) taglineEl.textContent = archiveTagline || '';
   modal.classList.add('is-visible');
 }
 function hideWorkComingSoon() {

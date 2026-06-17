@@ -175,16 +175,21 @@
   .wp-vol-slider { width: 46px; height: 2px; accent-color: var(--gold); cursor: pointer; background: rgba(201,168,76,0.25); }
   @media (max-width: 700px) { .wp-volume { display: none; } }
 
-  /* ── "Enter the Story" Coming Soon modal ── */
-  .wcs-overlay { position: fixed; inset: 0; background: rgba(8,8,8,0.82); backdrop-filter: blur(3px); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.25s ease, visibility 0.25s ease; padding: 1.5rem; }
+  /* ── "Enter the Story" — The Archive Is Opening modal ── */
+  .wcs-overlay { position: fixed; inset: 0; background: radial-gradient(ellipse at center, rgba(8,8,8,0.88) 0%, rgba(0,0,0,0.96) 100%); backdrop-filter: blur(14px) saturate(0.8); -webkit-backdrop-filter: blur(14px) saturate(0.8); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.45s ease, visibility 0.45s ease; padding: 1.5rem; }
   .wcs-overlay.is-visible { opacity: 1; visibility: visible; }
-  .wcs-box { position: relative; max-width: 420px; width: 100%; background: var(--dark-2); border: 1px solid rgba(201,168,76,0.35); padding: 2.5rem 2.25rem; text-align: center; box-shadow: 0 25px 70px rgba(0,0,0,0.6), 0 0 50px rgba(201,168,76,0.1); transform: translateY(8px); transition: transform 0.25s ease; }
-  .wcs-overlay.is-visible .wcs-box { transform: translateY(0); }
-  .wcs-close { position: absolute; top: 0.75rem; right: 0.9rem; background: none; border: none; color: rgba(255,255,255,0.45); font-size: 1.4rem; line-height: 1; cursor: pointer; transition: color 0.2s ease; padding: 0.25rem; }
-  .wcs-close:hover { color: var(--gold-light); }
-  .wcs-eyebrow { display: inline-block; font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.9rem; }
-  .wcs-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--warm-white); margin: 0 0 0.9rem; line-height: 1.2; }
-  .wcs-body { font-family: var(--font-mono); font-size: 0.65rem; line-height: 1.75; color: rgba(255,255,255,0.6); margin: 0; }
+  .wcs-box { position: relative; max-width: 480px; width: 100%; background: linear-gradient(160deg, var(--dark-2) 0%, var(--black) 100%); border: 1px solid rgba(201,168,76,0.28); padding: 3.25rem 2.75rem; text-align: center; box-shadow: 0 35px 90px rgba(0,0,0,0.7), 0 0 70px rgba(201,168,76,0.08); transform: translateY(14px) scale(0.97); opacity: 0; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.5s ease; }
+  .wcs-overlay.is-visible .wcs-box { transform: translateY(0) scale(1); opacity: 1; transition-delay: 0.08s; }
+  .wcs-eyebrow { display: inline-block; font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 1.4rem; opacity: 0.9; }
+  .wcs-title { font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--warm-white); margin: 0 0 0.7rem; line-height: 1.2; }
+  .wcs-tagline { font-family: var(--font-display); font-style: italic; font-size: 1rem; color: rgba(232,201,122,0.75); margin: 0 0 1.6rem; }
+  .wcs-body { font-family: var(--font-mono); font-size: 0.65rem; line-height: 1.85; color: rgba(255,255,255,0.58); margin: 0 0 1rem; }
+  .wcs-body-small { font-size: 0.58rem; color: rgba(201,168,76,0.55); letter-spacing: 0.04em; margin: 0 0 2rem; }
+  .wcs-actions { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem; }
+  .wcs-btn { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.85rem 1.5rem; cursor: pointer; transition: all 0.25s ease; }
+  .wcs-btn-primary { background: rgba(201,168,76,0.12); border: 1px solid var(--gold); color: var(--gold-light); }
+  .wcs-btn-primary:hover { background: rgba(201,168,76,0.22); box-shadow: 0 0 22px rgba(201,168,76,0.18); }
+  .wcs-btn-secondary { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.35); cursor: not-allowed; }
 
   .collapsible-section { border-top: 1px solid rgba(255,255,255,0.06); background: var(--black); position: relative; z-index: 2; }
   .collapsible-header { display: flex; align-items: center; justify-content: space-between; padding: 1.75rem 3rem; cursor: pointer; user-select: none; width: 100%; box-sizing: border-box; transition: background 0.2s; }
