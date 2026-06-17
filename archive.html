@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script
+  src="https://js.sentry-cdn.com/35947cf71d8837f6400d73a0272919a6.min.js"
+  crossorigin="anonymous"
+></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Archive — PorfolioID</title>
+<meta name="description" id="pageDesc" content="Explore the complete creative archive behind this original work, powered by PorfolioID.">
+
+<!-- Open Graph / Link Preview -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PorfolioID">
+<meta property="og:title" id="ogTitle" content="Archive — PorfolioID">
+<meta property="og:description" id="ogDesc" content="Explore the complete creative archive behind this original work.">
+<meta property="og:image" id="ogImage" content="https://porfolioid.com/og-default.png">
+<meta property="og:url" id="ogUrl" content="https://porfolioid.com">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" id="twTitle" content="Archive — PorfolioID">
+<meta name="twitter:description" id="twDesc" content="Explore the complete creative archive behind this original work.">
+<meta name="twitter:image" id="twImage" content="https://porfolioid.com/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/epk.css?v=20260616-14">
+<link rel="stylesheet" href="/archive.css?v=1.0.0">
+</head>
+<body class="archive-body">
+
+<nav>
+  <a href="/index.html" class="nav-logo">Porfolio<span>ID</span></a>
+  <a id="archiveBackLink" href="#" class="archive-nav-back">← Back to Profile</a>
+  <div style="display:flex;align-items:center;gap:0.75rem">
+    <button onclick="toggleArchiveLang('en')" id="archiveLangEN" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.4);padding:0.3rem 0.6rem;cursor:pointer;transition:all 0.2s">EN</button>
+    <button onclick="toggleArchiveLang('es')" id="archiveLangES" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;background:none;color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.15);padding:0.3rem 0.6rem;cursor:pointer;transition:all 0.2s">ES</button>
+  </div>
+</nav>
+
+<div id="archiveContent"></div>
+
+<footer>
+  <div class="footer-logo">Porfolio<span style="color:var(--gold)">ID</span></div>
+  <div class="footer-copy">All rights reserved</div>
+</footer>
+
+<script src="/archive.js?v=1.0.0" defer></script>
+
+</body>
+</html>

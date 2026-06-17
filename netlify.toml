@@ -14,6 +14,11 @@
   status = 200
 
 [[redirects]]
+  from = "/archive/:slug/:work"
+  to = "/archive.html?slug=:slug&work=:work"
+  status = 200
+
+[[redirects]]
   from = "/:slug"
   to = "/epk.html?slug=:slug"
   status = 200
