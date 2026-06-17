@@ -1201,15 +1201,15 @@ function buildEPK(epk) {
               <div class="work-card" data-category="${w.category || 'music'}">
                 <div class="work-card-cover">
                   <img src="${w.heroImage}" alt="${w.title}" loading="lazy">
-                  <div class="work-card-status">${statusLabel}</div>
                 </div>
                 <div class="work-card-body">
                   <div class="work-card-meta">${genre}${genre && durationLabel ? ' · ' : ''}${durationLabel}</div>
+                  <div class="work-card-status">${statusLabel}</div>
                   <h3 class="work-card-title">${w.title}</h3>
                   <p class="work-card-desc">${w.description || ''}</p>
                   ${audioAsset ? buildWorkAudioPlayer(playerId, audioAsset.url) : ''}
                   <div class="work-card-cta-row">
-                    <span class="work-card-cta" title="Full Work pages are coming soon">Enter the Story <span class="work-card-cta-arrow">→</span></span>
+                    <span class="work-card-cta" onclick="showWorkComingSoon('${(w.title||'').replace(/'/g,"\\'")}')">Enter the Story <span class="work-card-cta-arrow">→</span></span>
                   </div>
                 </div>
               </div>`;
@@ -2619,6 +2619,32 @@ function workPlayerMute(id) {
     if (slider) slider.value = restore;
     wrap.classList.remove('is-muted');
   }
+}
+
+// "Enter the Story" — Work detail pages aren't built yet, so show an on-brand Coming Soon modal
+// instead of a dead click. Creates the modal lazily on first use, reuses it after that.
+function showWorkComingSoon(workTitle) {
+  let modal = document.getElementById('workComingSoonModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'workComingSoonModal';
+    modal.className = 'wcs-overlay';
+    modal.innerHTML = `
+      <div class="wcs-box">
+        <button class="wcs-close" onclick="hideWorkComingSoon()" aria-label="Close">&times;</button>
+        <span class="wcs-eyebrow">Coming Soon</span>
+        <h3 class="wcs-title" id="wcsTitle"></h3>
+        <p class="wcs-body">The full Work experience for this piece — its story, lyrics, timeline, and the journey behind it — is currently being crafted. Check back soon to step inside.</p>
+      </div>`;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) hideWorkComingSoon(); });
+  }
+  document.getElementById('wcsTitle').textContent = workTitle || '';
+  modal.classList.add('is-visible');
+}
+function hideWorkComingSoon() {
+  const modal = document.getElementById('workComingSoonModal');
+  if (modal) modal.classList.remove('is-visible');
 }
 
 // Credits collapse/expand

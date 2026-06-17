@@ -136,7 +136,7 @@
   .work-card-cover { position: relative; aspect-ratio: 1/1.02; overflow: hidden; max-width: 380px; margin: 0 auto; width: 100%; }
   .work-card-cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.7s ease; }
   .work-card:hover .work-card-cover img { transform: scale(1.06); }
-  .work-card-status { position: absolute; top: 0.75rem; right: 0.75rem; font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(8,8,8,0.78); color: var(--gold-light); padding: 0.32rem 0.7rem; border: 1px solid rgba(201,168,76,0.38); border-radius: 3px; box-shadow: 0 0 14px rgba(201,168,76,0.22); overflow: hidden; }
+  .work-card-status { display: inline-flex; align-self: flex-start; width: fit-content; align-items: center; position: relative; font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 0.14em; text-transform: uppercase; background: rgba(8,8,8,0.85); color: var(--gold-light); padding: 0.3rem 0.65rem; border: 1px solid rgba(201,168,76,0.4); border-radius: 4px; box-shadow: 0 0 12px rgba(201,168,76,0.18); overflow: hidden; margin-bottom: 0.6rem; }
   .work-card-status::after { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(110deg, transparent, rgba(232,201,122,0.45), transparent); animation: wp-badge-shimmer 5s ease-in-out infinite; }
   @keyframes wp-badge-shimmer { 0%, 70% { left: -60%; } 90%, 100% { left: 130%; } }
   .work-card-body { padding: 1.3rem 1.4rem 1.6rem; display: flex; flex-direction: column; flex: 1; }
@@ -144,7 +144,7 @@
   .work-card-title { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--warm-white); margin: 0 0 0.55rem; line-height: 1.15; }
   .work-card-desc { font-family: var(--font-mono); font-size: 0.58rem; line-height: 1.65; color: rgba(255,255,255,0.55); margin: 0; }
   .work-card-cta-row { margin-top: 1.2rem; }
-  .work-card-cta { display: inline-flex; align-items: center; gap: 0.3rem; font-family: var(--font-display); font-size: 0.8rem; font-weight: 700; color: var(--gold); letter-spacing: 0.01em; cursor: default; opacity: 0.8; transition: opacity 0.25s ease; }
+  .work-card-cta { display: inline-flex; align-items: center; gap: 0.3rem; font-family: var(--font-display); font-size: 0.8rem; font-weight: 700; color: var(--gold); letter-spacing: 0.01em; cursor: pointer; opacity: 0.8; transition: opacity 0.25s ease; }
   .work-card:hover .work-card-cta { opacity: 1; }
   .work-card-cta-arrow { display: inline-block; transition: transform 0.3s ease; }
   .work-card:hover .work-card-cta-arrow { transform: translateX(5px); }
@@ -174,6 +174,17 @@
   .work-player.is-muted .wp-vol-icon { fill: rgba(255,255,255,0.25); }
   .wp-vol-slider { width: 46px; height: 2px; accent-color: var(--gold); cursor: pointer; background: rgba(201,168,76,0.25); }
   @media (max-width: 700px) { .wp-volume { display: none; } }
+
+  /* ── "Enter the Story" Coming Soon modal ── */
+  .wcs-overlay { position: fixed; inset: 0; background: rgba(8,8,8,0.82); backdrop-filter: blur(3px); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.25s ease, visibility 0.25s ease; padding: 1.5rem; }
+  .wcs-overlay.is-visible { opacity: 1; visibility: visible; }
+  .wcs-box { position: relative; max-width: 420px; width: 100%; background: var(--dark-2); border: 1px solid rgba(201,168,76,0.35); padding: 2.5rem 2.25rem; text-align: center; box-shadow: 0 25px 70px rgba(0,0,0,0.6), 0 0 50px rgba(201,168,76,0.1); transform: translateY(8px); transition: transform 0.25s ease; }
+  .wcs-overlay.is-visible .wcs-box { transform: translateY(0); }
+  .wcs-close { position: absolute; top: 0.75rem; right: 0.9rem; background: none; border: none; color: rgba(255,255,255,0.45); font-size: 1.4rem; line-height: 1; cursor: pointer; transition: color 0.2s ease; padding: 0.25rem; }
+  .wcs-close:hover { color: var(--gold-light); }
+  .wcs-eyebrow { display: inline-block; font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.9rem; }
+  .wcs-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--warm-white); margin: 0 0 0.9rem; line-height: 1.2; }
+  .wcs-body { font-family: var(--font-mono); font-size: 0.65rem; line-height: 1.75; color: rgba(255,255,255,0.6); margin: 0; }
 
   .collapsible-section { border-top: 1px solid rgba(255,255,255,0.06); background: var(--black); position: relative; z-index: 2; }
   .collapsible-header { display: flex; align-items: center; justify-content: space-between; padding: 1.75rem 3rem; cursor: pointer; user-select: none; width: 100%; box-sizing: border-box; transition: background 0.2s; }
