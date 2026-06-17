@@ -77,6 +77,21 @@
 .arc-credit-name { font-family: var(--font-display); font-size: 0.95rem; color: var(--white); font-weight: 700; margin-bottom: 0.2rem; }
 .arc-credit-role { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(201,168,76,0.65); }
 
+/* ── PRESS ── */
+.arc-press-list { display: flex; flex-direction: column; gap: 1.75rem; max-width: 640px; }
+.arc-press-item { border-left: 2px solid rgba(201,168,76,0.3); padding-left: 1rem; }
+.arc-press-outlet { font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
+.arc-press-title { font-family: var(--font-display); font-size: 1rem; color: var(--white); font-weight: 700; margin-bottom: 0.4rem; }
+.arc-press-quote { font-family: var(--font-display); font-style: italic; font-size: 0.85rem; color: rgba(245,243,238,0.65); margin-bottom: 0.5rem; }
+.arc-press-link { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.06em; color: var(--gold-light); text-decoration: none; }
+.arc-press-link:hover { text-decoration: underline; }
+
+/* ── EQUIPMENT ── */
+.arc-equipment-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.25rem; }
+.arc-equipment-item { border-left: 2px solid rgba(201,168,76,0.3); padding-left: 0.9rem; }
+.arc-equipment-name { font-family: var(--font-display); font-size: 0.9rem; color: var(--white); font-weight: 700; }
+.arc-equipment-note { font-family: var(--font-mono); font-size: 0.58rem; color: rgba(255,255,255,0.45); margin-top: 0.2rem; }
+
 /* ── GALLERY ── */
 .arc-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
 .arc-gallery-item { position: relative; aspect-ratio: 1/1; overflow: hidden; cursor: pointer; }

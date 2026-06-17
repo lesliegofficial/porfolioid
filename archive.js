@@ -54,32 +54,181 @@ function archiveEscape(str) {
   return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
-const ARCHIVE_CATEGORY_LABELS = {
-  music:       { manuscript: 'Lyrics', mediaNote: 'Recordings & Performances' },
-  books:       { manuscript: 'Manuscript', mediaNote: 'Readings & Media' },
-  screenplays: { manuscript: 'Script', mediaNote: 'Footage & Media' },
-  writing:     { manuscript: 'Full Text', mediaNote: 'Media' },
-  default:     { manuscript: 'Manuscript', mediaNote: 'Media' }
+// ── ARCHIVE CONFIGURATION LAYER ──
+// This is the single source of truth for what an Archive looks like for a given work type.
+// Each entry defines: which sections exist, in what order, and what each is labeled — nothing
+// about rendering itself. The render functions below (buildArchiveAbout, buildArchiveTimeline,
+// etc.) are written once per section TYPE, not per work type, and are shared across every
+// category. Adding a new work type to porfolioID never requires touching the render functions
+// or the page-assembly logic — only adding a new entry to ARCHIVE_TYPE_CONFIG below.
+//
+// Section ids map 1:1 to render functions via ARCHIVE_SECTION_RENDERERS. A work type's config
+// lists only the section ids it wants, in the order they should appear; everything else is
+// simply absent from that Archive instead of needing to be hidden.
+const ARCHIVE_TYPE_CONFIG = {
+  music: {
+    sections: [
+      { id: 'about',      label: 'About the Work' },
+      { id: 'story',      label: 'Story Behind the Work' },
+      { id: 'timeline',   label: 'Timeline' },
+      { id: 'notes',      label: 'Creative Notes' },
+      { id: 'manuscript', label: 'Lyrics' },
+      { id: 'credits',    label: 'Credits' },
+      { id: 'gallery',    label: 'Gallery' },
+      { id: 'media',      label: 'Media' },
+      { id: 'related',    label: 'Related Works' }
+    ]
+  },
+  books: {
+    sections: [
+      { id: 'about',      label: 'About the Book' },
+      { id: 'story',      label: 'Story Behind the Book' },
+      { id: 'timeline',   label: 'Timeline' },
+      { id: 'manuscript', label: 'Manuscript' },
+      { id: 'notes',      label: 'Notes' },
+      { id: 'credits',    label: 'Credits' },
+      { id: 'gallery',    label: 'Gallery' },
+      { id: 'press',      label: 'Press' },
+      { id: 'related',    label: 'Related Works' }
+    ]
+  },
+  screenplays: {
+    sections: [
+      { id: 'about',      label: 'About the Screenplay' },
+      { id: 'story',      label: 'Story Behind the Screenplay' },
+      { id: 'timeline',   label: 'Timeline' },
+      { id: 'manuscript', label: 'Script' },
+      { id: 'notes',      label: 'Creative Notes' },
+      { id: 'credits',    label: 'Credits' },
+      { id: 'gallery',    label: 'Gallery' },
+      { id: 'media',      label: 'Media' },
+      { id: 'related',    label: 'Related Works' }
+    ]
+  },
+  blog: {
+    sections: [
+      { id: 'about',      label: 'About this Post' },
+      { id: 'manuscript', label: 'Full Text' },
+      { id: 'notes',      label: 'Notes' },
+      { id: 'credits',    label: 'Credits' },
+      { id: 'related',    label: 'Related Works' }
+    ]
+  },
+  article: {
+    sections: [
+      { id: 'about',      label: 'About this Article' },
+      { id: 'story',      label: 'Story Behind the Article' },
+      { id: 'manuscript', label: 'Full Article' },
+      { id: 'credits',    label: 'Credits' },
+      { id: 'press',      label: 'Press' },
+      { id: 'related',    label: 'Related Works' }
+    ]
+  },
+  photography: {
+    sections: [
+      { id: 'about',      label: 'Artist Statement' },
+      { id: 'story',      label: 'Creative Process' },
+      { id: 'gallery',    label: 'Gallery' },
+      { id: 'equipment',  label: 'Equipment' },
+      { id: 'credits',    label: 'Credits' },
+      { id: 'related',    label: 'Related Works' }
+    ]
+  },
+  painting: {
+    sections: [
+      { id: 'about',      label: 'About the Work' },
+      { id: 'story',      label: 'Creative Process' },
+      { id: 'gallery',    label: 'Gallery' },
+      { id: 'notes',      label: 'Creative Notes' },
+      { id: 'credits',    label: 'Credits' },
+      { id: 'related',    label: 'Related Works' }
+    ]
+  },
+  podcast: {
+    sections: [
+      { id: 'about',      label: 'About this Episode' },
+      { id: 'timeline',   label: 'Timeline' },
+      { id: 'media',      label: 'Media' },
+      { id: 'notes',      label: 'Notes' },
+      { id: 'credits',    label: 'Credits' },
+      { id: 'related',    label: 'Related Works' }
+    ]
+  },
+  research: {
+    sections: [
+      { id: 'about',      label: 'Abstract' },
+      { id: 'story',      label: 'Background' },
+      { id: 'timeline',   label: 'Timeline' },
+      { id: 'manuscript', label: 'Full Paper' },
+      { id: 'credits',    label: 'Credits' },
+      { id: 'press',      label: 'Press' },
+      { id: 'related',    label: 'Related Works' }
+    ]
+  },
+  patent: {
+    sections: [
+      { id: 'about',      label: 'Overview' },
+      { id: 'story',      label: 'Story Behind the Invention' },
+      { id: 'timeline',   label: 'Timeline' },
+      { id: 'manuscript', label: 'Filing' },
+      { id: 'credits',    label: 'Credits' },
+      { id: 'related',    label: 'Related Works' }
+    ]
+  },
+  speech: {
+    sections: [
+      { id: 'about',      label: 'About this Speech' },
+      { id: 'story',      label: 'Story Behind the Speech' },
+      { id: 'manuscript', label: 'Transcript' },
+      { id: 'media',      label: 'Media' },
+      { id: 'credits',    label: 'Credits' },
+      { id: 'related',    label: 'Related Works' }
+    ]
+  },
+  course: {
+    sections: [
+      { id: 'about',      label: 'About this Course' },
+      { id: 'timeline',   label: 'Timeline' },
+      { id: 'notes',      label: 'Creative Notes' },
+      { id: 'media',      label: 'Media' },
+      { id: 'credits',    label: 'Credits' },
+      { id: 'related',    label: 'Related Works' }
+    ]
+  },
+  journal: {
+    sections: [
+      { id: 'about',      label: 'About this Entry' },
+      { id: 'manuscript', label: 'Full Text' },
+      { id: 'notes',      label: 'Notes' },
+      { id: 'gallery',    label: 'Gallery' },
+      { id: 'related',    label: 'Related Works' }
+    ]
+  }
 };
-function archiveCategoryLabels(category) {
-  return ARCHIVE_CATEGORY_LABELS[category] || ARCHIVE_CATEGORY_LABELS.default;
+// Any category not explicitly configured falls back to the most general shape rather than
+// failing — the Archive should never break simply because a new, not-yet-configured work
+// type was added to a Work's data before its section list was defined here.
+const ARCHIVE_DEFAULT_CONFIG = {
+  sections: [
+    { id: 'about',      label: 'About the Work' },
+    { id: 'story',      label: 'Story Behind the Work' },
+    { id: 'timeline',   label: 'Timeline' },
+    { id: 'manuscript', label: 'Manuscript' },
+    { id: 'notes',      label: 'Creative Notes' },
+    { id: 'credits',    label: 'Credits' },
+    { id: 'gallery',    label: 'Gallery' },
+    { id: 'media',      label: 'Media' },
+    { id: 'related',    label: 'Related Works' }
+  ]
+};
+function archiveTypeConfig(category) {
+  return ARCHIVE_TYPE_CONFIG[category] || ARCHIVE_DEFAULT_CONFIG;
 }
-
-const ARCHIVE_SECTIONS = [
-  { id: 'about',     label: 'About the Work' },
-  { id: 'story',     label: 'Story Behind the Work' },
-  { id: 'timeline',  label: 'Timeline' },
-  { id: 'notes',     label: 'Creative Notes' },
-  { id: 'manuscript',label: null },
-  { id: 'credits',   label: 'Credits' },
-  { id: 'gallery',   label: 'Gallery' },
-  { id: 'media',     label: 'Media' },
-  { id: 'related',   label: 'Related Works' }
-];
 
 function archiveEmptyState(message) {
   return `<div class="arc-empty">${archiveEscape(message)}</div>`;
 }
+
 
 function buildArchiveHero(w, epk) {
   const status = getWorkStatusArchive(w);
@@ -166,16 +315,18 @@ function buildArchiveNotes(w) {
     </div>`).join('');
 }
 
-function buildArchiveManuscript(w) {
+function buildArchiveManuscript(w, sectionLabel) {
   let text = null;
   if (w.category === 'music') text = w.music?.lyrics;
   else if (w.category === 'books') text = (w.books?.excerpts || []).join('\n\n') || w.books?.synopsis;
   else if (w.category === 'screenplays') text = w.screenplays?.synopsis;
-  else if (w.category === 'writing') text = w.writing?.bodyContent;
+  else if (w.writing?.bodyContent) text = w.writing.bodyContent;
+  // Generic fallback: any category can store manuscript-style long text directly on the
+  // Work as w.manuscriptText without needing its own dedicated metadata block.
+  if (!text) text = w.manuscriptText || null;
 
   if (!text) {
-    const labels = archiveCategoryLabels(w.category);
-    return archiveEmptyState(`The ${labels.manuscript.toLowerCase()} for this work has not yet been added.`);
+    return archiveEmptyState(`The ${(sectionLabel || 'manuscript').toLowerCase()} for this work has not yet been added.`);
   }
   const lines = text.split('\n');
   return `<div class="arc-manuscript">${lines.map(l => l.trim() ? `<p>${archiveEscape(l)}</p>` : '<br>').join('')}</div>`;
@@ -192,6 +343,40 @@ function buildArchiveCredits(w) {
         <div class="arc-credit-item">
           <div class="arc-credit-name">${archiveEscape(c.name)}</div>
           <div class="arc-credit-role">${archiveEscape(c.role || '')}</div>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ── PRESS (coverage, reviews, mentions — used by books, articles, research) ──
+function buildArchivePress(w) {
+  const items = w.press || [];
+  if (!items.length) {
+    return archiveEmptyState('No press coverage has been added for this work yet.');
+  }
+  return `
+    <div class="arc-press-list">
+      ${items.map(p => `
+        <div class="arc-press-item">
+          ${p.outlet ? `<div class="arc-press-outlet">${archiveEscape(p.outlet)}</div>` : ''}
+          ${p.title ? `<div class="arc-press-title">${archiveEscape(p.title)}</div>` : ''}
+          ${p.quote ? `<p class="arc-press-quote">${archiveEscape(p.quote)}</p>` : ''}
+          ${p.url ? `<a class="arc-press-link" href="${archiveEscape(p.url)}" target="_blank" rel="noopener">Read more →</a>` : ''}
+        </div>`).join('')}
+    </div>`;
+}
+
+// ── EQUIPMENT (cameras, lenses, instruments, software — used by photography, painting) ──
+function buildArchiveEquipment(w) {
+  const items = w.equipment || [];
+  if (!items.length) {
+    return archiveEmptyState('Equipment details have not yet been added for this work.');
+  }
+  return `
+    <div class="arc-equipment-list">
+      ${items.map(e => `
+        <div class="arc-equipment-item">
+          <div class="arc-equipment-name">${archiveEscape(e.name || e)}</div>
+          ${e.note ? `<div class="arc-equipment-note">${archiveEscape(e.note)}</div>` : ''}
         </div>`).join('')}
     </div>`;
 }
@@ -252,6 +437,24 @@ function buildArchiveNav(sections) {
     </nav>`;
 }
 
+// ── Section renderer registry. Maps a section id (as used in ARCHIVE_TYPE_CONFIG) to the
+// function that renders its content. This is the only place that needs a new entry when a
+// genuinely new SECTION TYPE is introduced — new WORK TYPES never need new renderers, only
+// a new entry in ARCHIVE_TYPE_CONFIG choosing which existing renderers to use. ──
+const ARCHIVE_SECTION_RENDERERS = {
+  about:      function(w) { return buildArchiveAbout(w); },
+  story:      function(w) { return buildArchiveStory(w); },
+  timeline:   function(w) { return buildArchiveTimeline(w); },
+  notes:      function(w) { return buildArchiveNotes(w); },
+  manuscript: function(w, label) { return buildArchiveManuscript(w, label); },
+  credits:    function(w) { return buildArchiveCredits(w); },
+  press:      function(w) { return buildArchivePress(w); },
+  equipment:  function(w) { return buildArchiveEquipment(w); },
+  gallery:    function(w) { return buildArchiveGallery(w); },
+  media:      function(w) { return buildArchiveMedia(w); },
+  related:    function(w, label, works, slug) { return buildArchiveRelated(w, works, slug); }
+};
+
 function buildArchive(epk, workSlug) {
   const works = epk.works || [];
   const w = works.find(item => item.id === workSlug || item.title === workSlug);
@@ -268,8 +471,11 @@ function buildArchive(epk, workSlug) {
     return;
   }
 
-  const labels = archiveCategoryLabels(w.category);
-  const sections = ARCHIVE_SECTIONS.map(s => s.id === 'manuscript' ? Object.assign({}, s, { label: labels.manuscript }) : s);
+  // The work's category determines its full section list and ordering via the configuration
+  // layer — this is the only place category drives page structure. A category with no explicit
+  // entry safely falls back to the general-purpose default shape rather than breaking.
+  const config = archiveTypeConfig(w.category);
+  const sections = config.sections;
 
   document.getElementById('pageTitle').textContent = w.title + ' — Archive — PorfolioID';
   const desc = (w.description || w.aboutWork || '').slice(0, 160);
@@ -285,47 +491,22 @@ function buildArchive(epk, workSlug) {
   const backLink = document.getElementById('archiveBackLink');
   if (backLink) backLink.href = '/' + (epk.slug || '');
 
+  const sectionsHTML = sections.map(function(s) {
+    const renderer = ARCHIVE_SECTION_RENDERERS[s.id];
+    const body = renderer ? renderer(w, s.label, works, epk.slug) : archiveEmptyState('This section is not yet available.');
+    return `
+        <section class="arc-section" id="arc-${s.id}">
+          <h2 class="arc-section-title">${archiveEscape(s.label)}</h2>
+          ${body}
+        </section>`;
+  }).join('');
+
   container.innerHTML = `
     ${buildArchiveHero(w, epk)}
     <div class="arc-layout">
       ${buildArchiveNav(sections)}
       <div class="arc-sections">
-        <section class="arc-section" id="arc-about">
-          <h2 class="arc-section-title">About the Work</h2>
-          ${buildArchiveAbout(w)}
-        </section>
-        <section class="arc-section" id="arc-story">
-          <h2 class="arc-section-title">Story Behind the Work</h2>
-          ${buildArchiveStory(w)}
-        </section>
-        <section class="arc-section" id="arc-timeline">
-          <h2 class="arc-section-title">Timeline</h2>
-          ${buildArchiveTimeline(w)}
-        </section>
-        <section class="arc-section" id="arc-notes">
-          <h2 class="arc-section-title">Creative Notes</h2>
-          ${buildArchiveNotes(w)}
-        </section>
-        <section class="arc-section" id="arc-manuscript">
-          <h2 class="arc-section-title">${archiveEscape(labels.manuscript)}</h2>
-          ${buildArchiveManuscript(w)}
-        </section>
-        <section class="arc-section" id="arc-credits">
-          <h2 class="arc-section-title">Credits</h2>
-          ${buildArchiveCredits(w)}
-        </section>
-        <section class="arc-section" id="arc-gallery">
-          <h2 class="arc-section-title">Gallery</h2>
-          ${buildArchiveGallery(w)}
-        </section>
-        <section class="arc-section" id="arc-media">
-          <h2 class="arc-section-title">Media</h2>
-          ${buildArchiveMedia(w)}
-        </section>
-        <section class="arc-section" id="arc-related">
-          <h2 class="arc-section-title">Related Works</h2>
-          ${buildArchiveRelated(w, works, epk.slug)}
-        </section>
+        ${sectionsHTML}
       </div>
     </div>`;
 

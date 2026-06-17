@@ -11,8 +11,20 @@ function getSlugFromURL() {
   const params = new URLSearchParams(window.location.search);
   const fromQuery = params.get('slug');
   if (fromQuery) return fromQuery;
-  const match = window.location.pathname.match(/\/epk\/([^\/]+)/);
-  return match ? match[1] : null;
+  const epkPathMatch = window.location.pathname.match(/\/epk\/([^\/]+)/);
+  if (epkPathMatch) return epkPathMatch[1];
+  // Netlify's status-200 rewrite (/:slug -> epk.html?slug=:slug) substitutes the query string
+  // server-side only — window.location.search/pathname on the client still reflect the original
+  // clean URL the browser actually requested, not the rewritten target. Fall back to reading the
+  // slug straight out of a bare top-level path segment, excluding direct .html file access and
+  // known non-profile paths so this never misfires on a real page.
+  const bareMatch = window.location.pathname.match(/^\/([^\/]+)\/?$/);
+  if (bareMatch) {
+    const candidate = bareMatch[1];
+    const reserved = ['epk.html', 'index.html', 'dashboard.html', 'login.html', 'signup.html', 'onboarding.html', 'archive', 'archive.html', 'api', ''];
+    if (candidate && !reserved.includes(candidate) && !candidate.includes('.html')) return candidate;
+  }
+  return null;
 }
 
 function getEPKData(slug) {
@@ -1209,7 +1221,7 @@ function buildEPK(epk) {
                   <p class="work-card-desc">${w.description || ''}</p>
                   ${audioAsset ? buildWorkAudioPlayer(playerId, audioAsset.url) : ''}
                   <div class="work-card-cta-row">
-                    <span class="work-card-cta" onclick="showWorkComingSoon('${(w.title||'').replace(/'/g,"\\'")}', '${(w.archiveTagline||'').replace(/'/g,"\\'")}', '${(w.heroImage||'').replace(/'/g,"\\'")}')">Enter the Story <span class="work-card-cta-arrow">→</span></span>
+                    <a class="work-card-cta" href="/archive/${encodeURIComponent(epk.slug || '')}/${encodeURIComponent(w.id || '')}">Enter the Story <span class="work-card-cta-arrow">→</span></a>
                   </div>
                 </div>
               </div>`;
@@ -2619,41 +2631,6 @@ function workPlayerMute(id) {
     if (slider) slider.value = restore;
     wrap.classList.remove('is-muted');
   }
-}
-
-// "Enter the Story" — Work detail pages aren't built yet, so show an on-brand "entering the archive"
-// modal instead of a dead click. Creates the modal lazily on first use, reuses it after that.
-function showWorkComingSoon(workTitle, archiveTagline, heroImage) {
-  let modal = document.getElementById('workComingSoonModal');
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'workComingSoonModal';
-    modal.className = 'wcs-overlay';
-    modal.innerHTML = `
-      <div class="wcs-box">
-        <div class="wcs-bg-visual" id="wcsBgVisual"></div>
-        <span class="wcs-eyebrow">Entering the Archive</span>
-        <h3 class="wcs-title" id="wcsTitle"></h3>
-        <p class="wcs-tagline" id="wcsTagline"></p>
-        <p class="wcs-body">Soon you'll be able to explore the complete creative archive — its story, lyrics, creative notes, original drafts, inspirations, credits, photographs, and the moments that brought it to life.</p>
-        <div class="wcs-actions">
-          <button class="wcs-btn wcs-btn-primary" onclick="hideWorkComingSoon()">← Return to Original Works</button>
-          <button class="wcs-btn wcs-btn-secondary" disabled title="Coming soon">Notify Me When This Archive Opens</button>
-        </div>
-      </div>`;
-    document.body.appendChild(modal);
-    modal.addEventListener('click', (e) => { if (e.target === modal) hideWorkComingSoon(); });
-  }
-  document.getElementById('wcsTitle').textContent = workTitle || '';
-  const taglineEl = document.getElementById('wcsTagline');
-  if (taglineEl) taglineEl.textContent = archiveTagline || '';
-  const bgVisual = document.getElementById('wcsBgVisual');
-  if (bgVisual) bgVisual.style.backgroundImage = heroImage ? `url('${heroImage}')` : '';
-  modal.classList.add('is-visible');
-}
-function hideWorkComingSoon() {
-  const modal = document.getElementById('workComingSoonModal');
-  if (modal) modal.classList.remove('is-visible');
 }
 
 // Credits collapse/expand
