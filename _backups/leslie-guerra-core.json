@@ -59,17 +59,92 @@
       ],
       "credits": [
         {
-          "link": null,
           "name": "Leslie Ann Guerra",
-          "role": "Writer & Performer",
-          "linkedCompanyId": null,
-          "linkedProfileId": null
+          "role": "Writing"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Lyrics"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Original Melody"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Inspired by Melody"
+        },
+        {
+          "name": "Suno AI",
+          "role": "Music Production"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Creative Direction"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Concept"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Artwork Direction"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Cover Artwork"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Archive Documentation"
         }
       ],
       "visible": true,
       "writing": null,
       "category": "music",
       "featured": true,
+      "timeline": [
+        {
+          "date": "2020-02-26",
+          "title": "First Draft Written",
+          "evidence": [
+            {
+              "url": null,
+              "type": "document",
+              "label": "Original lyric sheet (documentation pending)"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/lesliegofficial/porfolioid/main/press/evidence/vals-demente_original-voice-memo_2020-02-26.m4a",
+              "type": "audio",
+              "label": "Original iPhone Voice Memo"
+            }
+          ],
+          "description": "Original lyrics and hook were written and recorded as an iPhone Voice Memo. The emotional core of the song was captured during its first writing session."
+        },
+        {
+          "notes": "This milestone intentionally represents a season rather than a single event.",
+          "title": "The Song Waited",
+          "dateRange": "2020–2026",
+          "description": "Although the first draft existed, the song remained unfinished for more than six years. During that time, life continued, perspective changed, and the meaning of the song evolved alongside its writer."
+        },
+        {
+          "date": "2026-06-17",
+          "title": "Song Completed",
+          "evidence": [
+            {
+              "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1781672579/works/vals-demente/audio.mp3",
+              "type": "audio",
+              "label": "Final produced demo"
+            },
+            {
+              "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1781672566/works/vals-demente/cover.jpg",
+              "type": "image",
+              "label": "Final album cover"
+            }
+          ],
+          "description": "The song was finally completed with a completely different emotional understanding than when it began. What started as a story about someone else's actions became a story about recognizing personal patterns and choosing healing."
+        }
+      ],
       "aboutWork": "Vals Demente explores the emotional cycle of a relationship built on ego, manipulation, and repeated patterns. Rather than placing blame on one person, the song recognizes that both people continued dancing the same destructive dance until self-love finally became the way out.",
       "heroImage": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1781672566/works/vals-demente/cover.jpg",
       "sortOrder": 1,
@@ -81,7 +156,7 @@
       "startedDate": "2020-02-26",
       "releasedDate": null,
       "completedDate": "2026-06-17",
-      "creativeNotes": "Recorded originally as an iPhone voice note. The title and chorus image — \"un seis cilindros con el motor caliente\" — came from picturing the relationship as a car running hot, going nowhere, just cycling in place.",
+      "creativeNotes": "Recorded originally: iPhone Voice Memo. The title and chorus image — \"un seis cilindros con el motor caliente\" — came from picturing the relationship as a car running hot, going nowhere, just cycling in place.",
       "descriptionEs": "Una canción sobre romper un ciclo, no solo terminar una relación.",
       "inspirationEs": null,
       "relatedPeople": [],
@@ -90,9 +165,16 @@
         "yahweh-yo-te-pertenezco"
       ],
       "statusOverride": "unreleased",
+      "behindTheLyrics": [
+        {
+          "story": "That lyric came from a real experience.\n\nAt the time, I knew almost nothing about cars beyond driving them.\n\nAbout a month after paying off my Dodge Charger—my favorite car—my daughter was involved in an accident that totaled it.\n\nWhen I replaced it, I bought a newer Dodge Charger without realizing much about its performance features.\n\nOne winter day, while the car was stuck in the snow, I accidentally switched it into Sport mode.\n\nThe car couldn't move because it was trapped in the ice, but the engine suddenly roared to life.\n\nI had no idea what I had done.\n\nThe sound was intense.\n\nMy first thought was that if the car hadn't been stuck, I might have driven straight into my former employer's house.\n\nThat moment stayed with me.\n\nYears later, while writing Vals Demente, I remembered that engine—powerful, loud, unpredictable, and ready to launch before I was.\n\nIt became the perfect metaphor for the emotional intensity of the relationship.\n\nThat's where the lyric came from.\n\nSometimes the most unexpected moments become the lines people remember most.",
+          "excerpt": "Un seis cilindros con un motor caliente...",
+          "evidence": []
+        }
+      ],
       "creativeNotesEs": null,
       "relatedProjects": [],
-      "storyBehindWork": "I began writing \"Vals Demente\" on February 26, 2020. At the time, I was trying to make sense of a relationship that felt like an endless cycle—love, distance, hope, disappointment, and starting over again. The lyrics came quickly, but the song didn't. It stayed unfinished for years.\n\nLife continued. I grew. My perspective changed.\n\nMore than six years later, on June 17, 2026, I returned to the song and finally understood how it needed to end.\n\nWhat began as a song about someone else's behavior became a song about recognizing my own role in the dance. Healing didn't begin when the relationship ended—it began when I accepted my part in the pattern and learned to choose myself.\n\nThat's why \"Vals Demente\" isn't simply a breakup song. It's a song about breaking a cycle.",
+      "storyBehindWork": "I began writing \"Vals Demente\" on February 26, 2020.\n\nThe original lyrics and hook were captured that day in an iPhone voice memo, preserving the song's earliest form exactly as it first came to me.\n\nAt the time, I was trying to make sense of a relationship that felt like an endless cycle—love, distance, hope, disappointment, and beginning again.\n\nThe hook came almost immediately.\n\n“Un vals demente, un seis cilindros con un motor caliente...”\n\nThat single phrase captured everything I was feeling at the time.\n\nThe song itself, however, took much longer to reveal its final melody and form.\n\nAlthough the first draft captured exactly how I felt in that moment, I wasn't ready to finish it.\n\nSomething remained unresolved because, in many ways, I was still living the story I was trying to write.\n\nSo the song waited.\n\nYears passed.\n\nLife continued.\n\nI experienced new beginnings, painful endings, personal growth, and long periods of reflection.\n\nWithout realizing it, I was changing—and as I changed, so did the meaning of the song.\n\nWhen I returned to \"Vals Demente\" on June 17, 2026, I wasn't the same woman who had started writing it.\n\nI no longer heard it as a story about someone else's choices.\n\nI heard it as a story about my own.\n\nI realized the cycle wasn't only created by another person.\n\nIt continued because I kept returning to it, hoping that this time things would be different.\n\nThe song became less about heartbreak and more about awareness.\n\nFinishing it wasn't simply a creative milestone.\n\nIt was a personal one.\n\nFor the first time, I could see the dance for what it was—and choose to step out of it.\n\nThat's why \"Vals Demente\" isn't simply a breakup song.\n\nIt's a song about recognizing a pattern.\n\nIt's about reclaiming your voice.\n\nIt's about choosing yourself.\n\nAnd ultimately...\n\nit's about breaking the cycle.",
       "storyBehindWorkEs": null
     },
     {
