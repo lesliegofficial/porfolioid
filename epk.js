@@ -26,6 +26,20 @@ function getYouTubeThumb(url) {
   return match ? `https://img.youtube.com/vi/${match[1]||match[2]}/hqdefault.jpg` : null;
 }
 
+// Compute a Work's display status from its dates, unless a manual statusOverride is set.
+// Override always wins; otherwise: no completed/released dates = In Progress, completed only = Completed, released = Published.
+function getWorkStatus(w) {
+  const overrideLabels = {
+    'on-hold': 'On Hold', 'archived': 'Archived', 'private': 'Private',
+    'coming-soon': 'Coming Soon', 'in-revision': 'In Revision', 'unreleased': 'Unreleased'
+  };
+  if (w.statusOverride && overrideLabels[w.statusOverride]) return overrideLabels[w.statusOverride];
+  if (w.releasedDate) return 'Published';
+  if (w.completedDate) return 'Completed';
+  if (w.startedDate) return 'In Progress';
+  return 'Draft';
+}
+
 function buildEPK(epk) {
   window._epkData = epk;
   window._epkData.awards = epk.awards || [];
@@ -40,6 +54,7 @@ function buildEPK(epk) {
   const ALL_SECTIONS = [
     { id: 'bio', label: 'Career Profile' },
     { id: 'credits', label: 'Credits' },
+    { id: 'works', label: 'Works' },
     { id: 'photos', label: 'Photos' },
     { id: 'videos', label: 'Video' },
     { id: 'music', label: 'Music' },
@@ -47,7 +62,9 @@ function buildEPK(epk) {
     { id: 'assets', label: 'Assets' },
     { id: 'connect', label: 'Connect' },
   ];
-  const sectionOrder = epk.sectionOrder || ALL_SECTIONS.map(s => s.id);
+  const savedOrder = epk.sectionOrder || ALL_SECTIONS.map(s => s.id);
+  // Self-heal: any section in ALL_SECTIONS not yet present in a saved sectionOrder (e.g. newly added sections like 'works') gets appended at the end, so existing saved data doesn't hide new nav items.
+  const sectionOrder = savedOrder.concat(ALL_SECTIONS.map(s => s.id).filter(id => !savedOrder.includes(id)));
   const sectionVisibility = epk.sectionVisibility || {};
 
   // QR mode can override which sections are visible via ?sections= param
@@ -1119,6 +1136,47 @@ function buildEPK(epk) {
     </section>
     <div class="divider"></div>
 
+    <!-- CREATIVE WORKS -->
+    ${(epk.works || []).filter(w => w.visible !== false).length ? `
+    <section class="works-section" id="works">
+      <div class="works-wrap">
+        <div class="works-header">
+          <span class="works-label" id="worksEyebrow">Creative Works</span>
+          <div class="works-title-row">
+            <h2 class="section-title" id="worksHeading" style="margin:0">Featured Originals</h2>
+          </div>
+          <p class="works-tagline" id="worksTagline">Every song tells the story of a different season.</p>
+        </div>
+        <div class="works-grid">
+          ${(epk.works || [])
+            .filter(w => w.visible !== false)
+            .sort((a, b) => (a.sortOrder||0) - (b.sortOrder||0))
+            .map(w => {
+              const status = getWorkStatus(w);
+              const audioAsset = (w.assets || []).find(a => a.type === 'audio' && a.role === 'release') || (w.assets || []).find(a => a.type === 'audio');
+              const genre = w.music?.genre || '';
+              const duration = w.music?.duration ? `${Math.floor(w.music.duration/60)}:${String(w.music.duration%60).padStart(2,'0')}` : '';
+              return `
+              <div class="work-card">
+                <div class="work-card-cover">
+                  <img src="${w.heroImage}" alt="${w.title}" loading="lazy">
+                  <div class="work-card-status">${status}</div>
+                </div>
+                <div class="work-card-body">
+                  <div class="work-card-meta">${genre}${genre && duration ? ' · ' : ''}${duration}</div>
+                  <h3 class="work-card-title">${w.title}</h3>
+                  <p class="work-card-desc">${w.description || ''}</p>
+                  ${audioAsset ? `<audio controls style="width:100%;height:34px;margin-top:0.9rem;opacity:0.9" src="${audioAsset.url}"></audio>` : ''}
+                  <div class="work-card-cta-row">
+                    <span class="work-card-cta" title="Full Work pages are coming soon">Explore the Work →</span>
+                  </div>
+                </div>
+              </div>`;
+            }).join('')}
+        </div>
+      </div>
+    </section>
+    <div class="divider"></div>` : ''}
 
     <!-- PHOTOS — moved before music for claim→proof sequence — Credits=Claim, Photos=Proof -->
     ${epk.photos?.length ? `
@@ -2398,6 +2456,20 @@ function applySectionOrderAndVisibility(epk) {
       anchor.insertAdjacentElement('afterend', nextSib);
       anchor = nextSib;
     }
+    // Works is fixed (not user-reorderable) but must be re-pinned right after bio,
+    // since reordering bio's siblings would otherwise strand it wherever the DOM mutations left it.
+    if (id === 'bio') {
+      const worksEl = document.getElementById('works');
+      if (worksEl) {
+        const worksNextSib = worksEl.nextElementSibling;
+        anchor.insertAdjacentElement('afterend', worksEl);
+        anchor = worksEl;
+        if (worksNextSib && worksNextSib.classList && worksNextSib.classList.contains('divider')) {
+          anchor.insertAdjacentElement('afterend', worksNextSib);
+          anchor = worksNextSib;
+        }
+      }
+    }
   });
 }
 
@@ -2534,6 +2606,12 @@ function expandSection(sectionId) {
   // Credits now lives hidden inside the Career Highlights block until requested
   if (sectionId === 'credits') {
     filterCreditsByCategory('');
+    return;
+  }
+  // Works is a plain always-visible section — just smooth-scroll to it
+  if (sectionId === 'works') {
+    const el = document.getElementById('works');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     return;
   }
   // Connect uses a simple display:none toggle on #connect, not the collapsible-body pattern
