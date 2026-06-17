@@ -125,24 +125,24 @@
 
   /* ── CREATIVE WORKS — premium editorial two-up feature ── */
   .works-section { background: var(--black); }
-  .works-wrap { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 4rem; }
+  .works-wrap { max-width: 880px; margin: 0 auto; padding: 3rem 2rem 4rem; }
   .works-header { text-align: center; margin-bottom: 2.5rem; }
   .works-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); }
   .works-title-row { margin: 0.4rem 0 0.6rem; }
   .works-tagline { font-family: var(--font-display); font-style: italic; font-size: 1.1rem; color: rgba(245,243,238,0.65); margin: 0; }
-  .works-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: rgba(201,168,76,0.1); }
-  .work-card { background: var(--dark-2); display: flex; flex-direction: column; }
-  .work-card-cover { position: relative; aspect-ratio: 1/1; overflow: hidden; }
+  .works-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.25rem; }
+  .work-card { background: var(--dark-2); display: flex; flex-direction: column; border: 1px solid rgba(201,168,76,0.12); }
+  .work-card-cover { position: relative; aspect-ratio: 1/1.05; overflow: hidden; max-width: 320px; margin: 0 auto; width: 100%; }
   .work-card-cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
   .work-card:hover .work-card-cover img { transform: scale(1.03); }
-  .work-card-status { position: absolute; top: 0.9rem; right: 0.9rem; font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(8,8,8,0.75); color: var(--gold-light); padding: 0.3rem 0.7rem; border: 1px solid rgba(201,168,76,0.3); }
-  .work-card-body { padding: 1.75rem 1.75rem 2rem; display: flex; flex-direction: column; flex: 1; }
-  .work-card-meta { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
-  .work-card-title { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--warm-white); margin: 0 0 0.6rem; line-height: 1.15; }
-  .work-card-desc { font-family: var(--font-mono); font-size: 0.62rem; line-height: 1.7; color: rgba(255,255,255,0.55); margin: 0; }
-  .work-card-cta-row { margin-top: 1.4rem; }
-  .work-card-cta { display: inline-flex; align-items: center; font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; color: var(--gold); letter-spacing: 0.01em; cursor: default; opacity: 0.75; }
-  @media (max-width: 800px) { .works-grid { grid-template-columns: 1fr; } }
+  .work-card-status { position: absolute; top: 0.7rem; right: 0.7rem; font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(8,8,8,0.75); color: var(--gold-light); padding: 0.25rem 0.6rem; border: 1px solid rgba(201,168,76,0.3); }
+  .work-card-body { padding: 1.4rem 1.4rem 1.6rem; display: flex; flex-direction: column; flex: 1; }
+  .work-card-meta { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+  .work-card-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--warm-white); margin: 0 0 0.5rem; line-height: 1.15; }
+  .work-card-desc { font-family: var(--font-mono); font-size: 0.58rem; line-height: 1.65; color: rgba(255,255,255,0.55); margin: 0; }
+  .work-card-cta-row { margin-top: 1.1rem; }
+  .work-card-cta { display: inline-flex; align-items: center; font-family: var(--font-display); font-size: 0.8rem; font-weight: 700; color: var(--gold); letter-spacing: 0.01em; cursor: default; opacity: 0.75; }
+  @media (max-width: 700px) { .works-grid { grid-template-columns: 1fr; gap: 1.75rem; } .work-card-cover { max-width: 100%; } }
 
   .collapsible-section { border-top: 1px solid rgba(255,255,255,0.06); background: var(--black); position: relative; z-index: 2; }
   .collapsible-header { display: flex; align-items: center; justify-content: space-between; padding: 1.75rem 3rem; cursor: pointer; user-select: none; width: 100%; box-sizing: border-box; transition: background 0.2s; }
