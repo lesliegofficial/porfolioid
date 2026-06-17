@@ -1183,7 +1183,7 @@ function buildEPK(epk) {
           <div class="works-title-row">
             <h2 class="section-title" id="worksHeading" style="margin:0">Featured Originals</h2>
           </div>
-          <p class="works-tagline" id="worksTagline">Not every chapter became a memory. Some became music.</p>
+          <p class="works-tagline" id="worksTagline">Some stories couldn't stay on the page. They became music.</p>
         </div>
         <div class="works-grid">
           ${(epk.works || [])
@@ -1209,7 +1209,7 @@ function buildEPK(epk) {
                   <p class="work-card-desc">${w.description || ''}</p>
                   ${audioAsset ? buildWorkAudioPlayer(playerId, audioAsset.url) : ''}
                   <div class="work-card-cta-row">
-                    <span class="work-card-cta" title="Full Work pages are coming soon">Explore the Work <span class="work-card-cta-arrow">→</span></span>
+                    <span class="work-card-cta" title="Full Work pages are coming soon">Enter the Story <span class="work-card-cta-arrow">→</span></span>
                   </div>
                 </div>
               </div>`;
@@ -3457,13 +3457,13 @@ function toggleLang(lang) {
   const worksTagline = document.getElementById('worksTagline');
   if (worksTagline) {
     worksTagline.textContent = lang === 'es'
-      ? 'No todos los capítulos se convirtieron en recuerdos. Algunos se convirtieron en música.'
-      : 'Not every chapter became a memory. Some became music.';
+      ? 'Algunas historias no podían quedarse en la página. Se convirtieron en música.'
+      : 'Some stories couldn\'t stay on the page. They became music.';
   }
 
   document.querySelectorAll('.work-card-cta').forEach(el => {
     if (el.firstChild && el.firstChild.nodeType === Node.TEXT_NODE) {
-      el.firstChild.textContent = lang === 'es' ? 'Explorar la Obra ' : 'Explore the Work ';
+      el.firstChild.textContent = lang === 'es' ? 'Entrar a la Historia ' : 'Enter the Story ';
     }
   });
 }
