@@ -1,4 +1,228 @@
 {
+  "bio": "Leslie A. Guerra is a vocalist, recording artist, and music industry professional with more than twenty-five years of experience spanning live performance, recording, artist development, label operations, A&R, marketing, and entertainment management.",
+  "name": "Leslie Ann Guerra",
+  "slug": "leslie-guerra",
+  "stats": [
+    {
+      "label": "Years Active",
+      "number": "25+"
+    },
+    {
+      "label": "Live Shows",
+      "number": "500+"
+    },
+    {
+      "label": "Continents",
+      "number": "5"
+    }
+  ],
+  "works": [
+    {
+      "id": "vals-demente",
+      "books": null,
+      "music": {
+        "bpm": null,
+        "key": null,
+        "genre": "Latin Pop",
+        "lyrics": "Verso 1\nSé que el amor se va como llega en un día,\ny según tú murió lo que por mí sentías.\nCuando me iba y en brazos de otro me veías,\nentonces tú volvías a tu cacería.\n\nCoro\nEs un sube y baja, un vals demente,\nun seis cilindros con el motor caliente,\nun ven y un vete, una danza imprudente...\ndonde pierdo al quererte.\n\nVerso 2\nVolvía a creer en cada promesa vacía,\nhaciéndome la vista gorda a lo que ya sabía.\nBajaba la guardia cada vez que tú sonreías,\ny otra vez, el mismo vals se repetía.\n\nCoro\nEs un sube y baja, un vals demente,\nun seis cilindros con el motor caliente,\nun ven y un vete, una danza imprudente...\ndonde pierdo al quererte.",
+        "duration": 146,
+        "lyricsEs": null,
+        "streamingLinks": {
+          "spotify": null,
+          "youtube": null,
+          "appleMusic": null,
+          "soundcloud": null
+        }
+      },
+      "title": "Vals Demente",
+      "assets": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1781672566/works/vals-demente/cover.jpg",
+          "date": "2026-06-17",
+          "role": "cover-art",
+          "type": "image",
+          "title": "Final Album Cover",
+          "featured": true,
+          "sortOrder": 1,
+          "description": "Venetian mask concept representing the masks we wear in cycles of love and self-deception."
+        },
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1781672579/works/vals-demente/audio.mp3",
+          "date": "2026-06-17",
+          "role": "release",
+          "type": "audio",
+          "title": "Vals Demente (Final)",
+          "featured": true,
+          "sortOrder": 1,
+          "description": "Final released version."
+        }
+      ],
+      "credits": [
+        {
+          "link": null,
+          "name": "Leslie Ann Guerra",
+          "role": "Writer & Performer",
+          "linkedCompanyId": null,
+          "linkedProfileId": null
+        }
+      ],
+      "visible": true,
+      "writing": null,
+      "category": "music",
+      "featured": true,
+      "timeline": [
+        {
+          "date": "2020-02-26",
+          "title": "First Draft Written",
+          "evidence": [
+            {
+              "url": null,
+              "type": "document",
+              "label": "Original lyric sheet (awaiting verified information)"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/lesliegofficial/porfolioid/main/press/evidence/vals-demente_original-voice-memo_2020-02-26.m4a",
+              "type": "audio",
+              "label": "Original iPhone Voice Memo"
+            }
+          ],
+          "description": "Original lyrics and hook were written and recorded as an iPhone Voice Memo. The emotional core of the song was captured during its first writing session."
+        },
+        {
+          "notes": "This milestone intentionally represents a season rather than a single event.",
+          "title": "The Song Waited",
+          "dateRange": "2020–2026",
+          "description": "Although the first draft existed, the song remained unfinished for more than six years. During that time, life continued, perspective changed, and the meaning of the song evolved alongside its writer."
+        },
+        {
+          "date": "2026-06-17",
+          "title": "Song Completed",
+          "evidence": [
+            {
+              "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1781672579/works/vals-demente/audio.mp3",
+              "type": "audio",
+              "label": "Final produced demo"
+            },
+            {
+              "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1781672566/works/vals-demente/cover.jpg",
+              "type": "image",
+              "label": "Final album cover"
+            }
+          ],
+          "description": "The song was finally completed with a completely different emotional understanding than when it began. What started as a story about someone else's actions became a story about recognizing personal patterns and choosing healing."
+        }
+      ],
+      "aboutWork": "Vals Demente explores the emotional cycle of a relationship built on ego, manipulation, and repeated patterns. Rather than placing blame on one person, the song recognizes that both people continued dancing the same destructive dance until self-love finally became the way out.",
+      "heroImage": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1781672566/works/vals-demente/cover.jpg",
+      "sortOrder": 1,
+      "aboutWorkEs": "Vals Demente explora el ciclo emocional de una relación construida sobre el ego, la manipulación y los patrones repetidos. En lugar de culpar a una sola persona, la canción reconoce que ambas personas continuaron bailando el mismo baile destructivo hasta que el amor propio finalmente se convirtió en la salida.",
+      "description": "A haunting dance between love, temptation, and the emotional cycles we struggle to escape.",
+      "inspiration": "A real relationship that repeated the same cycle of distance and return until self-love became the way out.",
+      "lastUpdated": "2026-06-17",
+      "screenplays": null,
+      "startedDate": "2020-02-26",
+      "releasedDate": null,
+      "completedDate": "2026-06-17",
+      "creativeNotes": "Recorded originally: iPhone Voice Memo. The title and chorus image — \"un seis cilindros con el motor caliente\" — came from picturing the relationship as a car running hot, going nowhere, just cycling in place.",
+      "descriptionEs": "Una canción sobre romper un ciclo, no solo terminar una relación.",
+      "inspirationEs": null,
+      "relatedPeople": [],
+      "archiveTagline": "A dance between desire and consequence.",
+      "relatedWorkIds": [
+        "yahweh-yo-te-pertenezco"
+      ],
+      "statusOverride": "unreleased",
+      "behindTheLyrics": [
+        {
+          "story": "That lyric came from a real experience.\n\nAt the time, I knew almost nothing about cars beyond driving them.\n\nAbout a month after paying off my Dodge Charger—my favorite car—my daughter was involved in an accident that totaled it.\n\nWhen I replaced it, I bought a newer Dodge Charger without realizing much about its performance features.\n\nOne winter day, while the car was stuck in the snow, I accidentally switched it into Sport mode.\n\nThe car couldn't move because it was trapped in the ice, but the engine suddenly roared to life.\n\nI had no idea what I had done.\n\nThe sound was intense.\n\nMy first thought was that if the car hadn't been stuck, I might have driven straight into my former employer's house.\n\nThat moment stayed with me.\n\nYears later, while writing Vals Demente, I remembered that engine—powerful, loud, unpredictable, and ready to launch before I was.\n\nIt became the perfect metaphor for the emotional intensity of the relationship.\n\nThat's where the lyric came from.\n\nSometimes the most unexpected moments become the lines people remember most.",
+          "excerpt": "Un seis cilindros con un motor caliente...",
+          "evidence": []
+        }
+      ],
+      "creativeNotesEs": null,
+      "relatedProjects": [],
+      "storyBehindWork": "I began writing \"Vals Demente\" on February 26, 2020.\n\nThe original lyrics and hook were captured that day in an iPhone voice memo, preserving the song's earliest form exactly as it first came to me.\n\nAt the time, I was trying to make sense of a relationship that felt like an endless cycle—love, distance, hope, disappointment, and beginning again.\n\nThe hook came almost immediately.\n\n“Un vals demente, un seis cilindros con un motor caliente...”\n\nThat single phrase captured everything I was feeling at the time.\n\nThe song itself, however, took much longer to reveal its final melody and form.\n\nAlthough the first draft captured exactly how I felt in that moment, I wasn't ready to finish it.\n\nSomething remained unresolved because, in many ways, I was still living the story I was trying to write.\n\nSo the song waited.\n\nYears passed.\n\nLife continued.\n\nI experienced new beginnings, painful endings, personal growth, and long periods of reflection.\n\nWithout realizing it, I was changing—and as I changed, so did the meaning of the song.\n\nWhen I returned to \"Vals Demente\" on June 17, 2026, I wasn't the same woman who had started writing it.\n\nI no longer heard it as a story about someone else's choices.\n\nI heard it as a story about my own.\n\nI realized the cycle wasn't only created by another person.\n\nIt continued because I kept returning to it, hoping that this time things would be different.\n\nThe song became less about heartbreak and more about awareness.\n\nFinishing it wasn't simply a creative milestone.\n\nIt was a personal one.\n\nFor the first time, I could see the dance for what it was—and choose to step out of it.\n\nThat's why \"Vals Demente\" isn't simply a breakup song.\n\nIt's a song about recognizing a pattern.\n\nIt's about reclaiming your voice.\n\nIt's about choosing yourself.\n\nAnd ultimately...\n\nit's about breaking the cycle.",
+      "storyBehindWorkEs": null
+    },
+    {
+      "id": "yahweh-yo-te-pertenezco",
+      "books": null,
+      "music": {
+        "bpm": null,
+        "key": null,
+        "genre": "Contemporary Christian / Worship",
+        "lyrics": "[Verse 1]\nPertenezco al sol en el cielo\nA la luna guiando mi anhelo\nA las estrellas brillando en su vuelo\nY a tu abrazo que sana mi miedo\n\n[Pre-Chorus]\nJuntos somos uno en verdad\nTú me elevas con tu claridad\nEn tu luz vuelvo a comenzar\nMi principio y mi final\n\n[Chorus]\nLlévame contigo Yahweh\nDonde tú camines estaré\nCada latido sabe por qué\nContigo vuelvo a nacer es\nYo te pertenezco, tu tu amor me sostiene\nComo el río al mar, mi alma te obedece\nYo te pertenezco, tu tu amor me sostiene\n¡Jah-we, ay-ye!\nEres lo que mi alma crece\n(¡Jah-we, ay-ye)\nEres lo que mi alma crece\n\n[Verse 2]\nPertenezco a los campos en flor\nDonde corre libre el corazón\nA la lluvia cantando en mi voz\nY al llamado que me das, Señor\nLas montañas me invitan a ir\nMas nunca estaré sin ti\nCada paso que doy por vivir\nTú me enseñas a seguir\n\n[Bridge]\nCuando el mundo se pone al revés\nTú me cuidas, tú me ves\nCuando llegue la noche a caer\nTú me abrazas otra vez\nSi mi fuerza comienza a ceder\nTú me elevas, tú mi fe\nCada paso que logro tener\nEres vida en mi ser\n\n[Chorus]\nYo te pertenezco, tu tu amor me sostiene\nComo el río al mar, mi alma te obedece\nYo te pertenezco, tu tu amor me sostiene\n¡Yah-weh ahí eh eh!\nEres lo que mi alma crece\n¡Yah-weh ahí eh eh!\nEres lo que mi alma crece\n\n[Outro]\n¡Ay-Yahweh!\n¡Ay-Yahweh!\nEres luz dentro de mí\n¡Ay-Yahweh!\n¡Ay-Yahweh!\nEres luz dentro de mí",
+        "duration": 213,
+        "lyricsEs": null,
+        "streamingLinks": {
+          "spotify": null,
+          "youtube": null,
+          "appleMusic": null,
+          "soundcloud": null
+        }
+      },
+      "title": "Yahweh, Yo Te Pertenezco",
+      "assets": [
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1781672572/works/yahweh-yo-te-pertenezco/cover.jpg",
+          "date": "2026-06-17",
+          "role": "cover-art",
+          "type": "image",
+          "title": "Final Album Cover",
+          "featured": true,
+          "sortOrder": 1,
+          "description": "Lavender field at golden hour, reflective and worshipful tone."
+        },
+        {
+          "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1781672592/works/yahweh-yo-te-pertenezco/audio.mp3",
+          "date": "2026-06-17",
+          "role": "release",
+          "type": "audio",
+          "title": "Yahweh, Yo Te Pertenezco (Final)",
+          "featured": true,
+          "sortOrder": 1,
+          "description": "Final released version."
+        }
+      ],
+      "credits": [
+        {
+          "link": null,
+          "name": "Leslie Ann Guerra",
+          "role": "Writer & Performer",
+          "linkedCompanyId": null,
+          "linkedProfileId": null
+        }
+      ],
+      "visible": true,
+      "writing": null,
+      "category": "music",
+      "featured": true,
+      "aboutWork": "A contemporary worship song declaring belonging to God through every season — the sun, the moon, the fields, the storms. Built around the idea that everything in creation already belongs to Him, and so do we.",
+      "heroImage": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1781672572/works/yahweh-yo-te-pertenezco/cover.jpg",
+      "sortOrder": 2,
+      "aboutWorkEs": "Una canción de adoración contemporánea que declara pertenencia a Dios en cada temporada — el sol, la luna, los campos, las tormentas. Construida sobre la idea de que todo en la creación ya le pertenece, y nosotros también.",
+      "description": "A deeply personal prayer of surrender, belonging completely to God through every season of life.",
+      "inspiration": "The idea that everything in creation — sun, moon, stars, fields, rain — already belongs to God, and so does the singer.",
+      "lastUpdated": "2026-06-17",
+      "screenplays": null,
+      "startedDate": "2026-04-20",
+      "releasedDate": null,
+      "completedDate": "2026-06-17",
+      "creativeNotes": "Written with a South African Afro-house and gospel-leaning production direction in mind — spiritual chanting, call-and-response choir, rhythmic claps, warm pads, and a melodic hook in the spirit of \"Jerusalema.\"",
+      "descriptionEs": "Una canción de adoración sobre pertenecer completamente a Dios.",
+      "inspirationEs": null,
+      "relatedPeople": [],
+      "archiveTagline": "A prayer written in surrender.",
+      "relatedWorkIds": [
+        "vals-demente"
+      ],
+      "statusOverride": "unreleased",
+      "creativeNotesEs": null,
+      "relatedProjects": [],
+      "storyBehindWork": null,
+      "storyBehindWorkEs": null
+    }
+  ],
   "assets": [
     {
       "url": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780848724/Leslie_Ann_Guerra_Resume_General_gqxywa.pdf",
@@ -947,6 +1171,7 @@
       "thumbnail": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1780797129/nipffqctwmwblumjbkvu.png"
     }
   ],
+  "bioFull": "Her performance credits include touring as a supporting vocalist for reggaeton icons Don Omar (2006–2015) and J Álvarez (2015–2020), appearing before audiences throughout the United States, Latin America, and Europe. She is featured on the live release King of Kings: En Directo, recorded during Don Omar’s King of Kings World Tour and released by Machete Music.\n\nGuerra began her recording career as a member of Las Nenas del Swing, contributing to recordings including Rompe Corazones, Chicle Bomba, Desearía, and Me Faltas Tú. Throughout her touring career, she also performed on productions featuring artists such as Wisin & Yandel, Arcángel, Daddy Yankee, Natti Natasha, and Melina León.\n\nBeyond the stage, Guerra has held leadership and operational roles throughout the entertainment industry. She served as A&R Coordinator at Sony Music Latin, supporting executive A&R operations and artist development initiatives. She also coordinated artist and management operations for Orfanato Music Group and Arrow Management, managed artist logistics for Adam Torres Concerts, and led marketing and public relations initiatives through NV Marketing & Public Relations.\n\nToday, Guerra combines her experience in performance, artist development, operations, marketing, and business strategy through creative and entrepreneurial ventures, including PorfolioID, a professional platform designed to help artists, creators, and professionals showcase their work, accomplishments, and career journeys.",
   "credits": [
     {
       "desc": "Founder and product architect of two original SaaS platforms built from concept to deployment.",
@@ -1356,5 +1581,110 @@
       "highlightTag": "recordingartist",
       "collaborators": []
     }
-  ]
+  ],
+  "socials": {
+    "tiktok": "https://www.tiktok.com/@officiallyleslieann?_r=1&_t=ZP-96IhluNxFrq",
+    "spotify": "https://open.spotify.com/user/e62qg132bv862sjyfwor3iaq1?si=QzzPJ-q9SjmPfkkhWv9gIA",
+    "website": [],
+    "youtube": "https://youtube.com/@hearmynoise?si=Kl45ERrxrVE5xk37",
+    "facebook": [
+      "https://www.facebook.com/share/1Eb6JyPUTk/?mibextid=wwXIfr"
+    ],
+    "linkedin": "https://www.linkedin.com/in/lesliegofficial",
+    "instagram": [
+      "https://www.instagram.com/officiallyleslie",
+      "https://www.instagram.com/leslieaguerra"
+    ]
+  },
+  "bioImage": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778780770/yrtf3dmkcyxjtbxj5wz0.jpg",
+  "location": "Florida, USA",
+  "shortBio": "Leslie A. Guerra is a vocalist, recording artist, and music industry professional with more than twenty-five years of experience spanning live performance, recording, artist development, label operations, A&R, marketing, and entertainment management.",
+  "taglines": [
+    "International Vocalist",
+    "Recording Artist",
+    "Creative Professional"
+  ],
+  "bioFullES": "Sus créditos artísticos incluyen giras como vocalista de apoyo junto a los íconos del reggaetón Don Omar (2006–2015) y J Álvarez (2015–2020), presentándose ante audiencias en Estados Unidos, América Latina y Europa. También aparece en el lanzamiento en vivo King of Kings: En Directo, grabado durante la gira mundial King of Kings World Tour de Don Omar y publicado por Machete Music.\n\nGuerra inició su carrera discográfica como integrante de Las Nenas del Swing, participando en producciones y grabaciones como Rompe Corazones, Chicle Bomba, Desearía y Me Faltas Tú. A lo largo de su trayectoria en giras y espectáculos, también participó en producciones que incluyeron artistas como Wisin & Yandel, Arcángel, Daddy Yankee, Natti Natasha y Melina León.\n\nMás allá de los escenarios, Guerra ha ocupado posiciones de liderazgo, coordinación y operaciones dentro de la industria del entretenimiento. Se desempeñó como Coordinadora de A&R en Sony Music Latin, brindando apoyo a operaciones ejecutivas de A&R e iniciativas de desarrollo artístico. También coordinó operaciones artísticas y de manejo para Orfanato Music Group y Arrow Management, gestionó logística artística para Adam Torres Concerts y lideró iniciativas de mercadeo y relaciones públicas a través de NV Marketing & Public Relations.\n\nActualmente, Guerra combina su experiencia en interpretación, desarrollo artístico, operaciones, mercadeo y estrategia empresarial a través de proyectos creativos y empresariales, incluyendo PorfolioID, una plataforma profesional diseñada para ayudar a artistas, creadores y profesionales a presentar su trayectoria, logros y portafolio de manera moderna y organizada.",
+  "heroImage": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778791795/cjf97fij5yxobgggvlux.png",
+  "shortBioES": "Leslie A. Guerra es vocalista, artista de grabación y profesional de la industria musical con más de veinticinco años de experiencia que abarcan presentaciones en vivo, grabación, desarrollo artístico, operaciones discográficas, A&R, mercadeo y gestión dentro de la industria del entretenimiento.",
+  "bioImageFit": "contain",
+  "bookingNote": "Serious inquiries only",
+  "credentials": [
+    "ASCAP",
+    "SAG-AFTRA",
+    "SoundExchange"
+  ],
+  "resumeCards": [
+    {
+      "desc": "Bilingual Operations & Artist Relations professional with 20+ years of experience spanning live entertainment, business operations, compliance, and A&R coordination.",
+      "color": "gold",
+      "label": "OPERATIONS & ARTIST RELATIONS",
+      "title": "Operations & Artist Relations Resume",
+      "skills": [
+        "OPERATIONS & WORKFLOW MANAGEMENT",
+        "REGULATORY COMPLIANCE",
+        "ARTIST RELATIONS",
+        "A&R COORDINATION",
+        "MARKETING & CAMPAIGN STRATEGY",
+        "PROJECT COORDINATION",
+        "CASE MANAGEMENT",
+        "BILINGUAL EN/ES"
+      ],
+      "visible": true,
+      "btnLabel": "↓ DOWNLOAD RESUME →",
+      "subtitle": "Digital Campaigns | Live Experiences | A&R",
+      "resumeUrl": "https://porfolioid.com/press/resume-marketing-artist-relations.pdf"
+    }
+  ],
+  "videoLayout": "spotlight",
+  "assetsLayout": "cards",
+  "assetsLocked": true,
+  "availability": "Available for tours & studio sessions",
+  "bioImageZoom": 93,
+  "bookingEmail": "leslie@porfolioid.com",
+  "bookingLabel": "Inquiries",
+  "bookingPhone": "",
+  "careerLayout": "stacked",
+  "heroImageFit": "cover",
+  "sectionOrder": [
+    "bio",
+    "credits",
+    "photos",
+    "videos",
+    "music",
+    "awards",
+    "assets",
+    "connect"
+  ],
+  "bookingRegion": "Worldwide",
+  "galleryLayout": "grid",
+  "heroImageZoom": 101,
+  "identityBlock": {
+    "timeline": [],
+    "languages": [],
+    "industryRoles": [],
+    "availabilityBadges": []
+  },
+  "resumeEnabled": true,
+  "bookingEnabled": true,
+  "bookingTagline": "",
+  "bioImageCropTop": 36,
+  "bioImagePosition": 33,
+  "heroImageCropTop": 51,
+  "bookingCategories": [
+    "professional",
+    "administration",
+    "crm",
+    "other",
+    "adminsupport",
+    "projectcoordinator",
+    "personalassistant",
+    "executiveassistant",
+    "virtualassistant",
+    "translator"
+  ],
+  "heroImagePosition": 26,
+  "sectionVisibility": {},
+  "bookingAutoResponse": "Thank you for your inquiry. I will respond in less than 48 hours.",
+  "bookingAvailability": "selective"
 }
