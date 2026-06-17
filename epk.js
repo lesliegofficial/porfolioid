@@ -40,6 +40,44 @@ function getWorkStatus(w) {
   return 'Draft';
 }
 
+// Builds the markup for a custom premium audio player (replaces native <audio controls>).
+// Generates a fixed-bar-count "waveform" track purely for visual texture — it does not reflect actual audio amplitude.
+function buildWorkAudioPlayer(id, src) {
+  const barCount = 46;
+  let bars = '';
+  // Deterministic pseudo-random heights so the waveform looks organic but is identical on every render (no layout shift / hydration mismatch)
+  let seed = 0;
+  for (let i = 0; i < id.length; i++) seed += id.charCodeAt(i);
+  for (let i = 0; i < barCount; i++) {
+    const n = Math.sin(seed + i * 12.9898) * 43758.5453;
+    const frac = n - Math.floor(n);
+    const height = 28 + Math.round(frac * 72); // 28%–100% of track height
+    bars += `<div class="wp-bar" style="height:${height}%"></div>`;
+  }
+  return `
+    <div class="work-player" id="${id}" data-src="${src}">
+      <audio class="wp-audio" preload="metadata" src="${src}"></audio>
+      <button class="wp-playbtn" onclick="workPlayerToggle('${id}')" aria-label="Play">
+        <svg class="wp-icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg class="wp-icon-pause" viewBox="0 0 24 24" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+      </button>
+      <div class="wp-main">
+        <div class="wp-waveform" onclick="workPlayerSeek(event, '${id}')">
+          <div class="wp-waveform-bars">${bars}</div>
+          <div class="wp-progress-fill"></div>
+        </div>
+        <div class="wp-time-row">
+          <span class="wp-time-current">0:00</span>
+          <span class="wp-time-total">0:00</span>
+        </div>
+      </div>
+      <div class="wp-volume">
+        <svg class="wp-vol-icon" viewBox="0 0 24 24" onclick="workPlayerMute('${id}')"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1-3.29-2.5-4.03v8.05c1.5-.73 2.5-2.25 2.5-4.02z"/></svg>
+        <input class="wp-vol-slider" type="range" min="0" max="1" step="0.01" value="1" oninput="workPlayerVolume('${id}', this.value)">
+      </div>
+    </div>`;
+}
+
 function buildEPK(epk) {
   window._epkData = epk;
   window._epkData.awards = epk.awards || [];
@@ -1145,30 +1183,33 @@ function buildEPK(epk) {
           <div class="works-title-row">
             <h2 class="section-title" id="worksHeading" style="margin:0">Featured Originals</h2>
           </div>
-          <p class="works-tagline" id="worksTagline">Every song tells the story of a different season.</p>
+          <p class="works-tagline" id="worksTagline">Not every chapter became a memory. Some became music.</p>
         </div>
         <div class="works-grid">
           ${(epk.works || [])
             .filter(w => w.visible !== false)
             .sort((a, b) => (a.sortOrder||0) - (b.sortOrder||0))
-            .map(w => {
+            .map((w, wi) => {
               const status = getWorkStatus(w);
+              const statusLabel = status === 'Unreleased' ? 'First Listen' : status;
               const audioAsset = (w.assets || []).find(a => a.type === 'audio' && a.role === 'release') || (w.assets || []).find(a => a.type === 'audio');
               const genre = w.music?.genre || '';
-              const duration = w.music?.duration ? `${Math.floor(w.music.duration/60)}:${String(w.music.duration%60).padStart(2,'0')}` : '';
+              const duration = w.music?.duration || (audioAsset ? null : null);
+              const durationLabel = duration ? `${Math.floor(duration/60)}:${String(duration%60).padStart(2,'0')}` : '';
+              const playerId = `workPlayer_${w.id || wi}`;
               return `
-              <div class="work-card">
+              <div class="work-card" data-category="${w.category || 'music'}">
                 <div class="work-card-cover">
                   <img src="${w.heroImage}" alt="${w.title}" loading="lazy">
-                  <div class="work-card-status">${status}</div>
+                  <div class="work-card-status">${statusLabel}</div>
                 </div>
                 <div class="work-card-body">
-                  <div class="work-card-meta">${genre}${genre && duration ? ' · ' : ''}${duration}</div>
+                  <div class="work-card-meta">${genre}${genre && durationLabel ? ' · ' : ''}${durationLabel}</div>
                   <h3 class="work-card-title">${w.title}</h3>
                   <p class="work-card-desc">${w.description || ''}</p>
-                  ${audioAsset ? `<audio controls style="width:100%;height:34px;margin-top:0.9rem;opacity:0.9" src="${audioAsset.url}"></audio>` : ''}
+                  ${audioAsset ? buildWorkAudioPlayer(playerId, audioAsset.url) : ''}
                   <div class="work-card-cta-row">
-                    <span class="work-card-cta" title="Full Work pages are coming soon">Explore the Work →</span>
+                    <span class="work-card-cta" title="Full Work pages are coming soon">Explore the Work <span class="work-card-cta-arrow">→</span></span>
                   </div>
                 </div>
               </div>`;
@@ -1373,6 +1414,7 @@ function buildEPK(epk) {
 
   // Apply section order and visibility from epk data
   applySectionOrderAndVisibility(epk);
+  document.querySelectorAll('.work-player').forEach(wrap => workPlayerWire(wrap));
 
   // Build photo gallery if photos exist
   if (epk.photos?.length) buildGallery(epk.photos);
@@ -2473,6 +2515,112 @@ function applySectionOrderAndVisibility(epk) {
   });
 }
 
+// ══════════════════════════════════════════════
+// CREATIVE WORKS — custom audio player controls
+// ══════════════════════════════════════════════
+function formatPlayerTime(seconds) {
+  if (!isFinite(seconds) || seconds < 0) return '0:00';
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+function workPlayerEl(id) { return document.getElementById(id); }
+
+function workPlayerWire(wrap) {
+  if (!wrap || wrap.dataset.wired) return;
+  wrap.dataset.wired = '1';
+  const audio = wrap.querySelector('.wp-audio');
+  if (!audio) return;
+  const fill = wrap.querySelector('.wp-progress-fill');
+  const curEl = wrap.querySelector('.wp-time-current');
+  const totEl = wrap.querySelector('.wp-time-total');
+
+  audio.addEventListener('loadedmetadata', () => {
+    if (totEl) totEl.textContent = formatPlayerTime(audio.duration);
+  });
+  // The browser may have already loaded metadata before this listener was attached
+  // (e.g. preload="metadata" resolves fast on a cached/fast connection) — check directly too.
+  if (audio.readyState >= 1 && totEl) totEl.textContent = formatPlayerTime(audio.duration);
+  audio.addEventListener('timeupdate', () => {
+    if (!audio.duration) return;
+    const pct = (audio.currentTime / audio.duration) * 100;
+    if (fill) fill.style.width = pct + '%';
+    if (curEl) curEl.textContent = formatPlayerTime(audio.currentTime);
+  });
+  audio.addEventListener('ended', () => {
+    wrap.classList.remove('is-playing');
+    if (fill) fill.style.width = '0%';
+    if (curEl) curEl.textContent = '0:00';
+  });
+  audio.addEventListener('pause', () => wrap.classList.remove('is-playing'));
+  audio.addEventListener('play', () => wrap.classList.add('is-playing'));
+}
+
+function workPlayerToggle(id) {
+  const wrap = workPlayerEl(id);
+  if (!wrap) return;
+  const audio = wrap.querySelector('.wp-audio');
+  if (!audio) return;
+
+  // Pause every other Work player first so only one plays at a time
+  document.querySelectorAll('.work-player').forEach(other => {
+    if (other.id !== id) {
+      const otherAudio = other.querySelector('.wp-audio');
+      if (otherAudio && !otherAudio.paused) otherAudio.pause();
+      other.classList.remove('is-playing');
+    }
+  });
+
+  if (audio.paused) {
+    audio.play();
+    wrap.classList.add('is-playing');
+  } else {
+    audio.pause();
+    wrap.classList.remove('is-playing');
+  }
+
+  workPlayerWire(wrap);
+}
+
+function workPlayerSeek(evt, id) {
+  const wrap = workPlayerEl(id);
+  if (!wrap) return;
+  const audio = wrap.querySelector('.wp-audio');
+  const track = wrap.querySelector('.wp-waveform');
+  if (!audio || !track || !audio.duration) return;
+  const rect = track.getBoundingClientRect();
+  const pct = Math.min(1, Math.max(0, (evt.clientX - rect.left) / rect.width));
+  audio.currentTime = pct * audio.duration;
+}
+
+function workPlayerVolume(id, value) {
+  const wrap = workPlayerEl(id);
+  if (!wrap) return;
+  const audio = wrap.querySelector('.wp-audio');
+  if (audio) audio.volume = parseFloat(value);
+  wrap.classList.toggle('is-muted', parseFloat(value) === 0);
+}
+
+function workPlayerMute(id) {
+  const wrap = workPlayerEl(id);
+  if (!wrap) return;
+  const audio = wrap.querySelector('.wp-audio');
+  const slider = wrap.querySelector('.wp-vol-slider');
+  if (!audio) return;
+  if (audio.volume > 0) {
+    audio.dataset.prevVolume = audio.volume;
+    audio.volume = 0;
+    if (slider) slider.value = 0;
+    wrap.classList.add('is-muted');
+  } else {
+    const restore = parseFloat(audio.dataset.prevVolume || '1');
+    audio.volume = restore;
+    if (slider) slider.value = restore;
+    wrap.classList.remove('is-muted');
+  }
+}
+
 // Credits collapse/expand
 function toggleAllCredits() {
   const container = document.getElementById('credits');
@@ -3299,6 +3447,25 @@ function toggleLang(lang) {
 
   const ch3ViewBtn = document.getElementById('viewCompleteRecordBtn');
   if (ch3ViewBtn) ch3ViewBtn.textContent = lang === 'es' ? 'Ver Récord Completo →' : 'View Complete Record →';
+
+  const worksEyebrow = document.getElementById('worksEyebrow');
+  if (worksEyebrow) worksEyebrow.textContent = lang === 'es' ? 'Obras Creativas' : 'Creative Works';
+
+  const worksHeading = document.getElementById('worksHeading');
+  if (worksHeading) worksHeading.textContent = lang === 'es' ? 'Originales Destacados' : 'Featured Originals';
+
+  const worksTagline = document.getElementById('worksTagline');
+  if (worksTagline) {
+    worksTagline.textContent = lang === 'es'
+      ? 'No todos los capítulos se convirtieron en recuerdos. Algunos se convirtieron en música.'
+      : 'Not every chapter became a memory. Some became music.';
+  }
+
+  document.querySelectorAll('.work-card-cta').forEach(el => {
+    if (el.firstChild && el.firstChild.nodeType === Node.TEXT_NODE) {
+      el.firstChild.textContent = lang === 'es' ? 'Explorar la Obra ' : 'Explore the Work ';
+    }
+  });
 }
 
 // ══════════════════════════════════════════════
