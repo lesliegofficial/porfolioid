@@ -59,11 +59,44 @@
       ],
       "credits": [
         {
-          "link": null,
           "name": "Leslie Ann Guerra",
-          "role": "Writer & Performer",
-          "linkedCompanyId": null,
-          "linkedProfileId": null
+          "role": "Writing"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Lyrics"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Original Melody"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Inspired by Melody"
+        },
+        {
+          "name": "Suno AI",
+          "role": "Music Production"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Creative Direction"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Concept"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Artwork Direction"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Cover Artwork"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Archive Documentation"
         }
       ],
       "visible": true,
