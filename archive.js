@@ -54,6 +54,24 @@ function archiveEscape(str) {
   return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+// ── LANGUAGE STATE ──
+// Tracks the user's selected Archive language for this page view. Defaults to English. Only
+// fields that genuinely have real, human-provided Spanish content are ever shown under 'es' —
+// archiveLocalize() falls back to the English field whenever the *Es counterpart is missing or
+// blank, per the standing rule against displaying invented or placeholder translations.
+let archiveCurrentLang = 'en';
+
+// Returns the Spanish value for a field if (and only if) it exists and has real content;
+// otherwise falls back to the English value. `esKey` defaults to `${enKey}Es` (the project's
+// existing naming convention for translated fields), but can be passed explicitly.
+function archiveLocalize(w, enKey, esKey) {
+  const englishVal = w[enKey];
+  if (archiveCurrentLang !== 'es') return englishVal;
+  const key = esKey || (enKey + 'Es');
+  const esVal = w[key];
+  return (esVal && String(esVal).trim()) ? esVal : englishVal;
+}
+
 // ── ARCHIVE CONFIGURATION LAYER ──
 // This is the single source of truth for what an Archive looks like for a given work type.
 // Each entry defines: which sections exist, in what order, and what each is labeled — nothing
@@ -73,6 +91,7 @@ const ARCHIVE_TYPE_CONFIG = {
       { id: 'timeline',   label: 'Timeline' },
       { id: 'notes',      label: 'Creative Notes' },
       { id: 'manuscript', label: 'Lyrics' },
+      { id: 'behindTheLyrics', label: 'Behind the Lyrics' },
       { id: 'credits',    label: 'Credits' },
       { id: 'gallery',    label: 'Gallery' },
       { id: 'media',      label: 'Media' },
@@ -264,18 +283,32 @@ function buildArchiveHero(w, epk) {
 }
 
 function buildArchiveAbout(w) {
-  if (!w.aboutWork && !w.description) {
+  const text = archiveLocalize(w, 'aboutWork') || archiveLocalize(w, 'description');
+  if (!text) {
     return archiveEmptyState('This work\'s overview has not yet been documented.');
   }
-  return `<p class="arc-body-text">${archiveEscape(w.aboutWork || w.description)}</p>`;
+  return `<p class="arc-body-text">${archiveEscape(text)}</p>`;
 }
 
-function buildArchiveStory(w) {
-  if (!w.storyBehindWork) {
+function buildArchiveStory(w, epk) {
+  const text = archiveLocalize(w, 'storyBehindWork');
+  if (!text) {
     return archiveEmptyState('The story behind this work has not yet been written.');
   }
-  const paragraphs = w.storyBehindWork.split(/\n\s*\n/).filter(p => p.trim());
-  return paragraphs.map(p => `<p class="arc-body-text arc-story-p">${archiveEscape(p.trim())}</p>`).join('');
+  const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim());
+  const body = paragraphs.map(p => `<p class="arc-body-text arc-story-p">${archiveEscape(p.trim())}</p>`).join('');
+
+  // A subtle signature reinforcing this story is told directly by the artist — only shown when
+  // we have a real name and a real confirmed completion date; never a placeholder or guessed date.
+  const artistName = epk && epk.name;
+  const signedDate = w.completedDate ? archiveFormatDate(w.completedDate) : null;
+  const signature = (artistName && signedDate) ? `
+    <div class="arc-story-signature">
+      <div class="arc-story-signature-name">&mdash; ${archiveEscape(artistName)}</div>
+      <div class="arc-story-signature-date">${archiveEscape(signedDate)}</div>
+    </div>` : '';
+
+  return body + signature;
 }
 
 // ── TIMELINE ──
@@ -328,20 +361,37 @@ function buildArchiveTimelineEvidence(m) {
     </div>`;
 }
 
+// A milestone is eligible for the dated Timeline if it carries either a real single `date`
+// (sorts precisely) or a `dateRange` (a season rather than an event — e.g. "2020–2026" — sorts
+// by the range's ENDING year, since the range represents the span after its starting point
+// milestone and before its ending point milestone — anchoring to the start year would
+// incorrectly sort it before a same-year dated milestone that actually precedes it). Never
+// given a fabricated single date just to make sorting easier.
+function archiveTimelineSortKey(m) {
+  if (m.date) return new Date(m.date).getTime();
+  if (m.dateRange) {
+    const years = String(m.dateRange).match(/\d{4}/g);
+    const endYear = years && years.length ? parseInt(years[years.length - 1], 10) : NaN;
+    if (!isNaN(endYear)) return new Date(endYear, 0, 1).getTime();
+  }
+  return 0;
+}
+
 function buildArchiveTimeline(w) {
-  const milestones = archiveTimelineEntries(w).filter(function(m) { return !!m.date; });
+  const milestones = archiveTimelineEntries(w).filter(function(m) { return !!(m.date || m.dateRange); });
   if (!milestones.length) {
     return archiveEmptyState('A detailed timeline for this work has not yet been documented.');
   }
-  milestones.sort(function(a, b) { return new Date(a.date) - new Date(b.date); });
+  milestones.sort(function(a, b) { return archiveTimelineSortKey(a) - archiveTimelineSortKey(b); });
   return `
     <div class="arc-timeline">
       ${milestones.map(function(m) {
+        const dateLabel = m.date ? archiveFormatDate(m.date) : m.dateRange;
         return `
-        <div class="arc-timeline-item">
+        <div class="arc-timeline-item${m.dateRange && !m.date ? ' arc-timeline-item-range' : ''}">
           <div class="arc-timeline-dot"></div>
           <div class="arc-timeline-body">
-            <div class="arc-timeline-date">${archiveEscape(archiveFormatDate(m.date))}</div>
+            <div class="arc-timeline-date">${archiveEscape(dateLabel)}</div>
             <div class="arc-timeline-title">${archiveEscape(m.title)}</div>
             ${m.location ? `<div class="arc-timeline-location">${archiveEscape(m.location)}</div>` : ''}
             ${m.description ? `<div class="arc-timeline-desc">${archiveEscape(m.description)}</div>` : ''}
@@ -389,7 +439,7 @@ function buildArchiveStagesAwaitingDocumentation(w) {
             <div class="arc-stage-title">${archiveEscape(s.title)}</div>
             ${hasContent
               ? `${s.description ? `<div class="arc-stage-desc">${archiveEscape(s.description)}</div>` : ''}`
-              : `<div class="arc-stage-pending">Awaiting verified information</div>`}
+              : `<div class="arc-stage-pending">Documentation pending</div>`}
           </div>`;
         }).join('')}
       </div>
@@ -398,8 +448,10 @@ function buildArchiveStagesAwaitingDocumentation(w) {
 
 function buildArchiveNotes(w) {
   const parts = [];
-  if (w.creativeNotes) parts.push({ label: 'Creative Notes', text: w.creativeNotes });
-  if (w.inspiration) parts.push({ label: 'Inspiration', text: w.inspiration });
+  const notes = archiveLocalize(w, 'creativeNotes');
+  const inspiration = archiveLocalize(w, 'inspiration');
+  if (notes) parts.push({ label: 'Creative Notes', text: notes });
+  if (inspiration) parts.push({ label: 'Inspiration', text: inspiration });
   if (!parts.length) {
     return archiveEmptyState('Creative notes for this work have not yet been added.');
   }
@@ -436,9 +488,39 @@ function buildArchiveCredits(w) {
     <div class="arc-credits-grid">
       ${credits.map(c => `
         <div class="arc-credit-item">
-          <div class="arc-credit-name">${archiveEscape(c.name)}</div>
           <div class="arc-credit-role">${archiveEscape(c.role || '')}</div>
+          <div class="arc-credit-name">${archiveEscape(c.name)}</div>
+          ${c.description ? `<div class="arc-credit-desc">${archiveEscape(c.description)}</div>` : ''}
         </div>`).join('')}
+    </div>`;
+}
+
+// ── BEHIND THE LYRICS ──
+// Preserves the real story behind a specific lyric, line, or phrase — not trivia, but documented
+// creative provenance: the actual memory, accident, or experience that produced a particular
+// piece of the work. New this session. Currently used by music (placed after Lyrics), but
+// designed to extend to other categories later (e.g. "Behind a Passage" for books, "Behind a
+// Scene" for screenplays) without any change to this renderer — only a new config entry pointing
+// a different section id at the same underlying w.behindTheLyrics array shape, or a category
+// reading from an analogous field. Each entry: { excerpt, story, evidence? }. Never invented —
+// only real entries Leslie has explicitly provided are ever rendered here.
+function buildArchiveBehindTheLyrics(w) {
+  const entries = Array.isArray(w.behindTheLyrics) ? w.behindTheLyrics : [];
+  if (!entries.length) {
+    return archiveEmptyState('The real stories behind specific lyrics have not yet been documented for this work.');
+  }
+  return `
+    <div class="arc-behind-lyrics">
+      ${entries.map(function(e) {
+        return `
+        <div class="arc-lyric-story">
+          <div class="arc-lyric-excerpt">&ldquo;${archiveEscape(e.excerpt)}&rdquo;</div>
+          ${e.story ? e.story.split('\n').map(function(l) {
+            return l.trim() ? `<p class="arc-body-text">${archiveEscape(l)}</p>` : '';
+          }).join('') : ''}
+          ${buildArchiveTimelineEvidence(e)}
+        </div>`;
+      }).join('')}
     </div>`;
 }
 
@@ -560,10 +642,11 @@ function buildArchiveNav(sections) {
 // a new entry in ARCHIVE_TYPE_CONFIG choosing which existing renderers to use. ──
 const ARCHIVE_SECTION_RENDERERS = {
   about:      function(w) { return buildArchiveAbout(w); },
-  story:      function(w) { return buildArchiveStory(w); },
+  story:      function(w, label, works, slug, epk) { return buildArchiveStory(w, epk); },
   timeline:   function(w) { return buildArchiveTimeline(w); },
   notes:      function(w) { return buildArchiveNotes(w); },
   manuscript: function(w, label) { return buildArchiveManuscript(w, label); },
+  behindTheLyrics: function(w) { return buildArchiveBehindTheLyrics(w); },
   credits:    function(w) { return buildArchiveCredits(w); },
   press:      function(w) { return buildArchivePress(w); },
   equipment:  function(w) { return buildArchiveEquipment(w); },
@@ -610,7 +693,7 @@ function buildArchive(epk, workSlug) {
 
   const sectionsHTML = sections.map(function(s) {
     const renderer = ARCHIVE_SECTION_RENDERERS[s.id];
-    const body = renderer ? renderer(w, s.label, works, epk.slug) : archiveEmptyState('This section is not yet available.');
+    const body = renderer ? renderer(w, s.label, works, epk.slug, epk) : archiveEmptyState('This section is not yet available.');
     return `
         <section class="arc-section" id="arc-${s.id}">
           <h2 class="arc-section-title">${archiveEscape(s.label)}</h2>
@@ -731,13 +814,29 @@ function archiveOpenLightbox(url) {
   overlay.classList.add('is-visible');
 }
 
+// Cached after a successful load so the language toggle can rebuild the page in place
+// without a second network round-trip.
+let archiveLoadedEpk = null;
+let archiveLoadedWorkSlug = null;
+
 function toggleArchiveLang(lang) {
+  if (lang === archiveCurrentLang) return;
+  archiveCurrentLang = lang;
+
   const en = document.getElementById('archiveLangEN');
   const es = document.getElementById('archiveLangES');
   if (en) en.classList.toggle('is-active-lang', lang === 'en');
   if (es) es.classList.toggle('is-active-lang', lang === 'es');
   const backLink = document.getElementById('archiveBackLink');
   if (backLink) backLink.textContent = lang === 'es' ? '← Volver al Perfil' : '← Back to Profile';
+
+  // Re-render with the already-loaded data — no need to re-fetch. Preserve the user's scroll
+  // position across the rebuild so switching languages mid-read doesn't jump them back to the top.
+  if (archiveLoadedEpk && archiveLoadedWorkSlug) {
+    const scrollY = window.scrollY;
+    buildArchive(archiveLoadedEpk, archiveLoadedWorkSlug);
+    window.scrollTo(0, scrollY);
+  }
 }
 
 const archiveParams = getArchiveParamsFromURL();
@@ -751,6 +850,8 @@ if (archiveParams.slug && archiveParams.work) {
   .then(function(data) {
     if (data.success && data.epk) {
       try {
+        archiveLoadedEpk = data.epk;
+        archiveLoadedWorkSlug = archiveParams.work;
         buildArchive(data.epk, archiveParams.work);
       } catch (err) {
         document.getElementById('archiveContent').innerHTML = '<div class="arc-not-found"><h1>Something went wrong</h1><p>' + archiveEscape(err.message) + '</p></div>';

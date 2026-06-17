@@ -14,10 +14,10 @@
 .arc-hero-cover { aspect-ratio: 1/1; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.25); }
 .arc-hero-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .arc-hero-info { display: flex; flex-direction: column; }
-.arc-hero-eyebrow { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.9rem; }
-.arc-hero-title { font-family: var(--font-display); font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; color: var(--white); line-height: 1.05; margin-bottom: 0.85rem; }
-.arc-hero-subtitle { font-family: var(--font-display); font-style: italic; font-size: 1.2rem; color: rgba(232,201,122,0.8); margin-bottom: 1.5rem; }
-.arc-hero-meta { display: flex; gap: 1.25rem; align-items: center; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 2rem; flex-wrap: wrap; }
+.arc-hero-eyebrow { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.65rem; }
+.arc-hero-title { font-family: var(--font-display); font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; color: var(--white); line-height: 1.05; margin-bottom: 0.6rem; }
+.arc-hero-subtitle { font-family: var(--font-display); font-style: italic; font-size: 1.2rem; color: rgba(232,201,122,0.8); margin-bottom: 1.1rem; }
+.arc-hero-meta { display: flex; gap: 1.25rem; align-items: center; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 1.5rem; flex-wrap: wrap; }
 .arc-hero-meta span { position: relative; }
 .arc-hero-meta span:not(:last-child)::after { content: '·'; margin-left: 1.25rem; color: rgba(201,168,76,0.4); }
 .arc-hero-status { color: var(--gold-light); border: 1px solid rgba(201,168,76,0.4); padding: 0.25rem 0.65rem; border-radius: 4px; background: rgba(8,8,8,0.5); }
@@ -43,11 +43,14 @@
 .arc-sidenav-link { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.3s ease, padding-left 0.3s ease; }
 .arc-sidenav-link:hover { color: rgba(255,255,255,0.75); }
 .arc-sidenav-link.is-active { color: var(--gold-light); padding-left: 0.4rem; }
-.arc-sections { display: flex; flex-direction: column; gap: 5rem; min-width: 0; }
+.arc-sections { display: flex; flex-direction: column; gap: 3.6rem; min-width: 0; }
 .arc-section { scroll-margin-top: 6rem; }
-.arc-section-title { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--white); margin-bottom: 1.4rem; padding-bottom: 0.9rem; border-bottom: 1px solid rgba(201,168,76,0.15); }
-.arc-body-text { font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.9; color: rgba(255,255,255,0.65); max-width: 700px; }
-.arc-story-p { margin-bottom: 1.25rem; }
+.arc-section-title { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--white); margin-bottom: 1.1rem; padding-bottom: 0.7rem; border-bottom: 1px solid rgba(201,168,76,0.15); }
+.arc-body-text { font-family: var(--font-body); font-size: 0.95rem; line-height: 1.75; color: rgba(255,255,255,0.7); max-width: 700px; }
+.arc-story-p { margin-bottom: 0.95rem; }
+.arc-story-signature { margin-top: 1.75rem; padding-top: 1.1rem; border-top: 1px solid rgba(201,168,76,0.12); }
+.arc-story-signature-name { font-family: var(--font-display); font-style: italic; font-size: 0.95rem; color: rgba(232,201,122,0.85); }
+.arc-story-signature-date { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-top: 0.25rem; }
 .arc-empty { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.04em; color: rgba(255,255,255,0.3); font-style: italic; padding: 1.5rem 0; }
 @media (max-width: 900px) {
   .arc-layout { grid-template-columns: 1fr; padding: 3rem 1.5rem 4rem; gap: 2.5rem; }
@@ -55,15 +58,16 @@
 }
 
 /* ── TIMELINE ── */
-.arc-timeline { display: flex; flex-direction: column; gap: 1.75rem; position: relative; }
+.arc-timeline { display: flex; flex-direction: column; gap: 1.3rem; position: relative; }
 .arc-timeline::before { content: ''; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 1px; background: rgba(201,168,76,0.2); }
 .arc-timeline-item { display: flex; gap: 1.25rem; position: relative; }
 .arc-timeline-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 0.3rem; box-shadow: 0 0 0 3px var(--black); position: relative; z-index: 1; }
-.arc-timeline-date { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
-.arc-timeline-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 0.3rem; }
-.arc-timeline-location { font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.05em; color: rgba(201,168,76,0.55); margin-bottom: 0.4rem; }
-.arc-timeline-desc { font-family: var(--font-mono); font-size: 0.65rem; line-height: 1.7; color: rgba(255,255,255,0.5); }
-.arc-timeline-notes { font-family: var(--font-mono); font-size: 0.6rem; line-height: 1.7; color: rgba(255,255,255,0.4); font-style: italic; margin-top: 0.5rem; }
+.arc-timeline-item-range .arc-timeline-dot { background: transparent; border: 1.5px solid var(--gold); }
+.arc-timeline-date { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.25rem; }
+.arc-timeline-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 0.25rem; }
+.arc-timeline-location { font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.05em; color: rgba(201,168,76,0.55); margin-bottom: 0.3rem; }
+.arc-timeline-desc { font-family: var(--font-body); font-size: 0.85rem; line-height: 1.6; color: rgba(255,255,255,0.55); }
+.arc-timeline-notes { font-family: var(--font-mono); font-size: 0.6rem; line-height: 1.7; color: rgba(255,255,255,0.4); font-style: italic; margin-top: 0.4rem; }
 
 /* ── TIMELINE EVIDENCE ── */
 .arc-timeline-evidence { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.75rem; }
@@ -92,11 +96,19 @@
 .arc-manuscript { font-family: var(--font-display); font-size: 1.05rem; line-height: 1.95; color: rgba(245,243,238,0.82); max-width: 620px; }
 .arc-manuscript p { margin: 0; }
 
+/* ── BEHIND THE LYRICS ── */
+.arc-behind-lyrics { display: flex; flex-direction: column; gap: 2.5rem; }
+.arc-lyric-story { border-left: 2px solid rgba(201,168,76,0.3); padding-left: 1.25rem; max-width: 680px; }
+.arc-lyric-excerpt { font-family: var(--font-display); font-size: 1.1rem; font-style: italic; color: var(--gold); margin-bottom: 0.9rem; line-height: 1.6; }
+.arc-lyric-story .arc-body-text { margin: 0 0 0.85rem 0; }
+.arc-lyric-story .arc-body-text:last-of-type { margin-bottom: 0; }
+
 /* ── CREDITS ── */
-.arc-credits-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
+.arc-credits-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.1rem 1.5rem; }
 .arc-credit-item { border-left: 2px solid rgba(201,168,76,0.3); padding-left: 0.9rem; }
-.arc-credit-name { font-family: var(--font-display); font-size: 0.95rem; color: var(--white); font-weight: 700; margin-bottom: 0.2rem; }
-.arc-credit-role { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(201,168,76,0.65); }
+.arc-credit-role { font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(201,168,76,0.7); margin-bottom: 0.25rem; }
+.arc-credit-name { font-family: var(--font-display); font-size: 0.98rem; color: var(--white); font-weight: 700; }
+.arc-credit-desc { font-family: var(--font-body); font-size: 0.78rem; line-height: 1.5; color: rgba(255,255,255,0.5); margin-top: 0.3rem; }
 
 /* ── PRESS ── */
 .arc-press-list { display: flex; flex-direction: column; gap: 1.75rem; max-width: 640px; }
@@ -114,7 +126,7 @@
 .arc-equipment-note { font-family: var(--font-mono); font-size: 0.58rem; color: rgba(255,255,255,0.45); margin-top: 0.2rem; }
 
 /* ── GALLERY ── */
-.arc-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+.arc-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.85rem; }
 .arc-gallery-item { position: relative; aspect-ratio: 1/1; overflow: hidden; cursor: pointer; }
 .arc-gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); }
 .arc-gallery-item:hover img { transform: scale(1.06); }
@@ -122,17 +134,17 @@
 .arc-gallery-item:hover .arc-gallery-caption { opacity: 1; }
 
 /* ── MEDIA ── */
-.arc-media-list { display: flex; flex-direction: column; gap: 2rem; }
+.arc-media-list { display: flex; flex-direction: column; gap: 1.5rem; }
 .arc-media-item { max-width: 560px; }
 .arc-media-role { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
-.arc-media-title { font-family: var(--font-display); font-size: 1rem; color: var(--white); margin-bottom: 0.6rem; }
+.arc-media-title { font-family: var(--font-display); font-size: 1rem; color: var(--white); margin-bottom: 0.5rem; }
 .arc-media-audio, .arc-media-video { width: 100%; }
 .arc-media-video { border-radius: 2px; }
 
 /* ── RELATED WORKS ── */
-.arc-related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.5rem; }
+.arc-related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.2rem; }
 .arc-related-item { text-decoration: none; display: block; }
-.arc-related-item img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; margin-bottom: 0.6rem; transition: transform 0.5s ease; }
+.arc-related-item img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; margin-bottom: 0.5rem; transition: transform 0.5s ease; }
 .arc-related-item:hover img { transform: scale(1.03); }
 .arc-related-title { font-family: var(--font-display); font-size: 0.85rem; color: var(--white); font-weight: 700; }
 
