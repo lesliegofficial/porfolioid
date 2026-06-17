@@ -1181,7 +1181,7 @@ function buildEPK(epk) {
         <div class="works-header">
           <span class="works-label" id="worksEyebrow">Creative Works</span>
           <div class="works-title-row">
-            <h2 class="section-title" id="worksHeading" style="margin:0">Featured Originals</h2>
+            <h2 class="section-title" id="worksHeading" style="margin:0">Original Works</h2>
           </div>
           <p class="works-tagline" id="worksTagline">Some stories couldn't stay on the page. They became music.</p>
         </div>
@@ -3485,7 +3485,7 @@ function toggleLang(lang) {
   if (worksEyebrow) worksEyebrow.textContent = lang === 'es' ? 'Obras Creativas' : 'Creative Works';
 
   const worksHeading = document.getElementById('worksHeading');
-  if (worksHeading) worksHeading.textContent = lang === 'es' ? 'Originales Destacados' : 'Featured Originals';
+  if (worksHeading) worksHeading.textContent = lang === 'es' ? 'Obras Originales' : 'Original Works';
 
   const worksTagline = document.getElementById('worksTagline');
   if (worksTagline) {

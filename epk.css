@@ -126,20 +126,20 @@
   /* ── CREATIVE WORKS — premium editorial two-up feature ── */
   .works-section { background: var(--black); }
   .works-wrap { max-width: 920px; margin: 0 auto; padding: 3rem 2rem 4rem; }
-  .works-header { text-align: center; margin-bottom: 2.5rem; }
-  .works-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); }
-  .works-title-row { margin: 0.4rem 0 0.6rem; }
+  .works-header { text-align: left; margin-bottom: 2rem; }
+  .works-label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); }
+  .works-title-row { margin: 0.35rem 0 0.45rem; }
   .works-tagline { font-family: var(--font-display); font-style: italic; font-size: 1.1rem; color: rgba(245,243,238,0.65); margin: 0; }
   .works-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
-  .work-card { background: var(--dark-2); display: flex; flex-direction: column; border: 1px solid rgba(201,168,76,0.12); transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease; }
-  .work-card:hover { transform: translateY(-6px); border-color: rgba(201,168,76,0.42); box-shadow: 0 20px 54px rgba(0,0,0,0.52), 0 0 0 1px rgba(201,168,76,0.16), 0 0 42px rgba(201,168,76,0.18); }
+  .work-card { background: var(--dark-2); display: flex; flex-direction: column; border: 1px solid rgba(201,168,76,0.12); box-shadow: 0 8px 24px rgba(0,0,0,0.3); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease, border-color 0.4s ease; }
+  .work-card:hover { transform: translateY(-7px); border-color: rgba(201,168,76,0.45); box-shadow: 0 24px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(201,168,76,0.18), 0 0 46px rgba(201,168,76,0.2); }
   .work-card-cover { position: relative; aspect-ratio: 1/1.02; overflow: hidden; max-width: 380px; margin: 0 auto; width: 100%; }
-  .work-card-cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.7s ease; }
+  .work-card-cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.9s cubic-bezier(0.16,1,0.3,1); }
   .work-card:hover .work-card-cover img { transform: scale(1.06); }
   .work-card-status { display: inline-flex; align-self: flex-start; width: fit-content; align-items: center; position: relative; font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 0.14em; text-transform: uppercase; background: rgba(8,8,8,0.85); color: var(--gold-light); padding: 0.3rem 0.65rem; border: 1px solid rgba(201,168,76,0.4); border-radius: 4px; box-shadow: 0 0 12px rgba(201,168,76,0.18); overflow: hidden; margin-bottom: 0.6rem; }
   .work-card-status::after { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(110deg, transparent, rgba(232,201,122,0.45), transparent); animation: wp-badge-shimmer 5s ease-in-out infinite; }
   @keyframes wp-badge-shimmer { 0%, 70% { left: -60%; } 90%, 100% { left: 130%; } }
-  .work-card-body { padding: 1.3rem 1.4rem 1.6rem; display: flex; flex-direction: column; flex: 1; }
+  .work-card-body { padding: 1.5rem 1.6rem 1.8rem; display: flex; flex-direction: column; flex: 1; }
   .work-card-meta { font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(201,168,76,0.42); margin-bottom: 0.45rem; }
   .work-card-title { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--warm-white); margin: 0 0 0.55rem; line-height: 1.15; }
   .work-card-desc { font-family: var(--font-mono); font-size: 0.58rem; line-height: 1.65; color: rgba(255,255,255,0.55); margin: 0; }
@@ -176,7 +176,7 @@
   @media (max-width: 700px) { .wp-volume { display: none; } }
 
   /* ── "Enter the Story" — The Archive Is Opening modal ── */
-  .wcs-overlay { position: fixed; inset: 0; background: radial-gradient(ellipse at center, rgba(8,8,8,0.88) 0%, rgba(0,0,0,0.96) 100%); backdrop-filter: blur(14px) saturate(0.8); -webkit-backdrop-filter: blur(14px) saturate(0.8); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.45s ease, visibility 0.45s ease; padding: 1.5rem; }
+  .wcs-overlay { position: fixed; inset: 0; background: radial-gradient(ellipse at center, rgba(5,5,5,0.94) 0%, rgba(0,0,0,0.985) 100%); backdrop-filter: blur(22px) saturate(0.65) brightness(0.7); -webkit-backdrop-filter: blur(22px) saturate(0.65) brightness(0.7); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s ease; padding: 1.5rem; }
   .wcs-overlay.is-visible { opacity: 1; visibility: visible; }
   .wcs-box { position: relative; max-width: 480px; width: 100%; background: linear-gradient(160deg, var(--dark-2) 0%, var(--black) 100%); border: 1px solid rgba(201,168,76,0.28); padding: 3.25rem 2.75rem; text-align: center; box-shadow: 0 35px 90px rgba(0,0,0,0.7), 0 0 70px rgba(201,168,76,0.08); transform: translateY(14px) scale(0.97); opacity: 0; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.5s ease; }
   .wcs-overlay.is-visible .wcs-box { transform: translateY(0) scale(1); opacity: 1; transition-delay: 0.08s; }
