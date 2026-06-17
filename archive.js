@@ -278,26 +278,121 @@ function buildArchiveStory(w) {
   return paragraphs.map(p => `<p class="arc-body-text arc-story-p">${archiveEscape(p.trim())}</p>`).join('');
 }
 
+// ── TIMELINE ──
+// Two distinct, honest categories, never blended:
+// 1) Confirmed milestones — w.timeline entries with a real verified date. These render in the
+//    actual chronological Timeline, sorted by date. The two original lifecycle dates (started/
+//    completed) are included here as a fallback only if no w.timeline array exists yet, so existing
+//    Works never lose their dates during the transition to the richer structure.
+// 2) Stages Awaiting Documentation — logical creative-process stages with no verified date yet.
+//    These are never sorted into the dated timeline and never given an invented date. They exist
+//    purely so the Archive has a ready place to receive real information later, and so a visitor
+//    can see the full intended shape of the documented journey even before every stage is filled in.
+function archiveTimelineEntries(w) {
+  if (Array.isArray(w.timeline) && w.timeline.length) return w.timeline;
+  // Fallback for Works that haven't been migrated to the richer w.timeline structure yet —
+  // preserves the two original confirmed lifecycle dates exactly as before.
+  const fallback = [];
+  if (w.startedDate) fallback.push({ date: w.startedDate, title: 'Started' });
+  if (w.completedDate) fallback.push({ date: w.completedDate, title: 'Completed' });
+  if (w.releasedDate) fallback.push({ date: w.releasedDate, title: 'Released' });
+  return fallback;
+}
+
+function archiveEvidenceList(m) {
+  const items = [];
+  if (m.evidence && Array.isArray(m.evidence)) {
+    m.evidence.forEach(function(e) { items.push(e); });
+  }
+  // Convenience singular fields (image/document/audio/video) are folded into the same evidence
+  // list at render time, so a milestone author can use whichever is simpler for a given artifact.
+  if (m.image) items.push({ type: 'image', url: m.image, label: 'Photo' });
+  if (m.document) items.push({ type: 'document', url: m.document, label: 'Document' });
+  if (m.audio) items.push({ type: 'audio', url: m.audio, label: 'Audio' });
+  if (m.video) items.push({ type: 'video', url: m.video, label: 'Video' });
+  return items;
+}
+
+function buildArchiveTimelineEvidence(m) {
+  const items = archiveEvidenceList(m);
+  if (!items.length) return '';
+  return `
+    <div class="arc-timeline-evidence">
+      ${items.map(function(e) {
+        if (e.type === 'image') {
+          return `<div class="arc-evidence-chip arc-evidence-image" onclick="archiveOpenLightbox('${archiveEscape(e.url)}')"><img src="${archiveEscape(e.url)}" alt="${archiveEscape(e.label || 'Evidence')}" loading="lazy"></div>`;
+        }
+        const iconLabel = { document: 'Document', audio: 'Audio', video: 'Video' }[e.type] || 'Evidence';
+        return `<a class="arc-evidence-chip arc-evidence-file" href="${archiveEscape(e.url)}" target="_blank" rel="noopener">${archiveEscape(e.label || iconLabel)}</a>`;
+      }).join('')}
+    </div>`;
+}
+
 function buildArchiveTimeline(w) {
-  const milestones = [];
-  if (w.startedDate) milestones.push({ date: w.startedDate, title: 'Started', description: null });
-  if (w.completedDate) milestones.push({ date: w.completedDate, title: 'Completed', description: null });
-  if (w.releasedDate) milestones.push({ date: w.releasedDate, title: 'Released', description: null });
+  const milestones = archiveTimelineEntries(w).filter(function(m) { return !!m.date; });
   if (!milestones.length) {
     return archiveEmptyState('A detailed timeline for this work has not yet been documented.');
   }
-  milestones.sort((a, b) => new Date(a.date) - new Date(b.date));
+  milestones.sort(function(a, b) { return new Date(a.date) - new Date(b.date); });
   return `
     <div class="arc-timeline">
-      ${milestones.map(m => `
+      ${milestones.map(function(m) {
+        return `
         <div class="arc-timeline-item">
           <div class="arc-timeline-dot"></div>
           <div class="arc-timeline-body">
             <div class="arc-timeline-date">${archiveEscape(archiveFormatDate(m.date))}</div>
             <div class="arc-timeline-title">${archiveEscape(m.title)}</div>
+            ${m.location ? `<div class="arc-timeline-location">${archiveEscape(m.location)}</div>` : ''}
             ${m.description ? `<div class="arc-timeline-desc">${archiveEscape(m.description)}</div>` : ''}
+            ${m.notes ? `<div class="arc-timeline-notes">${archiveEscape(m.notes)}</div>` : ''}
+            ${buildArchiveTimelineEvidence(m)}
           </div>
-        </div>`).join('')}
+        </div>`;
+      }).join('')}
+    </div>
+    ${buildArchiveStagesAwaitingDocumentation(w)}`;
+}
+
+// ── STAGES AWAITING DOCUMENTATION ──
+// Logical creative-process stages with no verified date. Rendered as a visually distinct
+// subsection beneath the real chronological Timeline — never merged into it, never given a
+// fabricated date or description. Each stage is either a placeholder (no real data yet) or,
+// once real information is added to w.timelineStages for that stage id, shows what's confirmed
+// so far while still living outside the dated Timeline until it has a verified date and is
+// promoted into w.timeline directly.
+const ARCHIVE_DEFAULT_CREATIVE_STAGES = [
+  { id: 'initial-idea', title: 'Initial Idea' },
+  { id: 'first-draft',  title: 'First Draft' },
+  { id: 'revisions',    title: 'Revisions' },
+  { id: 'recording',    title: 'Recording' },
+  { id: 'production',   title: 'Production' },
+  { id: 'mix',          title: 'Mix' },
+  { id: 'master',       title: 'Master' },
+  { id: 'cover-design', title: 'Cover Design' },
+  { id: 'release',      title: 'Release' }
+];
+function buildArchiveStagesAwaitingDocumentation(w) {
+  const provided = (w.timelineStages && typeof w.timelineStages === 'object') ? w.timelineStages : {};
+  const stages = ARCHIVE_DEFAULT_CREATIVE_STAGES.map(function(stage) {
+    const data = provided[stage.id] || {};
+    return Object.assign({}, stage, data);
+  });
+  return `
+    <div class="arc-stages-awaiting">
+      <div class="arc-stages-awaiting-label">Stages Awaiting Documentation</div>
+      <div class="arc-stages-awaiting-grid">
+        ${stages.map(function(s) {
+          const hasContent = !!(s.description || s.notes);
+          return `
+          <div class="arc-stage-chip ${hasContent ? 'has-content' : ''}">
+            <div class="arc-stage-title">${archiveEscape(s.title)}</div>
+            ${hasContent
+              ? `${s.description ? `<div class="arc-stage-desc">${archiveEscape(s.description)}</div>` : ''}`
+              : `<div class="arc-stage-pending">Awaiting verified information</div>`}
+          </div>`;
+        }).join('')}
+      </div>
     </div>`;
 }
 
@@ -381,6 +476,24 @@ function buildArchiveEquipment(w) {
     </div>`;
 }
 
+// ── GALLERY ──
+// Reads from the same generic w.assets array already used by the hero/media sections, filtered
+// to images. The architecture already supports any role string; this just gives the recognized
+// roles a human-readable label so future material (behind-the-scenes, drafts, mood boards, studio
+// photos, promotional shots, video stills, press assets) is captioned automatically once added —
+// no layout or component change required to receive any of these asset types.
+const ARCHIVE_GALLERY_ROLE_LABELS = {
+  'cover-art': 'Cover Artwork',
+  'alternate-cover': 'Alternate Cover',
+  'behind-the-scenes': 'Behind the Scenes',
+  'draft-lyrics': 'Draft Lyrics',
+  'notebook-page': 'Notebook Page',
+  'mood-board': 'Mood Board',
+  'studio-photo': 'Studio Photo',
+  'promotional': 'Promotional Photography',
+  'video-still': 'Video Still',
+  'press-asset': 'Press Asset'
+};
 function buildArchiveGallery(w) {
   const items = (w.assets || []).filter(a => a.type === 'image');
   if (!items.length) {
@@ -388,11 +501,15 @@ function buildArchiveGallery(w) {
   }
   return `
     <div class="arc-gallery-grid">
-      ${items.map(a => `
+      ${items.map(a => {
+        const roleLabel = ARCHIVE_GALLERY_ROLE_LABELS[a.role] || null;
+        const caption = a.title || roleLabel;
+        return `
         <div class="arc-gallery-item" onclick="archiveOpenLightbox('${archiveEscape(a.url)}')">
           <img src="${archiveEscape(a.url)}" alt="${archiveEscape(a.title || w.title)}" loading="lazy">
-          ${a.title ? `<div class="arc-gallery-caption">${archiveEscape(a.title)}</div>` : ''}
-        </div>`).join('')}
+          ${caption ? `<div class="arc-gallery-caption">${archiveEscape(caption)}</div>` : ''}
+        </div>`;
+      }).join('')}
     </div>`;
 }
 
