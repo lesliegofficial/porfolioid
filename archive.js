@@ -11,7 +11,15 @@
 
 function getArchiveParamsFromURL() {
   const params = new URLSearchParams(window.location.search);
-  return { slug: params.get('slug'), work: params.get('work') };
+  let slug = params.get('slug');
+  let work = params.get('work');
+  if (slug && work) return { slug, work };
+  // Netlify's status-200 rewrite (/archive/:slug/:work -> archive.html?slug=:slug&work=:work) substitutes
+  // the query string server-side only — window.location.search still reflects the original clean URL the
+  // visitor's browser actually requested. Parse the real values straight out of the pathname instead.
+  const match = window.location.pathname.match(/\/archive\/([^\/]+)\/([^\/]+)/);
+  if (match) return { slug: decodeURIComponent(match[1]), work: decodeURIComponent(match[2]) };
+  return { slug: null, work: null };
 }
 
 // Reused from epk.js's status logic so Archive and homepage cards never disagree on a Work's status.
