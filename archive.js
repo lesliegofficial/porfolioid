@@ -28,11 +28,11 @@ function getWorkStatusArchive(w) {
     'on-hold': 'On Hold', 'archived': 'Archived', 'private': 'Private',
     'coming-soon': 'Coming Soon', 'in-revision': 'In Revision', 'unreleased': 'Unreleased'
   };
-  if (w.statusOverride && overrideLabels[w.statusOverride]) return overrideLabels[w.statusOverride];
-  if (w.releasedDate) return 'Published';
-  if (w.completedDate) return 'Completed';
-  if (w.startedDate) return 'In Progress';
-  return 'Draft';
+  if (w.statusOverride && overrideLabels[w.statusOverride]) return t(overrideLabels[w.statusOverride]);
+  if (w.releasedDate) return t('Published');
+  if (w.completedDate) return t('Completed');
+  if (w.startedDate) return t('In Progress');
+  return t('Draft');
 }
 
 function archiveFormatDate(dateStr) {
@@ -70,6 +70,125 @@ function archiveLocalize(w, enKey, esKey) {
   const key = esKey || (enKey + 'Es');
   const esVal = w[key];
   return (esVal && String(esVal).trim()) ? esVal : englishVal;
+}
+
+// ── FIXED UI STRING TRANSLATION ──
+// A completely separate system from archiveLocalize() above. archiveLocalize() handles
+// per-work CONTENT (the artist's own words — About, Story, Notes — which may or may not have
+// real Spanish text yet). This table handles fixed INTERFACE vocabulary: the same words on
+// every Archive page, for every work, regardless of content completeness — section headings,
+// button labels, placeholder sentences, status badges. These never depend on data; they're
+// hand-translated once, here, and apply universally. Never add per-work content to this table,
+// and never add fixed UI vocabulary to a work's data object — keeping the two systems apart is
+// what keeps this maintainable as the Archive grows to more works and more categories.
+const ARCHIVE_UI_STRINGS = {
+  // Section headings / sidenav labels (shared across all categories' configs below)
+  'About the Work':            { es: 'Sobre la Obra' },
+  'About the Book':             { es: 'Sobre el Libro' },
+  'Story Behind the Work':      { es: 'La Historia Detrás de la Obra' },
+  'Story Behind the Book':      { es: 'La Historia Detrás del Libro' },
+  'Timeline':                   { es: 'Cronología' },
+  'Creative Notes':             { es: 'Notas Creativas' },
+  'Notes':                      { es: 'Notas' },
+  'Lyrics':                     { es: 'Letra' },
+  'Manuscript':                 { es: 'Manuscrito' },
+  'Behind the Lyrics':          { es: 'Detrás de la Letra' },
+  'Credits':                    { es: 'Créditos' },
+  'Gallery':                    { es: 'Galería' },
+  'Media':                      { es: 'Multimedia' },
+  'Related Works':              { es: 'Obras Relacionadas' },
+  'Press':                      { es: 'Prensa' },
+  'Equipment':                  { es: 'Equipo' },
+
+  // Hero
+  'Play':                       { es: 'Reproducir' },
+  'Share':                      { es: 'Compartir' },
+  'Creative Works':             { es: 'Obras Creativas' },
+
+  // Status badge vocabulary (getWorkStatusArchive)
+  'Published':                  { es: 'Publicado' },
+  'Completed':                  { es: 'Completado' },
+  'In Progress':                { es: 'En Progreso' },
+  'Draft':                      { es: 'Borrador' },
+  'On Hold':                    { es: 'En Pausa' },
+  'Archived':                   { es: 'Archivado' },
+  'Private':                    { es: 'Privado' },
+  'Coming Soon':                { es: 'Próximamente' },
+  'In Revision':                { es: 'En Revisión' },
+  'Unreleased':                 { es: 'Inédito' },
+
+  // Stages Awaiting Documentation
+  'Stages Awaiting Documentation': { es: 'Etapas Pendientes de Documentación' },
+  'Documentation pending':      { es: 'Documentación pendiente' },
+  'Initial Idea':                { es: 'Idea Inicial' },
+  'First Draft':                 { es: 'Primer Borrador' },
+  'Revisions':                    { es: 'Revisiones' },
+  'Recording':                    { es: 'Grabación' },
+  'Production':                   { es: 'Producción' },
+  'Mix':                          { es: 'Mezcla' },
+  'Master':                       { es: 'Masterización' },
+  'Cover Design':                 { es: 'Diseño de Portada' },
+  'Release':                      { es: 'Lanzamiento' },
+
+  // Evidence fallback labels (used only when a chip has no custom label)
+  'Photo':                      { es: 'Foto' },
+  'Document':                   { es: 'Documento' },
+  'Audio':                      { es: 'Audio' },
+  'Video':                      { es: 'Video' },
+  'Evidence':                   { es: 'Evidencia' },
+
+  // Gallery role labels
+  'Cover Artwork':               { es: 'Arte de Portada' },
+  'Alternate Cover':             { es: 'Portada Alternativa' },
+  'Behind the Scenes':           { es: 'Detrás de Cámaras' },
+  'Draft Lyrics':                { es: 'Letra en Borrador' },
+  'Notebook Page':                { es: 'Página de Cuaderno' },
+  'Mood Board':                   { es: 'Tablero de Inspiración' },
+  'Studio Photo':                  { es: 'Foto de Estudio' },
+  'Promotional Photography':       { es: 'Fotografía Promocional' },
+  'Video Still':                    { es: 'Fotograma de Video' },
+  'Press Asset':                    { es: 'Material de Prensa' },
+
+  // Press
+  'Read more →':                { es: 'Leer más →' },
+
+  // Empty states (one entry per distinct English sentence used in archiveEmptyState calls)
+  "This work's overview has not yet been documented.":
+    { es: 'La descripción de esta obra aún no ha sido documentada.' },
+  'The story behind this work has not yet been written.':
+    { es: 'La historia detrás de esta obra aún no ha sido escrita.' },
+  'A detailed timeline for this work has not yet been documented.':
+    { es: 'Aún no se ha documentado una cronología detallada de esta obra.' },
+  'Creative notes for this work have not yet been added.':
+    { es: 'Aún no se han añadido notas creativas para esta obra.' },
+  'Credits for this work have not yet been added.':
+    { es: 'Aún no se han añadido créditos para esta obra.' },
+  'The real stories behind specific lyrics have not yet been documented for this work.':
+    { es: 'Las historias reales detrás de letras específicas aún no han sido documentadas para esta obra.' },
+  'No press coverage has been added for this work yet.':
+    { es: 'Aún no se ha añadido cobertura de prensa para esta obra.' },
+  'Equipment details have not yet been added for this work.':
+    { es: 'Aún no se han añadido detalles de equipo para esta obra.' },
+  'No gallery items have been added for this work yet.':
+    { es: 'Aún no se han añadido elementos a la galería de esta obra.' },
+  'No additional media has been added for this work yet.':
+    { es: 'Aún no se ha añadido contenido multimedia adicional para esta obra.' },
+  'No related works have been linked yet.':
+    { es: 'Aún no se han vinculado obras relacionadas.' },
+  'This section is not yet available.':
+    { es: 'Esta sección aún no está disponible.' },
+};
+
+// Looks up a fixed UI string's Spanish translation. Falls back to the original English string
+// if no translation is registered (so a missing table entry never produces blank or broken
+// text — it simply stays in English, the same safe-fallback principle archiveLocalize() uses
+// for content). `str` may contain a dynamic suffix (e.g. "The lyrics for this work...") built
+// from a runtime value; for those callers, pass the static portion through this table instead
+// of the whole interpolated string.
+function t(str) {
+  if (archiveCurrentLang !== 'es') return str;
+  const entry = ARCHIVE_UI_STRINGS[str];
+  return (entry && entry.es) ? entry.es : str;
 }
 
 // ── ARCHIVE CONFIGURATION LAYER ──
@@ -244,8 +363,9 @@ function archiveTypeConfig(category) {
   return ARCHIVE_TYPE_CONFIG[category] || ARCHIVE_DEFAULT_CONFIG;
 }
 
-function archiveEmptyState(message) {
-  return `<div class="arc-empty">${archiveEscape(message)}</div>`;
+function archiveEmptyState(message, alreadyTranslated) {
+  const text = alreadyTranslated ? message : t(message);
+  return `<div class="arc-empty">${archiveEscape(text)}</div>`;
 }
 
 
@@ -265,7 +385,7 @@ function buildArchiveHero(w, epk) {
         <img src="${archiveEscape(w.heroImage || '')}" alt="${archiveEscape(w.title)}">
       </div>
       <div class="arc-hero-info">
-        <span class="arc-hero-eyebrow">${archiveEscape(epk.name || 'Creative Works')}</span>
+        <span class="arc-hero-eyebrow">${archiveEscape(epk.name || t('Creative Works'))}</span>
         <h1 class="arc-hero-title">${archiveEscape(w.title)}</h1>
         ${w.archiveTagline ? `<p class="arc-hero-subtitle">${archiveEscape(w.archiveTagline)}</p>` : ''}
         <div class="arc-hero-meta">
@@ -274,8 +394,8 @@ function buildArchiveHero(w, epk) {
           <span class="arc-hero-status">${archiveEscape(status)}</span>
         </div>
         <div class="arc-hero-actions">
-          ${audioAsset ? `<button class="arc-hero-play" onclick="archivePlayHeroAudio('${archiveEscape(audioAsset.url)}', this)"><svg viewBox="0 0 24 24" class="arc-play-icon"><path d="M8 5v14l11-7z"/></svg><svg viewBox="0 0 24 24" class="arc-pause-icon" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg><span>Play</span></button>` : ''}
-          <button class="arc-hero-share" onclick="archiveShare()">Share</button>
+          ${audioAsset ? `<button class="arc-hero-play" onclick="archivePlayHeroAudio('${archiveEscape(audioAsset.url)}', this)"><svg viewBox="0 0 24 24" class="arc-play-icon"><path d="M8 5v14l11-7z"/></svg><svg viewBox="0 0 24 24" class="arc-pause-icon" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg><span>${t('Play')}</span></button>` : ''}
+          <button class="arc-hero-share" onclick="archiveShare()">${t('Share')}</button>
         </div>
       </div>
     </div>
@@ -339,10 +459,10 @@ function archiveEvidenceList(m) {
   }
   // Convenience singular fields (image/document/audio/video) are folded into the same evidence
   // list at render time, so a milestone author can use whichever is simpler for a given artifact.
-  if (m.image) items.push({ type: 'image', url: m.image, label: 'Photo' });
-  if (m.document) items.push({ type: 'document', url: m.document, label: 'Document' });
-  if (m.audio) items.push({ type: 'audio', url: m.audio, label: 'Audio' });
-  if (m.video) items.push({ type: 'video', url: m.video, label: 'Video' });
+  if (m.image) items.push({ type: 'image', url: m.image, label: t('Photo') });
+  if (m.document) items.push({ type: 'document', url: m.document, label: t('Document') });
+  if (m.audio) items.push({ type: 'audio', url: m.audio, label: t('Audio') });
+  if (m.video) items.push({ type: 'video', url: m.video, label: t('Video') });
   return items;
 }
 
@@ -355,7 +475,7 @@ function buildArchiveTimelineEvidence(m) {
         if (e.type === 'image') {
           return `<div class="arc-evidence-chip arc-evidence-image" onclick="archiveOpenLightbox('${archiveEscape(e.url)}')"><img src="${archiveEscape(e.url)}" alt="${archiveEscape(e.label || 'Evidence')}" loading="lazy"></div>`;
         }
-        const iconLabel = { document: 'Document', audio: 'Audio', video: 'Video' }[e.type] || 'Evidence';
+        const iconLabel = t({ document: 'Document', audio: 'Audio', video: 'Video' }[e.type] || 'Evidence');
         return `<a class="arc-evidence-chip arc-evidence-file" href="${archiveEscape(e.url)}" target="_blank" rel="noopener">${archiveEscape(e.label || iconLabel)}</a>`;
       }).join('')}
     </div>`;
@@ -430,16 +550,16 @@ function buildArchiveStagesAwaitingDocumentation(w) {
   });
   return `
     <div class="arc-stages-awaiting">
-      <div class="arc-stages-awaiting-label">Stages Awaiting Documentation</div>
+      <div class="arc-stages-awaiting-label">${t('Stages Awaiting Documentation')}</div>
       <div class="arc-stages-awaiting-grid">
         ${stages.map(function(s) {
           const hasContent = !!(s.description || s.notes);
           return `
           <div class="arc-stage-chip ${hasContent ? 'has-content' : ''}">
-            <div class="arc-stage-title">${archiveEscape(s.title)}</div>
+            <div class="arc-stage-title">${archiveEscape(t(s.title))}</div>
             ${hasContent
               ? `${s.description ? `<div class="arc-stage-desc">${archiveEscape(s.description)}</div>` : ''}`
-              : `<div class="arc-stage-pending">Documentation pending</div>`}
+              : `<div class="arc-stage-pending">${t('Documentation pending')}</div>`}
           </div>`;
         }).join('')}
       </div>
@@ -473,7 +593,11 @@ function buildArchiveManuscript(w, sectionLabel) {
   if (!text) text = w.manuscriptText || null;
 
   if (!text) {
-    return archiveEmptyState(`The ${(sectionLabel || 'manuscript').toLowerCase()} for this work has not yet been added.`);
+    const label = t(sectionLabel || 'Manuscript');
+    const sentence = archiveCurrentLang === 'es'
+      ? `Aún no se ha añadido ${label.toLowerCase()} para esta obra.`
+      : `The ${label.toLowerCase()} for this work has not yet been added.`;
+    return archiveEmptyState(sentence, true);
   }
   const lines = text.split('\n');
   return `<div class="arc-manuscript">${lines.map(l => l.trim() ? `<p>${archiveEscape(l)}</p>` : '<br>').join('')}</div>`;
@@ -537,7 +661,7 @@ function buildArchivePress(w) {
           ${p.outlet ? `<div class="arc-press-outlet">${archiveEscape(p.outlet)}</div>` : ''}
           ${p.title ? `<div class="arc-press-title">${archiveEscape(p.title)}</div>` : ''}
           ${p.quote ? `<p class="arc-press-quote">${archiveEscape(p.quote)}</p>` : ''}
-          ${p.url ? `<a class="arc-press-link" href="${archiveEscape(p.url)}" target="_blank" rel="noopener">Read more →</a>` : ''}
+          ${p.url ? `<a class="arc-press-link" href="${archiveEscape(p.url)}" target="_blank" rel="noopener">${t('Read more →')}</a>` : ''}
         </div>`).join('')}
     </div>`;
 }
@@ -584,7 +708,7 @@ function buildArchiveGallery(w) {
   return `
     <div class="arc-gallery-grid">
       ${items.map(a => {
-        const roleLabel = ARCHIVE_GALLERY_ROLE_LABELS[a.role] || null;
+        const roleLabel = ARCHIVE_GALLERY_ROLE_LABELS[a.role] ? t(ARCHIVE_GALLERY_ROLE_LABELS[a.role]) : null;
         const caption = a.title || roleLabel;
         return `
         <div class="arc-gallery-item" onclick="archiveOpenLightbox('${archiveEscape(a.url)}')">
@@ -640,7 +764,7 @@ function buildArchiveNav(sections) {
     <nav class="arc-sidenav" id="arcSideNav">
       ${sections.map(s => {
         const weightClass = ARCHIVE_PRIMARY_NAV_SECTIONS.has(s.id) ? 'arc-sidenav-link-primary' : 'arc-sidenav-link-secondary';
-        return `<a href="#arc-${s.id}" class="arc-sidenav-link ${weightClass}" data-section="${s.id}">${archiveEscape(s.label)}</a>`;
+        return `<a href="#arc-${s.id}" class="arc-sidenav-link ${weightClass}" data-section="${s.id}">${archiveEscape(t(s.label))}</a>`;
       }).join('')}
     </nav>`;
 }
@@ -721,7 +845,7 @@ function buildArchive(epk, workSlug) {
     const body = renderer ? renderer(w, s.label, works, epk.slug, epk) : archiveEmptyState('This section is not yet available.');
     return `
         <section class="arc-section" id="arc-${s.id}">
-          <h2 class="arc-section-title">${archiveEscape(s.label)}</h2>
+          <h2 class="arc-section-title">${archiveEscape(t(s.label))}</h2>
           ${body}
         </section>`;
   }).join('');
