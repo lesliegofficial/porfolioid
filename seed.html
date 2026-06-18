@@ -95,12 +95,18 @@ On the industry side, Guerra served as A&R Coordinator at Sony Music Latin (2017
     ]
   };
 
+  // DEPRECATED ONE-TIME SETUP UTILITY — this file is not part of the live application flow.
+  // It was used once to create the initial account via the /api/epk signup action.
+  // It must NEVER contain a real password or any other real credential.
+  // If this utility is ever needed again, set a fresh placeholder password here,
+  // run it once, then immediately change that password directly in Supabase
+  // and reset this file back to the placeholder below before committing.
   const leslieUser = {
     firstName: "Leslie Ann",
     lastName: "Guerra",
     email: "leslie@porfolioid.com",
     slug: "leslie-guerra",
-    password: "leslie2025",
+    password: "REPLACE_BEFORE_USE",
     epk: leslieEPK
   };
 
