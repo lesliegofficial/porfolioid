@@ -851,12 +851,33 @@ function buildEPK(epk) {
   const visibleAssets = (epk.assets || []).filter(a => a.visible !== false && a.category !== 'Resume');
   const allCategories = [...new Set(visibleAssets.map(a => a.category).filter(Boolean))];
 
+  // Temporary Phase 1 fallback: openAssetRequest() was referenced on both the
+  // Preview and Request Access buttons but never defined anywhere, so both
+  // silently did nothing on click. This routes visitors to the existing,
+  // working Connect Hub / inquiry section instead of leaving a dead button.
+  // This is intentionally NOT a real request-capture flow (no form, no
+  // storage, no email) - that remains a separate, future Phase 3 feature.
+  function requestAssetViaConnect() {
+    const c = document.getElementById('connect');
+    if (!c) return;
+    c.style.display = 'block';
+    const bar = document.querySelector('.hero-presence-bar');
+    if (bar) {
+      const exploreSpan = bar.querySelector('.hero-presence-explore');
+      if (exploreSpan) exploreSpan.textContent = 'Close ←';
+    }
+    setTimeout(() => {
+      const top = c.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }, 50);
+  }
+
   function makePreviewBtn(a, i) {
-    return '<button onclick="openAssetRequest()" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.5);background:rgba(201,168,76,0.08);color:var(--gold);padding:0.45rem 0.9rem;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.background=\'rgba(201,168,76,0.18)\'" onmouseout="this.style.background=\'rgba(201,168,76,0.08)\'">👁 Preview</button>';
+    return '<button onclick="requestAssetViaConnect()" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.5);background:rgba(201,168,76,0.08);color:var(--gold);padding:0.45rem 0.9rem;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.background=\'rgba(201,168,76,0.18)\'" onmouseout="this.style.background=\'rgba(201,168,76,0.08)\'">👁 Preview</button>';
   }
 
   function makeAccessBtn(a, i) {
-    if (assetsLocked) return '<button onclick="openAssetRequest()" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.35);background:none;color:var(--white);padding:0.45rem 0.9rem;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.borderColor=\'rgba(201,168,76,0.8)\'" onmouseout="this.style.borderColor=\'rgba(201,168,76,0.35)\'">🔒 Request Access</button>';
+    if (assetsLocked) return '<button onclick="requestAssetViaConnect()" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.35);background:none;color:var(--white);padding:0.45rem 0.9rem;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.borderColor=\'rgba(201,168,76,0.8)\'" onmouseout="this.style.borderColor=\'rgba(201,168,76,0.35)\'">🔒 Request Access</button>';
     if (a.url) return '<a href="'+a.url+'" target="_blank" onclick="trackAssetDownload('+i+')" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.5);background:var(--gold);color:var(--black);padding:0.45rem 0.9rem;transition:all 0.2s;text-decoration:none;white-space:nowrap">↓ Download</a>';
     return '';
   }
@@ -2948,6 +2969,9 @@ function trackAssetDownload(idx) {
   } catch(e) {}
 }
 
+// PHASE 1 TEMPORARY FALLBACK — see requestAssetViaConnect() near the Assets section
+// render logic above, which both the Preview and Request Access buttons now call.
+// (This function previously lived here as a separate, now-unused duplicate.)
 // Credit modal
 let epkCreditsData = [];
 let epkVisibleCredits = [];
