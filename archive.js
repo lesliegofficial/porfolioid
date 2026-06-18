@@ -629,10 +629,19 @@ function buildArchiveRelated(w, allWorks, slug) {
     </div>`;
 }
 
+// Sections given slightly stronger visual weight in the sidenav per the established editorial
+// hierarchy: About the Work, Story Behind the Work, Lyrics, and Media read as the primary path
+// through an Archive; Timeline, Creative Notes, Behind the Lyrics, Credits, Gallery, and Related
+// Works support that story without competing with it for attention.
+const ARCHIVE_PRIMARY_NAV_SECTIONS = new Set(['about', 'story', 'manuscript', 'media']);
+
 function buildArchiveNav(sections) {
   return `
     <nav class="arc-sidenav" id="arcSideNav">
-      ${sections.map(s => `<a href="#arc-${s.id}" class="arc-sidenav-link" data-section="${s.id}">${archiveEscape(s.label)}</a>`).join('')}
+      ${sections.map(s => {
+        const weightClass = ARCHIVE_PRIMARY_NAV_SECTIONS.has(s.id) ? 'arc-sidenav-link-primary' : 'arc-sidenav-link-secondary';
+        return `<a href="#arc-${s.id}" class="arc-sidenav-link ${weightClass}" data-section="${s.id}">${archiveEscape(s.label)}</a>`;
+      }).join('')}
     </nav>`;
 }
 
@@ -654,6 +663,22 @@ const ARCHIVE_SECTION_RENDERERS = {
   media:      function(w) { return buildArchiveMedia(w); },
   related:    function(w, label, works, slug) { return buildArchiveRelated(w, works, slug); }
 };
+
+// ── EDITORIAL PULL QUOTE ──
+// A quiet, wordless moment between the Hero and the first section — not another content
+// section, not an explanation. Renders only when the work carries real pullQuote data (a
+// short excerpt the artist has chosen, optionally with a translation); a work with none simply
+// has no pull quote, rather than ever showing an invented or default line.
+function buildArchivePullQuote(w) {
+  const quote = w.pullQuote;
+  if (!quote || !quote.text) return '';
+  return `
+    <div class="arc-pull-quote">
+      <div class="arc-pull-quote-rule"></div>
+      <div class="arc-pull-quote-text">&ldquo;${archiveEscape(quote.text)}&rdquo;</div>
+      ${quote.translation ? `<div class="arc-pull-quote-translation">${archiveEscape(quote.translation)}</div>` : ''}
+    </div>`;
+}
 
 function buildArchive(epk, workSlug) {
   const works = epk.works || [];
@@ -703,6 +728,7 @@ function buildArchive(epk, workSlug) {
 
   container.innerHTML = `
     ${buildArchiveHero(w, epk)}
+    ${buildArchivePullQuote(w)}
     <div class="arc-layout">
       ${buildArchiveNav(sections)}
       <div class="arc-sections">
