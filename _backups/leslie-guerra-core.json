@@ -212,7 +212,7 @@
         },
         {
           "url": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1781672592/works/yahweh-yo-te-pertenezco/audio.mp3",
-          "date": "2026-06-17",
+          "date": "2026-05-06",
           "role": "release",
           "type": "audio",
           "title": "Yahweh, Yo Te Pertenezco (Final)",
@@ -234,18 +234,45 @@
       "writing": null,
       "category": "music",
       "featured": true,
-      "aboutWork": "A contemporary worship song declaring belonging to God through every season — the sun, the moon, the fields, the storms. Built around the idea that everything in creation already belongs to Him, and so do we.",
+      "timeline": [
+        {
+          "date": "2025-11-13",
+          "title": "The First Composition",
+          "evidence": [],
+          "description": "The original composition of “Yahweh, Yo Te Pertenezco” was written, capturing the first words of what would become a testimony of returning home."
+        },
+        {
+          "notes": "This milestone intentionally represents a season rather than a single event.",
+          "title": "Living the Song Before Finishing It",
+          "evidence": [],
+          "dateRange": "2025–2026",
+          "description": "The song continued to evolve as her relationship with God deepened. This chapter represents living the testimony before the work reached its final form."
+        },
+        {
+          "date": "2026-05-06",
+          "title": "Re-recorded & Completed",
+          "evidence": [
+            {
+              "url": "https://raw.githubusercontent.com/lesliegofficial/porfolioid/main/press/evidence/yahweh-yo-te-pertenezco_final-recording_2026-05-06.mp3",
+              "type": "file",
+              "label": "Final Recording (May 6, 2026)"
+            }
+          ],
+          "description": "The song was re-recorded and completed in its final version."
+        }
+      ],
+      "aboutWork": "Yahweh, Yo Te Pertenezco is a song about returning. Written after a season of quiet distance from God, it traces the journey from emptiness back to belonging — the courage it took to sit down outside a closed door, and the peace that followed once she realized she had never truly been left waiting. It is worship as testimony: not a song about becoming religious, but about coming home.",
       "heroImage": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1781672572/works/yahweh-yo-te-pertenezco/cover.jpg",
       "sortOrder": 2,
-      "aboutWorkEs": "Una canción de adoración contemporánea que declara pertenencia a Dios en cada temporada — el sol, la luna, los campos, las tormentas. Construida sobre la idea de que todo en la creación ya le pertenece, y nosotros también.",
+      "aboutWorkEs": "Yahweh, Yo Te Pertenezco es la historia de un regreso — no uno triunfal, sino uno silencioso. Escrita después de una etapa en la que me sentí lejos de Dios, la canción refleja lo que significa volver a casa: dejar de huir, sentarse, orar, y descubrir que la puerta nunca estuvo realmente cerrada. Es una canción de pertenencia, escrita por alguien que alguna vez dudó si merecía pertenecer.",
       "description": "A deeply personal prayer of surrender, belonging completely to God through every season of life.",
-      "inspiration": "The idea that everything in creation — sun, moon, stars, fields, rain — already belongs to God, and so does the singer.",
+      "inspiration": "The realization that belonging was never lost, only forgotten — and that everything in creation already belongs to the One who made it, the singer included.",
       "lastUpdated": "2026-06-17",
       "screenplays": null,
-      "startedDate": "2026-04-20",
+      "startedDate": "2025-11-13",
       "releasedDate": null,
-      "completedDate": "2026-06-17",
-      "creativeNotes": "Written with a South African Afro-house and gospel-leaning production direction in mind — spiritual chanting, call-and-response choir, rhythmic claps, warm pads, and a melodic hook in the spirit of \"Jerusalema.\"",
+      "completedDate": "2026-05-06",
+      "creativeNotes": "Born from a season of quiet return rather than dramatic revelation — the song carries peace more than performance. Inspired by the image of a single open chair outside a closed church door, an invitation that never withdrew. Built in a South African Afro-house and gospel-leaning direction, with spiritual chanting, call-and-response choir, rhythmic claps, and a melodic hook in the spirit of “Jerusalema” — joy expressed as movement, not just declaration.",
       "descriptionEs": "Una canción de adoración sobre pertenecer completamente a Dios.",
       "inspirationEs": null,
       "relatedPeople": [],
@@ -254,9 +281,15 @@
         "vals-demente"
       ],
       "statusOverride": "unreleased",
+      "behindTheLyrics": [
+        {
+          "story": "This is the line the whole song turns on. “Yo te pertenezco” doesn't mean losing who she is — it means finally discovering where her identity belonged all along. The line that follows makes the shape of it clear: “Como el río al mar, mi alma te obedece” — like the river to the sea. A river doesn't disappear when it reaches the ocean. It arrives at what it was always moving toward.",
+          "excerpt": "Yo te pertenezco, tu tu amor me sostiene"
+        }
+      ],
       "creativeNotesEs": null,
       "relatedProjects": [],
-      "storyBehindWork": null,
+      "storyBehindWork": "There was a time in my life when I knew about God, but I didn't truly know Him.\n\nThat season is hard to describe. It wasn't simple loneliness. It was a quiet emptiness — the feeling that something essential was missing, even while life went on around me.\n\nI often wondered why I felt disconnected.\n\nWhy I never quite felt whole.\n\nMore than anything, I carried the weight of feeling undeserving.\n\nEverything began to change in February 2024.\n\nGod has a way of reaching us through the people and moments we least expect. One unexpected lesson led me to the doorstep of a church one evening.\n\nThe church was closed.\n\nBut outside sat a single chair.\n\nThe curtains were open, almost as if the invitation remained even after the doors had been locked.\n\nSo I sat down. I prayed.\n\nThat night, I found my way back to God.\n\nIt took courage to return — not because I doubted Him, but because I wasn't sure I deserved to come back.\n\nThen I realized something beautiful.\n\nHe had never left. He had been waiting for me all along.\n\nFrom that night forward, my life began to change — not all at once, but deeply, quietly, and permanently.\n\nPeace slowly replaced fear. Purpose replaced confusion. Hope replaced emptiness. Healing replaced shame.\n\nOn November 13, 2025, at 10:00 AM, I wrote the first composition of “Yahweh, Yo Te Pertenezco.”\n\nThe title means “Yahweh, I Belong to You.” Those words carry everything I could never fully say in conversation.\n\nThis song is my thank you. It is my worship. It is my testimony.\n\nGod gave me the gift of music long before I understood why He had given it to me. Writing this song felt like returning that gift to its rightful place.\n\nEvery time I sing it, I remember the woman I used to be, and I thank God for the woman He has helped me become.\n\nThe song kept growing as my relationship with God deepened.\n\nOn May 6, 2026, at 8:44 PM, I re-recorded and completed it in its final form.\n\nIf Vals Demente tells the story of a heart trapped in unhealthy patterns, Yahweh, Yo Te Pertenezco tells the story of what happened after healing.\n\nIt is the sound of coming home.\n\nMy prayer is simple. That anyone who hears this song will know that no one is ever too far gone, too broken, or too undeserving to return to God.\n\nIf He was waiting for me, I believe He is waiting for you too.",
       "storyBehindWorkEs": null
     }
   ],
