@@ -851,27 +851,9 @@ function buildEPK(epk) {
   const visibleAssets = (epk.assets || []).filter(a => a.visible !== false && a.category !== 'Resume');
   const allCategories = [...new Set(visibleAssets.map(a => a.category).filter(Boolean))];
 
-  // Temporary Phase 1 fallback: openAssetRequest() was referenced on both the
-  // Preview and Request Access buttons but never defined anywhere, so both
-  // silently did nothing on click. This routes visitors to the existing,
-  // working Connect Hub / inquiry section instead of leaving a dead button.
-  // This is intentionally NOT a real request-capture flow (no form, no
-  // storage, no email) - that remains a separate, future Phase 3 feature.
-  function requestAssetViaConnect() {
-    const c = document.getElementById('connect');
-    if (!c) return;
-    c.style.display = 'block';
-    const bar = document.querySelector('.hero-presence-bar');
-    if (bar) {
-      const exploreSpan = bar.querySelector('.hero-presence-explore');
-      if (exploreSpan) exploreSpan.textContent = 'Close ←';
-    }
-    setTimeout(() => {
-      const top = c.getBoundingClientRect().top + window.scrollY - 80;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }, 50);
-  }
-
+  // Phase 1 fix: both buttons below call requestAssetViaConnect(), defined as a
+  // global function near trackAssetDownload() further down this file (not nested
+  // here) so it's actually reachable from these inline onclick attributes.
   function makePreviewBtn(a, i) {
     return '<button onclick="requestAssetViaConnect()" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.5);background:rgba(201,168,76,0.08);color:var(--gold);padding:0.45rem 0.9rem;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.background=\'rgba(201,168,76,0.18)\'" onmouseout="this.style.background=\'rgba(201,168,76,0.08)\'">👁 Preview</button>';
   }
@@ -2969,9 +2951,29 @@ function trackAssetDownload(idx) {
   } catch(e) {}
 }
 
-// PHASE 1 TEMPORARY FALLBACK — see requestAssetViaConnect() near the Assets section
-// render logic above, which both the Preview and Request Access buttons now call.
-// (This function previously lived here as a separate, now-unused duplicate.)
+// Phase 1 fix: openAssetRequest() was referenced by both the Preview and Request
+// Access buttons in the Assets section but was never defined anywhere, so both
+// silently did nothing on click. This is defined here, at the top level (not
+// nested inside buildEPK), because inline onclick="" attributes run in the
+// global scope - a nested version is unreachable and throws "not defined".
+// This routes visitors to the existing, working Connect Hub inquiry section.
+// Intentionally NOT a real request-capture flow (no form, no storage, no
+// email) - that remains separate, future Phase 3 work.
+function requestAssetViaConnect() {
+  const c = document.getElementById('connect');
+  if (!c) return;
+  c.style.display = 'block';
+  const bar = document.querySelector('.hero-presence-bar');
+  if (bar) {
+    const exploreSpan = bar.querySelector('.hero-presence-explore');
+    if (exploreSpan) exploreSpan.textContent = 'Close ←';
+  }
+  setTimeout(() => {
+    const top = c.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }, 50);
+}
+
 // Credit modal
 let epkCreditsData = [];
 let epkVisibleCredits = [];
