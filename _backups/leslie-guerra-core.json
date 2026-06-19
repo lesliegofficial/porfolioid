@@ -1732,7 +1732,7 @@
     "industryRoles": [],
     "availabilityBadges": []
   },
-  "resumeEnabled": true,
+  "resumeEnabled": false,
   "bookingEnabled": true,
   "bookingTagline": "",
   "bioImageCropTop": 36,
