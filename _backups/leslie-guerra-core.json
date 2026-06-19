@@ -1712,9 +1712,6 @@
   ],
   "heroImagePosition": 26,
   "sectionVisibility": {},
-  "intentionallyEmpty": [
-    "assets"
-  ],
   "bookingAutoResponse": "Thank you for your inquiry. I will respond in less than 48 hours.",
   "bookingAvailability": "selective"
 }
