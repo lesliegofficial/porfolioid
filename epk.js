@@ -524,7 +524,7 @@ function buildEPK(epk) {
       ${r.skills?.length ? `<div class="resume-card-skills">${r.skills.map(s => `<span class="resume-skill-tag" style="border-color:${rc}4D;background:${rc}0D">${s}</span>`).join('')}</div>` : ''}
       ${r.desc ? `<div class="resume-card-desc">${r.desc}</div>` : ''}
       <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:auto;padding-top:1.25rem">
-        ${r.url ? `<a href="${r.url}" target="_blank" class="resume-card-btn" style="color:${rc};border-color:${rc}4D">↓ Download Resume →</a>` : '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;opacity:0.5">PDF coming soon</span>'}
+        ${(r.resumeUrl || r.url) ? `<a href="${r.resumeUrl || r.url}" target="_blank" class="resume-card-btn" style="color:${rc};border-color:${rc}4D">↓ Download Resume →</a>` : '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;opacity:0.5">PDF coming soon</span>'}
       </div>
       <div style="margin-top:0.85rem;padding-top:0.75rem;border-top:1px solid rgba(201,168,76,0.15);font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.08em;line-height:1.5;opacity:0.7">Full job descriptions and career documentation available in the Credits section below</div>
     </div>`;
@@ -1187,6 +1187,26 @@ function buildEPK(epk) {
         </div>` : ''}
       </div>
     </section>
+
+    <!-- PROFESSIONAL RESUME -->
+    <!-- Gated on both resumeEnabled (dashboard toggle) AND having at least one
+         resume card - matches the same visibility pattern used elsewhere on this
+         page (e.g. credits/works), so toggling the dashboard switch off truly
+         hides the section rather than just hiding its content. -->
+    ${(epk.resumeEnabled !== false && resumeCards.length) ? `
+    <section class="career-profile-section" id="resume">
+      <div class="ch3-wrap">
+        <div class="ch3-header">
+          <span class="ch3-label">Professional Resume</span>
+          <div class="ch3-title-row">
+            <h2 class="section-title" style="margin:0">Resume</h2>
+          </div>
+        </div>
+        <div class="career-stacked-cards">
+          ${resumeCards.map(buildResumeCard).join('')}
+        </div>
+      </div>
+    </section>` : ''}
     <div class="divider"></div>
 
     <!-- CREATIVE WORKS -->
@@ -2512,6 +2532,23 @@ function applySectionOrderAndVisibility(epk) {
     if (nextSib && nextSib.classList && nextSib.classList.contains('divider')) {
       anchor.insertAdjacentElement('afterend', nextSib);
       anchor = nextSib;
+    }
+    // Resume is intentionally not part of the general reorderable section list
+    // (it isn't in ALL_SECTIONS/DEFAULT_ORDER and has no drag-to-reorder entry).
+    // Pin it immediately after bio/Career Highlights every time, regardless of
+    // where the other sections land, so it never gets pushed to the end of the
+    // page just because it's unlisted here.
+    if (id === 'bio') {
+      const resumeEl = document.getElementById('resume');
+      if (resumeEl) {
+        const resumeNextSib = resumeEl.nextElementSibling;
+        anchor.insertAdjacentElement('afterend', resumeEl);
+        anchor = resumeEl;
+        if (resumeNextSib && resumeNextSib.classList && resumeNextSib.classList.contains('divider')) {
+          anchor.insertAdjacentElement('afterend', resumeNextSib);
+          anchor = resumeNextSib;
+        }
+      }
     }
     // Works is fixed (not user-reorderable) but must be re-pinned right after bio,
     // since reordering bio's siblings would otherwise strand it wherever the DOM mutations left it.
