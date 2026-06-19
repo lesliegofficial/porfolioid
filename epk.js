@@ -1457,6 +1457,89 @@ function buildEPK(epk) {
 
   // Build photo gallery if photos exist
   if (epk.photos?.length) buildGallery(epk.photos);
+
+  // ── TEMPORARY OWNER-ONLY DEBUG PANEL ──────────────────────────────────
+  // Production incident diagnosis only - reads the REAL, final, post-render
+  // DOM and live epk object, gated strictly on window._isOwner (the same
+  // existing flag that shows the Edit button). Public visitors never see
+  // this. Remove once the Assets lock issue is confirmed resolved from a
+  // real owner-session screenshot.
+  if (window._isOwner) {
+    try { renderAssetsDebugPanel(epk); } catch(e) {
+      console.error('Debug panel failed:', e);
+    }
+  }
+}
+
+function renderAssetsDebugPanel(epk) {
+  const existing = document.getElementById('__assetsDebugPanel');
+  if (existing) existing.remove();
+
+  const scriptEl = document.querySelector('script[src*="epk.js"]');
+  const scriptSrc = scriptEl ? scriptEl.getAttribute('src') : 'NOT FOUND';
+
+  const assetsList = (epk.assets || []).filter(a => a.visible !== false && a.category !== 'Resume');
+  const first = assetsList[0];
+
+  // Find the FIRST asset's actually-rendered Preview and access elements in
+  // the real DOM, inside the real #assetsBody container - not reconstructed
+  // from logic, read directly from what the browser actually has on screen.
+  const assetsBody = document.getElementById('assetsBody');
+  let firstPreviewInfo = 'no #assetsBody found';
+  let firstAccessInfo = 'no #assetsBody found';
+  if (assetsBody) {
+    const clickable = assetsBody.querySelectorAll('button, a');
+    const previewEl = Array.from(clickable).find(el => el.textContent.includes('Preview') || el.textContent.includes('PREVIEW'));
+    const accessEl = Array.from(clickable).find(el =>
+      (el.textContent.includes('Request Access') || el.textContent.includes('REQUEST ACCESS') || el.textContent.includes('Download') || el.textContent.includes('DOWNLOAD'))
+    );
+    if (previewEl) {
+      const tag = previewEl.tagName;
+      const onclick = previewEl.getAttribute('onclick');
+      const href = previewEl.getAttribute('href');
+      firstPreviewInfo = tag === 'A' && href
+        ? 'ANCHOR opening URL: ' + href
+        : 'BUTTON calling: ' + (onclick || '(no onclick found)');
+    } else {
+      firstPreviewInfo = 'NO preview element found in #assetsBody';
+    }
+    if (accessEl) {
+      const tag = accessEl.tagName;
+      const onclick = accessEl.getAttribute('onclick');
+      const href = accessEl.getAttribute('href');
+      const label = accessEl.textContent.trim();
+      firstAccessInfo = tag === 'A' && href
+        ? 'DOWNLOAD LINK (anchor) to: ' + href + ' | label: "' + label + '"'
+        : 'REQUEST ACCESS BUTTON calling: ' + (onclick || '(no onclick found)') + ' | label: "' + label + '"';
+    } else {
+      firstAccessInfo = 'NO access/download element found in #assetsBody';
+    }
+  }
+
+  const assetUrlRows = assetsList.map((a, i) =>
+    '<div>[' + i + '] "' + (a.title || '(untitled)') + '" — url: ' + (a.url ? 'PRESENT (' + a.url.slice(0, 60) + '...)' : 'MISSING') + '</div>'
+  ).join('');
+
+  const panel = document.createElement('div');
+  panel.id = '__assetsDebugPanel';
+  panel.style.cssText = 'position:relative;max-width:1100px;margin:0 auto 2rem;padding:1.25rem 1.5rem;background:#1a0000;border:2px solid #ff4444;font-family:monospace;font-size:11px;color:#ffcccc;line-height:1.6;white-space:pre-wrap;word-break:break-all';
+  panel.innerHTML =
+    '<div style="color:#ff6666;font-weight:bold;font-size:13px;margin-bottom:0.75rem">⚠ TEMPORARY DEBUG PANEL — OWNER VIEW ONLY — NOT VISIBLE TO PUBLIC</div>' +
+    '<div><b>1. epk.js script src (loaded by THIS browser, right now):</b> ' + scriptSrc + '</div>' +
+    '<div><b>   Diagnostic loaded at:</b> ' + new Date().toISOString() + '</div>' +
+    '<div style="margin-top:0.5rem"><b>2. epk.assetsLocked (as read by this page render):</b> ' + JSON.stringify(epk.assetsLocked) + ' (type: ' + typeof epk.assetsLocked + ')</div>' +
+    '<div style="margin-top:0.5rem"><b>3. Asset URLs (epk.assets, filtered same as live render):</b>' + (assetUrlRows || ' (no assets found)') + '</div>' +
+    '<div style="margin-top:0.5rem"><b>4. First asset — Preview element, AS ACTUALLY RENDERED in #assetsBody:</b><br>' + firstPreviewInfo + '</div>' +
+    '<div style="margin-top:0.5rem"><b>5. First asset — Access/Download element, AS ACTUALLY RENDERED in #assetsBody:</b><br>' + firstAccessInfo + '</div>' +
+    '<div style="margin-top:0.5rem"><b>6. Page load timestamp:</b> ' + (window.performance && performance.timing ? new Date(performance.timing.navigationStart).toISOString() : 'unavailable') + '</div>' +
+    '<div style="margin-top:0.5rem"><b>7. Data source:</b> fetched live via POST /api/epk on this page load (no embedded/static JSON is used in production) — epk.lastUpdated field: ' + (epk.lastUpdated || '(not set)') + '</div>';
+
+  const assetsBodyEl = document.getElementById('assetsBody');
+  if (assetsBodyEl && assetsBodyEl.parentElement) {
+    assetsBodyEl.parentElement.insertBefore(panel, assetsBodyEl);
+  } else {
+    document.body.insertBefore(panel, document.body.firstChild);
+  }
 }
 
 let currentGalleryLayout = 'marquee'; // overridden by epk.galleryLayout
