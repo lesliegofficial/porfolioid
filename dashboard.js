@@ -874,12 +874,12 @@ function updateAssetsLockUI() {
   if (locked) {
     track.style.background = '#333';
     thumb.style.left = '3px';
-    label.textContent = '🔒 Assets Locked';
+    label.textContent = '🔒 Assets Locked: ON — visitors must request access';
     toggleLabel.textContent = 'Locked';
   } else {
     track.style.background = 'var(--gold)';
     thumb.style.left = '23px';
-    label.textContent = '🔓 Assets Unlocked';
+    label.textContent = '🔓 Assets Locked: OFF — visitors can preview/download';
     toggleLabel.textContent = 'Unlocked';
   }
 }

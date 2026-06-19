@@ -851,11 +851,15 @@ function buildEPK(epk) {
   const visibleAssets = (epk.assets || []).filter(a => a.visible !== false && a.category !== 'Resume');
   const allCategories = [...new Set(visibleAssets.map(a => a.category).filter(Boolean))];
 
-  // Phase 1 fix: both buttons below call requestAssetViaConnect(), defined as a
-  // global function near trackAssetDownload() further down this file (not nested
-  // here) so it's actually reachable from these inline onclick attributes.
+  // Preview now mirrors the same assetsLocked/a.url branching already proven
+  // correct in makeAccessBtn() below, rather than always routing to Connect.
+  // Locked: no file URL is ever exposed, same safe fallback as Request Access.
+  // Unlocked with a real file: opens the actual asset directly.
+  // Unlocked with no file: nothing to preview, so nothing renders.
   function makePreviewBtn(a, i) {
-    return '<button onclick="requestAssetViaConnect()" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.5);background:rgba(201,168,76,0.08);color:var(--gold);padding:0.45rem 0.9rem;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.background=\'rgba(201,168,76,0.18)\'" onmouseout="this.style.background=\'rgba(201,168,76,0.08)\'">👁 Preview</button>';
+    if (assetsLocked) return '<button onclick="requestAssetViaConnect()" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.5);background:rgba(201,168,76,0.08);color:var(--gold);padding:0.45rem 0.9rem;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.background=\'rgba(201,168,76,0.18)\'" onmouseout="this.style.background=\'rgba(201,168,76,0.08)\'">👁 Preview</button>';
+    if (a.url) return '<a href="'+a.url+'" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.5);background:rgba(201,168,76,0.08);color:var(--gold);padding:0.45rem 0.9rem;transition:all 0.2s;text-decoration:none;white-space:nowrap" onmouseover="this.style.background=\'rgba(201,168,76,0.18)\'" onmouseout="this.style.background=\'rgba(201,168,76,0.08)\'">👁 Preview</a>';
+    return '';
   }
 
   function makeAccessBtn(a, i) {
