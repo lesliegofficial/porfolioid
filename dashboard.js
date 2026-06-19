@@ -859,9 +859,23 @@ function setAssetsLayout(layout) {
 }
 
 function toggleAssetsLock() {
+  const before = epk.assetsLocked;
+  console.log('[assetsLocked toggle] BEFORE click:', before, '(type:', typeof before + ')');
+
   epk.assetsLocked = !epk.assetsLocked;
+  const after = epk.assetsLocked;
+  console.log('[assetsLocked toggle] AFTER click (in-memory epk object):', after, '(type:', typeof after + ')');
+  console.log('[assetsLocked toggle] Value about to be sent to persistUser():', epk.assetsLocked);
+
   updateAssetsLockUI();
-  persistUser(); showSaveBanner();
+  persistUser().then(function(result) {
+    console.log('[assetsLocked toggle] persistUser() resolved. Return value:', result);
+    console.log('[assetsLocked toggle] epk.assetsLocked immediately after save completes:', epk.assetsLocked);
+    console.log('[assetsLocked toggle] Full epk object snapshot after save:', JSON.parse(JSON.stringify(epk)));
+  }).catch(function(err) {
+    console.error('[assetsLocked toggle] persistUser() FAILED:', err);
+  });
+  showSaveBanner();
 }
 
 function updateAssetsLockUI() {
