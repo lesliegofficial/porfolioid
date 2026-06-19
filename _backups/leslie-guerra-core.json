@@ -1692,7 +1692,7 @@
     "industryRoles": [],
     "availabilityBadges": []
   },
-  "resumeEnabled": false,
+  "resumeEnabled": true,
   "bookingEnabled": true,
   "bookingTagline": "",
   "bioImageCropTop": 36,
