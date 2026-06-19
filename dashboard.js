@@ -2693,7 +2693,7 @@ function renderResumeCards() {
             ${skills ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.25rem">${skills}</div>` : ''}
           </div>
           <div class="card-actions">
-            <button class="btn-card-action" onclick="generateResumePDF(${i})" title="Download as PDF" style="background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.3);color:var(--gold)">↓ PDF</button>
+            <button class="btn-card-action" onclick="openResumeFile(${i})" title="Open the uploaded resume file" style="background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.3);color:var(--gold)">↓ PDF</button>
             <button class="btn-card-action" onclick="editResumeCard(${i})">Edit</button>
             <button class="btn-card-action btn-card-delete" onclick="removeResumeCard(${i})">Delete</button>
           </div>
@@ -2705,6 +2705,21 @@ function renderResumeCards() {
   if (addBtn) addBtn.style.display = (epk.resumeCards || []).length >= 2 ? 'none' : '';
 }
 
+// Opens the actual uploaded/selected resume file in a new browser tab.
+// Checks resumeUrl first (canonical field going forward), falls back to the
+// legacy url field for existing records that predate this fix. Never writes
+// or migrates data - read-only fallback, both fields stay exactly as saved.
+function openResumeFile(idx) {
+  const r = epk.resumeCards[idx];
+  if (!r) return;
+  const fileUrl = r.resumeUrl || r.url;
+  if (!fileUrl) { alert('No resume file has been uploaded or selected for this card yet.'); return; }
+  window.open(fileUrl, '_blank');
+}
+
+// PRESERVED for a possible future, separately-labeled "Generate Resume" action.
+// No longer wired to the Resume Card's primary PDF button - see openResumeFile()
+// above, which now opens the actual uploaded/selected file instead.
 function generateResumePDF(idx) {
   const r = epk.resumeCards[idx];
   if (!r) return;
@@ -2802,7 +2817,7 @@ function editResumeCard(i) {
   document.getElementById('newResumeSubtitle').value = r.subtitle || '';
   document.getElementById('newResumeSkills').value = (r.skills || []).join(', ');
   document.getElementById('newResumeDesc').value = r.desc || '';
-  document.getElementById('newResumeUrl').value = r.url || '';
+  document.getElementById('newResumeUrl').value = r.resumeUrl || r.url || '';
   document.getElementById('addResumeForm').classList.add('open');
   document.getElementById('addResumeForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addResumeForm .add-form-title').textContent = 'Edit Resume Card';
@@ -2828,14 +2843,22 @@ function triggerResumeUpload() {
 function addResumeCard() {
   const title = document.getElementById('newResumeTitle').value.trim();
   if (!title) return;
+  // Canonical field going forward is resumeUrl, matching what the public site and
+  // openResumeFile() both read first. If this card already had a legacy `url` value
+  // (from before this fix), it is preserved rather than silently dropped on save -
+  // openResumeFile() still falls back to it if resumeUrl is ever empty.
+  const existingLegacyUrl = (editingResumeIdx >= 0 && epk.resumeCards && epk.resumeCards[editingResumeIdx])
+    ? epk.resumeCards[editingResumeIdx].url
+    : undefined;
   const card = {
     label: document.getElementById('newResumeLabel').value.trim(),
     title,
     subtitle: document.getElementById('newResumeSubtitle').value.trim(),
     skills: document.getElementById('newResumeSkills').value.split(',').map(s => s.trim()).filter(Boolean),
     desc: document.getElementById('newResumeDesc').value.trim(),
-    url: document.getElementById('newResumeUrl').value.trim(),
+    resumeUrl: document.getElementById('newResumeUrl').value.trim(),
   };
+  if (existingLegacyUrl) card.url = existingLegacyUrl;
   epk.resumeCards = epk.resumeCards || [];
   if (editingResumeIdx >= 0) {
     epk.resumeCards[editingResumeIdx] = card;
