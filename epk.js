@@ -1522,9 +1522,16 @@ function renderAssetsDebugPanel(epk) {
 
   const panel = document.createElement('div');
   panel.id = '__assetsDebugPanel';
-  panel.style.cssText = 'position:relative;max-width:1100px;margin:0 auto 2rem;padding:1.25rem 1.5rem;background:#1a0000;border:2px solid #ff4444;font-family:monospace;font-size:11px;color:#ffcccc;line-height:1.6;white-space:pre-wrap;word-break:break-all';
-  panel.innerHTML =
-    '<div style="color:#ff6666;font-weight:bold;font-size:13px;margin-bottom:0.75rem">⚠ TEMPORARY DEBUG PANEL — OWNER VIEW ONLY — NOT VISIBLE TO PUBLIC</div>' +
+  panel.style.cssText = 'position:relative;max-width:1100px;margin:0 auto 1rem;border:2px solid #ff4444;font-family:monospace;font-size:11px;color:#ffcccc;line-height:1.6';
+
+  const header = document.createElement('div');
+  header.style.cssText = 'padding:0.6rem 1rem;background:#1a0000;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none';
+  header.innerHTML = '<span style="color:#ff6666;font-weight:bold;font-size:12px">⚠ DEBUG PANEL (collapsed) — click to expand — owner view only</span><span id="__debugPanelArrow" style="color:#ff6666">▸</span>';
+
+  const body = document.createElement('div');
+  body.id = '__assetsDebugPanelBody';
+  body.style.cssText = 'display:none;padding:1.25rem 1.5rem;background:#1a0000;border-top:1px solid #662222;white-space:pre-wrap;word-break:break-all';
+  body.innerHTML =
     '<div><b>1. epk.js script src (loaded by THIS browser, right now):</b> ' + scriptSrc + '</div>' +
     '<div><b>   Diagnostic loaded at:</b> ' + new Date().toISOString() + '</div>' +
     '<div style="margin-top:0.5rem"><b>2. epk.assetsLocked (as read by this page render):</b> ' + JSON.stringify(epk.assetsLocked) + ' (type: ' + typeof epk.assetsLocked + ')</div>' +
@@ -1533,6 +1540,18 @@ function renderAssetsDebugPanel(epk) {
     '<div style="margin-top:0.5rem"><b>5. First asset — Access/Download element, AS ACTUALLY RENDERED in #assetsBody:</b><br>' + firstAccessInfo + '</div>' +
     '<div style="margin-top:0.5rem"><b>6. Page load timestamp:</b> ' + (window.performance && performance.timing ? new Date(performance.timing.navigationStart).toISOString() : 'unavailable') + '</div>' +
     '<div style="margin-top:0.5rem"><b>7. Data source:</b> fetched live via POST /api/epk on this page load (no embedded/static JSON is used in production) — epk.lastUpdated field: ' + (epk.lastUpdated || '(not set)') + '</div>';
+
+  header.onclick = function() {
+    const isOpen = body.style.display !== 'none';
+    body.style.display = isOpen ? 'none' : 'block';
+    document.getElementById('__debugPanelArrow').textContent = isOpen ? '▸' : '▾';
+    header.querySelector('span').textContent = isOpen
+      ? '⚠ DEBUG PANEL (collapsed) — click to expand — owner view only'
+      : '⚠ DEBUG PANEL (expanded) — click to collapse — owner view only';
+  };
+
+  panel.appendChild(header);
+  panel.appendChild(body);
 
   const assetsBodyEl = document.getElementById('assetsBody');
   if (assetsBodyEl && assetsBodyEl.parentElement) {
