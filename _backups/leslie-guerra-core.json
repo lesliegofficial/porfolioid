@@ -1686,8 +1686,8 @@
   ],
   "resumeCards": [
     {
+      "url": "https://raw.githubusercontent.com/lesliegofficial/porfolioid/main/assets/1781872387010_leslie_ann_guerra_resume_ats_final_06-2026.pdf",
       "desc": "Bilingual Operations & Artist Relations professional with 20+ years of experience spanning live entertainment, business operations, compliance, and A&R coordination.",
-      "color": "gold",
       "label": "OPERATIONS & ARTIST RELATIONS",
       "title": "Operations & Artist Relations Resume",
       "skills": [
@@ -1700,10 +1700,7 @@
         "CASE MANAGEMENT",
         "BILINGUAL EN/ES"
       ],
-      "visible": true,
-      "btnLabel": "↓ DOWNLOAD RESUME →",
-      "subtitle": "Digital Campaigns | Live Experiences | A&R",
-      "resumeUrl": "https://porfolioid.com/press/resume-marketing-artist-relations.pdf"
+      "subtitle": "Digital Campaigns | Live Experiences | A&R"
     }
   ],
   "videoLayout": "spotlight",
