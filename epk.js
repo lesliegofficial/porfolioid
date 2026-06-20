@@ -1174,23 +1174,6 @@ function buildEPK(epk) {
           </div>
         </div>
 
-        <!-- PROFESSIONAL RESUME — relocated inside the Career/Credits flow (Option A):
-             Career Highlights -> Resume -> View Complete Record -> Expanded Credits.
-             buildResumeCard() markup, styling, and the resumeEnabled gating are
-             completely unchanged from the prior standalone section - only the
-             insertion point moved. No longer its own <section>, no longer needs
-             the separate reorder-pinning workaround (removed below). -->
-        ${(epk.resumeEnabled !== false && resumeCards.length) ? `
-        <div class="ch3-header" style="margin-top:3rem">
-          <span class="ch3-label">Professional Resume</span>
-          <div class="ch3-title-row">
-            <h2 class="section-title" style="margin:0">Resume</h2>
-          </div>
-        </div>
-        <div class="career-stacked-cards">
-          ${resumeCards.map(buildResumeCard).join('')}
-        </div>` : ''}
-
         <div style="text-align:center;margin-top:2rem">
           <p id="viewCompleteRecordCaption" style="font-family:var(--font-display);font-size:1.05rem;font-style:italic;color:rgba(245,243,238,0.65);margin-bottom:1.1rem;letter-spacing:0.01em">Every credit, role, and collaboration in one place — sortable by category, with full details behind each entry.</p>
           <a href="#credits" onclick="filterCreditsByCategory('')" id="viewCompleteRecordBtn" class="ch3-viewcomplete">View Complete Record →</a>
@@ -1199,6 +1182,22 @@ function buildEPK(epk) {
         <!-- THE RECORD — hidden by default, revealed on demand -->
         ${epk.credits?.length ? `
         <div id="credits" style="display:none;margin-top:3rem;padding-top:2.5rem;border-top:1px solid rgba(201,168,76,0.15)">
+          <!-- PROFESSIONAL RESUME — first item revealed inside the expandable Credits
+               container. buildResumeCard() markup, styling, and the resumeEnabled
+               gating are unchanged from before - only the insertion point moved,
+               from a standalone visible block above "View Complete Record" to here,
+               so it now inherits the same hidden-until-expanded show/hide behavior
+               as the Credits cards (toggled by filterCreditsByCategory). -->
+          ${(epk.resumeEnabled !== false && resumeCards.length) ? `
+          <div class="ch3-header" style="margin-top:3rem">
+            <span class="ch3-label">Professional Resume</span>
+            <div class="ch3-title-row">
+              <h2 class="section-title" style="margin:0">Resume</h2>
+            </div>
+          </div>
+          <div class="career-stacked-cards">
+            ${resumeCards.map(buildResumeCard).join('')}
+          </div>` : ''}
           <div id="creditsFilterBanner" style="display:none;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.08em;color:var(--gray-light);margin-bottom:1rem"></div>
           <div class="credits-grid" id="creditsGrid">${creditsHTML}</div>
           ${visibleCredits.length > 4 ? `
