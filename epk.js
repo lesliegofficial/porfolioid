@@ -517,7 +517,7 @@ function buildEPK(epk) {
   // drives dashboard form defaults; rendering here is fully generic and works
   // identically regardless of cardType. All fields fall back safely so existing
   // cards saved before this system (resumeUrl/url only) keep working unchanged.)
-  const buildResumeCard = (r) => {
+  const buildResumeCard = (r, idx) => {
     const isMusicResume = (r.label||'').includes('Marketing') || (r.title||'').includes('Marketing') || (r.label||'').includes('Artist');
     const rc = isMusicResume ? 'var(--gold)' : '#8FB8D0';
     const rbg = isMusicResume ? 'rgba(201,168,76,' : 'rgba(123,155,175,';
@@ -528,13 +528,21 @@ function buildEPK(epk) {
     const pdfAreaHTML = pdfUrl
       ? `<a href="${pdfUrl}" target="_blank" class="resume-card-btn" style="color:${rc};border-color:${rc}4D">↓ ${pdfBtnLabel} →</a>`
       : (r.showPdfComingSoon ? '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;opacity:0.5">PDF coming soon</span>' : '');
+    // "Read Full Biography" opens the same modal used by Credit cards (openBiographyModal
+    // reuses #creditModalOverlay) so the on-site reading experience matches the rest of
+    // the site exactly. Index-based lookup (epkResumeCards[idx]) avoids embedding the
+    // full long-form text inside an inline HTML attribute. Only renders when fullBio
+    // is actually present on the card - independent of cardType, so it's available to
+    // any Profile Card that has long-form text, not just Biography.
+    const readBioHTML = r.fullBio ? `<button type="button" class="resume-card-btn" style="color:${rc};border-color:${rc}4D;background:none;cursor:pointer;font:inherit" onclick="openBiographyModal(${idx})">Read Full Biography →</button>` : '';
+    const buttonRowHTML = [pdfAreaHTML, readBioHTML].filter(Boolean).join('');
     return `<div class="resume-card" style="border-top:3px solid ${rc}">
       <div class="resume-card-label" style="color:${rc}">${displayLabel}</div>
       <div class="resume-card-title">${r.title}</div>
       <div class="resume-card-subtitle">${r.subtitle || ''}</div>
       ${r.skills?.length ? `<div class="resume-card-skills">${r.skills.map(s => `<span class="resume-skill-tag" style="border-color:${rc}4D;background:${rc}0D">${s}</span>`).join('')}</div>` : ''}
       ${r.desc ? `<div class="resume-card-desc">${r.desc}</div>` : ''}
-      ${pdfAreaHTML ? `<div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:auto;padding-top:1.25rem">${pdfAreaHTML}</div>` : ''}
+      ${buttonRowHTML ? `<div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:auto;padding-top:1.25rem">${buttonRowHTML}</div>` : ''}
       ${r.footerText ? `<div style="margin-top:0.85rem;padding-top:0.75rem;border-top:1px solid rgba(201,168,76,0.15);font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.08em;line-height:1.5;opacity:0.7">${r.footerText}</div>` : ''}
     </div>`;
   };
@@ -542,6 +550,7 @@ function buildEPK(epk) {
 
   const careerLayout = epk.careerLayout || 'stacked';
   const resumeCards = epk.resumeCards || [];
+  epkResumeCards = resumeCards;
   const bioImgPos = epk.bioImagePosition !== undefined ? `center ${epk.bioImagePosition}%` : 'center 0%';
   const bioZoom = epk.bioImageZoom || 100;
   const bioCropTop = epk.bioImageCropTop || 0;
@@ -3109,6 +3118,7 @@ function requestAssetViaConnect() {
 // Credit modal
 let epkCreditsData = [];
 let epkVisibleCredits = [];
+let epkResumeCards = [];
 let _currentOpenCredit = null;
 function openCreditModal(i) {
   const c = (typeof i === 'object') ? i : epkVisibleCredits[i];
@@ -3399,6 +3409,26 @@ function openCreditModal(i) {
 function closeCreditModal() {
   document.getElementById('creditModalOverlay').classList.remove('open');
   document.body.style.overflow = '';
+}
+// Opens the Biography's full long-form text in the same modal used by Credit
+// cards, so the on-site reading experience matches the rest of the site
+// exactly - same overlay, same typography, same close button and font-size
+// controls. Reuses openCreditModal's text-formatting convention: \n\n becomes
+// a paragraph break, and <strong>Heading</strong> renders as a gold section
+// header (existing .credit-modal-desc strong CSS rule, unchanged).
+function openBiographyModal(idx) {
+  const r = epkResumeCards[idx];
+  if (!r || !r.fullBio) return;
+  document.getElementById('creditModalArtist').textContent = r.title || 'Biography';
+  document.getElementById('creditModalMeta').textContent = r.subtitle || '';
+  let formattedBio = r.fullBio.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+  document.getElementById('creditModalDesc').innerHTML = formattedBio;
+  document.getElementById('creditModalCollaborators').innerHTML = '';
+  document.getElementById('creditModalMedia').innerHTML = '';
+  document.getElementById('creditModalPhotos').innerHTML = '';
+  document.getElementById('creditModalPress').innerHTML = '';
+  document.getElementById('creditModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 function fixVideoThumb(url) {
   // Remove forced crop transforms from Cloudinary video thumbnails

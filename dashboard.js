@@ -2836,6 +2836,7 @@ function editResumeCard(i) {
   document.getElementById('newResumePdfButtonLabel').value = r.pdfButtonLabel || '';
   document.getElementById('newResumeShowComingSoon').checked = !!r.showPdfComingSoon;
   document.getElementById('newResumeFooterText').value = r.footerText || '';
+  document.getElementById('newResumeFullBio').value = r.fullBio || '';
   document.getElementById('addResumeForm').classList.add('open');
   document.getElementById('addResumeForm').scrollIntoView({ behavior: 'smooth' });
   document.querySelector('#addResumeForm .add-form-title').textContent = 'Edit Profile Card';
@@ -2901,6 +2902,7 @@ function addResumeCard() {
     pdfButtonLabel: document.getElementById('newResumePdfButtonLabel').value.trim(),
     showPdfComingSoon: document.getElementById('newResumeShowComingSoon').checked,
     footerText: document.getElementById('newResumeFooterText').value.trim(),
+    fullBio: document.getElementById('newResumeFullBio').value.trim(),
   };
   if (existingLegacyUrl) card.url = existingLegacyUrl;
   if (existingLegacyResumeUrl) card.resumeUrl = existingLegacyResumeUrl;
@@ -2912,7 +2914,7 @@ function addResumeCard() {
   } else {
     epk.resumeCards.push(card);
   }
-  ['newResumeLabel','newResumeTitle','newResumeSubtitle','newResumeSkills','newResumeDesc','newResumeUrl','newResumePdfButtonLabel','newResumeFooterText'].forEach(id => document.getElementById(id).value = '');
+  ['newResumeLabel','newResumeTitle','newResumeSubtitle','newResumeSkills','newResumeDesc','newResumeUrl','newResumePdfButtonLabel','newResumeFooterText','newResumeFullBio'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('newResumeShowComingSoon').checked = false;
   document.getElementById('newResumeCardType').value = 'other';
   toggleAddForm('addResumeForm');
