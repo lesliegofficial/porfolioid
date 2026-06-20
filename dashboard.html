@@ -129,7 +129,7 @@
         <span class="nav-item-icon">🔗</span><span>Social Links</span>
       </button>
       <button class="nav-item" onclick="showPanel('resume')">
-        <span class="nav-item-icon">📋</span><span>Resume</span>
+        <span class="nav-item-icon">📋</span><span>Professional Profile</span>
       </button>
       <button class="nav-item" onclick="showPanel('awards')">
         <span class="nav-item-icon">🏅</span><span>Awards & Degrees</span>
@@ -1665,11 +1665,11 @@
 
     <!-- RESUME PANEL -->
     <div class="panel" id="panel-resume">
-      <h1 class="panel-title">Professional Resume</h1>
-      <p class="panel-sub">Add up to 2 resume cards — styled in black and gold to match your portfolio. Each card links to a downloadable resume.</p>
+      <h1 class="panel-title">Professional Profile</h1>
+      <p class="panel-sub">Add up to 2 profile cards — styled in black and gold to match your portfolio. Use them for your Resume, Biography, or other professional documents.</p>
 
       <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);padding:1rem 1.25rem;border:1px solid rgba(201,168,76,0.15);margin-bottom:1.5rem">
-        <label class="field-label" style="margin:0;flex:1">Show Resume Section on Portfolio</label>
+        <label class="field-label" style="margin:0;flex:1">Show Professional Profile Section on Portfolio</label>
         <label style="position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0">
           <input type="checkbox" id="resumeToggle" onchange="epk.resumeEnabled=this.checked;persistUser();showSaveBanner()" style="opacity:0;width:0;height:0" checked>
           <span style="position:absolute;cursor:pointer;inset:0;background:var(--dark-4);border:1px solid rgba(201,168,76,0.2);transition:0.3s;border-radius:24px" id="resumeToggleSlider"></span>
@@ -1683,10 +1683,18 @@
 
       <div id="resumeCardsList"></div>
 
-      <button class="btn-add-new" onclick="toggleAddForm('addResumeForm')" id="addResumeBtn">+ Add Resume Card</button>
+      <button class="btn-add-new" onclick="toggleAddForm('addResumeForm')" id="addResumeBtn">+ Add Profile Card</button>
 
       <div class="add-form" id="addResumeForm">
-        <div class="add-form-title">New Resume Card</div>
+        <div class="add-form-title">New Profile Card</div>
+        <div class="field-group">
+          <label class="field-label">Card Type <span style="color:var(--gray);font-weight:400">(prefills sensible defaults below — everything stays editable)</span></label>
+          <select id="newResumeCardType" onchange="applyResumeCardTypeDefaults()">
+            <option value="executive_resume">Executive Resume</option>
+            <option value="biography">Biography</option>
+            <option value="other" selected>Other</option>
+          </select>
+        </div>
         <div class="field-row">
           <div class="field-group">
             <label class="field-label">Card Label <span style="color:var(--gray);font-weight:400">(small tag above title)</span></label>
@@ -1710,13 +1718,25 @@
           <textarea id="newResumeDesc" rows="3" placeholder="Brief professional summary for this career track..."></textarea>
         </div>
         <div class="field-group">
-          <label class="field-label">Resume Link / PDF URL</label>
+          <label class="field-label">PDF URL</label>
           <input type="url" id="newResumeUrl" placeholder="https://... link to PDF">
           <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
             <button class="btn-add" onclick="triggerResumeUpload()">↑ Upload PDF</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
           </div>
           <input type="file" id="resumeFileInput" accept=".pdf" style="display:none">
+        </div>
+        <div class="field-group">
+          <label class="field-label">PDF Button Label <span style="color:var(--gray);font-weight:400">(shown only when a PDF URL is set)</span></label>
+          <input type="text" id="newResumePdfButtonLabel" placeholder="e.g. Download Resume">
+        </div>
+        <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1rem">
+          <input type="checkbox" id="newResumeShowComingSoon" style="width:16px;height:16px">
+          <label class="field-label" style="margin:0" for="newResumeShowComingSoon">Show "PDF Coming Soon" when no PDF URL is set</label>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Footer Text <span style="color:var(--gray);font-weight:400">(optional — blank shows nothing)</span></label>
+          <textarea id="newResumeFooterText" rows="2" placeholder="e.g. Full job descriptions and career documentation available in the Credits section below"></textarea>
         </div>
         <div class="form-actions">
           <button class="btn-save" onclick="addResumeCard()">Save Card</button>
@@ -1906,6 +1926,6 @@
 
 <div class="save-banner" id="saveBanner">✓ Saved</div>
 
-<script src="/dashboard.js?v=20260619-1" defer></script>
+<script src="/dashboard.js?v=20260620-1" defer></script>
 </body>
 </html>

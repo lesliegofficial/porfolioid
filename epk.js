@@ -512,23 +512,31 @@ function buildEPK(epk) {
   const bioParagraphs = bioFullText.split(/\n\n+/).filter(p => p.trim()).map(p => `<p style="margin-bottom:1em">${p}</p>`).join('');
   const shortBioHTML = `<p style="margin-bottom:1.5em">${shortBio}</p>`;
 
-  // Build career profile resume card
+  // Build career profile card (Profile Card system - supports Executive Resume,
+  // Biography, and Other card types via the generic fields below. cardType only
+  // drives dashboard form defaults; rendering here is fully generic and works
+  // identically regardless of cardType. All fields fall back safely so existing
+  // cards saved before this system (resumeUrl/url only) keep working unchanged.)
   const buildResumeCard = (r) => {
     const isMusicResume = (r.label||'').includes('Marketing') || (r.title||'').includes('Marketing') || (r.label||'').includes('Artist');
     const rc = isMusicResume ? 'var(--gold)' : '#8FB8D0';
     const rbg = isMusicResume ? 'rgba(201,168,76,' : 'rgba(123,155,175,';
+    const pdfUrl = r.pdfUrl || r.resumeUrl || r.url || '';
+    const pdfBtnLabel = r.pdfButtonLabel || 'Download Resume';
+    const pdfAreaHTML = pdfUrl
+      ? `<a href="${pdfUrl}" target="_blank" class="resume-card-btn" style="color:${rc};border-color:${rc}4D">↓ ${pdfBtnLabel} →</a>`
+      : (r.showPdfComingSoon ? '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;opacity:0.5">PDF coming soon</span>' : '');
     return `<div class="resume-card" style="border-top:3px solid ${rc}">
       <div class="resume-card-label" style="color:${rc}">${r.label || 'Resume'}</div>
       <div class="resume-card-title">${r.title}</div>
       <div class="resume-card-subtitle">${r.subtitle || ''}</div>
       ${r.skills?.length ? `<div class="resume-card-skills">${r.skills.map(s => `<span class="resume-skill-tag" style="border-color:${rc}4D;background:${rc}0D">${s}</span>`).join('')}</div>` : ''}
       ${r.desc ? `<div class="resume-card-desc">${r.desc}</div>` : ''}
-      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:auto;padding-top:1.25rem">
-        ${(r.resumeUrl || r.url) ? `<a href="${r.resumeUrl || r.url}" target="_blank" class="resume-card-btn" style="color:${rc};border-color:${rc}4D">↓ Download Resume →</a>` : '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;opacity:0.5">PDF coming soon</span>'}
-      </div>
-      <div style="margin-top:0.85rem;padding-top:0.75rem;border-top:1px solid rgba(201,168,76,0.15);font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.08em;line-height:1.5;opacity:0.7">Full job descriptions and career documentation available in the Credits section below</div>
+      ${pdfAreaHTML ? `<div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:auto;padding-top:1.25rem">${pdfAreaHTML}</div>` : ''}
+      ${r.footerText ? `<div style="margin-top:0.85rem;padding-top:0.75rem;border-top:1px solid rgba(201,168,76,0.15);font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.08em;line-height:1.5;opacity:0.7">${r.footerText}</div>` : ''}
     </div>`;
   };
+
 
   const careerLayout = epk.careerLayout || 'stacked';
   const resumeCards = epk.resumeCards || [];

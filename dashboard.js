@@ -2720,14 +2720,14 @@ function renderResumeCards() {
 }
 
 // Opens the actual uploaded/selected resume file in a new browser tab.
-// Checks resumeUrl first (canonical field going forward), falls back to the
-// legacy url field for existing records that predate this fix. Never writes
-// or migrates data - read-only fallback, both fields stay exactly as saved.
+// Checks pdfUrl first (canonical field going forward), falls back through
+// resumeUrl then the legacy url field for cards saved before each fix. Never
+// writes or migrates data - read-only fallback, fields stay exactly as saved.
 function openResumeFile(idx) {
   const r = epk.resumeCards[idx];
   if (!r) return;
-  const fileUrl = r.resumeUrl || r.url;
-  if (!fileUrl) { alert('No resume file has been uploaded or selected for this card yet.'); return; }
+  const fileUrl = r.pdfUrl || r.resumeUrl || r.url;
+  if (!fileUrl) { alert('No PDF has been uploaded or selected for this card yet.'); return; }
   window.open(fileUrl, '_blank');
 }
 
@@ -2826,15 +2826,19 @@ function generateResumePDF(idx) {
 function editResumeCard(i) {
   editingResumeIdx = i;
   const r = epk.resumeCards[i];
+  document.getElementById('newResumeCardType').value = r.cardType || 'other';
   document.getElementById('newResumeLabel').value = r.label || '';
   document.getElementById('newResumeTitle').value = r.title || '';
   document.getElementById('newResumeSubtitle').value = r.subtitle || '';
   document.getElementById('newResumeSkills').value = (r.skills || []).join(', ');
   document.getElementById('newResumeDesc').value = r.desc || '';
-  document.getElementById('newResumeUrl').value = r.resumeUrl || r.url || '';
+  document.getElementById('newResumeUrl').value = r.pdfUrl || r.resumeUrl || r.url || '';
+  document.getElementById('newResumePdfButtonLabel').value = r.pdfButtonLabel || '';
+  document.getElementById('newResumeShowComingSoon').checked = !!r.showPdfComingSoon;
+  document.getElementById('newResumeFooterText').value = r.footerText || '';
   document.getElementById('addResumeForm').classList.add('open');
   document.getElementById('addResumeForm').scrollIntoView({ behavior: 'smooth' });
-  document.querySelector('#addResumeForm .add-form-title').textContent = 'Edit Resume Card';
+  document.querySelector('#addResumeForm .add-form-title').textContent = 'Edit Profile Card';
 }
 
 function triggerResumeUpload() {
@@ -2854,34 +2858,63 @@ function triggerResumeUpload() {
   input.click();
 }
 
+// Card Type dropdown prefills sensible defaults into the existing editable
+// fields. Nothing is locked - the person can change any field afterward.
+// Only fires when fields are currently empty for label/title-ish prefill
+// behavior is intentionally NOT applied - this always overwrites the title/
+// PDF button label/footer placeholders so picking a type gives an obvious,
+// predictable starting point, matching the approved plan's examples.
+function applyResumeCardTypeDefaults() {
+  const type = document.getElementById('newResumeCardType').value;
+  const titleEl = document.getElementById('newResumeTitle');
+  const btnLabelEl = document.getElementById('newResumePdfButtonLabel');
+  if (type === 'executive_resume') {
+    if (!titleEl.value.trim()) titleEl.value = 'Executive Resume';
+    if (!btnLabelEl.value.trim()) btnLabelEl.value = 'Download Resume';
+  } else if (type === 'biography') {
+    if (!titleEl.value.trim()) titleEl.value = 'About Leslie';
+    if (!btnLabelEl.value.trim()) btnLabelEl.value = 'Download Biography';
+  }
+  // 'other' - no prefill, user controls everything manually
+}
+
 function addResumeCard() {
   const title = document.getElementById('newResumeTitle').value.trim();
   if (!title) return;
-  // Canonical field going forward is resumeUrl, matching what the public site and
-  // openResumeFile() both read first. If this card already had a legacy `url` value
-  // (from before this fix), it is preserved rather than silently dropped on save -
-  // openResumeFile() still falls back to it if resumeUrl is ever empty.
+  // Canonical field going forward is pdfUrl (Profile Card system). resumeUrl/url
+  // are preserved as read fallbacks for cards saved before this system existed -
+  // openResumeFile() and the public renderer both still check them in order.
   const existingLegacyUrl = (editingResumeIdx >= 0 && epk.resumeCards && epk.resumeCards[editingResumeIdx])
     ? epk.resumeCards[editingResumeIdx].url
     : undefined;
+  const existingLegacyResumeUrl = (editingResumeIdx >= 0 && epk.resumeCards && epk.resumeCards[editingResumeIdx])
+    ? epk.resumeCards[editingResumeIdx].resumeUrl
+    : undefined;
   const card = {
+    cardType: document.getElementById('newResumeCardType').value,
     label: document.getElementById('newResumeLabel').value.trim(),
     title,
     subtitle: document.getElementById('newResumeSubtitle').value.trim(),
     skills: document.getElementById('newResumeSkills').value.split(',').map(s => s.trim()).filter(Boolean),
     desc: document.getElementById('newResumeDesc').value.trim(),
-    resumeUrl: document.getElementById('newResumeUrl').value.trim(),
+    pdfUrl: document.getElementById('newResumeUrl').value.trim(),
+    pdfButtonLabel: document.getElementById('newResumePdfButtonLabel').value.trim(),
+    showPdfComingSoon: document.getElementById('newResumeShowComingSoon').checked,
+    footerText: document.getElementById('newResumeFooterText').value.trim(),
   };
   if (existingLegacyUrl) card.url = existingLegacyUrl;
+  if (existingLegacyResumeUrl) card.resumeUrl = existingLegacyResumeUrl;
   epk.resumeCards = epk.resumeCards || [];
   if (editingResumeIdx >= 0) {
     epk.resumeCards[editingResumeIdx] = card;
     editingResumeIdx = -1;
-    document.querySelector('#addResumeForm .add-form-title').textContent = 'New Resume Card';
+    document.querySelector('#addResumeForm .add-form-title').textContent = 'New Profile Card';
   } else {
     epk.resumeCards.push(card);
   }
-  ['newResumeLabel','newResumeTitle','newResumeSubtitle','newResumeSkills','newResumeDesc','newResumeUrl'].forEach(id => document.getElementById(id).value = '');
+  ['newResumeLabel','newResumeTitle','newResumeSubtitle','newResumeSkills','newResumeDesc','newResumeUrl','newResumePdfButtonLabel','newResumeFooterText'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('newResumeShowComingSoon').checked = false;
+  document.getElementById('newResumeCardType').value = 'other';
   toggleAddForm('addResumeForm');
   renderResumeCards(); persistUser(); showSaveBanner();
 }
