@@ -521,13 +521,15 @@ function buildEPK(epk) {
     const isMusicResume = (r.label||'').includes('Marketing') || (r.title||'').includes('Marketing') || (r.label||'').includes('Artist');
     const rc = isMusicResume ? 'var(--gold)' : '#8FB8D0';
     const rbg = isMusicResume ? 'rgba(201,168,76,' : 'rgba(123,155,175,';
+    const cardTypeLabels = { executive_resume: 'Executive Resume', biography: 'Biography', other: 'Other' };
+    const displayLabel = cardTypeLabels[r.cardType] || r.label || 'Resume';
     const pdfUrl = r.pdfUrl || r.resumeUrl || r.url || '';
     const pdfBtnLabel = r.pdfButtonLabel || 'Download Resume';
     const pdfAreaHTML = pdfUrl
       ? `<a href="${pdfUrl}" target="_blank" class="resume-card-btn" style="color:${rc};border-color:${rc}4D">↓ ${pdfBtnLabel} →</a>`
       : (r.showPdfComingSoon ? '<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;opacity:0.5">PDF coming soon</span>' : '');
     return `<div class="resume-card" style="border-top:3px solid ${rc}">
-      <div class="resume-card-label" style="color:${rc}">${r.label || 'Resume'}</div>
+      <div class="resume-card-label" style="color:${rc}">${displayLabel}</div>
       <div class="resume-card-title">${r.title}</div>
       <div class="resume-card-subtitle">${r.subtitle || ''}</div>
       ${r.skills?.length ? `<div class="resume-card-skills">${r.skills.map(s => `<span class="resume-skill-tag" style="border-color:${rc}4D;background:${rc}0D">${s}</span>`).join('')}</div>` : ''}
@@ -1198,9 +1200,9 @@ function buildEPK(epk) {
                as the Credits cards (toggled by filterCreditsByCategory). -->
           ${(epk.resumeEnabled !== false && resumeCards.length) ? `
           <div class="ch3-header" style="margin-top:3rem">
-            <span class="ch3-label">Professional Resume</span>
+            <span class="ch3-label">Professional Profile</span>
             <div class="ch3-title-row">
-              <h2 class="section-title" style="margin:0">Resume</h2>
+              <h2 class="section-title" style="margin:0">Professional Documents</h2>
             </div>
           </div>
           <div class="career-stacked-cards">
