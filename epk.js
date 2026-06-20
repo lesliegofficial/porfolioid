@@ -1174,6 +1174,23 @@ function buildEPK(epk) {
           </div>
         </div>
 
+        <!-- PROFESSIONAL RESUME — relocated inside the Career/Credits flow (Option A):
+             Career Highlights -> Resume -> View Complete Record -> Expanded Credits.
+             buildResumeCard() markup, styling, and the resumeEnabled gating are
+             completely unchanged from the prior standalone section - only the
+             insertion point moved. No longer its own <section>, no longer needs
+             the separate reorder-pinning workaround (removed below). -->
+        ${(epk.resumeEnabled !== false && resumeCards.length) ? `
+        <div class="ch3-header" style="margin-top:3rem">
+          <span class="ch3-label">Professional Resume</span>
+          <div class="ch3-title-row">
+            <h2 class="section-title" style="margin:0">Resume</h2>
+          </div>
+        </div>
+        <div class="career-stacked-cards">
+          ${resumeCards.map(buildResumeCard).join('')}
+        </div>` : ''}
+
         <div style="text-align:center;margin-top:2rem">
           <p id="viewCompleteRecordCaption" style="font-family:var(--font-display);font-size:1.05rem;font-style:italic;color:rgba(245,243,238,0.65);margin-bottom:1.1rem;letter-spacing:0.01em">Every credit, role, and collaboration in one place — sortable by category, with full details behind each entry.</p>
           <a href="#credits" onclick="filterCreditsByCategory('')" id="viewCompleteRecordBtn" class="ch3-viewcomplete">View Complete Record →</a>
@@ -1191,26 +1208,6 @@ function buildEPK(epk) {
         </div>` : ''}
       </div>
     </section>
-
-    <!-- PROFESSIONAL RESUME -->
-    <!-- Gated on both resumeEnabled (dashboard toggle) AND having at least one
-         resume card - matches the same visibility pattern used elsewhere on this
-         page (e.g. credits/works), so toggling the dashboard switch off truly
-         hides the section rather than just hiding its content. -->
-    ${(epk.resumeEnabled !== false && resumeCards.length) ? `
-    <section class="career-profile-section" id="resume">
-      <div class="ch3-wrap">
-        <div class="ch3-header">
-          <span class="ch3-label">Professional Resume</span>
-          <div class="ch3-title-row">
-            <h2 class="section-title" style="margin:0">Resume</h2>
-          </div>
-        </div>
-        <div class="career-stacked-cards">
-          ${resumeCards.map(buildResumeCard).join('')}
-        </div>
-      </div>
-    </section>` : ''}
     <div class="divider"></div>
 
     <!-- CREATIVE WORKS -->
@@ -2638,23 +2635,6 @@ function applySectionOrderAndVisibility(epk) {
     if (nextSib && nextSib.classList && nextSib.classList.contains('divider')) {
       anchor.insertAdjacentElement('afterend', nextSib);
       anchor = nextSib;
-    }
-    // Resume is intentionally not part of the general reorderable section list
-    // (it isn't in ALL_SECTIONS/DEFAULT_ORDER and has no drag-to-reorder entry).
-    // Pin it immediately after bio/Career Highlights every time, regardless of
-    // where the other sections land, so it never gets pushed to the end of the
-    // page just because it's unlisted here.
-    if (id === 'bio') {
-      const resumeEl = document.getElementById('resume');
-      if (resumeEl) {
-        const resumeNextSib = resumeEl.nextElementSibling;
-        anchor.insertAdjacentElement('afterend', resumeEl);
-        anchor = resumeEl;
-        if (resumeNextSib && resumeNextSib.classList && resumeNextSib.classList.contains('divider')) {
-          anchor.insertAdjacentElement('afterend', resumeNextSib);
-          anchor = resumeNextSib;
-        }
-      }
     }
     // Works is fixed (not user-reorderable) but must be re-pinned right after bio,
     // since reordering bio's siblings would otherwise strand it wherever the DOM mutations left it.
