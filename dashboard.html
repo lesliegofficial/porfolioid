@@ -1686,19 +1686,21 @@
       <button class="btn-add-new" onclick="toggleAddForm('addResumeForm')" id="addResumeBtn">+ Add Profile Card</button>
 
       <div class="add-form" id="addResumeForm">
-        <div class="add-form-title">New Profile Card</div>
+        <div class="add-form-title" style="text-transform:none">New Profile Card</div>
         <div class="field-group">
-          <label class="field-label">Card Type <span style="color:var(--gray);font-weight:400">(prefills sensible defaults below — everything stays editable)</span></label>
+          <label class="field-label">Card Type</label>
           <select id="newResumeCardType" onchange="applyResumeCardTypeDefaults()">
             <option value="executive_resume">Executive Resume</option>
             <option value="biography">Biography</option>
             <option value="other" selected>Other</option>
           </select>
+          <p class="field-hint">Choose a starting template. All fields remain fully editable.</p>
         </div>
         <div class="field-row">
           <div class="field-group">
-            <label class="field-label">Card Label <span style="color:var(--gray);font-weight:400">(small tag above title)</span></label>
+            <label class="field-label">Card Label</label>
             <input type="text" id="newResumeLabel" placeholder="e.g. Marketing & Artist Relations">
+            <p class="field-hint">Small tag shown above the title.</p>
           </div>
         </div>
         <div class="field-group">
@@ -1710,33 +1712,35 @@
           <input type="text" id="newResumeSubtitle" placeholder="e.g. Operations | Compliance | Case Management">
         </div>
         <div class="field-group">
-          <label class="field-label">Key Skills <span style="color:var(--gray);font-weight:400">(comma separated)</span></label>
+          <label class="field-label">Key Skills</label>
           <input type="text" id="newResumeSkills" placeholder="e.g. HubSpot, Salesforce, A&R, Digital Marketing">
+          <p class="field-hint">Comma separated.</p>
         </div>
         <div class="field-group">
           <label class="field-label">Description</label>
           <textarea id="newResumeDesc" rows="3" placeholder="Brief professional summary for this career track..."></textarea>
         </div>
         <div class="field-group">
-          <label class="field-label">PDF URL</label>
+          <label class="field-label">PDF (Optional)</label>
           <input type="url" id="newResumeUrl" placeholder="https://... link to PDF">
           <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
-            <button class="btn-add" onclick="triggerResumeUpload()">↑ Upload PDF</button>
+            <button class="btn-add" onclick="triggerResumeUpload()">↑ Attach PDF</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
           </div>
           <input type="file" id="resumeFileInput" accept=".pdf" style="display:none">
         </div>
         <div class="field-group">
-          <label class="field-label">PDF Button Label <span style="color:var(--gray);font-weight:400">(shown only when a PDF URL is set)</span></label>
+          <label class="field-label">Download Button Label</label>
           <input type="text" id="newResumePdfButtonLabel" placeholder="e.g. Download Resume">
+          <p class="field-hint">Only shown when a PDF has been attached.</p>
         </div>
         <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1rem">
           <input type="checkbox" id="newResumeShowComingSoon" style="width:16px;height:16px">
-          <label class="field-label" style="margin:0" for="newResumeShowComingSoon">Show "PDF Coming Soon" when no PDF URL is set</label>
+          <label class="field-label" style="margin:0" for="newResumeShowComingSoon">Show "PDF Coming Soon"</label>
         </div>
         <div class="field-group">
-          <label class="field-label">Footer Text <span style="color:var(--gray);font-weight:400">(optional — blank shows nothing)</span></label>
-          <textarea id="newResumeFooterText" rows="2" placeholder="e.g. Full job descriptions and career documentation available in the Credits section below"></textarea>
+          <label class="field-label">Footer Text (Optional)</label>
+          <textarea id="newResumeFooterText" rows="2" placeholder="Leave blank to hide the footer."></textarea>
         </div>
         <div class="form-actions">
           <button class="btn-save" onclick="addResumeCard()">Save Card</button>
