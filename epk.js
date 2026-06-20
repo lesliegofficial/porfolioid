@@ -534,7 +534,7 @@ function buildEPK(epk) {
     // full long-form text inside an inline HTML attribute. Only renders when fullBio
     // is actually present on the card - independent of cardType, so it's available to
     // any Profile Card that has long-form text, not just Biography.
-    const readBioHTML = r.fullBio ? `<button type="button" class="resume-card-btn" style="color:${rc};border-color:${rc}4D;background:none;cursor:pointer;font:inherit" onclick="openBiographyModal(${idx})">Read Full Biography →</button>` : '';
+    const readBioHTML = r.fullBio ? `<button type="button" class="resume-card-btn" style="color:${rc};border-color:${rc}4D;background:none;cursor:pointer" onclick="openBiographyModal(${idx})">Read Full Biography →</button>` : '';
     const buttonRowHTML = [pdfAreaHTML, readBioHTML].filter(Boolean).join('');
     return `<div class="resume-card" style="border-top:3px solid ${rc}">
       <div class="resume-card-label" style="color:${rc}">${displayLabel}</div>
