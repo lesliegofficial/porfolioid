@@ -342,11 +342,17 @@
     },
     {
       "org": "Microsoft",
+      "desc": "",
       "type": "certification",
       "year": "2026",
       "title": "Business Analytics with Excel",
       "photos": [],
-      "certUrl": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778790945/epkrox93k924u62rppv6.pdf"
+      "certUrl": "https://raw.githubusercontent.com/lesliegofficial/porfolioid/main/awards/1782143761354_business_analytics_with_excel.jpeg",
+      "category": "",
+      "featured": false,
+      "verified": false,
+      "proofLink": "",
+      "photoStyle": "thumbnails"
     }
   ],
   "photos": [
