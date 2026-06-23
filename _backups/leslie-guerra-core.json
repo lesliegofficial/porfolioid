@@ -1731,7 +1731,7 @@
     "connect"
   ],
   "bookingRegion": "Worldwide",
-  "galleryLayout": "grid",
+  "galleryLayout": "scroll",
   "heroImageZoom": 101,
   "identityBlock": {
     "timeline": [],
