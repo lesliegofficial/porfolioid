@@ -1703,7 +1703,7 @@
       "showPdfComingSoon": false
     }
   ],
-  "videoLayout": "spotlight",
+  "videoLayout": "grid",
   "assetsLayout": "cards",
   "assetsLocked": false,
   "availability": "Available for tours & studio sessions",
