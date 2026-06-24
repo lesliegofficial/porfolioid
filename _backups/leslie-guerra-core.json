@@ -1732,7 +1732,7 @@
     "connect"
   ],
   "bookingRegion": "Worldwide",
-  "galleryLayout": "marquee",
+  "galleryLayout": "scroll",
   "heroImageZoom": 101,
   "identityBlock": {
     "timeline": [],
