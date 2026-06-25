@@ -1208,7 +1208,7 @@ function buildEPK(epk) {
                so it now inherits the same hidden-until-expanded show/hide behavior
                as the Credits cards (toggled by filterCreditsByCategory). -->
           ${(epk.resumeEnabled !== false && resumeCards.length) ? `
-          <div class="ch3-header" style="margin-top:3rem">
+          <div class="ch3-header" style="margin-top:5rem;padding-top:2.5rem;border-top:1px solid rgba(201,168,76,0.1)">
             <span class="ch3-label">Professional Profile</span>
             <div class="ch3-title-row">
               <h2 class="section-title" style="margin:0">Professional Documents</h2>
@@ -2859,9 +2859,14 @@ function filterCreditsByCategory(tag) {
     }
   }
 
-  const el = document.getElementById('credits');
-  if (el) {
-    setTimeout(() => { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
+  // Scroll target: when a category tag is passed (highlight card click), scroll to the
+  // creditsGrid itself (Career Record section) — NOT the #credits container top which
+  // would land on Professional Documents first.
+  const scrollTarget = tag
+    ? document.getElementById('creditsGrid')   // → Career Record cards directly
+    : document.getElementById('credits');       // → top of expanded section (View Complete Record)
+  if (scrollTarget) {
+    setTimeout(() => { scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
   }
 }
 
