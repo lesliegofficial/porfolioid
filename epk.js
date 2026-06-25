@@ -1140,7 +1140,7 @@ function buildEPK(epk) {
         </div>
         <div class="ch3-grid">
           <div class="ch3-card" data-ch3-tag="recordingartist" onclick="filterCreditsByCategory('recordingartist')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052294/career-highlights/recording-artist.jpg" alt="Recording Artist" loading="lazy"></div>
+            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052294/career-highlights/recording-artist.jpg" alt="Recording Artist" loading="lazy" style="object-position: top"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
               <h3 class="ch3-title">Recording Artist</h3>
@@ -1148,7 +1148,7 @@ function buildEPK(epk) {
             </div>
           </div>
           <div class="ch3-card" data-ch3-tag="liveperformance" onclick="filterCreditsByCategory('liveperformance')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1782320896/career-highlights/touring-vocalist-don-omar.jpg" alt="Touring Vocalist" loading="lazy"></div>
+            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1782320896/career-highlights/touring-vocalist-don-omar.jpg" alt="Touring Vocalist" loading="lazy" style="transform: scale(1.12); object-position: center 20%"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
               <h3 class="ch3-title">Touring Vocalist</h3>
@@ -1164,7 +1164,7 @@ function buildEPK(epk) {
             </div>
           </div>
           <div class="ch3-card" data-ch3-tag="creativeprofessional" onclick="filterCreditsByCategory('creativeprofessional')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052298/career-highlights/collaborations.jpg" alt="Artist Liaison &amp; A&amp;R Coordinator" loading="lazy"></div>
+            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052295/career-highlights/creative-professional.jpg" alt="Artist Liaison &amp; A&amp;R Coordinator" style="object-position: top" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg></div>
               <h3 class="ch3-title">Artist Liaison &amp; A&amp;R Coordinator</h3>
@@ -1184,7 +1184,7 @@ function buildEPK(epk) {
             </div>
           </div>
           <div class="ch3-card" data-ch3-tag="founderbuilder" onclick="filterCreditsByCategory('founderbuilder')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781638246/career-highlights/founder-builder-official.jpg" alt="Founder, porfolioID" loading="lazy"></div>
+            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781638246/career-highlights/founder-builder-official.jpg" alt="Founder, porfolioID" loading="lazy" style="object-position: top"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
               <h3 class="ch3-title">Founder, porfolioID</h3>
