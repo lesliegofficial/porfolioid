@@ -465,15 +465,20 @@
   }
   .gallery-marquee-wrap::before { left: 0; background: linear-gradient(to right, var(--black), transparent); }
   .gallery-marquee-wrap::after { right: 0; background: linear-gradient(to left, var(--black), transparent); }
-  .gallery-marquee { display: flex; gap: 0.75rem; width: max-content; animation: marqueeScroll 55s linear infinite; }
+  /* --marquee-speed is set per-instance in JS from epk.galleryScrollSpeed or GALLERY_SCROLL_SPEED_DEFAULT.
+     Future Dashboard controls (Slow/Medium/Fast) write to epk.galleryScrollSpeed — no CSS change needed. */
+  .gallery-marquee { display: flex; gap: 0.75rem; width: max-content; animation: marqueeScroll var(--marquee-speed, 80s) linear infinite; will-change: transform; backface-visibility: hidden; }
   .gallery-marquee:hover { animation-play-state: paused; }
   @keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   .gallery-marquee-item {
-    flex-shrink: 0; width: 260px; height: 380px; position: relative; overflow: hidden;
+    /* Card size reduced ~13% from 260×380 → 226×330 (Sprint 1, June 24 2026) */
+    flex-shrink: 0; width: 226px; height: 330px; position: relative; overflow: hidden;
     border: 1px solid rgba(201,168,76,0.2);
     box-shadow: 0 6px 12px rgba(0,0,0,0.6), 0 12px 30px rgba(0,0,0,0.5), 0 -1px 0 rgba(255,255,255,0.05), 0 1px 0 rgba(201,168,76,0.25);
     transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
     cursor: pointer;
+    will-change: transform;
+    backface-visibility: hidden;
   }
   .gallery-marquee-item::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;

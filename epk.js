@@ -1283,7 +1283,12 @@ function buildEPK(epk) {
             <h2 class="section-title" data-editable data-editable-key="photosTitle" data-editable-type="title" style="outline:none;margin-bottom:0.25rem">On Stage & Behind the Scenes</h2>
             <p style="font-family:var(--font-body);font-size:0.9rem;color:var(--gray);margin:0 0 1rem">Explore moments from performances, studio sessions, press events, and more.</p>
           </div>
-          <div style="display:flex;gap:0.75rem;align-items:center;flex-shrink:0">
+          <!-- PUBLIC LAYOUT SELECTOR — INTENTIONALLY HIDDEN (Sprint 1, June 24 2026)
+               Dashboard is the single source of truth for photo layout.
+               The layout set in Dashboard is saved to Supabase and rendered here on load.
+               This selector is preserved (not deleted) for potential future use as an
+               Owner Preview tool. Do not remove this block. Re-enable by changing display:none to display:flex. -->
+          <div style="display:none;gap:0.75rem;align-items:center;flex-shrink:0">
             <div style="position:relative">
               <select id="galleryLayoutSelect" onchange="setGalleryLayout(this.value)" style="appearance:none;-webkit-appearance:none;background:var(--dark-3);border:1px solid rgba(201,168,76,0.3);color:var(--text);font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 2rem 0.5rem 0.85rem;cursor:pointer;outline:none">
                 <option value="marquee">▶ Auto Scroll</option>
@@ -1579,9 +1584,19 @@ function renderAssetsDebugPanel(epk) {
 let currentGalleryLayout = 'marquee'; // overridden by epk.galleryLayout
 let galleryPhotos = [];
 
+// GALLERY_SCROLL_SPEED — controls Auto Scroll (marquee) animation duration in seconds.
+// Lower = faster, higher = slower/more premium feel.
+// Future Dashboard controls (Slow/Medium/Fast) should write to epk.galleryScrollSpeed
+// and call setGalleryScrollSpeed() to update this value at runtime without a full rebuild.
+// Slow ≈ 100s | Medium ≈ 75s | Fast ≈ 45s
+const GALLERY_SCROLL_SPEED_DEFAULT = 80; // seconds
+
 function setGalleryLayout(layout) {
+  // NOTE: setGalleryLayout() is intentionally preserved for future use as an Owner Preview tool.
+  // The public layout selector is hidden (Sprint 1, June 24 2026).
+  // Dashboard is the single source of truth — layout is saved to Supabase and rendered on load.
   currentGalleryLayout = layout;
-  // Sync the dropdown
+  // Sync the dropdown (hidden but functional — ready for owner-preview re-enable)
   const sel = document.getElementById('galleryLayoutSelect');
   if (sel) sel.value = layout;
   buildGallery(galleryPhotos);
@@ -1592,6 +1607,10 @@ function buildMarqueeGallery(photos, container) {
   wrap.className = 'gallery-marquee-wrap';
   const track = document.createElement('div');
   track.className = 'gallery-marquee';
+  // Apply scroll speed from epk data (if set by Dashboard) or fall back to default constant.
+  // Future Dashboard controls write to epk.galleryScrollSpeed — no CSS rewrite needed.
+  const speed = (typeof epk !== 'undefined' && epk.galleryScrollSpeed) ? epk.galleryScrollSpeed : GALLERY_SCROLL_SPEED_DEFAULT;
+  track.style.setProperty('--marquee-speed', speed + 's');
   // Double the photos for seamless infinite loop
   const allPhotos = [...photos, ...photos];
   allPhotos.forEach(photo => {
