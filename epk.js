@@ -1139,14 +1139,6 @@ function buildEPK(epk) {
           </div>
         </div>
         <div class="ch3-grid">
-          <div class="ch3-card" data-ch3-tag="liveperformance" onclick="filterCreditsByCategory('liveperformance')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052293/career-highlights/live-performance.jpg" alt="Live Performance" loading="lazy"></div>
-            <div class="ch3-body">
-              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
-              <h3 class="ch3-title">Live Performance</h3>
-              <p class="ch3-desc">Exclusive touring vocalist for Don Omar, J Álvarez, and Melina León — hundreds of performances across five continents.</p>
-            </div>
-          </div>
           <div class="ch3-card" data-ch3-tag="recordingartist" onclick="filterCreditsByCategory('recordingartist')" style="cursor:pointer">
             <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052294/career-highlights/recording-artist.jpg" alt="Recording Artist" loading="lazy"></div>
             <div class="ch3-body">
@@ -1155,12 +1147,28 @@ function buildEPK(epk) {
               <p class="ch3-desc">Recording artist with Las Nenas del Swing. Original compositions and live concert recordings across multiple releases.</p>
             </div>
           </div>
+          <div class="ch3-card" data-ch3-tag="liveperformance" onclick="filterCreditsByCategory('liveperformance')" style="cursor:pointer">
+            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1782320896/career-highlights/touring-vocalist-don-omar.jpg" alt="Touring Vocalist" loading="lazy"></div>
+            <div class="ch3-body">
+              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
+              <h3 class="ch3-title">Touring Vocalist</h3>
+              <p class="ch3-desc">Exclusive touring vocalist for Don Omar, J Álvarez, and Melina León — hundreds of performances across five continents.</p>
+            </div>
+          </div>
+          <div class="ch3-card" data-ch3-tag="industryoperations" onclick="filterCreditsByCategory('industryoperations')" style="cursor:pointer">
+            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1782317473/career-highlights/operations-compliance.png" alt="Operations &amp; Compliance" loading="lazy"></div>
+            <div class="ch3-body">
+              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div>
+              <h3 class="ch3-title">Operations &amp; Compliance</h3>
+              <p class="ch3-desc">Executive operations, regulatory compliance, and organizational leadership. Human Services at FEMA, Head of Compliance at Venetian Productions, and operations coordination at Arrow Management.</p>
+            </div>
+          </div>
           <div class="ch3-card" data-ch3-tag="creativeprofessional" onclick="filterCreditsByCategory('creativeprofessional')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052295/career-highlights/creative-professional.jpg" alt="Creative Professional" loading="lazy"></div>
+            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052298/career-highlights/collaborations.jpg" alt="Artist Liaison &amp; A&amp;R Coordinator" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg></div>
-              <h3 class="ch3-title">Creative Professional</h3>
-              <p class="ch3-desc">A&amp;R Coordinator at Sony Music Latin and Urban Latino Music. Artist development, release coordination, and creative operations.</p>
+              <h3 class="ch3-title">Artist Liaison &amp; A&amp;R Coordinator</h3>
+              <p class="ch3-desc">A&amp;R coordination and artist development at Sony Music Latin and Urban Latino Music. Artist liaison and event coordination for Adam Torres Concerts. Music projects, release coordination, and industry relationships.</p>
             </div>
           </div>
           <div class="ch3-card" data-ch3-tag="marketingpr" onclick="filterCreditsByCategory('marketingpr')" style="cursor:pointer">
@@ -1171,24 +1179,16 @@ function buildEPK(epk) {
             </div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
-              <h3 class="ch3-title">Marketing &amp; PR</h3>
-              <p class="ch3-desc">Marketing &amp; Content Coordinator at NV Marketing &amp; PR. Digital campaigns, publicity support, and content strategy for major Latin artists.</p>
-            </div>
-          </div>
-          <div class="ch3-card" data-ch3-tag="industryoperations" onclick="filterCreditsByCategory('industryoperations')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052297/career-highlights/industry-operations.jpg" alt="Industry Operations" loading="lazy"></div>
-            <div class="ch3-body">
-              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div>
-              <h3 class="ch3-title">Industry Operations</h3>
-              <p class="ch3-desc">Artist Logistics &amp; Event Coordination for Adam Torres Concerts. Artist support at Arrow Management. Head of Compliance at Venetian Productions.</p>
+              <h3 class="ch3-title">Digital Marketing</h3>
+              <p class="ch3-desc">Digital marketing, social media strategy, public relations, and content marketing at NV Marketing &amp; PR. Managed artist marketing campaigns and brand promotion for major Latin artists.</p>
             </div>
           </div>
           <div class="ch3-card" data-ch3-tag="founderbuilder" onclick="filterCreditsByCategory('founderbuilder')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781638246/career-highlights/founder-builder-official.jpg" alt="Founder & Builder" loading="lazy"></div>
+            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781638246/career-highlights/founder-builder-official.jpg" alt="Founder, porfolioID" loading="lazy"></div>
             <div class="ch3-body">
               <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-              <h3 class="ch3-title">Founder &amp; Builder</h3>
-              <p class="ch3-desc">Founder &amp; Product Architect of PorfolioID and IDPressDrop — original platforms built from concept to deployment.</p>
+              <h3 class="ch3-title">Founder, porfolioID</h3>
+              <p class="ch3-desc">Founder &amp; Product Architect of porfolioID and IDPressDrop — original platforms built from concept to deployment.</p>
             </div>
           </div>
         </div>
