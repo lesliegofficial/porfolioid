@@ -1632,10 +1632,12 @@
     }
   ],
   "socials": {
-    "tiktok": "https://www.tiktok.com/@officiallyleslieann?_r=1&_t=ZP-96IhluNxFrq",
+    "tidal": "",
+    "tiktok": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1781034279/icons/tiktok-icon-nobg.jpg",
     "spotify": "https://open.spotify.com/user/e62qg132bv862sjyfwor3iaq1?si=QzzPJ-q9SjmPfkkhWv9gIA",
     "website": [],
     "youtube": "https://youtube.com/@hearmynoise?si=Kl45ERrxrVE5xk37",
+    "bandcamp": "",
     "facebook": [
       "https://www.facebook.com/share/1Eb6JyPUTk/?mibextid=wwXIfr"
     ],
@@ -1643,7 +1645,15 @@
     "instagram": [
       "https://www.instagram.com/officiallyleslie",
       "https://www.instagram.com/leslieaguerra"
-    ]
+    ],
+    "appleMusic": "",
+    "soundcloud": "",
+    "showMetrics": true,
+    "tiktok_followers": "",
+    "spotify_followers": "",
+    "youtube_followers": "",
+    "linkedin_followers": "",
+    "instagram_followers": ""
   },
   "bioImage": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1778780770/yrtf3dmkcyxjtbxj5wz0.jpg",
   "location": "Florida, USA",
