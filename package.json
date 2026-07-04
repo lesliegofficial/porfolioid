@@ -1,8 +1,13 @@
 {
   "name": "porfolioid-functions",
-  "version": "2.0.0",
-  "description": "PorfolioID serverless functions — Phase 6 Supabase",
+  "version": "2.1.0",
+  "description": "PorfolioID serverless functions — Phase 2 AMS",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@aws-sdk/s3-request-presigner": "^3.600.0",
     "@netlify/blobs": "^10.7.9"
+  },
+  "devDependencies": {
+    "dotenv": "^17.4.2"
   }
 }
