@@ -1,2 +1,7 @@
 node_modules/
 package-lock.json
+.env
+.env.local
+diag.js
+diag2.js
+run_tests.js
