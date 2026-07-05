@@ -1,55 +1,216 @@
 
-const CLOUDINARY_CLOUD = 'djj8xe3gx';
-const CLOUDINARY_PRESET = 'dj8fqdhj';
-const CLOUDINARY_VIDEO_PRESET = 'mgjdexrj';
+// ── R2 UPLOAD SYSTEM ─────────────────────────────────────────
+// Replaces Cloudinary. All new uploads go to Cloudflare R2
+// via media-presign → direct R2 PUT → media-register → media-service
+// No Cloudinary dependency. No hardcoded delivery URLs.
+// ─────────────────────────────────────────────────────────────
+
+// Convert filename to clean slug descriptor
+// "Don Omar Chile Concert - Dec 2006.jpg" → "don-omar-chile-concert-dec-2006"
+function filenameToDescriptor(filename) {
+  const withoutExt = filename.replace(/\.[^/.]+$/, '');
+  const slug = withoutExt
+    .normalize('NFKD')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80);
+  return slug || 'upload-' + Date.now();
+}
+
+// Show visible error in dashboard — no silent failures
+function showUploadError(btn, originalText, message) {
+  console.error('[Upload Error]', message);
+  if (btn) {
+    btn.textContent = '✗ ' + (message.length > 30 ? 'Upload failed' : message);
+    btn.style.color = '#e07070';
+    btn.disabled = false;
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.color = '';
+    }, 4000);
+  }
+}
+
+// Core R2 upload pipeline
+// file: File object
+// category: 'photos' | 'videos' | 'audio' | 'thumbnails' | 'documents' | 'covers'
+// onSuccess(deliveryUrl): called with the canonical media-service URL
+// onError(message): called on any failure
+async function uploadToR2(file, category, onSuccess, onError) {
+  const slug = (currentUser && currentUser.slug) ? currentUser.slug : 'leslie-guerra';
+  const descriptor = filenameToDescriptor(file.name);
+
+  // Step 1: Compute SHA-256 in browser for duplicate detection
+  let sha256Hash;
+  try {
+    const buffer = await file.arrayBuffer();
+    const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+    sha256Hash = Array.from(new Uint8Array(hashBuffer))
+      .map(b => b.toString(16).padStart(2, '0')).join('');
+  } catch (e) {
+    onError('Could not compute file hash');
+    return;
+  }
+
+  // Step 2: Get pre-signed upload URL from media-presign
+  let presignData;
+  try {
+    const presignRes = await fetch('/.netlify/functions/media-presign', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fileName:   file.name,
+        mimeType:   file.type,
+        fileSize:   file.size,
+        sha256Hash,
+        slug,
+        category,
+        descriptor,
+        isPublic:   true,
+      })
+    });
+    if (!presignRes.ok) {
+      const err = await presignRes.json().catch(() => ({}));
+      onError(err.error || 'Presign request failed (' + presignRes.status + ')');
+      return;
+    }
+    presignData = await presignRes.json();
+  } catch (e) {
+    onError('Network error during presign');
+    return;
+  }
+
+  // Duplicate — file already in library, return existing URL
+  if (presignData.duplicate) {
+    try {
+      const svcRes = await fetch(
+        `/.netlify/functions/media-service?slug=${encodeURIComponent(slug)}&category=${encodeURIComponent(category)}&descriptor=${encodeURIComponent(descriptor)}`
+      );
+      if (svcRes.ok) {
+        const svcData = await svcRes.json();
+        if (svcData.url) { onSuccess(svcData.url); return; }
+      }
+      // Fallback: construct from storage_key
+      onSuccess('https://media.porfolioid.com/' + presignData.storage_key);
+    } catch(e) {
+      onSuccess('https://media.porfolioid.com/' + presignData.storage_key);
+    }
+    return;
+  }
+
+  // Step 3: PUT file directly to R2 (browser → R2, no Netlify bandwidth)
+  try {
+    const uploadRes = await fetch(presignData.upload_url, {
+      method: 'PUT',
+      body: file,
+      headers: { 'Content-Type': file.type }
+    });
+    if (!uploadRes.ok) {
+      onError('R2 upload failed (' + uploadRes.status + ')');
+      return;
+    }
+  } catch (e) {
+    onError('Network error during R2 upload');
+    return;
+  }
+
+  // Step 4: Register asset in Supabase via media-register
+  let registerData;
+  try {
+    const registerRes = await fetch('/.netlify/functions/media-register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        storageKey:    presignData.storage_key,
+        assetFamilyId: presignData.asset_family_id,
+        version:       presignData.version,
+        slug,
+        category,
+        descriptor,
+        mimeType:      file.type,
+        fileSize:      file.size,
+        clientSha256:  sha256Hash,
+        fileName:      file.name,
+        isPublic:      true,
+      })
+    });
+    if (!registerRes.ok) {
+      const err = await registerRes.json().catch(() => ({}));
+      onError(err.error || 'Registration failed (' + registerRes.status + ')');
+      return;
+    }
+    registerData = await registerRes.json();
+    if (!registerData.success) {
+      onError('Registration returned failure');
+      return;
+    }
+  } catch (e) {
+    onError('Network error during registration');
+    return;
+  }
+
+  // Step 5: Get canonical delivery URL from media-service
+  try {
+    const svcRes = await fetch(
+      `/.netlify/functions/media-service?slug=${encodeURIComponent(slug)}&category=${encodeURIComponent(category)}&descriptor=${encodeURIComponent(descriptor)}`
+    );
+    if (svcRes.ok) {
+      const svcData = await svcRes.json();
+      if (svcData.url) { onSuccess(svcData.url); return; }
+    }
+  } catch(e) { /* fallback below */ }
+
+  // Fallback: construct from storage_key if media-service unavailable
+  onSuccess('https://media.porfolioid.com/' + presignData.storage_key);
+}
+
+// ── UPLOAD TRIGGER FUNCTIONS ──────────────────────────────────
+// Same signatures as before — only internals changed
 
 async function uploadToCloudinary(file, onSuccess) {
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('upload_preset', CLOUDINARY_PRESET);
-
-  const btn = event.currentTarget;
-  const originalText = btn.textContent;
-  btn.textContent = 'Uploading...';
-  btn.disabled = true;
-
-  try {
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
-      method: 'POST',
-      body: formData
-    });
-    const data = await res.json();
-    if (data.secure_url) {
-      onSuccess(data.secure_url);
-      btn.textContent = '✓ Uploaded';
-      btn.style.background = 'rgba(100,200,100,0.15)';
-      btn.style.borderColor = 'rgba(100,200,100,0.4)';
-      btn.style.color = '#7ec97e';
-      setTimeout(() => {
-        btn.textContent = originalText;
-        btn.style.background = '';
-        btn.style.borderColor = '';
-        btn.style.color = '';
-        btn.disabled = false;
-      }, 2000);
-    }
-  } catch (err) {
-    btn.textContent = 'Upload failed';
-    btn.disabled = false;
-    setTimeout(() => { btn.textContent = originalText; btn.disabled = false; }, 2000);
-  }
+  // Kept for signature compatibility — now routes to R2
+  const btn = (typeof event !== 'undefined' && event && event.currentTarget) ? event.currentTarget : null;
+  const originalText = btn ? btn.textContent : '';
+  if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+  await uploadToR2(file, 'photos',
+    (url) => {
+      onSuccess(url);
+      if (btn) {
+        btn.textContent = '✓ Uploaded';
+        btn.style.background = 'rgba(100,200,100,0.15)';
+        btn.style.borderColor = 'rgba(100,200,100,0.4)';
+        btn.style.color = '#7ec97e';
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = '';
+          btn.style.borderColor = '';
+          btn.style.color = '';
+          btn.disabled = false;
+        }, 2000);
+      }
+    },
+    (err) => showUploadError(btn, originalText, err)
+  );
 }
 
 function triggerUpload(inputId, targetFieldId) {
   const input = document.getElementById(inputId);
   input.click();
-  input.onchange = function() {
+  input.onchange = async function() {
     const file = input.files[0];
     if (!file) return;
-    uploadToCloudinary(file, (url) => {
-      document.getElementById(targetFieldId).value = url;
-      saveAll();
-    });
+    const btn = document.querySelector(`[onclick*="triggerUpload('${inputId}')"]`);
+    const originalText = btn ? btn.textContent : '';
+    if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+    await uploadToR2(file, 'photos',
+      (url) => {
+        document.getElementById(targetFieldId).value = url;
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
+        saveAll();
+      },
+      (err) => showUploadError(btn, originalText, err)
+    );
   };
 }
 
@@ -60,20 +221,15 @@ function triggerMp4Upload(inputId) {
     const file = input.files[0];
     if (!file) return;
     const btn = document.querySelector(`[onclick="triggerMp4Upload('${inputId}')"]`);
+    const originalText = btn ? btn.textContent : '↑ Upload MP4';
     if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_VIDEO_PRESET);
-    try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`, { method: 'POST', body: formData });
-      const data = await res.json();
-      if (data.secure_url) {
-        document.getElementById('newVideoUrl').value = data.secure_url;
-        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload MP4'; btn.style.color = ''; btn.disabled = false; }, 2000); }
-      }
-    } catch(e) {
-      if (btn) { btn.textContent = 'Failed'; btn.disabled = false; }
-    }
+    await uploadToR2(file, 'videos',
+      (url) => {
+        document.getElementById('newVideoUrl').value = url;
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      },
+      (err) => showUploadError(btn, originalText, err)
+    );
   };
 }
 
@@ -84,16 +240,12 @@ function triggerThumbUpload(inputId) {
     const file = input.files[0];
     if (!file) return;
     const btn = document.querySelector(`[onclick="triggerThumbUpload('${inputId}')"]`);
+    const originalText = btn ? btn.textContent : '↑ Upload Thumbnail';
     if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_PRESET);
-    try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
-      const data = await res.json();
-      if (data.secure_url) {
-        document.getElementById('newVideoThumb').value = data.secure_url;
-        // Show live preview so client can confirm the right image was uploaded
+    await uploadToR2(file, 'thumbnails',
+      (url) => {
+        document.getElementById('newVideoThumb').value = url;
+        // Show live preview so user can confirm the right image was uploaded
         let preview = document.getElementById('videoThumbPreview');
         if (!preview) {
           preview = document.createElement('div');
@@ -102,12 +254,11 @@ function triggerThumbUpload(inputId) {
           const thumbInput = document.getElementById('newVideoThumb');
           thumbInput.parentNode.insertBefore(preview, thumbInput.nextSibling);
         }
-        preview.innerHTML = `<img src="${data.secure_url}" style="width:160px;height:90px;object-fit:cover;border:2px solid rgba(126,201,126,0.5);margin-top:0.5rem;display:block"><div style="font-family:var(--font-mono);font-size:0.5rem;color:#7ec97e;margin-top:0.3rem">✓ Thumbnail uploaded — confirm this matches your video</div>`;
-        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload Thumbnail'; btn.style.color = ''; btn.disabled = false; }, 2000); }
-      }
-    } catch(e) {
-      if (btn) { btn.textContent = 'Failed'; btn.disabled = false; }
-    }
+        preview.innerHTML = `<img src="${url}" style="width:160px;height:90px;object-fit:cover;border:2px solid rgba(126,201,126,0.5);margin-top:0.5rem;display:block"><div style="font-family:var(--font-mono);font-size:0.5rem;color:#7ec97e;margin-top:0.3rem">✓ Thumbnail uploaded — confirm this matches your video</div>`;
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      },
+      (err) => showUploadError(btn, originalText, err)
+    );
   };
 }
 
@@ -143,21 +294,15 @@ function triggerMp3Upload(inputId) {
     const file = input.files[0];
     if (!file) return;
     const btn = document.querySelector(`[onclick="triggerMp3Upload('${inputId}')"]`);
+    const originalText = btn ? btn.textContent : '↑ Upload MP3';
     if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_VIDEO_PRESET);
-    formData.append('resource_type', 'video'); // Cloudinary uses 'video' for audio files
-    try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`, { method: 'POST', body: formData });
-      const data = await res.json();
-      if (data.secure_url) {
-        document.getElementById('newTrackLink').value = data.secure_url;
-        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload MP3'; btn.style.color = ''; btn.disabled = false; }, 2000); }
-      }
-    } catch(e) {
-      if (btn) { btn.textContent = 'Failed'; btn.disabled = false; }
-    }
+    await uploadToR2(file, 'audio',
+      (url) => {
+        document.getElementById('newTrackLink').value = url;
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      },
+      (err) => showUploadError(btn, originalText, err)
+    );
   };
 }
 
@@ -168,20 +313,15 @@ function triggerPhotoUpload(inputId) {
     const file = input.files[0];
     if (!file) return;
     const btn = document.querySelector(`[onclick="triggerPhotoUpload('${inputId}')"]`);
+    const originalText = btn ? btn.textContent : '↑ Upload Photo';
     if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_PRESET);
-    try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
-      const data = await res.json();
-      if (data.secure_url) {
-        document.getElementById('newPhotoUrl').value = data.secure_url;
-        if (btn) { btn.textContent = '✓ Done'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload Photo'; btn.style.color = ''; btn.disabled = false; }, 2000); }
-      }
-    } catch(e) {
-      if (btn) { btn.textContent = 'Failed'; btn.disabled = false; }
-    }
+    await uploadToR2(file, 'photos',
+      (url) => {
+        document.getElementById('newPhotoUrl').value = url;
+        if (btn) { btn.textContent = '✓ Done'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      },
+      (err) => showUploadError(btn, originalText, err)
+    );
   };
 }
 
@@ -1061,14 +1201,10 @@ function triggerCreditPhotoUpload() {
   input.onchange = async function() {
     const files = Array.from(input.files);
     for (const file of files) {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', CLOUDINARY_PRESET);
-      try {
-        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
-        const data = await res.json();
-        if (data.secure_url) { pendingCreditPhotos.push(data.secure_url); renderCreditPhotosPreview(); }
-      } catch(e) { console.error('Upload failed', e); }
+      await uploadToR2(file, 'credits',
+        (url) => { pendingCreditPhotos.push(url); renderCreditPhotosPreview(); },
+        (err) => { console.error('Credit photo upload failed:', err); alert('Upload failed: ' + err); }
+      );
     }
   };
 }
@@ -1144,18 +1280,14 @@ async function addPhotosToCredit(i) {
   input.onchange = async function() {
     const files = Array.from(input.files);
     for (const file of files) {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', CLOUDINARY_PRESET);
-      try {
-        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
-        const data = await res.json();
-        if (data.secure_url) {
+      await uploadToR2(file, 'credits',
+        (url) => {
           epk.credits[i].photos = epk.credits[i].photos || [];
-          epk.credits[i].photos.push(data.secure_url);
+          epk.credits[i].photos.push(url);
           renderCredits(); persistUser(); showSaveBanner();
-        }
-      } catch(e) { console.error('Upload failed', e); }
+        },
+        (err) => { console.error('Credit photo upload failed:', err); alert('Upload failed: ' + err); }
+      );
     }
   };
 }
@@ -1393,22 +1525,16 @@ function triggerCreditItemThumb(idx) {
     const file = input.files[0];
     if (!file) return;
     const btn = document.querySelector(`[onclick="triggerCreditItemThumb(${idx})"]`);
+    const originalText = btn ? btn.textContent : '↑ Upload Thumbnail';
     if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_PRESET);
-    try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
-      const data = await res.json();
-      if (data.secure_url) {
-        pendingCreditMedia[idx].thumb = data.secure_url;
+    await uploadToR2(file, 'thumbnails',
+      (url) => {
+        pendingCreditMedia[idx].thumb = url;
         renderCreditMediaList();
-        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; }
-      }
-    } catch(e) {
-      if (btn) { btn.textContent = '↑ Upload Thumbnail'; btn.disabled = false; }
-      console.error('Thumb upload failed', e);
-    }
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      },
+      (err) => showUploadError(btn, originalText, err)
+    );
   };
   input.click();
 }
@@ -1420,24 +1546,14 @@ function addCreditMedia(type) {
     input.onchange = async function() {
       const file = input.files[0];
       if (!file) return;
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', CLOUDINARY_VIDEO_PRESET);
-      try {
-        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`, { method: 'POST', body: formData });
-        const data = await res.json();
-        if (data.secure_url) {
-          // Auto-generate thumbnail from video using Cloudinary
-          // Replace /video/upload/ with transform to get a frame at natural dimensions
-          const autoThumb = data.secure_url
-            .replace('/video/upload/', '/video/upload/so_auto,w_800/f_jpg/')
-            .replace(/\.mp4$/, '.jpg')
-            .replace(/\.mov$/, '.jpg')
-            .replace(/\.webm$/, '.jpg');
-          pendingCreditMedia.push({ type: 'video', url: data.secure_url, label: file.name.replace(/\.[^.]+$/, ''), thumb: autoThumb });
+      await uploadToR2(file, 'videos',
+        (url) => {
+          // No auto-thumbnail from R2 — thumbnail uploaded separately
+          pendingCreditMedia.push({ type: 'video', url: url, label: file.name.replace(/\.[^.]+$/, ''), thumb: '' });
           renderCreditMediaList();
-        }
-      } catch(e) { console.error('Upload failed', e); }
+        },
+        (err) => { console.error('Credit video upload failed:', err); alert('Upload failed: ' + err); }
+      );
     };
     input.click();
   } else if (type === 'doc') {
@@ -1478,20 +1594,15 @@ function triggerCreditVideoUpload() {
     const file = input.files[0];
     if (!file) return;
     const btn = document.querySelector('[onclick="triggerCreditVideoUpload()"]');
+    const originalText = btn ? btn.textContent : '↑ Upload MP4';
     if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_VIDEO_PRESET);
-    try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`, { method: 'POST', body: formData });
-      const data = await res.json();
-      if (data.secure_url) {
-        document.getElementById('newCreditVideoUrl').value = data.secure_url;
-        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload MP4'; btn.style.color = ''; btn.disabled = false; }, 2000); }
-      }
-    } catch(e) {
-      if (btn) { btn.textContent = 'Failed'; btn.disabled = false; }
-    }
+    await uploadToR2(file, 'videos',
+      (url) => {
+        document.getElementById('newCreditVideoUrl').value = url;
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      },
+      (err) => showUploadError(btn, originalText, err)
+    );
   };
 }
 function removeCredit(i) { epk.credits.splice(i, 1); renderCredits(); persistUser(); showSaveBanner(); }
@@ -2209,23 +2320,18 @@ function triggerAssetUpload() {
     const file = input.files[0];
     if (!file) return;
     const btn = document.querySelector('[onclick="triggerAssetUpload()"]');
+    const originalText = btn ? btn.textContent : '↑ Upload File';
     if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_PRESET);
-    try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/raw/upload`, { method: 'POST', body: formData });
-      const data = await res.json();
-      if (data.secure_url) {
-        document.getElementById('newAssetUrl').value = data.secure_url;
+    await uploadToR2(file, 'documents',
+      (url) => {
+        document.getElementById('newAssetUrl').value = url;
         if (!document.getElementById('newAssetBtn').value) {
           document.getElementById('newAssetBtn').value = 'Download ' + file.name.split('.').pop().toUpperCase() + ' →';
         }
-        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload File'; btn.style.color = ''; btn.disabled = false; }, 2000); }
-      }
-    } catch(e) {
-      if (btn) { btn.textContent = 'Failed'; btn.disabled = false; }
-    }
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      },
+      (err) => showUploadError(btn, originalText, err)
+    );
   };
 }
 
@@ -2966,17 +3072,13 @@ function triggerAwardPhotoUpload() {
   input.onchange = async function() {
     const files = Array.from(input.files);
     for (const file of files) {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', CLOUDINARY_PRESET);
-      try {
-        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
-        const data = await res.json();
-        if (data.secure_url) {
-          pendingAwardPhotos.push({url: data.secure_url, caption: ''});
+      await uploadToR2(file, 'awards',
+        (url) => {
+          pendingAwardPhotos.push({url: url, caption: ''});
           renderAwardPhotosPreview();
-        }
-      } catch(e) { console.error('Upload failed', e); }
+        },
+        (err) => { console.error('Award photo upload failed:', err); alert('Upload failed: ' + err); }
+      );
     }
   };
   input.click();
