@@ -194,7 +194,7 @@ async function uploadToCloudinary(file, onSuccess) {
   );
 }
 
-function triggerUpload(inputId, targetFieldId) {
+function triggerUpload(inputId, targetFieldId, previewCallback) {
   const input = document.getElementById(inputId);
   input.click();
   input.onchange = async function() {
@@ -206,6 +206,8 @@ function triggerUpload(inputId, targetFieldId) {
     await uploadToR2(file, 'photos',
       (url) => {
         document.getElementById(targetFieldId).value = url;
+        // Call optional preview callback (e.g. updateHeroPreview, updateBioPreview)
+        if (typeof previewCallback === 'function') previewCallback(url);
         if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
         saveAll();
       },
