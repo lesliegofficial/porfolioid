@@ -30,9 +30,19 @@ const MAX_SIZE_BYTES = {
   document: 25  * 1024 * 1024,
 };
 
+// VALID_CATEGORIES must match the category strings the browser (dashboard.js)
+// actually sends via uploadToR2(). Previously this list only included
+// 'credits' among the categories in real use (plus several unused legacy
+// names), so media-presign.js rejected every other upload type (photos,
+// videos, thumbnails, audio, documents, awards) with a 400 before it ever
+// reached R2 or media-register — the root cause of media_assets staying
+// empty for anything but credit photos. Legacy names below are preserved
+// since dashboard.js is the only caller in this repo and nothing depends
+// on them being removed.
 const VALID_CATEGORIES = new Set([
   'gallery', 'bio', 'credits', 'thumbnail', 'resume',
   'cover', 'icon', 'branding', 'certificate', 'document',
+  'photos', 'videos', 'thumbnails', 'audio', 'documents', 'awards',
 ]);
 
 const VALID_ASSET_TYPES = new Set([
