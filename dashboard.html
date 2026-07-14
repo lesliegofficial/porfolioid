@@ -312,6 +312,15 @@
 
       <hr class="section-divider">
       <div class="field-group">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Career Record Highlights</span>
+        </div>
+        <div id="careerHighlightsEditorList"></div>
+        <button class="btn-save" onclick="saveCareerHighlights()">Save Career Record Highlights</button>
+      </div>
+
+      <hr class="section-divider">
+      <div class="field-group">
         <label class="field-label">Hero Image</label>
         <input type="url" id="heroImage" placeholder="https://... or upload below" oninput="updateHeroPreview(this.value)">
         <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
