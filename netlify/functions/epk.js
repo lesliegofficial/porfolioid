@@ -435,6 +435,12 @@ exports.handler = async (event) => {
             }
           } catch(e) { console.error('Credits fullDesc merge failed:', e); }
         }
+        // CANONICAL OBJECT — the single protected profile object written to
+        // every destination below. Established once, after all preservation
+        // and merge logic above has completed. No destination may receive
+        // the original unprotected `data` after this point.
+        const canonicalData = safeData;
+
         const upsertRes = await fetch(
           `${SUPABASE_URL}/rest/v1/epk_profiles?on_conflict=slug`,
           {
@@ -445,14 +451,14 @@ exports.handler = async (event) => {
               'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
               'Prefer': 'resolution=merge-duplicates,return=minimal'
             },
-            body: JSON.stringify({ slug, data: safeData, updated_at: new Date().toISOString() })
+            body: JSON.stringify({ slug, data: canonicalData, updated_at: new Date().toISOString() })
           }
         ).then(r => ({ ok: r.ok, status: r.status }));
 
         // Also write backup to Netlify Blobs so data survives Supabase hiccups
         try {
           const store = await getBlobs();
-          if (store) await store.set(`epk:${slug}`, JSON.stringify(data));
+          if (store) await store.set(`epk:${slug}`, JSON.stringify(canonicalData));
         } catch(backupErr) {
           console.error('Blob backup failed (non-fatal):', backupErr.message);
         }
@@ -463,19 +469,9 @@ exports.handler = async (event) => {
           const GITHUB_REPO = process.env.GITHUB_BACKUP_REPO || 'lesliegofficial/porfolioid';
           if (GITHUB_TOKEN) {
             const backupPath = `_backups/${slug}-core.json`;
-            // For backup, fetch complete data including credits from Supabase
-            let fullBackupData = { ...data };
-            try {
-              const fullRes = await fetch(
-                `${SUPABASE_URL}/rest/v1/epk_profiles?slug=eq.${slug}&select=data`,
-                { headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}` } }
-              );
-              if (fullRes.ok) {
-                const fullProfile = await fullRes.json();
-                if (fullProfile[0]) fullBackupData = fullProfile[0].data;
-              }
-            } catch(e) {}
-            const backupContent = JSON.stringify(fullBackupData, null, 2);
+            // Use the same canonical object already written to Supabase above —
+            // no re-fetch needed, and no fallback to the raw incoming `data`.
+            const backupContent = JSON.stringify(canonicalData, null, 2);
             const encoded = Buffer.from(backupContent).toString('base64');
             // Get current SHA if file exists (required for updates)
             let fileSha = null;
