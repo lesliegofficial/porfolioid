@@ -668,7 +668,6 @@
           <div id="creditPhotosPreview" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;min-height:20px"></div>
           <input type="file" id="creditPhotoInput" accept="image/*" style="display:none" multiple>
           <button class="credit-photo-add-btn" onclick="triggerCreditPhotoUpload()">+ Add Photos</button>
-          <button class="credit-photo-add-btn" onclick="browseCloudinaryForm()" style="margin-left:0.4rem;background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
         </div>
 
         <!-- PRESS & ARCHIVE -->
@@ -753,7 +752,6 @@
           <input type="url" id="newTrackLink" placeholder="Spotify / Apple Music / YouTube / SoundCloud URL">
           <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
             <button class="btn-add" onclick="triggerMp3Upload('newTrackMp3File')">↑ Upload MP3</button>
-            <button class="btn-add" onclick="browseCloudinaryMp3()" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a streaming link above</span>
           </div>
           <input type="file" id="newTrackMp3File" accept="audio/*" style="display:none">
@@ -877,7 +875,6 @@
           <input type="url" id="newVideoUrl" placeholder="https://youtube.com/watch?v=...">
           <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
             <button class="btn-add" onclick="triggerMp4Upload('newVideoMp4File')">↑ Upload MP4</button>
-            <button class="btn-add" onclick="browseCloudinaryVideo()" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a YouTube/Vimeo link above</span>
           </div>
           <input type="file" id="newVideoMp4File" accept="video/*" style="display:none">
@@ -978,7 +975,6 @@
           <input type="url" id="newPhotoUrl" placeholder="https://... or upload below" oninput="updatePhotoPreview(this.value)">
           <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
             <button class="btn-add" onclick="triggerPhotoUpload('newPhotoFile')">↑ Upload Photo</button>
-            <button class="btn-add" onclick="browseCloudinaryPhoto()" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
           </div>
           <input type="file" id="newPhotoFile" accept="image/*" style="display:none">
@@ -1240,7 +1236,6 @@
           <input type="url" id="newAssetUrl" placeholder="https://... or upload below">
           <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
             <button class="btn-add" onclick="triggerAssetUpload()">↑ Upload File</button>
-            <button class="btn-add" onclick="browseCloudinaryAsset()" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
           </div>
           <input type="file" id="assetFileInput" accept=".pdf,.doc,.docx,.zip,.jpg,.png,.mp3,.wav" style="display:none">

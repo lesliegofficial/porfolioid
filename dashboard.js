@@ -1126,7 +1126,6 @@ function renderCredits() {
             <div style="margin-top:0.5rem">
               <input type="file" id="creditPhotoInput_${i}" accept="image/*" multiple style="display:none">
               <button class="credit-photo-add-btn" onclick="addPhotosToCredit(${i})">+ Add Photos</button>
-              <button class="credit-photo-add-btn" onclick="browseCloudinary(${i})" style="margin-left:0.4rem;background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
             </div>` : ''}
           </div>
           <div class="card-actions">
