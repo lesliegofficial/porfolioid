@@ -401,6 +401,16 @@ function ch3TagOptionsHTML(selected) {
   return CH3_TAG_OPTIONS.map(o => `<option value="${o.value}" ${o.value === selected ? 'selected' : ''}>${o.label}</option>`).join('');
 }
 
+function ch3PreviewMediaHTML(url, size) {
+  const s = size || '48px';
+  if (!url) return `<div style="width:${s};height:${s};flex-shrink:0;background:var(--dark-4);border:1px solid rgba(201,168,76,0.15);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--gray)">no media</div>`;
+  const isVideo = /\.(mp4|mov|webm)(\?|$)/i.test(url);
+  if (isVideo) {
+    return `<video src="${url}" muted style="width:${s};height:${s};flex-shrink:0;object-fit:cover;border-radius:4px;border:1px solid rgba(201,168,76,0.15)"></video>`;
+  }
+  return `<img src="${url}" style="width:${s};height:${s};flex-shrink:0;object-fit:cover;border-radius:4px;border:1px solid rgba(201,168,76,0.15)">`;
+}
+
 function renderCareerHighlightsEditor() {
   const list = document.getElementById('careerHighlightsEditorList');
   if (!list || !_ch3Draft) return;
@@ -410,6 +420,7 @@ function renderCareerHighlightsEditor() {
     if (!isEditing) {
       return `<div style="${rowStyle}">
         <div style="display:flex;align-items:center;gap:0.5rem">
+          ${ch3PreviewMediaHTML(card.image)}
           <span style="flex:1;font-size:0.85rem;color:var(--white)">${card.title || ''}</span>
           <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">${card.tag}</span>
           <button class="btn-card-action" onclick="ch3MoveCard(${i},-1)" ${i === 0 ? 'disabled' : ''} title="Move up">▲</button>
@@ -437,8 +448,12 @@ function renderCareerHighlightsEditor() {
         <textarea id="ch3EditDescEs_${i}" rows="2">${card.descriptionEs || ''}</textarea>
       </div>
       <div class="field-group">
+        <label class="field-label">Image / Video Preview</label>
+        <div id="ch3PreviewWrap_${i}">${ch3PreviewMediaHTML(card.image, '140px')}</div>
+      </div>
+      <div class="field-group">
         <label class="field-label">Image URL</label>
-        <input type="url" id="ch3EditImage_${i}" value="${(card.image || '').replace(/"/g, '&quot;')}" placeholder="https://... or upload below">
+        <input type="url" id="ch3EditImage_${i}" value="${(card.image || '').replace(/"/g, '&quot;')}" placeholder="https://... or upload below" oninput="ch3UpdatePreview(${i})">
         <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
           <button class="btn-add" onclick="triggerCh3ImageUpload(${i})">↑ Upload Photo</button>
           <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
@@ -462,6 +477,12 @@ function renderCareerHighlightsEditor() {
       </div>
     </div>`;
   }).join('');
+}
+
+function ch3UpdatePreview(idx) {
+  const field = document.getElementById(`ch3EditImage_${idx}`);
+  const wrap = document.getElementById(`ch3PreviewWrap_${idx}`);
+  if (field && wrap) wrap.innerHTML = ch3PreviewMediaHTML(field.value, '140px');
 }
 
 function ch3ToggleEdit(idx) { _ch3EditingIdx = idx; renderCareerHighlightsEditor(); }
@@ -525,6 +546,7 @@ function triggerCh3ImageUpload(idx) {
       (url) => {
         const field = document.getElementById(`ch3EditImage_${idx}`);
         if (field) field.value = url;
+        ch3UpdatePreview(idx);
         if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
       },
       (err) => showUploadError(btn, originalText, err)
