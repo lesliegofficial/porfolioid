@@ -691,6 +691,7 @@ function showPanel(name) {
 // ── SECTION ORDER & VISIBILITY ──
 const DEFAULT_SECTIONS = [
   { id: 'bio',     label: 'Career Profile', icon: '✦' },
+  { id: 'credits', label: 'Credits',        icon: '🏆' },
   { id: 'photos',  label: 'Photos',         icon: '📸' },
   { id: 'videos',  label: 'Video',          icon: '🎬' },
   { id: 'music',   label: 'Music',          icon: '🎵' },
@@ -706,10 +707,25 @@ function initSectionsPanel() {
   const list = document.getElementById('sectionsOrderList');
   if (!list) return;
 
-  // Build ordered list
-  const ordered = order.map(id => DEFAULT_SECTIONS.find(s => s.id === id)).filter(Boolean);
-  // Add any missing sections
-  DEFAULT_SECTIONS.forEach(s => { if (!ordered.find(o => o.id === s.id)) ordered.push(s); });
+  // Build ordered list — preserve every saved section ID, including ones
+  // not present in DEFAULT_SECTIONS (e.g. future or legacy sections),
+  // instead of silently dropping them via .filter(Boolean). Known IDs get
+  // their canonical label/icon; unknown IDs get a safe fallback label so
+  // they stay visible in the editor and are never lost on the next save.
+  // Duplicate IDs are removed safely (first occurrence wins).
+  const seen = new Set();
+  const ordered = [];
+  order.forEach(id => {
+    if (seen.has(id)) return;
+    seen.add(id);
+    const known = DEFAULT_SECTIONS.find(s => s.id === id);
+    ordered.push(known || { id, label: id.charAt(0).toUpperCase() + id.slice(1), icon: '•' });
+  });
+  // Append any default sections missing from the saved order (e.g. newly
+  // introduced sections) exactly once each.
+  DEFAULT_SECTIONS.forEach(s => {
+    if (!seen.has(s.id)) { ordered.push(s); seen.add(s.id); }
+  });
 
   list.innerHTML = ordered.map((s, i) => {
     const visible = visibility[s.id] !== false;
