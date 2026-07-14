@@ -2822,7 +2822,17 @@ function toggleAllCredits() {
 
 // Filter credits grid by Career Highlight category, then scroll to it.
 // Pass '' to clear the filter and show everything.
+//
+// LEGACY_HIGHLIGHT_TAG_ALIASES: some already-saved credits still carry an
+// older tag value from before a prior taxonomy consolidation. This maps
+// each legacy value to its current canonical equivalent so filtering still
+// finds them, without renaming/mutating the credit data itself or the
+// data-highlight attribute already rendered into the DOM. Read-only,
+// in-memory canonicalization at match time only.
+const LEGACY_HIGHLIGHT_TAG_ALIASES = { operationscompliance: 'industryoperations' };
+
 function filterCreditsByCategory(tag) {
+  const canonicalTag = LEGACY_HIGHLIGHT_TAG_ALIASES[tag] || tag;
   const container = document.getElementById('credits');
   const grid = document.getElementById('creditsGrid');
   const btn = document.getElementById('creditsToggleBtn');
@@ -2839,20 +2849,22 @@ function filterCreditsByCategory(tag) {
   const cards = grid.querySelectorAll('.credit-card');
   let matchCount = 0;
   cards.forEach(card => {
-    const matches = !tag || card.getAttribute('data-highlight') === tag;
+    const cardTagRaw = card.getAttribute('data-highlight');
+    const cardTag = LEGACY_HIGHLIGHT_TAG_ALIASES[cardTagRaw] || cardTagRaw;
+    const matches = !canonicalTag || cardTag === canonicalTag;
     card.style.display = matches ? '' : 'none';
     if (matches) matchCount++;
   });
 
   if (banner) {
-    if (tag && matchCount > 0) {
+    if (canonicalTag && matchCount > 0) {
       const labels = _currentLang === 'es'
         ? { liveperformance:'Presentaciones en Vivo', recordingartist:'Artista de Grabación', creativeprofessional:'Profesional Creativa', marketingpr:'Mercadeo y Relaciones Públicas', industryoperations:'Operaciones de la Industria', founderbuilder:'Fundadora y Creadora' }
         : { liveperformance:'Live Performance', recordingartist:'Recording Artist', creativeprofessional:'Creative Professional', marketingpr:'Marketing & PR', industryoperations:'Industry Operations', founderbuilder:'Founder & Builder' };
       const showingText = _currentLang === 'es' ? 'Mostrando:' : 'Showing:';
       const viewAllText = _currentLang === 'es' ? 'Ver Récord Completo →' : 'View Complete Record →';
       const closeText = _currentLang === 'es' ? 'Cerrar –' : 'Close –';
-      banner.innerHTML = `${showingText} <strong style="color:var(--gold)">${labels[tag] || tag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">${viewAllText}</a> &nbsp;<a href="javascript:void(0)" onclick="toggleAllCredits()" style="color:var(--gray);text-decoration:underline">${closeText}</a>`;
+      banner.innerHTML = `${showingText} <strong style="color:var(--gold)">${labels[canonicalTag] || canonicalTag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">${viewAllText}</a> &nbsp;<a href="javascript:void(0)" onclick="toggleAllCredits()" style="color:var(--gray);text-decoration:underline">${closeText}</a>`;
       banner.style.display = 'block';
     } else {
       banner.style.display = 'none';
@@ -2862,7 +2874,7 @@ function filterCreditsByCategory(tag) {
   // Scroll target: when a category tag is passed (highlight card click), scroll to the
   // creditsGrid itself (Career Record section) — NOT the #credits container top which
   // would land on Professional Documents first.
-  const scrollTarget = tag
+  const scrollTarget = canonicalTag
     ? document.getElementById('creditsGrid')   // → Career Record cards directly
     : document.getElementById('credits');       // → top of expanded section (View Complete Record)
   if (scrollTarget) {
