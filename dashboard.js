@@ -209,7 +209,10 @@ function triggerUpload(inputId, targetFieldId, previewCallback) {
         // Call optional preview callback (e.g. updateHeroPreview, updateBioPreview)
         if (typeof previewCallback === 'function') previewCallback(url);
         if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
-        saveAll();
+        // Intentionally no saveAll() here — upload only populates the field
+        // and preview. Persisting is left to the existing explicit
+        // "Save Changes" button in this panel (see dashboard.html), so a
+        // media upload never triggers a broad full-profile save on its own.
       },
       (err) => showUploadError(btn, originalText, err)
     );
