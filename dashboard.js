@@ -778,6 +778,8 @@ function saveAll() {
   epk.bioImageCropTop = parseInt(document.getElementById('bioCropTopValue').value || 0);
   epk.bioImageZoom = parseInt(document.getElementById('bioZoomValue').value || 100);
 
+  saveIdentityBlock(); // captures Additional Profile Details into memory — no persist call of its own
+
   persistUser();
   showSaveBanner();
 }
@@ -3646,6 +3648,49 @@ function loadBookingToggle() {
 }
 
 // IDENTITY BLOCK
+// ── ADDITIONAL PROFILE DETAILS — per-module accordion state ──────
+// Only one module open at a time. Purely a UI state change — never
+// persists anything. Collapsing/expanding must never call persistUser().
+let _openIdentityModule = null;
+const IDENTITY_MODULE_KEYS = ['availabilityBadges', 'industryRoles', 'featuredCredit', 'verificationStatus', 'languages', 'representation', 'timeline'];
+
+function toggleIdentityModule(key) {
+  _openIdentityModule = (_openIdentityModule === key) ? null : key;
+  renderIdentityAccordionState();
+}
+
+function renderIdentityAccordionState() {
+  IDENTITY_MODULE_KEYS.forEach(key => {
+    const body = document.getElementById('idmBody_' + key);
+    const chevron = document.getElementById('idmChevron_' + key);
+    if (!body) return;
+    const isOpen = _openIdentityModule === key;
+    body.style.display = isOpen ? 'block' : 'none';
+    if (chevron) chevron.textContent = isOpen ? '▾' : '▸';
+  });
+}
+
+// Recomputes each module's collapsed-row summary from current in-memory
+// state. Called after any edit so the summary reflects reality without
+// requiring the module to be open — never persists anything itself.
+function updateIdentitySummaries() {
+  const ib = epk.identityBlock || {};
+  const set = (key, text) => { const el = document.getElementById('idmSummary_' + key); if (el) el.textContent = text; };
+  const state = (enabled) => enabled ? 'Enabled' : 'Disabled';
+
+  set('availabilityBadges', `${(ib.availabilityBadges || []).length} added — ${state(ib.availabilityEnabled)}`);
+  set('industryRoles', `${(ib.industryRoles || []).length} added — ${state(ib.rolesEnabled)}`);
+  const featuredSel = document.getElementById('featuredCreditSelect');
+  const hasFeatured = featuredSel && featuredSel.value !== '';
+  set('featuredCredit', `${hasFeatured ? 'Selected' : 'Not selected'} — ${state(ib.featuredEnabled)}`);
+  const hasVerification = !!(ib.verificationStatus && ib.verificationStatus.trim());
+  set('verificationStatus', `${hasVerification ? 'Configured' : 'Not configured'} — ${state(ib.verifiedEnabled)}`);
+  set('languages', `${(ib.languages || []).length} added — ${state(ib.languagesEnabled)}`);
+  const hasRep = !!(ib.repName && ib.repName.trim());
+  set('representation', `${hasRep ? 'Configured' : 'Not configured'} — ${state(ib.repEnabled)}`);
+  set('timeline', `${(ib.timeline || []).length} entries — ${state(ib.timelineEnabled)}`);
+}
+
 function saveIdentityBlock() {
   epk.identityBlock = epk.identityBlock || {};
   const ib = epk.identityBlock;
@@ -3661,7 +3706,13 @@ function saveIdentityBlock() {
   ib.repRole = document.getElementById('repRole').value.trim();
   ib.repContact = document.getElementById('repContact').value.trim();
   ib.timelineEnabled = document.getElementById('identityTimelineEnabled').checked;
-  persistUser(); showSaveBanner();
+  updateIdentitySummaries();
+  // Note: persistUser()/showSaveBanner() intentionally NOT called here.
+  // This function only updates epk.identityBlock in memory. Persisting
+  // happens once, when the Career Profile "Save Changes" button is
+  // clicked (saveAll() calls this function right before its own
+  // persistUser() call) — Additional Profile Details is not yet shown
+  // publicly, so it should never persist on its own ahead of that.
 }
 
 function loadIdentityBlock() {
@@ -3695,6 +3746,11 @@ function loadIdentityBlock() {
 
   // Featured credit dropdown
   populateFeaturedCreditSelect(ib.featuredCreditIdx || '');
+
+  // All modules collapsed by default on load; summaries reflect current data.
+  _openIdentityModule = null;
+  renderIdentityAccordionState();
+  updateIdentitySummaries();
 }
 
 function populateFeaturedCreditSelect(selectedVal) {
