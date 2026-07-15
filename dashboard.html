@@ -80,47 +80,36 @@
     </div>
 
     <div class="sidebar-section">
-      <div class="sidebar-section-label">Profile</div>
+      <div class="sidebar-section-label">Portfolio Content</div>
+      <div style="font-size:0.62rem;color:var(--gray);line-height:1.4;padding:0 0.5rem;margin-bottom:0.75rem;text-transform:none;letter-spacing:normal">Edit the sections visitors see on your portfolio.</div>
       <button class="nav-item active" onclick="showPanel('hero')">
-        <span class="nav-item-icon">✦</span><span>Hero & Identity</span>
+        <span class="nav-item-icon">✦</span><span>Career Profile</span>
       </button>
       <button class="nav-item" onclick="showPanel('bio')">
         <span class="nav-item-icon">👤</span><span>Biography</span>
       </button>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-section-label">Content</div>
+      <button class="nav-item" onclick="showPanel('resume')">
+        <span class="nav-item-icon">📋</span><span>Professional Documents</span>
+      </button>
       <button class="nav-item" onclick="showPanel('credits')">
         <span class="nav-item-icon">🏆</span><span>Credits</span>
       </button>
-      <button class="nav-item" onclick="showPanel('music')">
-        <span class="nav-item-icon">🎵</span><span>Music</span>
+      <!-- Works reserved here architecturally, matching public order (between Credits and Photos).
+           Not shown until a real Works editor exists — no placeholder, no disabled item. -->
+      <button class="nav-item" onclick="showPanel('photos')">
+        <span class="nav-item-icon">📸</span><span>Photos</span>
       </button>
       <button class="nav-item" onclick="showPanel('videos')">
         <span class="nav-item-icon">🎬</span><span>Video</span>
       </button>
-      <button class="nav-item" onclick="showPanel('photos')">
-        <span class="nav-item-icon">📸</span><span>Photos</span>
+      <button class="nav-item" onclick="showPanel('music')">
+        <span class="nav-item-icon">🎵</span><span>Music</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('awards')">
+        <span class="nav-item-icon">🏅</span><span>Awards</span>
       </button>
       <button class="nav-item" onclick="showPanel('assets')">
         <span class="nav-item-icon">📦</span><span>Assets</span>
-      </button>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-section-label">Layout</div>
-      <button class="nav-item" onclick="showPanel('careertype')">
-        <span class="nav-item-icon">⚡</span><span>Career Type</span>
-      </button>
-      <button class="nav-item" onclick="showPanel('sections')">
-        <span class="nav-item-icon">⠿</span><span>Section Order</span>
-      </button>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-section-label">Business</div>
-      <button class="nav-item" onclick="showPanel('qr')">
-        <span class="nav-item-icon">⬛</span><span>Share Card / QR</span>
       </button>
       <button class="nav-item" onclick="showPanel('booking')">
         <span class="nav-item-icon">📅</span><span>Connect</span>
@@ -128,11 +117,19 @@
       <button class="nav-item" onclick="showPanel('socials')">
         <span class="nav-item-icon">🔗</span><span>Social Links</span>
       </button>
-      <button class="nav-item" onclick="showPanel('resume')">
-        <span class="nav-item-icon">📋</span><span>Professional Profile</span>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Settings</div>
+      <div style="font-size:0.62rem;color:var(--gray);line-height:1.4;padding:0 0.5rem;margin-bottom:0.75rem;text-transform:none;letter-spacing:normal">Configure layout, organization, sharing, templates, and analytics.</div>
+      <button class="nav-item" onclick="showPanel('careertype')">
+        <span class="nav-item-icon">⚡</span><span>Career Type</span>
       </button>
-      <button class="nav-item" onclick="showPanel('awards')">
-        <span class="nav-item-icon">🏅</span><span>Awards & Degrees</span>
+      <button class="nav-item" onclick="showPanel('sections')">
+        <span class="nav-item-icon">⠿</span><span>Section Order</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('qr')">
+        <span class="nav-item-icon">⬛</span><span>Share Card / QR</span>
       </button>
       <button class="nav-item" onclick="showPanel('analytics')">
         <span class="nav-item-icon">📊</span><span>Analytics</span>
@@ -144,7 +141,7 @@
 
     <!-- HERO PANEL -->
     <div class="panel active" id="panel-hero">
-      <h1 class="panel-title">Hero & <em>Identity</em></h1>
+      <h1 class="panel-title">Career <em>Profile</em></h1>
       <p class="panel-sub">This is the first thing people see on your PorfolioID. Make it count.</p>
 
       <div class="field-row">
@@ -308,6 +305,15 @@
             <button class="btn-add" onclick="addTimelineMilestone()">+ Add</button>
           </div>
         </div>
+      </div>
+
+      <hr class="section-divider">
+      <div class="field-group">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Career Record Highlights</span>
+        </div>
+        <div id="careerHighlightsEditorList"></div>
+        <button class="btn-save" onclick="saveCareerHighlights()">Save Career Record Highlights</button>
       </div>
 
       <hr class="section-divider">
@@ -668,7 +674,6 @@
           <div id="creditPhotosPreview" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;min-height:20px"></div>
           <input type="file" id="creditPhotoInput" accept="image/*" style="display:none" multiple>
           <button class="credit-photo-add-btn" onclick="triggerCreditPhotoUpload()">+ Add Photos</button>
-          <button class="credit-photo-add-btn" onclick="browseCloudinaryForm()" style="margin-left:0.4rem;background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
         </div>
 
         <!-- PRESS & ARCHIVE -->
@@ -753,7 +758,6 @@
           <input type="url" id="newTrackLink" placeholder="Spotify / Apple Music / YouTube / SoundCloud URL">
           <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
             <button class="btn-add" onclick="triggerMp3Upload('newTrackMp3File')">↑ Upload MP3</button>
-            <button class="btn-add" onclick="browseCloudinaryMp3()" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a streaming link above</span>
           </div>
           <input type="file" id="newTrackMp3File" accept="audio/*" style="display:none">
@@ -877,7 +881,6 @@
           <input type="url" id="newVideoUrl" placeholder="https://youtube.com/watch?v=...">
           <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
             <button class="btn-add" onclick="triggerMp4Upload('newVideoMp4File')">↑ Upload MP4</button>
-            <button class="btn-add" onclick="browseCloudinaryVideo()" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a YouTube/Vimeo link above</span>
           </div>
           <input type="file" id="newVideoMp4File" accept="video/*" style="display:none">
@@ -978,7 +981,6 @@
           <input type="url" id="newPhotoUrl" placeholder="https://... or upload below" oninput="updatePhotoPreview(this.value)">
           <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
             <button class="btn-add" onclick="triggerPhotoUpload('newPhotoFile')">↑ Upload Photo</button>
-            <button class="btn-add" onclick="browseCloudinaryPhoto()" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
           </div>
           <input type="file" id="newPhotoFile" accept="image/*" style="display:none">
@@ -1240,7 +1242,6 @@
           <input type="url" id="newAssetUrl" placeholder="https://... or upload below">
           <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
             <button class="btn-add" onclick="triggerAssetUpload()">↑ Upload File</button>
-            <button class="btn-add" onclick="browseCloudinaryAsset()" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
             <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
           </div>
           <input type="file" id="assetFileInput" accept=".pdf,.doc,.docx,.zip,.jpg,.png,.mp3,.wav" style="display:none">
@@ -1665,7 +1666,7 @@
 
     <!-- RESUME PANEL -->
     <div class="panel" id="panel-resume">
-      <h1 class="panel-title">Professional Profile</h1>
+      <h1 class="panel-title">Professional Documents</h1>
       <p class="panel-sub">Create professional profile cards such as your Executive Resume, Biography, or other professional documents — styled in black and gold to match your portfolio.</p>
 
       <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);padding:1rem 1.25rem;border:1px solid rgba(201,168,76,0.15);margin-bottom:1.5rem">

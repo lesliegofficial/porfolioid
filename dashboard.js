@@ -209,7 +209,10 @@ function triggerUpload(inputId, targetFieldId, previewCallback) {
         // Call optional preview callback (e.g. updateHeroPreview, updateBioPreview)
         if (typeof previewCallback === 'function') previewCallback(url);
         if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
-        saveAll();
+        // Intentionally no saveAll() here — upload only populates the field
+        // and preview. Persisting is left to the existing explicit
+        // "Save Changes" button in this panel (see dashboard.html), so a
+        // media upload never triggers a broad full-profile save on its own.
       },
       (err) => showUploadError(btn, originalText, err)
     );
@@ -327,6 +330,241 @@ function triggerPhotoUpload(inputId) {
   };
 }
 
+// ── CAREER RECORD HIGHLIGHTS EDITOR ──────────────────────────────
+// Editable dashboard front-end for the 6 public "Career Record Highlights"
+// cards. Mirrors epk.js's DEFAULT_CAREER_HIGHLIGHTS exactly — keep both in
+// sync if the defaults ever change. Nothing here writes to the profile
+// until the explicit "Save Career Record Highlights" button is clicked.
+const CH3_ICON_OPTIONS = [
+  { value: 'music', label: 'Music note' },
+  { value: 'mic', label: 'Microphone' },
+  { value: 'building', label: 'Building' },
+  { value: 'briefcase', label: 'Briefcase' },
+  { value: 'megaphone', label: 'Megaphone' },
+  { value: 'flag', label: 'Flag' },
+];
+const CH3_TAG_OPTIONS = [
+  { value: 'recordingartist', label: 'Recording Artist' },
+  { value: 'liveperformance', label: 'Live Performance' },
+  { value: 'industryoperations', label: 'Industry Operations' },
+  { value: 'creativeprofessional', label: 'Creative Professional' },
+  { value: 'marketingpr', label: 'Marketing & PR' },
+  { value: 'founderbuilder', label: 'Founder & Builder' },
+];
+const DEFAULT_CAREER_HIGHLIGHTS = [
+  { id: 'default-recordingartist', tag: 'recordingartist', order: 0, visible: true, icon: 'music',
+    title: 'Recording Artist', titleEs: 'Artista de Grabación',
+    description: 'Recording artist with Las Nenas del Swing. Original compositions and live concert recordings across multiple releases.',
+    descriptionEs: 'Artista de grabación con Las Nenas del Swing. Composiciones originales y grabaciones de conciertos en vivo en múltiples lanzamientos.',
+    image: 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052294/career-highlights/recording-artist.jpg' },
+  { id: 'default-liveperformance', tag: 'liveperformance', order: 1, visible: true, icon: 'mic',
+    title: 'Touring Vocalist', titleEs: 'Presentaciones en Vivo',
+    description: 'Exclusive touring vocalist for Don Omar, J Álvarez, and Melina León — hundreds of performances across five continents.',
+    descriptionEs: 'Vocalista de gira exclusiva para Don Omar, J Álvarez y Melina León — cientos de presentaciones en cinco continentes.',
+    image: 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1782320896/career-highlights/touring-vocalist-don-omar.jpg' },
+  { id: 'default-industryoperations', tag: 'industryoperations', order: 2, visible: true, icon: 'building',
+    title: 'Operations &amp; Compliance', titleEs: 'Operaciones de la Industria',
+    description: 'Executive operations, regulatory compliance, and organizational leadership. Human Services at FEMA, Head of Compliance at Venetian Productions, and operations coordination at Arrow Management.',
+    descriptionEs: 'Logística de Artistas y Coordinación de Eventos para Adam Torres Concerts. Apoyo artístico en Arrow Management. Jefa de Cumplimiento en Venetian Productions.',
+    image: 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1782317473/career-highlights/operations-compliance.png' },
+  { id: 'default-creativeprofessional', tag: 'creativeprofessional', order: 3, visible: true, icon: 'briefcase',
+    title: 'Artist Liaison &amp; A&amp;R Coordinator', titleEs: 'Profesional Creativa',
+    description: 'A&amp;R coordination and artist development at Sony Music Latin and Urban Latino Music. Artist liaison and event coordination for Adam Torres Concerts. Music projects, release coordination, and industry relationships.',
+    descriptionEs: 'Coordinadora de A&R en Sony Music Latin y Urban Latino Music. Desarrollo artístico, coordinación de lanzamientos y operaciones creativas.',
+    image: 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052295/career-highlights/creative-professional.jpg' },
+  { id: 'default-marketingpr', tag: 'marketingpr', order: 4, visible: true, icon: 'megaphone',
+    title: 'Digital Marketing', titleEs: 'Mercadeo y Relaciones Públicas',
+    description: 'Digital marketing, social media strategy, public relations, and content marketing at NV Marketing &amp; PR. Managed artist marketing campaigns and brand promotion for major Latin artists.',
+    descriptionEs: 'Coordinadora de Mercadeo y Contenido en NV Marketing & PR. Campañas digitales, apoyo de publicidad y estrategia de contenido para grandes artistas latinos.',
+    image: 'https://res.cloudinary.com/djj8xe3gx/video/upload/v1781052306/career-highlights/marketing-pr.mp4' },
+  { id: 'default-founderbuilder', tag: 'founderbuilder', order: 5, visible: true, icon: 'flag',
+    title: 'Founder, porfolioID', titleEs: 'Fundadora y Creadora',
+    description: 'Founder &amp; Product Architect of porfolioID and IDPressDrop — original platforms built from concept to deployment.',
+    descriptionEs: 'Fundadora y Arquitecta de Producto de PorfolioID e IDPressDrop — plataformas originales construidas desde el concepto hasta el despliegue.',
+    image: 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1781638246/career-highlights/founder-builder-official.jpg' },
+];
+
+let _ch3Draft = null;   // working copy only — never touches epk.careerHighlights until explicit Save
+let _ch3EditingIdx = -1;
+
+function initCareerHighlightsEditor() {
+  const source = (epk.careerHighlights && epk.careerHighlights.length) ? epk.careerHighlights : DEFAULT_CAREER_HIGHLIGHTS;
+  _ch3Draft = JSON.parse(JSON.stringify(source)).sort((a, b) => (a.order || 0) - (b.order || 0));
+  _ch3EditingIdx = -1;
+  renderCareerHighlightsEditor();
+}
+
+function ch3IconOptionsHTML(selected) {
+  return CH3_ICON_OPTIONS.map(o => `<option value="${o.value}" ${o.value === selected ? 'selected' : ''}>${o.label}</option>`).join('');
+}
+function ch3TagOptionsHTML(selected) {
+  return CH3_TAG_OPTIONS.map(o => `<option value="${o.value}" ${o.value === selected ? 'selected' : ''}>${o.label}</option>`).join('');
+}
+
+function ch3PreviewMediaHTML(url, size) {
+  const s = size || '48px';
+  if (!url) return `<div style="width:${s};height:${s};flex-shrink:0;background:var(--dark-4);border:1px solid rgba(201,168,76,0.15);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--gray)">no media</div>`;
+  const isVideo = /\.(mp4|mov|webm)(\?|$)/i.test(url);
+  if (isVideo) {
+    return `<video src="${url}" muted style="width:${s};height:${s};flex-shrink:0;object-fit:cover;border-radius:4px;border:1px solid rgba(201,168,76,0.15)"></video>`;
+  }
+  return `<img src="${url}" style="width:${s};height:${s};flex-shrink:0;object-fit:cover;border-radius:4px;border:1px solid rgba(201,168,76,0.15)">`;
+}
+
+function renderCareerHighlightsEditor() {
+  const list = document.getElementById('careerHighlightsEditorList');
+  if (!list || !_ch3Draft) return;
+  list.innerHTML = _ch3Draft.map((card, i) => {
+    const isEditing = _ch3EditingIdx === i;
+    const rowStyle = `background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);padding:0.75rem;margin-bottom:0.5rem;${card.visible === false ? 'opacity:0.5' : ''}`;
+    if (!isEditing) {
+      return `<div style="${rowStyle}">
+        <div style="display:flex;align-items:center;gap:0.5rem">
+          ${ch3PreviewMediaHTML(card.image)}
+          <span style="flex:1;font-size:0.85rem;color:var(--white)">${card.title || ''}</span>
+          <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">${card.tag}</span>
+          <button class="btn-card-action" onclick="ch3MoveCard(${i},-1)" ${i === 0 ? 'disabled' : ''} title="Move up">▲</button>
+          <button class="btn-card-action" onclick="ch3MoveCard(${i},1)" ${i === _ch3Draft.length - 1 ? 'disabled' : ''} title="Move down">▼</button>
+          <button class="btn-card-action" onclick="ch3ToggleVisible(${i})">${card.visible === false ? '🚫 Hidden' : '👁 Visible'}</button>
+          <button class="btn-card-action" onclick="ch3ToggleEdit(${i})">Edit</button>
+        </div>
+      </div>`;
+    }
+    return `<div style="${rowStyle}">
+      <div class="field-group">
+        <label class="field-label">Title (English)</label>
+        <input type="text" id="ch3EditTitle_${i}" value="${(card.title || '').replace(/"/g, '&quot;')}">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Título (Español)</label>
+        <input type="text" id="ch3EditTitleEs_${i}" value="${(card.titleEs || '').replace(/"/g, '&quot;')}">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Description (English)</label>
+        <textarea id="ch3EditDesc_${i}" rows="2">${card.description || ''}</textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Descripción (Español)</label>
+        <textarea id="ch3EditDescEs_${i}" rows="2">${card.descriptionEs || ''}</textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Image / Video Preview</label>
+        <div id="ch3PreviewWrap_${i}">${ch3PreviewMediaHTML(card.image, '140px')}</div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Image URL</label>
+        <input type="url" id="ch3EditImage_${i}" value="${(card.image || '').replace(/"/g, '&quot;')}" placeholder="https://... or upload below" oninput="ch3UpdatePreview(${i})">
+        <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
+          <button class="btn-add" onclick="triggerCh3ImageUpload(${i})">↑ Upload Photo</button>
+          <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
+        </div>
+        <input type="file" id="ch3ImageFile_${i}" accept="image/*" style="display:none">
+      </div>
+      <div class="field-row" style="display:flex;gap:0.5rem">
+        <div class="field-group" style="flex:1">
+          <label class="field-label">Icon</label>
+          <select id="ch3EditIcon_${i}">${ch3IconOptionsHTML(card.icon)}</select>
+        </div>
+        <div class="field-group" style="flex:1">
+          <label class="field-label">Category tag</label>
+          <select id="ch3EditTag_${i}">${ch3TagOptionsHTML(card.tag)}</select>
+        </div>
+      </div>
+      <div style="display:flex;gap:0.5rem;margin-top:0.5rem">
+        <button class="btn-add" onclick="ch3SaveCardEdit(${i})">Save card</button>
+        <button class="btn-card-action" onclick="ch3CancelCardEdit()">Cancel</button>
+        <button class="btn-card-action" onclick="ch3ResetCard(${i})">Reset to default</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function ch3UpdatePreview(idx) {
+  const field = document.getElementById(`ch3EditImage_${idx}`);
+  const wrap = document.getElementById(`ch3PreviewWrap_${idx}`);
+  if (field && wrap) wrap.innerHTML = ch3PreviewMediaHTML(field.value, '140px');
+}
+
+function ch3ToggleEdit(idx) { _ch3EditingIdx = idx; renderCareerHighlightsEditor(); }
+function ch3CancelCardEdit() { _ch3EditingIdx = -1; renderCareerHighlightsEditor(); }
+
+function ch3SaveCardEdit(idx) {
+  const card = _ch3Draft[idx];
+  if (!card) return;
+  card.title = document.getElementById(`ch3EditTitle_${idx}`).value.trim();
+  card.titleEs = document.getElementById(`ch3EditTitleEs_${idx}`).value.trim();
+  card.description = document.getElementById(`ch3EditDesc_${idx}`).value.trim();
+  card.descriptionEs = document.getElementById(`ch3EditDescEs_${idx}`).value.trim();
+  card.image = document.getElementById(`ch3EditImage_${idx}`).value.trim();
+  card.icon = document.getElementById(`ch3EditIcon_${idx}`).value;
+  card.tag = document.getElementById(`ch3EditTag_${idx}`).value;
+  _ch3EditingIdx = -1;
+  renderCareerHighlightsEditor();
+  // Not persisted yet — only the explicit "Save Career Record Highlights" button below writes to the profile.
+}
+
+function ch3ToggleVisible(idx) {
+  if (!_ch3Draft[idx]) return;
+  _ch3Draft[idx].visible = _ch3Draft[idx].visible === false ? true : false;
+  renderCareerHighlightsEditor();
+}
+
+function ch3MoveCard(idx, dir) {
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= _ch3Draft.length) return;
+  const tmp = _ch3Draft[idx];
+  _ch3Draft[idx] = _ch3Draft[newIdx];
+  _ch3Draft[newIdx] = tmp;
+  renderCareerHighlightsEditor();
+}
+
+function ch3ResetCard(idx) {
+  const current = _ch3Draft[idx];
+  if (!current) return;
+  const original = DEFAULT_CAREER_HIGHLIGHTS.find(d => d.tag === current.tag) || DEFAULT_CAREER_HIGHLIGHTS[idx];
+  if (!original) return;
+  const order = current.order;
+  _ch3Draft[idx] = { ...JSON.parse(JSON.stringify(original)), order };
+  renderCareerHighlightsEditor();
+}
+
+// R2 upload for a single highlight card image — populates the field and
+// preview only. Intentionally no saveAll()/persistUser() call here, same
+// pattern as Hero/Bio uploads: persisting is left to the explicit
+// "Save Career Record Highlights" button.
+function triggerCh3ImageUpload(idx) {
+  const input = document.getElementById(`ch3ImageFile_${idx}`);
+  if (!input) return;
+  input.click();
+  input.onchange = async function() {
+    const file = input.files[0];
+    if (!file) return;
+    const btn = document.querySelector(`[onclick="triggerCh3ImageUpload(${idx})"]`);
+    const originalText = btn ? btn.textContent : '↑ Upload Photo';
+    if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+    await uploadToR2(file, 'photos',
+      (url) => {
+        const field = document.getElementById(`ch3EditImage_${idx}`);
+        if (field) field.value = url;
+        ch3UpdatePreview(idx);
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      },
+      (err) => showUploadError(btn, originalText, err)
+    );
+  };
+}
+
+// The ONLY function that persists Career Highlights changes. Explicit
+// user action only — never called automatically by edit/reorder/upload/
+// visibility actions above.
+function saveCareerHighlights() {
+  if (!_ch3Draft) return;
+  const normalized = _ch3Draft.map((card, i) => ({ ...card, order: i }));
+  epk.careerHighlights = normalized;
+  persistUser();
+  showSaveBanner();
+}
+
 let currentUser = null;
 let epk = null;
 
@@ -422,6 +660,9 @@ function loadAllFields() {
   if (stats[2]) { document.getElementById('stat3num').value = stats[2].number || ''; document.getElementById('stat3label').value = stats[2].label || ''; }
 
   renderTaglines();
+
+  // Career Record Highlights editor — sits just below Career Timeline Preview
+  initCareerHighlightsEditor();
 
   // Bio
   document.getElementById('bioText').value = epk.bioFull || epk.bio || '';
@@ -691,6 +932,7 @@ function showPanel(name) {
 // ── SECTION ORDER & VISIBILITY ──
 const DEFAULT_SECTIONS = [
   { id: 'bio',     label: 'Career Profile', icon: '✦' },
+  { id: 'credits', label: 'Credits',        icon: '🏆' },
   { id: 'photos',  label: 'Photos',         icon: '📸' },
   { id: 'videos',  label: 'Video',          icon: '🎬' },
   { id: 'music',   label: 'Music',          icon: '🎵' },
@@ -706,10 +948,25 @@ function initSectionsPanel() {
   const list = document.getElementById('sectionsOrderList');
   if (!list) return;
 
-  // Build ordered list
-  const ordered = order.map(id => DEFAULT_SECTIONS.find(s => s.id === id)).filter(Boolean);
-  // Add any missing sections
-  DEFAULT_SECTIONS.forEach(s => { if (!ordered.find(o => o.id === s.id)) ordered.push(s); });
+  // Build ordered list — preserve every saved section ID, including ones
+  // not present in DEFAULT_SECTIONS (e.g. future or legacy sections),
+  // instead of silently dropping them via .filter(Boolean). Known IDs get
+  // their canonical label/icon; unknown IDs get a safe fallback label so
+  // they stay visible in the editor and are never lost on the next save.
+  // Duplicate IDs are removed safely (first occurrence wins).
+  const seen = new Set();
+  const ordered = [];
+  order.forEach(id => {
+    if (seen.has(id)) return;
+    seen.add(id);
+    const known = DEFAULT_SECTIONS.find(s => s.id === id);
+    ordered.push(known || { id, label: id.charAt(0).toUpperCase() + id.slice(1), icon: '•' });
+  });
+  // Append any default sections missing from the saved order (e.g. newly
+  // introduced sections) exactly once each.
+  DEFAULT_SECTIONS.forEach(s => {
+    if (!seen.has(s.id)) { ordered.push(s); seen.add(s.id); }
+  });
 
   list.innerHTML = ordered.map((s, i) => {
     const visible = visibility[s.id] !== false;
@@ -1107,7 +1364,6 @@ function renderCredits() {
             <div style="margin-top:0.5rem">
               <input type="file" id="creditPhotoInput_${i}" accept="image/*" multiple style="display:none">
               <button class="credit-photo-add-btn" onclick="addPhotosToCredit(${i})">+ Add Photos</button>
-              <button class="credit-photo-add-btn" onclick="browseCloudinary(${i})" style="margin-left:0.4rem;background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3)">☁ Browse Cloudinary</button>
             </div>` : ''}
           </div>
           <div class="card-actions">

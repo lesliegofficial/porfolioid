@@ -90,6 +90,103 @@ function buildWorkAudioPlayer(id, src) {
     </div>`;
 }
 
+// ── CAREER RECORD HIGHLIGHTS — data-driven, dashboard-editable ──────
+// CH3_ICON_PATHS: fixed set of icon keys the dashboard editor can choose
+// from. Storing a key (not raw SVG) keeps saved data small and safe.
+const CH3_ICON_PATHS = {
+  music: 'M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z',
+  mic: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z',
+  building: 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z',
+  briefcase: 'M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z',
+  megaphone: 'M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z',
+  flag: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
+};
+
+// DEFAULT_CAREER_HIGHLIGHTS: exact content of the original 6 hardcoded
+// cards, converted to data. If epk.careerHighlights is absent or empty,
+// this is what renders — byte-for-byte equivalent to the prior hardcoded
+// output. This is the single source of truth for defaults; dashboard.js
+// keeps a matching copy for its "Reset card to default" action.
+const DEFAULT_CAREER_HIGHLIGHTS = [
+  { id: 'default-recordingartist', tag: 'recordingartist', order: 0, visible: true, icon: 'music',
+    title: 'Recording Artist', titleEs: 'Artista de Grabación',
+    description: 'Recording artist with Las Nenas del Swing. Original compositions and live concert recordings across multiple releases.',
+    descriptionEs: 'Artista de grabación con Las Nenas del Swing. Composiciones originales y grabaciones de conciertos en vivo en múltiples lanzamientos.',
+    image: 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052294/career-highlights/recording-artist.jpg' },
+  { id: 'default-liveperformance', tag: 'liveperformance', order: 1, visible: true, icon: 'mic',
+    title: 'Touring Vocalist', titleEs: 'Presentaciones en Vivo',
+    description: 'Exclusive touring vocalist for Don Omar, J Álvarez, and Melina León — hundreds of performances across five continents.',
+    descriptionEs: 'Vocalista de gira exclusiva para Don Omar, J Álvarez y Melina León — cientos de presentaciones en cinco continentes.',
+    image: 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1782320896/career-highlights/touring-vocalist-don-omar.jpg' },
+  { id: 'default-industryoperations', tag: 'industryoperations', order: 2, visible: true, icon: 'building',
+    title: 'Operations &amp; Compliance', titleEs: 'Operaciones de la Industria',
+    description: 'Executive operations, regulatory compliance, and organizational leadership. Human Services at FEMA, Head of Compliance at Venetian Productions, and operations coordination at Arrow Management.',
+    descriptionEs: 'Logística de Artistas y Coordinación de Eventos para Adam Torres Concerts. Apoyo artístico en Arrow Management. Jefa de Cumplimiento en Venetian Productions.',
+    image: 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1782317473/career-highlights/operations-compliance.png' },
+  { id: 'default-creativeprofessional', tag: 'creativeprofessional', order: 3, visible: true, icon: 'briefcase',
+    title: 'Artist Liaison &amp; A&amp;R Coordinator', titleEs: 'Profesional Creativa',
+    description: 'A&amp;R coordination and artist development at Sony Music Latin and Urban Latino Music. Artist liaison and event coordination for Adam Torres Concerts. Music projects, release coordination, and industry relationships.',
+    descriptionEs: 'Coordinadora de A&R en Sony Music Latin y Urban Latino Music. Desarrollo artístico, coordinación de lanzamientos y operaciones creativas.',
+    image: 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052295/career-highlights/creative-professional.jpg' },
+  { id: 'default-marketingpr', tag: 'marketingpr', order: 4, visible: true, icon: 'megaphone',
+    title: 'Digital Marketing', titleEs: 'Mercadeo y Relaciones Públicas',
+    description: 'Digital marketing, social media strategy, public relations, and content marketing at NV Marketing &amp; PR. Managed artist marketing campaigns and brand promotion for major Latin artists.',
+    descriptionEs: 'Coordinadora de Mercadeo y Contenido en NV Marketing & PR. Campañas digitales, apoyo de publicidad y estrategia de contenido para grandes artistas latinos.',
+    image: 'https://res.cloudinary.com/djj8xe3gx/video/upload/v1781052306/career-highlights/marketing-pr.mp4' },
+  { id: 'default-founderbuilder', tag: 'founderbuilder', order: 5, visible: true, icon: 'flag',
+    title: 'Founder, porfolioID', titleEs: 'Fundadora y Creadora',
+    description: 'Founder &amp; Product Architect of porfolioID and IDPressDrop — original platforms built from concept to deployment.',
+    descriptionEs: 'Fundadora y Arquitecta de Producto de PorfolioID e IDPressDrop — plataformas originales construidas desde el concepto hasta el despliegue.',
+    image: 'https://res.cloudinary.com/djj8xe3gx/image/upload/v1781638246/career-highlights/founder-builder-official.jpg' },
+];
+
+// Resolve which dataset to render from: saved data wins only if it's a
+// real, non-empty array; otherwise fall back to the defaults so existing
+// visitors see no change until a save happens.
+function getActiveCareerHighlights(epk) {
+  if (Array.isArray(epk.careerHighlights) && epk.careerHighlights.length > 0) {
+    return [...epk.careerHighlights].sort((a, b) => (a.order || 0) - (b.order || 0));
+  }
+  return DEFAULT_CAREER_HIGHLIGHTS;
+}
+
+function isCh3VideoUrl(url) {
+  return !!url && /\.(mp4|mov|webm)(\?|$)/i.test(url);
+}
+
+// Original per-tag image crop/position treatment, preserved so the default
+// six cards keep their exact prior appearance. Applied by tag rather than
+// as a new editable field, since the data model intentionally doesn't
+// expose image styling as an editor option.
+const CH3_IMAGE_STYLE_BY_TAG = {
+  recordingartist: 'object-position: top',
+  liveperformance: 'transform: scale(1.12); object-position: center 20%',
+  creativeprofessional: 'object-position: top',
+  founderbuilder: 'object-position: top',
+};
+
+function renderCh3Card(card) {
+  if (card.visible === false) return '';
+  const imgStyle = CH3_IMAGE_STYLE_BY_TAG[card.tag] || '';
+  const media = isCh3VideoUrl(card.image)
+    ? `<div class="ch3-img" style="position:relative;overflow:hidden">
+        <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0" poster="${card.image}${card.image.includes('?') ? '&' : '?'}so_2,f_jpg">
+          <source src="${card.image}" type="video/mp4">
+        </video>
+      </div>`
+    : `<div class="ch3-img"><img src="${card.image || ''}" alt="${card.title || ''}" loading="lazy"${imgStyle ? ` style="${imgStyle}"` : ''}></div>`;
+  const iconPath = CH3_ICON_PATHS[card.icon] || CH3_ICON_PATHS.briefcase;
+  return `
+          <div class="ch3-card" data-ch3-tag="${card.tag}" onclick="filterCreditsByCategory('${card.tag}')" style="cursor:pointer">
+            ${media}
+            <div class="ch3-body">
+              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="${iconPath}"/></svg></div>
+              <h3 class="ch3-title">${card.title || ''}</h3>
+              <p class="ch3-desc">${card.description || ''}</p>
+            </div>
+          </div>`;
+}
+
 function buildEPK(epk) {
   window._epkData = epk;
   window._epkData.awards = epk.awards || [];
@@ -1139,58 +1236,7 @@ function buildEPK(epk) {
           </div>
         </div>
         <div class="ch3-grid">
-          <div class="ch3-card" data-ch3-tag="recordingartist" onclick="filterCreditsByCategory('recordingartist')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052294/career-highlights/recording-artist.jpg" alt="Recording Artist" loading="lazy" style="object-position: top"></div>
-            <div class="ch3-body">
-              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
-              <h3 class="ch3-title">Recording Artist</h3>
-              <p class="ch3-desc">Recording artist with Las Nenas del Swing. Original compositions and live concert recordings across multiple releases.</p>
-            </div>
-          </div>
-          <div class="ch3-card" data-ch3-tag="liveperformance" onclick="filterCreditsByCategory('liveperformance')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1782320896/career-highlights/touring-vocalist-don-omar.jpg" alt="Touring Vocalist" loading="lazy" style="transform: scale(1.12); object-position: center 20%"></div>
-            <div class="ch3-body">
-              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
-              <h3 class="ch3-title">Touring Vocalist</h3>
-              <p class="ch3-desc">Exclusive touring vocalist for Don Omar, J Álvarez, and Melina León — hundreds of performances across five continents.</p>
-            </div>
-          </div>
-          <div class="ch3-card" data-ch3-tag="industryoperations" onclick="filterCreditsByCategory('industryoperations')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1782317473/career-highlights/operations-compliance.png" alt="Operations &amp; Compliance" loading="lazy"></div>
-            <div class="ch3-body">
-              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div>
-              <h3 class="ch3-title">Operations &amp; Compliance</h3>
-              <p class="ch3-desc">Executive operations, regulatory compliance, and organizational leadership. Human Services at FEMA, Head of Compliance at Venetian Productions, and operations coordination at Arrow Management.</p>
-            </div>
-          </div>
-          <div class="ch3-card" data-ch3-tag="creativeprofessional" onclick="filterCreditsByCategory('creativeprofessional')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052295/career-highlights/creative-professional.jpg" alt="Artist Liaison &amp; A&amp;R Coordinator" style="object-position: top" loading="lazy"></div>
-            <div class="ch3-body">
-              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg></div>
-              <h3 class="ch3-title">Artist Liaison &amp; A&amp;R Coordinator</h3>
-              <p class="ch3-desc">A&amp;R coordination and artist development at Sony Music Latin and Urban Latino Music. Artist liaison and event coordination for Adam Torres Concerts. Music projects, release coordination, and industry relationships.</p>
-            </div>
-          </div>
-          <div class="ch3-card" data-ch3-tag="marketingpr" onclick="filterCreditsByCategory('marketingpr')" style="cursor:pointer">
-            <div class="ch3-img" style="position:relative;overflow:hidden">
-              <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0" poster="https://res.cloudinary.com/djj8xe3gx/video/upload/so_2,f_jpg/v1781052306/career-highlights/marketing-pr.mp4">
-                <source src="https://res.cloudinary.com/djj8xe3gx/video/upload/v1781052306/career-highlights/marketing-pr.mp4" type="video/mp4">
-              </video>
-            </div>
-            <div class="ch3-body">
-              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
-              <h3 class="ch3-title">Digital Marketing</h3>
-              <p class="ch3-desc">Digital marketing, social media strategy, public relations, and content marketing at NV Marketing &amp; PR. Managed artist marketing campaigns and brand promotion for major Latin artists.</p>
-            </div>
-          </div>
-          <div class="ch3-card" data-ch3-tag="founderbuilder" onclick="filterCreditsByCategory('founderbuilder')" style="cursor:pointer">
-            <div class="ch3-img"><img src="https://res.cloudinary.com/djj8xe3gx/image/upload/v1781638246/career-highlights/founder-builder-official.jpg" alt="Founder, porfolioID" loading="lazy" style="object-position: top"></div>
-            <div class="ch3-body">
-              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-              <h3 class="ch3-title">Founder, porfolioID</h3>
-              <p class="ch3-desc">Founder &amp; Product Architect of porfolioID and IDPressDrop — original platforms built from concept to deployment.</p>
-            </div>
-          </div>
+          ${getActiveCareerHighlights(epk).map(renderCh3Card).join('')}
         </div>
 
         <div style="text-align:center;margin-top:2rem">
@@ -2822,7 +2868,17 @@ function toggleAllCredits() {
 
 // Filter credits grid by Career Highlight category, then scroll to it.
 // Pass '' to clear the filter and show everything.
+//
+// LEGACY_HIGHLIGHT_TAG_ALIASES: some already-saved credits still carry an
+// older tag value from before a prior taxonomy consolidation. This maps
+// each legacy value to its current canonical equivalent so filtering still
+// finds them, without renaming/mutating the credit data itself or the
+// data-highlight attribute already rendered into the DOM. Read-only,
+// in-memory canonicalization at match time only.
+const LEGACY_HIGHLIGHT_TAG_ALIASES = { operationscompliance: 'industryoperations' };
+
 function filterCreditsByCategory(tag) {
+  const canonicalTag = LEGACY_HIGHLIGHT_TAG_ALIASES[tag] || tag;
   const container = document.getElementById('credits');
   const grid = document.getElementById('creditsGrid');
   const btn = document.getElementById('creditsToggleBtn');
@@ -2839,20 +2895,22 @@ function filterCreditsByCategory(tag) {
   const cards = grid.querySelectorAll('.credit-card');
   let matchCount = 0;
   cards.forEach(card => {
-    const matches = !tag || card.getAttribute('data-highlight') === tag;
+    const cardTagRaw = card.getAttribute('data-highlight');
+    const cardTag = LEGACY_HIGHLIGHT_TAG_ALIASES[cardTagRaw] || cardTagRaw;
+    const matches = !canonicalTag || cardTag === canonicalTag;
     card.style.display = matches ? '' : 'none';
     if (matches) matchCount++;
   });
 
   if (banner) {
-    if (tag && matchCount > 0) {
+    if (canonicalTag && matchCount > 0) {
       const labels = _currentLang === 'es'
         ? { liveperformance:'Presentaciones en Vivo', recordingartist:'Artista de Grabación', creativeprofessional:'Profesional Creativa', marketingpr:'Mercadeo y Relaciones Públicas', industryoperations:'Operaciones de la Industria', founderbuilder:'Fundadora y Creadora' }
         : { liveperformance:'Live Performance', recordingartist:'Recording Artist', creativeprofessional:'Creative Professional', marketingpr:'Marketing & PR', industryoperations:'Industry Operations', founderbuilder:'Founder & Builder' };
       const showingText = _currentLang === 'es' ? 'Mostrando:' : 'Showing:';
       const viewAllText = _currentLang === 'es' ? 'Ver Récord Completo →' : 'View Complete Record →';
       const closeText = _currentLang === 'es' ? 'Cerrar –' : 'Close –';
-      banner.innerHTML = `${showingText} <strong style="color:var(--gold)">${labels[tag] || tag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">${viewAllText}</a> &nbsp;<a href="javascript:void(0)" onclick="toggleAllCredits()" style="color:var(--gray);text-decoration:underline">${closeText}</a>`;
+      banner.innerHTML = `${showingText} <strong style="color:var(--gold)">${labels[canonicalTag] || canonicalTag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">${viewAllText}</a> &nbsp;<a href="javascript:void(0)" onclick="toggleAllCredits()" style="color:var(--gray);text-decoration:underline">${closeText}</a>`;
       banner.style.display = 'block';
     } else {
       banner.style.display = 'none';
@@ -2862,7 +2920,7 @@ function filterCreditsByCategory(tag) {
   // Scroll target: when a category tag is passed (highlight card click), scroll to the
   // creditsGrid itself (Career Record section) — NOT the #credits container top which
   // would land on Professional Documents first.
-  const scrollTarget = tag
+  const scrollTarget = canonicalTag
     ? document.getElementById('creditsGrid')   // → Career Record cards directly
     : document.getElementById('credits');       // → top of expanded section (View Complete Record)
   if (scrollTarget) {
@@ -3622,40 +3680,20 @@ function toggleLang(lang) {
   const ch3Heading = document.getElementById('ch3Heading');
   if (ch3Heading) ch3Heading.textContent = lang === 'es' ? 'Aspectos Destacados de la Trayectoria' : 'Career Record Highlights';
 
-  const ch3Translations = {
-    liveperformance: {
-      title: 'Presentaciones en Vivo',
-      desc: 'Vocalista de gira exclusiva para Don Omar, J Álvarez y Melina León — cientos de presentaciones en cinco continentes.'
-    },
-    recordingartist: {
-      title: 'Artista de Grabación',
-      desc: 'Artista de grabación con Las Nenas del Swing. Composiciones originales y grabaciones de conciertos en vivo en múltiples lanzamientos.'
-    },
-    creativeprofessional: {
-      title: 'Profesional Creativa',
-      desc: 'Coordinadora de A&R en Sony Music Latin y Urban Latino Music. Desarrollo artístico, coordinación de lanzamientos y operaciones creativas.'
-    },
-    marketingpr: {
-      title: 'Mercadeo y Relaciones Públicas',
-      desc: 'Coordinadora de Mercadeo y Contenido en NV Marketing & PR. Campañas digitales, apoyo de publicidad y estrategia de contenido para grandes artistas latinos.'
-    },
-    industryoperations: {
-      title: 'Operaciones de la Industria',
-      desc: 'Logística de Artistas y Coordinación de Eventos para Adam Torres Concerts. Apoyo artístico en Arrow Management. Jefa de Cumplimiento en Venetian Productions.'
-    },
-    founderbuilder: {
-      title: 'Fundadora y Creadora',
-      desc: 'Fundadora y Arquitecta de Producto de PorfolioID e IDPressDrop — plataformas originales construidas desde el concepto hasta el despliegue.'
-    }
-  };
+  // Cards read their own titleEs/descriptionEs — either from saved
+  // epk.careerHighlights or from DEFAULT_CAREER_HIGHLIGHTS — instead of a
+  // separate hardcoded translation map, so dashboard-edited Spanish content
+  // is picked up automatically.
+  const ch3ActiveCards = getActiveCareerHighlights(epk);
   document.querySelectorAll('.ch3-card').forEach(card => {
     const tag = card.getAttribute('data-ch3-tag');
     const titleEl = card.querySelector('.ch3-title');
     const descEl = card.querySelector('.ch3-desc');
-    if (!tag || !ch3Translations[tag]) return;
+    const cardData = ch3ActiveCards.find(c => c.tag === tag);
+    if (!tag || !cardData) return;
     if (lang === 'es') {
-      if (titleEl) { if (!titleEl.dataset.enOriginal) titleEl.dataset.enOriginal = titleEl.innerHTML; titleEl.innerHTML = ch3Translations[tag].title; }
-      if (descEl)  { if (!descEl.dataset.enOriginal)  descEl.dataset.enOriginal  = descEl.innerHTML;  descEl.innerHTML  = ch3Translations[tag].desc; }
+      if (titleEl) { if (!titleEl.dataset.enOriginal) titleEl.dataset.enOriginal = titleEl.innerHTML; titleEl.innerHTML = cardData.titleEs || cardData.title || ''; }
+      if (descEl)  { if (!descEl.dataset.enOriginal)  descEl.dataset.enOriginal  = descEl.innerHTML;  descEl.innerHTML  = cardData.descriptionEs || cardData.description || ''; }
     } else {
       if (titleEl && titleEl.dataset.enOriginal) titleEl.innerHTML = titleEl.dataset.enOriginal;
       if (descEl && descEl.dataset.enOriginal)  descEl.innerHTML  = descEl.dataset.enOriginal;
