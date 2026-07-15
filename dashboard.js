@@ -727,7 +727,7 @@ function loadAllFields() {
   loadBookingToggle();
   epk.assetsLocked = epk.assetsLocked !== undefined ? epk.assetsLocked : true;
   updateAssetsLockUI();
-  setAssetsLayout(epk.assetsLayout || 'cards');
+  renderAssetsLayout(epk.assetsLayout || 'cards');
 
   // Availability dropdown
   const availSel = document.getElementById('availabilitySelect');
@@ -777,6 +777,19 @@ function saveAll() {
   epk.bioImagePosition = parseInt(document.getElementById('bioPositionValue').value || 0);
   epk.bioImageCropTop = parseInt(document.getElementById('bioCropTopValue').value || 0);
   epk.bioImageZoom = parseInt(document.getElementById('bioZoomValue').value || 100);
+
+  saveIdentityBlock(); // captures Additional Profile Details into memory — no persist call of its own
+
+  persistUser();
+  showSaveBanner();
+}
+
+// The single owner-facing save action for the unified Connect workspace.
+// Reads only Reach Me (booking) fields directly here — deliberately NOT
+// touching Hero/Bio fields, unlike saveAll(). Reuses saveSocials() to
+// update epk.socials (Follow Me) without triggering its own persist call.
+// Persists exactly once for both groups together.
+function saveConnect() {
   const bookingLabelSelect = document.getElementById('bookingLabel').value;
   epk.bookingLabel = bookingLabelSelect === 'custom'
     ? (document.getElementById('bookingLabelCustom').value.trim() || 'Inquiries')
@@ -789,6 +802,8 @@ function saveAll() {
   epk.bookingRegion = document.getElementById('bookingRegion').value.trim();
   epk.bookingAutoResponse = document.getElementById('bookingAutoResponse').value.trim();
   epk.bookingCategories = [..._selectedCategories];
+
+  saveSocials(); // updates epk.socials in memory only — see note on saveSocials()
 
   persistUser();
   showSaveBanner();
@@ -1247,13 +1262,22 @@ document.getElementById('newCredential').addEventListener('keydown', e => { if (
 // CREDITS
 let editingCreditIdx = -1;
 
-function setAssetsLayout(layout) {
+// Pure UI/state sync — sets epk.assetsLayout and highlights the matching
+// button, with NO persistence. Used both by the real click handler below
+// and by loadAllFields() during page initialization, so restoring the
+// saved layout selection on load never triggers a save.
+function renderAssetsLayout(layout) {
   epk.assetsLayout = layout;
   ['cards','list','compact','table','featured'].forEach(l => {
     const btn = document.getElementById('alayout_' + l);
     if (btn) btn.style.background = l === layout ? 'var(--gold)' : 'rgba(255,255,255,0.04)';
     if (btn) btn.style.color = l === layout ? 'var(--black)' : 'var(--gray)';
   });
+}
+
+// Real user action — clicking a layout button. Persists, exactly as before.
+function setAssetsLayout(layout) {
+  renderAssetsLayout(layout);
   persistUser(); showSaveBanner();
 }
 
@@ -3582,7 +3606,10 @@ function saveSocials() {
     const wSites = normalizeWebsites(epk.socials.website).filter(w => w.url && w.url.trim());
     epk.socials.website = wSites.length ? wSites : [];
   }
-  persistUser(); showSaveBanner();
+  // Note: persistUser()/showSaveBanner() intentionally NOT called here.
+  // This function only updates epk.socials in memory. Persisting is done
+  // once, by saveConnect(), which also captures Reach Me fields — this
+  // avoids a double-save when both groups are part of one workspace.
 }
 
 function loadSocials() {
@@ -3619,7 +3646,9 @@ function loadSocials() {
 // BOOKING TOGGLE
 function toggleBooking() {
   epk.bookingEnabled = document.getElementById('bookingToggle').checked;
-  persistUser(); showSaveBanner();
+  // Intentionally no persistUser() here — this toggle lives inside the
+  // unified Connect workspace, which persists only via the explicit
+  // "Save Connect" button.
 }
 
 function loadBookingToggle() {
@@ -3628,6 +3657,49 @@ function loadBookingToggle() {
 }
 
 // IDENTITY BLOCK
+// ── ADDITIONAL PROFILE DETAILS — per-module accordion state ──────
+// Only one module open at a time. Purely a UI state change — never
+// persists anything. Collapsing/expanding must never call persistUser().
+let _openIdentityModule = null;
+const IDENTITY_MODULE_KEYS = ['availabilityBadges', 'industryRoles', 'featuredCredit', 'verificationStatus', 'languages', 'representation', 'timeline'];
+
+function toggleIdentityModule(key) {
+  _openIdentityModule = (_openIdentityModule === key) ? null : key;
+  renderIdentityAccordionState();
+}
+
+function renderIdentityAccordionState() {
+  IDENTITY_MODULE_KEYS.forEach(key => {
+    const body = document.getElementById('idmBody_' + key);
+    const chevron = document.getElementById('idmChevron_' + key);
+    if (!body) return;
+    const isOpen = _openIdentityModule === key;
+    body.style.display = isOpen ? 'block' : 'none';
+    if (chevron) chevron.textContent = isOpen ? '▾' : '▸';
+  });
+}
+
+// Recomputes each module's collapsed-row summary from current in-memory
+// state. Called after any edit so the summary reflects reality without
+// requiring the module to be open — never persists anything itself.
+function updateIdentitySummaries() {
+  const ib = epk.identityBlock || {};
+  const set = (key, text) => { const el = document.getElementById('idmSummary_' + key); if (el) el.textContent = text; };
+  const state = (enabled) => enabled ? 'Enabled' : 'Disabled';
+
+  set('availabilityBadges', `${(ib.availabilityBadges || []).length} added — ${state(ib.availabilityEnabled)}`);
+  set('industryRoles', `${(ib.industryRoles || []).length} added — ${state(ib.rolesEnabled)}`);
+  const featuredSel = document.getElementById('featuredCreditSelect');
+  const hasFeatured = featuredSel && featuredSel.value !== '';
+  set('featuredCredit', `${hasFeatured ? 'Selected' : 'Not selected'} — ${state(ib.featuredEnabled)}`);
+  const hasVerification = !!(ib.verificationStatus && ib.verificationStatus.trim());
+  set('verificationStatus', `${hasVerification ? 'Configured' : 'Not configured'} — ${state(ib.verifiedEnabled)}`);
+  set('languages', `${(ib.languages || []).length} added — ${state(ib.languagesEnabled)}`);
+  const hasRep = !!(ib.repName && ib.repName.trim());
+  set('representation', `${hasRep ? 'Configured' : 'Not configured'} — ${state(ib.repEnabled)}`);
+  set('timeline', `${(ib.timeline || []).length} entries — ${state(ib.timelineEnabled)}`);
+}
+
 function saveIdentityBlock() {
   epk.identityBlock = epk.identityBlock || {};
   const ib = epk.identityBlock;
@@ -3643,7 +3715,13 @@ function saveIdentityBlock() {
   ib.repRole = document.getElementById('repRole').value.trim();
   ib.repContact = document.getElementById('repContact').value.trim();
   ib.timelineEnabled = document.getElementById('identityTimelineEnabled').checked;
-  persistUser(); showSaveBanner();
+  updateIdentitySummaries();
+  // Note: persistUser()/showSaveBanner() intentionally NOT called here.
+  // This function only updates epk.identityBlock in memory. Persisting
+  // happens once, when the Career Profile "Save Changes" button is
+  // clicked (saveAll() calls this function right before its own
+  // persistUser() call) — Additional Profile Details is not yet shown
+  // publicly, so it should never persist on its own ahead of that.
 }
 
 function loadIdentityBlock() {
@@ -3677,6 +3755,11 @@ function loadIdentityBlock() {
 
   // Featured credit dropdown
   populateFeaturedCreditSelect(ib.featuredCreditIdx || '');
+
+  // All modules collapsed by default on load; summaries reflect current data.
+  _openIdentityModule = null;
+  renderIdentityAccordionState();
+  updateIdentitySummaries();
 }
 
 function populateFeaturedCreditSelect(selectedVal) {

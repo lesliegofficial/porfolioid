@@ -114,9 +114,6 @@
       <button class="nav-item" onclick="showPanel('booking')">
         <span class="nav-item-icon">📅</span><span>Connect</span>
       </button>
-      <button class="nav-item" onclick="showPanel('socials')">
-        <span class="nav-item-icon">🔗</span><span>Social Links</span>
-      </button>
     </div>
 
     <div class="sidebar-section">
@@ -166,7 +163,7 @@
       </div>
 
       <hr class="section-divider">
-      <h3 style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 1.5rem;">Career Stats</h3>
+      <h3 style="font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem;">Career Stats</h3>
 
       <div class="stats-grid">
         <div class="stat-input-group">
@@ -185,140 +182,9 @@
 
       <hr class="section-divider">
 
-      <!-- IDENTITY BLOCK -->
-      <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:0.5rem;">Identity Block</h3>
-      <p class="field-hint" style="margin-bottom:1.5rem">Toggle on the blocks you want to display below your Career Stats on your portfolio. Only enabled blocks are shown.</p>
-
-      <!-- AVAILABILITY BADGES -->
-      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
-          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Availability Badges</span>
-          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
-            <input type="checkbox" id="identityAvailabilityEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on Portfolio</span>
-          </label>
-        </div>
-        <div class="tag-input-row" id="availabilityBadgesList"></div>
-        <div class="tag-add-row">
-          <input type="text" id="newAvailabilityBadge" placeholder="e.g. Available for Touring">
-          <button class="btn-add" onclick="addIdentityTag('availabilityBadges','newAvailabilityBadge','availabilityBadgesList')">+ Add</button>
-        </div>
-      </div>
-
-      <!-- INDUSTRY ROLES -->
-      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
-          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Industry Roles</span>
-          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
-            <input type="checkbox" id="identityRolesEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on Portfolio</span>
-          </label>
-        </div>
-        <div class="tag-input-row" id="industryRolesList"></div>
-        <div class="tag-add-row">
-          <input type="text" id="newIndustryRole" placeholder="e.g. Vocalist">
-          <button class="btn-add" onclick="addIdentityTag('industryRoles','newIndustryRole','industryRolesList')">+ Add</button>
-        </div>
-      </div>
-
-      <!-- FEATURED CREDIT -->
-      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
-          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Featured Credit</span>
-          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
-            <input type="checkbox" id="identityFeaturedEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on Portfolio</span>
-          </label>
-        </div>
-        <select id="featuredCreditSelect" onchange="saveIdentityBlock()" style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.8rem 1rem;font-family:var(--font-body);font-size:0.9rem;outline:none">
-          <option value="">— Select a credit to feature —</option>
-        </select>
-      </div>
-
-      <!-- VERIFICATION STATUS -->
-      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
-          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Verification Status</span>
-          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
-            <input type="checkbox" id="identityVerifiedEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on Portfolio</span>
-          </label>
-        </div>
-        <input type="text" id="verificationStatus" placeholder="e.g. Verified Artist · ASCAP Member" onchange="saveIdentityBlock()">
-      </div>
-
-      <!-- LANGUAGES SPOKEN -->
-      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
-          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Languages Spoken</span>
-          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
-            <input type="checkbox" id="identityLanguagesEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on Portfolio</span>
-          </label>
-        </div>
-        <div class="tag-input-row" id="languagesList"></div>
-        <div class="tag-add-row">
-          <input type="text" id="newLanguage" placeholder="e.g. English">
-          <button class="btn-add" onclick="addIdentityTag('languages','newLanguage','languagesList')">+ Add</button>
-        </div>
-      </div>
-
-      <!-- REPRESENTATION -->
-      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
-          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Representation</span>
-          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
-            <input type="checkbox" id="identityRepEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on Portfolio</span>
-          </label>
-        </div>
-        <div class="field-row" style="margin-bottom:0.75rem">
-          <div class="field-group" style="margin-bottom:0">
-            <label class="field-label">Name</label>
-            <input type="text" id="repName" placeholder="e.g. John Smith" onchange="saveIdentityBlock()">
-          </div>
-          <div class="field-group" style="margin-bottom:0">
-            <label class="field-label">Role</label>
-            <input type="text" id="repRole" placeholder="e.g. Manager" onchange="saveIdentityBlock()">
-          </div>
-        </div>
-        <div class="field-group" style="margin-bottom:0">
-          <label class="field-label">Contact</label>
-          <input type="text" id="repContact" placeholder="e.g. email@agency.com" onchange="saveIdentityBlock()">
-        </div>
-      </div>
-
-      <!-- CAREER TIMELINE -->
-      <div style="background:var(--dark-2);border:1px solid rgba(201,168,76,0.1);padding:1.25rem;margin-bottom:0.75rem;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
-          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Career Timeline Preview</span>
-          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
-            <input type="checkbox" id="identityTimelineEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Show on Portfolio</span>
-          </label>
-        </div>
-        <div id="timelineList" style="margin-bottom:0.75rem"></div>
-        <div style="display:grid;grid-template-columns:80px 1fr;gap:0.5rem;align-items:start">
-          <input type="text" id="newTimelineYear" placeholder="Year" style="background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.8rem;font-family:var(--font-body);font-size:0.9rem;outline:none">
-          <div style="display:flex;gap:0.5rem">
-            <input type="text" id="newTimelineMilestone" placeholder="e.g. Joined Don Omar Tour" style="flex:1;background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.8rem;font-family:var(--font-body);font-size:0.9rem;outline:none">
-            <button class="btn-add" onclick="addTimelineMilestone()">+ Add</button>
-          </div>
-        </div>
-      </div>
-
-      <hr class="section-divider">
+      <!-- HERO IMAGE (moved directly below Career Stats) -->
+      <h3 style="font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Hero Image</h3>
       <div class="field-group">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
-          <span style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Career Record Highlights</span>
-        </div>
-        <div id="careerHighlightsEditorList"></div>
-        <button class="btn-save" onclick="saveCareerHighlights()">Save Career Record Highlights</button>
-      </div>
-
-      <hr class="section-divider">
-      <div class="field-group">
-        <label class="field-label">Hero Image</label>
         <input type="url" id="heroImage" placeholder="https://... or upload below" oninput="updateHeroPreview(this.value)">
         <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
           <button class="btn-add" onclick="triggerUpload('heroImageFile', 'heroImage', updateHeroPreview)">↑ Upload Photo</button>
@@ -333,40 +199,215 @@
         </div>
 
         <div id="heroPositionWrap" style="display:none;margin-top:0.75rem">
-          <div style="display:flex;gap:0.75rem;margin-bottom:1rem">
-            <button onclick="resetHeroImageFit()" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold);padding:0.4rem 0.85rem;cursor:pointer">⊞ Fill Frame</button>
-            <button onclick="fitFullHeroImage()" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--gray);padding:0.4rem 0.85rem;cursor:pointer">⬜ Fit Full Image</button>
-          </div>
-          <label class="field-label" style="margin-bottom:0.5rem;display:block">Crop from Top <span style="color:var(--gray);font-weight:400">(removes empty space at top)</span></label>
-          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">None</span>
-            <input type="range" id="heroCropTopSlider" min="0" max="60" value="0" oninput="updateHeroCropTop(this.value)" style="flex:1;accent-color:var(--gold);cursor:pointer;height:4px">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Crop</span>
-          </div>
-          <label class="field-label" style="margin-bottom:0.5rem;display:block">Vertical Position <span style="color:var(--gray);font-weight:400">(drag to reframe)</span></label>
-          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Top</span>
-            <input type="range" id="heroPositionSlider" min="0" max="100" value="0"
-              oninput="updateHeroPosition(this.value)"
-              style="flex:1;accent-color:var(--gold);cursor:pointer;height:4px">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Bottom</span>
-          </div>
-          <label class="field-label" style="margin-bottom:0.5rem;display:block">Zoom <span style="color:var(--gray);font-weight:400">(drag to zoom in or out)</span></label>
-          <div style="display:flex;align-items:center;gap:1rem">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Wide</span>
-            <input type="range" id="heroZoomSlider" min="30" max="300" value="100"
-              oninput="updateHeroZoom(this.value)"
-              style="flex:1;accent-color:var(--gold);cursor:pointer;height:4px">
-            <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Larger</span>
-          </div>
+          <details class="pid-details">
+            <summary style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">Adjust Image</summary>
+            <div style="display:flex;gap:0.75rem;margin-bottom:1rem;margin-top:0.75rem">
+              <button onclick="resetHeroImageFit()" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--gold);padding:0.4rem 0.85rem;cursor:pointer">⊞ Fill Frame</button>
+              <button onclick="fitFullHeroImage()" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--gray);padding:0.4rem 0.85rem;cursor:pointer">⬜ Fit Full Image</button>
+            </div>
+            <label class="field-label" style="margin-bottom:0.5rem;display:block">Crop from Top <span style="color:var(--gray);font-weight:400">(removes empty space at top)</span></label>
+            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem">
+              <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">None</span>
+              <input type="range" id="heroCropTopSlider" min="0" max="60" value="0" oninput="updateHeroCropTop(this.value)" style="flex:1;accent-color:var(--gold);cursor:pointer;height:4px">
+              <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Crop</span>
+            </div>
+            <label class="field-label" style="margin-bottom:0.5rem;display:block">Vertical Position <span style="color:var(--gray);font-weight:400">(drag to reframe)</span></label>
+            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem">
+              <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Top</span>
+              <input type="range" id="heroPositionSlider" min="0" max="100" value="0"
+                oninput="updateHeroPosition(this.value)"
+                style="flex:1;accent-color:var(--gold);cursor:pointer;height:4px">
+              <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Bottom</span>
+            </div>
+            <label class="field-label" style="margin-bottom:0.5rem;display:block">Zoom <span style="color:var(--gray);font-weight:400">(drag to zoom in or out)</span></label>
+            <div style="display:flex;align-items:center;gap:1rem">
+              <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Wide</span>
+              <input type="range" id="heroZoomSlider" min="30" max="300" value="100"
+                oninput="updateHeroZoom(this.value)"
+                style="flex:1;accent-color:var(--gold);cursor:pointer;height:4px">
+              <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">Larger</span>
+            </div>
+          </details>
           <input type="hidden" id="heroPositionValue" value="0">
           <input type="hidden" id="heroZoomValue" value="100">
           <input type="hidden" id="heroCropTopValue" value="0">
         </div>
       </div>
 
+      <hr class="section-divider">
+
+      <!-- CAREER RECORD HIGHLIGHTS (moved directly below Hero Image) -->
+      <div class="field-group">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+          <span style="font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)">Career Record Highlights</span>
+        </div>
+        <div id="careerHighlightsEditorList"></div>
+        <button class="btn-save" onclick="saveCareerHighlights()">Save Career Record Highlights</button>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- ADDITIONAL PROFILE DETAILS (renamed, collapsed Identity Block) -->
+      <style>
+        .pid-details summary { list-style:none; cursor:pointer; }
+        .pid-details summary::-webkit-details-marker { display:none; }
+        .pid-details > summary::before { content:'▸ '; color:var(--gold); font-family:var(--font-mono); }
+        .pid-details[open] > summary::before { content:'▾ '; }
+        .idm-header { display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;cursor:pointer;background:var(--dark-2);border:1px solid rgba(201,168,76,0.15); }
+        .idm-header:hover { border-color:rgba(201,168,76,0.3); }
+        .idm-title { display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold); }
+        .idm-chevron { color:var(--gold);font-family:var(--font-mono);font-size:0.7rem;transition:transform 0.2s;display:inline-block; }
+        .idm-summary { font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.05em;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:55%; }
+        .idm-body { display:none;padding:1.25rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.15);border-top:none; }
+        .idm-row { margin-bottom:0.5rem; }
+      </style>
+      <details class="pid-details">
+        <summary style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:0.5rem">Additional Profile Details — <span style="color:var(--gold)">Not currently public</span></summary>
+        <p class="field-hint" style="margin-bottom:1.5rem">Add optional professional details to your Career Profile. These details are not yet displayed on the public portfolio.</p>
+
+      <!-- AVAILABILITY BADGES -->
+      <div class="idm-row">
+        <div class="idm-header" onclick="toggleIdentityModule('availabilityBadges')">
+          <span class="idm-title"><span class="idm-chevron" id="idmChevron_availabilityBadges">▸</span>Availability Badges</span>
+          <span class="idm-summary" id="idmSummary_availabilityBadges">0 added — Disabled</span>
+        </div>
+        <div class="idm-body" id="idmBody_availabilityBadges">
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-bottom:0.75rem">
+            <input type="checkbox" id="identityAvailabilityEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Include when public display is enabled</span>
+          </label>
+          <div class="tag-input-row" id="availabilityBadgesList"></div>
+          <div class="tag-add-row">
+            <input type="text" id="newAvailabilityBadge" placeholder="e.g. Available for Touring">
+            <button class="btn-add" onclick="addIdentityTag('availabilityBadges','newAvailabilityBadge','availabilityBadgesList')">+ Add</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- INDUSTRY ROLES -->
+      <div class="idm-row">
+        <div class="idm-header" onclick="toggleIdentityModule('industryRoles')">
+          <span class="idm-title"><span class="idm-chevron" id="idmChevron_industryRoles">▸</span>Industry Roles</span>
+          <span class="idm-summary" id="idmSummary_industryRoles">0 added — Disabled</span>
+        </div>
+        <div class="idm-body" id="idmBody_industryRoles">
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-bottom:0.75rem">
+            <input type="checkbox" id="identityRolesEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Include when public display is enabled</span>
+          </label>
+          <div class="tag-input-row" id="industryRolesList"></div>
+          <div class="tag-add-row">
+            <input type="text" id="newIndustryRole" placeholder="e.g. Vocalist">
+            <button class="btn-add" onclick="addIdentityTag('industryRoles','newIndustryRole','industryRolesList')">+ Add</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURED CREDIT -->
+      <div class="idm-row">
+        <div class="idm-header" onclick="toggleIdentityModule('featuredCredit')">
+          <span class="idm-title"><span class="idm-chevron" id="idmChevron_featuredCredit">▸</span>Featured Credit</span>
+          <span class="idm-summary" id="idmSummary_featuredCredit">Not selected — Disabled</span>
+        </div>
+        <div class="idm-body" id="idmBody_featuredCredit">
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-bottom:0.75rem">
+            <input type="checkbox" id="identityFeaturedEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Include when public display is enabled</span>
+          </label>
+          <select id="featuredCreditSelect" onchange="saveIdentityBlock()" style="width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.8rem 1rem;font-family:var(--font-body);font-size:0.9rem;outline:none">
+            <option value="">— Select a credit to feature —</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- VERIFICATION STATUS -->
+      <div class="idm-row">
+        <div class="idm-header" onclick="toggleIdentityModule('verificationStatus')">
+          <span class="idm-title"><span class="idm-chevron" id="idmChevron_verificationStatus">▸</span>Verification Status</span>
+          <span class="idm-summary" id="idmSummary_verificationStatus">Not configured — Disabled</span>
+        </div>
+        <div class="idm-body" id="idmBody_verificationStatus">
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-bottom:0.75rem">
+            <input type="checkbox" id="identityVerifiedEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Include when public display is enabled</span>
+          </label>
+          <input type="text" id="verificationStatus" placeholder="e.g. Verified Artist · ASCAP Member" onchange="saveIdentityBlock()">
+        </div>
+      </div>
+
+      <!-- LANGUAGES SPOKEN -->
+      <div class="idm-row">
+        <div class="idm-header" onclick="toggleIdentityModule('languages')">
+          <span class="idm-title"><span class="idm-chevron" id="idmChevron_languages">▸</span>Languages Spoken</span>
+          <span class="idm-summary" id="idmSummary_languages">0 added — Disabled</span>
+        </div>
+        <div class="idm-body" id="idmBody_languages">
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-bottom:0.75rem">
+            <input type="checkbox" id="identityLanguagesEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Include when public display is enabled</span>
+          </label>
+          <div class="tag-input-row" id="languagesList"></div>
+          <div class="tag-add-row">
+            <input type="text" id="newLanguage" placeholder="e.g. English">
+            <button class="btn-add" onclick="addIdentityTag('languages','newLanguage','languagesList')">+ Add</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- REPRESENTATION -->
+      <div class="idm-row">
+        <div class="idm-header" onclick="toggleIdentityModule('representation')">
+          <span class="idm-title"><span class="idm-chevron" id="idmChevron_representation">▸</span>Representation</span>
+          <span class="idm-summary" id="idmSummary_representation">Not configured — Disabled</span>
+        </div>
+        <div class="idm-body" id="idmBody_representation">
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-bottom:0.75rem">
+            <input type="checkbox" id="identityRepEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Include when public display is enabled</span>
+          </label>
+          <div class="field-row" style="margin-bottom:0.75rem">
+            <div class="field-group" style="margin-bottom:0">
+              <label class="field-label">Name</label>
+              <input type="text" id="repName" placeholder="e.g. John Smith" onchange="saveIdentityBlock()">
+            </div>
+            <div class="field-group" style="margin-bottom:0">
+              <label class="field-label">Role</label>
+              <input type="text" id="repRole" placeholder="e.g. Manager" onchange="saveIdentityBlock()">
+            </div>
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label">Contact</label>
+            <input type="text" id="repContact" placeholder="e.g. email@agency.com" onchange="saveIdentityBlock()">
+          </div>
+        </div>
+      </div>
+
+      <!-- CAREER TIMELINE -->
+      <div class="idm-row">
+        <div class="idm-header" onclick="toggleIdentityModule('timeline')">
+          <span class="idm-title"><span class="idm-chevron" id="idmChevron_timeline">▸</span>Career Timeline Preview</span>
+          <span class="idm-summary" id="idmSummary_timeline">0 entries — Disabled</span>
+        </div>
+        <div class="idm-body" id="idmBody_timeline">
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-bottom:0.75rem">
+            <input type="checkbox" id="identityTimelineEnabled" onchange="saveIdentityBlock()" style="accent-color:var(--gold)">
+            <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:var(--gray)">Include when public display is enabled</span>
+          </label>
+          <div id="timelineList" style="margin-bottom:0.75rem"></div>
+          <div style="display:grid;grid-template-columns:80px 1fr;gap:0.5rem;align-items:start">
+            <input type="text" id="newTimelineYear" placeholder="Year" style="background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.8rem;font-family:var(--font-body);font-size:0.9rem;outline:none">
+            <div style="display:flex;gap:0.5rem">
+              <input type="text" id="newTimelineMilestone" placeholder="e.g. Joined Don Omar Tour" style="flex:1;background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);color:var(--white);padding:0.8rem;font-family:var(--font-body);font-size:0.9rem;outline:none">
+              <button class="btn-add" onclick="addTimelineMilestone()">+ Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </details>
+
       <div class="form-actions">
         <button class="btn-save" onclick="saveAll()">Save Changes</button>
+      </div>
       </div>
     </div>
 
@@ -1443,7 +1484,9 @@
     <!-- BOOKING PANEL -->
     <div class="panel" id="panel-booking">
       <h1 class="panel-title">Connect</h1>
-      <p class="panel-sub">This lives inside your Connect section — control how people reach you, or turn it off entirely.</p>
+      <p class="panel-sub">Everything visitors see in your Connect section — how people reach you, and where they can follow you.</p>
+
+      <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;">Reach Me</h3>
 
       <div class="field-group" style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);padding:1rem 1.25rem;border:1px solid rgba(201,168,76,0.15)">
         <label class="field-label" style="margin:0;flex:1">Show Inquiries Card in Connect</label>
@@ -1539,15 +1582,8 @@
         <textarea id="bookingAutoResponse" rows="3" placeholder="Thank you for your inquiry. I will review your message and respond within 48 hours."></textarea>
       </div>
 
-      <div class="form-actions">
-        <button class="btn-save" onclick="saveAll()">Save Changes</button>
-      </div>
-    </div>
-
-    <!-- SOCIAL LINKS PANEL -->
-    <div class="panel" id="panel-socials">
-      <h1 class="panel-title">Social <em>Links</em></h1>
-      <p class="panel-sub">Add your platforms and profiles. These appear in a dedicated Connect section on your Portfolio.</p>
+      <hr class="section-divider">
+      <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;">Follow Me</h3>
 
       <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);padding:1rem 1.25rem;border:1px solid rgba(201,168,76,0.15);margin-bottom:1.75rem">
         <div style="flex:1">
@@ -1555,20 +1591,20 @@
           <p style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.2rem">Display follower counts and listener stats publicly. Turn off for executive or corporate profiles.</p>
         </div>
         <label style="position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0">
-          <input type="checkbox" id="socialShowMetrics" onchange="epk.socials=epk.socials||{};epk.socials.showMetrics=this.checked;persistUser();showSaveBanner()" style="opacity:0;width:0;height:0" checked>
+          <input type="checkbox" id="socialShowMetrics" onchange="epk.socials=epk.socials||{};epk.socials.showMetrics=this.checked" style="opacity:0;width:0;height:0" checked>
           <span style="position:absolute;cursor:pointer;inset:0;background:var(--dark-4);border:1px solid rgba(201,168,76,0.2);transition:0.3s;border-radius:24px" id="metricsToggleSlider"></span>
         </label>
       </div>
       <style>#socialShowMetrics:checked+span{background:var(--gold);border-color:var(--gold)}#socialShowMetrics:checked+span::before{transform:translateX(20px)}#metricsToggleSlider::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:white;transition:0.3s;border-radius:50%}</style>
 
-      <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:1.5rem;">Social Platforms</h3>
+      <h4 style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);margin-bottom:1.5rem;">Social Platforms</h4>
 
       <div class="field-group">
         <label class="field-label">Instagram <span style="color:var(--gray);font-weight:400">(add multiple)</span></label>
         <div id="instagramList"></div>
         <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
           <button class="btn-add-new" style="margin-top:0;padding:0.6rem 1rem;font-size:0.6rem" onclick="addSocialField('instagram','https://instagram.com/yourhandle')">+ Add Instagram</button>
-          <input type="text" id="socialInstagram_followers" placeholder="e.g. 12.5K followers" style="flex:1;min-width:140px;font-size:0.75rem;padding:0.5rem 0.75rem" oninput="saveSocials()">
+          <input type="text" id="socialInstagram_followers" placeholder="e.g. 12.5K followers" style="flex:1;min-width:140px;font-size:0.75rem;padding:0.5rem 0.75rem">
         </div>
       </div>
 
@@ -1600,7 +1636,7 @@
       </div>
 
       <hr class="section-divider">
-      <h3 style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:1.5rem;">Music Platforms</h3>
+      <h4 style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);margin-bottom:1.5rem;">Music Platforms</h4>
 
       <div class="field-group">
         <label class="field-label">Spotify</label>
@@ -1660,7 +1696,7 @@
       <div class="field-group"><label class="field-label">Quora</label><input type="url" id="socialQuora" placeholder="https://www.quora.com/profile/username"></div>
 
       <div class="form-actions">
-        <button class="btn-save" onclick="saveSocials()">Save Links</button>
+        <button class="btn-save" onclick="saveConnect()">Save Connect</button>
       </div>
     </div>
 
