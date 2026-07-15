@@ -80,47 +80,36 @@
     </div>
 
     <div class="sidebar-section">
-      <div class="sidebar-section-label">Profile</div>
+      <div class="sidebar-section-label">Portfolio Content</div>
+      <div style="font-size:0.62rem;color:var(--gray);line-height:1.4;padding:0 0.5rem;margin-bottom:0.75rem;text-transform:none;letter-spacing:normal">Edit the sections visitors see on your portfolio.</div>
       <button class="nav-item active" onclick="showPanel('hero')">
-        <span class="nav-item-icon">✦</span><span>Hero & Identity</span>
+        <span class="nav-item-icon">✦</span><span>Career Profile</span>
       </button>
       <button class="nav-item" onclick="showPanel('bio')">
         <span class="nav-item-icon">👤</span><span>Biography</span>
       </button>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-section-label">Content</div>
+      <button class="nav-item" onclick="showPanel('resume')">
+        <span class="nav-item-icon">📋</span><span>Professional Documents</span>
+      </button>
       <button class="nav-item" onclick="showPanel('credits')">
         <span class="nav-item-icon">🏆</span><span>Credits</span>
       </button>
-      <button class="nav-item" onclick="showPanel('music')">
-        <span class="nav-item-icon">🎵</span><span>Music</span>
+      <!-- Works reserved here architecturally, matching public order (between Credits and Photos).
+           Not shown until a real Works editor exists — no placeholder, no disabled item. -->
+      <button class="nav-item" onclick="showPanel('photos')">
+        <span class="nav-item-icon">📸</span><span>Photos</span>
       </button>
       <button class="nav-item" onclick="showPanel('videos')">
         <span class="nav-item-icon">🎬</span><span>Video</span>
       </button>
-      <button class="nav-item" onclick="showPanel('photos')">
-        <span class="nav-item-icon">📸</span><span>Photos</span>
+      <button class="nav-item" onclick="showPanel('music')">
+        <span class="nav-item-icon">🎵</span><span>Music</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('awards')">
+        <span class="nav-item-icon">🏅</span><span>Awards</span>
       </button>
       <button class="nav-item" onclick="showPanel('assets')">
         <span class="nav-item-icon">📦</span><span>Assets</span>
-      </button>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-section-label">Layout</div>
-      <button class="nav-item" onclick="showPanel('careertype')">
-        <span class="nav-item-icon">⚡</span><span>Career Type</span>
-      </button>
-      <button class="nav-item" onclick="showPanel('sections')">
-        <span class="nav-item-icon">⠿</span><span>Section Order</span>
-      </button>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-section-label">Business</div>
-      <button class="nav-item" onclick="showPanel('qr')">
-        <span class="nav-item-icon">⬛</span><span>Share Card / QR</span>
       </button>
       <button class="nav-item" onclick="showPanel('booking')">
         <span class="nav-item-icon">📅</span><span>Connect</span>
@@ -128,11 +117,19 @@
       <button class="nav-item" onclick="showPanel('socials')">
         <span class="nav-item-icon">🔗</span><span>Social Links</span>
       </button>
-      <button class="nav-item" onclick="showPanel('resume')">
-        <span class="nav-item-icon">📋</span><span>Professional Profile</span>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Settings</div>
+      <div style="font-size:0.62rem;color:var(--gray);line-height:1.4;padding:0 0.5rem;margin-bottom:0.75rem;text-transform:none;letter-spacing:normal">Configure layout, organization, sharing, templates, and analytics.</div>
+      <button class="nav-item" onclick="showPanel('careertype')">
+        <span class="nav-item-icon">⚡</span><span>Career Type</span>
       </button>
-      <button class="nav-item" onclick="showPanel('awards')">
-        <span class="nav-item-icon">🏅</span><span>Awards & Degrees</span>
+      <button class="nav-item" onclick="showPanel('sections')">
+        <span class="nav-item-icon">⠿</span><span>Section Order</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('qr')">
+        <span class="nav-item-icon">⬛</span><span>Share Card / QR</span>
       </button>
       <button class="nav-item" onclick="showPanel('analytics')">
         <span class="nav-item-icon">📊</span><span>Analytics</span>
@@ -144,7 +141,7 @@
 
     <!-- HERO PANEL -->
     <div class="panel active" id="panel-hero">
-      <h1 class="panel-title">Hero & <em>Identity</em></h1>
+      <h1 class="panel-title">Career <em>Profile</em></h1>
       <p class="panel-sub">This is the first thing people see on your PorfolioID. Make it count.</p>
 
       <div class="field-row">
@@ -1669,7 +1666,7 @@
 
     <!-- RESUME PANEL -->
     <div class="panel" id="panel-resume">
-      <h1 class="panel-title">Professional Profile</h1>
+      <h1 class="panel-title">Professional Documents</h1>
       <p class="panel-sub">Create professional profile cards such as your Executive Resume, Biography, or other professional documents — styled in black and gold to match your portfolio.</p>
 
       <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);padding:1rem 1.25rem;border:1px solid rgba(201,168,76,0.15);margin-bottom:1.5rem">
