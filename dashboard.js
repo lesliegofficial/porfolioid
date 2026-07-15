@@ -727,7 +727,7 @@ function loadAllFields() {
   loadBookingToggle();
   epk.assetsLocked = epk.assetsLocked !== undefined ? epk.assetsLocked : true;
   updateAssetsLockUI();
-  setAssetsLayout(epk.assetsLayout || 'cards');
+  renderAssetsLayout(epk.assetsLayout || 'cards');
 
   // Availability dropdown
   const availSel = document.getElementById('availabilitySelect');
@@ -1262,13 +1262,22 @@ document.getElementById('newCredential').addEventListener('keydown', e => { if (
 // CREDITS
 let editingCreditIdx = -1;
 
-function setAssetsLayout(layout) {
+// Pure UI/state sync — sets epk.assetsLayout and highlights the matching
+// button, with NO persistence. Used both by the real click handler below
+// and by loadAllFields() during page initialization, so restoring the
+// saved layout selection on load never triggers a save.
+function renderAssetsLayout(layout) {
   epk.assetsLayout = layout;
   ['cards','list','compact','table','featured'].forEach(l => {
     const btn = document.getElementById('alayout_' + l);
     if (btn) btn.style.background = l === layout ? 'var(--gold)' : 'rgba(255,255,255,0.04)';
     if (btn) btn.style.color = l === layout ? 'var(--black)' : 'var(--gray)';
   });
+}
+
+// Real user action — clicking a layout button. Persists, exactly as before.
+function setAssetsLayout(layout) {
+  renderAssetsLayout(layout);
   persistUser(); showSaveBanner();
 }
 
