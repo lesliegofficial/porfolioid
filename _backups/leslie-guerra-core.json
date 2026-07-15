@@ -1658,7 +1658,7 @@
     }
   ],
   "videoLayout": "cinematic",
-  "assetsLayout": "list",
+  "assetsLayout": "cards",
   "assetsLocked": false,
   "availability": "Available for tours & studio sessions",
   "bioImageZoom": 93,
