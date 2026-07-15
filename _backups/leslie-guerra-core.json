@@ -1708,6 +1708,80 @@
   "sectionVisibility": {},
   "bookingAutoResponse": "Thank you for your inquiry. I will respond in less than 48 hours.",
   "bookingAvailability": "selective",
+  "careerHighlights": [
+    {
+      "id": "default-recordingartist",
+      "tag": "recordingartist",
+      "order": 0,
+      "visible": true,
+      "icon": "music",
+      "title": "Recording Artist",
+      "titleEs": "Artista de Grabación",
+      "description": "Recording artist with Las Nenas del Swing. Original compositions and live concert recordings across multiple releases.",
+      "descriptionEs": "Artista de grabación con Las Nenas del Swing. Composiciones originales y grabaciones de conciertos en vivo en múltiples lanzamientos.",
+      "image": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052294/career-highlights/recording-artist.jpg"
+    },
+    {
+      "id": "default-liveperformance",
+      "tag": "liveperformance",
+      "order": 1,
+      "visible": true,
+      "icon": "mic",
+      "title": "Touring Vocalist",
+      "titleEs": "Presentaciones en Vivo",
+      "description": "Exclusive touring vocalist for Don Omar, J Álvarez, and Melina León — hundreds of performances across five continents.",
+      "descriptionEs": "Vocalista de gira exclusiva para Don Omar, J Álvarez y Melina León — cientos de presentaciones en cinco continentes.",
+      "image": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1782320896/career-highlights/touring-vocalist-don-omar.jpg"
+    },
+    {
+      "id": "default-industryoperations",
+      "tag": "industryoperations",
+      "order": 2,
+      "visible": true,
+      "icon": "building",
+      "title": "Operations &amp; Compliance",
+      "titleEs": "Operaciones de la Industria",
+      "description": "Executive operations, regulatory compliance, and organizational leadership. Human Services at FEMA, Head of Compliance at Venetian Productions, and operations coordination at Arrow Management.",
+      "descriptionEs": "Logística de Artistas y Coordinación de Eventos para Adam Torres Concerts. Apoyo artístico en Arrow Management. Jefa de Cumplimiento en Venetian Productions.",
+      "image": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1782317473/career-highlights/operations-compliance.png"
+    },
+    {
+      "id": "default-creativeprofessional",
+      "tag": "creativeprofessional",
+      "order": 3,
+      "visible": true,
+      "icon": "briefcase",
+      "title": "Artist Liaison &amp; A&amp;R Coordinator",
+      "titleEs": "Profesional Creativa",
+      "description": "A&amp;R coordination and artist development at Sony Music Latin and Urban Latino Music. Artist liaison and event coordination for Adam Torres Concerts. Music projects, release coordination, and industry relationships.",
+      "descriptionEs": "Coordinadora de A&R en Sony Music Latin y Urban Latino Music. Desarrollo artístico, coordinación de lanzamientos y operaciones creativas.",
+      "image": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1781052295/career-highlights/creative-professional.jpg"
+    },
+    {
+      "id": "default-marketingpr",
+      "tag": "marketingpr",
+      "order": 4,
+      "visible": true,
+      "icon": "megaphone",
+      "title": "Digital Marketing",
+      "titleEs": "Mercadeo y Relaciones Públicas",
+      "description": "Digital marketing, social media strategy, public relations, and content marketing at NV Marketing &amp; PR. Managed artist marketing campaigns and brand promotion for major Latin artists.",
+      "descriptionEs": "Coordinadora de Mercadeo y Contenido en NV Marketing & PR. Campañas digitales, apoyo de publicidad y estrategia de contenido para grandes artistas latinos.",
+      "image": "https://res.cloudinary.com/djj8xe3gx/video/upload/v1781052306/career-highlights/marketing-pr.mp4"
+    },
+    {
+      "id": "default-founderbuilder",
+      "tag": "founderbuilder",
+      "order": 5,
+      "visible": true,
+      "icon": "flag",
+      "title": "Founder, porfolioID",
+      "titleEs": "Fundadora y Creadora",
+      "description": "Founder &amp; Product Architect of porfolioID and IDPressDrop — original platforms built from concept to deployment.",
+      "descriptionEs": "Fundadora y Arquitecta de Producto de PorfolioID e IDPressDrop — plataformas originales construidas desde el concepto hasta el despliegue.",
+      "image": "https://res.cloudinary.com/djj8xe3gx/image/upload/v1781638246/career-highlights/founder-builder-official.jpg"
+    }
+  ],
   "awards": [
     {
       "org": "Polk State College",
