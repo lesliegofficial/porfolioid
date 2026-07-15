@@ -777,6 +777,17 @@ function saveAll() {
   epk.bioImagePosition = parseInt(document.getElementById('bioPositionValue').value || 0);
   epk.bioImageCropTop = parseInt(document.getElementById('bioCropTopValue').value || 0);
   epk.bioImageZoom = parseInt(document.getElementById('bioZoomValue').value || 100);
+
+  persistUser();
+  showSaveBanner();
+}
+
+// The single owner-facing save action for the unified Connect workspace.
+// Reads only Reach Me (booking) fields directly here — deliberately NOT
+// touching Hero/Bio fields, unlike saveAll(). Reuses saveSocials() to
+// update epk.socials (Follow Me) without triggering its own persist call.
+// Persists exactly once for both groups together.
+function saveConnect() {
   const bookingLabelSelect = document.getElementById('bookingLabel').value;
   epk.bookingLabel = bookingLabelSelect === 'custom'
     ? (document.getElementById('bookingLabelCustom').value.trim() || 'Inquiries')
@@ -789,6 +800,8 @@ function saveAll() {
   epk.bookingRegion = document.getElementById('bookingRegion').value.trim();
   epk.bookingAutoResponse = document.getElementById('bookingAutoResponse').value.trim();
   epk.bookingCategories = [..._selectedCategories];
+
+  saveSocials(); // updates epk.socials in memory only — see note on saveSocials()
 
   persistUser();
   showSaveBanner();
@@ -3582,7 +3595,10 @@ function saveSocials() {
     const wSites = normalizeWebsites(epk.socials.website).filter(w => w.url && w.url.trim());
     epk.socials.website = wSites.length ? wSites : [];
   }
-  persistUser(); showSaveBanner();
+  // Note: persistUser()/showSaveBanner() intentionally NOT called here.
+  // This function only updates epk.socials in memory. Persisting is done
+  // once, by saveConnect(), which also captures Reach Me fields — this
+  // avoids a double-save when both groups are part of one workspace.
 }
 
 function loadSocials() {
@@ -3619,7 +3635,9 @@ function loadSocials() {
 // BOOKING TOGGLE
 function toggleBooking() {
   epk.bookingEnabled = document.getElementById('bookingToggle').checked;
-  persistUser(); showSaveBanner();
+  // Intentionally no persistUser() here — this toggle lives inside the
+  // unified Connect workspace, which persists only via the explicit
+  // "Save Connect" button.
 }
 
 function loadBookingToggle() {
