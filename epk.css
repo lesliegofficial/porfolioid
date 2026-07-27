@@ -99,6 +99,14 @@
 
   /* Responsive */
   .section-title { font-family: var(--font-display); font-size: clamp(1.4rem, 2.2vw, 1.9rem); font-weight: 400; color: var(--white); line-height: 1.1; margin-bottom: 0.75rem; }
+  @media (min-width: 961px) and (max-width: 1200px) {
+    /* Tablet landscape (e.g. 1024px): keep the desktop 2-column layout,
+       but stop the image panel from stretching to match the content
+       column's natural height (which was pushing it to ~950px tall).
+       Scoped to this range only so 1440px desktop is untouched. */
+    .hero { align-items: start; }
+    .hero-image-panel { min-height: 440px; max-height: 440px; }
+  }
   @media (max-width: 960px) { .hero { grid-template-columns: 1fr; } .hero-image-panel { min-height: 55vw; } .hero-content { padding: 2rem 1.5rem; } }
   @media (max-width: 640px) { .hero-stats-row { flex-wrap: wrap; gap: 0.75rem; } .hero-stat-item { border-right: none; padding-right: 0; margin-right: 0; } }
 
@@ -716,7 +724,7 @@
 
     /* HERO */
     .hero { grid-template-columns: 1fr; min-height: auto; }
-    .hero-image-panel { height: 90vw; min-height: 340px; max-height: 520px; }
+    .hero-image-panel { width: 100%; height: auto; aspect-ratio: 1 / 1; max-height: 360px; min-height: 0; }
     .hero-img { object-position: center 35%; }
     .hero-content { padding: 2.5rem 1.25rem 2rem; }
     .hero-name { font-size: clamp(2.6rem, 11vw, 4.5rem); }
@@ -775,6 +783,11 @@
     /* OWNER BAR */
     .owner-bar { font-size: 0.55rem; padding: 0.75rem 1rem; gap: 0.75rem; }
     .owner-bar-right { gap: 0.5rem; }
+  }
+  @media (max-width: 480px) {
+    /* Phones — further reduce the portrait panel beyond the 768px tablet
+       cap, so it doesn't dominate the first screen on small devices. */
+    .hero-image-panel { max-height: 280px; }
   }
 
   /* Extra small phones */
@@ -1298,7 +1311,7 @@
 
     /* HERO */
     .hero { grid-template-columns: 1fr; min-height: auto; }
-    .hero-image-panel { height: 90vw; min-height: 340px; max-height: 520px; }
+    .hero-image-panel { width: 100%; height: auto; aspect-ratio: 1 / 1; max-height: 360px; min-height: 0; }
     .hero-img { object-position: center 35%; }
     .hero-content { padding: 2.5rem 1.25rem 2rem; }
     .hero-name { font-size: clamp(2.6rem, 11vw, 4.5rem); }
@@ -1357,6 +1370,11 @@
     /* OWNER BAR */
     .owner-bar { font-size: 0.55rem; padding: 0.75rem 1rem; gap: 0.75rem; }
     .owner-bar-right { gap: 0.5rem; }
+  }
+  @media (max-width: 480px) {
+    /* Phones — further reduce the portrait panel beyond the 768px tablet
+       cap, so it doesn't dominate the first screen on small devices. */
+    .hero-image-panel { max-height: 280px; }
   }
 
   /* Extra small phones */
