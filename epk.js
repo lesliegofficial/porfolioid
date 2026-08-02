@@ -342,8 +342,8 @@ function buildEPK(epk) {
 
   // Custom image icons (overrides SVG for specific platforms)
   const platformImg = {
-    amazon: 'https://res.cloudinary.com/djj8xe3gx/image/upload/x_234,y_211,w_541,h_551,c_crop,e_make_transparent:10,f_png/icons/amazon-icon-white.jpg',
-    tiktok: 'https://res.cloudinary.com/djj8xe3gx/image/upload/c_trim,e_make_transparent:10,f_png/icons/tiktok-icon-white.jpg',
+    amazon: 'https://media.porfolioid.com/profiles/leslie-guerra/icon/leslie-guerra_amazon-icon-logo_v1_20260802.jpg',
+    tiktok: 'https://media.porfolioid.com/profiles/leslie-guerra/icon/leslie-guerra_tiktok-icon-logo_v1_20260802.jpg',
   };
 
   const platformCat = {
@@ -488,7 +488,7 @@ function buildEPK(epk) {
   const amazonBannerHTML = amazonUrl ? `
     <a href="${amazonUrl}" class="ch-amazon-banner" target="_blank" rel="noopener">
       <span class="ch-amazon-icon">
-        <img src="https://res.cloudinary.com/djj8xe3gx/image/upload/x_234,y_211,w_541,h_551,c_crop,e_make_transparent:10,f_png/icons/amazon-icon-white.jpg" style="width:100%;height:100%;object-fit:cover" alt="amazon">
+        <img src="https://media.porfolioid.com/profiles/leslie-guerra/icon/leslie-guerra_amazon-icon-logo_v1_20260802.jpg" style="width:100%;height:100%;object-fit:cover" alt="amazon">
       </span>
       <span class="ch-amazon-left">
         <small class="ch-amazon-cat">Curated Picks</small>
