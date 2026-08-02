@@ -1493,11 +1493,11 @@
       "mediaItems": [],
       "mediaLabel": "",
       "sort_order": 3,
+      "mediaLayout": "grid",
       "projectType": "",
       "contractType": "",
       "highlightTag": "liveperformance",
-      "collaborators": [],
-      "mediaLayout": "grid"
+      "collaborators": []
     },
     {
       "id": "credit_08_fema",
@@ -1509,11 +1509,9 @@
       "artist": "FEMA",
       "descEs": "Agencia Federal para el Manejo de Emergencias | Trujillo Alto, PR | 2001–2006. Especialista bilingüe en Servicios Humanos. Progresó desde soporte al cliente en primera línea hasta gestión de casos.",
       "photos": [
-        "https://media.porfolioid.com/profiles/leslie-guerra/photos/rhixeyyxcezspzutu3kx.jpg",
-        "https://media.porfolioid.com/profiles/leslie-guerra/photos/i0xzdlyuluu6ptz6xubd.jpg",
-        "https://media.porfolioid.com/profiles/leslie-guerra/photos/f2llihxceckksiysijht.jpg",
-        "https://media.porfolioid.com/profiles/leslie-guerra/photos/uzkkleu5mcbw6qmxmb5x.jpg",
-        "https://media.porfolioid.com/profiles/leslie-guerra/photos/fvqhpttzar6dpjcgreuq.jpg"
+        "https://media.porfolioid.com/profiles/leslie-guerra/credits/leslie-guerra_fema-crew-2_v1_20260802.jpg",
+        "https://media.porfolioid.com/profiles/leslie-guerra/credits/leslie-guerra_fema-crew-3_v1_20260802.jpg",
+        "https://media.porfolioid.com/profiles/leslie-guerra/credits/leslie-guerra_fema-crew_v1_20260802.jpg"
       ],
       "pinned": false,
       "company": "FEMA",
