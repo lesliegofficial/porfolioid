@@ -431,6 +431,7 @@ function renderCareerHighlightsEditor() {
       </div>`;
     }
     return `<div style="${rowStyle}">
+      <button onclick="ch3CancelCardEdit()" style="display:inline-flex;align-items:center;gap:0.4rem;background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);padding:0;margin-bottom:1rem;transition:color 0.2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gray)'">✕ Close (won't save changes)</button>
       <div class="field-group">
         <label class="field-label">Title (English)</label>
         <input type="text" id="ch3EditTitle_${i}" value="${(card.title || '').replace(/"/g, '&quot;')}">
