@@ -1477,8 +1477,8 @@
       "artist": "Melina León",
       "descEs": "Vocalista de apoyo en vivo durante compromisos de presentación. Esta experiencia la llevó a ser invitada a unirse a la primera producción mayor de gira en vivo de Don Omar.",
       "photos": [
-        "https://media.porfolioid.com/profiles/leslie-guerra/photos/lydovbwv4o2qf9jxgnsh.jpg",
-        "https://media.porfolioid.com/profiles/leslie-guerra/photos/tseqoeqnrodjane34ukl.jpg"
+        "https://media.porfolioid.com/profiles/leslie-guerra/credits/leslie-guerra_melina-leon-crew-1_v1_20260802.jpg",
+        "https://media.porfolioid.com/profiles/leslie-guerra/credits/leslie-guerra_melina-leon-crew-2_v1_20260802.jpg"
       ],
       "pinned": false,
       "company": "Melina León",
@@ -1496,7 +1496,8 @@
       "projectType": "",
       "contractType": "",
       "highlightTag": "liveperformance",
-      "collaborators": []
+      "collaborators": [],
+      "mediaLayout": "grid"
     },
     {
       "id": "credit_08_fema",
