@@ -194,13 +194,25 @@ async function uploadToCloudinary(file, onSuccess) {
   );
 }
 
-function triggerUpload(inputId, targetFieldId, previewCallback) {
+function triggerUpload(btnEl, inputId, targetFieldId, previewCallback) {
   const input = document.getElementById(inputId);
   input.click();
   input.onchange = async function() {
     const file = input.files[0];
     if (!file) return;
-    const btn = document.querySelector(`[onclick*="triggerUpload('${inputId}')"]`);
+    // PI-007 fix: the button that triggered this upload is now passed in
+    // directly (btnEl) instead of being re-located afterward via a
+    // substring `onclick` selector. That selector —
+    // `[onclick*="triggerUpload('${inputId}')"]` — only matched buttons
+    // whose onclick was exactly `triggerUpload('id')` with nothing after
+    // the closing quote. Hero/Bio's buttons pass three additional
+    // arguments, so the substring never matched, btn was always null, and
+    // every status update below (uploading/success/error text) silently
+    // did nothing — while the field value and preview still updated
+    // normally, since those aren't gated on btn. This fix only makes the
+    // button reference reliable; it changes nothing else about the upload
+    // (still category 'photos', still no auto-save).
+    const btn = btnEl;
     const originalText = btn ? btn.textContent : '';
     if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
     await uploadToR2(file, 'photos',

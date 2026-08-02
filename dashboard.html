@@ -187,7 +187,7 @@
       <div class="field-group">
         <input type="url" id="heroImage" placeholder="https://... or upload below" oninput="updateHeroPreview(this.value)">
         <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
-          <button class="btn-add" onclick="triggerUpload('heroImageFile', 'heroImage', updateHeroPreview)">↑ Upload Photo</button>
+          <button class="btn-add" onclick="triggerUpload(this, 'heroImageFile', 'heroImage', updateHeroPreview)">↑ Upload Photo</button>
           <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
         </div>
         <input type="file" id="heroImageFile" accept="image/*" style="display:none">
@@ -468,7 +468,7 @@
         <label class="field-label">Bio Portrait Image</label>
         <input type="url" id="bioImage" placeholder="https://... or upload below" oninput="updateBioPreview(this.value)">
         <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center">
-          <button class="btn-add" onclick="triggerUpload('bioImageFile', 'bioImage', updateBioPreview)">↑ Upload Photo</button>
+          <button class="btn-add" onclick="triggerUpload(this, 'bioImageFile', 'bioImage', updateBioPreview)">↑ Upload Photo</button>
           <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
         </div>
         <input type="file" id="bioImageFile" accept="image/*" style="display:none">
