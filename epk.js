@@ -580,12 +580,28 @@ function buildEPK(epk) {
 
   const taglinesHTML = (epk.taglines || []).join('<br>');
 
-  const heroImgPos = epk.heroImagePosition !== undefined ? `center ${epk.heroImagePosition}%` : 'center 0%';
-  const heroZoom = epk.heroImageZoom || 100;
-  const heroFit = epk.heroImageFit || 'cover';
+  // NOTE ON FIELD USAGE (per approved design correction): the top first-page
+  // slot renders epk.bioImage (the profile portrait) and the lower Career
+  // Profile section renders epk.heroImage (the feature/performance image).
+  // This is a deliberate reversal of the field *names* vs. where they render
+  // — the stored URLs and their upload panels are unchanged; only which
+  // section pulls from which field changed. See epk.js history for context.
+  //
+  // TODO (future refactor, not in scope here): epk.heroImage and
+  // epk.bioImage no longer describe where they render in the UI, which is
+  // confusing for anyone maintaining this later. Once there's appetite for
+  // a data-model change, rename to something like epk.profilePortrait (top
+  // slot) and epk.careerFeatureImage (lower Career Profile slot), update
+  // the dashboard field labels and panel IDs to match, and migrate existing
+  // saved records. Do NOT do this as part of the current fix — it requires
+  // a Supabase data migration and dashboard UI changes beyond this PR's
+  // scope, and isn't needed for correct behavior today.
+  const heroImgPos = epk.bioImagePosition !== undefined ? `center ${epk.bioImagePosition}%` : 'center 0%';
+  const heroZoom = epk.bioImageZoom || 100;
+  const heroFit = epk.bioImageFit || 'cover';
   const heroZoomStyle = heroZoom !== 100 ? `transform:scale(${heroZoom/100});transform-origin:center top;` : '';
-  const heroImgHTML = epk.heroImage
-    ? `<img class="hero-img" src="${epk.heroImage}" alt="${epk.name}" style="object-fit:${heroFit};object-position:${heroImgPos};${heroZoomStyle}" onerror="this.parentElement.innerHTML='<div class=hero-placeholder><div class=hero-placeholder-icon>🎤</div></div>'">`
+  const heroImgHTML = epk.bioImage
+    ? `<img class="hero-img" src="${epk.bioImage}" alt="${epk.name}" style="object-fit:${heroFit};object-position:${heroImgPos};${heroZoomStyle}" onerror="this.parentElement.innerHTML='<div class=hero-placeholder><div class=hero-placeholder-icon>🎤</div></div>'">`
     : `<div class="hero-placeholder"><div class="hero-placeholder-icon">🎤</div></div>`;
 
   const bioImgHTML = epk.bioImage
@@ -648,14 +664,14 @@ function buildEPK(epk) {
   const careerLayout = epk.careerLayout || 'stacked';
   const resumeCards = epk.resumeCards || [];
   epkResumeCards = resumeCards;
-  const bioImgPos = epk.bioImagePosition !== undefined ? `center ${epk.bioImagePosition}%` : 'center 0%';
-  const bioZoom = epk.bioImageZoom || 100;
-  const bioCropTop = epk.bioImageCropTop || 0;
+  const bioImgPos = epk.heroImagePosition !== undefined ? `center ${epk.heroImagePosition}%` : 'center 0%';
+  const bioZoom = epk.heroImageZoom || 100;
+  const bioCropTop = epk.heroImageCropTop || 0; // not currently editable from the Hero panel; defaults to no crop
   const bioZoomStyle = bioZoom !== 100 ? `transform:scale(${bioZoom/100});transform-origin:center top;` : '';
   const bioCropStyle = bioCropTop > 0 ? `margin-top:-${bioCropTop}%;height:calc(100% + ${bioCropTop}%);` : '';
-  const bioFit = epk.bioImageFit || 'cover';
+  const bioFit = epk.heroImageFit || 'cover';
   const bioContainerStyle = bioFit === 'contain' ? 'background:transparent;display:flex;align-items:flex-start;justify-content:center;' : '';
-  const bioPortrait = epk.bioImage ? `<div style="position:relative;overflow:hidden;width:100%;height:100%;${bioContainerStyle}"><img src="${epk.bioImage}" class="career-portrait" alt="${epk.name}" style="object-fit:${bioFit};object-position:${bioImgPos};${bioZoomStyle}${bioCropStyle}"></div>` : '';
+  const bioPortrait = epk.heroImage ? `<div style="position:relative;overflow:hidden;width:100%;height:100%;${bioContainerStyle}"><img src="${epk.heroImage}" class="career-portrait" alt="${epk.name}" style="object-fit:${bioFit};object-position:${bioImgPos};${bioZoomStyle}${bioCropStyle}"></div>` : '';
 
   const bioShortContent = `
     <div class="career-bio-text">
@@ -669,41 +685,40 @@ function buildEPK(epk) {
 
   const bioContent = bioShortContent;
 
-  // Build career profile HTML based on layout
+  // Build career profile HTML for the top always-visible Career Profile
+  // section — PORTRAIT + BIOGRAPHY TEXT ONLY.
+  //
+  // IMPORTANT: resumeCards (Executive Resume / About Leslie / etc., via
+  // buildResumeCard) are deliberately NOT included here. They already
+  // render in their one original location further down the page, inside
+  // the expandable Credits container under "Professional Documents" (see
+  // the "PROFESSIONAL RESUME" block below, further down in this function).
+  // An earlier version of this section reused the same careerLayout
+  // branches used by that lower section, which also assembled resumeCards
+  // markup — inserting that combined markup at the top caused every resume
+  // card to render twice on the page. This block intentionally builds only
+  // the portrait/bio markup, regardless of careerLayout, so the top section
+  // can never reintroduce that duplication even if the Career Profile
+  // Layout setting (stacked / side-by-side / three columns) changes later.
   let careerProfileHTML = '';
-  if (careerLayout === 'sidebyside') {
+  if (careerLayout === 'sidebyside' || careerLayout === 'threecol') {
+    // Both multi-column layouts collapse to the same single-column
+    // portrait+bio treatment here, since the cards column that used to
+    // differentiate them no longer applies to this always-visible section.
     careerProfileHTML = `
       <div class="career-sidebyside">
         <div class="career-sidebyside-left">
           ${bioPortrait}
           ${bioContent}
         </div>
-        <div class="career-sidebyside-right">
-          ${resumeCards.map(buildResumeCard).join('')}
-        </div>
       </div>`;
-  } else if (careerLayout === 'threecol') {
-    careerProfileHTML = `
-      <div class="career-threecol">
-        <div class="career-threecol-bio">
-          ${bioPortrait}
-          ${bioContent}
-        </div>
-        <div class="career-threecol-cards">
-          ${resumeCards[0] ? buildResumeCard(resumeCards[0]) : ''}
-          ${resumeCards[1] ? buildResumeCard(resumeCards[1]) : ''}
-        </div>
-      </div>
-      ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}
-    `;
   } else {
     // Stacked (default)
     careerProfileHTML = `
       <div class="career-stacked-bio">
         ${bioPortrait ? `<div>${bioPortrait}</div>` : ''}
         ${bioContent}
-      </div>
-      ${resumeCards.length ? `<div class="career-stacked-cards">${resumeCards.map(buildResumeCard).join('')}</div>` : ''}`;
+      </div>`;
   }
 
 
@@ -1229,6 +1244,12 @@ function buildEPK(epk) {
     <!-- CAREER HIGHLIGHTS -->
     <section class="career-profile-section" id="bio">
       <div class="ch3-wrap">
+        <!-- CAREER PROFILE / BIOGRAPHY — previously built as careerProfileHTML
+             but never inserted anywhere (dead code); now rendered here as the
+             lead content of the always-visible #bio section, ahead of the
+             Career Record Highlights cards. No collapsible wrapper — this
+             section requires no click-to-expand interaction. -->
+        ${careerProfileHTML}
         <div class="ch3-header">
           <span class="ch3-label" id="ch3Eyebrow">Career Profile</span>
           <div class="ch3-title-row">
