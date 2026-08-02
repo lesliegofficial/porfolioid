@@ -685,41 +685,40 @@ function buildEPK(epk) {
 
   const bioContent = bioShortContent;
 
-  // Build career profile HTML based on layout
+  // Build career profile HTML for the top always-visible Career Profile
+  // section — PORTRAIT + BIOGRAPHY TEXT ONLY.
+  //
+  // IMPORTANT: resumeCards (Executive Resume / About Leslie / etc., via
+  // buildResumeCard) are deliberately NOT included here. They already
+  // render in their one original location further down the page, inside
+  // the expandable Credits container under "Professional Documents" (see
+  // the "PROFESSIONAL RESUME" block below, further down in this function).
+  // An earlier version of this section reused the same careerLayout
+  // branches used by that lower section, which also assembled resumeCards
+  // markup — inserting that combined markup at the top caused every resume
+  // card to render twice on the page. This block intentionally builds only
+  // the portrait/bio markup, regardless of careerLayout, so the top section
+  // can never reintroduce that duplication even if the Career Profile
+  // Layout setting (stacked / side-by-side / three columns) changes later.
   let careerProfileHTML = '';
-  if (careerLayout === 'sidebyside') {
+  if (careerLayout === 'sidebyside' || careerLayout === 'threecol') {
+    // Both multi-column layouts collapse to the same single-column
+    // portrait+bio treatment here, since the cards column that used to
+    // differentiate them no longer applies to this always-visible section.
     careerProfileHTML = `
       <div class="career-sidebyside">
         <div class="career-sidebyside-left">
           ${bioPortrait}
           ${bioContent}
         </div>
-        <div class="career-sidebyside-right">
-          ${resumeCards.map(buildResumeCard).join('')}
-        </div>
       </div>`;
-  } else if (careerLayout === 'threecol') {
-    careerProfileHTML = `
-      <div class="career-threecol">
-        <div class="career-threecol-bio">
-          ${bioPortrait}
-          ${bioContent}
-        </div>
-        <div class="career-threecol-cards">
-          ${resumeCards[0] ? buildResumeCard(resumeCards[0]) : ''}
-          ${resumeCards[1] ? buildResumeCard(resumeCards[1]) : ''}
-        </div>
-      </div>
-      ${bioFullContent ? `<div class="career-bio-full-width">${bioFullContent}</div>` : ''}
-    `;
   } else {
     // Stacked (default)
     careerProfileHTML = `
       <div class="career-stacked-bio">
         ${bioPortrait ? `<div>${bioPortrait}</div>` : ''}
         ${bioContent}
-      </div>
-      ${resumeCards.length ? `<div class="career-stacked-cards">${resumeCards.map(buildResumeCard).join('')}</div>` : ''}`;
+      </div>`;
   }
 
 
