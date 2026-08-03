@@ -8,16 +8,16 @@
   "bioES": "Sus créditos artísticos incluyen giras como vocalista de apoyo junto a los íconos del reggaetón Don Omar (2006–2015) y J Álvarez (2015–2020), presentándose ante audiencias en Estados Unidos, América Latina y Europa. También aparece en el lanzamiento en vivo King of Kings: En Directo, grabado durante la gira mundial King of Kings World Tour de Don Omar y publicado por Machete Music.\n\nGuerra inició su carrera discográfica como integrante de Las Nenas del Swing, participando en producciones y grabaciones como Rompe Corazones, Chicle Bomba, Desearía y Me Faltas Tú. A lo largo de su trayectoria en giras y espectáculos, también participó en producciones que incluyeron artistas como Wisin & Yandel, Arcángel, Daddy Yankee, Natti Natasha y Melina León.\n\nMás allá de los escenarios, Guerra ha ocupado posiciones de liderazgo, coordinación y operaciones dentro de la industria del entretenimiento. Se desempeñó como Coordinadora de A&R en Sony Music Latin, brindando apoyo a operaciones ejecutivas de A&R e iniciativas de desarrollo artístico. También coordinó operaciones artísticas y de manejo para Orfanato Music Group y Arrow Management, gestionó logística artística para Adam Torres Concerts y lideró iniciativas de mercadeo y relaciones públicas a través de NV Marketing & Public Relations.\n\nActualmente, Guerra combina su experiencia en interpretación, desarrollo artístico, operaciones, mercadeo y estrategia empresarial a través de proyectos creativos y empresariales, incluyendo PorfolioID, una plataforma profesional diseñada para ayudar a artistas, creadores y profesionales a presentar su trayectoria, logros y portafolio de manera moderna y organizada.",
   "stats": [
     {
-      "label": "Years Active",
-      "number": "25+"
+      "number": "25+",
+      "label": "Years Active"
     },
     {
-      "label": "Live Shows",
-      "number": "500+"
+      "number": "500+",
+      "label": "Live Shows"
     },
     {
-      "label": "Continents",
-      "number": "5"
+      "number": "5",
+      "label": "Continents"
     }
   ],
   "works": [
@@ -1799,7 +1799,7 @@
       "descriptionEs": "Fundadora y Arquitecta de Producto de PorfolioID e IDPressDrop — plataformas originales construidas desde el concepto hasta el despliegue."
     }
   ],
-  "heroImageCropTop": 34,
+  "heroImageCropTop": 0,
   "bookingCategories": [
     "professional",
     "administration",
@@ -1812,7 +1812,7 @@
     "virtualassistant",
     "translator"
   ],
-  "heroImagePosition": 34,
+  "heroImagePosition": 0,
   "sectionVisibility": {},
   "bookingAutoResponse": "Thank you for your inquiry. I will respond in less than 48 hours.",
   "bookingAvailability": "selective",
