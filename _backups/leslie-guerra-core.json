@@ -1679,7 +1679,7 @@
       "showPdfComingSoon": false
     }
   ],
-  "videoLayout": "cinematic",
+  "videoLayout": "list",
   "assetsLayout": "cards",
   "assetsLocked": false,
   "availability": "Available for tours & studio sessions",
