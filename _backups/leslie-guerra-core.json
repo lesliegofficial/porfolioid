@@ -20,6 +20,283 @@
       "number": "5"
     }
   ],
+  "works": [
+    {
+      "id": "vals-demente",
+      "books": null,
+      "music": {
+        "bpm": null,
+        "key": null,
+        "genre": "Latin Pop",
+        "lyrics": "Verso 1\nSé que el amor se va como llega en un día,\ny según tú murió lo que por mí sentías.\nCuando me iba y en brazos de otro me veías,\nentonces tú volvías a tu cacería.\n\nCoro\nEs un sube y baja, un vals demente,\nun seis cilindros con el motor caliente,\nun ven y un vete, una danza imprudente...\ndonde pierdo al quererte.\n\nVerso 2\nVolvía a creer en cada promesa vacía,\nhaciéndome la vista gorda a lo que ya sabía.\nBajaba la guardia cada vez que sonreías,\ny otra vez, el mismo vals se repetía.\n\nCoro\nEs un sube y baja, un vals demente,\nun seis cilindros con el motor caliente,\nun ven y un vete, una danza imprudente...\ndonde pierdo al quererte.",
+        "duration": 146,
+        "lyricsEs": null,
+        "streamingLinks": {
+          "spotify": null,
+          "youtube": null,
+          "appleMusic": null,
+          "soundcloud": null
+        }
+      },
+      "title": "Vals Demente",
+      "assets": [
+        {
+          "url": "https://media.porfolioid.com/profiles/leslie-guerra/covers/vals-demente_cover.jpg",
+          "date": "2026-06-17",
+          "role": "cover-art",
+          "type": "image",
+          "title": "Final Album Cover",
+          "featured": true,
+          "sortOrder": 1,
+          "description": "Venetian mask concept representing the masks we wear in cycles of love and self-deception."
+        },
+        {
+          "url": "https://media.porfolioid.com/profiles/leslie-guerra/audio/vals-demente_audio.mp3",
+          "date": "2026-06-17",
+          "role": "release",
+          "type": "audio",
+          "title": "Vals Demente (Final)",
+          "featured": true,
+          "sortOrder": 1,
+          "description": "Final released version."
+        }
+      ],
+      "credits": [
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Writing"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Lyrics"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Original Melody"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Inspired by Melody"
+        },
+        {
+          "name": "Suno AI",
+          "role": "Music Production"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Creative Direction"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Concept"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Artwork Direction"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Cover Artwork"
+        },
+        {
+          "name": "Leslie Ann Guerra",
+          "role": "Archive Documentation"
+        }
+      ],
+      "visible": true,
+      "writing": null,
+      "category": "music",
+      "featured": true,
+      "timeline": [
+        {
+          "date": "2020-02-26",
+          "title": "First Draft Written",
+          "evidence": [
+            {
+              "url": null,
+              "type": "document",
+              "label": "Original lyric sheet (documentation pending)"
+            },
+            {
+              "url": "https://raw.githubusercontent.com/lesliegofficial/porfolioid/main/press/evidence/vals-demente_original-voice-memo_2020-02-26.m4a",
+              "type": "audio",
+              "label": "Original iPhone Voice Memo"
+            }
+          ],
+          "description": "Original lyrics and hook were written and recorded as an iPhone Voice Memo. The emotional core of the song was captured during its first writing session."
+        },
+        {
+          "notes": "This milestone intentionally represents a season rather than a single event.",
+          "title": "The Song Waited",
+          "dateRange": "2020–2026",
+          "description": "Although the first draft existed, the song remained unfinished for more than six years. During that time, life continued, perspective changed, and the meaning of the song evolved alongside its writer."
+        },
+        {
+          "date": "2026-06-17",
+          "title": "Song Completed",
+          "evidence": [
+            {
+              "url": "https://media.porfolioid.com/profiles/leslie-guerra/audio/vals-demente_audio.mp3",
+              "type": "audio",
+              "label": "Final produced demo"
+            },
+            {
+              "url": "https://media.porfolioid.com/profiles/leslie-guerra/covers/vals-demente_cover.jpg",
+              "type": "image",
+              "label": "Final album cover"
+            }
+          ],
+          "description": "The song was finally completed with a completely different emotional understanding than when it began. What started as a story about someone else's actions became a story about recognizing personal patterns and choosing healing."
+        }
+      ],
+      "aboutWork": "Vals Demente explores the emotional cycle of a relationship built on ego, manipulation, and repeated patterns. Rather than placing blame on one person, the song recognizes that both people continued dancing the same destructive dance until self-love finally became the way out.",
+      "heroImage": "https://media.porfolioid.com/profiles/leslie-guerra/covers/vals-demente_cover.jpg",
+      "pullQuote": {
+        "text": "Un vals demente.",
+        "translation": "A mad waltz."
+      },
+      "sortOrder": 1,
+      "aboutWorkEs": "Vals Demente explora el ciclo emocional de una relación construida sobre el ego, la manipulación y los patrones repetidos. En lugar de culpar a una sola persona, la canción reconoce que ambas personas continuaron bailando el mismo baile destructivo hasta que el amor propio finalmente se convirtió en la salida.",
+      "description": "A haunting dance between love, temptation, and the emotional cycles we struggle to escape.",
+      "inspiration": "A real relationship that repeated the same cycle of distance and return until self-love became the way out.",
+      "lastUpdated": "2026-06-17",
+      "screenplays": null,
+      "startedDate": "2020-02-26",
+      "releasedDate": null,
+      "completedDate": "2026-06-17",
+      "creativeNotes": "Recorded originally: iPhone Voice Memo. The title and chorus image — \"un seis cilindros con el motor caliente\" — came from picturing the relationship as a car running hot, going nowhere, just cycling in place.",
+      "descriptionEs": "Una canción sobre romper un ciclo, no solo terminar una relación.",
+      "inspirationEs": null,
+      "relatedPeople": [],
+      "archiveTagline": "A dance between desire and consequence.",
+      "relatedWorkIds": [
+        "yahweh-yo-te-pertenezco"
+      ],
+      "statusOverride": "unreleased",
+      "behindTheLyrics": [
+        {
+          "story": "That lyric came from a real experience.\n\nAt the time, I knew almost nothing about cars beyond driving them.\n\nAbout a month after paying off my Dodge Charger—my favorite car—my daughter was involved in an accident that totaled it.\n\nWhen I replaced it, I bought a newer Dodge Charger without realizing much about its performance features.\n\nOne winter day, while the car was stuck in the snow, I accidentally switched it into Sport mode.\n\nThe car couldn't move because it was trapped in the ice, but the engine suddenly roared to life.\n\nI had no idea what I had done.\n\nThe sound was intense.\n\nMy first thought was that if the car hadn't been stuck, I might have driven straight into my former employer's house.\n\nThat moment stayed with me.\n\nYears later, while writing Vals Demente, I remembered that engine—powerful, loud, unpredictable, and ready to launch before I was.\n\nIt became the perfect metaphor for the emotional intensity of the relationship.\n\nThat's where the lyric came from.\n\nSometimes the most unexpected moments become the lines people remember most.",
+          "excerpt": "Un seis cilindros con un motor caliente...",
+          "evidence": []
+        }
+      ],
+      "creativeNotesEs": null,
+      "relatedProjects": [],
+      "storyBehindWork": "I began writing \"Vals Demente\" on February 26, 2020.\n\nThe original lyrics and hook were captured that day in an iPhone voice memo, preserving the song's earliest form exactly as it first came to me.\n\nAt the time, I was trying to make sense of a relationship that felt like an endless cycle—love, distance, hope, disappointment, and beginning again.\n\nThe hook came almost immediately.\n\n“Un vals demente, un seis cilindros con un motor caliente...”\n\nThat single phrase captured everything I was feeling at the time.\n\nThe song itself, however, took much longer to reveal its final melody and form.\n\nAlthough the first draft captured exactly how I felt in that moment, I wasn't ready to finish it.\n\nSomething remained unresolved because, in many ways, I was still living the story I was trying to write.\n\nSo the song waited.\n\nYears passed.\n\nLife continued.\n\nI experienced new beginnings, painful endings, personal growth, and long periods of reflection.\n\nWithout realizing it, I was changing—and as I changed, so did the meaning of the song.\n\nWhen I returned to \"Vals Demente\" on June 17, 2026, I wasn't the same woman who had started writing it.\n\nI no longer heard it as a story about someone else's choices.\n\nI heard it as a story about my own.\n\nI realized the cycle wasn't only created by another person.\n\nIt continued because I kept returning to it, hoping that this time things would be different.\n\nThe song became less about heartbreak and more about awareness.\n\nFinishing it wasn't simply a creative milestone.\n\nIt was a personal one.\n\nFor the first time, I could see the dance for what it was—and choose to step out of it.\n\nThat's why \"Vals Demente\" isn't simply a breakup song.\n\nIt's a song about recognizing a pattern.\n\nIt's about reclaiming your voice.\n\nIt's about choosing yourself.\n\nAnd ultimately...\n\nit's about breaking the cycle.",
+      "storyBehindWorkEs": null
+    },
+    {
+      "id": "yahweh-yo-te-pertenezco",
+      "books": null,
+      "music": {
+        "bpm": null,
+        "key": null,
+        "genre": "Contemporary Christian / Worship",
+        "lyrics": "[Verse 1]\nPertenezco al sol en el cielo\nA la luna guiando mi anhelo\nA las estrellas brillando en su vuelo\nY a tu abrazo que sana mi miedo\n\n[Pre-Chorus]\nJuntos somos uno en verdad\nTú me elevas con tu claridad\nEn tu luz vuelvo a comenzar\nMi principio y mi final\n\n[Chorus]\nLlévame contigo Yahweh\nDonde tú camines estaré\nCada latido sabe por qué\nContigo vuelvo a nacer es\nYo te pertenezco, tu tu amor me sostiene\nComo el río al mar, mi alma te obedece\nYo te pertenezco, tu tu amor me sostiene\n¡Jah-we, ay-ye!\nEres lo que mi alma crece\n(¡Jah-we, ay-ye)\nEres lo que mi alma crece\n\n[Verse 2]\nPertenezco a los campos en flor\nDonde corre libre el corazón\nA la lluvia cantando en mi voz\nY al llamado que me das, Señor\nLas montañas me invitan a ir\nMas nunca estaré sin ti\nCada paso que doy por vivir\nTú me enseñas a seguir\n\n[Bridge]\nCuando el mundo se pone al revés\nTú me cuidas, tú me ves\nCuando llegue la noche a caer\nTú me abrazas otra vez\nSi mi fuerza comienza a ceder\nTú me elevas, tú mi fe\nCada paso que logro tener\nEres vida en mi ser\n\n[Chorus]\nYo te pertenezco, tu tu amor me sostiene\nComo el río al mar, mi alma te obedece\nYo te pertenezco, tu tu amor me sostiene\n¡Yah-weh ahí eh eh!\nEres lo que mi alma crece\n¡Yah-weh ahí eh eh!\nEres lo que mi alma crece\n\n[Outro]\n¡Ay-Yahweh!\n¡Ay-Yahweh!\nEres luz dentro de mí\n¡Ay-Yahweh!\n¡Ay-Yahweh!\nEres luz dentro de mí",
+        "duration": 213,
+        "lyricsEs": null,
+        "streamingLinks": {
+          "spotify": null,
+          "youtube": null,
+          "appleMusic": null,
+          "soundcloud": null
+        }
+      },
+      "title": "Yahweh, Yo Te Pertenezco",
+      "assets": [
+        {
+          "url": "https://media.porfolioid.com/profiles/leslie-guerra/covers/yahweh-yo-te-pertenezco_cover.jpg",
+          "date": "2026-06-17",
+          "role": "cover-art",
+          "type": "image",
+          "title": "Final Album Cover",
+          "featured": true,
+          "sortOrder": 1,
+          "description": "Lavender field at golden hour, reflective and worshipful tone."
+        },
+        {
+          "url": "https://media.porfolioid.com/profiles/leslie-guerra/audio/yahweh-yo-te-pertenezco_audio.mp3",
+          "date": "2026-05-06",
+          "role": "release",
+          "type": "audio",
+          "title": "Yahweh, Yo Te Pertenezco (Final)",
+          "featured": true,
+          "sortOrder": 1,
+          "description": "Final released version."
+        }
+      ],
+      "credits": [
+        {
+          "link": null,
+          "name": "Leslie Ann Guerra",
+          "role": "Writer & Performer",
+          "linkedCompanyId": null,
+          "linkedProfileId": null
+        }
+      ],
+      "visible": true,
+      "writing": null,
+      "category": "music",
+      "featured": true,
+      "timeline": [
+        {
+          "date": "2025-11-13",
+          "title": "The First Composition",
+          "evidence": [],
+          "description": "The original composition of “Yahweh, Yo Te Pertenezco” was written, capturing the first words of what would become a testimony of returning home."
+        },
+        {
+          "notes": "This milestone intentionally represents a season rather than a single event.",
+          "title": "Living the Song Before Finishing It",
+          "evidence": [],
+          "dateRange": "2025–2026",
+          "description": "The song continued to evolve as her relationship with God deepened. This chapter represents living the testimony before the work reached its final form."
+        },
+        {
+          "date": "2026-05-06",
+          "title": "Re-recorded & Completed",
+          "evidence": [
+            {
+              "url": "https://raw.githubusercontent.com/lesliegofficial/porfolioid/main/press/evidence/yahweh-yo-te-pertenezco_final-recording_2026-05-06.mp3",
+              "type": "file",
+              "label": "Final Recording (May 6, 2026)"
+            }
+          ],
+          "description": "The song was re-recorded and completed in its final version."
+        }
+      ],
+      "aboutWork": "Yahweh, Yo Te Pertenezco is a song about returning. Written after a season of quiet distance from God, it traces the journey from emptiness back to belonging — the courage it took to sit down outside a closed door, and the peace that followed once she realized she had never truly been left waiting. It is worship as testimony: not a song about becoming religious, but about coming home.",
+      "heroImage": "https://media.porfolioid.com/profiles/leslie-guerra/covers/yahweh-yo-te-pertenezco_cover.jpg",
+      "sortOrder": 2,
+      "aboutWorkEs": "Yahweh, Yo Te Pertenezco es la historia de un regreso — no uno triunfal, sino uno silencioso. Escrita después de una etapa en la que me sentí lejos de Dios, la canción refleja lo que significa volver a casa: dejar de huir, sentarse, orar, y descubrir que la puerta nunca estuvo realmente cerrada. Es una canción de pertenencia, escrita por alguien que alguna vez dudó si merecía pertenecer.",
+      "description": "A deeply personal prayer of surrender, belonging completely to God through every season of life.",
+      "inspiration": "The realization that belonging was never lost, only forgotten — and that everything in creation already belongs to the One who made it, the singer included.",
+      "lastUpdated": "2026-06-17",
+      "screenplays": null,
+      "startedDate": "2025-11-13",
+      "releasedDate": null,
+      "completedDate": "2026-05-06",
+      "creativeNotes": "Born from a season of quiet return rather than dramatic revelation — the song carries peace more than performance. Inspired by the image of a single open chair outside a closed church door, an invitation that never withdrew. Built in a South African Afro-house and gospel-leaning direction, with spiritual chanting, call-and-response choir, rhythmic claps, and a melodic hook in the spirit of “Jerusalema” — joy expressed as movement, not just declaration.",
+      "descriptionEs": "Una canción de adoración sobre pertenecer completamente a Dios.",
+      "inspirationEs": null,
+      "relatedPeople": [],
+      "archiveTagline": "A prayer written in surrender.",
+      "relatedWorkIds": [
+        "vals-demente"
+      ],
+      "statusOverride": "unreleased",
+      "behindTheLyrics": [
+        {
+          "story": "This is the line the whole song turns on. “Yo te pertenezco” doesn't mean losing who she is — it means finally discovering where her identity belonged all along. The line that follows makes the shape of it clear: “Como el río al mar, mi alma te obedece” — like the river to the sea. A river doesn't disappear when it reaches the ocean. It arrives at what it was always moving toward.",
+          "excerpt": "Yo te pertenezco, tu tu amor me sostiene"
+        }
+      ],
+      "creativeNotesEs": null,
+      "relatedProjects": [],
+      "storyBehindWork": "There was a time in my life when I knew about God, but I didn't truly know Him.\n\nThat season is hard to describe. It wasn't simple loneliness. It was a quiet emptiness — the feeling that something essential was missing, even while life went on around me.\n\nI often wondered why I felt disconnected.\n\nWhy I never quite felt whole.\n\nMore than anything, I carried the weight of feeling undeserving.\n\nEverything began to change in February 2024.\n\nGod has a way of reaching us through the people and moments we least expect. One unexpected lesson led me to the doorstep of a church one evening.\n\nThe church was closed.\n\nBut outside sat a single chair.\n\nThe curtains were open, almost as if the invitation remained even after the doors had been locked.\n\nSo I sat down. I prayed.\n\nThat night, I found my way back to God.\n\nIt took courage to return — not because I doubted Him, but because I wasn't sure I deserved to come back.\n\nThen I realized something beautiful.\n\nHe had never left. He had been waiting for me all along.\n\nFrom that night forward, my life began to change — not all at once, but deeply, quietly, and permanently.\n\nPeace slowly replaced fear. Purpose replaced confusion. Hope replaced emptiness. Healing replaced shame.\n\nOn November 13, 2025, at 10:00 AM, I wrote the first composition of “Yahweh, Yo Te Pertenezco.”\n\nThe title means “Yahweh, I Belong to You.” Those words carry everything I could never fully say in conversation.\n\nThis song is my thank you. It is my worship. It is my testimony.\n\nGod gave me the gift of music long before I understood why He had given it to me. Writing this song felt like returning that gift to its rightful place.\n\nEvery time I sing it, I remember the woman I used to be, and I thank God for the woman He has helped me become.\n\nThe song kept growing as my relationship with God deepened.\n\nOn May 6, 2026, at 8:44 PM, I re-recorded and completed it in its final form.\n\nIf Vals Demente tells the story of a heart trapped in unhealthy patterns, Yahweh, Yo Te Pertenezco tells the story of what happened after healing.\n\nIt is the sound of coming home.\n\nMy prayer is simple. That anyone who hears this song will know that no one is ever too far gone, too broken, or too undeserving to return to God.\n\nIf He was waiting for me, I believe He is waiting for you too.",
+      "storyBehindWorkEs": null
+    }
+  ],
   "awards": [
     {
       "org": "Polk State College",
@@ -1606,282 +1883,5 @@
   "heroImagePosition": 34,
   "sectionVisibility": {},
   "bookingAutoResponse": "Thank you for your inquiry. I will respond in less than 48 hours.",
-  "bookingAvailability": "selective",
-  "works": [
-    {
-      "id": "vals-demente",
-      "books": null,
-      "music": {
-        "bpm": null,
-        "key": null,
-        "genre": "Latin Pop",
-        "lyrics": "Verso 1\nSé que el amor se va como llega en un día,\ny según tú murió lo que por mí sentías.\nCuando me iba y en brazos de otro me veías,\nentonces tú volvías a tu cacería.\n\nCoro\nEs un sube y baja, un vals demente,\nun seis cilindros con el motor caliente,\nun ven y un vete, una danza imprudente...\ndonde pierdo al quererte.\n\nVerso 2\nVolvía a creer en cada promesa vacía,\nhaciéndome la vista gorda a lo que ya sabía.\nBajaba la guardia cada vez que sonreías,\ny otra vez, el mismo vals se repetía.\n\nCoro\nEs un sube y baja, un vals demente,\nun seis cilindros con el motor caliente,\nun ven y un vete, una danza imprudente...\ndonde pierdo al quererte.",
-        "duration": 146,
-        "lyricsEs": null,
-        "streamingLinks": {
-          "spotify": null,
-          "youtube": null,
-          "appleMusic": null,
-          "soundcloud": null
-        }
-      },
-      "title": "Vals Demente",
-      "assets": [
-        {
-          "url": "https://media.porfolioid.com/profiles/leslie-guerra/covers/vals-demente_cover.jpg",
-          "date": "2026-06-17",
-          "role": "cover-art",
-          "type": "image",
-          "title": "Final Album Cover",
-          "featured": true,
-          "sortOrder": 1,
-          "description": "Venetian mask concept representing the masks we wear in cycles of love and self-deception."
-        },
-        {
-          "url": "https://media.porfolioid.com/profiles/leslie-guerra/audio/vals-demente_audio.mp3",
-          "date": "2026-06-17",
-          "role": "release",
-          "type": "audio",
-          "title": "Vals Demente (Final)",
-          "featured": true,
-          "sortOrder": 1,
-          "description": "Final released version."
-        }
-      ],
-      "credits": [
-        {
-          "name": "Leslie Ann Guerra",
-          "role": "Writing"
-        },
-        {
-          "name": "Leslie Ann Guerra",
-          "role": "Lyrics"
-        },
-        {
-          "name": "Leslie Ann Guerra",
-          "role": "Original Melody"
-        },
-        {
-          "name": "Leslie Ann Guerra",
-          "role": "Inspired by Melody"
-        },
-        {
-          "name": "Suno AI",
-          "role": "Music Production"
-        },
-        {
-          "name": "Leslie Ann Guerra",
-          "role": "Creative Direction"
-        },
-        {
-          "name": "Leslie Ann Guerra",
-          "role": "Concept"
-        },
-        {
-          "name": "Leslie Ann Guerra",
-          "role": "Artwork Direction"
-        },
-        {
-          "name": "Leslie Ann Guerra",
-          "role": "Cover Artwork"
-        },
-        {
-          "name": "Leslie Ann Guerra",
-          "role": "Archive Documentation"
-        }
-      ],
-      "visible": true,
-      "writing": null,
-      "category": "music",
-      "featured": true,
-      "timeline": [
-        {
-          "date": "2020-02-26",
-          "title": "First Draft Written",
-          "evidence": [
-            {
-              "url": null,
-              "type": "document",
-              "label": "Original lyric sheet (documentation pending)"
-            },
-            {
-              "url": "https://raw.githubusercontent.com/lesliegofficial/porfolioid/main/press/evidence/vals-demente_original-voice-memo_2020-02-26.m4a",
-              "type": "audio",
-              "label": "Original iPhone Voice Memo"
-            }
-          ],
-          "description": "Original lyrics and hook were written and recorded as an iPhone Voice Memo. The emotional core of the song was captured during its first writing session."
-        },
-        {
-          "notes": "This milestone intentionally represents a season rather than a single event.",
-          "title": "The Song Waited",
-          "dateRange": "2020–2026",
-          "description": "Although the first draft existed, the song remained unfinished for more than six years. During that time, life continued, perspective changed, and the meaning of the song evolved alongside its writer."
-        },
-        {
-          "date": "2026-06-17",
-          "title": "Song Completed",
-          "evidence": [
-            {
-              "url": "https://media.porfolioid.com/profiles/leslie-guerra/audio/vals-demente_audio.mp3",
-              "type": "audio",
-              "label": "Final produced demo"
-            },
-            {
-              "url": "https://media.porfolioid.com/profiles/leslie-guerra/covers/vals-demente_cover.jpg",
-              "type": "image",
-              "label": "Final album cover"
-            }
-          ],
-          "description": "The song was finally completed with a completely different emotional understanding than when it began. What started as a story about someone else's actions became a story about recognizing personal patterns and choosing healing."
-        }
-      ],
-      "aboutWork": "Vals Demente explores the emotional cycle of a relationship built on ego, manipulation, and repeated patterns. Rather than placing blame on one person, the song recognizes that both people continued dancing the same destructive dance until self-love finally became the way out.",
-      "heroImage": "https://media.porfolioid.com/profiles/leslie-guerra/covers/vals-demente_cover.jpg",
-      "pullQuote": {
-        "text": "Un vals demente.",
-        "translation": "A mad waltz."
-      },
-      "sortOrder": 1,
-      "aboutWorkEs": "Vals Demente explora el ciclo emocional de una relación construida sobre el ego, la manipulación y los patrones repetidos. En lugar de culpar a una sola persona, la canción reconoce que ambas personas continuaron bailando el mismo baile destructivo hasta que el amor propio finalmente se convirtió en la salida.",
-      "description": "A haunting dance between love, temptation, and the emotional cycles we struggle to escape.",
-      "inspiration": "A real relationship that repeated the same cycle of distance and return until self-love became the way out.",
-      "lastUpdated": "2026-06-17",
-      "screenplays": null,
-      "startedDate": "2020-02-26",
-      "releasedDate": null,
-      "completedDate": "2026-06-17",
-      "creativeNotes": "Recorded originally: iPhone Voice Memo. The title and chorus image — \"un seis cilindros con el motor caliente\" — came from picturing the relationship as a car running hot, going nowhere, just cycling in place.",
-      "descriptionEs": "Una canción sobre romper un ciclo, no solo terminar una relación.",
-      "inspirationEs": null,
-      "relatedPeople": [],
-      "archiveTagline": "A dance between desire and consequence.",
-      "relatedWorkIds": [
-        "yahweh-yo-te-pertenezco"
-      ],
-      "statusOverride": "unreleased",
-      "behindTheLyrics": [
-        {
-          "story": "That lyric came from a real experience.\n\nAt the time, I knew almost nothing about cars beyond driving them.\n\nAbout a month after paying off my Dodge Charger—my favorite car—my daughter was involved in an accident that totaled it.\n\nWhen I replaced it, I bought a newer Dodge Charger without realizing much about its performance features.\n\nOne winter day, while the car was stuck in the snow, I accidentally switched it into Sport mode.\n\nThe car couldn't move because it was trapped in the ice, but the engine suddenly roared to life.\n\nI had no idea what I had done.\n\nThe sound was intense.\n\nMy first thought was that if the car hadn't been stuck, I might have driven straight into my former employer's house.\n\nThat moment stayed with me.\n\nYears later, while writing Vals Demente, I remembered that engine—powerful, loud, unpredictable, and ready to launch before I was.\n\nIt became the perfect metaphor for the emotional intensity of the relationship.\n\nThat's where the lyric came from.\n\nSometimes the most unexpected moments become the lines people remember most.",
-          "excerpt": "Un seis cilindros con un motor caliente...",
-          "evidence": []
-        }
-      ],
-      "creativeNotesEs": null,
-      "relatedProjects": [],
-      "storyBehindWork": "I began writing \"Vals Demente\" on February 26, 2020.\n\nThe original lyrics and hook were captured that day in an iPhone voice memo, preserving the song's earliest form exactly as it first came to me.\n\nAt the time, I was trying to make sense of a relationship that felt like an endless cycle—love, distance, hope, disappointment, and beginning again.\n\nThe hook came almost immediately.\n\n“Un vals demente, un seis cilindros con un motor caliente...”\n\nThat single phrase captured everything I was feeling at the time.\n\nThe song itself, however, took much longer to reveal its final melody and form.\n\nAlthough the first draft captured exactly how I felt in that moment, I wasn't ready to finish it.\n\nSomething remained unresolved because, in many ways, I was still living the story I was trying to write.\n\nSo the song waited.\n\nYears passed.\n\nLife continued.\n\nI experienced new beginnings, painful endings, personal growth, and long periods of reflection.\n\nWithout realizing it, I was changing—and as I changed, so did the meaning of the song.\n\nWhen I returned to \"Vals Demente\" on June 17, 2026, I wasn't the same woman who had started writing it.\n\nI no longer heard it as a story about someone else's choices.\n\nI heard it as a story about my own.\n\nI realized the cycle wasn't only created by another person.\n\nIt continued because I kept returning to it, hoping that this time things would be different.\n\nThe song became less about heartbreak and more about awareness.\n\nFinishing it wasn't simply a creative milestone.\n\nIt was a personal one.\n\nFor the first time, I could see the dance for what it was—and choose to step out of it.\n\nThat's why \"Vals Demente\" isn't simply a breakup song.\n\nIt's a song about recognizing a pattern.\n\nIt's about reclaiming your voice.\n\nIt's about choosing yourself.\n\nAnd ultimately...\n\nit's about breaking the cycle.",
-      "storyBehindWorkEs": null
-    },
-    {
-      "id": "yahweh-yo-te-pertenezco",
-      "books": null,
-      "music": {
-        "bpm": null,
-        "key": null,
-        "genre": "Contemporary Christian / Worship",
-        "lyrics": "[Verse 1]\nPertenezco al sol en el cielo\nA la luna guiando mi anhelo\nA las estrellas brillando en su vuelo\nY a tu abrazo que sana mi miedo\n\n[Pre-Chorus]\nJuntos somos uno en verdad\nTú me elevas con tu claridad\nEn tu luz vuelvo a comenzar\nMi principio y mi final\n\n[Chorus]\nLlévame contigo Yahweh\nDonde tú camines estaré\nCada latido sabe por qué\nContigo vuelvo a nacer es\nYo te pertenezco, tu tu amor me sostiene\nComo el río al mar, mi alma te obedece\nYo te pertenezco, tu tu amor me sostiene\n¡Jah-we, ay-ye!\nEres lo que mi alma crece\n(¡Jah-we, ay-ye)\nEres lo que mi alma crece\n\n[Verse 2]\nPertenezco a los campos en flor\nDonde corre libre el corazón\nA la lluvia cantando en mi voz\nY al llamado que me das, Señor\nLas montañas me invitan a ir\nMas nunca estaré sin ti\nCada paso que doy por vivir\nTú me enseñas a seguir\n\n[Bridge]\nCuando el mundo se pone al revés\nTú me cuidas, tú me ves\nCuando llegue la noche a caer\nTú me abrazas otra vez\nSi mi fuerza comienza a ceder\nTú me elevas, tú mi fe\nCada paso que logro tener\nEres vida en mi ser\n\n[Chorus]\nYo te pertenezco, tu tu amor me sostiene\nComo el río al mar, mi alma te obedece\nYo te pertenezco, tu tu amor me sostiene\n¡Yah-weh ahí eh eh!\nEres lo que mi alma crece\n¡Yah-weh ahí eh eh!\nEres lo que mi alma crece\n\n[Outro]\n¡Ay-Yahweh!\n¡Ay-Yahweh!\nEres luz dentro de mí\n¡Ay-Yahweh!\n¡Ay-Yahweh!\nEres luz dentro de mí",
-        "duration": 213,
-        "lyricsEs": null,
-        "streamingLinks": {
-          "spotify": null,
-          "youtube": null,
-          "appleMusic": null,
-          "soundcloud": null
-        }
-      },
-      "title": "Yahweh, Yo Te Pertenezco",
-      "assets": [
-        {
-          "url": "https://media.porfolioid.com/profiles/leslie-guerra/covers/yahweh-yo-te-pertenezco_cover.jpg",
-          "date": "2026-06-17",
-          "role": "cover-art",
-          "type": "image",
-          "title": "Final Album Cover",
-          "featured": true,
-          "sortOrder": 1,
-          "description": "Lavender field at golden hour, reflective and worshipful tone."
-        },
-        {
-          "url": "https://media.porfolioid.com/profiles/leslie-guerra/audio/yahweh-yo-te-pertenezco_audio.mp3",
-          "date": "2026-05-06",
-          "role": "release",
-          "type": "audio",
-          "title": "Yahweh, Yo Te Pertenezco (Final)",
-          "featured": true,
-          "sortOrder": 1,
-          "description": "Final released version."
-        }
-      ],
-      "credits": [
-        {
-          "link": null,
-          "name": "Leslie Ann Guerra",
-          "role": "Writer & Performer",
-          "linkedCompanyId": null,
-          "linkedProfileId": null
-        }
-      ],
-      "visible": true,
-      "writing": null,
-      "category": "music",
-      "featured": true,
-      "timeline": [
-        {
-          "date": "2025-11-13",
-          "title": "The First Composition",
-          "evidence": [],
-          "description": "The original composition of “Yahweh, Yo Te Pertenezco” was written, capturing the first words of what would become a testimony of returning home."
-        },
-        {
-          "notes": "This milestone intentionally represents a season rather than a single event.",
-          "title": "Living the Song Before Finishing It",
-          "evidence": [],
-          "dateRange": "2025–2026",
-          "description": "The song continued to evolve as her relationship with God deepened. This chapter represents living the testimony before the work reached its final form."
-        },
-        {
-          "date": "2026-05-06",
-          "title": "Re-recorded & Completed",
-          "evidence": [
-            {
-              "url": "https://raw.githubusercontent.com/lesliegofficial/porfolioid/main/press/evidence/yahweh-yo-te-pertenezco_final-recording_2026-05-06.mp3",
-              "type": "file",
-              "label": "Final Recording (May 6, 2026)"
-            }
-          ],
-          "description": "The song was re-recorded and completed in its final version."
-        }
-      ],
-      "aboutWork": "Yahweh, Yo Te Pertenezco is a song about returning. Written after a season of quiet distance from God, it traces the journey from emptiness back to belonging — the courage it took to sit down outside a closed door, and the peace that followed once she realized she had never truly been left waiting. It is worship as testimony: not a song about becoming religious, but about coming home.",
-      "heroImage": "https://media.porfolioid.com/profiles/leslie-guerra/covers/yahweh-yo-te-pertenezco_cover.jpg",
-      "sortOrder": 2,
-      "aboutWorkEs": "Yahweh, Yo Te Pertenezco es la historia de un regreso — no uno triunfal, sino uno silencioso. Escrita después de una etapa en la que me sentí lejos de Dios, la canción refleja lo que significa volver a casa: dejar de huir, sentarse, orar, y descubrir que la puerta nunca estuvo realmente cerrada. Es una canción de pertenencia, escrita por alguien que alguna vez dudó si merecía pertenecer.",
-      "description": "A deeply personal prayer of surrender, belonging completely to God through every season of life.",
-      "inspiration": "The realization that belonging was never lost, only forgotten — and that everything in creation already belongs to the One who made it, the singer included.",
-      "lastUpdated": "2026-06-17",
-      "screenplays": null,
-      "startedDate": "2025-11-13",
-      "releasedDate": null,
-      "completedDate": "2026-05-06",
-      "creativeNotes": "Born from a season of quiet return rather than dramatic revelation — the song carries peace more than performance. Inspired by the image of a single open chair outside a closed church door, an invitation that never withdrew. Built in a South African Afro-house and gospel-leaning direction, with spiritual chanting, call-and-response choir, rhythmic claps, and a melodic hook in the spirit of “Jerusalema” — joy expressed as movement, not just declaration.",
-      "descriptionEs": "Una canción de adoración sobre pertenecer completamente a Dios.",
-      "inspirationEs": null,
-      "relatedPeople": [],
-      "archiveTagline": "A prayer written in surrender.",
-      "relatedWorkIds": [
-        "vals-demente"
-      ],
-      "statusOverride": "unreleased",
-      "behindTheLyrics": [
-        {
-          "story": "This is the line the whole song turns on. “Yo te pertenezco” doesn't mean losing who she is — it means finally discovering where her identity belonged all along. The line that follows makes the shape of it clear: “Como el río al mar, mi alma te obedece” — like the river to the sea. A river doesn't disappear when it reaches the ocean. It arrives at what it was always moving toward.",
-          "excerpt": "Yo te pertenezco, tu tu amor me sostiene"
-        }
-      ],
-      "creativeNotesEs": null,
-      "relatedProjects": [],
-      "storyBehindWork": "There was a time in my life when I knew about God, but I didn't truly know Him.\n\nThat season is hard to describe. It wasn't simple loneliness. It was a quiet emptiness — the feeling that something essential was missing, even while life went on around me.\n\nI often wondered why I felt disconnected.\n\nWhy I never quite felt whole.\n\nMore than anything, I carried the weight of feeling undeserving.\n\nEverything began to change in February 2024.\n\nGod has a way of reaching us through the people and moments we least expect. One unexpected lesson led me to the doorstep of a church one evening.\n\nThe church was closed.\n\nBut outside sat a single chair.\n\nThe curtains were open, almost as if the invitation remained even after the doors had been locked.\n\nSo I sat down. I prayed.\n\nThat night, I found my way back to God.\n\nIt took courage to return — not because I doubted Him, but because I wasn't sure I deserved to come back.\n\nThen I realized something beautiful.\n\nHe had never left. He had been waiting for me all along.\n\nFrom that night forward, my life began to change — not all at once, but deeply, quietly, and permanently.\n\nPeace slowly replaced fear. Purpose replaced confusion. Hope replaced emptiness. Healing replaced shame.\n\nOn November 13, 2025, at 10:00 AM, I wrote the first composition of “Yahweh, Yo Te Pertenezco.”\n\nThe title means “Yahweh, I Belong to You.” Those words carry everything I could never fully say in conversation.\n\nThis song is my thank you. It is my worship. It is my testimony.\n\nGod gave me the gift of music long before I understood why He had given it to me. Writing this song felt like returning that gift to its rightful place.\n\nEvery time I sing it, I remember the woman I used to be, and I thank God for the woman He has helped me become.\n\nThe song kept growing as my relationship with God deepened.\n\nOn May 6, 2026, at 8:44 PM, I re-recorded and completed it in its final form.\n\nIf Vals Demente tells the story of a heart trapped in unhealthy patterns, Yahweh, Yo Te Pertenezco tells the story of what happened after healing.\n\nIt is the sound of coming home.\n\nMy prayer is simple. That anyone who hears this song will know that no one is ever too far gone, too broken, or too undeserving to return to God.\n\nIf He was waiting for me, I believe He is waiting for you too.",
-      "storyBehindWorkEs": null
-    }
-  ]
+  "bookingAvailability": "selective"
 }
