@@ -379,16 +379,16 @@ exports.handler = async (event) => {
             }
           } catch(e) { console.error('Tracks protection failed:', e); }
         }
-        // Protect photos, awards, assets from partial/accidental empty saves.
+        // Protect photos, awards, assets, works from partial/accidental empty saves.
         // Narrow exception: a caller can explicitly confirm an empty array is
         // intentional (not an accidental/crashed save) by including the field
         // name in data.intentionallyEmpty. This is opt-in only — a normal save
-        // with no such flag behaves exactly as before for all three fields,
+        // with no such flag behaves exactly as before for all four fields,
         // including photos and awards. Added specifically to allow a one-time,
         // deliberate cleanup of the assets array without weakening the
         // existing protection for photos or awards.
         const intentionallyEmpty = Array.isArray(data.intentionallyEmpty) ? data.intentionallyEmpty : [];
-        for (const field of ['photos', 'awards', 'assets']) {
+        for (const field of ['photos', 'awards', 'assets', 'works']) {
           if (intentionallyEmpty.includes(field)) continue;
           if (!safeData[field] || safeData[field].length === 0) {
             try {
