@@ -8,16 +8,16 @@
   "bioES": "Sus créditos artísticos incluyen giras como vocalista de apoyo junto a los íconos del reggaetón Don Omar (2006–2015) y J Álvarez (2015–2020), presentándose ante audiencias en Estados Unidos, América Latina y Europa. También aparece en el lanzamiento en vivo King of Kings: En Directo, grabado durante la gira mundial King of Kings World Tour de Don Omar y publicado por Machete Music.\n\nGuerra inició su carrera discográfica como integrante de Las Nenas del Swing, participando en producciones y grabaciones como Rompe Corazones, Chicle Bomba, Desearía y Me Faltas Tú. A lo largo de su trayectoria en giras y espectáculos, también participó en producciones que incluyeron artistas como Wisin & Yandel, Arcángel, Daddy Yankee, Natti Natasha y Melina León.\n\nMás allá de los escenarios, Guerra ha ocupado posiciones de liderazgo, coordinación y operaciones dentro de la industria del entretenimiento. Se desempeñó como Coordinadora de A&R en Sony Music Latin, brindando apoyo a operaciones ejecutivas de A&R e iniciativas de desarrollo artístico. También coordinó operaciones artísticas y de manejo para Orfanato Music Group y Arrow Management, gestionó logística artística para Adam Torres Concerts y lideró iniciativas de mercadeo y relaciones públicas a través de NV Marketing & Public Relations.\n\nActualmente, Guerra combina su experiencia en interpretación, desarrollo artístico, operaciones, mercadeo y estrategia empresarial a través de proyectos creativos y empresariales, incluyendo PorfolioID, una plataforma profesional diseñada para ayudar a artistas, creadores y profesionales a presentar su trayectoria, logros y portafolio de manera moderna y organizada.",
   "stats": [
     {
-      "number": "25+",
-      "label": "Years Active"
+      "label": "Years Active",
+      "number": "25+"
     },
     {
-      "number": "500+",
-      "label": "Live Shows"
+      "label": "Live Shows",
+      "number": "500+"
     },
     {
-      "number": "5",
-      "label": "Continents"
+      "label": "Continents",
+      "number": "5"
     }
   ],
   "works": [
@@ -295,6 +295,21 @@
       "relatedProjects": [],
       "storyBehindWork": "There was a time in my life when I knew about God, but I didn't truly know Him.\n\nThat season is hard to describe. It wasn't simple loneliness. It was a quiet emptiness — the feeling that something essential was missing, even while life went on around me.\n\nI often wondered why I felt disconnected.\n\nWhy I never quite felt whole.\n\nMore than anything, I carried the weight of feeling undeserving.\n\nEverything began to change in February 2024.\n\nGod has a way of reaching us through the people and moments we least expect. One unexpected lesson led me to the doorstep of a church one evening.\n\nThe church was closed.\n\nBut outside sat a single chair.\n\nThe curtains were open, almost as if the invitation remained even after the doors had been locked.\n\nSo I sat down. I prayed.\n\nThat night, I found my way back to God.\n\nIt took courage to return — not because I doubted Him, but because I wasn't sure I deserved to come back.\n\nThen I realized something beautiful.\n\nHe had never left. He had been waiting for me all along.\n\nFrom that night forward, my life began to change — not all at once, but deeply, quietly, and permanently.\n\nPeace slowly replaced fear. Purpose replaced confusion. Hope replaced emptiness. Healing replaced shame.\n\nOn November 13, 2025, at 10:00 AM, I wrote the first composition of “Yahweh, Yo Te Pertenezco.”\n\nThe title means “Yahweh, I Belong to You.” Those words carry everything I could never fully say in conversation.\n\nThis song is my thank you. It is my worship. It is my testimony.\n\nGod gave me the gift of music long before I understood why He had given it to me. Writing this song felt like returning that gift to its rightful place.\n\nEvery time I sing it, I remember the woman I used to be, and I thank God for the woman He has helped me become.\n\nThe song kept growing as my relationship with God deepened.\n\nOn May 6, 2026, at 8:44 PM, I re-recorded and completed it in its final form.\n\nIf Vals Demente tells the story of a heart trapped in unhealthy patterns, Yahweh, Yo Te Pertenezco tells the story of what happened after healing.\n\nIt is the sound of coming home.\n\nMy prayer is simple. That anyone who hears this song will know that no one is ever too far gone, too broken, or too undeserving to return to God.\n\nIf He was waiting for me, I believe He is waiting for you too.",
       "storyBehindWorkEs": null
+    },
+    {
+      "id": "qa-disposable-test-work",
+      "title": "QA DISPOSABLE TEST WORK - SAFE TO DELETE",
+      "description": "Temporary entry created for PI-013B verification. Will be deleted immediately.",
+      "category": "test",
+      "music": {
+        "genre": "QA Test"
+      },
+      "heroImage": "",
+      "statusOverride": "private",
+      "visible": false,
+      "featured": false,
+      "assets": [],
+      "sortOrder": 99
     }
   ],
   "photos": [
@@ -1591,6 +1606,7 @@
   ],
   "socials": {
     "tidal": "",
+    "amazon": "Check out this page from leslieaguerra https://a.co/d/00BFRnk5",
     "tiktok": "https://media.porfolioid.com/profiles/leslie-guerra/icons/icons/tiktok-icon-nobg.jpg",
     "spotify": "https://open.spotify.com/user/e62qg132bv862sjyfwor3iaq1?si=QzzPJ-q9SjmPfkkhWv9gIA",
     "website": [],
@@ -1611,8 +1627,7 @@
     "spotify_followers": "",
     "youtube_followers": "",
     "linkedin_followers": "",
-    "instagram_followers": "",
-    "amazon": "Check out this page from leslieaguerra https://a.co/d/00BFRnk5"
+    "instagram_followers": ""
   },
   "bioImage": "https://media.porfolioid.com/profiles/leslie-guerra/photos/leslie-guerra_leslie-ann-guerra-bio-picture-3_v1_20260727.png",
   "location": "Florida, USA",
