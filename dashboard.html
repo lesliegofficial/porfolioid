@@ -105,6 +105,9 @@
       <button class="nav-item" onclick="showPanel('music')">
         <span class="nav-item-icon">🎵</span><span>Music</span>
       </button>
+      <button class="nav-item" onclick="showPanel('works')">
+        <span class="nav-item-icon">✦</span><span>Works</span>
+      </button>
       <button class="nav-item" onclick="showPanel('awards')">
         <span class="nav-item-icon">🏅</span><span>Awards</span>
       </button>
@@ -856,6 +859,94 @@
         <div class="form-actions">
           <button class="btn-save" onclick="addTrack()">Add Track</button>
           <button class="btn-cancel" onclick="toggleAddForm('addTrackForm')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKS PANEL -->
+    <div class="panel" id="panel-works">
+      <button onclick="showPanel('hero')" style="display:inline-flex;align-items:center;gap:0.4rem;background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);padding:0;margin-bottom:1rem;transition:color 0.2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gray)'">← Back to Career Profile</button>
+      <h1 class="panel-title">Works</h1>
+      <p class="panel-sub">Original creative works — songs, stories, or projects that became something more than a page. Shown as "Original Works" on your public portfolio.</p>
+      <p style="font-family:var(--font-mono);font-size:0.65rem;color:var(--gray);margin-top:-0.5rem;margin-bottom:1.5rem">Note: this covers the core fields shown on your public Works cards (title, description, cover image, release audio, genre, status). Deeper story content — timeline, credits, behind-the-lyrics — isn't editable here yet and is preserved exactly as-is when you save.</p>
+
+      <div class="cards-list" id="worksList"></div>
+
+      <button class="btn-add-new" onclick="toggleAddForm('addWorkForm')">+ Add Work</button>
+
+      <div class="add-form" id="addWorkForm">
+        <button onclick="toggleAddForm('addWorkForm')" style="display:inline-flex;align-items:center;gap:0.4rem;background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);padding:0;margin-bottom:1rem;transition:color 0.2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gray)'">← Back to Works</button>
+        <div class="add-form-title">New Work</div>
+
+        <div class="field-group">
+          <label class="field-label">Title</label>
+          <input type="text" id="newWorkTitle" placeholder="e.g. Vals Demente">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Description</label>
+          <textarea id="newWorkDesc" placeholder="A short line shown on the card." rows="2"></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Category</label>
+            <input type="text" id="newWorkCategory" placeholder="e.g. music" value="music">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Genre</label>
+            <input type="text" id="newWorkGenre" placeholder="e.g. Latin Pop">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Status</label>
+          <select id="newWorkStatus">
+            <option value="">— Auto (based on dates) —</option>
+            <option value="unreleased">Unreleased</option>
+            <option value="coming-soon">Coming Soon</option>
+            <option value="in-revision">In Revision</option>
+            <option value="on-hold">On Hold</option>
+            <option value="archived">Archived</option>
+            <option value="private">Private</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Cover Image</label>
+          <div id="newWorkImagePreviewWrap" style="margin-bottom:0.5rem">
+            <div id="newWorkImagePreviewEmpty" style="width:120px;height:120px;background:var(--dark-3);border:1px solid rgba(201,168,76,0.15);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);text-align:center;padding:0.5rem">No cover uploaded</div>
+            <img id="newWorkImagePreviewImg" src="" alt="Cover preview" style="display:none;width:120px;height:120px;object-fit:cover;border:1px solid rgba(201,168,76,0.3)">
+          </div>
+          <input type="url" id="newWorkImageUrl" placeholder="https://... or upload below" oninput="updateWorkImagePreview(this.value)">
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;align-items:center;flex-wrap:wrap">
+            <button class="btn-add" onclick="triggerWorkImageUpload()">↑ Upload Cover</button>
+          </div>
+          <input type="file" id="newWorkImageFile" accept="image/*" style="display:none">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Release Audio (MP3)</label>
+          <div id="newWorkAudioStatus" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--gray);margin-bottom:0.5rem">No audio uploaded</div>
+          <input type="url" id="newWorkAudioUrl" placeholder="https://... or upload below" style="display:none">
+          <button class="btn-add" onclick="triggerWorkAudioUpload()">↑ Upload MP3</button>
+          <input type="file" id="newWorkAudioFile" accept="audio/*" style="display:none">
+        </div>
+
+        <div class="field-row">
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="newWorkVisible" checked>
+            <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--gray)">Visible on public portfolio</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+            <input type="checkbox" id="newWorkFeatured">
+            <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--gray)">Featured</span>
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-save" onclick="addWork()">Add Work</button>
+          <button class="btn-cancel" onclick="toggleAddForm('addWorkForm')">Cancel</button>
         </div>
       </div>
     </div>

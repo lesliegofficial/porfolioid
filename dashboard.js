@@ -695,6 +695,8 @@ function loadAllFields() {
   renderCredits();
   // Music
   renderTracks();
+  // Works
+  renderWorks();
   // Videos
   renderVideos();
   // Photos
@@ -1981,6 +1983,211 @@ function addTrack() {
   renderTracks(); persistUser(); showSaveBanner();
 }
 function removeTrack(i) { epk.tracks.splice(i, 1); renderTracks(); persistUser(); showSaveBanner(); }
+
+// WORKS
+// Deliberately scoped to the fields the public Works grid card actually
+// renders (title, description, category, music.genre, heroImage,
+// statusOverride, visible, featured, one "release" audio asset). The
+// richer per-work archive fields (timeline, credits, behindTheLyrics,
+// storyBehindWork, pullQuote, bilingual long-form text, relatedWorkIds)
+// belong to a separate archive-page renderer and are NOT exposed here.
+// Every save merges into the existing work object (spread + override),
+// so all of that untouched content is preserved exactly as-is.
+let editingWorkIdx = -1;
+
+function renderWorks() {
+  const container = document.getElementById('worksList');
+  if (!container) return;
+  container.innerHTML = '';
+  const works = epk.works || [];
+  works.forEach((w, i) => {
+    const badges = [
+      w.featured ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.15rem 0.5rem;letter-spacing:0.1em">FEATURED</span>' : '',
+      w.visible === false ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(255,100,100,0.1);color:#ff6b6b;padding:0.15rem 0.5rem;letter-spacing:0.1em">HIDDEN</span>' : '',
+      w.statusOverride ? `<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.08);color:var(--gray);padding:0.15rem 0.5rem;letter-spacing:0.1em">${w.statusOverride}</span>` : '',
+    ].filter(Boolean).join(' ');
+    const hasAudio = (w.assets || []).some(a => a.type === 'audio');
+    container.innerHTML += `
+      <div class="editable-card" style="${w.visible===false?'opacity:0.5':''}">
+        <div class="editable-card-header">
+          <div style="display:flex;flex-direction:column;gap:0.2rem;margin-right:0.75rem">
+            <button class="btn-card-action" onclick="moveWork(${i},-1)" ${i===0?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▲</button>
+            <button class="btn-card-action" onclick="moveWork(${i},1)" ${i===(works.length-1)?'disabled':''} style="padding:0.15rem 0.4rem;font-size:0.65rem;line-height:1">▼</button>
+          </div>
+          ${w.heroImage ? `<img src="${w.heroImage}" alt="" style="width:48px;height:48px;object-fit:cover;flex-shrink:0;border:1px solid rgba(201,168,76,0.2);margin-right:0.5rem" onerror="this.style.display='none'">` : ''}
+          <div style="flex:1">
+            ${badges ? `<div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.3rem">${badges}</div>` : ''}
+            <div class="editable-card-title">${w.title || ''}</div>
+            <div class="editable-card-subtitle">${w.category || ''}${w.music?.genre ? ' · ' + w.music.genre : ''}${hasAudio ? ' · audio attached' : ' · no audio yet'}</div>
+            ${w.description ? `<div style="font-size:0.85rem;color:var(--gray);margin-top:0.3rem">${w.description}</div>` : ''}
+          </div>
+          <div class="card-actions">
+            <button class="btn-card-action" onclick="editWork(${i})">Edit</button>
+            <button class="btn-card-action btn-card-delete" onclick="removeWork(${i})">Delete</button>
+          </div>
+        </div>
+      </div>`;
+  });
+}
+
+function updateWorkImagePreview(url) {
+  const img = document.getElementById('newWorkImagePreviewImg');
+  const empty = document.getElementById('newWorkImagePreviewEmpty');
+  if (!img || !empty) return;
+  if (url) { img.src = url; img.style.display = 'block'; empty.style.display = 'none'; }
+  else { img.src = ''; img.style.display = 'none'; empty.style.display = 'flex'; }
+}
+
+function triggerWorkImageUpload() {
+  const input = document.getElementById('newWorkImageFile');
+  if (!input) return;
+  input.value = '';
+  input.click();
+  input.onchange = async function() {
+    const file = input.files[0];
+    if (!file) return;
+    const btn = document.querySelector('[onclick="triggerWorkImageUpload()"]');
+    const originalText = btn ? btn.textContent : '↑ Upload Cover';
+    if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+    await uploadToR2(file, 'photos',
+      (url) => {
+        document.getElementById('newWorkImageUrl').value = url;
+        updateWorkImagePreview(url);
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      },
+      (err) => showUploadError(btn, originalText, err)
+    );
+  };
+}
+
+function triggerWorkAudioUpload() {
+  const input = document.getElementById('newWorkAudioFile');
+  if (!input) return;
+  input.value = '';
+  input.click();
+  input.onchange = async function() {
+    const file = input.files[0];
+    if (!file) return;
+    const btn = document.querySelector('[onclick="triggerWorkAudioUpload()"]');
+    const originalText = btn ? btn.textContent : '↑ Upload MP3';
+    const statusEl = document.getElementById('newWorkAudioStatus');
+    if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+    if (statusEl) statusEl.textContent = 'Uploading...';
+    await uploadToR2(file, 'audio',
+      (url) => {
+        document.getElementById('newWorkAudioUrl').value = url;
+        if (statusEl) statusEl.textContent = '✓ Uploaded: ' + file.name;
+        if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
+      },
+      (err) => { if (statusEl) statusEl.textContent = '✗ Upload failed'; showUploadError(btn, originalText, err); }
+    );
+  };
+}
+
+function editWork(i) {
+  editingWorkIdx = i;
+  const w = epk.works[i];
+  document.getElementById('newWorkTitle').value = w.title || '';
+  document.getElementById('newWorkDesc').value = w.description || '';
+  document.getElementById('newWorkCategory').value = w.category || 'music';
+  document.getElementById('newWorkGenre').value = (w.music && w.music.genre) || '';
+  document.getElementById('newWorkStatus').value = w.statusOverride || '';
+  document.getElementById('newWorkImageUrl').value = w.heroImage || '';
+  updateWorkImagePreview(w.heroImage || '');
+  const audioAsset = (w.assets || []).find(a => a.type === 'audio' && a.role === 'release') || (w.assets || []).find(a => a.type === 'audio');
+  document.getElementById('newWorkAudioUrl').value = audioAsset ? audioAsset.url : '';
+  document.getElementById('newWorkAudioStatus').textContent = audioAsset ? '✓ Audio attached (upload to replace)' : 'No audio uploaded';
+  document.getElementById('newWorkVisible').checked = w.visible !== false;
+  document.getElementById('newWorkFeatured').checked = w.featured || false;
+  document.getElementById('addWorkForm').classList.add('open');
+  document.getElementById('addWorkForm').scrollIntoView({ behavior: 'smooth' });
+  document.querySelector('#addWorkForm .add-form-title').textContent = 'Edit Work';
+}
+
+function addWork() {
+  const title = document.getElementById('newWorkTitle').value.trim();
+  const description = document.getElementById('newWorkDesc').value.trim();
+  const category = document.getElementById('newWorkCategory').value.trim() || 'music';
+  const genre = document.getElementById('newWorkGenre').value.trim();
+  const statusOverride = document.getElementById('newWorkStatus').value;
+  const heroImage = document.getElementById('newWorkImageUrl').value.trim();
+  const audioUrl = document.getElementById('newWorkAudioUrl').value.trim();
+  const visible = document.getElementById('newWorkVisible').checked;
+  const featured = document.getElementById('newWorkFeatured').checked;
+  if (!title) return;
+  epk.works = epk.works || [];
+
+  const existing = editingWorkIdx >= 0 ? epk.works[editingWorkIdx] : null;
+
+  // Merge music.genre without wiping other music fields (bpm, key, lyrics, etc.)
+  const music = { ...(existing && existing.music ? existing.music : {}), genre };
+
+  // Merge the release audio asset into the existing assets array without
+  // touching any other assets entries (e.g. cover-art).
+  let assets = existing && Array.isArray(existing.assets) ? [...existing.assets] : [];
+  if (audioUrl) {
+    const idx = assets.findIndex(a => a.type === 'audio' && a.role === 'release');
+    const audioEntry = {
+      url: audioUrl,
+      type: 'audio',
+      role: 'release',
+      title: (existing && idx >= 0 && assets[idx].title) || `${title} (Final)`,
+      date: (existing && idx >= 0 && assets[idx].date) || new Date().toISOString().slice(0, 10),
+      featured: true,
+      sortOrder: 1,
+      description: (existing && idx >= 0 && assets[idx].description) || '',
+    };
+    if (idx >= 0) assets[idx] = { ...assets[idx], url: audioUrl };
+    else assets.push(audioEntry);
+  }
+
+  const workData = { title, description, category, music, heroImage, statusOverride, visible, featured, assets };
+
+  if (editingWorkIdx >= 0) {
+    // Spread existing first so untouched fields (timeline, credits,
+    // behindTheLyrics, storyBehindWork, pullQuote, bilingual text,
+    // relatedWorkIds, id, sortOrder, etc.) are preserved exactly.
+    epk.works[editingWorkIdx] = { ...epk.works[editingWorkIdx], ...workData };
+    editingWorkIdx = -1;
+    document.querySelector('#addWorkForm .add-form-title').textContent = 'New Work';
+  } else {
+    const maxSort = epk.works.reduce((max, w) => Math.max(max, w.sortOrder || 0), 0);
+    epk.works.push({
+      ...workData,
+      id: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `work-${Date.now()}`,
+      sortOrder: maxSort + 1,
+    });
+  }
+
+  ['newWorkTitle','newWorkDesc','newWorkCategory','newWorkGenre','newWorkImageUrl','newWorkAudioUrl'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('newWorkStatus').value = '';
+  document.getElementById('newWorkVisible').checked = true;
+  document.getElementById('newWorkFeatured').checked = false;
+  updateWorkImagePreview('');
+  document.getElementById('newWorkAudioStatus').textContent = 'No audio uploaded';
+  toggleAddForm('addWorkForm');
+  renderWorks(); persistUser(); showSaveBanner();
+}
+
+function removeWork(i) { epk.works.splice(i, 1); renderWorks(); persistUser(); showSaveBanner(); }
+
+// Dedicated reorder for Works (not the shared moveItem) because the public
+// renderer sorts by each work's `sortOrder` field, not array position —
+// reusing moveItem's plain array-swap would silently do nothing on the
+// public site. This swaps array position AND reassigns sortOrder
+// sequentially so both stay in sync.
+function moveWork(idx, direction) {
+  const arr = epk.works || [];
+  const newIdx = idx + direction;
+  if (newIdx < 0 || newIdx >= arr.length) return;
+  const temp = arr[idx];
+  arr[idx] = arr[newIdx];
+  arr[newIdx] = temp;
+  arr.forEach((w, i) => { w.sortOrder = i + 1; });
+  epk.works = arr;
+  renderWorks();
+  persistUser(); showSaveBanner();
+}
 
 // VIDEOS
 let editingVideoIdx = -1;
