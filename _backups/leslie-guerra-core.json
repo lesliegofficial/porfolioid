@@ -297,30 +297,30 @@
       "storyBehindWorkEs": null
     },
     {
-      "title": "QA DISPOSABLE VISIBLE WORK 1785850860372",
-      "description": "Disposable UI-driven QA test entry, safe to delete.",
-      "category": "test",
+      "id": "qa-disposable-visible-work-1785850860372",
       "music": {
         "genre": "QA Test Genre"
       },
-      "heroImage": "https://media.porfolioid.com/profiles/leslie-guerra/photos/leslie-guerra_leslie-ann-guerra-bio-picture-3_v1_20260727.png",
-      "statusOverride": "unreleased",
-      "visible": true,
-      "featured": false,
+      "title": "QA DISPOSABLE VISIBLE WORK 1785850860372 EDITED",
       "assets": [
         {
           "url": "https://media.porfolioid.com/profiles/leslie-guerra/audio/vals-demente_audio.mp3",
-          "type": "audio",
-          "role": "release",
-          "title": "QA DISPOSABLE VISIBLE WORK 1785850860372 (Final)",
           "date": "2026-08-04",
+          "role": "release",
+          "type": "audio",
+          "title": "QA DISPOSABLE VISIBLE WORK 1785850860372 (Final)",
           "featured": true,
           "sortOrder": 1,
           "description": ""
         }
       ],
-      "id": "qa-disposable-visible-work-1785850860372",
-      "sortOrder": 3
+      "visible": true,
+      "category": "test",
+      "featured": false,
+      "heroImage": "https://media.porfolioid.com/profiles/leslie-guerra/photos/leslie-guerra_leslie-ann-guerra-bio-picture-3_v1_20260727.png",
+      "sortOrder": 3,
+      "description": "EDITED description for QA verification.",
+      "statusOverride": "unreleased"
     }
   ],
   "photos": [
