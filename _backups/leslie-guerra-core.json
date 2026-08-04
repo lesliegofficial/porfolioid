@@ -297,19 +297,19 @@
       "storyBehindWorkEs": null
     },
     {
-      "title": "QA DISPOSABLE VISIBLE WORK 1785850662091",
-      "description": "Disposable UI-driven QA test entry, safe to delete.",
-      "category": "test",
+      "id": "qa-disposable-visible-work-1785850662091",
       "music": {
         "genre": "QA Test Genre"
       },
-      "heroImage": "",
-      "statusOverride": "unreleased",
-      "visible": true,
-      "featured": false,
+      "title": "QA DISPOSABLE VISIBLE WORK 1785850662091 EDITED",
       "assets": [],
-      "id": "qa-disposable-visible-work-1785850662091",
-      "sortOrder": 3
+      "visible": true,
+      "category": "test",
+      "featured": false,
+      "heroImage": "",
+      "sortOrder": 3,
+      "description": "EDITED description for QA verification.",
+      "statusOverride": "unreleased"
     }
   ],
   "photos": [
