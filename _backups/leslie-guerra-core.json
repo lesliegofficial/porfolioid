@@ -186,21 +186,6 @@
       "storyBehindWorkEs": null
     },
     {
-      "title": "QA PROD FUNCTIONAL TEST 1786062404163 EDITED",
-      "description": "temporary, will be deleted",
-      "category": "music",
-      "music": {
-        "genre": ""
-      },
-      "heroImage": "",
-      "statusOverride": "",
-      "visible": true,
-      "featured": false,
-      "assets": [],
-      "id": "qa-prod-functional-test-1786062404163",
-      "sortOrder": 2
-    },
-    {
       "id": "yahweh-yo-te-pertenezco",
       "books": null,
       "music": {
