@@ -897,20 +897,41 @@ function buildEPK(epk) {
     });
     videosHTML += '</div>';
   } else if (videoLayout === 'spotlight') {
+    // Shared clickable item for both Recommended and Collections: always
+    // sets the featured player via spotlightSelect(), always carries a
+    // stable data-video-idx identifier (the video's own index in
+    // visibleVideos) so the active-highlight can match by identity
+    // instead of DOM position -- required since Collections regroups
+    // items by category, so DOM order no longer matches data order.
+    const buildSpotlightThumb = (v, size) => {
+      const th = v.thumb || getYouTubeThumb(v.url);
+      const img = th ? `<img class="vcard-thumb" src="${th}" alt="${v.title}" loading="lazy">` : `<div class="vcard-thumb-empty" style="aspect-ratio:16/9">▶</div>`;
+      if (size === 'recommended') {
+        const meta = [v.album, v.year].filter(Boolean).join(' · ');
+        return `<div class="vcard videos-spotlight-thumb videos-spotlight-thumb-recommended" data-video-idx="${v._origIdx}" onclick="spotlightSelect(${v._origIdx})" title="${v.title}">
+          <div class="vcard-media">${v.category ? `<div class="vcard-badge">${v.category}</div>` : ''}${img}<div class="vcard-play">▶</div></div>
+          <div class="vcard-body"><div class="vcard-title">${v.title}</div>${meta ? `<div class="vcard-meta">${meta}</div>` : ''}</div>
+        </div>`;
+      }
+      return `<div class="videos-spotlight-thumb videos-collection-thumb" data-video-idx="${v._origIdx}" onclick="spotlightSelect(${v._origIdx})" title="${v.title}">
+        ${img}
+        <div class="video-play" style="width:1.6rem;height:1.6rem;font-size:0.7rem">▶</div>
+      </div>`;
+    };
     const first = visibleVideos[0];
     const rest = visibleVideos.slice(1);
     let html = '';
     if (first) {
       const meta = [first.album, first.year].filter(Boolean).join(' · ');
       html += `<div class="video-hero video-hero-glow">
-        <div class="video-hero-media videos-spotlight-player">${buildFeaturedMedia(first, 'spotlightPlayer')}</div>
+        <div class="video-hero-media videos-spotlight-player" data-video-idx="${first._origIdx}">${buildFeaturedMedia(first, 'spotlightPlayer')}</div>
         <div class="video-hero-info">
           <div class="video-hero-eyebrow">Featured</div>
           ${first.category ? `<div class="video-hero-eyebrow" style="color:var(--gray)">${first.category}</div>` : ''}
-          <h3 class="video-hero-title">${first.title}</h3>
-          ${meta ? `<div class="video-hero-meta">${meta}</div>` : ''}
-          ${first.desc ? `<div class="video-hero-desc">${first.desc}</div>` : ''}
-          <a href="${first.url}" target="_blank" class="video-hero-watch">Watch →</a>
+          <h3 class="video-hero-title" id="spotlightFeaturedTitle">${first.title}</h3>
+          <div class="video-hero-meta" id="spotlightFeaturedMeta">${meta}</div>
+          ${first.desc ? `<div class="video-hero-desc" id="spotlightFeaturedDesc">${first.desc}</div>` : ''}
+          <a href="${first.url}" target="_blank" class="video-hero-watch" id="spotlightFeaturedWatch">Watch →</a>
         </div>
       </div>`;
     }
@@ -918,7 +939,7 @@ function buildEPK(epk) {
       const recommended = rest.slice(0, 3);
       html += `<div class="videos-subsection">
         <div class="videos-subheading">Recommended<span class="videos-subheading-rule"></span></div>
-        <div class="videos-grid">${recommended.map(v => buildVideoCard(v, v._origIdx, false)).join('')}</div>
+        <div class="videos-grid">${recommended.map(v => buildSpotlightThumb(v, 'recommended')).join('')}</div>
       </div>`;
     }
     if (hasCategories) {
@@ -928,13 +949,7 @@ function buildEPK(epk) {
         html += `<div class="videos-collection-row">
           <div class="videos-collection-label">${cat}<span class="videos-subheading-rule"></span></div>
           <div class="videos-collection-thumbs">
-            ${vids.map(v => {
-              const th = v.thumb || getYouTubeThumb(v.url);
-              return `<div class="videos-collection-thumb videos-spotlight-thumb" onclick="spotlightSelect(${v._origIdx})" title="${v.title}">
-                ${th ? `<img src="${th}" alt="${v.title}" loading="lazy">` : `<div class="vcard-thumb vcard-thumb-empty" style="aspect-ratio:16/9">▶</div>`}
-                <div class="video-play" style="width:1.6rem;height:1.6rem;font-size:0.7rem">▶</div>
-              </div>`;
-            }).join('')}
+            ${vids.map(v => buildSpotlightThumb(v, 'collection')).join('')}
           </div>
         </div>`;
       });
@@ -4026,19 +4041,37 @@ function spotlightSelect(idx) {
   const videos = window._epkData?.videos || [];
   const v = videos.filter(v => v.visible !== false)[idx];
   if (!v) return;
-  // Update active thumb
-  document.querySelectorAll('.videos-spotlight-thumb').forEach((el, i) => {
-    el.classList.toggle('active', i === idx);
+  // Update active state by the item's own stable data-video-idx identity,
+  // not DOM/loop position -- Collections groups items by category, so
+  // DOM order no longer matches data order, and Recommended/Collections
+  // can both contain the item, so multiple elements may need to update.
+  document.querySelectorAll('.videos-spotlight-thumb').forEach((el) => {
+    el.classList.toggle('active', el.getAttribute('data-video-idx') === String(idx));
   });
   // Update player
   const player = document.querySelector('.videos-spotlight-player');
-  if (!player) return;
-  const isMP4 = v.url && (v.url.includes('.mp4') || v.url.includes('.mov') || v.url.includes('.webm') || (v.url.includes('cloudinary') && !v.url.includes('youtube')));
-  const ytId = v.url ? v.url.match(/youtube\.com.*v=([^&]+)|youtu\.be\/([^?]+)/) : null;
-  const ytVideoId = ytId ? (ytId[1] || ytId[2]) : null;
-  if (isMP4) {
-    player.innerHTML = `<video controls autoplay style="width:100%;height:100%;display:block;background:#000;object-fit:contain" ${v.thumb?`poster="${v.thumb}"`:''}><source src="${v.url}" type="video/mp4"></video>`;
-  } else if (ytVideoId) {
-    player.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytVideoId}?autoplay=1&rel=0" style="width:100%;height:100%;border:none;display:block" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+  if (player) {
+    player.setAttribute('data-video-idx', String(idx));
+    const isMP4 = v.url && (v.url.includes('.mp4') || v.url.includes('.mov') || v.url.includes('.webm') || (v.url.includes('cloudinary') && !v.url.includes('youtube')));
+    const ytId = v.url ? v.url.match(/youtube\.com.*v=([^&]+)|youtu\.be\/([^?]+)/) : null;
+    const ytVideoId = ytId ? (ytId[1] || ytId[2]) : null;
+    if (isMP4) {
+      player.innerHTML = `<video controls autoplay style="width:100%;height:100%;display:block;background:#000;object-fit:contain" ${v.thumb?`poster="${v.thumb}"`:''}><source src="${v.url}" type="video/mp4"></video>`;
+    } else if (ytVideoId) {
+      player.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytVideoId}?autoplay=1&rel=0" style="width:100%;height:100%;border:none;display:block" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+    } else {
+      const th = v.thumb || (typeof getYouTubeThumb === 'function' ? getYouTubeThumb(v.url) : null);
+      player.innerHTML = `<div onclick="window.open('${v.url}','_blank')" style="position:relative;cursor:pointer;width:100%;height:100%">${th ? `<img src="${th}" style="width:100%;height:100%;object-fit:cover;display:block">` : ''}<div class="vcard-play" style="width:64px;height:64px;font-size:1.3rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">▶</div></div>`;
+    }
   }
+  // Update the featured info panel so title/meta/description/watch-link
+  // match the newly selected video, not the original first one.
+  const titleEl = document.getElementById('spotlightFeaturedTitle');
+  if (titleEl) titleEl.textContent = v.title || '';
+  const metaEl = document.getElementById('spotlightFeaturedMeta');
+  if (metaEl) metaEl.textContent = [v.album, v.year].filter(Boolean).join(' · ');
+  const descEl = document.getElementById('spotlightFeaturedDesc');
+  if (descEl) descEl.textContent = v.desc || '';
+  const watchEl = document.getElementById('spotlightFeaturedWatch');
+  if (watchEl) watchEl.setAttribute('href', v.url || '#');
 }
