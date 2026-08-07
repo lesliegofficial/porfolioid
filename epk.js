@@ -1382,10 +1382,10 @@ function buildEPK(epk) {
       <div class="section-label">Video</div>
       <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:0">
         <h2 class="section-title" data-editable data-editable-key="videoTitle" data-editable-type="title" style="outline:none;margin-bottom:0">Live & On Camera</h2>
-        ${visibleVideos.length > 3 ? `<button onclick="toggleAllVideos()" id="videoToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-bottom:1.5rem;transition:all 0.2s">View All Videos +</button>` : ''}
+        ${visibleVideos.length > 3 ? `<button onclick="toggleAllVideos()" id="videoToggleBtn" aria-expanded="false" aria-controls="videosAll" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-bottom:1.5rem;transition:all 0.2s">View All Videos +</button>` : ''}
       </div>
-      <div id="videosFeatured">${(videoLayout === 'spotlight' || videoLayout === 'cinematic' || videoLayout === 'list' || visibleVideos.length <= 3) ? videosHTML : `<div class="videos-grid">${visibleVideos.slice(0,3).map((v,i) => buildVideoCard(v,i)).join("")}</div>`}</div>
-      ${(videoLayout !== 'spotlight' && videoLayout !== 'cinematic' && videoLayout !== 'list' && visibleVideos.length > 3) ? `<div id="videosAll" style="display:none">${videosHTML}</div>` : ''}
+      <div id="videosFeatured">${visibleVideos.length <= 3 ? videosHTML : `<div class="videos-grid">${visibleVideos.slice(0,3).map((v,i) => buildVideoCard(v,i)).join("")}</div>`}</div>
+      ${visibleVideos.length > 3 ? `<div id="videosAll" style="display:none">${videosHTML}</div>` : ''}
     </section>
     <div class="divider"></div>` : ''}
 
@@ -2676,11 +2676,24 @@ function toggleAllVideos() {
   const allDiv = document.getElementById('videosAll');
   const featDiv = document.getElementById('videosFeatured');
   const btn = document.getElementById('videoToggleBtn');
-  if (!allDiv) return;
-  const isHidden = allDiv.style.display === 'none';
-  allDiv.style.display = isHidden ? 'block' : 'none';
-  featDiv.style.display = isHidden ? 'none' : 'block';
-  btn.textContent = isHidden ? 'Show Less –' : 'View All Videos +';
+  if (!allDiv || !btn) return;
+  const isExpanding = btn.getAttribute('aria-expanded') !== 'true';
+  allDiv.style.display = isExpanding ? 'block' : 'none';
+  featDiv.style.display = isExpanding ? 'none' : 'block';
+  btn.setAttribute('aria-expanded', isExpanding ? 'true' : 'false');
+  btn.textContent = isExpanding ? 'Show Less \u2212' : 'View All Videos +';
+  if (!isExpanding) {
+    // Collapsing: only scroll back to the top of the section if the user
+    // has scrolled below where the collapsed content ends, so they aren't
+    // left stranded looking at empty space below the now-shorter section.
+    const section = document.getElementById('videos');
+    if (section) {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < 0) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }
 }
 
 // Modal font size control

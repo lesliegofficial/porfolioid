@@ -365,10 +365,12 @@
   .track-role { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); text-align: right; flex-shrink: 0; }
 
   /* VIDEOS */
-  .videos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; max-width: 1100px; }
-  .videos-spotlight-player { width:100%; max-height:480px; aspect-ratio:16/9; background:#000; margin-bottom:1.5rem; position:relative; overflow:hidden; }
+  .videos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 1100px; margin: 0 auto; padding: 0 2rem; box-sizing: border-box; }
+  .videos-spotlight-player { width:100%; max-height:480px; aspect-ratio:16/9; background:#000; margin:0 auto 1.5rem; max-width: 1100px; box-sizing: border-box; position:relative; overflow:hidden; }
   .videos-spotlight-player video, .videos-spotlight-player iframe { width:100%; height:100%; display:block; border:none; }
-  .videos-spotlight-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0.75rem; }
+  .videos-spotlight-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0.75rem; max-width: 1100px; margin: 0 auto; padding: 0 2rem; box-sizing: border-box; }
+  @media (max-width: 767px) { .videos-spotlight-grid { grid-template-columns: 1fr; } }
+  @media (min-width: 768px) and (max-width: 1024px) { .videos-spotlight-grid { grid-template-columns: repeat(2, 1fr); } }
   .videos-spotlight-thumb { cursor:pointer; position:relative; opacity:0.65; transition:opacity 0.2s,border-color 0.2s; border:2px solid transparent; }
   .videos-spotlight-thumb:hover { opacity:1; }
   .videos-spotlight-thumb.active { opacity:1; border-color:var(--gold); }
@@ -442,12 +444,12 @@
 
   /* VIDEO LAYOUTS */
   /* Cinematic — first video large, rest below */
-  .video-cinematic-featured { margin-bottom: 1.5rem; position: relative; }
+  .video-cinematic-featured { margin: 0 auto 1.5rem; position: relative; max-width: 860px; padding: 0 2rem; box-sizing: border-box; }
   .video-cinematic-featured video, .video-cinematic-featured iframe { width: 100%; aspect-ratio: 16/9; display: block; background: #000; border: 1px solid rgba(201,168,76,0.15); }
   .video-cinematic-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin: 0.75rem 0 0.25rem; }
   .video-cinematic-meta { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
   .video-cinematic-desc { font-size: 0.85rem; color: var(--gray); font-style: italic; }
-  .video-cinematic-rest { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .video-cinematic-rest { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; max-width: 1100px; margin: 0 auto; padding: 0 2rem; box-sizing: border-box; }
   /* List layout */
   .video-list-item { display: flex; gap: 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid rgba(201,168,76,0.06); align-items: flex-start; }
   .video-list-thumb { width: 160px; flex-shrink: 0; position: relative; cursor: pointer; }
@@ -1370,6 +1372,15 @@
     /* OWNER BAR */
     .owner-bar { font-size: 0.55rem; padding: 0.75rem 1rem; gap: 0.75rem; }
     .owner-bar-right { gap: 0.5rem; }
+  }
+
+  /* Tablet: 2-column video grid. Placed after the <=768px block above so
+     it wins the cascade at exactly 768px (both rules target
+     .videos-grid; later source order wins for equal specificity),
+     ensuring 768px gets 2 columns rather than falling through to the
+     1-column mobile rule. */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .videos-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 480px) {
     /* Phones — further reduce the portrait panel beyond the 768px tablet
