@@ -32,13 +32,23 @@
   .btn-sm-outline:hover { border-color: var(--gold); color: var(--gold); }
 
   /* LAYOUT */
-  .app-layout { display: flex; height: calc(100vh - 56px); margin-top: 56px; overflow: hidden; }
+  .app-layout { display: flex; height: 0; min-height: 0; margin-top: 56px; overflow: visible; }
 
-  /* SIDEBAR */
+  /* SIDEBAR
+     Fixed positioning (rather than relying purely on flex-child layout)
+     so the sidebar renders correctly at a stable position even in cases
+     where a panel ends up as a direct <body> child instead of nested
+     inside .app-layout/.main-content -- a pre-existing HTML structural
+     issue (confirmed present on production main before this branch,
+     unrelated to the Works panel) where the browser's error-recovery
+     parser occasionally closes .app-layout earlier than intended.
+     .main-content gets a matching margin-left below so content still
+     starts exactly where the sidebar ends, in every case. */
   .sidebar {
     width: var(--sidebar-w); background: var(--dark-2);
     border-right: 1px solid rgba(201,168,76,0.08);
     display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0;
+    position: fixed; top: 56px; left: 0; bottom: 0; z-index: 100;
   }
   .sidebar-section { padding: 1.25rem 1rem 0.5rem; }
   .sidebar-section-label {
@@ -66,8 +76,11 @@
   .epk-url-link:hover { text-decoration: underline; }
 
   /* MAIN */
-  .main-content { flex: 1; overflow-y: auto; background: var(--black); }
-  .panel { display: none; padding: 2.5rem; max-width: 900px; }
+  .main-content { overflow-y: auto; background: var(--black); min-height: calc(100vh - 56px); }
+  .panel {
+    display: none; padding: 2.5rem; max-width: 900px;
+    margin-left: var(--sidebar-w); box-sizing: border-box;
+  }
   .panel.active { display: block; }
 
   .panel-title {
@@ -203,11 +216,43 @@
 
   @media (max-width: 900px) {
     .sidebar { width: 60px; }
-    .nav-item span { display: none; }
+    .panel { margin-left: 60px; }
+    .nav-item > span:not(.nav-item-icon) { display: none; }
     .sidebar-section-label { display: none; }
+    .sidebar-section-label + div { display: none; }
     .epk-url-box { display: none; }
     .field-row, .field-row-3 { grid-template-columns: 1fr; }
     .stats-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .panel { padding: 1.25rem; }
+    .topbar-user { display: none; }
+  }
+
+  /* Stack card header contents on narrow screens so titles/descriptions get
+     full width to wrap normally instead of being squeezed alongside
+     reorder arrows, cover thumbnails, badges, and action buttons in one
+     row. Scoped to <=480px only -- desktop/tablet appearance unchanged. */
+  @media (max-width: 480px) {
+    .editable-card { padding: 1rem; }
+    .editable-card-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+    }
+    .editable-card-header > div[style*="flex-direction:column"] {
+      flex-direction: row !important;
+      gap: 0.75rem !important;
+      margin-right: 0 !important;
+    }
+    .editable-card-title, .editable-card-subtitle,
+    .editable-card p, .editable-card div[style*="color:var(--gray)"] {
+      white-space: normal;
+      overflow-wrap: break-word;
+    }
+    .card-actions { width: 100%; }
+    .card-actions .btn-card-action { flex: 1; text-align: center; }
   }
 
 /* ── PROFILE SWITCHER ── */
