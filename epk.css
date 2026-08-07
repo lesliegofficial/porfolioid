@@ -364,26 +364,64 @@
   .track-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.6; margin-top: 0.4rem; font-style: italic; }
   .track-role { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); text-align: right; flex-shrink: 0; }
 
-  /* VIDEOS */
-  .videos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 1100px; margin: 0 auto; padding: 0 2rem; box-sizing: border-box; }
-  .videos-spotlight-player { width:100%; max-height:480px; aspect-ratio:16/9; background:#000; margin:0 auto 1.5rem; max-width: 1100px; box-sizing: border-box; position:relative; overflow:hidden; }
-  .videos-spotlight-player video, .videos-spotlight-player iframe { width:100%; height:100%; display:block; border:none; }
-  .videos-spotlight-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0.75rem; max-width: 1100px; margin: 0 auto; padding: 0 2rem; box-sizing: border-box; }
-  @media (max-width: 767px) { .videos-spotlight-grid { grid-template-columns: 1fr; } }
-  @media (min-width: 768px) and (max-width: 1024px) { .videos-spotlight-grid { grid-template-columns: repeat(2, 1fr); } }
-  .videos-spotlight-thumb { cursor:pointer; position:relative; opacity:0.65; transition:opacity 0.2s,border-color 0.2s; border:2px solid transparent; }
-  .videos-spotlight-thumb:hover { opacity:1; }
-  .videos-spotlight-thumb.active { opacity:1; border-color:var(--gold); }
-  .videos-spotlight-thumb img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
-  .videos-spotlight-thumb .spot-title { font-family:var(--font-mono); font-size:0.55rem; letter-spacing:0.05em; color:var(--gray); padding:0.3rem 0.4rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .video-card { background: var(--dark-3); overflow: hidden; cursor: pointer; position: relative; }
-  .video-thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: var(--dark-4); }
-  .video-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1rem; background: rgba(0,0,0,0.5); transition: all 0.3s; }
-  .video-card:hover .video-play { background: var(--gold); color: var(--black); }
-  .video-caption { padding: 0.6rem 0.75rem 0.4rem; font-size: 0.78rem; color: var(--white); font-weight: 400; }
-  .video-meta { padding: 0 1rem 0.4rem; font-family: var(--font-mono); font-size: 0.6rem; color: var(--gray); letter-spacing: 0.05em; }
-  .video-meta span { color: var(--gold); }
-  .video-desc { padding: 0 1rem 0.75rem; font-size: 0.78rem; color: var(--gray); line-height: 1.6; font-style: italic; }
+  /* VIDEOS — shared editorial shell + card system, used by every layout
+     in both collapsed and expanded states. */
+  .video-shell { max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); box-sizing: border-box; }
+  .video-shell-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+  .video-shell-subtitle { font-size: 0.85rem; color: var(--gray); margin-top: 0.5rem; max-width: 520px; line-height: 1.6; }
+  .video-toggle-btn { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); background: none; border: 1px solid rgba(201,168,76,0.3); padding: 0.5rem 1.1rem; cursor: pointer; transition: all 0.2s; flex-shrink: 0; white-space: nowrap; }
+  .video-toggle-btn:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.5); }
+
+  /* Shared card component -- collapsed preview, Grid, and compact
+     supporting rows in Cinematic/Spotlight. */
+  .vcard { background: var(--dark-3); border: 1px solid rgba(201,168,76,0.08); overflow: hidden; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
+  .vcard:hover { transform: translateY(-3px); border-color: rgba(201,168,76,0.35); box-shadow: 0 14px 40px rgba(0,0,0,0.35); }
+  .vcard-media { position: relative; background: #000; }
+  .vcard-media-clickable { cursor: pointer; }
+  .vcard-thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: var(--dark-4); }
+  .vcard-thumb-empty { display: flex; align-items: center; justify-content: center; color: var(--gray); font-size: 2rem; aspect-ratio: 16/9; }
+  .vcard-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1rem; background: rgba(0,0,0,0.5); transition: all 0.3s; pointer-events: none; }
+  .vcard:hover .vcard-play { background: var(--gold); color: var(--black); }
+  .vcard-badge { position: absolute; top: 0.6rem; left: 0.6rem; font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(0,0,0,0.75); color: var(--gold); padding: 0.2rem 0.55rem; z-index: 2; }
+  .vcard-badge-featured { left: auto; right: 0.6rem; background: rgba(201,168,76,0.92); color: var(--black); }
+  .vcard-body { padding: 0.85rem 1rem 1rem; }
+  .vcard-title { font-size: 0.85rem; color: var(--white); font-weight: 400; margin-bottom: 0.3rem; }
+  .vcard-meta { font-family: var(--font-mono); font-size: 0.58rem; color: var(--gray); letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .vcard-meta span { color: var(--gold); }
+  .vcard-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.6; font-style: italic; }
+  .vcard-ytlink { display: block; text-align: right; margin-top: 0.4rem; font-family: var(--font-mono); font-size: 0.55rem; color: var(--gray); letter-spacing: 0.05em; text-decoration: none; opacity: 0.6; }
+
+  /* Grid: explicit 3/2/1 responsive steps. Trailing incomplete row is
+     centered via a flex modifier that matches the column's per-card
+     width -- never by enlarging an arbitrary card. */
+  /* Grid: auto-fit responsive columns (3 desktop / 2 tablet / 1 mobile,
+     verified via computed column count at each breakpoint) that also
+     centers a trailing incomplete row automatically via
+     justify-content:center -- this works correctly at every breakpoint
+     without needing JS to pre-split rows by an assumed column count,
+     which is what caused a real bug: a JS split computed for 3 columns
+     left an uncentered orphan card when the grid responsively dropped
+     to 2 columns. Card width capped (not stretched) so cards never
+     enlarge just to fill empty space. */
+  .videos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 330px)); justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .videos-category-group { margin-bottom: 2.5rem; }
+  .videos-subheading { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 1rem; }
+  .videos-subheading-rule { flex: 1; height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.2), transparent); max-width: 200px; display: inline-block; }
+  .videos-subsection { margin-top: 2.5rem; }
+
+  /* List: centered editorial archive, narrower than the full shell so it
+     reads as one deliberate column rather than a stretched table. */
+  .videos-list-wrap { max-width: 820px; margin: 0 auto; }
+  .video-list-item { display: flex; gap: 1.75rem; padding: 1.75rem 0; border-bottom: 1px solid rgba(201,168,76,0.08); align-items: flex-start; }
+  .video-list-item:first-child { padding-top: 0.25rem; }
+  .video-list-thumb { width: 190px; flex-shrink: 0; position: relative; cursor: pointer; }
+  .video-list-thumb img, .video-list-thumb video { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; border: 1px solid rgba(201,168,76,0.15); }
+  .video-list-thumb .video-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold); background: rgba(0,0,0,0.5); font-size: 0.8rem; pointer-events: none; }
+  .video-list-info { flex: 1; max-width: 560px; }
+  .video-list-category { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; opacity: 0.85; }
+  .video-list-title { font-size: 1.05rem; font-weight: 400; color: var(--white); margin-bottom: 0.35rem; font-family: var(--font-display); }
+  .video-list-meta { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gold); letter-spacing: 0.08em; margin-bottom: 0.6rem; }
+  .video-list-desc { font-size: 0.85rem; color: var(--gray); font-style: italic; line-height: 1.7; }
 
   /* PHOTOS */
   .gallery-section { background: var(--dark-2); padding: 3rem 0; max-width: 100%; }
@@ -443,23 +481,53 @@
   @media (max-width: 768px) { .gallery-4col { grid-template-columns: repeat(2, 1fr); } .gallery-col { height: 260px; } }
 
   /* VIDEO LAYOUTS */
-  /* Cinematic — first video large, rest below */
-  .video-cinematic-featured { margin: 0 auto 1.5rem; position: relative; max-width: 860px; padding: 0 2rem; box-sizing: border-box; }
-  .video-cinematic-featured video, .video-cinematic-featured iframe { width: 100%; aspect-ratio: 16/9; display: block; background: #000; border: 1px solid rgba(201,168,76,0.15); }
-  .video-cinematic-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin: 0.75rem 0 0.25rem; }
-  .video-cinematic-meta { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
-  .video-cinematic-desc { font-size: 0.85rem; color: var(--gray); font-style: italic; }
-  .video-cinematic-rest { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; max-width: 1100px; margin: 0 auto; padding: 0 2rem; box-sizing: border-box; }
-  /* List layout */
-  .video-list-item { display: flex; gap: 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid rgba(201,168,76,0.06); align-items: flex-start; }
-  .video-list-thumb { width: 160px; flex-shrink: 0; position: relative; cursor: pointer; }
-  .video-list-thumb img, .video-list-thumb video { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; border: 1px solid rgba(201,168,76,0.15); }
-  .video-list-thumb .video-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold); background: rgba(0,0,0,0.5); font-size: 0.8rem; }
-  .video-list-info { flex: 1; }
-  .video-list-title { font-size: 1rem; font-weight: 400; color: var(--white); margin-bottom: 0.3rem; }
-  .video-list-meta { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gold); letter-spacing: 0.08em; margin-bottom: 0.4rem; }
-  .video-list-desc { font-size: 0.82rem; color: var(--gray); font-style: italic; line-height: 1.6; }
-  @media (max-width: 768px) { .video-list-item { flex-direction: column; } .video-list-thumb { width: 100%; } }
+  /* Cinematic + Spotlight shared editorial hero: video left, info right
+     on desktop, stacks on mobile. Substantial but not oversized. */
+  .video-hero { display: flex; gap: 2.5rem; align-items: flex-start; margin-bottom: 1rem; position: relative; }
+  .video-hero-media { flex: 0 0 58%; max-width: 58%; aspect-ratio: 16/9; background: #000; position: relative; overflow: hidden; border: 1px solid rgba(201,168,76,0.15); }
+  .video-hero-info { flex: 1; min-width: 0; padding-top: 0.5rem; }
+  .video-hero-eyebrow { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+  .video-hero-title { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--white); margin: 0 0 0.4rem; line-height: 1.2; }
+  .video-hero-meta { font-family: var(--font-mono); font-size: 0.65rem; color: var(--gold); letter-spacing: 0.08em; margin-bottom: 1rem; opacity: 0.85; }
+  .video-hero-desc { font-size: 0.9rem; color: var(--gray); line-height: 1.75; margin-bottom: 1.25rem; max-width: 460px; }
+  .video-hero-watch { display: inline-block; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(201,168,76,0.4); padding-bottom: 0.2rem; transition: border-color 0.2s, opacity 0.2s; }
+  .video-hero-watch:hover { border-color: var(--gold); opacity: 0.85; }
+
+  /* Restrained gold glow behind the hero only -- Cinematic/Spotlight. */
+  .video-hero-glow::before { content: ''; position: absolute; top: -10%; left: -5%; right: -5%; bottom: -10%; background: radial-gradient(circle at 50% 25%, rgba(198,158,69,0.06), transparent 55%); pointer-events: none; z-index: 0; }
+  .video-hero-glow > * { position: relative; z-index: 1; }
+
+  /* Spotlight Collections */
+  .videos-collections { margin-top: 3rem; }
+  .videos-collection-row { margin-bottom: 2rem; }
+  .videos-collection-label { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 1rem; }
+  .videos-collection-thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.65rem; }
+  .videos-collection-thumb { cursor: pointer; position: relative; opacity: 0.7; transition: opacity 0.2s, border-color 0.2s; border: 2px solid transparent; }
+  .videos-collection-thumb:hover, .videos-collection-thumb.active { opacity: 1; border-color: var(--gold); }
+  .videos-collection-thumb img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+
+  /* Responsive: non-overlapping ranges by construction (<=767 vs
+     768-1024) so there is no possibility of a cascade tie at the 768px
+     boundary, regardless of source order. */
+  @media (max-width: 767px) {
+    .video-shell { padding: 0 20px; }
+    .video-shell-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+    .videos-grid { grid-template-columns: 1fr; }
+    .video-hero { flex-direction: column; gap: 1.25rem; }
+    .video-hero-media { flex: 1 1 auto; max-width: 100%; }
+    .video-hero-info { padding-top: 0.25rem; }
+    .video-hero-desc { max-width: 100%; }
+    .videos-list-wrap { max-width: 100%; }
+    .video-list-item { flex-direction: column; gap: 1rem; }
+    .video-list-thumb { width: 100%; }
+    .video-list-info { max-width: 100%; }
+    .videos-collection-thumbs { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .videos-grid { grid-template-columns: repeat(2, 1fr); }
+    .video-hero-media { flex-basis: 52%; max-width: 52%; }
+  }
+
 
   /* GALLERY MARQUEE */
   .gallery-marquee-wrap {
@@ -760,11 +828,6 @@
     .credits-grid .credit-card:last-child:nth-child(3n+2) { grid-column: 1; }
     .credit-card { padding: 1.25rem; }
     .credit-modal { padding: 1.5rem 1.25rem; max-height: 85vh; }
-
-    /* VIDEOS */
-    .videos-grid { grid-template-columns: 1fr; }
-    .video-list-item { flex-direction: column; }
-    .video-list-thumb { width: 100%; }
 
     /* PHOTOS */
     .gallery-slideshows { grid-template-columns: 1fr; height: auto; }
@@ -1348,11 +1411,6 @@
     .credit-card { padding: 1.25rem; }
     .credit-modal { padding: 1.5rem 1.25rem; max-height: 85vh; }
 
-    /* VIDEOS */
-    .videos-grid { grid-template-columns: 1fr; }
-    .video-list-item { flex-direction: column; }
-    .video-list-thumb { width: 100%; }
-
     /* PHOTOS */
     .gallery-slideshows { grid-template-columns: 1fr; height: auto; }
     .gallery-col { height: 280px; }
@@ -1374,14 +1432,6 @@
     .owner-bar-right { gap: 0.5rem; }
   }
 
-  /* Tablet: 2-column video grid. Placed after the <=768px block above so
-     it wins the cascade at exactly 768px (both rules target
-     .videos-grid; later source order wins for equal specificity),
-     ensuring 768px gets 2 columns rather than falling through to the
-     1-column mobile rule. */
-  @media (min-width: 768px) and (max-width: 1024px) {
-    .videos-grid { grid-template-columns: repeat(2, 1fr); }
-  }
   @media (max-width: 480px) {
     /* Phones — further reduce the portrait panel beyond the 768px tablet
        cap, so it doesn't dominate the first screen on small devices. */

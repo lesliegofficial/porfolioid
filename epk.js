@@ -788,28 +788,29 @@ function buildEPK(epk) {
   const visibleVideos = (epk.videos || [])
     .filter(v => v.visible !== false);
 
-  const buildVideoCard = (v, vidIdx) => {
-    const totalVisible = visibleVideos.length;
+  const buildVideoCard = (v, vidIdx, showDesc) => {
+    if (showDesc === undefined) showDesc = true;
     const ownerOverlay = `<div class="owner-overlay" style="flex-direction:row;gap:0.2rem"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('videos',${vidIdx},-1)" title="Move Left">◀</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('videos',${vidIdx},1)" title="Move Right">▶</button></div>`;
     const isMP4 = v.url && (v.url.includes('.mp4') || v.url.includes('.mov') || v.url.includes('.webm') || (v.url.includes('cloudinary') && !v.url.includes('youtube')));
     const thumb = v.thumb || getYouTubeThumb(v.url);
-    const videoMeta = (v.album || v.year) ? `<div class="video-meta">${v.album ? `<span>${v.album}</span>` : ''}${v.album && v.year ? ' · ' : ''}${v.year || ''}</div>` : '';
-    const videoDesc = v.desc ? `<div class="video-desc">${v.desc}</div>` : '';
-    const categoryBadge = v.category ? `<div style="position:absolute;top:0.5rem;left:0.5rem;font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(0,0,0,0.7);color:var(--gold);padding:0.15rem 0.5rem;z-index:2">${v.category}</div>` : '';
-    const featuredBadge = v.featured ? `<div style="position:absolute;top:0.5rem;right:0.5rem;font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.9);color:var(--black);padding:0.15rem 0.5rem;z-index:2">⭐ Featured</div>` : '';
+    const videoMeta = (v.album || v.year) ? `<div class="vcard-meta">${v.album ? `<span>${v.album}</span>` : ''}${v.album && v.year ? ' · ' : ''}${v.year || ''}</div>` : '';
+    const videoDesc = (showDesc && v.desc) ? `<div class="vcard-desc">${v.desc}</div>` : '';
+    const categoryBadge = v.category ? `<div class="vcard-badge">${v.category}</div>` : '';
+    const featuredBadge = v.featured ? `<div class="vcard-badge vcard-badge-featured">★ Featured</div>` : '';
     if (isMP4) {
-      return `<div class="video-card owner-item-wrap" style="position:relative">${ownerOverlay}${categoryBadge}${featuredBadge}<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain" ${v.thumb ? `poster="${v.thumb}"` : ''}><source src="${v.url}" type="video/mp4"></video><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}</div>`;
+      return `<div class="vcard owner-item-wrap">${ownerOverlay}<div class="vcard-media">${categoryBadge}${featuredBadge}<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain" ${v.thumb ? `poster="${v.thumb}"` : ''}><source src="${v.url}" type="video/mp4"></video></div><div class="vcard-body"><div class="vcard-title">${v.title}</div>${videoMeta}${videoDesc}</div></div>`;
     }
     const ytId = v.url ? v.url.match(/youtube\.com.*v=([^&]+)|youtu\.be\/([^?]+)/) : null;
     const ytVideoId = ytId ? (ytId[1] || ytId[2]) : null;
     if (ytVideoId) {
       const ytEmbedId = 'yt_' + vidIdx + '_' + ytVideoId;
-      return `<div class="video-card owner-item-wrap" style="position:relative" id="ytcard_${ytEmbedId}">${ownerOverlay}${categoryBadge}${featuredBadge}<div id="ytthumb_${ytEmbedId}" style="position:relative;cursor:pointer" onclick="playYouTubeInline('${ytEmbedId}','${ytVideoId}')">${thumb ? `<img class="video-thumb" src="${thumb}" alt="${v.title}" loading="lazy" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block">` : `<div class="video-thumb" style="background:var(--dark-4);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:2rem;aspect-ratio:16/9">▶</div>`}<div class="video-play">▶</div></div><div id="ytembed_${ytEmbedId}" style="display:none;width:100%;aspect-ratio:16/9"></div><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}<div style="text-align:right;margin-top:0.25rem"><a href="${v.url}" target="_blank" style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.05em;text-decoration:none;opacity:0.6">↗ Watch on YouTube</a></div></div>`;
+      return `<div class="vcard owner-item-wrap" id="ytcard_${ytEmbedId}">${ownerOverlay}<div class="vcard-media vcard-media-clickable" id="ytthumb_${ytEmbedId}" onclick="playYouTubeInline('${ytEmbedId}','${ytVideoId}')">${categoryBadge}${featuredBadge}${thumb ? `<img class="vcard-thumb" src="${thumb}" alt="${v.title}" loading="lazy">` : `<div class="vcard-thumb vcard-thumb-empty">▶</div>`}<div class="vcard-play">▶</div></div><div id="ytembed_${ytEmbedId}" style="display:none;width:100%;aspect-ratio:16/9"></div><div class="vcard-body"><div class="vcard-title">${v.title}</div>${videoMeta}${videoDesc}<a href="${v.url}" target="_blank" class="vcard-ytlink">↗ Watch on YouTube</a></div></div>`;
     }
-    return `<div class="video-card owner-item-wrap" style="position:relative" onclick="window.open('${v.url}','_blank')">${ownerOverlay}${categoryBadge}${featuredBadge}${thumb ? `<img class="video-thumb" src="${thumb}" alt="${v.title}" loading="lazy">` : `<div class="video-thumb" style="background:var(--dark-4);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:2rem">▶</div>`}<div class="video-play">▶</div><div class="video-caption">${v.title}</div>${videoMeta}${videoDesc}</div>`;
+    return `<div class="vcard owner-item-wrap" onclick="window.open('${v.url}','_blank')">${ownerOverlay}<div class="vcard-media vcard-media-clickable">${categoryBadge}${featuredBadge}${thumb ? `<img class="vcard-thumb" src="${thumb}" alt="${v.title}" loading="lazy">` : `<div class="vcard-thumb vcard-thumb-empty">▶</div>`}<div class="vcard-play">▶</div></div><div class="vcard-body"><div class="vcard-title">${v.title}</div>${videoMeta}${videoDesc}</div></div>`;
   };
 
-  // Group by category — but keep original indices for reordering
+  // Group by category — but keep original indices for reordering.
+  // Reused by Grid (category headings) and Spotlight (Collections).
   const groupedVideos = {};
   const uncategorized = [];
   visibleVideos.forEach((v, origIdx) => {
@@ -825,28 +826,59 @@ function buildEPK(epk) {
   const hasCategories = Object.keys(groupedVideos).length > 0;
   const videoLayout = epk.videoLayout || 'grid';
 
+  // Shared media builder for a hero/featured video (used by Cinematic and
+  // Spotlight). Preserves all three playback mechanisms exactly.
+  const buildFeaturedMedia = (v, playerId) => {
+    if (!v) return '';
+    const isMP4 = v.url && (v.url.includes('.mp4') || v.url.includes('.mov') || v.url.includes('.webm') || (v.url.includes('cloudinary') && !v.url.includes('youtube')));
+    const th = v.thumb || getYouTubeThumb(v.url);
+    const ytMatch = v.url ? v.url.match(/youtube\.com.*v=([^&]+)|youtu\.be\/([^?]+)/) : null;
+    const ytId = ytMatch ? (ytMatch[1] || ytMatch[2]) : null;
+    if (isMP4) {
+      return `<video ${playerId ? `id="${playerId}"` : ''} controls style="width:100%;height:100%;display:block;background:#000;object-fit:contain" ${v.thumb ? `poster="${v.thumb}"` : ''}><source src="${v.url}" type="video/mp4"></video>`;
+    }
+    if (ytId) {
+      return `<iframe ${playerId ? `id="${playerId}"` : ''} src="https://www.youtube.com/embed/${ytId}?rel=0" style="width:100%;height:100%;border:none;display:block" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+    }
+    return `<div onclick="window.open('${v.url}','_blank')" style="position:relative;cursor:pointer;width:100%;height:100%">${th ? `<img src="${th}" style="width:100%;height:100%;object-fit:cover;display:block">` : ''}<div class="vcard-play" style="width:64px;height:64px;font-size:1.3rem">▶</div></div>`;
+  };
+
+  // Emits one .videos-grid per list of videos. Responsive column count
+  // (3/2/1) and centering of any trailing incomplete row are both
+  // handled entirely by CSS (repeat(auto-fit, minmax(...)) +
+  // justify-content:center) -- correct at every breakpoint automatically,
+  // never by arbitrarily enlarging a card.
+  const buildGridRows = (vids) => {
+    if (!vids.length) return '';
+    return `<div class="videos-grid">${vids.map(v => buildVideoCard(v, v._origIdx, true)).join('')}</div>`;
+  };
+
   let videosHTML = '';
 
   if (videoLayout === 'cinematic') {
-    // First video large, rest in grid below
+    // Editorial hero: video left, info right on desktop; stacks on mobile.
     const [first, ...rest] = visibleVideos;
-    const isMP4First = first && first.url && (first.url.includes('.mp4') || first.url.includes('.mov') || first.url.includes('.webm') || (first.url.includes('cloudinary') && !first.url.includes('youtube')));
-    const firstThumb = first && (first.thumb || getYouTubeThumb(first.url));
-    const firstYtMatch = first && first.url ? first.url.match(/youtube\.com.*v=([^&]+)|youtu\.be\/([^?]+)/) : null;
-    const firstYtId = firstYtMatch ? (firstYtMatch[1] || firstYtMatch[2]) : null;
-    const firstMedia = first ? (isMP4First
-      ? `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000" ${first.thumb?`poster="${first.thumb}"`:''}><source src="${first.url}" type="video/mp4"></video>`
-      : firstYtId
-        ? `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden"><iframe src="https://www.youtube.com/embed/${firstYtId}?rel=0" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen allow="autoplay; encrypted-media"></iframe></div>`
-        : `<div onclick="window.open('${first.url}','_blank')" style="position:relative;cursor:pointer">${firstThumb?`<img src="${firstThumb}" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block">`:''}<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.2rem;background:rgba(0,0,0,0.5)">▶</div></div>`) : '';
     if (first) {
-      videosHTML = `<div class="video-cinematic-featured">${firstMedia}<div class="video-cinematic-title">${first.title}</div><div class="video-cinematic-meta">${[first.album, first.year].filter(Boolean).join(' · ')}</div>${first.desc?`<div class="video-cinematic-desc">${first.desc}</div>`:''}</div>`;
+      const meta = [first.album, first.year].filter(Boolean).join(' · ');
+      videosHTML = `<div class="video-hero video-hero-glow">
+        <div class="video-hero-media">${buildFeaturedMedia(first)}</div>
+        <div class="video-hero-info">
+          ${first.category ? `<div class="video-hero-eyebrow">${first.category}</div>` : ''}
+          <h3 class="video-hero-title">${first.title}</h3>
+          ${meta ? `<div class="video-hero-meta">${meta}</div>` : ''}
+          ${first.desc ? `<div class="video-hero-desc">${first.desc}</div>` : ''}
+          <a href="${first.url}" target="_blank" class="video-hero-watch">Watch Performance →</a>
+        </div>
+      </div>`;
     }
     if (rest.length) {
-      videosHTML += `<div class="video-cinematic-rest">${rest.map(v => buildVideoCard(v, v._origIdx || visibleVideos.indexOf(v))).join('')}</div>`;
+      videosHTML += `<div class="videos-subsection">
+        <div class="videos-subheading">More Performances<span class="videos-subheading-rule"></span></div>
+        ${buildGridRows(rest.map((v,i) => { v._origIdx = first ? i + 1 : i; return v; }))}
+      </div>`;
     }
   } else if (videoLayout === 'list') {
-    videosHTML = '<div>';
+    videosHTML = '<div class="videos-list-wrap">';
     visibleVideos.forEach((v, i) => {
       const isMP4 = v.url && (v.url.includes('.mp4') || v.url.includes('cloudinary'));
       const thumb = v.thumb || getYouTubeThumb(v.url);
@@ -856,6 +888,7 @@ function buildEPK(epk) {
       videosHTML += `<div class="video-list-item">
         <div class="video-list-thumb owner-item-wrap" onclick="window.open('${v.url}','_blank')">${thumbHTML}<div class="owner-overlay"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('videos',${i},-1)">▲</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('videos',${i},1)">▼</button></div></div>
         <div class="video-list-info">
+          ${v.category ? `<div class="video-list-category">${v.category}</div>` : ''}
           <div class="video-list-title">${v.title}</div>
           <div class="video-list-meta">${[v.album, v.year].filter(Boolean).join(' · ')}</div>
           ${v.desc?`<div class="video-list-desc">${v.desc}</div>`:''}
@@ -865,35 +898,62 @@ function buildEPK(epk) {
     videosHTML += '</div>';
   } else if (videoLayout === 'spotlight') {
     const first = visibleVideos[0];
-    const firstThumb = first ? (first.thumb || getYouTubeThumb(first.url)) : null;
-    const firstIsMP4 = first && first.url && (first.url.includes('.mp4') || first.url.includes('.mov') || first.url.includes('.webm') || (first.url.includes('cloudinary') && !first.url.includes('youtube')));
-    const firstYtId = first && first.url ? (first.url.match(/youtube\.com.*v=([^&]+)|youtu\.be\/([^?]+)/) || []) : [];
-    const firstYtVideoId = firstYtId[1] || firstYtId[2] || null;
-    let playerHTML = '';
-    if (firstIsMP4) {
-      playerHTML = `<video id="spotlightPlayer" controls style="width:100%;height:100%;display:block;background:#000;object-fit:contain" ${first.thumb?`poster="${first.thumb}"`:''}><source src="${first.url}" type="video/mp4"></video>`;
-    } else if (firstYtVideoId) {
-      playerHTML = `<iframe id="spotlightPlayer" src="https://www.youtube.com/embed/${firstYtVideoId}?rel=0" style="width:100%;height:100%;border:none;display:block" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
-    }
-    const thumbsHTML = visibleVideos.map((v, i) => {
-      const th = v.thumb || getYouTubeThumb(v.url);
-      return `<div class="videos-spotlight-thumb${i===0?' active':''}" onclick="spotlightSelect(${i})" id="spotthumb_${i}">
-        ${th ? `<img src="${th}" alt="${v.title}" loading="lazy">` : `<div style="width:100%;aspect-ratio:16/9;background:var(--dark-4);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:1.5rem">▶</div>`}
-        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)" class="video-play" style="width:1.8rem;height:1.8rem;font-size:0.8rem">▶</div>
-        <div class="spot-title">${v.title}</div>
+    const rest = visibleVideos.slice(1);
+    let html = '';
+    if (first) {
+      const meta = [first.album, first.year].filter(Boolean).join(' · ');
+      html += `<div class="video-hero video-hero-glow">
+        <div class="video-hero-media videos-spotlight-player">${buildFeaturedMedia(first, 'spotlightPlayer')}</div>
+        <div class="video-hero-info">
+          <div class="video-hero-eyebrow">Featured</div>
+          ${first.category ? `<div class="video-hero-eyebrow" style="color:var(--gray)">${first.category}</div>` : ''}
+          <h3 class="video-hero-title">${first.title}</h3>
+          ${meta ? `<div class="video-hero-meta">${meta}</div>` : ''}
+          ${first.desc ? `<div class="video-hero-desc">${first.desc}</div>` : ''}
+          <a href="${first.url}" target="_blank" class="video-hero-watch">Watch →</a>
+        </div>
       </div>`;
-    }).join('');
-    videosHTML = `<div class="videos-spotlight-player">${playerHTML}</div><div class="videos-spotlight-grid">${thumbsHTML}</div>`;
+    }
+    if (rest.length) {
+      const recommended = rest.slice(0, 3);
+      html += `<div class="videos-subsection">
+        <div class="videos-subheading">Recommended<span class="videos-subheading-rule"></span></div>
+        <div class="videos-grid">${recommended.map(v => buildVideoCard(v, v._origIdx, false)).join('')}</div>
+      </div>`;
+    }
+    if (hasCategories) {
+      html += `<div class="videos-subsection videos-collections">
+        <div class="videos-subheading">Collections<span class="videos-subheading-rule"></span></div>`;
+      Object.entries(groupedVideos).forEach(([cat, vids]) => {
+        html += `<div class="videos-collection-row">
+          <div class="videos-collection-label">${cat}<span class="videos-subheading-rule"></span></div>
+          <div class="videos-collection-thumbs">
+            ${vids.map(v => {
+              const th = v.thumb || getYouTubeThumb(v.url);
+              return `<div class="videos-collection-thumb videos-spotlight-thumb" onclick="spotlightSelect(${v._origIdx})" title="${v.title}">
+                ${th ? `<img src="${th}" alt="${v.title}" loading="lazy">` : `<div class="vcard-thumb vcard-thumb-empty" style="aspect-ratio:16/9">▶</div>`}
+                <div class="video-play" style="width:1.6rem;height:1.6rem;font-size:0.7rem">▶</div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    videosHTML = html;
   } else {
+    // Grid: browsing/discovery. Category-grouped, each group's trailing
+    // incomplete row centered via buildGridRows (see above) rather than
+    // stretching an arbitrary card to fill space.
     if (hasCategories) {
       Object.entries(groupedVideos).forEach(([cat, vids]) => {
-        videosHTML += `<div style="margin-bottom:3rem"><div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem">${cat}<span style="flex:1;height:1px;background:linear-gradient(to right,rgba(201,168,76,0.2),transparent);max-width:200px;display:inline-block"></span></div><div class="videos-grid">${vids.map(v => buildVideoCard(v, v._origIdx)).join('')}</div></div>`;
+        videosHTML += `<div class="videos-category-group"><div class="videos-subheading">${cat}<span class="videos-subheading-rule"></span></div>${buildGridRows(vids)}</div>`;
       });
       if (uncategorized.length) {
-        videosHTML += `<div class="videos-grid">${uncategorized.map(v => buildVideoCard(v, v._origIdx)).join('')}</div>`;
+        videosHTML += buildGridRows(uncategorized);
       }
     } else {
-      videosHTML = `<div class="videos-grid">${visibleVideos.map((v,i) => buildVideoCard(v, i)).join('')}</div>`;
+      videosHTML = buildGridRows(visibleVideos);
     }
   }
 
@@ -1379,13 +1439,18 @@ function buildEPK(epk) {
     <!-- VIDEOS -->
     ${visibleVideos.length ? `
     <section id="videos">
-      <div class="section-label">Video</div>
-      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:0">
-        <h2 class="section-title" data-editable data-editable-key="videoTitle" data-editable-type="title" style="outline:none;margin-bottom:0">Live & On Camera</h2>
-        ${visibleVideos.length > 3 ? `<button onclick="toggleAllVideos()" id="videoToggleBtn" aria-expanded="false" aria-controls="videosAll" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-bottom:1.5rem;transition:all 0.2s">View All Videos +</button>` : ''}
+      <div class="video-shell">
+        <div class="section-label">Video</div>
+        <div class="video-shell-header">
+          <div>
+            <h2 class="section-title" data-editable data-editable-key="videoTitle" data-editable-type="title" style="outline:none;margin-bottom:0.4rem">Live & On Camera</h2>
+            <p class="video-shell-subtitle">Selected performances, live appearances, acoustic sessions, and more.</p>
+          </div>
+          ${visibleVideos.length > 3 ? `<button onclick="toggleAllVideos()" id="videoToggleBtn" aria-expanded="false" aria-controls="videosAll" class="video-toggle-btn">View All Videos +</button>` : ''}
+        </div>
+        <div id="videosFeatured">${visibleVideos.length <= 3 ? videosHTML : `<div class="videos-grid">${visibleVideos.slice(0,3).map((v,i) => buildVideoCard(v,i,false)).join("")}</div>`}</div>
+        ${visibleVideos.length > 3 ? `<div id="videosAll" style="display:none">${videosHTML}</div>` : ''}
       </div>
-      <div id="videosFeatured">${visibleVideos.length <= 3 ? videosHTML : `<div class="videos-grid">${visibleVideos.slice(0,3).map((v,i) => buildVideoCard(v,i)).join("")}</div>`}</div>
-      ${visibleVideos.length > 3 ? `<div id="videosAll" style="display:none">${videosHTML}</div>` : ''}
     </section>
     <div class="divider"></div>` : ''}
 
