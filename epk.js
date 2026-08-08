@@ -2251,6 +2251,21 @@ function initExhibitionMotion(wrap) {
   }, { root: null, rootMargin: '50% 50% 50% 50%', threshold: 0 });
   frames.forEach(el => io.observe(el));
 
+  // Cache each frame's untransformed position within the scrollable
+  // content, measured once before any transform is ever applied.
+  // Necessary because this pass adds translateX (for the slight
+  // center-ward overlap) -- getBoundingClientRect() reflects the
+  // POST-transform position, so reading it directly after a frame has
+  // already been transformed would feed a shifted position back into
+  // the next tick's distance calculation, compounding rather than
+  // settling. Content-relative offset is stable regardless of scroll
+  // or any transform later applied to the element itself.
+  const wrapRectInit = wrap.getBoundingClientRect();
+  frames.forEach((el) => {
+    const r = el.getBoundingClientRect();
+    el._contentOffset = (r.left - wrapRectInit.left) + wrap.scrollLeft + r.width / 2;
+  });
+
   let ticking = false;
   function update() {
     const mobile = isMobile();
@@ -2284,46 +2299,90 @@ function initExhibitionMotion(wrap) {
       // so the full rotation arc completes within the distance a photo
       // is actually visible, not far beyond it.
       const wrapRect = wrap.getBoundingClientRect();
-      const centerX = wrapRect.left + wrapRect.width / 2;
+      const centerX = wrapRect.width / 2;
       const frame0 = frames[0];
       const slotWidth = frames.length > 1
         ? Math.abs(frames[1].getBoundingClientRect().left - frame0.getBoundingClientRect().left)
         : frame0.getBoundingClientRect().width + 56;
       const denom = Math.max(slotWidth * 1.9, 300);
       active.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        const elCenter = rect.left + rect.width / 2;
+        // Position from the cached content offset, not a live
+        // (possibly already-transformed) getBoundingClientRect --
+        // see the caching comment above.
+        const elCenter = el._contentOffset - wrap.scrollLeft;
         const dist = elCenter - centerX;
         const ratio = Math.max(-1, Math.min(1, dist / denom));
-        const rotate = ratio * maxRotate;
-        // Depth: centered photo comes forward at full scale/opacity;
-        // angled photos recede slightly, both in size and presence.
-        const scale = 1 - Math.abs(ratio) * 0.11;
-        const opacity = 1 - Math.abs(ratio) * 0.14;
-        // Conservative depth: a few pixels of recession for off-center
-        // photos (never a forward push, so nothing overlaps its
-        // neighbor), plus stacking so the centered photo naturally
-        // reads above its neighbors rather than all panels feeling
-        // like they're on one flat plane.
-        const depthZ = -Math.abs(ratio) * 22;
-        const stack = Math.round((1 - Math.abs(ratio)) * 10);
-        el.style.transform = `perspective(1400px) rotateY(${rotate.toFixed(2)}deg) scale(${scale.toFixed(3)}) translateZ(${depthZ.toFixed(1)}px)`;
+        const absRatio = Math.abs(ratio);
+        const sign = Math.sign(ratio);
+
+        // Rotation: an accelerating curve (exponent > 1) stays flatter
+        // near center and steepens toward the edges, so the centered
+        // photo reads nearly flat while entering/exiting panels
+        // foreshorten visibly more than a linear curve would give --
+        // "panels turning," not "cards tilted in a row."
+        const rotate = sign * Math.pow(absRatio, 1.4) * maxRotate;
+
+        // Scale: a real dominant center. 1.13 at dead center down to
+        // ~0.77 at the visible edges, continuous with position.
+        const scale = 1.13 - absRatio * 0.36;
+
+        // Depth: center comes forward (positive translateZ, toward
+        // the viewer); neighbors recede. Real hierarchy, not just a
+        // flatter/smaller silhouette.
+        const depthZ = 40 - absRatio * 95;
+
+        // Vertical stagger: alternating neighbors sit slightly higher
+        // or lower, breaking the rigid single baseline. Tied to the
+        // frame's own position in sequence (even/odd) and scaled by
+        // distance from center, so the centered photo always stays
+        // grounded at 0 regardless of which one it is.
+        const idx = frames.indexOf(el);
+        const stagger = (idx % 2 === 0 ? -1 : 1) * Math.min(absRatio, 1) * 26;
+
+        // Slight controlled overlap: a small pull toward center that
+        // peaks mid-transition and returns to zero at both dead
+        // center and the far edge -- dimensional continuity between
+        // frames, not a stacked/card-deck look at either extreme.
+        const pull = -sign * absRatio * (1 - absRatio) * 70;
+
+        const opacity = 1 - absRatio * 0.14;
+        const stack = Math.round((1 - absRatio) * 10);
+        el.style.transform = `perspective(1400px) translateX(${pull.toFixed(1)}px) translateY(${stagger.toFixed(1)}px) rotateY(${rotate.toFixed(2)}deg) scale(${scale.toFixed(3)}) translateZ(${depthZ.toFixed(1)}px)`;
         el.style.opacity = opacity.toFixed(3);
         el.style.zIndex = String(stack);
-        // Caption hierarchy: the centered piece reads fully present;
-        // side captions stay legible, just quieter -- never faded
-        // enough to be hard to read.
+        // Caption hierarchy: the centered piece reads clearly
+        // dominant; side captions fade and shrink substantially with
+        // distance -- still present, never gone entirely.
         const caption = el.closest('.exhibition-slide')?.querySelector('.exhibition-caption');
-        if (caption) caption.style.opacity = (1 - Math.abs(ratio) * 0.45).toFixed(3);
+        if (caption) {
+          caption.style.opacity = (1 - absRatio * 0.7).toFixed(3);
+          caption.style.transform = `scale(${(1 - absRatio * 0.15).toFixed(3)})`;
+        }
       });
     }
     ticking = false;
   }
+  function recomputeOffsets() {
+    const wrapRectNow = wrap.getBoundingClientRect();
+    frames.forEach((el) => {
+      // Reset any transform first so the measurement reflects true
+      // layout position, not a previously-transformed one.
+      const prevTransform = el.style.transform;
+      el.style.transform = 'none';
+      const r = el.getBoundingClientRect();
+      el._contentOffset = (r.left - wrapRectNow.left) + wrap.scrollLeft + r.width / 2;
+      el.style.transform = prevTransform;
+    });
+  }
   function onUpdate() {
     if (!ticking) { requestAnimationFrame(update); ticking = true; }
   }
+  function onResize() {
+    recomputeOffsets();
+    onUpdate();
+  }
   window.addEventListener('scroll', onUpdate, { passive: true });
-  window.addEventListener('resize', onUpdate, { passive: true });
+  window.addEventListener('resize', onResize, { passive: true });
   wrap.addEventListener('scroll', onUpdate, { passive: true });
   update();
 }
