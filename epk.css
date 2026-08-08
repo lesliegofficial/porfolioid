@@ -433,6 +433,17 @@
   .videos-flat-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.25rem; margin-bottom: 1.5rem; }
   .videos-flat-grid > .vcard { flex: 0 0 calc(25% - 0.9375rem); }
   .videos-flat-grid > .vcard .vcard-body { padding-top: 0.7rem; }
+  /* Grid-only typography: reduced so the thumbnail reads first and
+     text simply identifies rather than competes -- Grid is "browse,"
+     not "read" (that's List's job). Scoped under .videos-flat-grid so
+     the shared .vcard-title/.vcard-meta base rules (used by the
+     collapsed preview and Cinematic's More Performances) are
+     untouched. Each element (badge/title/meta/desc) remains its own
+     discrete, independently-selectable class -- nothing here merges
+     them, so any future per-element show/hide option has exactly the
+     same hooks available today. */
+  .videos-flat-grid > .vcard .vcard-title { font-size: 0.86rem; margin-bottom: 0.15rem; }
+  .videos-flat-grid > .vcard .vcard-meta { font-size: 0.54rem; }
   @media (min-width: 900px) and (max-width: 1199px) {
     .videos-flat-grid > .vcard { flex-basis: calc(33.333% - 0.834rem); }
   }
