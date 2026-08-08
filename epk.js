@@ -2322,41 +2322,47 @@ function initExhibitionMotion(wrap) {
         // "panels turning," not "cards tilted in a row."
         const rotate = sign * Math.pow(absRatio, 1.4) * maxRotate;
 
-        // Scale: a real dominant center. 1.13 at dead center down to
-        // ~0.77 at the visible edges, continuous with position.
-        const scale = 1.13 - absRatio * 0.36;
+        // Scale: a moderate center hierarchy -- 1.06 at dead center
+        // down to ~0.88 at the visible edges. The previous 1.13->0.77
+        // range made outer photographs read as miniature, distant
+        // objects rather than legitimate exhibition pieces; this is
+        // deliberately narrower so perspective/rotation carries most
+        // of the perceived depth, not a large size difference.
+        const scale = 1.06 - absRatio * 0.18;
 
         // Depth: center comes forward (positive translateZ, toward
         // the viewer); neighbors recede. Real hierarchy, not just a
         // flatter/smaller silhouette.
         const depthZ = 40 - absRatio * 95;
 
-        // Vertical stagger: alternating neighbors sit slightly higher
-        // or lower, breaking the rigid single baseline. Tied to the
-        // frame's own position in sequence (even/odd) and scaled by
-        // distance from center, so the centered photo always stays
-        // grounded at 0 regardless of which one it is.
-        const idx = frames.indexOf(el);
-        const stagger = (idx % 2 === 0 ? -1 : 1) * Math.min(absRatio, 1) * 26;
+        // No vertical stagger -- removed entirely. It broke the
+        // photographs into a scattered, unrelated-objects feeling
+        // rather than one continuous installation. Perspective
+        // rotation alone now carries the sense of movement.
 
         // Slight controlled overlap: a small pull toward center that
         // peaks mid-transition and returns to zero at both dead
-        // center and the far edge -- dimensional continuity between
-        // frames, not a stacked/card-deck look at either extreme.
-        const pull = -sign * absRatio * (1 - absRatio) * 70;
+        // center and the far edge. Reduced in magnitude to match the
+        // now much tighter base gap between slots (1.1rem, down from
+        // 3.5rem) -- the gap reduction is the primary fix for the
+        // "scattered objects" feeling; this pull only needs to add a
+        // little continuity on top of that, not do the job alone.
+        const pull = -sign * absRatio * (1 - absRatio) * 34;
 
         const opacity = 1 - absRatio * 0.14;
         const stack = Math.round((1 - absRatio) * 10);
-        el.style.transform = `perspective(1400px) translateX(${pull.toFixed(1)}px) translateY(${stagger.toFixed(1)}px) rotateY(${rotate.toFixed(2)}deg) scale(${scale.toFixed(3)}) translateZ(${depthZ.toFixed(1)}px)`;
+        el.style.transform = `perspective(1400px) translateX(${pull.toFixed(1)}px) rotateY(${rotate.toFixed(2)}deg) scale(${scale.toFixed(3)}) translateZ(${depthZ.toFixed(1)}px)`;
         el.style.opacity = opacity.toFixed(3);
         el.style.zIndex = String(stack);
-        // Caption hierarchy: the centered piece reads clearly
-        // dominant; side captions fade and shrink substantially with
-        // distance -- still present, never gone entirely.
+        // Caption hierarchy: present but restrained. The previous fade
+        // to 0.3 made neighboring pieces look disabled/inactive --
+        // every photograph should still read as a legitimate part of
+        // the installation, not a dimmed-out thumbnail. No scale term
+        // either now -- opacity alone carries the hierarchy.
         const caption = el.closest('.exhibition-slide')?.querySelector('.exhibition-caption');
         if (caption) {
-          caption.style.opacity = (1 - absRatio * 0.7).toFixed(3);
-          caption.style.transform = `scale(${(1 - absRatio * 0.15).toFixed(3)})`;
+          caption.style.opacity = (1 - absRatio * 0.3).toFixed(3);
+          caption.style.transform = 'none';
         }
       });
     }

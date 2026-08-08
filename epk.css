@@ -1134,7 +1134,7 @@
 }
 .exhibition-outer > .exhibition-wrap, .exhibition-outer > .exhibition-arrow { position: relative; z-index: 1; }
 .exhibition-wrap {
-  display: flex; align-items: flex-start; gap: 3.5rem;
+  display: flex; align-items: flex-start; gap: 1.1rem;
   overflow-x: auto; overflow-y: hidden;
   padding: 1rem 0 1.5rem;
   scrollbar-width: thin; scrollbar-color: rgba(201,168,76,0.3) transparent;
@@ -1169,7 +1169,7 @@
   -webkit-box-reflect: below 2px linear-gradient(to bottom, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 12%, transparent 20%);
 }
 .exhibition-frame img { height: 100%; width: auto; max-width: none; object-fit: contain; display: block; }
-.exhibition-caption { text-align: center; margin-top: 4.5rem; max-width: 320px; transition: opacity 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); }
+.exhibition-caption { text-align: center; margin-top: 2.5rem; max-width: 320px; transition: opacity 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); }
 .exhibition-caption-title { font-family: var(--font-display); font-size: 1rem; color: var(--white); font-weight: 400; }
 .exhibition-caption-year { font-family: var(--font-mono); font-size: 0.58rem; color: var(--gold); letter-spacing: 0.08em; margin-top: 0.3rem; opacity: 0.85; }
 .exhibition-arrow {
