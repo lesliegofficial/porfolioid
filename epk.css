@@ -364,26 +364,157 @@
   .track-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.6; margin-top: 0.4rem; font-style: italic; }
   .track-role { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); text-align: right; flex-shrink: 0; }
 
-  /* VIDEOS */
-  .videos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 1100px; margin: 0 auto; padding: 0 2rem; box-sizing: border-box; }
-  .videos-spotlight-player { width:100%; max-height:480px; aspect-ratio:16/9; background:#000; margin:0 auto 1.5rem; max-width: 1100px; box-sizing: border-box; position:relative; overflow:hidden; }
-  .videos-spotlight-player video, .videos-spotlight-player iframe { width:100%; height:100%; display:block; border:none; }
-  .videos-spotlight-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0.75rem; max-width: 1100px; margin: 0 auto; padding: 0 2rem; box-sizing: border-box; }
-  @media (max-width: 767px) { .videos-spotlight-grid { grid-template-columns: 1fr; } }
-  @media (min-width: 768px) and (max-width: 1024px) { .videos-spotlight-grid { grid-template-columns: repeat(2, 1fr); } }
-  .videos-spotlight-thumb { cursor:pointer; position:relative; opacity:0.65; transition:opacity 0.2s,border-color 0.2s; border:2px solid transparent; }
-  .videos-spotlight-thumb:hover { opacity:1; }
-  .videos-spotlight-thumb.active { opacity:1; border-color:var(--gold); }
-  .videos-spotlight-thumb img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
-  .videos-spotlight-thumb .spot-title { font-family:var(--font-mono); font-size:0.55rem; letter-spacing:0.05em; color:var(--gray); padding:0.3rem 0.4rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .video-card { background: var(--dark-3); overflow: hidden; cursor: pointer; position: relative; }
-  .video-thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: var(--dark-4); }
-  .video-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1rem; background: rgba(0,0,0,0.5); transition: all 0.3s; }
-  .video-card:hover .video-play { background: var(--gold); color: var(--black); }
-  .video-caption { padding: 0.6rem 0.75rem 0.4rem; font-size: 0.78rem; color: var(--white); font-weight: 400; }
-  .video-meta { padding: 0 1rem 0.4rem; font-family: var(--font-mono); font-size: 0.6rem; color: var(--gray); letter-spacing: 0.05em; }
-  .video-meta span { color: var(--gold); }
-  .video-desc { padding: 0 1rem 0.75rem; font-size: 0.78rem; color: var(--gray); line-height: 1.6; font-style: italic; }
+  /* VIDEOS — shared editorial shell + card system, used by every layout
+     in both collapsed and expanded states. */
+  .video-shell { max-width: 1200px; margin: 0 auto; padding: 3.5rem clamp(20px, 4vw, 48px) 0; box-sizing: border-box; }
+  .video-shell .section-label { margin-bottom: 1.1rem; }
+  .video-shell-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+  .video-shell-subtitle { font-size: 0.85rem; color: var(--gray); margin-top: 0.5rem; max-width: 520px; line-height: 1.6; }
+  .video-toggle-btn { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); background: none; border: 1px solid rgba(201,168,76,0.3); padding: 0.5rem 1.1rem; cursor: pointer; transition: all 0.2s; flex-shrink: 0; white-space: nowrap; }
+  .video-toggle-btn:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.5); }
+
+  /* Shared card component -- collapsed preview, Grid, and compact
+     supporting rows in Cinematic/Spotlight. */
+  .vcard { background: transparent; border: none; overflow: visible; transition: transform 0.3s; }
+  .vcard:hover { transform: translateY(-3px); }
+  .vcard-media { position: relative; background: #000; overflow: hidden; border: 1px solid rgba(201,168,76,0.1); transition: border-color 0.3s; }
+  .vcard:hover .vcard-media { border-color: rgba(201,168,76,0.4); }
+  .vcard-media-clickable { cursor: pointer; }
+  .vcard-thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: var(--dark-4); }
+  .vcard-thumb-empty { display: flex; align-items: center; justify-content: center; color: var(--gray); font-size: 2rem; aspect-ratio: 16/9; }
+  .vcard-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1rem; background: rgba(0,0,0,0.5); transition: all 0.3s; pointer-events: none; }
+  .vcard:hover .vcard-play { background: var(--gold); color: var(--black); }
+  .vcard-badge { position: absolute; top: 0.6rem; left: 0.6rem; font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(0,0,0,0.75); color: var(--gold); padding: 0.2rem 0.55rem; z-index: 2; }
+  .vcard-badge-featured { left: auto; right: 0.6rem; background: rgba(201,168,76,0.92); color: var(--black); }
+  .vcard-body { padding: 0.9rem 0.1rem 0; border-top: 1px solid rgba(201,168,76,0.1); }
+  .vcard-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 400; color: var(--white); margin-bottom: 0.3rem; line-height: 1.25; }
+  .vcard-meta { font-family: var(--font-mono); font-size: 0.58rem; color: var(--gray); letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .vcard-meta span { color: var(--gold); }
+  .vcard-desc { font-size: 0.78rem; color: #999; line-height: 1.6; font-style: italic; }
+  .vcard-ytlink { display: block; text-align: right; margin-top: 0.4rem; font-family: var(--font-mono); font-size: 0.55rem; color: var(--gray); letter-spacing: 0.05em; text-decoration: none; opacity: 0.6; }
+
+  /* Grid: explicit 3/2/1 responsive steps. Trailing incomplete row is
+     centered via a flex modifier that matches the column's per-card
+     width -- never by enlarging an arbitrary card. */
+  /* Grid: auto-fit responsive columns (3 desktop / 2 tablet / 1 mobile,
+     verified via computed column count at each breakpoint) that also
+     centers a trailing incomplete row automatically via
+     justify-content:center -- this works correctly at every breakpoint
+     without needing JS to pre-split rows by an assumed column count,
+     which is what caused a real bug: a JS split computed for 3 columns
+     left an uncentered orphan card when the grid responsively dropped
+     to 2 columns. Card width capped (not stretched) so cards never
+     enlarge just to fill empty space. */
+  .videos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 330px)); justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+  /* justify-content:center only centers the grid's overall track
+     structure, not each individual row -- a lone trailing item (e.g.
+     5 items in a 3-column grid) still anchors to column 1 of that
+     shared structure. Span it across the full row and center it
+     within that span instead. The 3n+1 pattern is only valid for a
+     3-column layout, so this is explicitly scoped to >1024px; a
+     matching 2n+1 version is scoped to the 768-1024px tablet range
+     below, where the column count is 2, not 3. */
+  @media (min-width: 1025px) {
+    .videos-grid > .vcard:last-child:nth-child(3n+1) { grid-column: 1 / -1; justify-self: center; }
+  }
+  /* Grid: compact static multi-column grid, deliberately not a
+     carousel. Flexbox with percentage flex-basis (not CSS grid) --
+     flex-wrap creates genuinely independent rows, so
+     justify-content:center correctly centers a trailing partial row
+     of ANY size (1, 2, or 3 leftover items), not just a single
+     orphan. CSS grid's justify-content only centers the whole track
+     structure, which cannot express "center this specific row" for a
+     multi-item trailing group -- confirmed by testing: the real
+     7-item/4-column case (a 4+3 split) left the trailing 3 items
+     left-aligned even with the same nth-child technique that
+     correctly handles a single trailing item elsewhere in this file.
+     Percentage-basis (not auto-fit, not fixed carousel-style pixel
+     width) gives an explicit, predictable column count per tier. */
+  .videos-flat-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.25rem; margin-bottom: 1.5rem; }
+  .videos-flat-grid > .vcard { flex: 0 0 calc(25% - 0.9375rem); }
+  .videos-flat-grid > .vcard .vcard-body { padding-top: 0.7rem; }
+  /* Grid-only typography: reduced so the thumbnail reads first and
+     text simply identifies rather than competes -- Grid is "browse,"
+     not "read" (that's List's job). Scoped under .videos-flat-grid so
+     the shared .vcard-title/.vcard-meta base rules (used by the
+     collapsed preview and Cinematic's More Performances) are
+     untouched. Each element (badge/title/meta/desc) remains its own
+     discrete, independently-selectable class -- nothing here merges
+     them, so any future per-element show/hide option has exactly the
+     same hooks available today. */
+  .videos-flat-grid > .vcard .vcard-title { font-size: 0.86rem; margin-bottom: 0.15rem; }
+  .videos-flat-grid > .vcard .vcard-meta { font-size: 0.54rem; }
+  @media (min-width: 900px) and (max-width: 1199px) {
+    .videos-flat-grid > .vcard { flex-basis: calc(33.333% - 0.834rem); }
+  }
+  @media (min-width: 600px) and (max-width: 899px) {
+    .videos-flat-grid > .vcard { flex-basis: calc(50% - 0.625rem); }
+  }
+  @media (max-width: 599px) {
+    .videos-flat-grid { gap: 1.5rem; }
+    .videos-flat-grid > .vcard { flex-basis: 100%; }
+    .videos-flat-grid > .vcard { max-width: 100%; }
+  }
+
+  /* Horizontal video carousel: shared by Grid categories, Cinematic's
+     More Performances, and Spotlight's Collections. Cards keep their
+     normal fixed size (no wrapping/stretching); the row scrolls
+     horizontally instead of the page growing vertically. */
+  .video-carousel-wrap { position: relative; margin-bottom: 1.5rem; }
+  .video-carousel {
+    display: flex; gap: 1.5rem; overflow-x: auto; scroll-behavior: smooth;
+    scroll-snap-type: x proximity; padding-bottom: 0.5rem;
+    scrollbar-width: thin; scrollbar-color: rgba(201,168,76,0.3) transparent;
+    /* Subtle edge fade signaling more content off-screen. Right edge
+       only, so the first card is never dimmed. Purely visual (mask
+       only affects compositing, not hit-testing), so it has zero
+       effect on clicking, scrolling, wheel-redirect, touch, keyboard,
+       or the arrow buttons, which are separate sibling elements. */
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
+    mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
+  }
+  .video-carousel::-webkit-scrollbar { height: 6px; }
+  .video-carousel::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.25); border-radius: 3px; }
+  .video-carousel::-webkit-scrollbar-track { background: transparent; }
+  .video-carousel > .vcard { flex: 0 0 300px; width: 300px; scroll-snap-align: start; }
+  .video-carousel-arrow {
+    position: absolute; top: 40%; transform: translateY(-50%);
+    width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(201,168,76,0.3);
+    background: rgba(8,8,8,0.85); color: var(--gold); font-size: 1.1rem; line-height: 1;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.2s, background 0.2s; z-index: 2;
+  }
+  .video-carousel-arrow:hover { border-color: rgba(201,168,76,0.7); background: rgba(8,8,8,0.95); }
+  .video-carousel-arrow-prev { left: -14px; }
+  .video-carousel-arrow-next { right: -14px; }
+  @media (max-width: 767px) {
+    .video-carousel-arrow { display: none; }
+    .video-carousel { margin: 0 -20px; padding-left: 20px; padding-right: 20px; }
+    .video-carousel > .vcard { flex-basis: 78vw; width: 78vw; }
+  }
+  /* Spotlight's flattened Collections carousel uses the smaller
+     collection-thumb card, not the full .vcard. */
+  .video-carousel > .videos-collection-thumb { flex: 0 0 260px; width: 260px; scroll-snap-align: start; }
+  @media (max-width: 767px) {
+    .video-carousel > .videos-collection-thumb { flex-basis: 62vw; width: 62vw; }
+  }
+  .videos-subheading { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 1rem; }
+  .videos-subheading-rule { flex: 1; height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.2), transparent); max-width: 200px; display: inline-block; }
+  .videos-subsection { margin-top: 2.5rem; }
+
+  /* List: centered editorial archive, narrower than the full shell so it
+     reads as one deliberate column rather than a stretched table. */
+  .videos-list-wrap { max-width: 960px; margin: 0 auto; }
+  .video-list-item { display: flex; gap: 1.25rem; padding: 1.75rem 0; border-bottom: 1px solid rgba(201,168,76,0.08); align-items: flex-start; }
+  .video-list-item:first-child { padding-top: 0.25rem; }
+  .video-list-thumb { width: 235px; flex-shrink: 0; position: relative; cursor: pointer; }
+  .video-list-thumb img, .video-list-thumb video { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; border: 1px solid rgba(201,168,76,0.15); }
+  .video-list-thumb .video-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold); background: rgba(0,0,0,0.5); font-size: 0.8rem; pointer-events: none; }
+  .video-list-info { flex: 1; max-width: 680px; }
+  .video-list-category { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; opacity: 0.85; }
+  .video-list-title { font-size: 1.05rem; font-weight: 400; color: var(--white); margin-bottom: 0.35rem; font-family: var(--font-display); }
+  .video-list-meta { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gold); letter-spacing: 0.08em; margin-bottom: 0.6rem; }
+  .video-list-desc { font-size: 0.85rem; color: #999; font-style: italic; line-height: 1.7; }
 
   /* PHOTOS */
   .gallery-section { background: var(--dark-2); padding: 3rem 0; max-width: 100%; }
@@ -443,23 +574,52 @@
   @media (max-width: 768px) { .gallery-4col { grid-template-columns: repeat(2, 1fr); } .gallery-col { height: 260px; } }
 
   /* VIDEO LAYOUTS */
-  /* Cinematic — first video large, rest below */
-  .video-cinematic-featured { margin: 0 auto 1.5rem; position: relative; max-width: 860px; padding: 0 2rem; box-sizing: border-box; }
-  .video-cinematic-featured video, .video-cinematic-featured iframe { width: 100%; aspect-ratio: 16/9; display: block; background: #000; border: 1px solid rgba(201,168,76,0.15); }
-  .video-cinematic-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin: 0.75rem 0 0.25rem; }
-  .video-cinematic-meta { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
-  .video-cinematic-desc { font-size: 0.85rem; color: var(--gray); font-style: italic; }
-  .video-cinematic-rest { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; max-width: 1100px; margin: 0 auto; padding: 0 2rem; box-sizing: border-box; }
-  /* List layout */
-  .video-list-item { display: flex; gap: 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid rgba(201,168,76,0.06); align-items: flex-start; }
-  .video-list-thumb { width: 160px; flex-shrink: 0; position: relative; cursor: pointer; }
-  .video-list-thumb img, .video-list-thumb video { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; border: 1px solid rgba(201,168,76,0.15); }
-  .video-list-thumb .video-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold); background: rgba(0,0,0,0.5); font-size: 0.8rem; }
-  .video-list-info { flex: 1; }
-  .video-list-title { font-size: 1rem; font-weight: 400; color: var(--white); margin-bottom: 0.3rem; }
-  .video-list-meta { font-family: var(--font-mono); font-size: 0.6rem; color: var(--gold); letter-spacing: 0.08em; margin-bottom: 0.4rem; }
-  .video-list-desc { font-size: 0.82rem; color: var(--gray); font-style: italic; line-height: 1.6; }
-  @media (max-width: 768px) { .video-list-item { flex-direction: column; } .video-list-thumb { width: 100%; } }
+  /* Cinematic + Spotlight shared editorial hero: video left, info right
+     on desktop, stacks on mobile. Substantial but not oversized. */
+  .video-hero { display: flex; gap: 2.5rem; align-items: center; margin-bottom: 1rem; position: relative; }
+  .video-hero-media { flex: 0 0 58%; max-width: 58%; aspect-ratio: 16/9; background: #000; position: relative; overflow: hidden; border: 1px solid rgba(201,168,76,0.15); }
+  .video-hero-info { flex: 1; min-width: 0; }
+  .video-hero-eyebrow { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .video-hero-eyebrow-featured { letter-spacing: 0.22em; font-weight: 600; }
+  .video-hero-title { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--white); margin: 0 0 0.5rem; line-height: 1.2; }
+  .video-hero-meta { font-family: var(--font-mono); font-size: 0.65rem; color: var(--gold); letter-spacing: 0.08em; margin-bottom: 1.6rem; opacity: 0.85; }
+  .video-hero-desc { font-size: 0.9rem; color: #999; line-height: 1.8; margin-bottom: 2rem; max-width: 460px; }
+  .video-hero-watch { display: inline-block; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(201,168,76,0.4); padding-bottom: 0.2rem; transition: border-color 0.2s, opacity 0.2s; }
+  .video-hero-watch:hover { border-color: var(--gold); opacity: 0.85; }
+
+  /* Restrained gold glow behind the hero only -- Cinematic/Spotlight. */
+  .video-hero-glow::before { content: ''; position: absolute; top: -10%; left: -5%; right: -5%; bottom: -10%; background: radial-gradient(circle at 50% 25%, rgba(198,158,69,0.06), transparent 55%); pointer-events: none; z-index: 0; }
+  .video-hero-glow > * { position: relative; z-index: 1; }
+
+  /* Spotlight Collections */
+  .videos-collections { margin-top: 3.5rem; padding-top: 2.5rem; border-top: 1px solid rgba(201,168,76,0.1); }
+  .videos-collection-thumb { cursor: pointer; position: relative; opacity: 0.7; transition: opacity 0.2s, border-color 0.2s; border: 2px solid transparent; }
+  .videos-collection-thumb:hover, .videos-collection-thumb.active { opacity: 1; border-color: var(--gold); }
+  .videos-collection-thumb img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+
+  /* Responsive: non-overlapping ranges by construction (<=767 vs
+     768-1024) so there is no possibility of a cascade tie at the 768px
+     boundary, regardless of source order. */
+  @media (max-width: 767px) {
+    .video-shell { padding: 2.5rem 20px 0; }
+    .video-shell-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+    .videos-grid { grid-template-columns: 1fr; }
+    .video-hero { flex-direction: column; gap: 1.25rem; }
+    .video-hero-media { flex: 1 1 auto; max-width: 100%; }
+    .video-hero-info { padding-top: 0.25rem; }
+    .video-hero-desc { max-width: 100%; }
+    .videos-list-wrap { max-width: 100%; }
+    .video-list-item { flex-direction: column; gap: 1rem; }
+    .video-list-thumb { width: 100%; }
+    .video-list-info { max-width: 100%; }
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .videos-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 310px)); }
+    .video-hero-media { flex-basis: 52%; max-width: 52%; }
+    .videos-grid > .vcard:last-child:nth-child(3n+1) { grid-column: auto; justify-self: stretch; }
+    .videos-grid > .vcard:last-child:nth-child(2n+1) { grid-column: 1 / -1; justify-self: center; }
+  }
+
 
   /* GALLERY MARQUEE */
   .gallery-marquee-wrap {
@@ -760,11 +920,6 @@
     .credits-grid .credit-card:last-child:nth-child(3n+2) { grid-column: 1; }
     .credit-card { padding: 1.25rem; }
     .credit-modal { padding: 1.5rem 1.25rem; max-height: 85vh; }
-
-    /* VIDEOS */
-    .videos-grid { grid-template-columns: 1fr; }
-    .video-list-item { flex-direction: column; }
-    .video-list-thumb { width: 100%; }
 
     /* PHOTOS */
     .gallery-slideshows { grid-template-columns: 1fr; height: auto; }
@@ -1348,11 +1503,6 @@
     .credit-card { padding: 1.25rem; }
     .credit-modal { padding: 1.5rem 1.25rem; max-height: 85vh; }
 
-    /* VIDEOS */
-    .videos-grid { grid-template-columns: 1fr; }
-    .video-list-item { flex-direction: column; }
-    .video-list-thumb { width: 100%; }
-
     /* PHOTOS */
     .gallery-slideshows { grid-template-columns: 1fr; height: auto; }
     .gallery-col { height: 280px; }
@@ -1374,14 +1524,6 @@
     .owner-bar-right { gap: 0.5rem; }
   }
 
-  /* Tablet: 2-column video grid. Placed after the <=768px block above so
-     it wins the cascade at exactly 768px (both rules target
-     .videos-grid; later source order wins for equal specificity),
-     ensuring 768px gets 2 columns rather than falling through to the
-     1-column mobile rule. */
-  @media (min-width: 768px) and (max-width: 1024px) {
-    .videos-grid { grid-template-columns: repeat(2, 1fr); }
-  }
   @media (max-width: 480px) {
     /* Phones — further reduce the portrait panel beyond the 768px tablet
        cap, so it doesn't dominate the first screen on small devices. */
