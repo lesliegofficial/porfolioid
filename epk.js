@@ -848,9 +848,9 @@ function buildEPK(epk) {
   // handled entirely by CSS (repeat(auto-fit, minmax(...)) +
   // justify-content:center) -- correct at every breakpoint automatically,
   // never by arbitrarily enlarging a card.
-  const buildGridRows = (vids) => {
+  const buildGridRows = (vids, showDesc) => {
     if (!vids.length) return '';
-    return `<div class="videos-grid">${vids.map(v => buildVideoCard(v, v._origIdx, true)).join('')}</div>`;
+    return `<div class="videos-grid">${vids.map(v => buildVideoCard(v, v._origIdx, showDesc)).join('')}</div>`;
   };
 
   let videosHTML = '';
@@ -872,9 +872,9 @@ function buildEPK(epk) {
       </div>`;
     }
     if (rest.length) {
-      videosHTML += `<div class="videos-subsection">
+      videosHTML += `<div class="videos-subsection videos-more-performances">
         <div class="videos-subheading">More Performances<span class="videos-subheading-rule"></span></div>
-        ${buildGridRows(rest.map((v,i) => { v._origIdx = first ? i + 1 : i; return v; }))}
+        ${buildGridRows(rest.map((v,i) => { v._origIdx = first ? i + 1 : i; return v; }), true)}
       </div>`;
     }
   } else if (videoLayout === 'list') {
@@ -939,7 +939,7 @@ function buildEPK(epk) {
       const recommended = rest.slice(0, 3);
       html += `<div class="videos-subsection">
         <div class="videos-subheading">Recommended<span class="videos-subheading-rule"></span></div>
-        <div class="videos-grid">${recommended.map(v => buildSpotlightThumb(v, 'recommended')).join('')}</div>
+        <div class="videos-recommended-grid">${recommended.map(v => buildSpotlightThumb(v, 'recommended')).join('')}</div>
       </div>`;
     }
     if (hasCategories) {
@@ -962,13 +962,13 @@ function buildEPK(epk) {
     // stretching an arbitrary card to fill space.
     if (hasCategories) {
       Object.entries(groupedVideos).forEach(([cat, vids]) => {
-        videosHTML += `<div class="videos-category-group"><div class="videos-subheading">${cat}<span class="videos-subheading-rule"></span></div>${buildGridRows(vids)}</div>`;
+        videosHTML += `<div class="videos-category-group"><div class="videos-subheading">${cat}<span class="videos-subheading-rule"></span></div>${buildGridRows(vids, false)}</div>`;
       });
       if (uncategorized.length) {
-        videosHTML += buildGridRows(uncategorized);
+        videosHTML += buildGridRows(uncategorized, false);
       }
     } else {
-      videosHTML = buildGridRows(visibleVideos);
+      videosHTML = buildGridRows(visibleVideos, false);
     }
   }
 
