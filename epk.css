@@ -1112,22 +1112,24 @@
    into visible motion, and the restrained framing/shadow language. */
 .exhibition-outer {
   position: relative; max-width: 1400px; margin: 2rem auto 0; padding: 0 3.5rem;
-  /* Gallery room, not a black web component: a genuine dark warm-
-     charcoal base (not pure black with a faint overlay on top of
-     it -- that was the earlier attempt, and it read as almost the
-     same because there was no real surface for light to register
-     against). A distinct horizontal floor plane sits across roughly
-     the lower 38% (added via ::before below), only slightly lighter/
-     warmer than the wall tone above it -- enough separation for the
-     reflection to actually have contrast, not a vertical gradient
-     demo. Center pool stays broad/soft/wide, no visible circle. */
-  background-color: #18150f;
-  background-image: radial-gradient(ellipse 900px 500px at 50% 45%, rgba(140,114,68,0.14), transparent 72%);
+  /* Neutral dark museum room -- black walls, graphite floor, gold
+     stays an accent (arrows/metadata/labels) rather than tinting the
+     room itself. A warmer/browner version of this was tried and
+     rejected: it read as a muddy sepia lounge and visually competed
+     with the photographs instead of receding behind them. This
+     version uses the site's own --dark-2 (#141414, already
+     established elsewhere in the page) for the wall, and genuinely
+     neutral grays for the floor and ambient light -- no warm/gold
+     tint on the room itself. */
+  background-color: var(--dark-2);
+  background-image: radial-gradient(ellipse 900px 500px at 50% 45%, rgba(255,255,255,0.025), transparent 72%);
 }
 .exhibition-outer::before {
   content: '';
   position: absolute; left: 0; right: 0; bottom: 0; height: 38%;
-  background: linear-gradient(to bottom, transparent, rgba(80,66,42,0.22) 35%, rgba(80,66,42,0.26) 100%);
+  /* Floor plane: neutral graphite, only a few percent lighter than
+     the wall -- something sensed, not something seen. */
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.035) 35%, rgba(255,255,255,0.045) 100%);
   pointer-events: none;
 }
 .exhibition-outer > .exhibition-wrap, .exhibition-outer > .exhibition-arrow { position: relative; z-index: 1; }
