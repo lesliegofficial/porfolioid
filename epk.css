@@ -406,6 +406,17 @@
      to 2 columns. Card width capped (not stretched) so cards never
      enlarge just to fill empty space. */
   .videos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 330px)); justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+  /* justify-content:center only centers the grid's overall track
+     structure, not each individual row -- a lone trailing item (e.g.
+     5 items in a 3-column grid) still anchors to column 1 of that
+     shared structure. Span it across the full row and center it
+     within that span instead. The 3n+1 pattern is only valid for a
+     3-column layout, so this is explicitly scoped to >1024px; a
+     matching 2n+1 version is scoped to the 768-1024px tablet range
+     below, where the column count is 2, not 3. */
+  @media (min-width: 1025px) {
+    .videos-grid > .vcard:last-child:nth-child(3n+1) { grid-column: 1 / -1; justify-self: center; }
+  }
   .videos-category-group { margin-bottom: 2.5rem; }
   .videos-subheading { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 1rem; }
   .videos-subheading-rule { flex: 1; height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.2), transparent); max-width: 200px; display: inline-block; }
@@ -532,9 +543,11 @@
     .video-list-info { max-width: 100%; }
   }
   @media (min-width: 768px) and (max-width: 1024px) {
-    .videos-grid { grid-template-columns: repeat(2, 1fr); }
-    .videos-more-performances .videos-grid { grid-template-columns: repeat(2, 1fr); }
+    .videos-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 310px)); }
+    .videos-more-performances .videos-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 310px)); }
     .video-hero-media { flex-basis: 52%; max-width: 52%; }
+    .videos-grid > .vcard:last-child:nth-child(3n+1) { grid-column: auto; justify-self: stretch; }
+    .videos-grid > .vcard:last-child:nth-child(2n+1) { grid-column: 1 / -1; justify-self: center; }
   }
 
 
