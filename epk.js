@@ -1739,7 +1739,7 @@ function buildMarqueeGallery(photos, container) {
   track.className = 'gallery-marquee';
   // Apply scroll speed from epk data (if set by Dashboard) or fall back to default constant.
   // Future Dashboard controls write to epk.galleryScrollSpeed — no CSS rewrite needed.
-  const speed = (typeof epk !== 'undefined' && epk.galleryScrollSpeed) ? epk.galleryScrollSpeed : GALLERY_SCROLL_SPEED_DEFAULT;
+  const speed = (window._epkData && window._epkData.galleryScrollSpeed) ? window._epkData.galleryScrollSpeed : GALLERY_SCROLL_SPEED_DEFAULT;
   track.style.setProperty('--marquee-speed', speed + 's');
   // Double the photos for seamless infinite loop
   const allPhotos = [...photos, ...photos];
@@ -2127,117 +2127,37 @@ function buildCollectionsGallery(photos, container) {
 }
 
 function buildGridGallery(photos, container) {
-  let PAGE_SIZE = 20;
-  let page = 0;
-  const wrap = document.createElement('div');
-  wrap.className = 'gallery-grid-wrap';
-
-  function renderPage() {
-    wrap.innerHTML = '';
-    const start = page * PAGE_SIZE;
-    const end = Math.min(start + PAGE_SIZE, photos.length);
-
-    const grid = document.createElement('div');
-    grid.className = 'gallery-grid';
-    photos.slice(start, end).forEach(photo => {
-      const item = document.createElement('div');
-      item.className = 'gallery-grid-item';
-      const img = document.createElement('img');
-      img.src = photo.url;
-      img.alt = photo.caption || '';
-      img.loading = 'lazy';
-      img.style.objectPosition = (photo.position && photo.position !== 'center') ? photo.position : 'center top';
-      img.onerror = function() { this.style.display = 'none'; };
-      item.appendChild(img);
-      if (photo.caption) {
-        const cap = document.createElement('div');
-        cap.className = 'gallery-grid-caption';
-        cap.textContent = photo.caption;
-        item.appendChild(cap);
-      }
-      item.onclick = () => openLightbox(photo.url);
-      grid.appendChild(item);
-    });
-    wrap.appendChild(grid);
-
-    // Pagination bar
-    const totalPages = Math.ceil(photos.length / PAGE_SIZE);
-    const pagBar = document.createElement('div');
-    pagBar.className = 'gallery-grid-pagbar';
-
-    // Count label
-    const countLabel = document.createElement('div');
-    countLabel.className = 'gallery-grid-count';
-    countLabel.textContent = `Showing ${start + 1} to ${end} of ${photos.length} photos`;
-    pagBar.appendChild(countLabel);
-
-    // Page buttons
-    const pagBtns = document.createElement('div');
-    pagBtns.className = 'gallery-grid-pagination';
-    if (totalPages > 1) {
-      // Prev
-      const prev = document.createElement('button');
-      prev.innerHTML = '&#8249;';
-      prev.className = 'gallery-grid-pag-btn' + (page === 0 ? ' disabled' : '');
-      prev.disabled = page === 0;
-      prev.onclick = () => { if (page > 0) { page--; renderPage(); } };
-      pagBtns.appendChild(prev);
-
-      // Page numbers with ellipsis
-      const pageNums = [];
-      if (totalPages <= 7) {
-        for (let i = 0; i < totalPages; i++) pageNums.push(i);
-      } else {
-        pageNums.push(0);
-        if (page > 2) pageNums.push('...');
-        for (let i = Math.max(1, page-1); i <= Math.min(totalPages-2, page+1); i++) pageNums.push(i);
-        if (page < totalPages - 3) pageNums.push('...');
-        pageNums.push(totalPages - 1);
-      }
-      pageNums.forEach(n => {
-        if (n === '...') {
-          const ell = document.createElement('span');
-          ell.textContent = '...';
-          ell.style.cssText = 'font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);padding:0 0.25rem';
-          pagBtns.appendChild(ell);
-        } else {
-          const btn = document.createElement('button');
-          btn.textContent = n + 1;
-          btn.className = 'gallery-grid-pag-btn' + (n === page ? ' active' : '');
-          btn.onclick = () => { page = n; renderPage(); };
-          pagBtns.appendChild(btn);
-        }
-      });
-
-      // Next
-      const next = document.createElement('button');
-      next.innerHTML = '&#8250;';
-      next.className = 'gallery-grid-pag-btn' + (page === totalPages - 1 ? ' disabled' : '');
-      next.disabled = page === totalPages - 1;
-      next.onclick = () => { if (page < totalPages - 1) { page++; renderPage(); } };
-      pagBtns.appendChild(next);
-    }
-    pagBar.appendChild(pagBtns);
-
-    // Photos per page selector
-    const perPageWrap = document.createElement('div');
-    perPageWrap.className = 'gallery-grid-perpage';
-    perPageWrap.innerHTML = `<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.05em">Photos per page:</span>
-      <select onchange="this.closest('.gallery-grid-wrap') && (arguments[0].target.closest('.gallery-grid-wrap'))" style="background:var(--dark-3);border:1px solid rgba(201,168,76,0.2);color:var(--text);font-family:var(--font-mono);font-size:0.55rem;padding:0.2rem 0.4rem;cursor:pointer;outline:none">
-        <option value="12" ${PAGE_SIZE===12?'selected':''}>12</option>
-        <option value="20" ${PAGE_SIZE===20?'selected':''}>20</option>
-        <option value="40" ${PAGE_SIZE===40?'selected':''}>40</option>
-      </select>`;
-    perPageWrap.querySelector('select').onchange = e => {
-      PAGE_SIZE = parseInt(e.target.value);
-      page = 0;
-      renderPage();
-    };
-    pagBar.appendChild(perPageWrap);
-    wrap.appendChild(pagBar);
-  }
-  renderPage();
-  container.appendChild(wrap);
+  // Editorial "Gallery" -- image-first, minimal text (caption + year
+  // only). Reuses the same percentage-flexbox technique proven for
+  // Video's Grid so a trailing incomplete row centers correctly at
+  // every column-count tier, regardless of how many items are left
+  // over. No pagination -- matches the "see everything quickly"
+  // purpose; revisit only if a very large library proves this wrong.
+  if (!photos.length) return;
+  const grid = document.createElement('div');
+  grid.className = 'photo-flat-grid';
+  photos.forEach((photo, i) => {
+    const item = document.createElement('div');
+    item.className = 'pcard owner-item-wrap';
+    const pos = photo.position || 'center';
+    const capHTML = photo.caption ? `<div class="pcard-title">${photo.caption}</div>` : '';
+    const yearHTML = photo.year ? `<div class="pcard-meta">${photo.year}</div>` : '';
+    item.innerHTML = `
+      <div class="owner-overlay" style="flex-direction:row;gap:0.2rem">
+        <button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('photos',${i},-1)" title="Move Left">◀</button>
+        <button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('photos',${i},1)" title="Move Right">▶</button>
+      </div>
+      <div class="pcard-media">
+        <img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" style="object-position:${pos}" onerror="this.style.display='none'">
+      </div>
+      ${(capHTML || yearHTML) ? `<div class="pcard-body">${capHTML}${yearHTML}</div>` : ''}
+    `;
+    const media = item.querySelector('.pcard-media');
+    media.style.cursor = 'pointer';
+    media.onclick = () => openLightbox(photo.url, photo);
+    grid.appendChild(item);
+  });
+  container.appendChild(grid);
 }
 
 function buildMagazineGallery(photos, container) {
@@ -2482,8 +2402,12 @@ let _galleryCategoryFilter = 'all';
 function buildCategoryBar(photos) {
   const bar = document.getElementById('galleryCategoryBar');
   if (!bar) return;
-  // Layouts that use category bar
-  const showBar = ['collections','grid','magazine','timeline','wall'].includes(currentGalleryLayout);
+  // Layouts that use category bar. 'grid' intentionally excluded --
+  // the approved Gallery design is a clean flat grid with no filter
+  // UI (minimal text, see-everything-quickly), and this bar has a
+  // pre-existing mobile overflow issue in the other four modes that
+  // is out of scope for this Gallery-only redesign.
+  const showBar = ['collections','magazine','timeline','wall'].includes(currentGalleryLayout);
   if (!showBar) { bar.innerHTML = ''; return; }
 
   // Build category counts
@@ -2522,8 +2446,8 @@ function buildCategoryBar(photos) {
 function buildGallery(photos) {
   galleryPhotos = photos;
   // Use saved layout preference from dashboard
-  if (typeof epk !== 'undefined' && epk.galleryLayout) {
-    currentGalleryLayout = epk.galleryLayout;
+  if (window._epkData && window._epkData.galleryLayout) {
+    currentGalleryLayout = window._epkData.galleryLayout;
   }
   // Sync dropdown
   const sel = document.getElementById('galleryLayoutSelect');
