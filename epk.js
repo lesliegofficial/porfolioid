@@ -2638,6 +2638,12 @@ function buildGallery(photos) {
   if (window._epkData && window._epkData.galleryLayout) {
     currentGalleryLayout = window._epkData.galleryLayout;
   }
+  // Preview-only override: ?previewLayout=exhibition lets a specific
+  // layout be reviewed on a deploy preview without writing anything to
+  // the real saved dashboard preference. Read-only, client-side only,
+  // never touches window._epkData or persists anywhere.
+  const previewLayout = new URLSearchParams(window.location.search).get('previewLayout');
+  if (previewLayout) currentGalleryLayout = previewLayout;
   // Sync dropdown
   const sel = document.getElementById('galleryLayoutSelect');
   if (sel) sel.value = currentGalleryLayout;
