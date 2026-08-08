@@ -417,7 +417,33 @@
   @media (min-width: 1025px) {
     .videos-grid > .vcard:last-child:nth-child(3n+1) { grid-column: 1 / -1; justify-self: center; }
   }
-  .videos-category-group { margin-bottom: 2.5rem; }
+  /* Grid: compact static multi-column grid, deliberately not a
+     carousel. Flexbox with percentage flex-basis (not CSS grid) --
+     flex-wrap creates genuinely independent rows, so
+     justify-content:center correctly centers a trailing partial row
+     of ANY size (1, 2, or 3 leftover items), not just a single
+     orphan. CSS grid's justify-content only centers the whole track
+     structure, which cannot express "center this specific row" for a
+     multi-item trailing group -- confirmed by testing: the real
+     7-item/4-column case (a 4+3 split) left the trailing 3 items
+     left-aligned even with the same nth-child technique that
+     correctly handles a single trailing item elsewhere in this file.
+     Percentage-basis (not auto-fit, not fixed carousel-style pixel
+     width) gives an explicit, predictable column count per tier. */
+  .videos-flat-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.25rem; margin-bottom: 1.5rem; }
+  .videos-flat-grid > .vcard { flex: 0 0 calc(25% - 0.9375rem); }
+  .videos-flat-grid > .vcard .vcard-body { padding-top: 0.7rem; }
+  @media (min-width: 900px) and (max-width: 1199px) {
+    .videos-flat-grid > .vcard { flex-basis: calc(33.333% - 0.834rem); }
+  }
+  @media (min-width: 600px) and (max-width: 899px) {
+    .videos-flat-grid > .vcard { flex-basis: calc(50% - 0.625rem); }
+  }
+  @media (max-width: 599px) {
+    .videos-flat-grid { gap: 1.5rem; }
+    .videos-flat-grid > .vcard { flex-basis: 100%; }
+    .videos-flat-grid > .vcard { max-width: 100%; }
+  }
 
   /* Horizontal video carousel: shared by Grid categories, Cinematic's
      More Performances, and Spotlight's Collections. Cards keep their

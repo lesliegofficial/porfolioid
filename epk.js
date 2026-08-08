@@ -942,18 +942,15 @@ function buildEPK(epk) {
     }
     videosHTML = html;
   } else {
-    // Grid: browsing/discovery. Category-grouped, each group's trailing
-    // incomplete row centered via buildGridRows (see above) rather than
-    // stretching an arbitrary card to fill space.
-    if (hasCategories) {
-      Object.entries(groupedVideos).forEach(([cat, vids]) => {
-        videosHTML += `<div class="videos-category-group"><div class="videos-subheading">${cat}<span class="videos-subheading-rule"></span></div>${buildGridRows(vids, false)}</div>`;
-      });
-      if (uncategorized.length) {
-        videosHTML += buildGridRows(uncategorized, false);
-      }
-    } else {
-      videosHTML = buildGridRows(visibleVideos, false);
+    // Grid: compact visual overview of the entire library. Flat,
+    // uncategorized (category shown as a badge inside each card, not
+    // as a section divider), static multi-column grid -- not a
+    // carousel, deliberately distinct from Cinematic/Spotlight now
+    // that those use horizontal scrolling. Category is preserved as
+    // metadata via buildVideoCard's existing badge, just no longer
+    // used to split the page into separate sections/rows.
+    if (visibleVideos.length) {
+      videosHTML = `<div class="videos-flat-grid">${visibleVideos.map(v => buildVideoCard(v, v._origIdx, false)).join('')}</div>`;
     }
   }
 
