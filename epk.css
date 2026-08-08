@@ -1112,10 +1112,20 @@
    into visible motion, and the restrained framing/shadow language. */
 .exhibition-outer {
   position: relative; max-width: 1400px; margin: 2rem auto 0; padding: 0 3.5rem;
-  /* Ambient room glow: static, section-level, not tied to any single
-     photo -- suggests a dimly-lit gallery room rather than a flat
-     black component. Extremely faint by design. */
-  background: radial-gradient(ellipse 900px 480px at 50% 45%, rgba(201,168,76,0.022), transparent 65%);
+  /* Gallery-stage environment: a broad, diffused pool of warm-
+     charcoal light behind and slightly beneath the center viewing
+     area, plus a wider, flatter floor-sheen layer hugging the
+     bottom -- meant to read as standing inside a dim exhibition
+     room, not looking at a flat black component. Wide ellipses (not
+     circles), kept low/broad rather than tall, so nothing reads as a
+     spotlight beam or a distinct glowing dot. Static rather than
+     scroll-driven -- the center viewing position is a fixed spot in
+     this layout (photos rotate through it, not the other way
+     around), so a fixed pool of light naturally sits behind
+     whichever photo currently occupies center. */
+  background:
+    radial-gradient(ellipse 800px 440px at 50% 48%, rgba(130,106,62,0.20), transparent 70%),
+    radial-gradient(ellipse 1150px 240px at 50% 98%, rgba(96,80,54,0.15), transparent 74%);
 }
 .exhibition-wrap {
   display: flex; align-items: flex-start; gap: 3.5rem;
@@ -1128,16 +1138,6 @@
 .exhibition-wrap::-webkit-scrollbar-track { background: transparent; }
 .exhibition-slide { flex: 0 0 auto; text-align: center; position: relative; }
 .exhibition-frame-outer { position: relative; display: inline-block; }
-/* Illumination: sits behind the frame, expands slightly past its
-   edges. Opacity is JS-driven (near 0 off-center, capped at 0.16 at
-   dead center) -- deliberately capped low so this reads as "this
-   piece has presence," never as a visible halo or glow ring. */
-.exhibition-spotlight {
-  position: absolute; inset: -14% -10%; z-index: -1; pointer-events: none;
-  background: radial-gradient(ellipse at center, rgba(201,168,76,0.5) 0%, rgba(201,168,76,0.12) 45%, transparent 72%);
-  opacity: 0; transition: opacity 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
-  filter: blur(6px);
-}
 .exhibition-frame {
   transform: perspective(1400px) rotateY(0deg) scale(1);
   transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -1160,10 +1160,10 @@
      depth cue, not a mirror. Webkit/Blink only (Safari, Chrome,
      Edge); Firefox simply shows no reflection, a graceful, harmless
      degradation since it's purely decorative. */
-  -webkit-box-reflect: below 6px linear-gradient(to bottom, transparent, transparent calc(100% - 40px), rgba(0,0,0,0.07) 100%);
+  -webkit-box-reflect: below 2px linear-gradient(to bottom, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 12%, transparent 20%);
 }
 .exhibition-frame img { height: 100%; width: auto; max-width: none; object-fit: contain; display: block; }
-.exhibition-caption { text-align: center; margin-top: 1rem; max-width: 320px; transition: opacity 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); }
+.exhibition-caption { text-align: center; margin-top: 4.5rem; max-width: 320px; transition: opacity 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); }
 .exhibition-caption-title { font-family: var(--font-display); font-size: 1rem; color: var(--white); font-weight: 400; }
 .exhibition-caption-year { font-family: var(--font-mono); font-size: 0.58rem; color: var(--gold); letter-spacing: 0.08em; margin-top: 0.3rem; opacity: 0.85; }
 .exhibition-arrow {
@@ -1192,8 +1192,7 @@
   .exhibition-slide:last-child { margin-bottom: 0; }
   .exhibition-frame { height: auto; max-height: 60vh; width: 100%; box-shadow: 0 16px 44px rgba(0,0,0,0.4); -webkit-box-reflect: unset; }
   .exhibition-frame img { height: auto; max-height: 60vh; width: auto; max-width: 100%; }
-  .exhibition-caption { max-width: 100%; }
-  .exhibition-spotlight { display: none; }
+  .exhibition-caption { max-width: 100%; margin-top: 1rem; }
 }
 
 .gallery-grid-wrap { margin-top: 1.5rem; }
