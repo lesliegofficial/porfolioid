@@ -850,7 +850,11 @@ function buildEPK(epk) {
   // never by arbitrarily enlarging a card.
   const buildGridRows = (vids, showDesc) => {
     if (!vids.length) return '';
-    return `<div class="videos-grid">${vids.map(v => buildVideoCard(v, v._origIdx, showDesc)).join('')}</div>`;
+    return `<div class="video-carousel-wrap">
+      <button class="video-carousel-arrow video-carousel-arrow-prev" onclick="scrollCarousel(this,-1)" aria-label="Scroll left">‹</button>
+      <div class="video-carousel">${vids.map(v => buildVideoCard(v, v._origIdx, showDesc)).join('')}</div>
+      <button class="video-carousel-arrow video-carousel-arrow-next" onclick="scrollCarousel(this,1)" aria-label="Scroll right">›</button>
+    </div>`;
   };
 
   let videosHTML = '';
@@ -897,22 +901,14 @@ function buildEPK(epk) {
     });
     videosHTML += '</div>';
   } else if (videoLayout === 'spotlight') {
-    // Shared clickable item for both Recommended and Collections: always
-    // sets the featured player via spotlightSelect(), always carries a
-    // stable data-video-idx identifier (the video's own index in
+    // Shared clickable item for Collections: always sets the featured
+    // player via spotlightSelect(), always carries a stable
+    // data-video-idx identifier (the video's own index in
     // visibleVideos) so the active-highlight can match by identity
-    // instead of DOM position -- required since Collections regroups
-    // items by category, so DOM order no longer matches data order.
-    const buildSpotlightThumb = (v, size) => {
+    // instead of DOM/carousel-scroll position.
+    const buildSpotlightThumb = (v) => {
       const th = v.thumb || getYouTubeThumb(v.url);
       const img = th ? `<img class="vcard-thumb" src="${th}" alt="${v.title}" loading="lazy">` : `<div class="vcard-thumb-empty" style="aspect-ratio:16/9">▶</div>`;
-      if (size === 'recommended') {
-        const meta = [v.album, v.year].filter(Boolean).join(' · ');
-        return `<div class="vcard videos-spotlight-thumb videos-spotlight-thumb-recommended" data-video-idx="${v._origIdx}" onclick="spotlightSelect(${v._origIdx})" title="${v.title}">
-          <div class="vcard-media">${v.category ? `<div class="vcard-badge">${v.category}</div>` : ''}${img}<div class="vcard-play">▶</div></div>
-          <div class="vcard-body"><div class="vcard-title">${v.title}</div>${meta ? `<div class="vcard-meta">${meta}</div>` : ''}</div>
-        </div>`;
-      }
       return `<div class="videos-spotlight-thumb videos-collection-thumb" data-video-idx="${v._origIdx}" onclick="spotlightSelect(${v._origIdx})" title="${v.title}">
         ${img}
         <div class="video-play" style="width:1.6rem;height:1.6rem;font-size:0.7rem">▶</div>
@@ -936,24 +932,14 @@ function buildEPK(epk) {
       </div>`;
     }
     if (rest.length) {
-      const recommended = rest.slice(0, 3);
-      html += `<div class="videos-subsection">
-        <div class="videos-subheading">Recommended<span class="videos-subheading-rule"></span></div>
-        <div class="videos-recommended-grid">${recommended.map(v => buildSpotlightThumb(v, 'recommended')).join('')}</div>
-      </div>`;
-    }
-    if (hasCategories) {
       html += `<div class="videos-subsection videos-collections">
-        <div class="videos-subheading">Collections<span class="videos-subheading-rule"></span></div>`;
-      Object.entries(groupedVideos).forEach(([cat, vids]) => {
-        html += `<div class="videos-collection-row">
-          <div class="videos-collection-label">${cat}<span class="videos-subheading-rule"></span></div>
-          <div class="videos-collection-thumbs">
-            ${vids.map(v => buildSpotlightThumb(v, 'collection')).join('')}
-          </div>
-        </div>`;
-      });
-      html += `</div>`;
+        <div class="videos-subheading">Collections<span class="videos-subheading-rule"></span></div>
+        <div class="video-carousel-wrap">
+          <button class="video-carousel-arrow video-carousel-arrow-prev" onclick="scrollCarousel(this,-1)" aria-label="Scroll left">‹</button>
+          <div class="video-carousel">${rest.map(v => buildSpotlightThumb(v)).join('')}</div>
+          <button class="video-carousel-arrow video-carousel-arrow-next" onclick="scrollCarousel(this,1)" aria-label="Scroll right">›</button>
+        </div>
+      </div>`;
     }
     videosHTML = html;
   } else {
@@ -1636,6 +1622,7 @@ function buildEPK(epk) {
       console.error('Debug panel failed:', e);
     }
   }
+  initVideoCarousels();
 }
 
 function renderAssetsDebugPanel(epk) {
@@ -2751,6 +2738,37 @@ document.addEventListener('click', function(e) {
   }
 });
 
+// Horizontal video carousel: prev/next button scroll + wheel-redirect.
+// Shared by Grid categories, Cinematic's More Performances, and
+// Spotlight's Collections -- one implementation, three uses.
+function scrollCarousel(btn, dir) {
+  const wrap = btn.closest('.video-carousel-wrap');
+  const track = wrap && wrap.querySelector('.video-carousel');
+  if (!track) return;
+  const card = track.querySelector('.vcard, .videos-collection-thumb');
+  const step = card ? (card.getBoundingClientRect().width + 24) * 2 : 400;
+  track.scrollBy({ left: dir * step, behavior: 'smooth' });
+}
+function initVideoCarousels() {
+  document.querySelectorAll('.video-carousel').forEach((track) => {
+    if (track.dataset.wheelBound) return;
+    track.dataset.wheelBound = '1';
+    track.addEventListener('wheel', (e) => {
+      // Only intercept vertical wheel motion, and only while the
+      // carousel actually has room to scroll further in that
+      // direction -- otherwise let the event pass through so the
+      // page keeps scrolling normally rather than trapping the user.
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      if (track.scrollWidth <= track.clientWidth) return;
+      const atStart = track.scrollLeft <= 0;
+      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+      if ((e.deltaY < 0 && atStart) || (e.deltaY > 0 && atEnd)) return;
+      e.preventDefault();
+      track.scrollLeft += e.deltaY;
+    }, { passive: false });
+  });
+}
+
 // Video collapse/expand
 function toggleAllVideos() {
   const allDiv = document.getElementById('videosAll');
@@ -2762,6 +2780,7 @@ function toggleAllVideos() {
   featDiv.style.display = isExpanding ? 'none' : 'block';
   btn.setAttribute('aria-expanded', isExpanding ? 'true' : 'false');
   btn.textContent = isExpanding ? 'Show Less \u2212' : 'View All Videos +';
+  if (isExpanding) initVideoCarousels();
   if (!isExpanding) {
     // Collapsing: only scroll back to the top of the section if the user
     // has scrolled below where the collapsed content ends, so they aren't
