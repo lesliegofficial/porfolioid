@@ -2126,6 +2126,195 @@ function buildCollectionsGallery(photos, container) {
   container.appendChild(footer);
 }
 
+function buildExhibitionGallery(photos, container) {
+  // Desktop/tablet: horizontal "walk past a gallery wall" experience.
+  // Mobile: unchanged vertical scroll (media query switches layout;
+  // same markup serves both, no separate mobile code path needed).
+  // Frame HEIGHT is fixed, width varies per photo's own aspect ratio
+  // (object-fit:contain) -- closer to real prints of differing sizes
+  // hung on a wall than forcing every photo into identical dimensions.
+  if (!photos.length) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'exhibition-wrap';
+  wrap.setAttribute('tabindex', '0');
+  wrap.setAttribute('role', 'region');
+  wrap.setAttribute('aria-label', 'Photo exhibition, scroll or use arrow keys to browse');
+
+  photos.forEach((photo, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'exhibition-slide';
+    const pos = photo.position || 'center';
+    const capHTML = photo.caption ? `<div class="exhibition-caption-title">${photo.caption}</div>` : '';
+    const yearHTML = photo.year ? `<div class="exhibition-caption-year">${photo.year}</div>` : '';
+    slide.innerHTML = `
+      <div class="exhibition-frame-outer owner-item-wrap">
+        <div class="owner-overlay" style="flex-direction:row;gap:0.2rem">
+          <button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('photos',${i},-1)" title="Move earlier">◀</button>
+          <button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('photos',${i},1)" title="Move later">▶</button>
+        </div>
+        <div class="exhibition-frame">
+          <img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" style="object-position:${pos}" onerror="this.style.display='none'">
+        </div>
+      </div>
+      ${(capHTML || yearHTML) ? `<div class="exhibition-caption">${capHTML}${yearHTML}</div>` : ''}
+    `;
+    const frameOuter = slide.querySelector('.exhibition-frame-outer');
+    frameOuter.style.cursor = 'pointer';
+    frameOuter.onclick = () => openLightbox(photo.url, photo);
+    wrap.appendChild(slide);
+  });
+
+  const outer = document.createElement('div');
+  outer.className = 'exhibition-outer';
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'exhibition-arrow exhibition-arrow-prev';
+  prevBtn.setAttribute('aria-label', 'Scroll to previous photos');
+  prevBtn.innerHTML = '‹';
+  prevBtn.onclick = () => scrollExhibition(wrap, -1);
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'exhibition-arrow exhibition-arrow-next';
+  nextBtn.setAttribute('aria-label', 'Scroll to next photos');
+  nextBtn.innerHTML = '›';
+  nextBtn.onclick = () => scrollExhibition(wrap, 1);
+  outer.appendChild(prevBtn);
+  outer.appendChild(wrap);
+  outer.appendChild(nextBtn);
+  container.appendChild(outer);
+
+  // Reduced motion: skip the motion controller entirely. Photos render
+  // fully frontal and static -- same markup, no animation, nothing to
+  // understand that depends on the effect.
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reducedMotion) initExhibitionMotion(wrap);
+  initExhibitionWheelRedirect(wrap);
+}
+
+// Scroll a step (roughly two frames' worth) in the given direction --
+// shared by both arrow buttons.
+function scrollExhibition(wrap, dir) {
+  const frame = wrap.querySelector('.exhibition-frame-outer');
+  const step = frame ? (frame.getBoundingClientRect().width + 48) * 2 : 500;
+  wrap.scrollBy({ left: dir * step, behavior: 'smooth' });
+}
+
+// Boundary-aware wheel redirect, same logic already proven for Video's
+// carousels: intercept vertical wheel input only while there's room to
+// scroll further in that direction; once at either edge, let the event
+// pass through untouched so page scroll resumes naturally. Desktop/
+// tablet only -- mobile stays vertical, native touch scroll applies.
+function initExhibitionWheelRedirect(wrap) {
+  wrap.addEventListener('wheel', (e) => {
+    if (window.matchMedia('(max-width: 700px)').matches) return;
+    if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+    if (wrap.scrollWidth <= wrap.clientWidth) return;
+    const atStart = wrap.scrollLeft <= 0;
+    const atEnd = wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 1;
+    if ((e.deltaY < 0 && atStart) || (e.deltaY > 0 && atEnd)) return;
+    e.preventDefault();
+    wrap.scrollLeft += e.deltaY;
+  }, { passive: false });
+  // Keyboard: left/right arrows scroll when the region has focus,
+  // matching the visible arrow buttons' behavior.
+  wrap.addEventListener('keydown', (e) => {
+    if (window.matchMedia('(max-width: 700px)').matches) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); scrollExhibition(wrap, 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); scrollExhibition(wrap, -1); }
+  });
+}
+
+function initExhibitionMotion(wrap) {
+  const frames = Array.from(wrap.querySelectorAll('.exhibition-frame-outer'));
+  if (!frames.length) return;
+
+  // Desktop/tablet: rotate around the horizontal axis as photos travel
+  // through the exhibition container. Mobile stays vertical with a
+  // further-reduced rotation (touch scrolling should feel calm, not
+  // like a demo of the effect).
+  function isMobile() {
+    return window.matchMedia('(max-width: 700px)').matches;
+  }
+  function maxRotateFor() {
+    return isMobile() ? 8 : 52;
+  }
+
+  // IntersectionObserver keeps an "active" set of frames actually near
+  // the exhibition container (generous margin so the rotation arc
+  // starts before a photo is fully visible and finishes after it
+  // leaves), so the scroll handler only ever recalculates a handful of
+  // elements -- not all photos in the library, regardless of size.
+  const active = new Set();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) active.add(entry.target);
+      else active.delete(entry.target);
+    });
+  }, { root: null, rootMargin: '50% 50% 50% 50%', threshold: 0 });
+  frames.forEach(el => io.observe(el));
+
+  let ticking = false;
+  function update() {
+    const mobile = isMobile();
+    const maxRotate = maxRotateFor();
+    if (mobile) {
+      // Vertical axis, same math as the original prototype.
+      const centerY = window.innerHeight / 2;
+      active.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const elCenter = rect.top + rect.height / 2;
+        const dist = elCenter - centerY;
+        const ratio = Math.max(-1, Math.min(1, dist / (window.innerHeight * 0.8)));
+        const rotate = ratio * maxRotate;
+        const scale = 1 - Math.abs(ratio) * 0.06;
+        el.style.transform = `perspective(1400px) rotateY(${(-rotate).toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      });
+    } else {
+      // Horizontal axis: distance from the exhibition container's own
+      // horizontal center, not the window's -- the scrolling happens
+      // inside this bounded container, not the full page.
+      //
+      // The normalization denominator here is the actual fix. The
+      // previous version used 0.6x the FULL container width (~715px
+      // in testing), which required a photo to travel nearly the
+      // entire container to reach even the old, lower max rotation --
+      // within the range a photo is actually visible (roughly 1-2
+      // "slot widths," ~450-900px in testing), it barely moved through
+      // any of that range, so the effect read as almost static. Fixed
+      // denominator based on the real measured slot spacing (frame
+      // width + gap) instead of an arbitrary container-width fraction,
+      // so the full rotation arc completes within the distance a photo
+      // is actually visible, not far beyond it.
+      const wrapRect = wrap.getBoundingClientRect();
+      const centerX = wrapRect.left + wrapRect.width / 2;
+      const frame0 = frames[0];
+      const slotWidth = frames.length > 1
+        ? Math.abs(frames[1].getBoundingClientRect().left - frame0.getBoundingClientRect().left)
+        : frame0.getBoundingClientRect().width + 56;
+      const denom = Math.max(slotWidth * 1.9, 300);
+      active.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const elCenter = rect.left + rect.width / 2;
+        const dist = elCenter - centerX;
+        const ratio = Math.max(-1, Math.min(1, dist / denom));
+        const rotate = ratio * maxRotate;
+        // Depth: centered photo comes forward at full scale/opacity;
+        // angled photos recede slightly, both in size and presence.
+        const scale = 1 - Math.abs(ratio) * 0.11;
+        const opacity = 1 - Math.abs(ratio) * 0.14;
+        el.style.transform = `perspective(1400px) rotateY(${rotate.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+        el.style.opacity = opacity.toFixed(3);
+      });
+    }
+    ticking = false;
+  }
+  function onUpdate() {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }
+  window.addEventListener('scroll', onUpdate, { passive: true });
+  window.addEventListener('resize', onUpdate, { passive: true });
+  wrap.addEventListener('scroll', onUpdate, { passive: true });
+  update();
+}
+
 function buildGridGallery(photos, container) {
   // Editorial "Gallery" -- image-first, minimal text (caption + year
   // only). Reuses the same percentage-flexbox technique proven for
@@ -2495,6 +2684,10 @@ function buildGallery(photos) {
   }
   if (currentGalleryLayout === 'table') {
     buildTableGallery(filtered, container);
+    return;
+  }
+  if (currentGalleryLayout === 'exhibition') {
+    buildExhibitionGallery(filtered, container);
     return;
   }
 
