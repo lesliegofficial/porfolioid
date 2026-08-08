@@ -428,6 +428,13 @@
     display: flex; gap: 1.5rem; overflow-x: auto; scroll-behavior: smooth;
     scroll-snap-type: x proximity; padding-bottom: 0.5rem;
     scrollbar-width: thin; scrollbar-color: rgba(201,168,76,0.3) transparent;
+    /* Subtle edge fade signaling more content off-screen. Right edge
+       only, so the first card is never dimmed. Purely visual (mask
+       only affects compositing, not hit-testing), so it has zero
+       effect on clicking, scrolling, wheel-redirect, touch, keyboard,
+       or the arrow buttons, which are separate sibling elements. */
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
+    mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
   }
   .video-carousel::-webkit-scrollbar { height: 6px; }
   .video-carousel::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.25); border-radius: 3px; }

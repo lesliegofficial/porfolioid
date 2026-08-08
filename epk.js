@@ -922,12 +922,11 @@ function buildEPK(epk) {
       html += `<div class="video-hero video-hero-glow">
         <div class="video-hero-media videos-spotlight-player" data-video-idx="${first._origIdx}">${buildFeaturedMedia(first, 'spotlightPlayer')}</div>
         <div class="video-hero-info">
-          <div class="video-hero-eyebrow video-hero-eyebrow-featured">✦ Featured</div>
-          ${first.category ? `<div class="video-hero-eyebrow" style="color:var(--gray)">${first.category}</div>` : ''}
+          <div class="video-hero-eyebrow video-hero-eyebrow-featured">✦ Featured${first.category ? ` · ${first.category}` : ''}</div>
           <h3 class="video-hero-title" id="spotlightFeaturedTitle">${first.title}</h3>
           <div class="video-hero-meta" id="spotlightFeaturedMeta">${meta}</div>
           ${first.desc ? `<div class="video-hero-desc" id="spotlightFeaturedDesc">${first.desc}</div>` : ''}
-          <a href="${first.url}" target="_blank" class="video-hero-watch" id="spotlightFeaturedWatch">Watch →</a>
+          <a href="${first.url}" target="_blank" class="video-hero-watch" id="spotlightFeaturedWatch">Watch Performance →</a>
         </div>
       </div>`;
     }
