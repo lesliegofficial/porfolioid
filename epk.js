@@ -2152,6 +2152,7 @@ function buildExhibitionGallery(photos, container) {
           <button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('photos',${i},-1)" title="Move earlier">◀</button>
           <button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('photos',${i},1)" title="Move later">▶</button>
         </div>
+        <div class="exhibition-spotlight"></div>
         <div class="exhibition-frame">
           <img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" style="object-position:${pos}" onerror="this.style.display='none'">
         </div>
@@ -2300,8 +2301,25 @@ function initExhibitionMotion(wrap) {
         // angled photos recede slightly, both in size and presence.
         const scale = 1 - Math.abs(ratio) * 0.11;
         const opacity = 1 - Math.abs(ratio) * 0.14;
-        el.style.transform = `perspective(1400px) rotateY(${rotate.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+        // Conservative depth: a few pixels of recession for off-center
+        // photos (never a forward push, so nothing overlaps its
+        // neighbor), plus stacking so the centered photo naturally
+        // reads above its neighbors rather than all panels feeling
+        // like they're on one flat plane.
+        const depthZ = -Math.abs(ratio) * 22;
+        const stack = Math.round((1 - Math.abs(ratio)) * 10);
+        el.style.transform = `perspective(1400px) rotateY(${rotate.toFixed(2)}deg) scale(${scale.toFixed(3)}) translateZ(${depthZ.toFixed(1)}px)`;
         el.style.opacity = opacity.toFixed(3);
+        el.style.zIndex = String(stack);
+        // Illumination: a near-imperceptible spotlight that only
+        // reads as "this one has presence," not a visible glow.
+        const spotlight = el.querySelector('.exhibition-spotlight');
+        if (spotlight) spotlight.style.opacity = (Math.max(0, 1 - Math.abs(ratio) * 1.6) * 0.16).toFixed(3);
+        // Caption hierarchy: the centered piece reads fully present;
+        // side captions stay legible, just quieter -- never faded
+        // enough to be hard to read.
+        const caption = el.closest('.exhibition-slide')?.querySelector('.exhibition-caption');
+        if (caption) caption.style.opacity = (1 - Math.abs(ratio) * 0.45).toFixed(3);
       });
     }
     ticking = false;

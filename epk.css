@@ -1110,7 +1110,13 @@
    transform in JS (initExhibitionMotion); this CSS establishes the
    resting state, the transition curve that smooths per-frame updates
    into visible motion, and the restrained framing/shadow language. */
-.exhibition-outer { position: relative; max-width: 1400px; margin: 2rem auto 0; padding: 0 3.5rem; }
+.exhibition-outer {
+  position: relative; max-width: 1400px; margin: 2rem auto 0; padding: 0 3.5rem;
+  /* Ambient room glow: static, section-level, not tied to any single
+     photo -- suggests a dimly-lit gallery room rather than a flat
+     black component. Extremely faint by design. */
+  background: radial-gradient(ellipse 900px 480px at 50% 45%, rgba(201,168,76,0.022), transparent 65%);
+}
 .exhibition-wrap {
   display: flex; align-items: flex-start; gap: 3.5rem;
   overflow-x: auto; overflow-y: hidden;
@@ -1120,14 +1126,29 @@
 .exhibition-wrap::-webkit-scrollbar { height: 6px; }
 .exhibition-wrap::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.25); border-radius: 3px; }
 .exhibition-wrap::-webkit-scrollbar-track { background: transparent; }
-.exhibition-slide { flex: 0 0 auto; text-align: center; }
+.exhibition-slide { flex: 0 0 auto; text-align: center; position: relative; }
 .exhibition-frame-outer { position: relative; display: inline-block; }
+/* Illumination: sits behind the frame, expands slightly past its
+   edges. Opacity is JS-driven (near 0 off-center, capped at 0.16 at
+   dead center) -- deliberately capped low so this reads as "this
+   piece has presence," never as a visible halo or glow ring. */
+.exhibition-spotlight {
+  position: absolute; inset: -14% -10%; z-index: -1; pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.5) 0%, rgba(201,168,76,0.12) 45%, transparent 72%);
+  opacity: 0; transition: opacity 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+  filter: blur(6px);
+}
 .exhibition-frame {
   transform: perspective(1400px) rotateY(0deg) scale(1);
   transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
   will-change: transform;
   border: 1px solid rgba(201,168,76,0.12);
-  box-shadow: 0 16px 44px rgba(0,0,0,0.4);
+  /* Layered shadow: a tight near shadow plus a softer, more diffuse
+     far shadow -- reads as a mounted panel with real thickness,
+     rather than a single flat drop-shadow. Static (not JS-driven);
+     the per-photo depth/stacking comes from translateZ/z-index in
+     the motion controller instead. */
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35), 0 28px 56px rgba(0,0,0,0.3);
   background: #000;
   overflow: hidden;
   height: 46vh;
@@ -1135,9 +1156,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Floor reflection: a very short, low-opacity fade -- decorative
+     depth cue, not a mirror. Webkit/Blink only (Safari, Chrome,
+     Edge); Firefox simply shows no reflection, a graceful, harmless
+     degradation since it's purely decorative. */
+  -webkit-box-reflect: below 6px linear-gradient(to bottom, transparent, transparent calc(100% - 40px), rgba(0,0,0,0.07) 100%);
 }
 .exhibition-frame img { height: 100%; width: auto; max-width: none; object-fit: contain; display: block; }
-.exhibition-caption { text-align: center; margin-top: 1rem; max-width: 320px; }
+.exhibition-caption { text-align: center; margin-top: 1rem; max-width: 320px; transition: opacity 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); }
 .exhibition-caption-title { font-family: var(--font-display); font-size: 1rem; color: var(--white); font-weight: 400; }
 .exhibition-caption-year { font-family: var(--font-mono); font-size: 0.58rem; color: var(--gold); letter-spacing: 0.08em; margin-top: 0.3rem; opacity: 0.85; }
 .exhibition-arrow {
@@ -1155,15 +1181,19 @@
 }
 @media (max-width: 700px) {
   /* Mobile: unchanged vertical stack, native touch scroll, arrows
-     hidden entirely (touch scrolling is the obvious affordance here). */
-  .exhibition-outer { padding: 0; margin-top: 1.5rem; }
+     hidden entirely (touch scrolling is the obvious affordance here).
+     Atmosphere pass additions (reflection, spotlight, ambient glow,
+     layered shadow) are desktop/tablet only -- explicitly neutralized
+     here so mobile stays exactly as it was before this pass. */
+  .exhibition-outer { padding: 0; margin-top: 1.5rem; background: none; }
   .exhibition-arrow { display: none; }
   .exhibition-wrap { display: block; overflow: visible; padding: 0; gap: 0; }
   .exhibition-slide { display: block; margin-bottom: 5rem; }
   .exhibition-slide:last-child { margin-bottom: 0; }
-  .exhibition-frame { height: auto; max-height: 60vh; width: 100%; }
+  .exhibition-frame { height: auto; max-height: 60vh; width: 100%; box-shadow: 0 16px 44px rgba(0,0,0,0.4); -webkit-box-reflect: unset; }
   .exhibition-frame img { height: auto; max-height: 60vh; width: auto; max-width: 100%; }
   .exhibition-caption { max-width: 100%; }
+  .exhibition-spotlight { display: none; }
 }
 
 .gallery-grid-wrap { margin-top: 1.5rem; }
