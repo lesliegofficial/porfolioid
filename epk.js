@@ -2127,18 +2127,27 @@ function buildCollectionsGallery(photos, container) {
 }
 
 function buildExhibitionGallery(photos, container) {
-  // Desktop/tablet: horizontal "walk past a gallery wall" experience.
-  // Mobile: unchanged vertical scroll (media query switches layout;
-  // same markup serves both, no separate mobile code path needed).
-  // Frame HEIGHT is fixed, width varies per photo's own aspect ratio
-  // (object-fit:contain) -- closer to real prints of differing sizes
-  // hung on a wall than forcing every photo into identical dimensions.
+  // Discrete 5-slot fan installation on desktop/tablet; mobile keeps
+  // its own unchanged, simpler vertical stack (all photos, native
+  // touch scroll). These are genuinely different DOM structures now,
+  // not one markup styled two ways -- chosen once at build time.
   if (!photos.length) return;
+  const mobile = window.matchMedia('(max-width: 700px)').matches;
+  if (mobile) {
+    buildExhibitionMobile(photos, container);
+  } else {
+    buildExhibitionFan(photos, container);
+  }
+}
+
+// ---- Mobile: unchanged vertical stack ----------------------------
+// Extracted, not rewritten, from the previous single implementation's
+// mobile behavior. Same markup, same motion math, same ~8deg max
+// rotation as every prior Exhibition round -- this pass does not
+// touch mobile at all.
+function buildExhibitionMobile(photos, container) {
   const wrap = document.createElement('div');
   wrap.className = 'exhibition-wrap';
-  wrap.setAttribute('tabindex', '0');
-  wrap.setAttribute('role', 'region');
-  wrap.setAttribute('aria-label', 'Photo exhibition, scroll or use arrow keys to browse');
 
   photos.forEach((photo, i) => {
     const slide = document.createElement('div');
@@ -2166,82 +2175,17 @@ function buildExhibitionGallery(photos, container) {
 
   const outer = document.createElement('div');
   outer.className = 'exhibition-outer';
-  const prevBtn = document.createElement('button');
-  prevBtn.className = 'exhibition-arrow exhibition-arrow-prev';
-  prevBtn.setAttribute('aria-label', 'Scroll to previous photos');
-  prevBtn.innerHTML = '‹';
-  prevBtn.onclick = () => scrollExhibition(wrap, -1);
-  const nextBtn = document.createElement('button');
-  nextBtn.className = 'exhibition-arrow exhibition-arrow-next';
-  nextBtn.setAttribute('aria-label', 'Scroll to next photos');
-  nextBtn.innerHTML = '›';
-  nextBtn.onclick = () => scrollExhibition(wrap, 1);
-  outer.appendChild(prevBtn);
   outer.appendChild(wrap);
-  outer.appendChild(nextBtn);
   container.appendChild(outer);
 
-  // Reduced motion: skip the motion controller entirely. Photos render
-  // fully frontal and static -- same markup, no animation, nothing to
-  // understand that depends on the effect.
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reducedMotion) initExhibitionMotion(wrap);
-  initExhibitionWheelRedirect(wrap);
+  if (!reducedMotion) initExhibitionMobileMotion(wrap);
 }
 
-// Scroll a step (roughly two frames' worth) in the given direction --
-// shared by both arrow buttons.
-function scrollExhibition(wrap, dir) {
-  const frame = wrap.querySelector('.exhibition-frame-outer');
-  const step = frame ? (frame.getBoundingClientRect().width + 48) * 2 : 500;
-  wrap.scrollBy({ left: dir * step, behavior: 'smooth' });
-}
-
-// Boundary-aware wheel redirect, same logic already proven for Video's
-// carousels: intercept vertical wheel input only while there's room to
-// scroll further in that direction; once at either edge, let the event
-// pass through untouched so page scroll resumes naturally. Desktop/
-// tablet only -- mobile stays vertical, native touch scroll applies.
-function initExhibitionWheelRedirect(wrap) {
-  wrap.addEventListener('wheel', (e) => {
-    if (window.matchMedia('(max-width: 700px)').matches) return;
-    if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-    if (wrap.scrollWidth <= wrap.clientWidth) return;
-    const atStart = wrap.scrollLeft <= 0;
-    const atEnd = wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 1;
-    if ((e.deltaY < 0 && atStart) || (e.deltaY > 0 && atEnd)) return;
-    e.preventDefault();
-    wrap.scrollLeft += e.deltaY;
-  }, { passive: false });
-  // Keyboard: left/right arrows scroll when the region has focus,
-  // matching the visible arrow buttons' behavior.
-  wrap.addEventListener('keydown', (e) => {
-    if (window.matchMedia('(max-width: 700px)').matches) return;
-    if (e.key === 'ArrowRight') { e.preventDefault(); scrollExhibition(wrap, 1); }
-    if (e.key === 'ArrowLeft') { e.preventDefault(); scrollExhibition(wrap, -1); }
-  });
-}
-
-function initExhibitionMotion(wrap) {
+function initExhibitionMobileMotion(wrap) {
   const frames = Array.from(wrap.querySelectorAll('.exhibition-frame-outer'));
   if (!frames.length) return;
-
-  // Desktop/tablet: rotate around the horizontal axis as photos travel
-  // through the exhibition container. Mobile stays vertical with a
-  // further-reduced rotation (touch scrolling should feel calm, not
-  // like a demo of the effect).
-  function isMobile() {
-    return window.matchMedia('(max-width: 700px)').matches;
-  }
-  function maxRotateFor() {
-    return isMobile() ? 8 : 26;
-  }
-
-  // IntersectionObserver keeps an "active" set of frames actually near
-  // the exhibition container (generous margin so the rotation arc
-  // starts before a photo is fully visible and finishes after it
-  // leaves), so the scroll handler only ever recalculates a handful of
-  // elements -- not all photos in the library, regardless of size.
+  const maxRotate = 8;
   const active = new Set();
   const io = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -2251,151 +2195,237 @@ function initExhibitionMotion(wrap) {
   }, { root: null, rootMargin: '50% 50% 50% 50%', threshold: 0 });
   frames.forEach(el => io.observe(el));
 
-  // Cache each frame's untransformed position within the scrollable
-  // content, measured once before any transform is ever applied.
-  // Necessary because this pass adds translateX (for the slight
-  // center-ward overlap) -- getBoundingClientRect() reflects the
-  // POST-transform position, so reading it directly after a frame has
-  // already been transformed would feed a shifted position back into
-  // the next tick's distance calculation, compounding rather than
-  // settling. Content-relative offset is stable regardless of scroll
-  // or any transform later applied to the element itself.
-  const wrapRectInit = wrap.getBoundingClientRect();
-  frames.forEach((el) => {
-    const r = el.getBoundingClientRect();
-    el._contentOffset = (r.left - wrapRectInit.left) + wrap.scrollLeft + r.width / 2;
-  });
-
   let ticking = false;
   function update() {
-    const mobile = isMobile();
-    const maxRotate = maxRotateFor();
-    if (mobile) {
-      // Vertical axis, same math as the original prototype.
-      const centerY = window.innerHeight / 2;
-      active.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        const elCenter = rect.top + rect.height / 2;
-        const dist = elCenter - centerY;
-        const ratio = Math.max(-1, Math.min(1, dist / (window.innerHeight * 0.8)));
-        const rotate = ratio * maxRotate;
-        const scale = 1 - Math.abs(ratio) * 0.06;
-        el.style.transform = `perspective(1400px) rotateY(${(-rotate).toFixed(2)}deg) scale(${scale.toFixed(3)})`;
-      });
-    } else {
-      // Horizontal axis: distance from the exhibition container's own
-      // horizontal center, not the window's -- the scrolling happens
-      // inside this bounded container, not the full page.
-      //
-      // The normalization denominator here is the actual fix. The
-      // previous version used 0.6x the FULL container width (~715px
-      // in testing), which required a photo to travel nearly the
-      // entire container to reach even the old, lower max rotation --
-      // within the range a photo is actually visible (roughly 1-2
-      // "slot widths," ~450-900px in testing), it barely moved through
-      // any of that range, so the effect read as almost static. Fixed
-      // denominator based on the real measured slot spacing (frame
-      // width + gap) instead of an arbitrary container-width fraction,
-      // so the full rotation arc completes within the distance a photo
-      // is actually visible, not far beyond it.
-      const wrapRect = wrap.getBoundingClientRect();
-      const centerX = wrapRect.width / 2;
-      const frame0 = frames[0];
-      const slotWidth = frames.length > 1
-        ? Math.abs(frames[1].getBoundingClientRect().left - frame0.getBoundingClientRect().left)
-        : frame0.getBoundingClientRect().width + 56;
-      const denom = Math.max(slotWidth * 1.9, 300);
-      active.forEach(el => {
-        // Position from the cached content offset, not a live
-        // (possibly already-transformed) getBoundingClientRect --
-        // see the caching comment above.
-        const elCenter = el._contentOffset - wrap.scrollLeft;
-        const dist = elCenter - centerX;
-        const ratio = Math.max(-1, Math.min(1, dist / denom));
-        const absRatio = Math.abs(ratio);
-        const sign = Math.sign(ratio);
-
-        // Rotation is now secondary -- it only signals entering/
-        // leaving, not the primary depth cue (that's the vertical
-        // lift below). Exponent raised further (1.6) so a genuinely
-        // broad zone near center stays close to flat -- a photograph
-        // should be easy to actually look at for a meaningful portion
-        // of its journey, not just at one exact mathematical point.
-        // Roughly: ~3-4deg at absRatio 0.3, ~11-12deg approaching at
-        // 0.6, up to the ~26deg max only at the true outer edge.
-        const rotate = sign * Math.pow(absRatio, 1.6) * maxRotate;
-
-        // Scale: subtle only. Active ~1.05, neighbors ~0.94-0.98,
-        // outer never below ~0.90.
-        const scale = 1.05 - absRatio * 0.15;
-
-        // Vertical lift is the primary depth cue for this pass: the
-        // active/center photograph lifts up and toward the viewer;
-        // resting/receding photos settle lower, as if returning to a
-        // gallery floor/display plane. Restrained total range
-        // (~37px here, within the requested 30-45px) so it reads as
-        // a gentle lift, not a bounce or a staircase.
-        const liftY = -22 + absRatio * 37;
-
-        // Depth: center still comes forward toward the viewer:
-        // paired with the lift, this reinforces "rising toward you,"
-        // not just "moving up."
-        const depthZ = 40 - absRatio * 95;
-
-        // Slight controlled overlap: unchanged reasoning from the
-        // density-correction pass -- a small pull toward center,
-        // peaking mid-transition, zero at both extremes.
-        const pull = -sign * absRatio * (1 - absRatio) * 34;
-
-        const opacity = 1 - absRatio * 0.14;
-        const stack = Math.round((1 - absRatio) * 10);
-        el.style.transform = `perspective(1400px) translateX(${pull.toFixed(1)}px) translateY(${liftY.toFixed(1)}px) rotateY(${rotate.toFixed(2)}deg) scale(${scale.toFixed(3)}) translateZ(${depthZ.toFixed(1)}px)`;
-        el.style.opacity = opacity.toFixed(3);
-        el.style.zIndex = String(stack);
-        // Floor relationship: a supplementary drop-shadow (additive,
-        // doesn't replace the frame's own static box-shadow) whose
-        // vertical offset grows with how far a photo has lifted --
-        // the higher it rises, the more separated its shadow reads
-        // beneath it, reinforcing "elevated off the floor" rather
-        // than just "moved up." Restrained blur/opacity so this stays
-        // a felt cue, not a visible added effect.
-        const shadowLift = (1 - absRatio) * 14;
-        el.style.filter = `drop-shadow(0 ${(6 + shadowLift).toFixed(1)}px ${(8 + shadowLift * 0.6).toFixed(1)}px rgba(0,0,0,${(0.25 + (1 - absRatio) * 0.1).toFixed(3)}))`;
-        // Caption hierarchy: present but restrained. Floor raised to
-        // ~0.75 (within the requested 0.7-0.85) -- neighboring
-        // captions stay clearly legible.
-        const caption = el.closest('.exhibition-slide')?.querySelector('.exhibition-caption');
-        if (caption) {
-          caption.style.opacity = (1 - absRatio * 0.25).toFixed(3);
-          caption.style.transform = 'none';
-        }
-      });
-    }
-    ticking = false;
-  }
-  function recomputeOffsets() {
-    const wrapRectNow = wrap.getBoundingClientRect();
-    frames.forEach((el) => {
-      // Reset any transform first so the measurement reflects true
-      // layout position, not a previously-transformed one.
-      const prevTransform = el.style.transform;
-      el.style.transform = 'none';
-      const r = el.getBoundingClientRect();
-      el._contentOffset = (r.left - wrapRectNow.left) + wrap.scrollLeft + r.width / 2;
-      el.style.transform = prevTransform;
+    const centerY = window.innerHeight / 2;
+    active.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const elCenter = rect.top + rect.height / 2;
+      const dist = elCenter - centerY;
+      const ratio = Math.max(-1, Math.min(1, dist / (window.innerHeight * 0.8)));
+      const rotate = ratio * maxRotate;
+      const scale = 1 - Math.abs(ratio) * 0.06;
+      el.style.transform = `perspective(1400px) rotateY(${(-rotate).toFixed(2)}deg) scale(${scale.toFixed(3)})`;
     });
+    ticking = false;
   }
   function onUpdate() {
     if (!ticking) { requestAnimationFrame(update); ticking = true; }
   }
-  function onResize() {
-    recomputeOffsets();
-    onUpdate();
-  }
   window.addEventListener('scroll', onUpdate, { passive: true });
-  window.addEventListener('resize', onResize, { passive: true });
-  wrap.addEventListener('scroll', onUpdate, { passive: true });
+  window.addEventListener('resize', onUpdate, { passive: true });
   update();
+}
+
+// ---- Desktop/tablet: fixed 5-slot fan installation ----------------
+// Five target slot definitions -- outer-left, inner-left, hero,
+// inner-right, outer-right. rotate/scale/liftY/z/capOpacity are the
+// resting values for a photo sitting in that slot; xFrac is its
+// horizontal offset as a fraction of the stage width, combined with
+// each panel's own self-centering (left:50% + translateX(-50%)) so
+// photos of any aspect ratio center correctly on their slot's anchor
+// point. Rotation ceiling (not a fixed target) tuned to 17deg per
+// approved feedback, within the requested 15-19deg range.
+const EXHIBITION_FAN_SLOTS = [
+  { rotate: 17,  scale: 0.81, liftY: 10,  z: -40, capOpacity: 0.6,  xFrac: -0.40 },
+  { rotate: 9,   scale: 0.90, liftY: -6,  z: -15, capOpacity: 0.75, xFrac: -0.21 },
+  { rotate: 0,   scale: 1.00, liftY: -18, z: 30,  capOpacity: 1.0,  xFrac: 0 },
+  { rotate: -9,  scale: 0.90, liftY: -6,  z: -15, capOpacity: 0.75, xFrac: 0.21 },
+  { rotate: -17, scale: 0.81, liftY: 10,  z: -40, capOpacity: 0.6,  xFrac: 0.40 },
+];
+
+function buildExhibitionFan(photos, container) {
+  const N = photos.length;
+  if (!N) return;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Clamp so a full, balanced 5-photo tableau is always shown when
+  // N>=5 -- reaching "the beginning" or "the end" of the library just
+  // means further advancement in that direction stops (and wheel
+  // input passes through to page scroll), never a lopsided partial
+  // fan with empty slot positions. Smaller libraries (<5 photos) fall
+  // back to a centered range using whatever exists.
+  const minCenter = N >= 5 ? 2 : Math.floor((N - 1) / 2);
+  const maxCenter = N >= 5 ? N - 3 : Math.ceil((N - 1) / 2);
+  let centerIndex = Math.min(maxCenter, Math.max(minCenter, Math.floor((minCenter + maxCenter) / 2)));
+
+  const outer = document.createElement('div');
+  outer.className = 'exhibition-outer';
+  const stage = document.createElement('div');
+  stage.className = 'exhibition-stage';
+  stage.setAttribute('tabindex', '0');
+  stage.setAttribute('role', 'region');
+  stage.setAttribute('aria-label', 'Photo exhibition installation, use arrow keys to advance');
+
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'exhibition-arrow exhibition-arrow-prev';
+  prevBtn.setAttribute('aria-label', 'Previous photograph');
+  prevBtn.innerHTML = '‹';
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'exhibition-arrow exhibition-arrow-next';
+  nextBtn.setAttribute('aria-label', 'Next photograph');
+  nextBtn.innerHTML = '›';
+
+  outer.appendChild(prevBtn);
+  outer.appendChild(stage);
+  outer.appendChild(nextBtn);
+  container.appendChild(outer);
+
+  let panels = [];
+  let transitioning = false;
+
+  function slotDefFor(slotPos) {
+    const idx = slotPos + 2;
+    if (idx >= 0 && idx < EXHIBITION_FAN_SLOTS.length) return EXHIBITION_FAN_SLOTS[idx];
+    // Entering/exiting panel just off-stage: extrapolated from the
+    // nearest real outer slot, pushed further out and transparent.
+    const edge = slotPos < -2 ? EXHIBITION_FAN_SLOTS[0] : EXHIBITION_FAN_SLOTS[EXHIBITION_FAN_SLOTS.length - 1];
+    const dir = slotPos < -2 ? -1 : 1;
+    return { rotate: edge.rotate, scale: edge.scale * 0.92, liftY: edge.liftY, z: edge.z - 15, capOpacity: 0, xFrac: edge.xFrac + dir * 0.15, offstage: true };
+  }
+
+  function applyPanelStyle(panel) {
+    const def = slotDefFor(panel.slotPos);
+    const stageWidth = stage.getBoundingClientRect().width;
+    const xOffset = def.xFrac * stageWidth;
+    const opacity = def.offstage ? '0' : '1';
+    // Frame: full treatment (rotation/scale/depth/lift).
+    panel.frameOuter.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px)) translateY(${def.liftY}px) perspective(1400px) rotateY(${def.rotate}deg) scale(${def.scale}) translateZ(${def.z}px)`;
+    panel.frameOuter.style.opacity = opacity;
+    panel.frameOuter.style.zIndex = String(10 - Math.abs(panel.slotPos));
+    // Caption: horizontal position only, matching its photo -- no
+    // scale, no rotation, no lift. Every caption sits on the same
+    // fixed vertical baseline regardless of which slot it's in, so
+    // differently-scaled photos never produce overlapping or jumbled
+    // captions (the bug in the first version of this approach: the
+    // caption was nested inside the same scaled element as the frame,
+    // so a 0.81-scale panel's caption ended up at a different
+    // vertical position than the hero's, and all five collided).
+    if (panel.capEl) {
+      panel.capEl.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px))`;
+      panel.capEl.style.opacity = def.offstage ? '0' : String(def.capOpacity);
+      panel.capEl.style.zIndex = String(10 - Math.abs(panel.slotPos));
+    }
+  }
+
+  function renderPhotoIntoPanel(panel, photoIdx) {
+    const photo = photos[photoIdx];
+    panel.photoIndex = photoIdx;
+    panel.imgEl.src = photo.url;
+    panel.imgEl.alt = photo.caption || '';
+    panel.imgEl.style.objectPosition = photo.position || 'center';
+    if (panel.capTitleEl) panel.capTitleEl.textContent = photo.caption || '';
+    if (panel.capYearEl) panel.capYearEl.textContent = photo.year || '';
+    panel.frameOuter.onclick = () => openLightbox(photo.url, photo);
+  }
+
+  function createPanel(slotPos, photoIdx) {
+    const el = document.createElement('div');
+    el.className = 'exhibition-fan-panel';
+    el.innerHTML = `
+      <div class="exhibition-frame-outer">
+        <div class="exhibition-frame"><img loading="lazy" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="exhibition-caption">
+        <div class="exhibition-caption-title"></div>
+        <div class="exhibition-caption-year"></div>
+      </div>
+    `;
+    const frameOuter = el.querySelector('.exhibition-frame-outer');
+    const capEl = el.querySelector('.exhibition-caption');
+    const transitionCss = reducedMotion ? 'none' : 'transform 0.6s cubic-bezier(0.22,0.61,0.36,1), opacity 0.6s ease';
+    frameOuter.style.transition = transitionCss;
+    capEl.style.transition = transitionCss;
+    const panel = {
+      el,
+      frameOuter,
+      imgEl: el.querySelector('img'),
+      capEl,
+      capTitleEl: el.querySelector('.exhibition-caption-title'),
+      capYearEl: el.querySelector('.exhibition-caption-year'),
+      slotPos, photoIndex: photoIdx,
+    };
+    renderPhotoIntoPanel(panel, photoIdx);
+    stage.appendChild(el);
+    return panel;
+  }
+
+  function renderInitial() {
+    panels = [];
+    for (let p = -2; p <= 2; p++) {
+      const idx = centerIndex + p;
+      if (idx < 0 || idx >= N) continue;
+      panels.push(createPanel(p, idx));
+    }
+    requestAnimationFrame(() => panels.forEach(applyPanelStyle));
+  }
+
+  function advance(dir) {
+    if (transitioning) return false;
+    const newCenter = centerIndex + dir;
+    if (newCenter < minCenter || newCenter > maxCenter) return false;
+    transitioning = true;
+    centerIndex = newCenter;
+
+    panels.forEach(panel => { panel.slotPos -= dir; });
+    const leaving = panels.filter(p => Math.abs(p.slotPos) > 2);
+    panels = panels.filter(p => Math.abs(p.slotPos) <= 2);
+
+    const enterSlotPos = dir > 0 ? 2 : -2;
+    const enterPhotoIdx = centerIndex + enterSlotPos;
+    if (enterPhotoIdx >= 0 && enterPhotoIdx < N && !panels.find(p => p.slotPos === enterSlotPos)) {
+      const startSlotPos = enterSlotPos + dir;
+      const panel = createPanel(startSlotPos, enterPhotoIdx);
+      // Snap to the off-stage starting position with no transition,
+      // force a reflow, then re-enable the transition before setting
+      // its real target -- otherwise it would visibly animate in from
+      // wherever the browser defaults an untransformed element to.
+      el_setNoTransition(panel.el);
+      applyPanelStyle(panel);
+      void panel.el.offsetHeight;
+      panel.el.style.transition = reducedMotion ? 'none' : 'transform 0.6s cubic-bezier(0.22,0.61,0.36,1), opacity 0.6s ease';
+      panel.slotPos = enterSlotPos;
+      panels.push(panel);
+    }
+
+    requestAnimationFrame(() => panels.forEach(applyPanelStyle));
+    setTimeout(() => {
+      leaving.forEach(p => p.el.remove());
+      transitioning = false;
+    }, reducedMotion ? 0 : 650);
+    return true;
+  }
+  function el_setNoTransition(el) { el.style.transition = 'none'; }
+
+  renderInitial();
+
+  prevBtn.onclick = () => advance(-1);
+  nextBtn.onclick = () => advance(1);
+
+  let wheelAccum = 0;
+  const WHEEL_THRESHOLD = 60;
+  stage.addEventListener('wheel', (e) => {
+    if (window.matchMedia('(max-width: 700px)').matches) return;
+    if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+    const dir = e.deltaY > 0 ? 1 : -1;
+    const wouldExceed = (centerIndex + dir < minCenter) || (centerIndex + dir > maxCenter);
+    if (wouldExceed) return; // let page scroll resume naturally at the true boundary
+    e.preventDefault();
+    if (transitioning) return;
+    wheelAccum += e.deltaY;
+    if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
+      advance(wheelAccum > 0 ? 1 : -1);
+      wheelAccum = 0;
+    }
+  }, { passive: false });
+
+  stage.addEventListener('keydown', (e) => {
+    if (window.matchMedia('(max-width: 700px)').matches) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); advance(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); advance(-1); }
+  });
+
+  window.addEventListener('resize', () => panels.forEach(applyPanelStyle), { passive: true });
 }
 
 function buildGridGallery(photos, container) {

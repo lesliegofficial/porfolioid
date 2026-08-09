@@ -1132,7 +1132,23 @@
   background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.035) 35%, rgba(255,255,255,0.045) 100%);
   pointer-events: none;
 }
-.exhibition-outer > .exhibition-wrap, .exhibition-outer > .exhibition-arrow { position: relative; z-index: 1; }
+.exhibition-outer > .exhibition-stage, .exhibition-outer > .exhibition-wrap, .exhibition-outer > .exhibition-arrow { position: relative; z-index: 1; }
+/* Fixed 5-slot fan stage (desktop/tablet). Panels are absolutely
+   positioned from a shared center anchor (left:50%) so photos of
+   varying natural aspect ratios all center correctly on their slot's
+   target position -- JS sets translateX(calc(-50% + Npx)) per panel,
+   combining the base self-centering with the slot's horizontal
+   offset in one transform. Height is fixed (not auto) since absolute
+   children don't contribute to a parent's intrinsic height -- sized
+   to comfortably hold the hero frame (same 400px cap as before) plus
+   the lift range and caption beneath it. */
+.exhibition-stage { position: relative; height: 560px; margin: 1rem 0 0; overflow: visible; }
+.exhibition-fan-panel { position: absolute; left: 50%; top: 0; text-align: center; }
+.exhibition-fan-panel .exhibition-frame-outer { position: absolute; left: 0; top: 0; display: inline-block; cursor: pointer; will-change: transform, opacity; }
+.exhibition-fan-panel .exhibition-caption {
+  position: absolute; left: 0; top: 420px; width: 200px; margin: 0;
+  will-change: transform, opacity;
+}
 .exhibition-wrap {
   display: flex; align-items: flex-start; gap: 1.1rem;
   overflow-x: auto; overflow-y: hidden;
@@ -1194,6 +1210,7 @@
   .exhibition-outer { padding: 0; margin-top: 1.5rem; background: none; background-color: transparent; }
   .exhibition-outer::before { display: none; }
   .exhibition-arrow { display: none; }
+  .exhibition-stage { display: none; }
   .exhibition-wrap { display: block; overflow: visible; padding: 0; gap: 0; }
   .exhibition-slide { display: block; margin-bottom: 5rem; }
   .exhibition-slide:last-child { margin-bottom: 0; }
