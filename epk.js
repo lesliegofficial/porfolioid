@@ -2234,7 +2234,7 @@ function initExhibitionMotion(wrap) {
     return window.matchMedia('(max-width: 700px)').matches;
   }
   function maxRotateFor() {
-    return isMobile() ? 8 : 52;
+    return isMobile() ? 8 : 26;
   }
 
   // IntersectionObserver keeps an "active" set of frames actually near
@@ -2315,53 +2315,58 @@ function initExhibitionMotion(wrap) {
         const absRatio = Math.abs(ratio);
         const sign = Math.sign(ratio);
 
-        // Rotation: an accelerating curve (exponent > 1) stays flatter
-        // near center and steepens toward the edges, so the centered
-        // photo reads nearly flat while entering/exiting panels
-        // foreshorten visibly more than a linear curve would give --
-        // "panels turning," not "cards tilted in a row."
-        const rotate = sign * Math.pow(absRatio, 1.4) * maxRotate;
+        // Rotation is now secondary -- it only signals entering/
+        // leaving, not the primary depth cue (that's the vertical
+        // lift below). Exponent raised further (1.6) so a genuinely
+        // broad zone near center stays close to flat -- a photograph
+        // should be easy to actually look at for a meaningful portion
+        // of its journey, not just at one exact mathematical point.
+        // Roughly: ~3-4deg at absRatio 0.3, ~11-12deg approaching at
+        // 0.6, up to the ~26deg max only at the true outer edge.
+        const rotate = sign * Math.pow(absRatio, 1.6) * maxRotate;
 
-        // Scale: a moderate center hierarchy -- 1.06 at dead center
-        // down to ~0.88 at the visible edges. The previous 1.13->0.77
-        // range made outer photographs read as miniature, distant
-        // objects rather than legitimate exhibition pieces; this is
-        // deliberately narrower so perspective/rotation carries most
-        // of the perceived depth, not a large size difference.
-        const scale = 1.06 - absRatio * 0.18;
+        // Scale: subtle only. Active ~1.05, neighbors ~0.94-0.98,
+        // outer never below ~0.90.
+        const scale = 1.05 - absRatio * 0.15;
 
-        // Depth: center comes forward (positive translateZ, toward
-        // the viewer); neighbors recede. Real hierarchy, not just a
-        // flatter/smaller silhouette.
+        // Vertical lift is the primary depth cue for this pass: the
+        // active/center photograph lifts up and toward the viewer;
+        // resting/receding photos settle lower, as if returning to a
+        // gallery floor/display plane. Restrained total range
+        // (~37px here, within the requested 30-45px) so it reads as
+        // a gentle lift, not a bounce or a staircase.
+        const liftY = -22 + absRatio * 37;
+
+        // Depth: center still comes forward toward the viewer:
+        // paired with the lift, this reinforces "rising toward you,"
+        // not just "moving up."
         const depthZ = 40 - absRatio * 95;
 
-        // No vertical stagger -- removed entirely. It broke the
-        // photographs into a scattered, unrelated-objects feeling
-        // rather than one continuous installation. Perspective
-        // rotation alone now carries the sense of movement.
-
-        // Slight controlled overlap: a small pull toward center that
-        // peaks mid-transition and returns to zero at both dead
-        // center and the far edge. Reduced in magnitude to match the
-        // now much tighter base gap between slots (1.1rem, down from
-        // 3.5rem) -- the gap reduction is the primary fix for the
-        // "scattered objects" feeling; this pull only needs to add a
-        // little continuity on top of that, not do the job alone.
+        // Slight controlled overlap: unchanged reasoning from the
+        // density-correction pass -- a small pull toward center,
+        // peaking mid-transition, zero at both extremes.
         const pull = -sign * absRatio * (1 - absRatio) * 34;
 
         const opacity = 1 - absRatio * 0.14;
         const stack = Math.round((1 - absRatio) * 10);
-        el.style.transform = `perspective(1400px) translateX(${pull.toFixed(1)}px) rotateY(${rotate.toFixed(2)}deg) scale(${scale.toFixed(3)}) translateZ(${depthZ.toFixed(1)}px)`;
+        el.style.transform = `perspective(1400px) translateX(${pull.toFixed(1)}px) translateY(${liftY.toFixed(1)}px) rotateY(${rotate.toFixed(2)}deg) scale(${scale.toFixed(3)}) translateZ(${depthZ.toFixed(1)}px)`;
         el.style.opacity = opacity.toFixed(3);
         el.style.zIndex = String(stack);
-        // Caption hierarchy: present but restrained. The previous fade
-        // to 0.3 made neighboring pieces look disabled/inactive --
-        // every photograph should still read as a legitimate part of
-        // the installation, not a dimmed-out thumbnail. No scale term
-        // either now -- opacity alone carries the hierarchy.
+        // Floor relationship: a supplementary drop-shadow (additive,
+        // doesn't replace the frame's own static box-shadow) whose
+        // vertical offset grows with how far a photo has lifted --
+        // the higher it rises, the more separated its shadow reads
+        // beneath it, reinforcing "elevated off the floor" rather
+        // than just "moved up." Restrained blur/opacity so this stays
+        // a felt cue, not a visible added effect.
+        const shadowLift = (1 - absRatio) * 14;
+        el.style.filter = `drop-shadow(0 ${(6 + shadowLift).toFixed(1)}px ${(8 + shadowLift * 0.6).toFixed(1)}px rgba(0,0,0,${(0.25 + (1 - absRatio) * 0.1).toFixed(3)}))`;
+        // Caption hierarchy: present but restrained. Floor raised to
+        // ~0.75 (within the requested 0.7-0.85) -- neighboring
+        // captions stay clearly legible.
         const caption = el.closest('.exhibition-slide')?.querySelector('.exhibition-caption');
         if (caption) {
-          caption.style.opacity = (1 - absRatio * 0.3).toFixed(3);
+          caption.style.opacity = (1 - absRatio * 0.25).toFixed(3);
           caption.style.transform = 'none';
         }
       });
