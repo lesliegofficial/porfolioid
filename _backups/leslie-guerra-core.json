@@ -1694,7 +1694,7 @@
     "connect"
   ],
   "bookingRegion": "Worldwide",
-  "galleryLayout": "magazine",
+  "galleryLayout": "timeline",
   "heroImageZoom": 100,
   "identityBlock": {
     "repName": "",
