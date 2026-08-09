@@ -2319,6 +2319,7 @@ function buildExhibitionFan(photos, container) {
     panel.frameOuter.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px)) translateY(${def.liftY}px) perspective(1400px) rotateY(${def.rotate}deg) translateZ(${def.z}px)`;
     panel.frameOuter.style.opacity = opacity;
     panel.frameOuter.style.zIndex = String(10 - Math.abs(panel.slotPos));
+    panel.frameOuter.classList.toggle('exhibition-fan-hero', panel.slotPos === 0 && !def.offstage);
     // Caption hierarchy: hero fully present, inner quiet, outer
     // hidden entirely -- five simultaneous caption columns were
     // breaking the composition back apart into "five cards." Position
