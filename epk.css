@@ -1111,7 +1111,7 @@
    resting state, the transition curve that smooths per-frame updates
    into visible motion, and the restrained framing/shadow language. */
 .exhibition-outer {
-  position: relative; max-width: 1400px; margin: 2rem auto 0; padding: 0 3.5rem;
+  position: relative; max-width: 1400px; margin: 2rem auto 0; padding: 3rem 3.5rem 0;
   overflow: hidden;
   /* Neutral dark museum room -- black walls, graphite floor, gold
      stays an accent (arrows/metadata/labels) rather than tinting the
@@ -1133,7 +1133,9 @@
   background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.035) 35%, rgba(255,255,255,0.045) 100%);
   pointer-events: none;
 }
-.exhibition-outer > .exhibition-stage, .exhibition-outer > .exhibition-wrap, .exhibition-outer > .exhibition-arrow { position: relative; z-index: 1; }
+.exhibition-outer > .exhibition-stage, .exhibition-outer > .exhibition-wrap { position: relative; z-index: 1; }
+.exhibition-room-header { position: relative; z-index: 1; margin-bottom: 2.75rem; }
+.exhibition-room-header .section-label { margin-bottom: 0.5rem; }
 /* Fixed 5-slot fan stage (desktop/tablet). Panels are absolutely
    positioned from a shared center anchor (left:50%) so photos of
    varying natural aspect ratios all center correctly on their slot's

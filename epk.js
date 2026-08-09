@@ -1401,9 +1401,9 @@ function buildEPK(epk) {
     ${epk.photos?.length ? `
     <div class="gallery-section" id="photos">
       <div class="gallery-inner">
-        <div class="section-label">Photos</div>
+        <div class="section-label" id="galleryEyebrow">Photos</div>
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:0.5rem">
-          <div>
+          <div id="galleryTitleBlock">
             <h2 class="section-title" data-editable data-editable-key="photosTitle" data-editable-type="title" style="outline:none;margin-bottom:0.25rem">On Stage & Behind the Scenes</h2>
             <p style="font-family:var(--font-body);font-size:0.9rem;color:var(--gray);margin:0 0 1rem">Explore moments from performances, studio sessions, press events, and more.</p>
           </div>
@@ -2268,6 +2268,23 @@ function buildExhibitionFan(photos, container) {
 
   const outer = document.createElement('div');
   outer.className = 'exhibition-outer';
+
+  // Pull the section's own eyebrow/title/subtitle INTO the room --
+  // in the approved reference, the header lives inside the same dark
+  // box as the photos, not above it on the plain page background.
+  // These elements already exist in the page (rendered by the shared
+  // section-header markup); moving them (not cloning) keeps
+  // data-editable hooks and existing behavior intact.
+  const eyebrow = document.getElementById('galleryEyebrow');
+  const titleBlock = document.getElementById('galleryTitleBlock');
+  if (eyebrow || titleBlock) {
+    const headerWrap = document.createElement('div');
+    headerWrap.className = 'exhibition-room-header';
+    if (eyebrow) headerWrap.appendChild(eyebrow);
+    if (titleBlock) headerWrap.appendChild(titleBlock);
+    outer.appendChild(headerWrap);
+  }
+
   const stage = document.createElement('div');
   stage.className = 'exhibition-stage';
   stage.setAttribute('tabindex', '0');
@@ -2287,6 +2304,15 @@ function buildExhibitionFan(photos, container) {
   outer.appendChild(stage);
   outer.appendChild(nextBtn);
   container.appendChild(outer);
+
+  // Arrows align with the photo area specifically (stage's own
+  // vertical center), not a fixed percentage of the whole outer box
+  // -- correct regardless of how tall the header above it is.
+  function positionArrows() {
+    const stageMidpoint = stage.offsetTop + stage.offsetHeight / 2;
+    prevBtn.style.top = `${stageMidpoint}px`;
+    nextBtn.style.top = `${stageMidpoint}px`;
+  }
 
   let panels = [];
   let transitioning = false;
@@ -2412,7 +2438,7 @@ function buildExhibitionFan(photos, container) {
         panel.heroOrientation = orientation;
         panel.fitMode = fit;
         applyPanelStyle(panel);
-        updateStageHeight();
+        updateStageHeight(); positionArrows();
       });
     }
   }
@@ -2463,7 +2489,7 @@ function buildExhibitionFan(photos, container) {
       if (idx < 0 || idx >= N) continue;
       panels.push(createPanel(p, idx));
     }
-    requestAnimationFrame(() => { panels.forEach(applyPanelStyle); updateStageHeight(); });
+    requestAnimationFrame(() => { panels.forEach(applyPanelStyle); updateStageHeight(); positionArrows(); });
   }
 
   function advance(dir) {
@@ -2483,7 +2509,7 @@ function buildExhibitionFan(photos, container) {
         becomingHero.heroOrientation = orientation;
         becomingHero.fitMode = fit;
         applyPanelStyle(becomingHero);
-        updateStageHeight();
+        updateStageHeight(); positionArrows();
       });
     }
     const leaving = panels.filter(p => Math.abs(p.slotPos) > 1);
@@ -2506,7 +2532,7 @@ function buildExhibitionFan(photos, container) {
       panels.push(panel);
     }
 
-    requestAnimationFrame(() => { panels.forEach(applyPanelStyle); updateStageHeight(); });
+    requestAnimationFrame(() => { panels.forEach(applyPanelStyle); updateStageHeight(); positionArrows(); });
     setTimeout(() => {
       leaving.forEach(p => p.el.remove());
       transitioning = false;
@@ -2542,7 +2568,7 @@ function buildExhibitionFan(photos, container) {
     if (e.key === 'ArrowLeft') { e.preventDefault(); advance(-1); }
   });
 
-  window.addEventListener('resize', () => { panels.forEach(applyPanelStyle); updateStageHeight(); }, { passive: true });
+  window.addEventListener('resize', () => { panels.forEach(applyPanelStyle); updateStageHeight(); positionArrows(); }, { passive: true });
 }
 
 
