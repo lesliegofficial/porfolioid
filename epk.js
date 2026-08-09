@@ -2248,10 +2248,10 @@ function initExhibitionMobileMotion(wrap) {
 // one for a landscape photo) rather than forcing every photo into
 // one fixed shape. Support panels stay art-directed cover-crops --
 // they're previews of what's next, not the featured piece.
-const EXHIBITION_HERO_PORTRAIT = { widthFrac: 0.32, aspect: 0.72 };   // width/height
-const EXHIBITION_HERO_LANDSCAPE = { widthFrac: 0.48, aspect: 1.65 };
+const EXHIBITION_HERO_PORTRAIT = { widthFrac: 0.35, aspect: 0.72 };   // width/height
+const EXHIBITION_HERO_LANDSCAPE = { widthFrac: 0.52, aspect: 1.65 };
 const EXHIBITION_SUPPORT_WIDTH_FRAC = 0.22;
-const EXHIBITION_SUPPORT_HEIGHT_RATIO = 0.85; // fraction of the hero's own height
+const EXHIBITION_SUPPORT_HEIGHT_RATIO = 0.73; // fraction of the hero's own height
 
 function buildExhibitionFan(photos, container) {
   const N = photos.length;
@@ -2338,16 +2338,27 @@ function buildExhibitionFan(photos, container) {
     const supportHeightFrac = heroHeightFrac * EXHIBITION_SUPPORT_HEIGHT_RATIO;
     const heroHalf = win.widthFrac / 2;
     const overlap = EXHIBITION_SUPPORT_WIDTH_FRAC * 0.25;
-    const supportOffset = heroHalf + overlap;
+    // Extra outward gap beyond the overlap term itself -- the overlap
+    // amount (how much the support tucks behind the hero) stays the
+    // same; this just gives the pair more breathing room from each
+    // other so they don't crowd the hero.
+    const outwardGap = 0.02;
+    const supportOffset = heroHalf + overlap + outwardGap;
 
     if (panel.slotPos === 0) {
-      return { widthFrac: win.widthFrac, heightFrac: heroHeightFrac, offsetFrac: 0, rotate: 0, z: 40, liftY: -16, capMode: 'full', isHero: true };
+      // Hero steps toward the viewer: lifted higher and pushed
+      // further forward in depth than before, reinforcing "standing
+      // closer to you" rather than just "centered."
+      return { widthFrac: win.widthFrac, heightFrac: heroHeightFrac, offsetFrac: 0, rotate: 0, z: 55, liftY: -24, capMode: 'full', isHero: true };
     }
     if (panel.slotPos === -1) {
-      return { widthFrac: EXHIBITION_SUPPORT_WIDTH_FRAC, heightFrac: supportHeightFrac, offsetFrac: -supportOffset, rotate: 10, z: -20, liftY: 8, capMode: 'quiet' };
+      // Supports plant lower and recede further -- a real physical
+      // step down and back, not just a smaller/dimmer copy sitting on
+      // the same line as the hero.
+      return { widthFrac: EXHIBITION_SUPPORT_WIDTH_FRAC, heightFrac: supportHeightFrac, offsetFrac: -supportOffset, rotate: 10, z: -32, liftY: 16, capMode: 'quiet' };
     }
     if (panel.slotPos === 1) {
-      return { widthFrac: EXHIBITION_SUPPORT_WIDTH_FRAC, heightFrac: supportHeightFrac, offsetFrac: supportOffset, rotate: -10, z: -20, liftY: 8, capMode: 'quiet' };
+      return { widthFrac: EXHIBITION_SUPPORT_WIDTH_FRAC, heightFrac: supportHeightFrac, offsetFrac: supportOffset, rotate: -10, z: -32, liftY: 16, capMode: 'quiet' };
     }
     // Entering/exiting just off-stage, extrapolated from the nearest
     // real support slot, pushed further out and transparent.
@@ -2377,7 +2388,7 @@ function buildExhibitionFan(photos, container) {
       const hidden = def.offstage || def.capMode === 'hidden';
       panel.capEl.style.top = `${(heightPx + 32).toFixed(1)}px`;
       panel.capEl.style.width = `${((def.isHero ? 0.26 : 0.16) * stageWidth).toFixed(1)}px`;
-      panel.capEl.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px))`;
+      panel.capEl.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px)) translateY(${def.liftY}px)`;
       panel.capEl.style.opacity = hidden ? '0' : (def.capMode === 'full' ? '1' : '0.55');
       panel.capEl.style.zIndex = String(def.isHero ? 20 : (10 - Math.abs(panel.slotPos)));
       panel.capEl.classList.toggle('exhibition-caption-quiet', def.capMode === 'quiet');

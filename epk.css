@@ -1155,6 +1155,10 @@
    available in the lightbox. */
 .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame { width: 100%; height: 100%; }
 .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame img { width: 100%; height: 100%; object-fit: cover; }
+/* Support panels dim slightly so they recede emotionally rather than
+   competing for attention -- the hero (excluded via :not()) stays at
+   full brightness. */
+.exhibition-fan-panel .exhibition-frame-outer:not(.exhibition-fan-hero) .exhibition-frame img { filter: brightness(0.82); }
 /* Illuminated edge: every panel gets a brighter gold rim than the
    plain 1px border used elsewhere, plus a soft outer glow -- reads
    as a lit gallery panel rather than an image dropped on the page. */
@@ -1168,12 +1172,21 @@
 .exhibition-fan-hero .exhibition-frame {
   border: 2px solid rgba(201,168,76,0.7);
   box-shadow: 0 0 56px rgba(201,168,76,0.24), 0 14px 26px rgba(0,0,0,0.45), 0 40px 80px rgba(0,0,0,0.4);
-  -webkit-box-reflect: below 2px linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.16) 16%, transparent 28%);
+  -webkit-box-reflect: below 2px linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.14) 22%, transparent 38%);
 }
 /* Grounded floor glow beneath the hero -- a soft warm light pooling
    at its base, matching the reference's glowing horizontal bar under
    the center piece. Gold stays confined to this accent role, not a
    room-wide tint. */
+.exhibition-fan-hero::before {
+  content: '';
+  position: absolute; left: 50%; bottom: -10px; width: 62%; height: 14px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.55), transparent 75%);
+  filter: blur(3px);
+  pointer-events: none;
+  z-index: -1;
+}
 .exhibition-fan-hero::after {
   content: '';
   position: absolute; left: 50%; bottom: -14px; width: 70%; height: 28px;
