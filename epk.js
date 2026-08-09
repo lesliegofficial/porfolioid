@@ -2453,7 +2453,7 @@ function buildExhibitionFan(photos, container) {
     const heroHeightFrac = heroWin.widthFrac / heroWin.aspect;
     const stageWidth = stage.getBoundingClientRect().width;
     const heightPx = heroHeightFrac * stageWidth;
-    stage.style.height = `${(heightPx + 32 + 150).toFixed(1)}px`;
+    stage.style.height = `${(heightPx + 32 + 110).toFixed(1)}px`;
   }
 
   function renderInitial() {
