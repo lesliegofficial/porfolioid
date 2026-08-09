@@ -2386,9 +2386,10 @@ function buildExhibitionFan(photos, container) {
     if (def.isHero && panel.fitMode) panel.imgEl.style.objectFit = panel.fitMode;
     if (panel.capEl) {
       const hidden = def.offstage || def.capMode === 'hidden';
-      panel.capEl.style.top = `${(heightPx + 32).toFixed(1)}px`;
-      panel.capEl.style.width = `${((def.isHero ? 0.26 : 0.16) * stageWidth).toFixed(1)}px`;
-      panel.capEl.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px)) translateY(${def.liftY}px)`;
+      const photoLeftEdge = xOffset - widthPx / 2;
+      panel.capEl.style.top = `${(heightPx + 14).toFixed(1)}px`;
+      panel.capEl.style.width = `${((def.isHero ? 0.28 : 0.19) * stageWidth).toFixed(1)}px`;
+      panel.capEl.style.transform = `translateX(${photoLeftEdge.toFixed(1)}px) translateY(${def.liftY}px)`;
       panel.capEl.style.opacity = hidden ? '0' : (def.capMode === 'full' ? '1' : '0.55');
       panel.capEl.style.zIndex = String(def.isHero ? 20 : (10 - Math.abs(panel.slotPos)));
       panel.capEl.classList.toggle('exhibition-caption-quiet', def.capMode === 'quiet');
@@ -2452,7 +2453,7 @@ function buildExhibitionFan(photos, container) {
     const heroHeightFrac = heroWin.widthFrac / heroWin.aspect;
     const stageWidth = stage.getBoundingClientRect().width;
     const heightPx = heroHeightFrac * stageWidth;
-    stage.style.height = `${(heightPx + 32 + 96).toFixed(1)}px`;
+    stage.style.height = `${(heightPx + 32 + 150).toFixed(1)}px`;
   }
 
   function renderInitial() {
