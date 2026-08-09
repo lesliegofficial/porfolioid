@@ -2242,28 +2242,28 @@ function initExhibitionMobileMotion(wrap) {
 // inner's own 0.215 width (target 15-25%). Outer overlaps inner by
 // ~19% of outer's own width using the same method. Hero is 0.290 /
 // 0.215 = 1.35x an inner panel's width (target 30-40% wider).
-const EXHIBITION_FAN_HEIGHT_FRAC = 0.34;
-const EXHIBITION_FAN_SLOTS = [
-  { widthFrac: 0.169, offsetFrac: -0.365, rotate: 17,  z: -50, liftY: 8,   capMode: 'hidden' },
-  { widthFrac: 0.215, offsetFrac: -0.205, rotate: 10,  z: -20, liftY: -2,  capMode: 'quiet' },
-  { widthFrac: 0.290, offsetFrac: 0,      rotate: 0,   z: 40,  liftY: -16, capMode: 'full' },
-  { widthFrac: 0.215, offsetFrac: 0.205,  rotate: -10, z: -20, liftY: -2,  capMode: 'quiet' },
-  { widthFrac: 0.169, offsetFrac: 0.365,  rotate: -17, z: -50, liftY: 8,   capMode: 'hidden' },
-];
+// Triptych: LEFT SUPPORT -- HERO -- RIGHT SUPPORT. The hero adapts
+// its own window proportions to whichever photo currently occupies
+// it (a genuinely tall window for a portrait photo, a genuinely wide
+// one for a landscape photo) rather than forcing every photo into
+// one fixed shape. Support panels stay art-directed cover-crops --
+// they're previews of what's next, not the featured piece.
+const EXHIBITION_HERO_PORTRAIT = { widthFrac: 0.32, aspect: 0.72 };   // width/height
+const EXHIBITION_HERO_LANDSCAPE = { widthFrac: 0.48, aspect: 1.65 };
+const EXHIBITION_SUPPORT_WIDTH_FRAC = 0.22;
+const EXHIBITION_SUPPORT_HEIGHT_RATIO = 0.85; // fraction of the hero's own height
 
 function buildExhibitionFan(photos, container) {
   const N = photos.length;
   if (!N) return;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Clamp so a full, balanced 5-photo tableau is always shown when
-  // N>=5 -- reaching "the beginning" or "the end" of the library just
-  // means further advancement in that direction stops (and wheel
-  // input passes through to page scroll), never a lopsided partial
-  // fan with empty slot positions. Smaller libraries (<5 photos) fall
-  // back to a centered range using whatever exists.
-  const minCenter = N >= 5 ? 2 : Math.floor((N - 1) / 2);
-  const maxCenter = N >= 5 ? N - 3 : Math.ceil((N - 1) / 2);
+  // Clamp so a complete three-piece installation is always shown --
+  // reaching the start/end of the library never leaves a missing
+  // support panel. Wheel input attempting to advance past the clamp
+  // passes through to page scroll, same as every previous round.
+  const minCenter = N >= 3 ? 1 : 0;
+  const maxCenter = N >= 3 ? N - 2 : N - 1;
   let centerIndex = Math.min(maxCenter, Math.max(minCenter, Math.floor((minCenter + maxCenter) / 2)));
 
   const outer = document.createElement('div');
@@ -2290,65 +2290,119 @@ function buildExhibitionFan(photos, container) {
 
   let panels = [];
   let transitioning = false;
+  const orientationCache = new Map(); // photoIdx -> 'portrait' | 'landscape'
+  const fitCache = new Map(); // photoIdx -> 'cover' | 'contain'
 
-  function slotDefFor(slotPos) {
-    const idx = slotPos + 2;
-    if (idx >= 0 && idx < EXHIBITION_FAN_SLOTS.length) return EXHIBITION_FAN_SLOTS[idx];
-    // Entering/exiting panel just off-stage: extrapolated from the
-    // nearest real outer slot, pushed further out and transparent.
-    const edge = slotPos < -2 ? EXHIBITION_FAN_SLOTS[0] : EXHIBITION_FAN_SLOTS[EXHIBITION_FAN_SLOTS.length - 1];
-    const dir = slotPos < -2 ? -1 : 1;
-    return { widthFrac: edge.widthFrac * 0.85, offsetFrac: edge.offsetFrac + dir * 0.13, rotate: edge.rotate, z: edge.z - 15, liftY: edge.liftY, capMode: 'hidden', offstage: true };
+  // Orientation and crop-fit are both derived from the photo's real
+  // natural dimensions once known (from the already-loaded <img> if
+  // it was previously showing as a support, or via its own load
+  // event the first time it appears at all) -- never guessed.
+  function resolveHeroTreatment(photoIdx, imgEl, onReady) {
+    if (orientationCache.has(photoIdx)) {
+      onReady(orientationCache.get(photoIdx), fitCache.get(photoIdx));
+      return;
+    }
+    function compute() {
+      const w = imgEl.naturalWidth, h = imgEl.naturalHeight;
+      const orientation = (w && h && h > w) ? 'portrait' : 'landscape';
+      const win = orientation === 'portrait' ? EXHIBITION_HERO_PORTRAIT : EXHIBITION_HERO_LANDSCAPE;
+      const imgAspect = (w && h) ? w / h : win.aspect;
+      // cover crops minimally when the photo's own aspect is already
+      // close to the hero window's aspect; contain preserves the full
+      // photo when the mismatch is large enough that cover would cut
+      // off a meaningful portion (a real panorama in a narrower
+      // window, for example).
+      const mismatch = Math.abs(imgAspect - win.aspect) / win.aspect;
+      const fit = mismatch > 0.30 ? 'contain' : 'cover';
+      orientationCache.set(photoIdx, orientation);
+      fitCache.set(photoIdx, fit);
+      onReady(orientation, fit);
+    }
+    if (imgEl.complete && imgEl.naturalWidth) compute();
+    else imgEl.addEventListener('load', compute, { once: true });
+  }
+
+  function currentHeroOrientation() {
+    return panels.find(p => p.slotPos === 0)?.heroOrientation || 'landscape';
+  }
+
+  function slotDefFor(panel) {
+    // Height reference always comes from whichever panel currently
+    // sits in the hero slot -- never from this panel's own history.
+    // A support panel that was previously hero (before advancing
+    // away) must not keep using its own stale orientation; all three
+    // panels share one consistent height, tied to the current hero.
+    const heroOrientation = currentHeroOrientation();
+    const win = heroOrientation === 'portrait' ? EXHIBITION_HERO_PORTRAIT : EXHIBITION_HERO_LANDSCAPE;
+    const heroHeightFrac = win.widthFrac / win.aspect;
+    const supportHeightFrac = heroHeightFrac * EXHIBITION_SUPPORT_HEIGHT_RATIO;
+    const heroHalf = win.widthFrac / 2;
+    const overlap = EXHIBITION_SUPPORT_WIDTH_FRAC * 0.25;
+    const supportOffset = heroHalf + overlap;
+
+    if (panel.slotPos === 0) {
+      return { widthFrac: win.widthFrac, heightFrac: heroHeightFrac, offsetFrac: 0, rotate: 0, z: 40, liftY: -16, capMode: 'full', isHero: true };
+    }
+    if (panel.slotPos === -1) {
+      return { widthFrac: EXHIBITION_SUPPORT_WIDTH_FRAC, heightFrac: supportHeightFrac, offsetFrac: -supportOffset, rotate: 10, z: -20, liftY: 8, capMode: 'quiet' };
+    }
+    if (panel.slotPos === 1) {
+      return { widthFrac: EXHIBITION_SUPPORT_WIDTH_FRAC, heightFrac: supportHeightFrac, offsetFrac: supportOffset, rotate: -10, z: -20, liftY: 8, capMode: 'quiet' };
+    }
+    // Entering/exiting just off-stage, extrapolated from the nearest
+    // real support slot, pushed further out and transparent.
+    const dir = panel.slotPos < -1 ? -1 : 1;
+    return {
+      widthFrac: EXHIBITION_SUPPORT_WIDTH_FRAC * 0.85, heightFrac: supportHeightFrac * 0.85,
+      offsetFrac: dir * (supportOffset + EXHIBITION_SUPPORT_WIDTH_FRAC * 0.7),
+      rotate: dir > 0 ? -16 : 16, z: -50, liftY: 12, capMode: 'hidden', offstage: true,
+    };
   }
 
   function applyPanelStyle(panel) {
-    const def = slotDefFor(panel.slotPos);
+    const def = slotDefFor(panel);
     const stageWidth = stage.getBoundingClientRect().width;
     const xOffset = def.offsetFrac * stageWidth;
     const widthPx = def.widthFrac * stageWidth;
-    const heightPx = EXHIBITION_FAN_HEIGHT_FRAC * stageWidth;
+    const heightPx = def.heightFrac * stageWidth;
     const opacity = def.offstage ? '0' : '1';
-    // Fixed art-directed window: explicit width/height, not a scale()
-    // of the photo's own natural size -- object-fit:cover on the img
-    // (set once in createPanel) crops each source photo into this
-    // shared silhouette so portrait and landscape photos participate
-    // in one cohesive composition. Rotation/depth/lift stay as
-    // transform properties layered on top of the sized box.
     panel.frameOuter.style.width = `${widthPx.toFixed(1)}px`;
     panel.frameOuter.style.height = `${heightPx.toFixed(1)}px`;
     panel.frameOuter.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px)) translateY(${def.liftY}px) perspective(1400px) rotateY(${def.rotate}deg) translateZ(${def.z}px)`;
     panel.frameOuter.style.opacity = opacity;
-    panel.frameOuter.style.zIndex = String(10 - Math.abs(panel.slotPos));
-    panel.frameOuter.classList.toggle('exhibition-fan-hero', panel.slotPos === 0 && !def.offstage);
-    // Caption hierarchy: hero fully present, inner quiet, outer
-    // hidden entirely -- five simultaneous caption columns were
-    // breaking the composition back apart into "five cards." Position
-    // matches its photo horizontally; no scale/rotation/lift applied.
+    panel.frameOuter.style.zIndex = String(def.isHero ? 20 : (10 - Math.abs(panel.slotPos)));
+    panel.frameOuter.classList.toggle('exhibition-fan-hero', !!def.isHero);
+    if (def.isHero && panel.fitMode) panel.imgEl.style.objectFit = panel.fitMode;
     if (panel.capEl) {
       const hidden = def.offstage || def.capMode === 'hidden';
-      const capWidthFrac = def.capMode === 'full' ? 0.23 : 0.13;
-      panel.capEl.style.width = `${(capWidthFrac * stageWidth).toFixed(1)}px`;
       panel.capEl.style.top = `${(heightPx + 32).toFixed(1)}px`;
+      panel.capEl.style.width = `${((def.isHero ? 0.26 : 0.16) * stageWidth).toFixed(1)}px`;
       panel.capEl.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px))`;
       panel.capEl.style.opacity = hidden ? '0' : (def.capMode === 'full' ? '1' : '0.55');
-      panel.capEl.style.zIndex = String(10 - Math.abs(panel.slotPos));
+      panel.capEl.style.zIndex = String(def.isHero ? 20 : (10 - Math.abs(panel.slotPos)));
       panel.capEl.classList.toggle('exhibition-caption-quiet', def.capMode === 'quiet');
     }
-    // Stage height tracks the shared frame height (which scales with
-    // stage width) plus room for the caption block beneath it, so
-    // nothing is clipped at any viewport.
-    stage.style.height = `${(heightPx + 32 + 96).toFixed(1)}px`;
+    
   }
 
-  function renderPhotoIntoPanel(panel, photoIdx) {
+  function renderPhotoIntoPanel(panel, photoIdx, isHeroSlot) {
     const photo = photos[photoIdx];
     panel.photoIndex = photoIdx;
     panel.imgEl.src = photo.url;
     panel.imgEl.alt = photo.caption || '';
     panel.imgEl.style.objectPosition = photo.position || 'center';
+    panel.imgEl.style.objectFit = 'cover';
     if (panel.capTitleEl) panel.capTitleEl.textContent = photo.caption || '';
     if (panel.capYearEl) panel.capYearEl.textContent = photo.year || '';
     panel.frameOuter.onclick = () => openLightbox(photo.url, photo);
+    if (isHeroSlot) {
+      resolveHeroTreatment(photoIdx, panel.imgEl, (orientation, fit) => {
+        panel.heroOrientation = orientation;
+        panel.fitMode = fit;
+        applyPanelStyle(panel);
+        updateStageHeight();
+      });
+    }
   }
 
   function createPanel(slotPos, photoIdx) {
@@ -2369,27 +2423,35 @@ function buildExhibitionFan(photos, container) {
     frameOuter.style.transition = transitionCss;
     capEl.style.transition = 'opacity 0.4s ease, transform 0.6s cubic-bezier(0.22,0.61,0.36,1)';
     const panel = {
-      el,
-      frameOuter,
+      el, frameOuter,
       imgEl: el.querySelector('img'),
       capEl,
       capTitleEl: el.querySelector('.exhibition-caption-title'),
       capYearEl: el.querySelector('.exhibition-caption-year'),
       slotPos, photoIndex: photoIdx,
+      heroOrientation: 'landscape', fitMode: 'cover',
     };
-    renderPhotoIntoPanel(panel, photoIdx);
+    renderPhotoIntoPanel(panel, photoIdx, slotPos === 0);
     stage.appendChild(el);
     return panel;
   }
 
+  function updateStageHeight() {
+    const heroWin = currentHeroOrientation() === 'portrait' ? EXHIBITION_HERO_PORTRAIT : EXHIBITION_HERO_LANDSCAPE;
+    const heroHeightFrac = heroWin.widthFrac / heroWin.aspect;
+    const stageWidth = stage.getBoundingClientRect().width;
+    const heightPx = heroHeightFrac * stageWidth;
+    stage.style.height = `${(heightPx + 32 + 96).toFixed(1)}px`;
+  }
+
   function renderInitial() {
     panels = [];
-    for (let p = -2; p <= 2; p++) {
+    for (let p = -1; p <= 1; p++) {
       const idx = centerIndex + p;
       if (idx < 0 || idx >= N) continue;
       panels.push(createPanel(p, idx));
     }
-    requestAnimationFrame(() => panels.forEach(applyPanelStyle));
+    requestAnimationFrame(() => { panels.forEach(applyPanelStyle); updateStageHeight(); });
   }
 
   function advance(dir) {
@@ -2400,34 +2462,45 @@ function buildExhibitionFan(photos, container) {
     centerIndex = newCenter;
 
     panels.forEach(panel => { panel.slotPos -= dir; });
-    const leaving = panels.filter(p => Math.abs(p.slotPos) > 2);
-    panels = panels.filter(p => Math.abs(p.slotPos) <= 2);
+    // The panel moving INTO hero (slotPos becomes 0) needs its hero
+    // treatment resolved fresh -- it was rendered as a support crop
+    // until now.
+    const becomingHero = panels.find(p => p.slotPos === 0);
+    if (becomingHero) {
+      resolveHeroTreatment(becomingHero.photoIndex, becomingHero.imgEl, (orientation, fit) => {
+        becomingHero.heroOrientation = orientation;
+        becomingHero.fitMode = fit;
+        applyPanelStyle(becomingHero);
+        updateStageHeight();
+      });
+    }
+    const leaving = panels.filter(p => Math.abs(p.slotPos) > 1);
+    panels = panels.filter(p => Math.abs(p.slotPos) <= 1);
 
-    const enterSlotPos = dir > 0 ? 2 : -2;
+    const enterSlotPos = dir > 0 ? 1 : -1;
     const enterPhotoIdx = centerIndex + enterSlotPos;
     if (enterPhotoIdx >= 0 && enterPhotoIdx < N && !panels.find(p => p.slotPos === enterSlotPos)) {
       const startSlotPos = enterSlotPos + dir;
       const panel = createPanel(startSlotPos, enterPhotoIdx);
-      // Snap to the off-stage starting position with no transition,
-      // force a reflow, then re-enable the transition before setting
-      // its real target -- otherwise it would visibly animate in from
-      // wherever the browser defaults an untransformed element to.
-      el_setNoTransition(panel.el);
+      panel.el.style.transition = 'none';
+      panel.frameOuter.style.transition = 'none';
+      panel.capEl.style.transition = 'none';
       applyPanelStyle(panel);
       void panel.el.offsetHeight;
-      panel.el.style.transition = reducedMotion ? 'none' : 'transform 0.6s cubic-bezier(0.22,0.61,0.36,1), opacity 0.6s ease';
+      const transitionCss = reducedMotion ? 'none' : 'transform 0.6s cubic-bezier(0.22,0.61,0.36,1), opacity 0.6s ease, width 0.6s cubic-bezier(0.22,0.61,0.36,1), height 0.6s cubic-bezier(0.22,0.61,0.36,1)';
+      panel.frameOuter.style.transition = transitionCss;
+      panel.capEl.style.transition = 'opacity 0.4s ease, transform 0.6s cubic-bezier(0.22,0.61,0.36,1)';
       panel.slotPos = enterSlotPos;
       panels.push(panel);
     }
 
-    requestAnimationFrame(() => panels.forEach(applyPanelStyle));
+    requestAnimationFrame(() => { panels.forEach(applyPanelStyle); updateStageHeight(); });
     setTimeout(() => {
       leaving.forEach(p => p.el.remove());
       transitioning = false;
     }, reducedMotion ? 0 : 650);
     return true;
   }
-  function el_setNoTransition(el) { el.style.transition = 'none'; }
 
   renderInitial();
 
@@ -2441,7 +2514,7 @@ function buildExhibitionFan(photos, container) {
     if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
     const dir = e.deltaY > 0 ? 1 : -1;
     const wouldExceed = (centerIndex + dir < minCenter) || (centerIndex + dir > maxCenter);
-    if (wouldExceed) return; // let page scroll resume naturally at the true boundary
+    if (wouldExceed) return;
     e.preventDefault();
     if (transitioning) return;
     wheelAccum += e.deltaY;
@@ -2457,8 +2530,9 @@ function buildExhibitionFan(photos, container) {
     if (e.key === 'ArrowLeft') { e.preventDefault(); advance(-1); }
   });
 
-  window.addEventListener('resize', () => panels.forEach(applyPanelStyle), { passive: true });
+  window.addEventListener('resize', () => { panels.forEach(applyPanelStyle); updateStageHeight(); }, { passive: true });
 }
+
 
 function buildGridGallery(photos, container) {
   // Editorial "Gallery" -- image-first, minimal text (caption + year
