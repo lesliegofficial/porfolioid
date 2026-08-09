@@ -1144,11 +1144,22 @@
    the lift range and caption beneath it. */
 .exhibition-stage { position: relative; height: 560px; margin: 1rem 0 0; overflow: visible; }
 .exhibition-fan-panel { position: absolute; left: 50%; top: 0; text-align: center; }
-.exhibition-fan-panel .exhibition-frame-outer { position: absolute; left: 0; top: 0; display: inline-block; cursor: pointer; will-change: transform, opacity; }
+.exhibition-fan-panel .exhibition-frame-outer { position: absolute; left: 0; top: 0; display: inline-block; cursor: pointer; will-change: transform, opacity, width, height; }
+/* Fixed art-directed window: the frame fills whatever width/height JS
+   assigns to its parent (frame-outer) rather than sizing itself from
+   the source image's natural aspect ratio, and the image inside
+   crops to fill that window (object-fit:cover) instead of preserving
+   its full uncropped shape (object-fit:contain, used everywhere
+   else) -- portrait and landscape source photos both participate in
+   the same shared silhouette. The full uncropped photo remains
+   available in the lightbox. */
+.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame { width: 100%; height: 100%; }
+.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame img { width: 100%; height: 100%; object-fit: cover; }
 .exhibition-fan-panel .exhibition-caption {
-  position: absolute; left: 0; top: 420px; width: 200px; margin: 0;
-  will-change: transform, opacity;
+  position: absolute; left: 0; margin: 0;
+  will-change: transform, opacity, top, width;
 }
+.exhibition-caption-quiet .exhibition-caption-title { font-size: 0.82rem; }
 .exhibition-wrap {
   display: flex; align-items: flex-start; gap: 1.1rem;
   overflow-x: auto; overflow-y: hidden;

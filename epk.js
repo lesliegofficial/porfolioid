@@ -2226,12 +2226,29 @@ function initExhibitionMobileMotion(wrap) {
 // photos of any aspect ratio center correctly on their slot's anchor
 // point. Rotation ceiling (not a fixed target) tuned to 17deg per
 // approved feedback, within the requested 15-19deg range.
+// Fixed art-directed slot windows, not natural-aspect-ratio scaling.
+// Portrait and landscape source photos are cropped via object-fit:
+// cover into the same shared silhouette height so the five pieces
+// read as one composition rather than five independently-sized
+// objects -- the full uncropped photo remains available in the
+// lightbox on click. All dimensions/offsets are fractions of the
+// measured stage width, so the composition (including overlap
+// ratios) scales together at any viewport rather than only fitting
+// one reference size.
+//
+// Overlap verified by construction, not eyeballed: hero right edge
+// sits at 0.145 (half of 0.290 width); inner-right's left edge sits
+// at 0.205 - 0.1075 = 0.0975 -- a 0.0475 overlap, which is 22% of
+// inner's own 0.215 width (target 15-25%). Outer overlaps inner by
+// ~19% of outer's own width using the same method. Hero is 0.290 /
+// 0.215 = 1.35x an inner panel's width (target 30-40% wider).
+const EXHIBITION_FAN_HEIGHT_FRAC = 0.34;
 const EXHIBITION_FAN_SLOTS = [
-  { rotate: 17,  scale: 0.81, liftY: 10,  z: -40, capOpacity: 0.6,  xFrac: -0.40 },
-  { rotate: 9,   scale: 0.90, liftY: -6,  z: -15, capOpacity: 0.75, xFrac: -0.21 },
-  { rotate: 0,   scale: 1.00, liftY: -18, z: 30,  capOpacity: 1.0,  xFrac: 0 },
-  { rotate: -9,  scale: 0.90, liftY: -6,  z: -15, capOpacity: 0.75, xFrac: 0.21 },
-  { rotate: -17, scale: 0.81, liftY: 10,  z: -40, capOpacity: 0.6,  xFrac: 0.40 },
+  { widthFrac: 0.169, offsetFrac: -0.365, rotate: 17,  z: -50, liftY: 8,   capMode: 'hidden' },
+  { widthFrac: 0.215, offsetFrac: -0.205, rotate: 10,  z: -20, liftY: -2,  capMode: 'quiet' },
+  { widthFrac: 0.290, offsetFrac: 0,      rotate: 0,   z: 40,  liftY: -16, capMode: 'full' },
+  { widthFrac: 0.215, offsetFrac: 0.205,  rotate: -10, z: -20, liftY: -2,  capMode: 'quiet' },
+  { widthFrac: 0.169, offsetFrac: 0.365,  rotate: -17, z: -50, liftY: 8,   capMode: 'hidden' },
 ];
 
 function buildExhibitionFan(photos, container) {
@@ -2281,31 +2298,45 @@ function buildExhibitionFan(photos, container) {
     // nearest real outer slot, pushed further out and transparent.
     const edge = slotPos < -2 ? EXHIBITION_FAN_SLOTS[0] : EXHIBITION_FAN_SLOTS[EXHIBITION_FAN_SLOTS.length - 1];
     const dir = slotPos < -2 ? -1 : 1;
-    return { rotate: edge.rotate, scale: edge.scale * 0.92, liftY: edge.liftY, z: edge.z - 15, capOpacity: 0, xFrac: edge.xFrac + dir * 0.15, offstage: true };
+    return { widthFrac: edge.widthFrac * 0.85, offsetFrac: edge.offsetFrac + dir * 0.13, rotate: edge.rotate, z: edge.z - 15, liftY: edge.liftY, capMode: 'hidden', offstage: true };
   }
 
   function applyPanelStyle(panel) {
     const def = slotDefFor(panel.slotPos);
     const stageWidth = stage.getBoundingClientRect().width;
-    const xOffset = def.xFrac * stageWidth;
+    const xOffset = def.offsetFrac * stageWidth;
+    const widthPx = def.widthFrac * stageWidth;
+    const heightPx = EXHIBITION_FAN_HEIGHT_FRAC * stageWidth;
     const opacity = def.offstage ? '0' : '1';
-    // Frame: full treatment (rotation/scale/depth/lift).
-    panel.frameOuter.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px)) translateY(${def.liftY}px) perspective(1400px) rotateY(${def.rotate}deg) scale(${def.scale}) translateZ(${def.z}px)`;
+    // Fixed art-directed window: explicit width/height, not a scale()
+    // of the photo's own natural size -- object-fit:cover on the img
+    // (set once in createPanel) crops each source photo into this
+    // shared silhouette so portrait and landscape photos participate
+    // in one cohesive composition. Rotation/depth/lift stay as
+    // transform properties layered on top of the sized box.
+    panel.frameOuter.style.width = `${widthPx.toFixed(1)}px`;
+    panel.frameOuter.style.height = `${heightPx.toFixed(1)}px`;
+    panel.frameOuter.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px)) translateY(${def.liftY}px) perspective(1400px) rotateY(${def.rotate}deg) translateZ(${def.z}px)`;
     panel.frameOuter.style.opacity = opacity;
     panel.frameOuter.style.zIndex = String(10 - Math.abs(panel.slotPos));
-    // Caption: horizontal position only, matching its photo -- no
-    // scale, no rotation, no lift. Every caption sits on the same
-    // fixed vertical baseline regardless of which slot it's in, so
-    // differently-scaled photos never produce overlapping or jumbled
-    // captions (the bug in the first version of this approach: the
-    // caption was nested inside the same scaled element as the frame,
-    // so a 0.81-scale panel's caption ended up at a different
-    // vertical position than the hero's, and all five collided).
+    // Caption hierarchy: hero fully present, inner quiet, outer
+    // hidden entirely -- five simultaneous caption columns were
+    // breaking the composition back apart into "five cards." Position
+    // matches its photo horizontally; no scale/rotation/lift applied.
     if (panel.capEl) {
+      const hidden = def.offstage || def.capMode === 'hidden';
+      const capWidthFrac = def.capMode === 'full' ? 0.23 : 0.13;
+      panel.capEl.style.width = `${(capWidthFrac * stageWidth).toFixed(1)}px`;
+      panel.capEl.style.top = `${(heightPx + 32).toFixed(1)}px`;
       panel.capEl.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px))`;
-      panel.capEl.style.opacity = def.offstage ? '0' : String(def.capOpacity);
+      panel.capEl.style.opacity = hidden ? '0' : (def.capMode === 'full' ? '1' : '0.55');
       panel.capEl.style.zIndex = String(10 - Math.abs(panel.slotPos));
+      panel.capEl.classList.toggle('exhibition-caption-quiet', def.capMode === 'quiet');
     }
+    // Stage height tracks the shared frame height (which scales with
+    // stage width) plus room for the caption block beneath it, so
+    // nothing is clipped at any viewport.
+    stage.style.height = `${(heightPx + 32 + 96).toFixed(1)}px`;
   }
 
   function renderPhotoIntoPanel(panel, photoIdx) {
@@ -2333,9 +2364,9 @@ function buildExhibitionFan(photos, container) {
     `;
     const frameOuter = el.querySelector('.exhibition-frame-outer');
     const capEl = el.querySelector('.exhibition-caption');
-    const transitionCss = reducedMotion ? 'none' : 'transform 0.6s cubic-bezier(0.22,0.61,0.36,1), opacity 0.6s ease';
+    const transitionCss = reducedMotion ? 'none' : 'transform 0.6s cubic-bezier(0.22,0.61,0.36,1), opacity 0.6s ease, width 0.6s cubic-bezier(0.22,0.61,0.36,1), height 0.6s cubic-bezier(0.22,0.61,0.36,1)';
     frameOuter.style.transition = transitionCss;
-    capEl.style.transition = transitionCss;
+    capEl.style.transition = 'opacity 0.4s ease, transform 0.6s cubic-bezier(0.22,0.61,0.36,1)';
     const panel = {
       el,
       frameOuter,
