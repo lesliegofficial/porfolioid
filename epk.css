@@ -1156,8 +1156,27 @@
    else) -- portrait and landscape source photos both participate in
    the same shared silhouette. The full uncropped photo remains
    available in the lightbox. */
-.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame { width: 100%; height: 100%; }
+.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame { width: 100%; height: 100%; max-width: none; max-height: none; }
+.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame { position: relative; z-index: 1; }
 .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame img { width: 100%; height: 100%; object-fit: cover; }
+/* Letterbox fill: when a hero photo's aspect ratio doesn't match its
+   window closely enough for a clean cover-crop, it switches to
+   object-fit:contain (full photo preserved, no cropping), which by
+   itself leaves empty space on two sides. A blurred-image backdrop
+   fill was attempted here and abandoned -- across three different
+   techniques (a separate absolutely-positioned element, then an img
+   with object-fit, then a ::before pseudo-element) the fill
+   consistently rendered at the wrong size relative to its container,
+   for a cause not fully isolated within available time (likely
+   related to how percentage-based sizing resolves inside this
+   element's 3D perspective/rotateY transform context). This simpler,
+   guaranteed-correct fix instead softens the letterboxed frame's own
+   background to a warm dark tone that blends with the room, rather
+   than the stark pure-black void -- no element sizing involved, so
+   nothing to get wrong. */
+.exhibition-fan-panel .exhibition-frame-outer.exhibition-frame-letterboxed .exhibition-frame {
+  background: #18140f;
+}
 /* Support panels dim slightly so they recede emotionally rather than
    competing for attention -- the hero (excluded via :not()) stays at
    full brightness. */

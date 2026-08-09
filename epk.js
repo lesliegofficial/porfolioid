@@ -2409,7 +2409,15 @@ function buildExhibitionFan(photos, container) {
     panel.frameOuter.style.opacity = opacity;
     panel.frameOuter.style.zIndex = String(def.isHero ? 20 : (10 - Math.abs(panel.slotPos)));
     panel.frameOuter.classList.toggle('exhibition-fan-hero', !!def.isHero);
-    if (def.isHero && panel.fitMode) panel.imgEl.style.objectFit = panel.fitMode;
+    // Explicit pixel sizing for the backdrop, matching frame-outer's
+    // own dimensions exactly -- CSS percentage/inset sizing was
+    // resolving against the wrong containing block in this nested
+    if (def.isHero && panel.fitMode) {
+      panel.imgEl.style.objectFit = panel.fitMode;
+      panel.frameOuter.classList.toggle('exhibition-frame-letterboxed', panel.fitMode === 'contain');
+    } else {
+      panel.frameOuter.classList.remove('exhibition-frame-letterboxed');
+    }
     if (panel.capEl) {
       const hidden = def.offstage || def.capMode === 'hidden';
       const photoLeftEdge = xOffset - widthPx / 2;
@@ -2448,7 +2456,9 @@ function buildExhibitionFan(photos, container) {
     el.className = 'exhibition-fan-panel';
     el.innerHTML = `
       <div class="exhibition-frame-outer">
-        <div class="exhibition-frame"><img loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="exhibition-frame">
+          <img class="exhibition-frame-main" loading="lazy" onerror="this.style.display='none'">
+        </div>
       </div>
       <div class="exhibition-caption">
         <div class="exhibition-caption-title"></div>
@@ -2462,7 +2472,7 @@ function buildExhibitionFan(photos, container) {
     capEl.style.transition = 'opacity 0.4s ease, transform 0.6s cubic-bezier(0.22,0.61,0.36,1)';
     const panel = {
       el, frameOuter,
-      imgEl: el.querySelector('img'),
+      imgEl: el.querySelector('.exhibition-frame-main'),
       capEl,
       capTitleEl: el.querySelector('.exhibition-caption-title'),
       capYearEl: el.querySelector('.exhibition-caption-year'),
