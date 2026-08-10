@@ -2840,12 +2840,14 @@ let _galleryCategoryFilter = 'all';
 function buildCategoryBar(photos) {
   const bar = document.getElementById('galleryCategoryBar');
   if (!bar) return;
-  // Layouts that use category bar. 'grid' intentionally excluded --
-  // the approved Gallery design is a clean flat grid with no filter
-  // UI (minimal text, see-everything-quickly), and this bar has a
-  // pre-existing mobile overflow issue in the other four modes that
-  // is out of scope for this Gallery-only redesign.
-  const showBar = ['collections','magazine','timeline','wall'].includes(currentGalleryLayout);
+  // No currently-supported layout (Auto Scroll or Spotlight) uses
+  // this category filter bar. It's kept defined here, unreachable
+  // rather than deleted, since it was previously used by Collections/
+  // Magazine/Timeline/Wall -- if a legacy profile still has one of
+  // those values saved, the render dispatch now falls back to Auto
+  // Scroll for it, so showing this bar for that raw saved value would
+  // pair it with a layout it was never designed for. Always hidden.
+  const showBar = false;
   if (!showBar) { bar.innerHTML = ''; return; }
 
   // Build category counts
@@ -2913,76 +2915,25 @@ function buildGallery(photos) {
     buildMarqueeGallery(filtered, container);
     return;
   }
-  if (currentGalleryLayout === 'wall') {
-    buildWallGallery(filtered, container);
-    return;
-  }
-  if (currentGalleryLayout === 'scroll') {
-    buildScrollGallery(filtered, container);
-    return;
-  }
-  if (currentGalleryLayout === 'collections') {
-    buildCollectionsGallery(filtered, container);
-    return;
-  }
-  if (currentGalleryLayout === 'grid') {
-    buildGridGallery(filtered, container);
-    return;
-  }
-  if (currentGalleryLayout === 'magazine') {
-    buildMagazineGallery(filtered, container);
-    return;
-  }
-  if (currentGalleryLayout === 'timeline') {
-    buildTimelineGallery(filtered, container);
-    return;
-  }
-  if (currentGalleryLayout === 'table') {
-    buildTableGallery(filtered, container);
-    return;
-  }
   if (currentGalleryLayout === 'exhibition') {
     buildExhibitionGallery(filtered, container);
     return;
   }
-
-  // All photos go into one pool, distributed across 4 columns
-  const numCols = 5;
-  const cols = [[], [], [], [], []];
-  photos.forEach((p, i) => cols[i % numCols].push(p));
-
-  const grid = document.createElement('div');
-  grid.className = 'gallery-4col';
-
-  cols.forEach((colPhotos, colIdx) => {
-    if (!colPhotos.length) return;
-    const col = document.createElement('div');
-    col.className = 'gallery-col';
-    const state = { current: 0 };
-
-    colPhotos.forEach((photo, i) => {
-      const slide = document.createElement('div');
-      slide.className = 'gallery-slide' + (i === 0 ? ' active' : '');
-      const pos = photo.position || 'center 0%';
-      slide.innerHTML = `<img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onclick="openLightbox('${photo.url}')" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;object-position:${pos};display:block"><div class="gallery-caption">${photo.caption || ''}</div>`;
-      col.appendChild(slide);
-    });
-
-    // Auto-rotate each column at different speeds
-    if (colPhotos.length > 1) {
-      setInterval(() => {
-        const slides = col.querySelectorAll('.gallery-slide');
-        slides[state.current].classList.remove('active');
-        state.current = (state.current + 1) % colPhotos.length;
-        slides[state.current].classList.add('active');
-      }, 3000 + colIdx * 800);
-    }
-
-    grid.appendChild(col);
-  });
-
-  container.innerHTML = '';
-  container.appendChild(grid);
+  // Every other value renders Auto Scroll -- this covers every
+  // legacy value from before the Photos layout selector was
+  // simplified to just Auto Scroll + Spotlight (wall, scroll,
+  // collections, grid, magazine, timeline, table), plus any
+  // unrecognized future value. The six legacy renderer functions
+  // below (buildWallGallery, buildScrollGallery, buildCollectionsGallery,
+  // buildGridGallery, buildMagazineGallery, buildTimelineGallery,
+  // buildTableGallery) are intentionally left fully defined and
+  // untouched -- not deleted -- so a profile that still has one of
+  // those old saved values (no profile data was migrated) renders
+  // something correct here rather than whatever undocumented fallback
+  // previously lived in this spot. This also replaces that old
+  // fallback (a rarely-reached 4-column auto-rotating pool render)
+  // with an explicit, intentional Auto Scroll default.
+  buildMarqueeGallery(filtered, container);
 }
 
 function goToSlide(col, state, idx) {
