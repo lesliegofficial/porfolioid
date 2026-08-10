@@ -2242,39 +2242,64 @@ function initExhibitionMobileMotion(wrap) {
 // inner's own 0.215 width (target 15-25%). Outer overlaps inner by
 // ~19% of outer's own width using the same method. Hero is 0.290 /
 // 0.215 = 1.35x an inner panel's width (target 30-40% wider).
-// Triptych: LEFT SUPPORT -- HERO -- RIGHT SUPPORT. The hero adapts
-// its own window proportions to whichever photo currently occupies
-// it (a genuinely tall window for a portrait photo, a genuinely wide
-// one for a landscape photo) rather than forcing every photo into
-// one fixed shape. Support panels stay art-directed cover-crops --
-// they're previews of what's next, not the featured piece.
-const EXHIBITION_HERO_PORTRAIT = { widthFrac: 0.35, aspect: 0.72 };   // width/height
-const EXHIBITION_HERO_LANDSCAPE = { widthFrac: 0.52, aspect: 1.65 };
-const EXHIBITION_SUPPORT_WIDTH_FRAC = 0.22;
-const EXHIBITION_SUPPORT_HEIGHT_RATIO = 0.73; // fraction of the hero's own height
+// Five-slot installation, reproducing the approved Figma spec exactly:
+// outer-left / inner-left / hero / inner-right / outer-right. Base
+// geometry below is derived directly from Figma Page 1 (exact 1440px
+// pixel positions) cross-checked against Page 2's explicit
+// developer-spec ranges (section 02) -- not estimated from
+// screenshots. All values are fractions of the measured stage width
+// so the installation scales together at any viewport.
+//
+// The hero has two art-directed states, chosen from the active
+// photo's natural orientation -- not two carousel systems, one
+// five-slot system with two hero geometries:
+// - Portrait: the Figma's exact geometry (0.242 x 0.362), 0 rotation.
+// - Landscape: substantially wider and shorter (0.42 x 0.27) so a
+//   horizontal photograph can be shown close to its full composition
+//   with a modest cover-crop rather than the destructive crop a
+//   portrait-shaped window would force onto it.
+const EXHIBITION_HERO_PORTRAIT = { widthFrac: 0.242, heightFrac: 0.362 };
+const EXHIBITION_HERO_LANDSCAPE = { widthFrac: 0.420, heightFrac: 0.270 };
+// Extra half-width the landscape hero needs beyond the portrait
+// hero's half-width -- inner/outer slots shift outward by (a
+// fraction of) this amount when the hero is landscape, so the
+// installation stays connected around the wider centerpiece instead
+// of the hero overrunning its neighbors. Inner shifts by the full
+// amount (it sits right against the hero); outer shifts by half as
+// much (it only needs to keep pace with inner, not the hero
+// directly) -- verified this keeps the outer panel's total span
+// comfortably inside the stage bounds rather than clipping at the
+// edge.
+const EXHIBITION_HERO_WIDTH_DELTA = EXHIBITION_HERO_LANDSCAPE.widthFrac / 2 - EXHIBITION_HERO_PORTRAIT.widthFrac / 2;
+
+// Verified overlap by construction (portrait hero case): hero
+// half-width (0.121) minus inner's inner-edge (0.196-0.096=0.100) =
+// real ~0.021 overlap. Inner's outer-edge (0.196+0.096=0.292) vs
+// outer's inner-edge (0.365-0.080=0.285) = real ~0.007 overlap. Both
+// slots tuck behind their neighbor, matching "no large gaps."
+const EXHIBITION_SLOTS_BASE = [
+  { pos: -2, offsetFrac: -0.365, widthFrac: 0.160, heightFrac: 0.285, rotate: 6,    depthZ: -30, opacity: 0.66, liftY: 14, stackZ: 10, role: 'outer' },
+  { pos: -1, offsetFrac: -0.196, widthFrac: 0.192, heightFrac: 0.320, rotate: 3.5,  depthZ: 10,  opacity: 0.82, liftY: 0,  stackZ: 30, role: 'inner' },
+  { pos: 0,  offsetFrac: 0,      widthFrac: EXHIBITION_HERO_PORTRAIT.widthFrac, heightFrac: EXHIBITION_HERO_PORTRAIT.heightFrac, rotate: 0, depthZ: 40, opacity: 1.0, liftY: -10, stackZ: 50, role: 'hero', isHero: true },
+  { pos: 1,  offsetFrac: 0.196,  widthFrac: 0.192, heightFrac: 0.320, rotate: -3.5, depthZ: 10,  opacity: 0.82, liftY: 0,  stackZ: 30, role: 'inner' },
+  { pos: 2,  offsetFrac: 0.365,  widthFrac: 0.160, heightFrac: 0.285, rotate: -6,   depthZ: -30, opacity: 0.66, liftY: 14, stackZ: 10, role: 'outer' },
+];
 
 function buildExhibitionFan(photos, container) {
   const N = photos.length;
   if (!N) return;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Clamp so a complete three-piece installation is always shown --
-  // reaching the start/end of the library never leaves a missing
-  // support panel. Wheel input attempting to advance past the clamp
-  // passes through to page scroll, same as every previous round.
-  const minCenter = N >= 3 ? 1 : 0;
-  const maxCenter = N >= 3 ? N - 2 : N - 1;
+  // A complete five-piece tableau is always shown when N>=5 -- reaching
+  // the start/end of the library stops advancing in that direction
+  // rather than ever showing a lopsided partial installation.
+  const minCenter = N >= 5 ? 2 : Math.floor((N - 1) / 2);
+  const maxCenter = N >= 5 ? N - 3 : Math.ceil((N - 1) / 2);
   let centerIndex = Math.min(maxCenter, Math.max(minCenter, Math.floor((minCenter + maxCenter) / 2)));
 
   const outer = document.createElement('div');
   outer.className = 'exhibition-outer';
 
-  // Pull the section's own eyebrow/title/subtitle INTO the room --
-  // in the approved reference, the header lives inside the same dark
-  // box as the photos, not above it on the plain page background.
-  // These elements already exist in the page (rendered by the shared
-  // section-header markup); moving them (not cloning) keeps
-  // data-editable hooks and existing behavior intact.
   const eyebrow = document.getElementById('galleryEyebrow');
   const titleBlock = document.getElementById('galleryTitleBlock');
   if (eyebrow || titleBlock) {
@@ -2305,9 +2330,6 @@ function buildExhibitionFan(photos, container) {
   outer.appendChild(nextBtn);
   container.appendChild(outer);
 
-  // Arrows align with the photo area specifically (stage's own
-  // vertical center), not a fixed percentage of the whole outer box
-  // -- correct regardless of how tall the header above it is.
   function positionArrows() {
     const stageMidpoint = stage.offsetTop + stage.offsetHeight / 2;
     prevBtn.style.top = `${stageMidpoint}px`;
@@ -2316,119 +2338,96 @@ function buildExhibitionFan(photos, container) {
 
   let panels = [];
   let transitioning = false;
-  const orientationCache = new Map(); // photoIdx -> 'portrait' | 'landscape'
-  const fitCache = new Map(); // photoIdx -> 'cover' | 'contain'
+  const orientationCache = new Map();
+  const fitCache = new Map();
 
-  // Orientation and crop-fit are both derived from the photo's real
-  // natural dimensions once known (from the already-loaded <img> if
-  // it was previously showing as a support, or via its own load
-  // event the first time it appears at all) -- never guessed.
-  function resolveHeroTreatment(photoIdx, imgEl, onReady) {
-    if (orientationCache.has(photoIdx)) {
-      onReady(orientationCache.get(photoIdx), fitCache.get(photoIdx));
-      return;
-    }
+  function resolveHeroFit(photoIdx, imgEl, onReady) {
+    if (fitCache.has(photoIdx)) { onReady(fitCache.get(photoIdx)); return; }
     function compute() {
       const w = imgEl.naturalWidth, h = imgEl.naturalHeight;
       const orientation = (w && h && h > w) ? 'portrait' : 'landscape';
       const win = orientation === 'portrait' ? EXHIBITION_HERO_PORTRAIT : EXHIBITION_HERO_LANDSCAPE;
-      const imgAspect = (w && h) ? w / h : win.aspect;
-      // cover crops minimally when the photo's own aspect is already
-      // close to the hero window's aspect; contain preserves the full
-      // photo when the mismatch is large enough that cover would cut
-      // off a meaningful portion (a real panorama in a narrower
-      // window, for example).
-      const mismatch = Math.abs(imgAspect - win.aspect) / win.aspect;
-      const fit = mismatch > 0.30 ? 'contain' : 'cover';
+      const winAspect = win.widthFrac / win.heightFrac;
+      const imgAspect = (w && h) ? w / h : winAspect;
+      // Mismatch is measured against the window that actually matches
+      // this photo's own orientation, so it's small in the common
+      // case (the whole point of having two hero states) -- contain
+      // only kicks in for genuinely extreme photos (e.g. a real
+      // panorama) that don't fit even their own matching window well.
+      const mismatch = Math.abs(imgAspect - winAspect) / winAspect;
+      const fit = mismatch > 0.35 ? 'contain' : 'cover';
+      const result = { orientation, fit };
+      fitCache.set(photoIdx, result);
       orientationCache.set(photoIdx, orientation);
-      fitCache.set(photoIdx, fit);
-      onReady(orientation, fit);
+      onReady(result);
     }
     if (imgEl.complete && imgEl.naturalWidth) compute();
     else imgEl.addEventListener('load', compute, { once: true });
   }
 
   function currentHeroOrientation() {
-    return panels.find(p => p.slotPos === 0)?.heroOrientation || 'landscape';
+    const heroPanel = panels.find(p => p.slotPos === 0);
+    if (!heroPanel) return 'portrait';
+    return orientationCache.get(heroPanel.photoIndex) || 'portrait';
   }
 
-  function slotDefFor(panel) {
-    // Height reference always comes from whichever panel currently
-    // sits in the hero slot -- never from this panel's own history.
-    // A support panel that was previously hero (before advancing
-    // away) must not keep using its own stale orientation; all three
-    // panels share one consistent height, tied to the current hero.
+  function slotDefFor(slotPos) {
     const heroOrientation = currentHeroOrientation();
-    const win = heroOrientation === 'portrait' ? EXHIBITION_HERO_PORTRAIT : EXHIBITION_HERO_LANDSCAPE;
-    const heroHeightFrac = win.widthFrac / win.aspect;
-    const supportHeightFrac = heroHeightFrac * EXHIBITION_SUPPORT_HEIGHT_RATIO;
-    const heroHalf = win.widthFrac / 2;
-    const overlap = EXHIBITION_SUPPORT_WIDTH_FRAC * 0.25;
-    // Extra outward gap beyond the overlap term itself -- the overlap
-    // amount (how much the support tucks behind the hero) stays the
-    // same; this just gives the pair more breathing room from each
-    // other so they don't crowd the hero.
-    const outwardGap = 0.02;
-    const supportOffset = heroHalf + overlap + outwardGap;
-
-    if (panel.slotPos === 0) {
-      // Hero steps toward the viewer: lifted higher and pushed
-      // further forward in depth than before, reinforcing "standing
-      // closer to you" rather than just "centered."
-      return { widthFrac: win.widthFrac, heightFrac: heroHeightFrac, offsetFrac: 0, rotate: 0, z: 55, liftY: -24, capMode: 'full', isHero: true };
-    }
-    if (panel.slotPos === -1) {
-      // Supports plant lower and recede further -- a real physical
-      // step down and back, not just a smaller/dimmer copy sitting on
-      // the same line as the hero.
-      return { widthFrac: EXHIBITION_SUPPORT_WIDTH_FRAC, heightFrac: supportHeightFrac, offsetFrac: -supportOffset, rotate: 10, z: -32, liftY: 16, capMode: 'quiet' };
-    }
-    if (panel.slotPos === 1) {
-      return { widthFrac: EXHIBITION_SUPPORT_WIDTH_FRAC, heightFrac: supportHeightFrac, offsetFrac: supportOffset, rotate: -10, z: -32, liftY: 16, capMode: 'quiet' };
+    const isLandscapeHero = heroOrientation === 'landscape';
+    const base = EXHIBITION_SLOTS_BASE.find(s => s.pos === slotPos);
+    if (base) {
+      if (base.role === 'hero') {
+        const win = isLandscapeHero ? EXHIBITION_HERO_LANDSCAPE : EXHIBITION_HERO_PORTRAIT;
+        return { ...base, widthFrac: win.widthFrac, heightFrac: win.heightFrac };
+      }
+      if (!isLandscapeHero) return base;
+      // Landscape hero: shift inner/outer outward to stay connected
+      // around the now-wider centerpiece. Inner shifts by the full
+      // delta (it sits directly against the hero); outer shifts by
+      // half as much (it only needs to keep pace with inner).
+      const dir = Math.sign(base.offsetFrac);
+      const shiftAmount = base.role === 'inner' ? EXHIBITION_HERO_WIDTH_DELTA : EXHIBITION_HERO_WIDTH_DELTA * 0.5;
+      return { ...base, offsetFrac: base.offsetFrac + dir * shiftAmount };
     }
     // Entering/exiting just off-stage, extrapolated from the nearest
-    // real support slot, pushed further out and transparent.
-    const dir = panel.slotPos < -1 ? -1 : 1;
+    // real outer slot (already orientation-shifted above), pushed
+    // further out and transparent.
+    const edgeBase = slotPos < -2 ? EXHIBITION_SLOTS_BASE[0] : EXHIBITION_SLOTS_BASE[EXHIBITION_SLOTS_BASE.length - 1];
+    const dir = slotPos < -2 ? -1 : 1;
+    const outerShift = isLandscapeHero ? EXHIBITION_HERO_WIDTH_DELTA * 0.5 : 0;
     return {
-      widthFrac: EXHIBITION_SUPPORT_WIDTH_FRAC * 0.85, heightFrac: supportHeightFrac * 0.85,
-      offsetFrac: dir * (supportOffset + EXHIBITION_SUPPORT_WIDTH_FRAC * 0.7),
-      rotate: dir > 0 ? -16 : 16, z: -50, liftY: 12, capMode: 'hidden', offstage: true,
+      offsetFrac: edgeBase.offsetFrac + dir * outerShift + dir * 0.13, widthFrac: edgeBase.widthFrac * 0.85, heightFrac: edgeBase.heightFrac * 0.85,
+      rotate: edgeBase.rotate * 1.2, depthZ: edgeBase.depthZ - 15, opacity: 0, liftY: edgeBase.liftY + 4, stackZ: 0, role: 'outer', offstage: true,
     };
   }
 
   function applyPanelStyle(panel) {
-    const def = slotDefFor(panel);
+    const def = slotDefFor(panel.slotPos);
     const stageWidth = stage.getBoundingClientRect().width;
     const xOffset = def.offsetFrac * stageWidth;
     const widthPx = def.widthFrac * stageWidth;
     const heightPx = def.heightFrac * stageWidth;
-    const opacity = def.offstage ? '0' : '1';
     panel.frameOuter.style.width = `${widthPx.toFixed(1)}px`;
     panel.frameOuter.style.height = `${heightPx.toFixed(1)}px`;
-    panel.frameOuter.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px)) translateY(${def.liftY}px) perspective(1400px) rotateY(${def.rotate}deg) translateZ(${def.z}px)`;
-    panel.frameOuter.style.opacity = opacity;
-    panel.frameOuter.style.zIndex = String(def.isHero ? 20 : (10 - Math.abs(panel.slotPos)));
-    panel.frameOuter.classList.toggle('exhibition-fan-hero', !!def.isHero);
-    // Explicit pixel sizing for the backdrop, matching frame-outer's
-    // own dimensions exactly -- CSS percentage/inset sizing was
-    // resolving against the wrong containing block in this nested
+    panel.frameOuter.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px)) translateY(${def.liftY}px) perspective(1400px) rotateY(${def.rotate}deg) translateZ(${def.depthZ}px)`;
+    panel.frameOuter.style.opacity = def.offstage ? '0' : String(def.opacity);
+    panel.frameOuter.style.zIndex = String(def.stackZ);
+    panel.frameOuter.classList.toggle('exhibition-fan-hero', def.role === 'hero');
+    panel.frameOuter.classList.toggle('exhibition-fan-inner', def.role === 'inner');
+    panel.frameOuter.classList.toggle('exhibition-fan-outer', def.role === 'outer');
     if (def.isHero && panel.fitMode) {
       panel.imgEl.style.objectFit = panel.fitMode;
       panel.frameOuter.classList.toggle('exhibition-frame-letterboxed', panel.fitMode === 'contain');
     } else {
       panel.frameOuter.classList.remove('exhibition-frame-letterboxed');
     }
-    if (panel.capEl) {
-      const hidden = def.offstage || def.capMode === 'hidden';
-      const photoLeftEdge = xOffset - widthPx / 2;
-      panel.capEl.style.top = `${(heightPx + 14).toFixed(1)}px`;
-      panel.capEl.style.width = `${((def.isHero ? 0.28 : 0.19) * stageWidth).toFixed(1)}px`;
-      panel.capEl.style.transform = `translateX(${photoLeftEdge.toFixed(1)}px) translateY(${def.liftY}px)`;
-      panel.capEl.style.opacity = hidden ? '0' : (def.capMode === 'full' ? '1' : '0.55');
-      panel.capEl.style.zIndex = String(def.isHero ? 20 : (10 - Math.abs(panel.slotPos)));
-      panel.capEl.classList.toggle('exhibition-caption-quiet', def.capMode === 'quiet');
-    }
-    
+  }
+
+  function updateStageHeight() {
+    const stageWidth = stage.getBoundingClientRect().width;
+    const win = currentHeroOrientation() === 'landscape' ? EXHIBITION_HERO_LANDSCAPE : EXHIBITION_HERO_PORTRAIT;
+    const heightPx = win.heightFrac * stageWidth;
+    stage.style.height = `${(heightPx + 20).toFixed(1)}px`;
   }
 
   function renderPhotoIntoPanel(panel, photoIdx, isHeroSlot) {
@@ -2442,11 +2441,10 @@ function buildExhibitionFan(photos, container) {
     if (panel.capYearEl) panel.capYearEl.textContent = photo.year || '';
     panel.frameOuter.onclick = () => openLightbox(photo.url, photo);
     if (isHeroSlot) {
-      resolveHeroTreatment(photoIdx, panel.imgEl, (orientation, fit) => {
-        panel.heroOrientation = orientation;
+      resolveHeroFit(photoIdx, panel.imgEl, ({ fit }) => {
         panel.fitMode = fit;
-        applyPanelStyle(panel);
-        updateStageHeight(); positionArrows();
+        panels.forEach(applyPanelStyle);
+        updateStageHeight();
       });
     }
   }
@@ -2458,43 +2456,32 @@ function buildExhibitionFan(photos, container) {
       <div class="exhibition-frame-outer">
         <div class="exhibition-frame">
           <img class="exhibition-frame-main" loading="lazy" onerror="this.style.display='none'">
+          <div class="exhibition-frame-caption">
+            <div class="exhibition-caption-title"></div>
+            <div class="exhibition-caption-year"></div>
+          </div>
         </div>
-      </div>
-      <div class="exhibition-caption">
-        <div class="exhibition-caption-title"></div>
-        <div class="exhibition-caption-year"></div>
       </div>
     `;
     const frameOuter = el.querySelector('.exhibition-frame-outer');
-    const capEl = el.querySelector('.exhibition-caption');
-    const transitionCss = reducedMotion ? 'none' : 'transform 0.6s cubic-bezier(0.22,0.61,0.36,1), opacity 0.6s ease, width 0.6s cubic-bezier(0.22,0.61,0.36,1), height 0.6s cubic-bezier(0.22,0.61,0.36,1)';
+    const transitionCss = reducedMotion ? 'none' : 'transform 0.6s cubic-bezier(0.22,1,0.36,1), opacity 0.5s ease, width 0.6s cubic-bezier(0.22,1,0.36,1), height 0.6s cubic-bezier(0.22,1,0.36,1)';
     frameOuter.style.transition = transitionCss;
-    capEl.style.transition = 'opacity 0.4s ease, transform 0.6s cubic-bezier(0.22,0.61,0.36,1)';
     const panel = {
       el, frameOuter,
       imgEl: el.querySelector('.exhibition-frame-main'),
-      capEl,
       capTitleEl: el.querySelector('.exhibition-caption-title'),
       capYearEl: el.querySelector('.exhibition-caption-year'),
       slotPos, photoIndex: photoIdx,
-      heroOrientation: 'landscape', fitMode: 'cover',
+      fitMode: 'cover',
     };
     renderPhotoIntoPanel(panel, photoIdx, slotPos === 0);
     stage.appendChild(el);
     return panel;
   }
 
-  function updateStageHeight() {
-    const heroWin = currentHeroOrientation() === 'portrait' ? EXHIBITION_HERO_PORTRAIT : EXHIBITION_HERO_LANDSCAPE;
-    const heroHeightFrac = heroWin.widthFrac / heroWin.aspect;
-    const stageWidth = stage.getBoundingClientRect().width;
-    const heightPx = heroHeightFrac * stageWidth;
-    stage.style.height = `${(heightPx + 32 + 110).toFixed(1)}px`;
-  }
-
   function renderInitial() {
     panels = [];
-    for (let p = -1; p <= 1; p++) {
+    for (let p = -2; p <= 2; p++) {
       const idx = centerIndex + p;
       if (idx < 0 || idx >= N) continue;
       panels.push(createPanel(p, idx));
@@ -2510,34 +2497,30 @@ function buildExhibitionFan(photos, container) {
     centerIndex = newCenter;
 
     panels.forEach(panel => { panel.slotPos -= dir; });
-    // The panel moving INTO hero (slotPos becomes 0) needs its hero
-    // treatment resolved fresh -- it was rendered as a support crop
-    // until now.
     const becomingHero = panels.find(p => p.slotPos === 0);
     if (becomingHero) {
-      resolveHeroTreatment(becomingHero.photoIndex, becomingHero.imgEl, (orientation, fit) => {
-        becomingHero.heroOrientation = orientation;
+      resolveHeroFit(becomingHero.photoIndex, becomingHero.imgEl, ({ fit }) => {
         becomingHero.fitMode = fit;
-        applyPanelStyle(becomingHero);
-        updateStageHeight(); positionArrows();
+        // The new hero's orientation can change inner/outer offsets
+        // for every panel (see slotDefFor), not just the hero's own
+        // size -- re-apply all of them, not just this one.
+        panels.forEach(applyPanelStyle);
+        updateStageHeight();
       });
     }
-    const leaving = panels.filter(p => Math.abs(p.slotPos) > 1);
-    panels = panels.filter(p => Math.abs(p.slotPos) <= 1);
+    const leaving = panels.filter(p => Math.abs(p.slotPos) > 2);
+    panels = panels.filter(p => Math.abs(p.slotPos) <= 2);
 
-    const enterSlotPos = dir > 0 ? 1 : -1;
+    const enterSlotPos = dir > 0 ? 2 : -2;
     const enterPhotoIdx = centerIndex + enterSlotPos;
     if (enterPhotoIdx >= 0 && enterPhotoIdx < N && !panels.find(p => p.slotPos === enterSlotPos)) {
       const startSlotPos = enterSlotPos + dir;
       const panel = createPanel(startSlotPos, enterPhotoIdx);
-      panel.el.style.transition = 'none';
       panel.frameOuter.style.transition = 'none';
-      panel.capEl.style.transition = 'none';
       applyPanelStyle(panel);
       void panel.el.offsetHeight;
-      const transitionCss = reducedMotion ? 'none' : 'transform 0.6s cubic-bezier(0.22,0.61,0.36,1), opacity 0.6s ease, width 0.6s cubic-bezier(0.22,0.61,0.36,1), height 0.6s cubic-bezier(0.22,0.61,0.36,1)';
+      const transitionCss = reducedMotion ? 'none' : 'transform 0.6s cubic-bezier(0.22,1,0.36,1), opacity 0.5s ease, width 0.6s cubic-bezier(0.22,1,0.36,1), height 0.6s cubic-bezier(0.22,1,0.36,1)';
       panel.frameOuter.style.transition = transitionCss;
-      panel.capEl.style.transition = 'opacity 0.4s ease, transform 0.6s cubic-bezier(0.22,0.61,0.36,1)';
       panel.slotPos = enterSlotPos;
       panels.push(panel);
     }
@@ -2580,7 +2563,6 @@ function buildExhibitionFan(photos, container) {
 
   window.addEventListener('resize', () => { panels.forEach(applyPanelStyle); updateStageHeight(); positionArrows(); }, { passive: true });
 }
-
 
 function buildGridGallery(photos, container) {
   // Editorial "Gallery" -- image-first, minimal text (caption + year

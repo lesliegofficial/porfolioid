@@ -1147,59 +1147,72 @@
    the lift range and caption beneath it. */
 .exhibition-stage { position: relative; height: 560px; margin: 1rem 0 0; overflow: visible; }
 .exhibition-fan-panel { position: absolute; left: 50%; top: 0; text-align: center; }
-.exhibition-fan-panel .exhibition-frame-outer { position: absolute; left: 0; top: 0; display: inline-block; cursor: pointer; will-change: transform, opacity, width, height; }
+.exhibition-fan-panel .exhibition-frame-outer { position: absolute; left: 0; top: 0; display: inline-block; cursor: pointer; will-change: transform, opacity, width, height; border-radius: 1px; }
 /* Fixed art-directed window: the frame fills whatever width/height JS
    assigns to its parent (frame-outer) rather than sizing itself from
    the source image's natural aspect ratio, and the image inside
    crops to fill that window (object-fit:cover) instead of preserving
-   its full uncropped shape (object-fit:contain, used everywhere
-   else) -- portrait and landscape source photos both participate in
-   the same shared silhouette. The full uncropped photo remains
-   available in the lightbox. */
-.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame { width: 100%; height: 100%; max-width: none; max-height: none; }
-.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame { position: relative; z-index: 1; }
-.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame img { width: 100%; height: 100%; object-fit: cover; }
-/* Letterbox fill: when a hero photo's aspect ratio doesn't match its
-   window closely enough for a clean cover-crop, it switches to
-   object-fit:contain (full photo preserved, no cropping), which by
-   itself leaves empty space on two sides. A blurred-image backdrop
-   fill was attempted here and abandoned -- across three different
-   techniques (a separate absolutely-positioned element, then an img
-   with object-fit, then a ::before pseudo-element) the fill
-   consistently rendered at the wrong size relative to its container,
-   for a cause not fully isolated within available time (likely
-   related to how percentage-based sizing resolves inside this
-   element's 3D perspective/rotateY transform context). This simpler,
-   guaranteed-correct fix instead softens the letterboxed frame's own
-   background to a warm dark tone that blends with the room, rather
-   than the stark pure-black void -- no element sizing involved, so
-   nothing to get wrong. */
+   its full uncropped shape -- portrait and landscape source photos
+   both participate in the same shared silhouette. The full uncropped
+   photo remains available in the lightbox. */
+.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame { width: 100%; height: 100%; max-width: none; max-height: none; position: relative; z-index: 1; overflow: hidden; border-radius: 1px; }
+.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Letterbox fill: when a hero photo's aspect ratio doesn't match the
+   fixed hero window closely enough for a clean cover-crop, it
+   switches to object-fit:contain (full photo preserved, no
+   destructive cropping), which by itself leaves empty space on two
+   sides. Softens that space to a warm dark tone blending with the
+   room rather than a stark black void. */
 .exhibition-fan-panel .exhibition-frame-outer.exhibition-frame-letterboxed .exhibition-frame {
   background: #18140f;
 }
-/* Support panels dim slightly so they recede emotionally rather than
-   competing for attention -- the hero (excluded via :not()) stays at
-   full brightness. */
-.exhibition-fan-panel .exhibition-frame-outer:not(.exhibition-fan-hero) .exhibition-frame img { filter: brightness(0.82); }
-/* Illuminated edge: every panel gets a brighter gold rim than the
-   plain 1px border used elsewhere, plus a soft outer glow -- reads
-   as a lit gallery panel rather than an image dropped on the page. */
-.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
-  border: 1.5px solid rgba(201,168,76,0.4);
-  box-shadow: 0 0 30px rgba(201,168,76,0.14), 0 10px 20px rgba(0,0,0,0.4), 0 32px 60px rgba(0,0,0,0.35);
-  -webkit-box-reflect: below 2px linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 10%, transparent 18%);
+/* Support panels dim slightly so the hero reads as unmistakably
+   dominant -- the hero (excluded via :not()) stays at full
+   brightness. */
+.exhibition-fan-panel .exhibition-frame-outer:not(.exhibition-fan-hero) .exhibition-frame img { filter: brightness(0.85); }
+/* Integrated caption: a near-black gradient scrim inside the lower
+   portion of the image itself, with the caption text sitting on top
+   of it -- per spec, "no separate floating caption boxes," captions
+   stay physically attached to their photo because they're literally
+   inside the same element that rotates/scales/moves with it. */
+.exhibition-frame-caption {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  padding: 1.6rem 0.85rem 0.65rem;
+  background: linear-gradient(to top, rgba(5,4,3,0.92) 0%, rgba(5,4,3,0.55) 45%, transparent 100%);
+  text-align: left;
+  pointer-events: none;
 }
-/* Hero: strongest lighting, strongest reflection, brightest edge --
-   "the featured artwork," not just the largest panel. */
+.exhibition-caption-title { font-family: var(--font-display); font-size: 0.92rem; line-height: 1.25; color: var(--white); }
+.exhibition-caption-year { font-family: var(--font-mono); font-size: 0.58rem; color: var(--gold); letter-spacing: 0.08em; margin-top: 0.25rem; opacity: 0.9; }
+.exhibition-fan-outer .exhibition-caption-title { font-size: 0.78rem; }
+.exhibition-fan-outer .exhibition-frame-caption { padding: 1.1rem 0.6rem 0.5rem; }
+/* Gold rim + reflection, differentiated by role per spec: "Hero
+   border/light is strongest; neighbors quieter; outer panels
+   subdued." Reflection intensity is intentionally the OPPOSITE of
+   the border/glow hierarchy -- per spec section 05, resting side
+   panels read with slightly stronger/closer reflections, while the
+   lifted/active hero has a lighter reflection with more separation
+   (a hero standing forward, closer to the viewer and further from
+   the floor, casts a fainter, more distant reflection than a piece
+   settled back near the floor). */
+.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
+  border: 1px solid rgba(201,168,76,0.32);
+  box-shadow: 0 0 18px rgba(201,168,76,0.09), 0 10px 20px rgba(0,0,0,0.4), 0 32px 60px rgba(0,0,0,0.35);
+  -webkit-box-reflect: below 2px linear-gradient(to bottom, rgba(255,255,255,0.36) 0%, rgba(255,255,255,0.13) 12%, transparent 22%);
+}
+.exhibition-fan-inner .exhibition-frame {
+  border: 1.2px solid rgba(201,168,76,0.42);
+  box-shadow: 0 0 22px rgba(201,168,76,0.12), 0 11px 22px rgba(0,0,0,0.4), 0 34px 64px rgba(0,0,0,0.35);
+}
 .exhibition-fan-hero .exhibition-frame {
-  border: 2px solid rgba(201,168,76,0.7);
-  box-shadow: 0 0 56px rgba(201,168,76,0.24), 0 14px 26px rgba(0,0,0,0.45), 0 40px 80px rgba(0,0,0,0.4);
-  -webkit-box-reflect: below 2px linear-gradient(to bottom, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.15) 14%, transparent 26%);
+  border: 1.6px solid rgba(201,168,76,0.75);
+  box-shadow: 0 0 44px rgba(201,168,76,0.2), 0 14px 26px rgba(0,0,0,0.45), 0 40px 80px rgba(0,0,0,0.4);
+  -webkit-box-reflect: below 2px linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.06) 8%, transparent 15%);
 }
 /* Grounded floor glow beneath the hero -- a soft warm light pooling
-   at its base, matching the reference's glowing horizontal bar under
-   the center piece. Gold stays confined to this accent role, not a
-   room-wide tint. */
+   at its base plus a tight dark contact shadow, matching the
+   reference's glowing horizontal bar under the center piece. Gold
+   stays confined to this accent role, not a room-wide tint. */
 .exhibition-fan-hero::before {
   content: '';
   position: absolute; left: 50%; bottom: -10px; width: 62%; height: 14px;
@@ -1213,15 +1226,10 @@
   content: '';
   position: absolute; left: 50%; bottom: -14px; width: 70%; height: 28px;
   transform: translateX(-50%);
-  background: radial-gradient(ellipse at center, rgba(201,168,76,0.35), transparent 72%);
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.32), transparent 72%);
   filter: blur(4px);
   pointer-events: none;
 }
-.exhibition-fan-panel .exhibition-caption {
-  position: absolute; left: 0; margin: 0; text-align: left;
-  will-change: transform, opacity, top, width;
-}
-.exhibition-caption-quiet .exhibition-caption-title { font-size: 0.82rem; }
 .exhibition-wrap {
   display: flex; align-items: flex-start; gap: 1.1rem;
   overflow-x: auto; overflow-y: hidden;
