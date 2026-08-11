@@ -297,6 +297,74 @@
       "storyBehindWorkEs": null
     }
   ],
+  "awards": [
+    {
+      "org": "Polk State College",
+      "type": "degree",
+      "year": "2026",
+      "title": "A.S. Business Administration (In Progress)",
+      "photos": []
+    },
+    {
+      "org": "Florida Technical College (NUC University)",
+      "note": "High Honors, GPA 4.0",
+      "type": "degree",
+      "year": "2025",
+      "title": "Computer Support Technician Diploma",
+      "photos": [
+        {
+          "url": "https://media.porfolioid.com/profiles/leslie-guerra/photos/awards-degrees/leslie_ftc_graduation.jpg",
+          "caption": "Graduation — Florida Technical College"
+        }
+      ],
+      "certUrl": "https://media.porfolioid.com/profiles/leslie-guerra/documents/p0npavwpllen9vfqceiq.ai"
+    },
+    {
+      "org": "Florida Technical College (NUC University)",
+      "type": "recognition",
+      "year": "2025",
+      "title": "President's List",
+      "photos": [
+        {
+          "url": "https://media.porfolioid.com/profiles/leslie-guerra/photos/rypcc7shqcz7rt4kyhny.jpg",
+          "caption": "Receiving President's List Award — Florida Technical College"
+        },
+        {
+          "url": "https://media.porfolioid.com/profiles/leslie-guerra/photos/apw3zngzif4uxweqfn9a.jpg",
+          "caption": "Graduation Ceremony — NUC University"
+        }
+      ],
+      "certUrl": "https://media.porfolioid.com/profiles/leslie-guerra/documents/zjz3grw21r7nqtwgajh8.pdf"
+    },
+    {
+      "org": "Google",
+      "desc": "",
+      "type": "certification",
+      "year": "2026",
+      "title": "Google Analytics Certification",
+      "photos": [],
+      "certUrl": "https://media.porfolioid.com/profiles/leslie-guerra/photos/awards-degrees/top8skjmwsx62zarq9h8.jpg",
+      "category": "",
+      "featured": false,
+      "verified": false,
+      "proofLink": "",
+      "photoStyle": "thumbnails"
+    },
+    {
+      "org": "Microsoft",
+      "desc": "",
+      "type": "certification",
+      "year": "2026",
+      "title": "Business Analytics with Excel",
+      "photos": [],
+      "certUrl": "https://raw.githubusercontent.com/lesliegofficial/porfolioid/main/awards/1782144146799_business_analytics_with_excel.jpeg",
+      "category": "",
+      "featured": false,
+      "verified": false,
+      "proofLink": "",
+      "photoStyle": "thumbnails"
+    }
+  ],
   "photos": [
     {
       "url": "https://media.porfolioid.com/profiles/leslie-guerra/photos/leslie-guerra_j-balvin-and-me_v1_20260803.jpg",
@@ -1694,7 +1762,7 @@
     "connect"
   ],
   "bookingRegion": "Worldwide",
-  "galleryLayout": "scroll",
+  "galleryLayout": "marquee",
   "heroImageZoom": 100,
   "identityBlock": {
     "repName": "",
@@ -1809,73 +1877,5 @@
   "heroImagePosition": 0,
   "sectionVisibility": {},
   "bookingAutoResponse": "Thank you for your inquiry. I will respond in less than 48 hours.",
-  "bookingAvailability": "selective",
-  "awards": [
-    {
-      "org": "Polk State College",
-      "type": "degree",
-      "year": "2026",
-      "title": "A.S. Business Administration (In Progress)",
-      "photos": []
-    },
-    {
-      "org": "Florida Technical College (NUC University)",
-      "note": "High Honors, GPA 4.0",
-      "type": "degree",
-      "year": "2025",
-      "title": "Computer Support Technician Diploma",
-      "photos": [
-        {
-          "url": "https://media.porfolioid.com/profiles/leslie-guerra/photos/awards-degrees/leslie_ftc_graduation.jpg",
-          "caption": "Graduation — Florida Technical College"
-        }
-      ],
-      "certUrl": "https://media.porfolioid.com/profiles/leslie-guerra/documents/p0npavwpllen9vfqceiq.ai"
-    },
-    {
-      "org": "Florida Technical College (NUC University)",
-      "type": "recognition",
-      "year": "2025",
-      "title": "President's List",
-      "photos": [
-        {
-          "url": "https://media.porfolioid.com/profiles/leslie-guerra/photos/rypcc7shqcz7rt4kyhny.jpg",
-          "caption": "Receiving President's List Award — Florida Technical College"
-        },
-        {
-          "url": "https://media.porfolioid.com/profiles/leslie-guerra/photos/apw3zngzif4uxweqfn9a.jpg",
-          "caption": "Graduation Ceremony — NUC University"
-        }
-      ],
-      "certUrl": "https://media.porfolioid.com/profiles/leslie-guerra/documents/zjz3grw21r7nqtwgajh8.pdf"
-    },
-    {
-      "org": "Google",
-      "desc": "",
-      "type": "certification",
-      "year": "2026",
-      "title": "Google Analytics Certification",
-      "photos": [],
-      "certUrl": "https://media.porfolioid.com/profiles/leslie-guerra/photos/awards-degrees/top8skjmwsx62zarq9h8.jpg",
-      "category": "",
-      "featured": false,
-      "verified": false,
-      "proofLink": "",
-      "photoStyle": "thumbnails"
-    },
-    {
-      "org": "Microsoft",
-      "desc": "",
-      "type": "certification",
-      "year": "2026",
-      "title": "Business Analytics with Excel",
-      "photos": [],
-      "certUrl": "https://raw.githubusercontent.com/lesliegofficial/porfolioid/main/awards/1782144146799_business_analytics_with_excel.jpeg",
-      "category": "",
-      "featured": false,
-      "verified": false,
-      "proofLink": "",
-      "photoStyle": "thumbnails"
-    }
-  ]
+  "bookingAvailability": "selective"
 }
