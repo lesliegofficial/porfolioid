@@ -2425,8 +2425,14 @@ function buildExhibitionFan(photos, container) {
 
   function updateStageHeight() {
     const stageWidth = stage.getBoundingClientRect().width;
-    const win = currentHeroOrientation() === 'landscape' ? EXHIBITION_HERO_LANDSCAPE : EXHIBITION_HERO_PORTRAIT;
-    const heightPx = win.heightFrac * stageWidth;
+    // Always sized for the taller (portrait) hero state, regardless of
+    // which orientation is currently showing -- keeps the room/stage
+    // container's own footprint constant so the arrows (positioned
+    // against this container) never shift vertically when the hero
+    // orientation changes. Individual panels still resize/reposition
+    // within this fixed-height room exactly as before; only the
+    // room's own height stopped fluctuating.
+    const heightPx = EXHIBITION_HERO_PORTRAIT.heightFrac * stageWidth;
     stage.style.height = `${(heightPx + 180).toFixed(1)}px`;
   }
 

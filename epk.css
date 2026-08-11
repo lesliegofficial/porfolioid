@@ -1146,6 +1146,24 @@
    to comfortably hold the hero frame (same 400px cap as before) plus
    the lift range and caption beneath it. */
 .exhibition-stage { position: relative; height: 560px; margin: 1rem 0 0; overflow: visible; }
+/* Broad secondary gallery lighting: a wide, soft warm wash spanning
+   behind/beneath the whole five-card installation, distinct from and
+   in addition to the hero's own contact shadow/reflection/floor pool
+   (all untouched, still hero-scoped). This is deliberately much
+   lower-opacity and much more spread out than the hero's own glow --
+   an ambient environmental layer suggesting concealed gallery
+   lighting washing the floor behind the pieces, not a light source
+   itself. Sits at the back of the stack (z-index:0, below every
+   panel's 10-50 range) so it never competes with the photographs. */
+.exhibition-stage::before {
+  content: '';
+  position: absolute; left: 50%; bottom: 6%; width: 85%; height: 34%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.09), rgba(201,168,76,0.04) 45%, transparent 75%);
+  filter: blur(28px);
+  pointer-events: none;
+  z-index: 0;
+}
 .exhibition-fan-panel { position: absolute; left: 50%; top: 0; text-align: center; }
 .exhibition-fan-panel .exhibition-frame-outer { position: absolute; left: 0; top: 0; display: inline-block; cursor: pointer; will-change: transform, opacity, width, height; border-radius: 1px; }
 /* Fixed art-directed window: the frame fills whatever width/height JS
@@ -1207,17 +1225,17 @@
    the floor, casts a fainter, more distant reflection than a piece
    settled back near the floor). */
 .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
-  border: 1px solid rgba(201,168,76,0.42);
-  box-shadow: 0 0 18px rgba(201,168,76,0.09), 0 10px 20px rgba(0,0,0,0.4), 0 32px 60px rgba(0,0,0,0.35);
+  border: 1px solid rgba(201,168,76,0.52);
+  box-shadow: 0 0 22px rgba(201,168,76,0.15), 0 10px 20px rgba(0,0,0,0.4), 0 32px 60px rgba(0,0,0,0.35);
   -webkit-box-reflect: below 2px linear-gradient(to bottom, rgba(255,255,255,0.36) 0%, rgba(255,255,255,0.13) 12%, transparent 22%);
 }
 .exhibition-fan-inner .exhibition-frame {
-  border: 1px solid rgba(201,168,76,0.58);
-  box-shadow: 0 0 22px rgba(201,168,76,0.12), 0 11px 22px rgba(0,0,0,0.4), 0 34px 64px rgba(0,0,0,0.35);
+  border: 1px solid rgba(201,168,76,0.66);
+  box-shadow: 0 0 24px rgba(201,168,76,0.18), 0 11px 22px rgba(0,0,0,0.4), 0 34px 64px rgba(0,0,0,0.35);
 }
 .exhibition-fan-hero .exhibition-frame {
   border: 1.4px solid rgba(242,184,71,0.95);
-  box-shadow: 0 20px 26px 0 rgba(0,0,0,0.82), 0 0 14px 0px rgba(247,176,56,0.26), 0 10px 16px -4px rgba(247,176,56,0.32);
+  box-shadow: 0 20px 26px 0 rgba(0,0,0,0.82), 0 0 16px 0px rgba(247,176,56,0.32), 0 10px 18px -4px rgba(247,176,56,0.38);
   -webkit-box-reflect: below 2px linear-gradient(to bottom, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.05) 7%, transparent 13%);
 }
 /* Grounded floor glow beneath the hero -- a soft warm light pooling
