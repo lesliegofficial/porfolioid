@@ -2259,7 +2259,7 @@ function initExhibitionMobileMotion(wrap) {
 //   with a modest cover-crop rather than the destructive crop a
 //   portrait-shaped window would force onto it.
 const EXHIBITION_HERO_PORTRAIT = { widthFrac: 0.242, heightFrac: 0.362 };
-const EXHIBITION_HERO_LANDSCAPE = { widthFrac: 0.420, heightFrac: 0.270 };
+const EXHIBITION_HERO_LANDSCAPE = { widthFrac: 0.390, heightFrac: 0.270 };
 // Extra half-width the landscape hero needs beyond the portrait
 // hero's half-width -- inner/outer slots shift outward by (a
 // fraction of) this amount when the hero is landscape, so the
@@ -2278,11 +2278,11 @@ const EXHIBITION_HERO_WIDTH_DELTA = EXHIBITION_HERO_LANDSCAPE.widthFrac / 2 - EX
 // outer's inner-edge (0.365-0.080=0.285) = real ~0.007 overlap. Both
 // slots tuck behind their neighbor, matching "no large gaps."
 const EXHIBITION_SLOTS_BASE = [
-  { pos: -2, offsetFrac: -0.365, widthFrac: 0.160, heightFrac: 0.285, rotate: 6,    depthZ: -30, opacity: 0.66, liftY: 14, stackZ: 10, role: 'outer' },
-  { pos: -1, offsetFrac: -0.196, widthFrac: 0.192, heightFrac: 0.320, rotate: 3.5,  depthZ: 10,  opacity: 0.82, liftY: 0,  stackZ: 30, role: 'inner' },
+  { pos: -2, offsetFrac: -0.366, widthFrac: 0.144, heightFrac: 0.275, rotate: 5.5,  depthZ: -30, opacity: 0.75, liftY: 11,  stackZ: 10, role: 'outer' },
+  { pos: -1, offsetFrac: -0.198, widthFrac: 0.165, heightFrac: 0.311, rotate: 3.4,  depthZ: 10,  opacity: 0.82, liftY: -3,  stackZ: 30, role: 'inner' },
   { pos: 0,  offsetFrac: 0,      widthFrac: EXHIBITION_HERO_PORTRAIT.widthFrac, heightFrac: EXHIBITION_HERO_PORTRAIT.heightFrac, rotate: 0, depthZ: 40, opacity: 1.0, liftY: -10, stackZ: 50, role: 'hero', isHero: true },
-  { pos: 1,  offsetFrac: 0.196,  widthFrac: 0.192, heightFrac: 0.320, rotate: -3.5, depthZ: 10,  opacity: 0.82, liftY: 0,  stackZ: 30, role: 'inner' },
-  { pos: 2,  offsetFrac: 0.365,  widthFrac: 0.160, heightFrac: 0.285, rotate: -6,   depthZ: -30, opacity: 0.66, liftY: 14, stackZ: 10, role: 'outer' },
+  { pos: 1,  offsetFrac: 0.198,  widthFrac: 0.165, heightFrac: 0.311, rotate: -3.4, depthZ: 10,  opacity: 0.82, liftY: -3,  stackZ: 30, role: 'inner' },
+  { pos: 2,  offsetFrac: 0.366,  widthFrac: 0.144, heightFrac: 0.275, rotate: -5.5, depthZ: -30, opacity: 0.75, liftY: 11,  stackZ: 10, role: 'outer' },
 ];
 
 function buildExhibitionFan(photos, container) {
@@ -2427,7 +2427,7 @@ function buildExhibitionFan(photos, container) {
     const stageWidth = stage.getBoundingClientRect().width;
     const win = currentHeroOrientation() === 'landscape' ? EXHIBITION_HERO_LANDSCAPE : EXHIBITION_HERO_PORTRAIT;
     const heightPx = win.heightFrac * stageWidth;
-    stage.style.height = `${(heightPx + 20).toFixed(1)}px`;
+    stage.style.height = `${(heightPx + 180).toFixed(1)}px`;
   }
 
   function renderPhotoIntoPanel(panel, photoIdx, isHeroSlot) {
