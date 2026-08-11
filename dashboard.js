@@ -2590,7 +2590,9 @@ function saveGalleryLayout(val) {
 }
 
 function loadGalleryLayout() {
-  const val = epk.galleryLayout || 'marquee';
+  const SUPPORTED_GALLERY_LAYOUTS = ['marquee', 'exhibition'];
+  const raw = epk.galleryLayout || 'marquee';
+  const val = SUPPORTED_GALLERY_LAYOUTS.includes(raw) ? raw : 'marquee';
   document.querySelectorAll('input[name="galleryLayout"]').forEach(r => r.checked = r.value === val);
 }
 

@@ -1401,9 +1401,9 @@ function buildEPK(epk) {
     ${epk.photos?.length ? `
     <div class="gallery-section" id="photos">
       <div class="gallery-inner">
-        <div class="section-label">Photos</div>
+        <div class="section-label" id="galleryEyebrow">Photos</div>
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:0.5rem">
-          <div>
+          <div id="galleryTitleBlock">
             <h2 class="section-title" data-editable data-editable-key="photosTitle" data-editable-type="title" style="outline:none;margin-bottom:0.25rem">On Stage & Behind the Scenes</h2>
             <p style="font-family:var(--font-body);font-size:0.9rem;color:var(--gray);margin:0 0 1rem">Explore moments from performances, studio sessions, press events, and more.</p>
           </div>
@@ -1739,7 +1739,7 @@ function buildMarqueeGallery(photos, container) {
   track.className = 'gallery-marquee';
   // Apply scroll speed from epk data (if set by Dashboard) or fall back to default constant.
   // Future Dashboard controls write to epk.galleryScrollSpeed — no CSS rewrite needed.
-  const speed = (typeof epk !== 'undefined' && epk.galleryScrollSpeed) ? epk.galleryScrollSpeed : GALLERY_SCROLL_SPEED_DEFAULT;
+  const speed = (window._epkData && window._epkData.galleryScrollSpeed) ? window._epkData.galleryScrollSpeed : GALLERY_SCROLL_SPEED_DEFAULT;
   track.style.setProperty('--marquee-speed', speed + 's');
   // Double the photos for seamless infinite loop
   const allPhotos = [...photos, ...photos];
@@ -2126,118 +2126,482 @@ function buildCollectionsGallery(photos, container) {
   container.appendChild(footer);
 }
 
-function buildGridGallery(photos, container) {
-  let PAGE_SIZE = 20;
-  let page = 0;
-  const wrap = document.createElement('div');
-  wrap.className = 'gallery-grid-wrap';
-
-  function renderPage() {
-    wrap.innerHTML = '';
-    const start = page * PAGE_SIZE;
-    const end = Math.min(start + PAGE_SIZE, photos.length);
-
-    const grid = document.createElement('div');
-    grid.className = 'gallery-grid';
-    photos.slice(start, end).forEach(photo => {
-      const item = document.createElement('div');
-      item.className = 'gallery-grid-item';
-      const img = document.createElement('img');
-      img.src = photo.url;
-      img.alt = photo.caption || '';
-      img.loading = 'lazy';
-      img.style.objectPosition = (photo.position && photo.position !== 'center') ? photo.position : 'center top';
-      img.onerror = function() { this.style.display = 'none'; };
-      item.appendChild(img);
-      if (photo.caption) {
-        const cap = document.createElement('div');
-        cap.className = 'gallery-grid-caption';
-        cap.textContent = photo.caption;
-        item.appendChild(cap);
-      }
-      item.onclick = () => openLightbox(photo.url);
-      grid.appendChild(item);
-    });
-    wrap.appendChild(grid);
-
-    // Pagination bar
-    const totalPages = Math.ceil(photos.length / PAGE_SIZE);
-    const pagBar = document.createElement('div');
-    pagBar.className = 'gallery-grid-pagbar';
-
-    // Count label
-    const countLabel = document.createElement('div');
-    countLabel.className = 'gallery-grid-count';
-    countLabel.textContent = `Showing ${start + 1} to ${end} of ${photos.length} photos`;
-    pagBar.appendChild(countLabel);
-
-    // Page buttons
-    const pagBtns = document.createElement('div');
-    pagBtns.className = 'gallery-grid-pagination';
-    if (totalPages > 1) {
-      // Prev
-      const prev = document.createElement('button');
-      prev.innerHTML = '&#8249;';
-      prev.className = 'gallery-grid-pag-btn' + (page === 0 ? ' disabled' : '');
-      prev.disabled = page === 0;
-      prev.onclick = () => { if (page > 0) { page--; renderPage(); } };
-      pagBtns.appendChild(prev);
-
-      // Page numbers with ellipsis
-      const pageNums = [];
-      if (totalPages <= 7) {
-        for (let i = 0; i < totalPages; i++) pageNums.push(i);
-      } else {
-        pageNums.push(0);
-        if (page > 2) pageNums.push('...');
-        for (let i = Math.max(1, page-1); i <= Math.min(totalPages-2, page+1); i++) pageNums.push(i);
-        if (page < totalPages - 3) pageNums.push('...');
-        pageNums.push(totalPages - 1);
-      }
-      pageNums.forEach(n => {
-        if (n === '...') {
-          const ell = document.createElement('span');
-          ell.textContent = '...';
-          ell.style.cssText = 'font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);padding:0 0.25rem';
-          pagBtns.appendChild(ell);
-        } else {
-          const btn = document.createElement('button');
-          btn.textContent = n + 1;
-          btn.className = 'gallery-grid-pag-btn' + (n === page ? ' active' : '');
-          btn.onclick = () => { page = n; renderPage(); };
-          pagBtns.appendChild(btn);
-        }
-      });
-
-      // Next
-      const next = document.createElement('button');
-      next.innerHTML = '&#8250;';
-      next.className = 'gallery-grid-pag-btn' + (page === totalPages - 1 ? ' disabled' : '');
-      next.disabled = page === totalPages - 1;
-      next.onclick = () => { if (page < totalPages - 1) { page++; renderPage(); } };
-      pagBtns.appendChild(next);
-    }
-    pagBar.appendChild(pagBtns);
-
-    // Photos per page selector
-    const perPageWrap = document.createElement('div');
-    perPageWrap.className = 'gallery-grid-perpage';
-    perPageWrap.innerHTML = `<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.05em">Photos per page:</span>
-      <select onchange="this.closest('.gallery-grid-wrap') && (arguments[0].target.closest('.gallery-grid-wrap'))" style="background:var(--dark-3);border:1px solid rgba(201,168,76,0.2);color:var(--text);font-family:var(--font-mono);font-size:0.55rem;padding:0.2rem 0.4rem;cursor:pointer;outline:none">
-        <option value="12" ${PAGE_SIZE===12?'selected':''}>12</option>
-        <option value="20" ${PAGE_SIZE===20?'selected':''}>20</option>
-        <option value="40" ${PAGE_SIZE===40?'selected':''}>40</option>
-      </select>`;
-    perPageWrap.querySelector('select').onchange = e => {
-      PAGE_SIZE = parseInt(e.target.value);
-      page = 0;
-      renderPage();
-    };
-    pagBar.appendChild(perPageWrap);
-    wrap.appendChild(pagBar);
+function buildExhibitionGallery(photos, container) {
+  // Discrete 5-slot fan installation on desktop/tablet; mobile keeps
+  // its own unchanged, simpler vertical stack (all photos, native
+  // touch scroll). These are genuinely different DOM structures now,
+  // not one markup styled two ways -- chosen once at build time.
+  if (!photos.length) return;
+  const mobile = window.matchMedia('(max-width: 700px)').matches;
+  if (mobile) {
+    buildExhibitionMobile(photos, container);
+  } else {
+    buildExhibitionFan(photos, container);
   }
-  renderPage();
-  container.appendChild(wrap);
+}
+
+// ---- Mobile: unchanged vertical stack ----------------------------
+// Extracted, not rewritten, from the previous single implementation's
+// mobile behavior. Same markup, same motion math, same ~8deg max
+// rotation as every prior Exhibition round -- this pass does not
+// touch mobile at all.
+function buildExhibitionMobile(photos, container) {
+  const wrap = document.createElement('div');
+  wrap.className = 'exhibition-wrap';
+
+  photos.forEach((photo, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'exhibition-slide';
+    const pos = photo.position || 'center';
+    const capHTML = photo.caption ? `<div class="exhibition-caption-title">${photo.caption}</div>` : '';
+    const yearHTML = photo.year ? `<div class="exhibition-caption-year">${photo.year}</div>` : '';
+    slide.innerHTML = `
+      <div class="exhibition-frame-outer owner-item-wrap">
+        <div class="owner-overlay" style="flex-direction:row;gap:0.2rem">
+          <button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('photos',${i},-1)" title="Move earlier">◀</button>
+          <button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('photos',${i},1)" title="Move later">▶</button>
+        </div>
+        <div class="exhibition-frame">
+          <img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" style="object-position:${pos}" onerror="this.style.display='none'">
+        </div>
+      </div>
+      ${(capHTML || yearHTML) ? `<div class="exhibition-caption">${capHTML}${yearHTML}</div>` : ''}
+    `;
+    const frameOuter = slide.querySelector('.exhibition-frame-outer');
+    frameOuter.style.cursor = 'pointer';
+    frameOuter.onclick = () => openLightbox(photo.url, photo);
+    wrap.appendChild(slide);
+  });
+
+  const outer = document.createElement('div');
+  outer.className = 'exhibition-outer';
+  outer.appendChild(wrap);
+  container.appendChild(outer);
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reducedMotion) initExhibitionMobileMotion(wrap);
+}
+
+function initExhibitionMobileMotion(wrap) {
+  const frames = Array.from(wrap.querySelectorAll('.exhibition-frame-outer'));
+  if (!frames.length) return;
+  const maxRotate = 8;
+  const active = new Set();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) active.add(entry.target);
+      else active.delete(entry.target);
+    });
+  }, { root: null, rootMargin: '50% 50% 50% 50%', threshold: 0 });
+  frames.forEach(el => io.observe(el));
+
+  let ticking = false;
+  function update() {
+    const centerY = window.innerHeight / 2;
+    active.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const elCenter = rect.top + rect.height / 2;
+      const dist = elCenter - centerY;
+      const ratio = Math.max(-1, Math.min(1, dist / (window.innerHeight * 0.8)));
+      const rotate = ratio * maxRotate;
+      const scale = 1 - Math.abs(ratio) * 0.06;
+      el.style.transform = `perspective(1400px) rotateY(${(-rotate).toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+    });
+    ticking = false;
+  }
+  function onUpdate() {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }
+  window.addEventListener('scroll', onUpdate, { passive: true });
+  window.addEventListener('resize', onUpdate, { passive: true });
+  update();
+}
+
+// ---- Desktop/tablet: fixed 5-slot fan installation ----------------
+// Five target slot definitions -- outer-left, inner-left, hero,
+// inner-right, outer-right. rotate/scale/liftY/z/capOpacity are the
+// resting values for a photo sitting in that slot; xFrac is its
+// horizontal offset as a fraction of the stage width, combined with
+// each panel's own self-centering (left:50% + translateX(-50%)) so
+// photos of any aspect ratio center correctly on their slot's anchor
+// point. Rotation ceiling (not a fixed target) tuned to 17deg per
+// approved feedback, within the requested 15-19deg range.
+// Fixed art-directed slot windows, not natural-aspect-ratio scaling.
+// Portrait and landscape source photos are cropped via object-fit:
+// cover into the same shared silhouette height so the five pieces
+// read as one composition rather than five independently-sized
+// objects -- the full uncropped photo remains available in the
+// lightbox on click. All dimensions/offsets are fractions of the
+// measured stage width, so the composition (including overlap
+// ratios) scales together at any viewport rather than only fitting
+// one reference size.
+//
+// Overlap verified by construction, not eyeballed: hero right edge
+// sits at 0.145 (half of 0.290 width); inner-right's left edge sits
+// at 0.205 - 0.1075 = 0.0975 -- a 0.0475 overlap, which is 22% of
+// inner's own 0.215 width (target 15-25%). Outer overlaps inner by
+// ~19% of outer's own width using the same method. Hero is 0.290 /
+// 0.215 = 1.35x an inner panel's width (target 30-40% wider).
+// Five-slot installation, reproducing the approved Figma spec exactly:
+// outer-left / inner-left / hero / inner-right / outer-right. Base
+// geometry below is derived directly from Figma Page 1 (exact 1440px
+// pixel positions) cross-checked against Page 2's explicit
+// developer-spec ranges (section 02) -- not estimated from
+// screenshots. All values are fractions of the measured stage width
+// so the installation scales together at any viewport.
+//
+// The hero has two art-directed states, chosen from the active
+// photo's natural orientation -- not two carousel systems, one
+// five-slot system with two hero geometries:
+// - Portrait: the Figma's exact geometry (0.242 x 0.362), 0 rotation.
+// - Landscape: substantially wider and shorter (0.42 x 0.27) so a
+//   horizontal photograph can be shown close to its full composition
+//   with a modest cover-crop rather than the destructive crop a
+//   portrait-shaped window would force onto it.
+const EXHIBITION_HERO_PORTRAIT = { widthFrac: 0.242, heightFrac: 0.362 };
+const EXHIBITION_HERO_LANDSCAPE = { widthFrac: 0.390, heightFrac: 0.270 };
+// Extra half-width the landscape hero needs beyond the portrait
+// hero's half-width -- inner/outer slots shift outward by (a
+// fraction of) this amount when the hero is landscape, so the
+// installation stays connected around the wider centerpiece instead
+// of the hero overrunning its neighbors. Inner shifts by the full
+// amount (it sits right against the hero); outer shifts by half as
+// much (it only needs to keep pace with inner, not the hero
+// directly) -- verified this keeps the outer panel's total span
+// comfortably inside the stage bounds rather than clipping at the
+// edge.
+const EXHIBITION_HERO_WIDTH_DELTA = EXHIBITION_HERO_LANDSCAPE.widthFrac / 2 - EXHIBITION_HERO_PORTRAIT.widthFrac / 2;
+
+// Verified overlap by construction (portrait hero case): hero
+// half-width (0.121) minus inner's inner-edge (0.196-0.096=0.100) =
+// real ~0.021 overlap. Inner's outer-edge (0.196+0.096=0.292) vs
+// outer's inner-edge (0.365-0.080=0.285) = real ~0.007 overlap. Both
+// slots tuck behind their neighbor, matching "no large gaps."
+const EXHIBITION_SLOTS_BASE = [
+  { pos: -2, offsetFrac: -0.366, widthFrac: 0.144, heightFrac: 0.275, rotate: 5.5,  depthZ: -30, opacity: 0.75, liftY: 11,  stackZ: 10, role: 'outer' },
+  { pos: -1, offsetFrac: -0.198, widthFrac: 0.165, heightFrac: 0.311, rotate: 3.4,  depthZ: 10,  opacity: 0.82, liftY: -3,  stackZ: 30, role: 'inner' },
+  { pos: 0,  offsetFrac: 0,      widthFrac: EXHIBITION_HERO_PORTRAIT.widthFrac, heightFrac: EXHIBITION_HERO_PORTRAIT.heightFrac, rotate: 0, depthZ: 40, opacity: 1.0, liftY: -10, stackZ: 50, role: 'hero', isHero: true },
+  { pos: 1,  offsetFrac: 0.198,  widthFrac: 0.165, heightFrac: 0.311, rotate: -3.4, depthZ: 10,  opacity: 0.82, liftY: -3,  stackZ: 30, role: 'inner' },
+  { pos: 2,  offsetFrac: 0.366,  widthFrac: 0.144, heightFrac: 0.275, rotate: -5.5, depthZ: -30, opacity: 0.75, liftY: 11,  stackZ: 10, role: 'outer' },
+];
+
+function buildExhibitionFan(photos, container) {
+  const N = photos.length;
+  if (!N) return;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // A complete five-piece tableau is always shown when N>=5 -- reaching
+  // the start/end of the library stops advancing in that direction
+  // rather than ever showing a lopsided partial installation.
+  const minCenter = N >= 5 ? 2 : Math.floor((N - 1) / 2);
+  const maxCenter = N >= 5 ? N - 3 : Math.ceil((N - 1) / 2);
+  let centerIndex = Math.min(maxCenter, Math.max(minCenter, Math.floor((minCenter + maxCenter) / 2)));
+
+  const outer = document.createElement('div');
+  outer.className = 'exhibition-outer';
+
+  const eyebrow = document.getElementById('galleryEyebrow');
+  const titleBlock = document.getElementById('galleryTitleBlock');
+  if (eyebrow || titleBlock) {
+    const headerWrap = document.createElement('div');
+    headerWrap.className = 'exhibition-room-header';
+    if (eyebrow) headerWrap.appendChild(eyebrow);
+    if (titleBlock) headerWrap.appendChild(titleBlock);
+    outer.appendChild(headerWrap);
+  }
+
+  const stage = document.createElement('div');
+  stage.className = 'exhibition-stage';
+  stage.setAttribute('tabindex', '0');
+  stage.setAttribute('role', 'region');
+  stage.setAttribute('aria-label', 'Photo exhibition installation, use arrow keys to advance');
+
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'exhibition-arrow exhibition-arrow-prev';
+  prevBtn.setAttribute('aria-label', 'Previous photograph');
+  prevBtn.innerHTML = '‹';
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'exhibition-arrow exhibition-arrow-next';
+  nextBtn.setAttribute('aria-label', 'Next photograph');
+  nextBtn.innerHTML = '›';
+
+  outer.appendChild(prevBtn);
+  outer.appendChild(stage);
+  outer.appendChild(nextBtn);
+  container.appendChild(outer);
+
+  function positionArrows() {
+    const stageMidpoint = stage.offsetTop + stage.offsetHeight / 2;
+    prevBtn.style.top = `${stageMidpoint}px`;
+    nextBtn.style.top = `${stageMidpoint}px`;
+  }
+
+  let panels = [];
+  let transitioning = false;
+  const orientationCache = new Map();
+  const fitCache = new Map();
+
+  function resolveHeroFit(photoIdx, imgEl, onReady) {
+    if (fitCache.has(photoIdx)) { onReady(fitCache.get(photoIdx)); return; }
+    function compute() {
+      const w = imgEl.naturalWidth, h = imgEl.naturalHeight;
+      const orientation = (w && h && h > w) ? 'portrait' : 'landscape';
+      const win = orientation === 'portrait' ? EXHIBITION_HERO_PORTRAIT : EXHIBITION_HERO_LANDSCAPE;
+      const winAspect = win.widthFrac / win.heightFrac;
+      const imgAspect = (w && h) ? w / h : winAspect;
+      // Mismatch is measured against the window that actually matches
+      // this photo's own orientation, so it's small in the common
+      // case (the whole point of having two hero states) -- contain
+      // only kicks in for genuinely extreme photos (e.g. a real
+      // panorama) that don't fit even their own matching window well.
+      const mismatch = Math.abs(imgAspect - winAspect) / winAspect;
+      const fit = mismatch > 0.35 ? 'contain' : 'cover';
+      const result = { orientation, fit };
+      fitCache.set(photoIdx, result);
+      orientationCache.set(photoIdx, orientation);
+      onReady(result);
+    }
+    if (imgEl.complete && imgEl.naturalWidth) compute();
+    else imgEl.addEventListener('load', compute, { once: true });
+  }
+
+  function currentHeroOrientation() {
+    const heroPanel = panels.find(p => p.slotPos === 0);
+    if (!heroPanel) return 'portrait';
+    return orientationCache.get(heroPanel.photoIndex) || 'portrait';
+  }
+
+  function slotDefFor(slotPos) {
+    const heroOrientation = currentHeroOrientation();
+    const isLandscapeHero = heroOrientation === 'landscape';
+    const base = EXHIBITION_SLOTS_BASE.find(s => s.pos === slotPos);
+    if (base) {
+      if (base.role === 'hero') {
+        const win = isLandscapeHero ? EXHIBITION_HERO_LANDSCAPE : EXHIBITION_HERO_PORTRAIT;
+        return { ...base, widthFrac: win.widthFrac, heightFrac: win.heightFrac };
+      }
+      if (!isLandscapeHero) return base;
+      // Landscape hero: shift inner/outer outward to stay connected
+      // around the now-wider centerpiece. Inner shifts by the full
+      // delta (it sits directly against the hero); outer shifts by
+      // half as much (it only needs to keep pace with inner).
+      const dir = Math.sign(base.offsetFrac);
+      const shiftAmount = base.role === 'inner' ? EXHIBITION_HERO_WIDTH_DELTA : EXHIBITION_HERO_WIDTH_DELTA * 0.5;
+      return { ...base, offsetFrac: base.offsetFrac + dir * shiftAmount };
+    }
+    // Entering/exiting just off-stage, extrapolated from the nearest
+    // real outer slot (already orientation-shifted above), pushed
+    // further out and transparent.
+    const edgeBase = slotPos < -2 ? EXHIBITION_SLOTS_BASE[0] : EXHIBITION_SLOTS_BASE[EXHIBITION_SLOTS_BASE.length - 1];
+    const dir = slotPos < -2 ? -1 : 1;
+    const outerShift = isLandscapeHero ? EXHIBITION_HERO_WIDTH_DELTA * 0.5 : 0;
+    return {
+      offsetFrac: edgeBase.offsetFrac + dir * outerShift + dir * 0.13, widthFrac: edgeBase.widthFrac * 0.85, heightFrac: edgeBase.heightFrac * 0.85,
+      rotate: edgeBase.rotate * 1.2, depthZ: edgeBase.depthZ - 15, opacity: 0, liftY: edgeBase.liftY + 4, stackZ: 0, role: 'outer', offstage: true,
+    };
+  }
+
+  function applyPanelStyle(panel) {
+    const def = slotDefFor(panel.slotPos);
+    const stageWidth = stage.getBoundingClientRect().width;
+    const xOffset = def.offsetFrac * stageWidth;
+    const widthPx = def.widthFrac * stageWidth;
+    const heightPx = def.heightFrac * stageWidth;
+    panel.frameOuter.style.width = `${widthPx.toFixed(1)}px`;
+    panel.frameOuter.style.height = `${heightPx.toFixed(1)}px`;
+    panel.frameOuter.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px)) translateY(${def.liftY}px) perspective(1400px) rotateY(${def.rotate}deg) translateZ(${def.depthZ}px)`;
+    panel.frameOuter.style.opacity = def.offstage ? '0' : String(def.opacity);
+    panel.frameOuter.style.zIndex = String(def.stackZ);
+    panel.frameOuter.classList.toggle('exhibition-fan-hero', def.role === 'hero');
+    panel.frameOuter.classList.toggle('exhibition-fan-inner', def.role === 'inner');
+    panel.frameOuter.classList.toggle('exhibition-fan-outer', def.role === 'outer');
+    if (def.isHero && panel.fitMode) {
+      panel.imgEl.style.objectFit = panel.fitMode;
+      panel.frameOuter.classList.toggle('exhibition-frame-letterboxed', panel.fitMode === 'contain');
+    } else {
+      panel.frameOuter.classList.remove('exhibition-frame-letterboxed');
+    }
+  }
+
+  function updateStageHeight() {
+    const stageWidth = stage.getBoundingClientRect().width;
+    // Always sized for the taller (portrait) hero state, regardless of
+    // which orientation is currently showing -- keeps the room/stage
+    // container's own footprint constant so the arrows (positioned
+    // against this container) never shift vertically when the hero
+    // orientation changes. Individual panels still resize/reposition
+    // within this fixed-height room exactly as before; only the
+    // room's own height stopped fluctuating.
+    const heightPx = EXHIBITION_HERO_PORTRAIT.heightFrac * stageWidth;
+    stage.style.height = `${(heightPx + 180).toFixed(1)}px`;
+  }
+
+  function renderPhotoIntoPanel(panel, photoIdx, isHeroSlot) {
+    const photo = photos[photoIdx];
+    panel.photoIndex = photoIdx;
+    panel.imgEl.src = photo.url;
+    panel.imgEl.alt = photo.caption || '';
+    panel.imgEl.style.objectPosition = photo.position || 'center';
+    panel.imgEl.style.objectFit = 'cover';
+    if (panel.capTitleEl) panel.capTitleEl.textContent = photo.caption || '';
+    if (panel.capYearEl) panel.capYearEl.textContent = photo.year || '';
+    panel.frameOuter.onclick = () => openLightbox(photo.url, photo);
+    if (isHeroSlot) {
+      resolveHeroFit(photoIdx, panel.imgEl, ({ fit }) => {
+        panel.fitMode = fit;
+        panels.forEach(applyPanelStyle);
+        updateStageHeight();
+      });
+    }
+  }
+
+  function createPanel(slotPos, photoIdx) {
+    const el = document.createElement('div');
+    el.className = 'exhibition-fan-panel';
+    el.innerHTML = `
+      <div class="exhibition-frame-outer">
+        <div class="exhibition-frame">
+          <img class="exhibition-frame-main" loading="lazy" onerror="this.style.display='none'">
+          <div class="exhibition-frame-caption">
+            <div class="exhibition-caption-title"></div>
+            <div class="exhibition-caption-year"></div>
+          </div>
+        </div>
+      </div>
+    `;
+    const frameOuter = el.querySelector('.exhibition-frame-outer');
+    const transitionCss = reducedMotion ? 'none' : 'transform 0.6s cubic-bezier(0.22,1,0.36,1), opacity 0.5s ease, width 0.6s cubic-bezier(0.22,1,0.36,1), height 0.6s cubic-bezier(0.22,1,0.36,1)';
+    frameOuter.style.transition = transitionCss;
+    const panel = {
+      el, frameOuter,
+      imgEl: el.querySelector('.exhibition-frame-main'),
+      capTitleEl: el.querySelector('.exhibition-caption-title'),
+      capYearEl: el.querySelector('.exhibition-caption-year'),
+      slotPos, photoIndex: photoIdx,
+      fitMode: 'cover',
+    };
+    renderPhotoIntoPanel(panel, photoIdx, slotPos === 0);
+    stage.appendChild(el);
+    return panel;
+  }
+
+  function renderInitial() {
+    panels = [];
+    for (let p = -2; p <= 2; p++) {
+      const idx = centerIndex + p;
+      if (idx < 0 || idx >= N) continue;
+      panels.push(createPanel(p, idx));
+    }
+    requestAnimationFrame(() => { panels.forEach(applyPanelStyle); updateStageHeight(); positionArrows(); });
+  }
+
+  function advance(dir) {
+    if (transitioning) return false;
+    const newCenter = centerIndex + dir;
+    if (newCenter < minCenter || newCenter > maxCenter) return false;
+    transitioning = true;
+    centerIndex = newCenter;
+
+    panels.forEach(panel => { panel.slotPos -= dir; });
+    const becomingHero = panels.find(p => p.slotPos === 0);
+    if (becomingHero) {
+      resolveHeroFit(becomingHero.photoIndex, becomingHero.imgEl, ({ fit }) => {
+        becomingHero.fitMode = fit;
+        // The new hero's orientation can change inner/outer offsets
+        // for every panel (see slotDefFor), not just the hero's own
+        // size -- re-apply all of them, not just this one.
+        panels.forEach(applyPanelStyle);
+        updateStageHeight();
+      });
+    }
+    const leaving = panels.filter(p => Math.abs(p.slotPos) > 2);
+    panels = panels.filter(p => Math.abs(p.slotPos) <= 2);
+
+    const enterSlotPos = dir > 0 ? 2 : -2;
+    const enterPhotoIdx = centerIndex + enterSlotPos;
+    if (enterPhotoIdx >= 0 && enterPhotoIdx < N && !panels.find(p => p.slotPos === enterSlotPos)) {
+      const startSlotPos = enterSlotPos + dir;
+      const panel = createPanel(startSlotPos, enterPhotoIdx);
+      panel.frameOuter.style.transition = 'none';
+      applyPanelStyle(panel);
+      void panel.el.offsetHeight;
+      const transitionCss = reducedMotion ? 'none' : 'transform 0.6s cubic-bezier(0.22,1,0.36,1), opacity 0.5s ease, width 0.6s cubic-bezier(0.22,1,0.36,1), height 0.6s cubic-bezier(0.22,1,0.36,1)';
+      panel.frameOuter.style.transition = transitionCss;
+      panel.slotPos = enterSlotPos;
+      panels.push(panel);
+    }
+
+    requestAnimationFrame(() => { panels.forEach(applyPanelStyle); updateStageHeight(); positionArrows(); });
+    setTimeout(() => {
+      leaving.forEach(p => p.el.remove());
+      transitioning = false;
+    }, reducedMotion ? 0 : 650);
+    return true;
+  }
+
+  renderInitial();
+
+  prevBtn.onclick = () => advance(-1);
+  nextBtn.onclick = () => advance(1);
+
+  let wheelAccum = 0;
+  const WHEEL_THRESHOLD = 60;
+  stage.addEventListener('wheel', (e) => {
+    if (window.matchMedia('(max-width: 700px)').matches) return;
+    if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+    const dir = e.deltaY > 0 ? 1 : -1;
+    const wouldExceed = (centerIndex + dir < minCenter) || (centerIndex + dir > maxCenter);
+    if (wouldExceed) return;
+    e.preventDefault();
+    if (transitioning) return;
+    wheelAccum += e.deltaY;
+    if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
+      advance(wheelAccum > 0 ? 1 : -1);
+      wheelAccum = 0;
+    }
+  }, { passive: false });
+
+  stage.addEventListener('keydown', (e) => {
+    if (window.matchMedia('(max-width: 700px)').matches) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); advance(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); advance(-1); }
+  });
+
+  window.addEventListener('resize', () => { panels.forEach(applyPanelStyle); updateStageHeight(); positionArrows(); }, { passive: true });
+}
+
+function buildGridGallery(photos, container) {
+  // Editorial "Gallery" -- image-first, minimal text (caption + year
+  // only). Reuses the same percentage-flexbox technique proven for
+  // Video's Grid so a trailing incomplete row centers correctly at
+  // every column-count tier, regardless of how many items are left
+  // over. No pagination -- matches the "see everything quickly"
+  // purpose; revisit only if a very large library proves this wrong.
+  if (!photos.length) return;
+  const grid = document.createElement('div');
+  grid.className = 'photo-flat-grid';
+  photos.forEach((photo, i) => {
+    const item = document.createElement('div');
+    item.className = 'pcard owner-item-wrap';
+    const pos = photo.position || 'center';
+    const capHTML = photo.caption ? `<div class="pcard-title">${photo.caption}</div>` : '';
+    const yearHTML = photo.year ? `<div class="pcard-meta">${photo.year}</div>` : '';
+    item.innerHTML = `
+      <div class="owner-overlay" style="flex-direction:row;gap:0.2rem">
+        <button class="owner-action-btn owner-up" onclick="event.stopPropagation();ownerMoveItem('photos',${i},-1)" title="Move Left">◀</button>
+        <button class="owner-action-btn owner-down" onclick="event.stopPropagation();ownerMoveItem('photos',${i},1)" title="Move Right">▶</button>
+      </div>
+      <div class="pcard-media">
+        <img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" style="object-position:${pos}" onerror="this.style.display='none'">
+      </div>
+      ${(capHTML || yearHTML) ? `<div class="pcard-body">${capHTML}${yearHTML}</div>` : ''}
+    `;
+    const media = item.querySelector('.pcard-media');
+    media.style.cursor = 'pointer';
+    media.onclick = () => openLightbox(photo.url, photo);
+    grid.appendChild(item);
+  });
+  container.appendChild(grid);
 }
 
 function buildMagazineGallery(photos, container) {
@@ -2482,8 +2846,14 @@ let _galleryCategoryFilter = 'all';
 function buildCategoryBar(photos) {
   const bar = document.getElementById('galleryCategoryBar');
   if (!bar) return;
-  // Layouts that use category bar
-  const showBar = ['collections','grid','magazine','timeline','wall'].includes(currentGalleryLayout);
+  // No currently-supported layout (Auto Scroll or Spotlight) uses
+  // this category filter bar. It's kept defined here, unreachable
+  // rather than deleted, since it was previously used by Collections/
+  // Magazine/Timeline/Wall -- if a legacy profile still has one of
+  // those values saved, the render dispatch now falls back to Auto
+  // Scroll for it, so showing this bar for that raw saved value would
+  // pair it with a layout it was never designed for. Always hidden.
+  const showBar = false;
   if (!showBar) { bar.innerHTML = ''; return; }
 
   // Build category counts
@@ -2522,9 +2892,15 @@ function buildCategoryBar(photos) {
 function buildGallery(photos) {
   galleryPhotos = photos;
   // Use saved layout preference from dashboard
-  if (typeof epk !== 'undefined' && epk.galleryLayout) {
-    currentGalleryLayout = epk.galleryLayout;
+  if (window._epkData && window._epkData.galleryLayout) {
+    currentGalleryLayout = window._epkData.galleryLayout;
   }
+  // Preview-only override: ?previewLayout=exhibition lets a specific
+  // layout be reviewed on a deploy preview without writing anything to
+  // the real saved dashboard preference. Read-only, client-side only,
+  // never touches window._epkData or persists anywhere.
+  const previewLayout = new URLSearchParams(window.location.search).get('previewLayout');
+  if (previewLayout) currentGalleryLayout = previewLayout;
   // Sync dropdown
   const sel = document.getElementById('galleryLayoutSelect');
   if (sel) sel.value = currentGalleryLayout;
@@ -2545,72 +2921,25 @@ function buildGallery(photos) {
     buildMarqueeGallery(filtered, container);
     return;
   }
-  if (currentGalleryLayout === 'wall') {
-    buildWallGallery(filtered, container);
+  if (currentGalleryLayout === 'exhibition') {
+    buildExhibitionGallery(filtered, container);
     return;
   }
-  if (currentGalleryLayout === 'scroll') {
-    buildScrollGallery(filtered, container);
-    return;
-  }
-  if (currentGalleryLayout === 'collections') {
-    buildCollectionsGallery(filtered, container);
-    return;
-  }
-  if (currentGalleryLayout === 'grid') {
-    buildGridGallery(filtered, container);
-    return;
-  }
-  if (currentGalleryLayout === 'magazine') {
-    buildMagazineGallery(filtered, container);
-    return;
-  }
-  if (currentGalleryLayout === 'timeline') {
-    buildTimelineGallery(filtered, container);
-    return;
-  }
-  if (currentGalleryLayout === 'table') {
-    buildTableGallery(filtered, container);
-    return;
-  }
-
-  // All photos go into one pool, distributed across 4 columns
-  const numCols = 5;
-  const cols = [[], [], [], [], []];
-  photos.forEach((p, i) => cols[i % numCols].push(p));
-
-  const grid = document.createElement('div');
-  grid.className = 'gallery-4col';
-
-  cols.forEach((colPhotos, colIdx) => {
-    if (!colPhotos.length) return;
-    const col = document.createElement('div');
-    col.className = 'gallery-col';
-    const state = { current: 0 };
-
-    colPhotos.forEach((photo, i) => {
-      const slide = document.createElement('div');
-      slide.className = 'gallery-slide' + (i === 0 ? ' active' : '');
-      const pos = photo.position || 'center 0%';
-      slide.innerHTML = `<img src="${photo.url}" alt="${photo.caption || ''}" loading="lazy" onclick="openLightbox('${photo.url}')" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;object-position:${pos};display:block"><div class="gallery-caption">${photo.caption || ''}</div>`;
-      col.appendChild(slide);
-    });
-
-    // Auto-rotate each column at different speeds
-    if (colPhotos.length > 1) {
-      setInterval(() => {
-        const slides = col.querySelectorAll('.gallery-slide');
-        slides[state.current].classList.remove('active');
-        state.current = (state.current + 1) % colPhotos.length;
-        slides[state.current].classList.add('active');
-      }, 3000 + colIdx * 800);
-    }
-
-    grid.appendChild(col);
-  });
-
-  container.innerHTML = '';
-  container.appendChild(grid);
+  // Every other value renders Auto Scroll -- this covers every
+  // legacy value from before the Photos layout selector was
+  // simplified to just Auto Scroll + Spotlight (wall, scroll,
+  // collections, grid, magazine, timeline, table), plus any
+  // unrecognized future value. The six legacy renderer functions
+  // below (buildWallGallery, buildScrollGallery, buildCollectionsGallery,
+  // buildGridGallery, buildMagazineGallery, buildTimelineGallery,
+  // buildTableGallery) are intentionally left fully defined and
+  // untouched -- not deleted -- so a profile that still has one of
+  // those old saved values (no profile data was migrated) renders
+  // something correct here rather than whatever undocumented fallback
+  // previously lived in this spot. This also replaces that old
+  // fallback (a rarely-reached 4-column auto-rotating pool render)
+  // with an explicit, intentional Auto Scroll default.
+  buildMarqueeGallery(filtered, container);
 }
 
 function goToSlide(col, state, idx) {

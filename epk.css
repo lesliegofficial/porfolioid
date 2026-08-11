@@ -1074,6 +1074,261 @@
 @media (max-width: 768px) { .gallery-collections { grid-template-columns: 1fr 1fr; } }
 
 /* ── GALLERY: GRID ── */
+/* New editorial Gallery, image-first, minimal text. Percentage
+   flex-basis (not auto-fit, not CSS grid) -- flex-wrap creates
+   genuinely independent rows, so justify-content:center correctly
+   centers a trailing partial row of any size. Same technique already
+   proven for Video's Grid; tier boundaries re-verified against
+   Photos' own (wider, 1400px-capped) .gallery-inner container rather
+   than assumed identical to Video's. Old .gallery-grid-* rules below
+   are now unused (confirmed via grep) but left in place rather than
+   risk touching a duplicated block elsewhere in this file. */
+.photo-flat-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.25rem; margin-top: 1.5rem; }
+.pcard { flex: 0 0 calc(20% - 1rem); background: transparent; border: none; transition: transform 0.3s; }
+.pcard:hover { transform: translateY(-3px); }
+.pcard-media { position: relative; background: #000; overflow: hidden; border: 1px solid rgba(201,168,76,0.1); transition: border-color 0.3s; aspect-ratio: 4/5; }
+.pcard:hover .pcard-media { border-color: rgba(201,168,76,0.4); }
+.pcard-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+.pcard:hover .pcard-media img { transform: scale(1.04); }
+.pcard-body { padding: 0.65rem 0.1rem 0; }
+.pcard-title { font-family: var(--font-display); font-size: 0.86rem; font-weight: 400; color: var(--white); line-height: 1.25; }
+.pcard-meta { font-family: var(--font-mono); font-size: 0.54rem; color: var(--gold); letter-spacing: 0.06em; margin-top: 0.15rem; opacity: 0.85; }
+@media (min-width: 900px) and (max-width: 1199px) { .pcard { flex-basis: calc(25% - 0.9375rem); } }
+@media (min-width: 600px) and (max-width: 899px) { .pcard { flex-basis: calc(33.333% - 0.834rem); } }
+@media (max-width: 599px) { .photo-flat-grid { gap: 1.5rem; } .pcard { flex-basis: calc(50% - 0.625rem); } }
+@media (max-width: 380px) { .pcard { flex-basis: 100%; } }
+
+/* -- EXHIBITION -- */
+/* Desktop/tablet: horizontal "walk past a gallery wall." Frame HEIGHT
+   is fixed; width varies per photo's own natural aspect ratio
+   (object-fit:contain), so portrait and landscape photos read like
+   individually-sized prints rather than uniform tiles -- closer to a
+   real wall of photographs than a slider. Sized so roughly 3-4 frames
+   are visible at once on large desktop with clear negative space
+   between them, and enough of the next frame peeking in at the edge
+   to signal the sequence continues. Motion is applied via inline
+   transform in JS (initExhibitionMotion); this CSS establishes the
+   resting state, the transition curve that smooths per-frame updates
+   into visible motion, and the restrained framing/shadow language. */
+.exhibition-outer {
+  position: relative; max-width: 1400px; margin: 2rem auto 0; padding: 3rem 3.5rem 0;
+  overflow: hidden;
+  /* Neutral dark museum room -- black walls, graphite floor, gold
+     stays an accent (arrows/metadata/labels) rather than tinting the
+     room itself. A warmer/browner version of this was tried and
+     rejected: it read as a muddy sepia lounge and visually competed
+     with the photographs instead of receding behind them. This
+     version uses the site's own --dark-2 (#141414, already
+     established elsewhere in the page) for the wall, and genuinely
+     neutral grays for the floor and ambient light -- no warm/gold
+     tint on the room itself. */
+  background-color: var(--dark-2);
+  background-image: radial-gradient(ellipse 900px 500px at 50% 45%, rgba(255,255,255,0.025), transparent 72%);
+}
+.exhibition-outer::before {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0; height: 38%;
+  /* Floor plane: neutral graphite, only a few percent lighter than
+     the wall -- something sensed, not something seen. */
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.035) 35%, rgba(255,255,255,0.045) 100%);
+  pointer-events: none;
+}
+.exhibition-outer > .exhibition-stage, .exhibition-outer > .exhibition-wrap { position: relative; z-index: 1; }
+.exhibition-room-header { position: relative; z-index: 1; margin-bottom: 2.75rem; }
+.exhibition-room-header .section-label { margin-bottom: 0.5rem; }
+/* Fixed 5-slot fan stage (desktop/tablet). Panels are absolutely
+   positioned from a shared center anchor (left:50%) so photos of
+   varying natural aspect ratios all center correctly on their slot's
+   target position -- JS sets translateX(calc(-50% + Npx)) per panel,
+   combining the base self-centering with the slot's horizontal
+   offset in one transform. Height is fixed (not auto) since absolute
+   children don't contribute to a parent's intrinsic height -- sized
+   to comfortably hold the hero frame (same 400px cap as before) plus
+   the lift range and caption beneath it. */
+.exhibition-stage { position: relative; height: 560px; margin: 1rem 0 0; overflow: visible; }
+/* Broad secondary gallery lighting: a wide, soft warm wash spanning
+   behind/beneath the whole five-card installation, distinct from and
+   in addition to the hero's own contact shadow/reflection/floor pool
+   (all untouched, still hero-scoped). This is deliberately much
+   lower-opacity and much more spread out than the hero's own glow --
+   an ambient environmental layer suggesting concealed gallery
+   lighting washing the floor behind the pieces, not a light source
+   itself. Sits at the back of the stack (z-index:0, below every
+   panel's 10-50 range) so it never competes with the photographs. */
+.exhibition-stage::before {
+  content: '';
+  position: absolute; left: 50%; bottom: 6%; width: 85%; height: 34%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.09), rgba(201,168,76,0.04) 45%, transparent 75%);
+  filter: blur(28px);
+  pointer-events: none;
+  z-index: 0;
+}
+.exhibition-fan-panel { position: absolute; left: 50%; top: 0; text-align: center; }
+.exhibition-fan-panel .exhibition-frame-outer { position: absolute; left: 0; top: 0; display: inline-block; cursor: pointer; will-change: transform, opacity, width, height; border-radius: 1px; }
+/* Fixed art-directed window: the frame fills whatever width/height JS
+   assigns to its parent (frame-outer) rather than sizing itself from
+   the source image's natural aspect ratio, and the image inside
+   crops to fill that window (object-fit:cover) instead of preserving
+   its full uncropped shape -- portrait and landscape source photos
+   both participate in the same shared silhouette. The full uncropped
+   photo remains available in the lightbox. */
+.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame { width: 100%; height: 100%; max-width: none; max-height: none; position: relative; z-index: 1; overflow: hidden; border-radius: 1px; }
+.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Letterbox fill: when a hero photo's aspect ratio doesn't match the
+   fixed hero window closely enough for a clean cover-crop, it
+   switches to object-fit:contain (full photo preserved, no
+   destructive cropping), which by itself leaves empty space on two
+   sides. Softens that space to a warm dark tone blending with the
+   room rather than a stark black void. */
+.exhibition-fan-panel .exhibition-frame-outer.exhibition-frame-letterboxed .exhibition-frame {
+  background: #18140f;
+}
+/* Support panels dim slightly so the hero reads as unmistakably
+   dominant -- the hero (excluded via :not()) stays at full
+   brightness. */
+.exhibition-fan-panel .exhibition-frame-outer:not(.exhibition-fan-hero) .exhibition-frame img { filter: brightness(0.85); }
+/* Integrated caption: a near-black gradient scrim inside the lower
+   portion of the image itself, with the caption text sitting on top
+   of it -- per spec, "no separate floating caption boxes," captions
+   stay physically attached to their photo because they're literally
+   inside the same element that rotates/scales/moves with it. */
+.exhibition-frame-caption {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  padding: 1.6rem 0.85rem 0.65rem;
+  background: linear-gradient(to top, rgba(5,4,3,0.92) 0%, rgba(5,4,3,0.55) 45%, transparent 100%);
+  text-align: left;
+  pointer-events: none;
+}
+.exhibition-caption-title { font-family: var(--font-display); font-size: 0.92rem; line-height: 1.25; color: var(--white); }
+.exhibition-caption-year { font-family: var(--font-mono); font-size: 0.58rem; color: var(--gold); letter-spacing: 0.08em; margin-top: 0.25rem; opacity: 0.9; }
+/* Caption containment: overlapping panels each anchor a caption to
+   their own bottom edge, so the visible (uncovered) sliver of a
+   lower-z-index neighbor's caption can otherwise read as colliding
+   with the panel on top of it. Outer panels sit in the narrowest,
+   most-overlapped sliver, so their captions are hidden entirely.
+   Inner captions stay present (quieter, per spec) but inset from
+   their own edges and capped to a narrower width so their text stays
+   within the panel's own un-overlapped core rather than extending
+   toward the hero. */
+.exhibition-fan-inner .exhibition-frame-caption { padding: 1.1rem 1.1rem 0.55rem; }
+.exhibition-fan-inner .exhibition-caption-title { font-size: 0.72rem; opacity: 0.7; max-width: 78%; }
+.exhibition-fan-inner .exhibition-caption-year { opacity: 0.55; }
+.exhibition-fan-outer .exhibition-frame-caption { display: none; }
+/* Gold rim + reflection, differentiated by role per spec: "Hero
+   border/light is strongest; neighbors quieter; outer panels
+   subdued." Reflection intensity is intentionally the OPPOSITE of
+   the border/glow hierarchy -- per spec section 05, resting side
+   panels read with slightly stronger/closer reflections, while the
+   lifted/active hero has a lighter reflection with more separation
+   (a hero standing forward, closer to the viewer and further from
+   the floor, casts a fainter, more distant reflection than a piece
+   settled back near the floor). */
+.exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
+  border: 1px solid rgba(201,168,76,0.52);
+  box-shadow: 0 0 22px rgba(201,168,76,0.15), 0 10px 20px rgba(0,0,0,0.4), 0 32px 60px rgba(0,0,0,0.35);
+  -webkit-box-reflect: below 2px linear-gradient(to bottom, rgba(255,255,255,0.36) 0%, rgba(255,255,255,0.13) 12%, transparent 22%);
+}
+.exhibition-fan-inner .exhibition-frame {
+  border: 1px solid rgba(201,168,76,0.66);
+  box-shadow: 0 0 24px rgba(201,168,76,0.18), 0 11px 22px rgba(0,0,0,0.4), 0 34px 64px rgba(0,0,0,0.35);
+}
+.exhibition-fan-hero .exhibition-frame {
+  border: 1.4px solid rgba(242,184,71,0.95);
+  box-shadow: 0 20px 26px 0 rgba(0,0,0,0.82), 0 0 16px 0px rgba(247,176,56,0.32), 0 10px 18px -4px rgba(247,176,56,0.38);
+  -webkit-box-reflect: below 2px linear-gradient(to bottom, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.05) 7%, transparent 13%);
+}
+/* Grounded floor glow beneath the hero -- a soft warm light pooling
+   at its base plus a tight dark contact shadow, matching the
+   reference's glowing horizontal bar under the center piece. Gold
+   stays confined to this accent role, not a room-wide tint. */
+.exhibition-fan-hero::before {
+  content: '';
+  position: absolute; left: 50%; bottom: -14px; width: 80%; height: 22px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.68), transparent 70%);
+  filter: blur(2px);
+  pointer-events: none;
+  z-index: -1;
+}
+.exhibition-fan-hero::after {
+  content: '';
+  position: absolute; left: 50%; bottom: -68px; width: 120%; height: 70px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.16), transparent 72%);
+  filter: blur(4px);
+  pointer-events: none;
+}
+.exhibition-wrap {
+  display: flex; align-items: flex-start; gap: 1.1rem;
+  overflow-x: auto; overflow-y: hidden;
+  padding: 1rem 0 1.5rem;
+  scrollbar-width: thin; scrollbar-color: rgba(201,168,76,0.3) transparent;
+}
+.exhibition-wrap::-webkit-scrollbar { height: 6px; }
+.exhibition-wrap::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.25); border-radius: 3px; }
+.exhibition-wrap::-webkit-scrollbar-track { background: transparent; }
+.exhibition-slide { flex: 0 0 auto; text-align: center; position: relative; }
+.exhibition-frame-outer { position: relative; display: inline-block; }
+.exhibition-frame {
+  transform: perspective(1400px) rotateY(0deg) scale(1);
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+  border: 1px solid rgba(201,168,76,0.12);
+  /* Layered shadow: a tight near shadow plus a softer, more diffuse
+     far shadow -- reads as a mounted panel with real thickness,
+     rather than a single flat drop-shadow. Static (not JS-driven);
+     the per-photo depth/stacking comes from translateZ/z-index in
+     the motion controller instead. */
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35), 0 28px 56px rgba(0,0,0,0.3);
+  background: #000;
+  overflow: hidden;
+  height: 46vh;
+  max-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Floor reflection: a very short, low-opacity fade -- decorative
+     depth cue, not a mirror. Webkit/Blink only (Safari, Chrome,
+     Edge); Firefox simply shows no reflection, a graceful, harmless
+     degradation since it's purely decorative. */
+  -webkit-box-reflect: below 2px linear-gradient(to bottom, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 12%, transparent 20%);
+}
+.exhibition-frame img { height: 100%; width: auto; max-width: none; object-fit: contain; display: block; }
+.exhibition-caption { text-align: center; margin-top: 2.5rem; max-width: 320px; transition: opacity 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); }
+.exhibition-caption-title { font-family: var(--font-display); font-size: 1rem; color: var(--white); font-weight: 400; }
+.exhibition-caption-year { font-family: var(--font-mono); font-size: 0.58rem; color: var(--gold); letter-spacing: 0.08em; margin-top: 0.3rem; opacity: 0.85; }
+.exhibition-arrow {
+  position: absolute; top: 32%; transform: translateY(-50%);
+  width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(201,168,76,0.22);
+  background: rgba(8,8,8,0.7); color: var(--gold); font-size: 1.1rem; line-height: 1;
+  opacity: 0.6; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.2s, border-color 0.2s, background 0.2s; z-index: 2;
+}
+.exhibition-arrow:hover { opacity: 1; border-color: rgba(201,168,76,0.6); background: rgba(8,8,8,0.9); }
+.exhibition-arrow-prev { left: 0; }
+.exhibition-arrow-next { right: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .exhibition-frame { transform: none !important; transition: none !important; }
+}
+@media (max-width: 700px) {
+  /* Mobile: unchanged vertical stack, native touch scroll, arrows
+     hidden entirely (touch scrolling is the obvious affordance here).
+     Atmosphere pass additions (reflection, spotlight, ambient glow,
+     layered shadow) are desktop/tablet only -- explicitly neutralized
+     here so mobile stays exactly as it was before this pass. */
+  .exhibition-outer { padding: 0; margin-top: 1.5rem; background: none; background-color: transparent; }
+  .exhibition-outer::before { display: none; }
+  .exhibition-arrow { display: none; }
+  .exhibition-stage { display: none; }
+  .exhibition-wrap { display: block; overflow: visible; padding: 0; gap: 0; }
+  .exhibition-slide { display: block; margin-bottom: 5rem; }
+  .exhibition-slide:last-child { margin-bottom: 0; }
+  .exhibition-frame { height: auto; max-height: 60vh; width: 100%; box-shadow: 0 16px 44px rgba(0,0,0,0.4); -webkit-box-reflect: unset; }
+  .exhibition-frame img { height: auto; max-height: 60vh; width: auto; max-width: 100%; }
+  .exhibition-caption { max-width: 100%; margin-top: 1rem; }
+}
+
 .gallery-grid-wrap { margin-top: 1.5rem; }
 .gallery-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
 .gallery-grid-item { position: relative; overflow: hidden; aspect-ratio: 3/4; cursor: pointer; border: 1px solid rgba(201,168,76,0.1); transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; background: var(--dark-3); }
