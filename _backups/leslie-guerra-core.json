@@ -1762,7 +1762,7 @@
     "connect"
   ],
   "bookingRegion": "Worldwide",
-  "galleryLayout": "exhibition",
+  "galleryLayout": "scroll",
   "heroImageZoom": 100,
   "identityBlock": {
     "repName": "",
