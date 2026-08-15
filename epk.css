@@ -517,7 +517,7 @@
   .video-list-desc { font-size: 0.85rem; color: #999; font-style: italic; line-height: 1.7; }
 
   /* PHOTOS */
-  .gallery-section { background: var(--dark-2); padding: 3rem 0; max-width: 100%; }
+  .gallery-section { background: var(--black); padding: 3rem 0; max-width: 100%; }
   .gallery-inner { max-width: 1400px; margin: 0 auto; padding: 0 3rem; }
   .gallery-slideshows { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; height: 500px; margin-top: 2rem; }
   .gallery-col { position: relative; overflow: hidden; background: var(--dark-3); }
@@ -1117,12 +1117,14 @@
      stays an accent (arrows/metadata/labels) rather than tinting the
      room itself. A warmer/browner version of this was tried and
      rejected: it read as a muddy sepia lounge and visually competed
-     with the photographs instead of receding behind them. This
-     version uses the site's own --dark-2 (#141414, already
-     established elsewhere in the page) for the wall, and genuinely
-     neutral grays for the floor and ambient light -- no warm/gold
-     tint on the room itself. */
-  background-color: var(--dark-2);
+     with the photographs instead of receding behind them.
+     Uses the site's actual page-wide --black (#080808, the same
+     background as body/.career-profile-section/.works-section), not
+     --dark-2 (#141414) -- the room was previously a visibly lighter
+     charcoal than the rest of the page it sits inside, which this
+     corrects. Floor and ambient light stay genuinely neutral gray --
+     no warm/gold tint on the room itself. */
+  background-color: var(--black);
   background-image: radial-gradient(ellipse 900px 500px at 50% 45%, rgba(255,255,255,0.025), transparent 72%);
 }
 .exhibition-outer::before {
