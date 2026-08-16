@@ -1125,15 +1125,6 @@
      corrects. Floor and ambient light stay genuinely neutral gray --
      no warm/gold tint on the room itself. */
   background-color: var(--black);
-  background-image: radial-gradient(ellipse 900px 500px at 50% 45%, rgba(255,255,255,0.025), transparent 72%);
-}
-.exhibition-outer::before {
-  content: '';
-  position: absolute; left: 0; right: 0; bottom: 0; height: 38%;
-  /* Floor plane: neutral graphite, only a few percent lighter than
-     the wall -- something sensed, not something seen. */
-  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.035) 35%, rgba(255,255,255,0.045) 100%);
-  pointer-events: none;
 }
 .exhibition-outer > .exhibition-stage, .exhibition-outer > .exhibition-wrap { position: relative; z-index: 1; }
 .exhibition-room-header { position: relative; z-index: 1; margin-bottom: 2.75rem; }
