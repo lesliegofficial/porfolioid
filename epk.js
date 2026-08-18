@@ -2278,11 +2278,11 @@ const EXHIBITION_HERO_WIDTH_DELTA = EXHIBITION_HERO_LANDSCAPE.widthFrac / 2 - EX
 // outer's inner-edge (0.365-0.080=0.285) = real ~0.007 overlap. Both
 // slots tuck behind their neighbor, matching "no large gaps."
 const EXHIBITION_SLOTS_BASE = [
-  { pos: -2, offsetFrac: -0.366, widthFrac: 0.144, heightFrac: 0.275, rotate: 5.5,  depthZ: -30, opacity: 0.75, liftY: 11,  stackZ: 10, role: 'outer' },
-  { pos: -1, offsetFrac: -0.198, widthFrac: 0.165, heightFrac: 0.311, rotate: 3.4,  depthZ: 10,  opacity: 0.82, liftY: -3,  stackZ: 30, role: 'inner' },
-  { pos: 0,  offsetFrac: 0,      widthFrac: EXHIBITION_HERO_PORTRAIT.widthFrac, heightFrac: EXHIBITION_HERO_PORTRAIT.heightFrac, rotate: 0, depthZ: 40, opacity: 1.0, liftY: -10, stackZ: 50, role: 'hero', isHero: true },
-  { pos: 1,  offsetFrac: 0.198,  widthFrac: 0.165, heightFrac: 0.311, rotate: -3.4, depthZ: 10,  opacity: 0.82, liftY: -3,  stackZ: 30, role: 'inner' },
-  { pos: 2,  offsetFrac: 0.366,  widthFrac: 0.144, heightFrac: 0.275, rotate: -5.5, depthZ: -30, opacity: 0.75, liftY: 11,  stackZ: 10, role: 'outer' },
+  { pos: -2, offsetFrac: -0.366, widthFrac: 0.144, heightFrac: 0.275, rotate: 5.5,  depthZ: -110, opacity: 0.75, liftY: 11,  stackZ: 10, role: 'outer' },
+  { pos: -1, offsetFrac: -0.198, widthFrac: 0.165, heightFrac: 0.311, rotate: 3.4,  depthZ: 25,  opacity: 0.82, liftY: -3,  stackZ: 30, role: 'inner' },
+  { pos: 0,  offsetFrac: 0,      widthFrac: EXHIBITION_HERO_PORTRAIT.widthFrac, heightFrac: EXHIBITION_HERO_PORTRAIT.heightFrac, rotate: 0, depthZ: 150, opacity: 1.0, liftY: -10, stackZ: 50, role: 'hero', isHero: true },
+  { pos: 1,  offsetFrac: 0.198,  widthFrac: 0.165, heightFrac: 0.311, rotate: -3.4, depthZ: 25,  opacity: 0.82, liftY: -3,  stackZ: 30, role: 'inner' },
+  { pos: 2,  offsetFrac: 0.366,  widthFrac: 0.144, heightFrac: 0.275, rotate: -5.5, depthZ: -110, opacity: 0.75, liftY: 11,  stackZ: 10, role: 'outer' },
 ];
 
 function buildExhibitionFan(photos, container) {
@@ -2324,6 +2324,10 @@ function buildExhibitionFan(photos, container) {
   nextBtn.className = 'exhibition-arrow exhibition-arrow-next';
   nextBtn.setAttribute('aria-label', 'Next photograph');
   nextBtn.innerHTML = '›';
+
+  const floor = document.createElement('div');
+  floor.className = 'exhibition-floor';
+  stage.appendChild(floor);
 
   outer.appendChild(prevBtn);
   outer.appendChild(stage);
@@ -2409,7 +2413,7 @@ function buildExhibitionFan(photos, container) {
     const heightPx = def.heightFrac * stageWidth;
     panel.frameOuter.style.width = `${widthPx.toFixed(1)}px`;
     panel.frameOuter.style.height = `${heightPx.toFixed(1)}px`;
-    panel.frameOuter.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px)) translateY(${def.liftY}px) perspective(1400px) rotateY(${def.rotate}deg) translateZ(${def.depthZ}px)`;
+    panel.frameOuter.style.transform = `translateX(calc(-50% + ${xOffset.toFixed(1)}px)) translateY(${def.liftY}px) rotateY(${def.rotate}deg) translateZ(${def.depthZ}px)`;
     panel.frameOuter.style.opacity = def.offstage ? '0' : String(def.opacity);
     panel.frameOuter.style.zIndex = String(def.stackZ);
     panel.frameOuter.classList.toggle('exhibition-fan-hero', def.role === 'hero');
@@ -2417,6 +2421,7 @@ function buildExhibitionFan(photos, container) {
     panel.frameOuter.classList.toggle('exhibition-fan-outer', def.role === 'outer');
     if (def.isHero && panel.fitMode) {
       panel.imgEl.style.objectFit = panel.fitMode;
+      if (panel.reflectionImgEl) panel.reflectionImgEl.style.objectFit = panel.fitMode;
       panel.frameOuter.classList.toggle('exhibition-frame-letterboxed', panel.fitMode === 'contain');
     } else {
       panel.frameOuter.classList.remove('exhibition-frame-letterboxed');
@@ -2443,6 +2448,10 @@ function buildExhibitionFan(photos, container) {
     panel.imgEl.alt = photo.caption || '';
     panel.imgEl.style.objectPosition = photo.position || 'center';
     panel.imgEl.style.objectFit = 'cover';
+    if (panel.reflectionImgEl) {
+      panel.reflectionImgEl.src = photo.url;
+      panel.reflectionImgEl.style.objectPosition = photo.position || 'center';
+    }
     if (panel.capTitleEl) panel.capTitleEl.textContent = photo.caption || '';
     if (panel.capYearEl) panel.capYearEl.textContent = photo.year || '';
     panel.frameOuter.onclick = () => openLightbox(photo.url, photo);
@@ -2467,6 +2476,9 @@ function buildExhibitionFan(photos, container) {
             <div class="exhibition-caption-year"></div>
           </div>
         </div>
+        <div class="exhibition-frame-reflection">
+          <img class="exhibition-frame-reflection-img" loading="lazy" aria-hidden="true">
+        </div>
       </div>
     `;
     const frameOuter = el.querySelector('.exhibition-frame-outer');
@@ -2475,6 +2487,7 @@ function buildExhibitionFan(photos, container) {
     const panel = {
       el, frameOuter,
       imgEl: el.querySelector('.exhibition-frame-main'),
+      reflectionImgEl: el.querySelector('.exhibition-frame-reflection-img'),
       capTitleEl: el.querySelector('.exhibition-caption-title'),
       capYearEl: el.querySelector('.exhibition-caption-year'),
       slotPos, photoIndex: photoIdx,
