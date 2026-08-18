@@ -2438,7 +2438,7 @@ function buildExhibitionFan(photos, container) {
     // within this fixed-height room exactly as before; only the
     // room's own height stopped fluctuating.
     const heightPx = EXHIBITION_HERO_PORTRAIT.heightFrac * stageWidth;
-    stage.style.height = `${(heightPx + 26).toFixed(1)}px`;
+    stage.style.height = `${(heightPx + 14).toFixed(1)}px`;
   }
 
   function renderPhotoIntoPanel(panel, photoIdx, isHeroSlot) {
