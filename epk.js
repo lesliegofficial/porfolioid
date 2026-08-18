@@ -3935,6 +3935,7 @@ function openCreditModal(i) {
 
   document.getElementById('creditModalMedia').innerHTML = unifiedHTML;
   document.getElementById('creditModalPhotos').innerHTML = ''; // now unified above
+  renderShortVideos(c);
 
   // Press & Archive section
   const pressItems = c.press || [];
@@ -3959,6 +3960,61 @@ function openCreditModal(i) {
   document.getElementById('creditModalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
+// Short Clips: compact square archival video tiles, rendered below the
+// existing unified media/photos block. Completely separate data source
+// (c.shortVideos) and renderer from the primary mediaItems/openVideoPlayer
+// system -- these never get merged into allMediaItems and never open the
+// big overlay player. A credit with no shortVideos array (or an empty one)
+// renders nothing here, identical to today's behavior.
+function renderShortVideos(c) {
+  const clips = c.shortVideos || [];
+  const container = document.getElementById('creditModalShortVideos');
+  if (!container) return;
+  if (!clips.length) { container.innerHTML = ''; return; }
+  const heading = c.shortVideosLabel || 'Short Clips';
+  const tiles = clips.map((clip, idx) => {
+    if (!clip.url) return '';
+    const posterAttr = clip.thumb ? ` poster="${clip.thumb}"` : '';
+    const label = clip.label ? `<div class="short-clip-label">${clip.label}</div>` : '';
+    return `<div class="short-clip-tile" data-clip-idx="${idx}" onclick="toggleShortClip(this)">
+      <video class="short-clip-video" src="${clip.url}"${posterAttr} playsinline preload="metadata" onended="this.controls=false;this.currentTime=0;this.closest('.short-clip-tile').classList.remove('is-playing')" onerror="this.closest('.short-clip-tile').style.display='none'"></video>
+      <div class="short-clip-play">▶</div>
+      ${label}
+    </div>`;
+  }).join('');
+  container.innerHTML = `
+    <div class="short-clips-heading">${heading}</div>
+    <div class="credit-media-grid">${tiles}</div>
+  `;
+}
+
+// Plays a short clip inline within its own tile. Pauses every other
+// short-clip tile first (mirrors the existing workPlayerToggle convention
+// of "pause every other player of this kind before starting a new one"),
+// and also pauses the large featured-video overlay if it happens to be
+// open, since this codebase has no single global pause-all mechanism to
+// hook into instead.
+function toggleShortClip(tile) {
+  const video = tile.querySelector('.short-clip-video');
+  if (!video) return;
+  if (video.paused) {
+    document.querySelectorAll('.short-clip-tile.is-playing').forEach(other => {
+      if (other === tile) return;
+      const otherVideo = other.querySelector('.short-clip-video');
+      if (otherVideo) { otherVideo.pause(); otherVideo.controls = false; }
+      other.classList.remove('is-playing');
+    });
+    const bigPlayerVideo = document.querySelector('#videoPlayerOverlay video');
+    if (bigPlayerVideo && !bigPlayerVideo.paused) bigPlayerVideo.pause();
+    video.controls = true;
+    video.currentTime = 0;
+    video.play();
+    tile.classList.add('is-playing');
+  } else {
+    video.pause();
+  }
+}
+
 function closeCreditModal() {
   document.getElementById('creditModalOverlay').classList.remove('open');
   document.body.style.overflow = '';
