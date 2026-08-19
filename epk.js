@@ -3687,10 +3687,10 @@ function openCreditModal(i) {
     const testClip = 'test-assets/TEMPORARY_test_clip_for_pr15_preview_only.mp4';
     c = Object.assign({}, c, {
       shortVideos: [
-        { url: testClip, label: 'Backstage Clip 1' },
-        { url: testClip, label: 'Backstage Clip 2' },
-        { url: testClip, label: 'Studio Session' },
-        { url: testClip },
+        { url: testClip, label: 'Backstage Clip 1 (poster near start, 2.5s)', posterTime: 2.5 },
+        { url: testClip, label: 'Backstage Clip 2 (poster middle, 7.5s)', posterTime: 7.5 },
+        { url: testClip, label: 'Studio Session (poster near end, 13s)', posterTime: 13 },
+        { url: testClip, label: 'No posterTime (default/backward-compat)' },
         { url: testClip, label: 'On the Road' },
       ],
     });
@@ -3994,9 +3994,10 @@ function renderShortVideos(c) {
   const tiles = clips.map((clip, idx) => {
     if (!clip.url) return '';
     const posterAttr = clip.thumb ? ` poster="${clip.thumb}"` : '';
+    const posterTime = (typeof clip.posterTime === 'number' && clip.posterTime > 0) ? clip.posterTime : 0;
     const label = clip.label ? `<div class="short-clip-label">${clip.label}</div>` : '';
-    return `<div class="short-clip-tile" data-clip-idx="${idx}" onclick="toggleShortClip(this)">
-      <video class="short-clip-video" src="${clip.url}"${posterAttr} playsinline preload="metadata" onended="this.controls=false;this.currentTime=0;this.closest('.short-clip-tile').classList.remove('is-playing')" onerror="this.closest('.short-clip-tile').style.display='none'"></video>
+    return `<div class="short-clip-tile" data-clip-idx="${idx}" data-poster-time="${posterTime}" data-has-thumb="${!!clip.thumb}" onclick="toggleShortClip(this)">
+      <video class="short-clip-video" src="${clip.url}"${posterAttr} playsinline preload="metadata" onerror="this.closest('.short-clip-tile').style.display='none'"></video>
       <div class="short-clip-play">▶</div>
       ${label}
     </div>`;
@@ -4005,6 +4006,29 @@ function renderShortVideos(c) {
     <div class="short-clips-heading">${heading}</div>
     <div class="credit-media-grid">${tiles}</div>
   `;
+  // Wire up posterTime: positions the paused frame at the chosen
+  // timestamp, without ever triggering playback. Only applies when no
+  // explicit thumb image is set (thumb still takes priority) and
+  // posterTime is a meaningful nonzero value -- clips without either
+  // fall back to the browser's natural first frame, identical to
+  // pre-posterTime behavior. Uses addEventListener rather than inline
+  // HTML attributes for reliable timing on elements just inserted via
+  // innerHTML (confirmed more reliable in an earlier round of testing).
+  container.querySelectorAll('.short-clip-tile').forEach(tile => {
+    const video = tile.querySelector('.short-clip-video');
+    if (!video) return;
+    const posterTime = parseFloat(tile.dataset.posterTime) || 0;
+    const showPosterFrame = () => { video.currentTime = posterTime; };
+    if (posterTime > 0 && tile.dataset.hasThumb !== 'true') {
+      if (video.readyState >= 1) showPosterFrame();
+      else video.addEventListener('loadedmetadata', showPosterFrame, { once: true });
+    }
+    video.addEventListener('ended', () => {
+      video.controls = false;
+      showPosterFrame();
+      tile.classList.remove('is-playing');
+    });
+  });
 }
 
 // Plays a short clip inline within its own tile. Pauses every other
