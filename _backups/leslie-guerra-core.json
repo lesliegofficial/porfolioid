@@ -1358,7 +1358,13 @@
       "projectType": "",
       "contractType": "",
       "highlightTag": "liveperformance",
-      "collaborators": []
+      "collaborators": [],
+      "shortVideos": [
+        {
+          "url": "   test-assets/TEMPORARY_test_clip_for_pr15_preview_only.mp4",
+          "label": ""
+        }
+      ]
     },
     {
       "id": "credit_05_arrow_orfanato",
