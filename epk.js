@@ -3674,27 +3674,8 @@ let epkVisibleCredits = [];
 let epkResumeCards = [];
 let _currentOpenCredit = null;
 function openCreditModal(i) {
-  let c = (typeof i === 'object') ? i : epkVisibleCredits[i];
+  const c = (typeof i === 'object') ? i : epkVisibleCredits[i];
   if (!c) return;
-  // Preview-only override: ?previewShortClips=1 lets the Short Clips
-  // section be reviewed on a deploy preview using a temporary local test
-  // file, without writing anything to the real saved credit data. Mirrors
-  // the existing ?previewLayout override in buildGallery(). Read-only,
-  // client-side only, operates on a shallow clone so the real credit
-  // object (and anything derived from it elsewhere on the page) is never
-  // mutated. Inert unless the query param is present.
-  if (new URLSearchParams(window.location.search).get('previewShortClips') === '1' && !c.shortVideos) {
-    const testClip = 'test-assets/TEMPORARY_test_clip_for_pr15_preview_only.mp4';
-    c = Object.assign({}, c, {
-      shortVideos: [
-        { url: testClip, label: 'Backstage Clip 1 (poster near start, 2.5s)', posterTime: 2.5 },
-        { url: testClip, label: 'Backstage Clip 2 (poster middle, 7.5s)', posterTime: 7.5 },
-        { url: testClip, label: 'Studio Session (poster near end, 13s)', posterTime: 13 },
-        { url: testClip, label: 'No posterTime (default/backward-compat)' },
-        { url: testClip, label: 'On the Road' },
-      ],
-    });
-  }
   _currentOpenCredit = c;
   const photos = c.photos || [];
   document.getElementById('creditModalArtist').textContent = c.company || c.artist;
