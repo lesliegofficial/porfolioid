@@ -1356,15 +1356,16 @@
       "sort_order": 1,
       "mediaLayout": "hybrid",
       "projectType": "",
-      "contractType": "",
-      "highlightTag": "liveperformance",
-      "collaborators": [],
       "shortVideos": [
         {
           "url": "   test-assets/TEMPORARY_test_clip_for_pr15_preview_only.mp4",
-          "label": ""
+          "label": "",
+          "posterTime": 7.5
         }
-      ]
+      ],
+      "contractType": "",
+      "highlightTag": "liveperformance",
+      "collaborators": []
     },
     {
       "id": "credit_05_arrow_orfanato",
