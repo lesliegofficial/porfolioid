@@ -1901,14 +1901,15 @@ function addCreditShortVideo(type) {
       const file = input.files[0];
       if (!file) return;
       const btn = document.querySelector(".btn-add[onclick*=\"addCreditShortVideo('upload')\"]");
+      const originalText = btn ? btn.textContent : '↑ Upload Short Clip';
       if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
       await uploadToR2(file, 'videos',
         (url) => {
           pendingCreditShortVideos.push({ url, label: file.name.replace(/\.[^.]+$/, '') });
           renderCreditShortVideosList();
-          if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload Short Clip'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+          if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = originalText; btn.style.color = ''; btn.disabled = false; }, 2000); }
         },
-        (err) => { console.error('Short clip upload failed:', err); alert('Upload failed: ' + err); if (btn) { btn.textContent = '↑ Upload Short Clip'; btn.disabled = false; } }
+        (err) => showUploadError(btn, originalText, err)
       );
     };
     input.click();
