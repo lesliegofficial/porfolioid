@@ -1712,7 +1712,9 @@ function addCredit() {
   const mediaLink = mediaItems[0]?.url || '';
   const mediaLabel = mediaItems[0]?.label || '';
   const videoUrl = mediaItems.find(m => m.type==='video')?.url || '';
-  const shortVideos = pendingCreditShortVideos.filter(s => s.url);
+  const shortVideos = pendingCreditShortVideos
+    .map(s => ({ ...s, url: (s.url || '').trim(), label: (s.label || '').trim() }))
+    .filter(s => s.url);
   const proofLink = document.getElementById('newCreditProofLink').value.trim();
   const visible = document.getElementById('newCreditVisible').checked;
   const verified = document.getElementById('newCreditVerified').checked;
