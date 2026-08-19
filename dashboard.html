@@ -695,6 +695,17 @@
         </div>
 
         <div class="field-group">
+          <label class="field-label">Short Clips <span style="color:var(--gray);font-weight:400">(optional, compact archival videos)</span></label>
+          <p class="field-hint">Square/vertical archival clips shown below the photos, separate from the main video above. Choose a poster frame directly from each clip — no separate thumbnail image needed.</p>
+          <div id="creditShortVideosList" style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:0.75rem"></div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+            <button class="btn-add" onclick="addCreditShortVideo('link')">+ Add Short Clip Link</button>
+            <button class="btn-add" onclick="addCreditShortVideo('upload')">↑ Upload Short Clip</button>
+          </div>
+          <input type="file" id="creditShortVideoInput" accept="video/*" style="display:none">
+        </div>
+
+        <div class="field-group">
           <label class="field-label">Verification / Proof <span style="color:var(--gray);font-weight:400">(optional)</span></label>
           <input type="url" id="newCreditProofLink" placeholder="https://... link to proof (article, contract, etc.)">
           <p class="field-hint">A URL that verifies this credit — press coverage, official site, IMDb, etc.</p>

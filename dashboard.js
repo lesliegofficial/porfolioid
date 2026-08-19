@@ -1424,6 +1424,8 @@ function editCredit(i) {
   if (c.videoUrl && !pendingCreditMedia.find(m => m.url === c.videoUrl)) pendingCreditMedia.push({type:'video', url:c.videoUrl, label:''});
   pendingCreditMediaLayout = c.mediaLayout || 'grid';
   renderCreditMediaList();
+  pendingCreditShortVideos = c.shortVideos || [];
+  renderCreditShortVideosList();
   document.getElementById('newCreditProofLink').value = c.proofLink || '';
   document.getElementById('newCreditVisible').checked = c.visible !== false;
   document.getElementById('newCreditVerified').checked = c.verified || false;
@@ -1710,13 +1712,14 @@ function addCredit() {
   const mediaLink = mediaItems[0]?.url || '';
   const mediaLabel = mediaItems[0]?.label || '';
   const videoUrl = mediaItems.find(m => m.type==='video')?.url || '';
+  const shortVideos = pendingCreditShortVideos.filter(s => s.url);
   const proofLink = document.getElementById('newCreditProofLink').value.trim();
   const visible = document.getElementById('newCreditVisible').checked;
   const verified = document.getElementById('newCreditVerified').checked;
   const pinned = document.getElementById('newCreditPinned').checked;
   if (!artist || !role) return;
   epk.credits = epk.credits || [];
-  const creditData = { company: artist, artist, years, category, highlightTag, contractType, role, projectType, desc, fullDesc, fullDescEs, mediaLink, mediaLabel, videoUrl, mediaItems, proofLink, visible, verified, pinned, mediaLayout: pendingCreditMediaLayout, collaborators: [...pendingCreditCollaborators], photos: [...pendingCreditPhotos], press: pendingPressItems.filter(p => p.publication && p.summary) };
+  const creditData = { company: artist, artist, years, category, highlightTag, contractType, role, projectType, desc, fullDesc, fullDescEs, mediaLink, mediaLabel, videoUrl, mediaItems, shortVideos, proofLink, visible, verified, pinned, mediaLayout: pendingCreditMediaLayout, collaborators: [...pendingCreditCollaborators], photos: [...pendingCreditPhotos], press: pendingPressItems.filter(p => p.publication && p.summary) };
   if (editingCreditIdx >= 0) {
     epk.credits[editingCreditIdx] = { ...epk.credits[editingCreditIdx], ...creditData };
     editingCreditIdx = -1;
@@ -1728,6 +1731,7 @@ function addCredit() {
   pendingCreditCollaborators = [];
   pendingCreditMedia = [];
   pendingCreditMediaLayout = 'grid';
+  pendingCreditShortVideos = [];
   pendingPressItems = [];
   renderPressItems();
   renderCreditPhotosPreview();
@@ -1765,6 +1769,8 @@ function addCreditCollaborator() {
 // CREDIT MULTI-MEDIA
 let pendingCreditMedia = [];
 let pendingCreditMediaLayout = 'grid';
+let pendingCreditShortVideos = [];
+let posterFramePickerOpenIdx = null;
 
 function renderCreditMediaList() {
   const container = document.getElementById('creditMediaList');
@@ -1822,6 +1828,98 @@ function triggerCreditItemThumb(idx) {
     );
   };
   input.click();
+}
+
+function renderCreditShortVideosList() {
+  const container = document.getElementById('creditShortVideosList');
+  if (!container) return;
+  container.innerHTML = pendingCreditShortVideos.map((s, i) => {
+    const posterLabel = (typeof s.posterTime === 'number' && s.posterTime > 0) ? `${s.posterTime.toFixed(1)}s` : 'Default (start of clip)';
+    const pickerOpen = posterFramePickerOpenIdx === i;
+    const pickerPanel = pickerOpen && s.url ? `
+      <div style="margin-top:0.5rem;padding:0.75rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.3)">
+        <p style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray);margin:0 0 0.5rem">Drag the scrubber to the frame you want, then Use This Frame.</p>
+        <video id="posterPickerVideo_${i}" src="${s.url}" muted playsinline preload="metadata"
+          style="width:100%;max-width:240px;aspect-ratio:1/1;object-fit:cover;display:block;background:#000;border:1px solid rgba(201,168,76,0.2)"
+          onloadedmetadata="const r=document.getElementById('posterPickerRange_${i}'); r.max=this.duration; r.value=Math.min(${s.posterTime||0}, this.duration); this.currentTime=r.value;"></video>
+        <input type="range" id="posterPickerRange_${i}" min="0" max="15" step="0.1" value="${s.posterTime||0}"
+          oninput="const v=document.getElementById('posterPickerVideo_${i}'); v.currentTime=this.value; document.getElementById('posterPickerTime_${i}').textContent=parseFloat(this.value).toFixed(1)+'s';"
+          style="width:100%;max-width:240px;margin-top:0.5rem;accent-color:var(--gold)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem;max-width:240px">
+          <span id="posterPickerTime_${i}" style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold)">${(s.posterTime||0).toFixed(1)}s</span>
+          <div style="display:flex;gap:0.4rem">
+            <button onclick="useThisFrame(${i})" style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.08em;text-transform:uppercase;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.4);color:var(--gold);padding:0.3rem 0.6rem;cursor:pointer">✓ Use This Frame</button>
+            <button onclick="closePosterFramePicker()" style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.08em;text-transform:uppercase;background:transparent;border:1px solid rgba(255,255,255,0.15);color:var(--gray);padding:0.3rem 0.6rem;cursor:pointer">Cancel</button>
+          </div>
+        </div>
+      </div>` : '';
+    return `
+    <div style="background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);padding:0.75rem">
+      <div style="display:flex;gap:0.5rem;align-items:center">
+        <input type="url" value="${s.url||''}" placeholder="Short clip URL" oninput="pendingCreditShortVideos[${i}].url=this.value"
+          style="flex:1;background:transparent;border:none;color:var(--white);font-family:var(--font-body);font-size:0.8rem;outline:none">
+        <input type="text" value="${s.label||''}" placeholder="Label (optional)" oninput="pendingCreditShortVideos[${i}].label=this.value"
+          style="width:150px;background:transparent;border:none;border-left:1px solid rgba(255,255,255,0.1);padding-left:0.5rem;color:var(--gray);font-family:var(--font-body);font-size:0.75rem;outline:none">
+        <button onclick="pendingCreditShortVideos.splice(${i},1);if(posterFramePickerOpenIdx===${i})posterFramePickerOpenIdx=null;renderCreditShortVideosList()"
+          style="background:none;border:none;color:#ff6b6b;cursor:pointer;font-size:0.8rem;padding:0 0.25rem">✕</button>
+      </div>
+      <div style="margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
+        <span style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray)">Poster Frame:</span>
+        <span style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray-light)">${posterLabel}</span>
+        <button onclick="openPosterFramePicker(${i})" ${s.url ? '' : 'disabled'}
+          style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.08em;text-transform:uppercase;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);color:var(--gold);padding:0.25rem 0.6rem;cursor:${s.url ? 'pointer' : 'not-allowed'};opacity:${s.url ? '1' : '0.4'}">🎬 ${pickerOpen ? 'Picking Frame…' : 'Set Poster Frame'}</button>
+      </div>
+      ${pickerPanel}
+    </div>`;
+  }).join('');
+}
+
+function openPosterFramePicker(idx) {
+  posterFramePickerOpenIdx = idx;
+  renderCreditShortVideosList();
+}
+
+function closePosterFramePicker() {
+  posterFramePickerOpenIdx = null;
+  renderCreditShortVideosList();
+}
+
+function useThisFrame(idx) {
+  const range = document.getElementById(`posterPickerRange_${idx}`);
+  if (range && pendingCreditShortVideos[idx]) {
+    pendingCreditShortVideos[idx].posterTime = parseFloat(range.value) || 0;
+  }
+  posterFramePickerOpenIdx = null;
+  renderCreditShortVideosList();
+}
+
+function addCreditShortVideo(type) {
+  if (type === 'upload') {
+    const input = document.getElementById('creditShortVideoInput');
+    input.value = '';
+    input.onchange = async function() {
+      const file = input.files[0];
+      if (!file) return;
+      const btn = document.querySelector(".btn-add[onclick*=\"addCreditShortVideo('upload')\"]");
+      if (btn) { btn.textContent = 'Uploading...'; btn.disabled = true; }
+      await uploadToR2(file, 'videos',
+        (url) => {
+          pendingCreditShortVideos.push({ url, label: file.name.replace(/\.[^.]+$/, '') });
+          renderCreditShortVideosList();
+          if (btn) { btn.textContent = '✓ Uploaded'; btn.style.color = '#7ec97e'; setTimeout(() => { btn.textContent = '↑ Upload Short Clip'; btn.style.color = ''; btn.disabled = false; }, 2000); }
+        },
+        (err) => { console.error('Short clip upload failed:', err); alert('Upload failed: ' + err); if (btn) { btn.textContent = '↑ Upload Short Clip'; btn.disabled = false; } }
+      );
+    };
+    input.click();
+  } else {
+    pendingCreditShortVideos.push({ url: '', label: '' });
+    renderCreditShortVideosList();
+    setTimeout(() => {
+      const inputs = document.querySelectorAll('#creditShortVideosList input[type="url"]');
+      if (inputs.length) inputs[inputs.length-1].focus();
+    }, 50);
+  }
 }
 
 function addCreditMedia(type) {
