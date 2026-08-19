@@ -1342,7 +1342,7 @@
       "verified": true,
       "videoUrl": "https://media.porfolioid.com/profiles/leslie-guerra/videos/leslie-guerra_j-alvarez-medley_v1_20260802.mp4",
       "mediaLink": "https://media.porfolioid.com/profiles/leslie-guerra/videos/leslie-guerra_j-alvarez-medley_v1_20260802.mp4",
-      "proofLink": "",
+      "proofLink": "test-assets/TEMPORARY_test_clip_for_pr15_preview_only.mp4",
       "fullDescEs": "J Álvarez — Vocalista de Gira / Colaboración en Presentaciones en Vivo\n\nLeslie fue reclutada para la producción de gira de J Álvarez por Robert Santiago, el mánager de producción de J Álvarez, quien anteriormente formó parte del equipo de gira de Don Omar.\n\nColaboré como vocalista de apoyo dentro de entornos profesionales de gira y presentaciones en vivo, aportando ejecución vocal, soporte armónico y coordinación escénica en producciones de música urbana latina.\n\nContribuciones Principales:\n- Apoyo vocal en presentaciones en vivo\n- Ejecución de armonías y acople vocal\n- Coordinación escénica y sincronización musical\n- Precisión interpretativa en entornos de gira\n- Adaptabilidad dentro de producciones dinámicas\n- Colaboración con artistas, músicos y producción\n- Consistencia profesional en múltiples presentaciones\n- Presencia escénica y soporte interpretativo\n\n<strong>Un agradecimiento especial a J Álvarez por la oportunidad y por abrirme las puertas a su mundo. Y a Robert Santiago, cuya llamada lo hizo todo posible.</strong>",
       "mediaItems": [
         {
@@ -1356,13 +1356,7 @@
       "sort_order": 1,
       "mediaLayout": "hybrid",
       "projectType": "",
-      "shortVideos": [
-        {
-          "url": "   test-assets/TEMPORARY_test_clip_for_pr15_preview_only.mp4",
-          "label": "",
-          "posterTime": 7.5
-        }
-      ],
+      "shortVideos": [],
       "contractType": "",
       "highlightTag": "liveperformance",
       "collaborators": []
