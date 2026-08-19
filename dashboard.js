@@ -1858,7 +1858,7 @@ function renderCreditShortVideosList() {
     return `
     <div style="background:var(--dark-3);border:1px solid rgba(201,168,76,0.12);padding:0.75rem">
       <div style="display:flex;gap:0.5rem;align-items:center">
-        <input type="url" value="${s.url||''}" placeholder="Short clip URL" oninput="pendingCreditShortVideos[${i}].url=this.value"
+        <input type="url" id="shortClipUrlInput_${i}" value="${s.url||''}" placeholder="Short clip URL" oninput="pendingCreditShortVideos[${i}].url=this.value; const b=document.getElementById('shortClipFrameBtn_${i}'); if(b){const has=!!this.value.trim(); b.disabled=!has; b.style.cursor=has?'pointer':'not-allowed'; b.style.opacity=has?'1':'0.4';}"
           style="flex:1;background:transparent;border:none;color:var(--white);font-family:var(--font-body);font-size:0.8rem;outline:none">
         <input type="text" value="${s.label||''}" placeholder="Label (optional)" oninput="pendingCreditShortVideos[${i}].label=this.value"
           style="width:150px;background:transparent;border:none;border-left:1px solid rgba(255,255,255,0.1);padding-left:0.5rem;color:var(--gray);font-family:var(--font-body);font-size:0.75rem;outline:none">
@@ -1868,7 +1868,7 @@ function renderCreditShortVideosList() {
       <div style="margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
         <span style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray)">Poster Frame:</span>
         <span style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray-light)">${posterLabel}</span>
-        <button onclick="openPosterFramePicker(${i})" ${s.url ? '' : 'disabled'}
+        <button id="shortClipFrameBtn_${i}" onclick="openPosterFramePicker(${i})" ${s.url ? '' : 'disabled'}
           style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.08em;text-transform:uppercase;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);color:var(--gold);padding:0.25rem 0.6rem;cursor:${s.url ? 'pointer' : 'not-allowed'};opacity:${s.url ? '1' : '0.4'}">🎬 ${pickerOpen ? 'Picking Frame…' : 'Set Poster Frame'}</button>
       </div>
       ${pickerPanel}
