@@ -2290,11 +2290,21 @@ function buildExhibitionFan(photos, container) {
   if (!N) return;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // A complete five-piece tableau is always shown when N>=5 -- reaching
-  // the start/end of the library stops advancing in that direction
-  // rather than ever showing a lopsided partial installation.
+  // A complete five-piece tableau is always shown when N>=5. For
+  // collections with 5+ photos, the full range of the library must
+  // be reachable -- every photo can become hero, including the
+  // first two and last two -- so navigation wraps circularly at the
+  // ends rather than refusing to advance. Wrapping is safe here
+  // because N is always >= 5 in this branch, so the five panels
+  // shown at any moment are always five distinct photos, never a
+  // repeat, even right at the wrap point.
+  // For collections smaller than 5, wrapping would risk showing the
+  // same photo twice within one five-panel view, so that branch keeps
+  // its original clamped (non-wrapping) behavior unchanged.
+  const canWrap = N >= 5;
   const minCenter = N >= 5 ? 2 : Math.floor((N - 1) / 2);
   const maxCenter = N >= 5 ? N - 3 : Math.ceil((N - 1) / 2);
+  const wrapIndex = (i) => ((i % N) + N) % N;
   let centerIndex = Math.min(maxCenter, Math.max(minCenter, Math.floor((minCenter + maxCenter) / 2)));
 
   const outer = document.createElement('div');
@@ -2501,7 +2511,7 @@ function buildExhibitionFan(photos, container) {
   function renderInitial() {
     panels = [];
     for (let p = -2; p <= 2; p++) {
-      const idx = centerIndex + p;
+      const idx = canWrap ? wrapIndex(centerIndex + p) : centerIndex + p;
       if (idx < 0 || idx >= N) continue;
       panels.push(createPanel(p, idx));
     }
@@ -2510,8 +2520,12 @@ function buildExhibitionFan(photos, container) {
 
   function advance(dir) {
     if (transitioning) return false;
-    const newCenter = centerIndex + dir;
-    if (newCenter < minCenter || newCenter > maxCenter) return false;
+    let newCenter = centerIndex + dir;
+    if (canWrap) {
+      newCenter = wrapIndex(newCenter);
+    } else if (newCenter < minCenter || newCenter > maxCenter) {
+      return false;
+    }
     transitioning = true;
     centerIndex = newCenter;
 
@@ -2531,7 +2545,7 @@ function buildExhibitionFan(photos, container) {
     panels = panels.filter(p => Math.abs(p.slotPos) <= 2);
 
     const enterSlotPos = dir > 0 ? 2 : -2;
-    const enterPhotoIdx = centerIndex + enterSlotPos;
+    const enterPhotoIdx = canWrap ? wrapIndex(centerIndex + enterSlotPos) : centerIndex + enterSlotPos;
     if (enterPhotoIdx >= 0 && enterPhotoIdx < N && !panels.find(p => p.slotPos === enterSlotPos)) {
       const startSlotPos = enterSlotPos + dir;
       const panel = createPanel(startSlotPos, enterPhotoIdx);
@@ -2563,7 +2577,7 @@ function buildExhibitionFan(photos, container) {
     if (window.matchMedia('(max-width: 700px)').matches) return;
     if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
     const dir = e.deltaY > 0 ? 1 : -1;
-    const wouldExceed = (centerIndex + dir < minCenter) || (centerIndex + dir > maxCenter);
+    const wouldExceed = canWrap ? false : ((centerIndex + dir < minCenter) || (centerIndex + dir > maxCenter));
     if (wouldExceed) return;
     e.preventDefault();
     if (transitioning) return;
