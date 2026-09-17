@@ -68,8 +68,16 @@
     return null;
   }
 
+  function eachSelfAndDescendant(root, selector, callback) {
+    if (root.matches?.(selector)) callback(root);
+    root.querySelectorAll?.(selector).forEach(callback);
+  }
+
   function markStatusBadges(root) {
-    root.querySelectorAll?.('.award-badge-verified, .credit-card span, #assets span, #awardModalContent span').forEach(el => {
+    eachSelfAndDescendant(root, 'span, .award-badge-verified', el => {
+      const context = el.closest?.('.credit-card, #assets, #awardModalContent, .award-card');
+      if (!context && !el.classList.contains('award-badge-verified')) return;
+
       const text = (el.textContent || '').trim().toUpperCase();
       if (text.includes('VERIFIED')) el.classList.add('semantic-status-verified');
       if (text.includes('FEATURED') || text.includes('PINNED')) el.classList.add('semantic-status-featured');
@@ -77,14 +85,16 @@
   }
 
   function markAssetCategories(root) {
-    root.querySelectorAll?.('#assets span[style]').forEach(el => {
+    eachSelfAndDescendant(root, 'span[style]', el => {
+      if (!el.closest?.('#assets')) return;
       if (!el.style.border && !el.style.borderColor) return;
       const categoryClass = assetCategoryClass(el.textContent);
       if (categoryClass) el.classList.add(categoryClass);
     });
 
     /* Asset SVGs are decorative theme icons, not category semantics. */
-    root.querySelectorAll?.('#assets svg [stroke], #assets svg [fill]').forEach(el => {
+    eachSelfAndDescendant(root, 'svg [stroke], svg [fill]', el => {
+      if (!el.closest?.('#assets')) return;
       const stroke = el.getAttribute('stroke');
       const fill = el.getAttribute('fill');
       if (stroke && legacyGoldPattern.test(stroke)) el.setAttribute('stroke', 'var(--accent-icon)');
