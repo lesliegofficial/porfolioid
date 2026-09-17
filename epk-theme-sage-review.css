@@ -1,19 +1,21 @@
-/* PorfolioID Sage visual review — "Sage Stone"
-   Alternative direction built from the user's supplied swatches.
+/* PorfolioID Sage visual review — "Sage on Black"
+   User review: the Sage accents work, but the full slate background makes
+   the profile feel visually empty. This pass restores PorfolioID's original
+   near-black atmosphere and keeps Sage as the personality/accent system.
 
-   Deep Charcoal #0F1B27 = page atmosphere/base
+   Near Black    #080808 = page base
    Sage          #8DB580 = primary theme accent
    Soft Sage     #C2CFB2 = readable/light accent
    Dusty Stone   #BFAFAF = contrasting secondary/emphasis
 
-   No Gold is used as Sage theme decoration.
+   No Gold is used as Sage public-theme decoration.
    Fixed category, status, external platform-brand, and product-control colors
    remain architecturally separate.
 */
 
 [data-theme="sage"] {
-  /* Make legacy var(--black) surfaces inherit the Sage base consistently. */
-  --black: #0F1B27;
+  /* Restore the original PorfolioID dark base instead of tinting the whole page. */
+  --black: #080808;
 
   --accent-primary: #8DB580;
   --accent-primary-rgb: 141 181 128;
@@ -36,42 +38,43 @@
   --accent-surface-rgb: var(--accent-primary-rgb);
 }
 
-/* ── CONSISTENT PAGE ATMOSPHERE ─────────────────────────────────────── */
+/* ── RESTORE PORFOLIOID'S DENSER DARK ATMOSPHERE ─────────────────── */
 [data-theme="sage"] body,
 [data-theme="sage"] #epkContent,
 [data-theme="sage"] .hero,
 [data-theme="sage"] .career-profile-section,
 [data-theme="sage"] .gallery-section,
 [data-theme="sage"] .exhibition-outer {
-  background-color: var(--accent-dark) !important;
+  background-color: var(--black) !important;
 }
 
 [data-theme="sage"] nav {
-  background: rgb(var(--accent-dark-rgb) / 0.95);
-  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.18);
+  background: rgba(8,8,8,0.94);
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.15);
 }
 
+/* Keep the image fade visually integrated with the original near-black page. */
 [data-theme="sage"] .hero-image-panel::after {
   background:
-    linear-gradient(to right, transparent 40%, rgb(var(--accent-dark-rgb)) 100%),
-    linear-gradient(to bottom, transparent 60%, rgb(var(--accent-dark-rgb)) 100%);
+    linear-gradient(to right, transparent 40%, #080808 100%),
+    linear-gradient(to bottom, transparent 60%, #080808 100%);
 }
 
+/* Sage appears as a controlled light field, not a full background color. */
 [data-theme="sage"] .hero-content {
   background:
-    radial-gradient(circle at 27% 20%, rgb(var(--accent-primary-rgb) / 0.12), transparent 43%),
-    linear-gradient(110deg, rgb(var(--accent-dark-rgb) / 0.98), rgb(var(--accent-dark-rgb) / 0.84) 68%);
+    radial-gradient(circle at 22% 18%, rgb(var(--accent-primary-rgb) / 0.085), transparent 38%),
+    linear-gradient(110deg, rgba(8,8,8,0.98), rgba(8,8,8,0.94) 70%);
 }
 
-/* Dusty Stone is the visible contrast color; Sage carries structure. */
 [data-theme="sage"] .hero-name em {
   color: var(--accent-secondary);
 }
 
 [data-theme="sage"] .hero-role-item {
-  background: rgb(var(--accent-primary-rgb) / 0.055);
-  border-color: rgb(var(--accent-primary-rgb) / 0.36);
-  box-shadow: inset 0 0 0 1px rgb(var(--accent-light-rgb) / 0.035);
+  background: rgb(var(--accent-primary-rgb) / 0.045);
+  border-color: rgb(var(--accent-primary-rgb) / 0.34);
+  box-shadow: inset 0 0 0 1px rgb(var(--accent-light-rgb) / 0.025);
 }
 
 [data-theme="sage"] .hero-role-icon {
@@ -82,7 +85,7 @@
 [data-theme="sage"] .hero-stats-row,
 [data-theme="sage"] .hero-presence-bar {
   background: transparent;
-  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.20);
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.18);
 }
 
 [data-theme="sage"] .hero-presence-eyebrow {
@@ -99,11 +102,31 @@
 [data-theme="sage"] .hero-presence-explore:hover,
 [data-theme="sage"] .hero-cta-primary:hover,
 [data-theme="sage"] .ch-btn-gold:hover {
-  background: rgb(var(--accent-secondary-rgb) / 0.09);
-  box-shadow: 0 0 14px rgb(var(--accent-secondary-rgb) / 0.22);
+  background: rgb(var(--accent-primary-rgb) / 0.075);
+  box-shadow: 0 0 12px rgb(var(--accent-primary-rgb) / 0.18);
 }
 
-/* ── REMOVE LEGACY GOLD FROM PUBLIC THEME DECORATION ───────────────── */
+/* Subtle section-local atmosphere adds depth without flooding empty space. */
+[data-theme="sage"] .career-profile-section,
+[data-theme="sage"] .works-section,
+[data-theme="sage"] .gallery-section {
+  background-image: linear-gradient(
+    180deg,
+    rgb(var(--accent-primary-rgb) / 0.028),
+    transparent 220px
+  );
+}
+
+[data-theme="sage"] .ch3-card,
+[data-theme="sage"] .work-card,
+[data-theme="sage"] .resume-card,
+[data-theme="sage"] .award-card,
+[data-theme="sage"] .asset-card {
+  background-color: #0C0C0C;
+  box-shadow: inset 0 0 0 1px rgb(var(--accent-primary-rgb) / 0.035);
+}
+
+/* ── REMOVE LEGACY GOLD FROM PUBLIC THEME DECORATION ─────────────── */
 [data-theme="sage"] .section-label,
 [data-theme="sage"] .video-list-meta,
 [data-theme="sage"] .ew-sidebar-section-label,
@@ -118,16 +141,16 @@
 }
 
 [data-theme="sage"] .section-label::after {
-  background: linear-gradient(to right, rgb(var(--accent-secondary-rgb) / 0.40), transparent) !important;
+  background: linear-gradient(to right, rgb(var(--accent-primary-rgb) / 0.34), transparent) !important;
 }
 
 [data-theme="sage"] #bioToggleBtn {
   color: var(--accent-secondary) !important;
-  border-color: rgb(var(--accent-secondary-rgb) / 0.40) !important;
+  border-color: rgb(var(--accent-primary-rgb) / 0.40) !important;
 }
 
 [data-theme="sage"] #bioToggleBtn:hover {
-  background: rgb(var(--accent-secondary-rgb) / 0.08) !important;
+  background: rgb(var(--accent-primary-rgb) / 0.07) !important;
 }
 
 [data-theme="sage"] #bioShort p:first-child::first-letter,
@@ -141,12 +164,12 @@
 
 [data-theme="sage"] .ch3-icon,
 [data-theme="sage"] .collapsible-icon {
-  border-color: rgb(var(--accent-primary-rgb) / 0.38);
+  border-color: rgb(var(--accent-primary-rgb) / 0.34);
 }
 
-/* Gallery/exhibition framing follows Sage Stone instead of Gold. */
+/* Gallery/exhibition framing stays Sage without tinting the museum room. */
 [data-theme="sage"] .exhibition-frame {
-  border-color: rgb(var(--accent-primary-rgb) / 0.58) !important;
+  border-color: rgb(var(--accent-primary-rgb) / 0.55) !important;
 }
 
 [data-theme="sage"] .exhibition-caption-year,
@@ -158,23 +181,22 @@
 }
 
 [data-theme="sage"] .ew-sidebar-btn:hover {
-  background: rgb(var(--accent-primary-rgb) / 0.06);
-  border-left-color: rgb(var(--accent-secondary-rgb) / 0.42);
+  background: rgb(var(--accent-primary-rgb) / 0.05);
+  border-left-color: rgb(var(--accent-primary-rgb) / 0.42);
 }
 
 [data-theme="sage"] .ew-sidebar-btn.active {
-  border-left-color: var(--accent-secondary);
-  background: rgb(var(--accent-secondary-rgb) / 0.08);
+  border-left-color: var(--accent-primary);
+  background: rgb(var(--accent-primary-rgb) / 0.07);
 }
 
-/* ── CONNECT HUB ────────────────────────────────────────────────────── */
+/* ── CONNECT HUB ─────────────────────────────────────────────────── */
 [data-theme="sage"] .connect-hub {
   background:
-    radial-gradient(circle at 78% 0%, rgb(var(--accent-primary-rgb) / 0.075), transparent 32%),
-    var(--accent-dark);
+    radial-gradient(circle at 78% 0%, rgb(var(--accent-primary-rgb) / 0.05), transparent 28%),
+    #080808;
 }
 
-/* Gate 5 visual test: old Connect mid-Gold maps to Dusty Stone here. */
 [data-theme="sage"] .ch-eyebrow,
 [data-theme="sage"] .ch-section-label,
 [data-theme="sage"] .ch-hero-title em,
@@ -188,7 +210,7 @@
 }
 
 [data-theme="sage"] .ch-btn-outline {
-  border-color: rgb(var(--accent-secondary-rgb) / 0.42);
+  border-color: rgb(var(--accent-primary-rgb) / 0.40);
 }
 
 /* Music/category semantics remain fixed globally and are not recolored here. */
