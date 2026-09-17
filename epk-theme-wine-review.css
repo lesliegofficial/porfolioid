@@ -1,28 +1,30 @@
-/* Wine visual-review refinement — combination pass
+/* Wine visual-review refinement — inverted combination pass
    Uses the user's reference palette as one coordinated theme:
    Wine #610C27 = atmosphere/surfaces
-   Taupe #AC9C8D = contrasting secondary / readable functional accent
-   Blush #E3C1B4 = selective emphasis
+   Blush #E3C1B4 = contrasting secondary / readable functional accent
+   Taupe #AC9C8D = selective emphasis
    Existing PorfolioID neutrals = ordinary content text
 
-   This is a PREVIEW mapping for visual approval. It does not lock Taupe as the
-   permanent Wine secondary until the rendered combination is reviewed.
+   This is a PREVIEW mapping for visual approval. It does not lock either
+   supporting color's permanent semantic role until the rendered combination
+   is reviewed.
 */
 
 [data-theme="wine"] {
-  /* Preview-only contrast partner from the supplied Wine palette. */
+  /* Preview contrast partner from the supplied Wine palette. */
   --accent-secondary: #AC9C8D;
   --accent-secondary-rgb: 172 156 141;
 
-  /* Rebalance semantic roles so Wine does not become a blush-only theme. */
-  --accent-text: var(--accent-secondary);
-  --accent-text-rgb: var(--accent-secondary-rgb);
-  --accent-emphasis: var(--accent-light);
-  --accent-emphasis-rgb: var(--accent-light-rgb);
-  --accent-icon: var(--accent-secondary);
-  --accent-icon-rgb: var(--accent-secondary-rgb);
-  --accent-border: var(--accent-secondary);
-  --accent-border-rgb: var(--accent-secondary-rgb);
+  /* Inverted from the prior preview:
+     Blush carries readable/functional contrast; Taupe carries emphasis. */
+  --accent-text: var(--accent-light);
+  --accent-text-rgb: var(--accent-light-rgb);
+  --accent-emphasis: var(--accent-secondary);
+  --accent-emphasis-rgb: var(--accent-secondary-rgb);
+  --accent-icon: var(--accent-light);
+  --accent-icon-rgb: var(--accent-light-rgb);
+  --accent-border: var(--accent-light);
+  --accent-border-rgb: var(--accent-light-rgb);
   --accent-surface: var(--accent-primary);
   --accent-surface-rgb: var(--accent-primary-rgb);
 }
@@ -33,12 +35,12 @@
     linear-gradient(110deg, rgb(var(--accent-primary-rgb) / 0.14), transparent 66%);
 }
 
-/* Blush is now a deliberate signature emphasis instead of the universal accent. */
+/* Taupe becomes the selective signature emphasis in this inverted test. */
 [data-theme="wine"] .hero-name em {
   color: var(--accent-emphasis);
 }
 
-/* Deep Wine owns atmosphere; Taupe supplies the readable contrasting edge. */
+/* Deep Wine owns atmosphere; Blush supplies the readable contrasting edge. */
 [data-theme="wine"] .hero-role-item {
   background: rgb(var(--accent-primary-rgb) / 0.18);
   border-color: rgb(var(--accent-border-rgb) / 0.38);
@@ -46,7 +48,7 @@
 }
 
 [data-theme="wine"] .hero-role-icon {
-  fill: var(--accent-secondary);
+  fill: var(--accent-light);
 }
 
 [data-theme="wine"] .hero-roles-row,
@@ -63,9 +65,9 @@
   background: linear-gradient(90deg, rgb(var(--accent-primary-rgb) / 0.17), transparent 68%);
 }
 
-/* Taupe = secondary information; Blush = action/emphasis. */
+/* Blush = secondary information; Taupe = action/emphasis. */
 [data-theme="wine"] .hero-presence-eyebrow {
-  color: var(--accent-secondary);
+  color: var(--accent-light);
 }
 
 [data-theme="wine"] .hero-presence-explore {
@@ -95,15 +97,14 @@
   box-shadow: inset 0 0 0 1px rgb(var(--accent-primary-rgb) / 0.045);
 }
 
-/* Small structural accents use Taupe so the second palette color is visibly
-   present without competing with fixed content-category colors. */
+/* Small structural accents now use Blush in the inverted preview. */
 [data-theme="wine"] .ch3-label,
 [data-theme="wine"] .works-label,
 [data-theme="wine"] .collapsible-header-label,
 [data-theme="wine"] .booking-note,
 [data-theme="wine"] .identity-block-label,
 [data-theme="wine"] .timeline-year {
-  color: var(--accent-secondary);
+  color: var(--accent-light);
 }
 
 [data-theme="wine"] .ch3-icon,
