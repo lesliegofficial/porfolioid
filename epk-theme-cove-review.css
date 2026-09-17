@@ -1,24 +1,31 @@
-/* PorfolioID Cove visual review — "Midnight Cove"
-   Chosen from the user's reference swatches as a cohesive dark-profile palette.
+/* PorfolioID Cove visual review — refined cool palette
+   User review showed two problems in the first Cove pass:
+   1) legacy black and Cove navy alternated between sections;
+   2) Warm Sand read as leftover Gold instead of a true contrast color.
 
-   Midnight Navy #061222 = atmosphere/depth
-   Cove Blue     #30A0E0 = primary accent
+   Refined Cove palette:
+   Midnight Navy #061222 = page atmosphere/base
+   Cove Blue     #30A0E0 = primary theme accent
    Soft Aqua     #B8E3E9 = readable/light accent
-   Warm Sand     #FFC872 = selective contrast/emphasis
+   Lavender      #B298E7 = contrasting secondary/emphasis
 
-   Fixed category, status, external platform-brand, and product-control colors
-   remain outside this theme mapping.
+   No Warm Sand/Gold is used as Cove theme decoration.
+   Fixed status/category/product-control semantics remain architecturally separate.
 */
 
 [data-theme="cove"] {
+  /* Let legacy surfaces that already use var(--black) inherit Cove's base.
+     This fixes the black/navy striping without rewriting each section. */
+  --black: #061222;
+
   --accent-primary: #30A0E0;
   --accent-primary-rgb: 48 160 224;
   --accent-light: #B8E3E9;
   --accent-light-rgb: 184 227 233;
   --accent-dark: #061222;
   --accent-dark-rgb: 6 18 34;
-  --accent-secondary: #FFC872;
-  --accent-secondary-rgb: 255 200 114;
+  --accent-secondary: #B298E7;
+  --accent-secondary-rgb: 178 152 231;
 
   --accent-text: var(--accent-light);
   --accent-text-rgb: var(--accent-light-rgb);
@@ -32,21 +39,42 @@
   --accent-surface-rgb: var(--accent-primary-rgb);
 }
 
-/* Deep navy provides the atmosphere; blue is used as light, controlled glow. */
-[data-theme="cove"] .hero-content {
-  background:
-    radial-gradient(circle at 26% 22%, rgb(var(--accent-primary-rgb) / 0.16), transparent 40%),
-    linear-gradient(110deg, rgb(var(--accent-dark-rgb) / 0.88), rgba(8,8,8,0.20) 68%);
+/* ── CONSISTENT PAGE ATMOSPHERE ─────────────────────────────────────── */
+[data-theme="cove"] body,
+[data-theme="cove"] #epkContent,
+[data-theme="cove"] .hero,
+[data-theme="cove"] .career-profile-section,
+[data-theme="cove"] .gallery-section,
+[data-theme="cove"] .exhibition-outer {
+  background-color: var(--accent-dark) !important;
 }
 
-/* Warm sand is a signature accent, not the default text color. */
+[data-theme="cove"] nav {
+  background: rgb(var(--accent-dark-rgb) / 0.94);
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.18);
+}
+
+/* Replace the hero's hard-coded black image fade with Midnight Navy. */
+[data-theme="cove"] .hero-image-panel::after {
+  background:
+    linear-gradient(to right, transparent 40%, rgb(var(--accent-dark-rgb)) 100%),
+    linear-gradient(to bottom, transparent 60%, rgb(var(--accent-dark-rgb)) 100%);
+}
+
+[data-theme="cove"] .hero-content {
+  background:
+    radial-gradient(circle at 26% 22%, rgb(var(--accent-primary-rgb) / 0.13), transparent 42%),
+    linear-gradient(110deg, rgb(var(--accent-dark-rgb) / 0.98), rgb(var(--accent-dark-rgb) / 0.82) 68%);
+}
+
+/* Lavender is the visible contrast color; Aqua handles readable UI marks. */
 [data-theme="cove"] .hero-name em {
-  color: var(--accent-emphasis);
+  color: var(--accent-secondary);
 }
 
 [data-theme="cove"] .hero-role-item {
-  background: linear-gradient(145deg, rgb(var(--accent-dark-rgb) / 0.86), rgb(var(--accent-primary-rgb) / 0.075));
-  border-color: rgb(var(--accent-primary-rgb) / 0.40);
+  background: rgb(var(--accent-primary-rgb) / 0.055);
+  border-color: rgb(var(--accent-primary-rgb) / 0.38);
   box-shadow: inset 0 0 0 1px rgb(var(--accent-light-rgb) / 0.035);
 }
 
@@ -57,15 +85,8 @@
 [data-theme="cove"] .hero-roles-row,
 [data-theme="cove"] .hero-stats-row,
 [data-theme="cove"] .hero-presence-bar {
+  background: transparent;
   border-bottom-color: rgb(var(--accent-primary-rgb) / 0.20);
-}
-
-[data-theme="cove"] .hero-stats-row {
-  background: linear-gradient(90deg, rgb(var(--accent-dark-rgb) / 0.55), transparent 62%);
-}
-
-[data-theme="cove"] .hero-presence-bar {
-  background: linear-gradient(90deg, rgb(var(--accent-primary-rgb) / 0.055), transparent 70%);
 }
 
 [data-theme="cove"] .hero-presence-eyebrow {
@@ -75,41 +96,53 @@
 [data-theme="cove"] .hero-presence-explore,
 [data-theme="cove"] .hero-cta-primary,
 [data-theme="cove"] .ch-btn-gold {
-  color: var(--accent-emphasis);
-  border-color: var(--accent-emphasis);
+  color: var(--accent-secondary);
+  border-color: var(--accent-secondary);
 }
 
 [data-theme="cove"] .hero-presence-explore:hover,
 [data-theme="cove"] .hero-cta-primary:hover,
 [data-theme="cove"] .ch-btn-gold:hover {
-  background: rgb(var(--accent-secondary-rgb) / 0.09);
-  box-shadow: 0 0 14px rgb(var(--accent-secondary-rgb) / 0.20);
+  background: rgb(var(--accent-secondary-rgb) / 0.10);
+  box-shadow: 0 0 14px rgb(var(--accent-secondary-rgb) / 0.28);
 }
 
-/* Carry a restrained midnight-blue field through later sections. */
-[data-theme="cove"] .career-profile-section,
-[data-theme="cove"] .works-section {
-  background-image: linear-gradient(
-    180deg,
-    rgb(var(--accent-dark-rgb) / 0.42),
-    transparent 280px
-  );
-}
-
-[data-theme="cove"] .work-card,
-[data-theme="cove"] .resume-card,
-[data-theme="cove"] .asset-card,
-[data-theme="cove"] .award-card {
-  box-shadow: inset 0 0 0 1px rgb(var(--accent-primary-rgb) / 0.045);
-}
-
+/* ── LEGACY PUBLIC-THEME GOLD LEAKS ───────────────────────────────────
+   These are decorative/public-profile roles, not category/status semantics. */
+[data-theme="cove"] .section-label,
+[data-theme="cove"] .video-list-meta,
+[data-theme="cove"] .ew-sidebar-section-label,
+[data-theme="cove"] .ew-sidebar-btn.active,
 [data-theme="cove"] .ch3-label,
 [data-theme="cove"] .works-label,
 [data-theme="cove"] .collapsible-header-label,
 [data-theme="cove"] .booking-note,
 [data-theme="cove"] .identity-block-label,
 [data-theme="cove"] .timeline-year {
-  color: var(--accent-light);
+  color: var(--accent-secondary) !important;
+}
+
+[data-theme="cove"] .section-label::after {
+  background: linear-gradient(to right, rgb(var(--accent-secondary-rgb) / 0.42), transparent) !important;
+}
+
+[data-theme="cove"] #bioToggleBtn {
+  color: var(--accent-secondary) !important;
+  border-color: rgb(var(--accent-secondary-rgb) / 0.42) !important;
+}
+
+[data-theme="cove"] #bioToggleBtn:hover {
+  background: rgb(var(--accent-secondary-rgb) / 0.08) !important;
+}
+
+[data-theme="cove"] #bioShort p:first-child::first-letter,
+[data-theme="cove"] .career-bio-text p:first-of-type::first-letter {
+  color: var(--accent-secondary) !important;
+}
+
+/* Career-highlight SVGs are theme decoration; legacy JS still emits var(--gold). */
+[data-theme="cove"] .ch3-icon svg {
+  fill: var(--accent-light) !important;
 }
 
 [data-theme="cove"] .ch3-icon,
@@ -117,8 +150,37 @@
   border-color: rgb(var(--accent-primary-rgb) / 0.38);
 }
 
-/* Gate 5 visual test for Cove: the old Connect mid-Gold is replaced by the
-   theme's intentional warm-sand contrast so it does not look like leftover Gold. */
+/* Exhibition/gallery framing follows Cove instead of legacy Gold. */
+[data-theme="cove"] .exhibition-frame {
+  border-color: rgb(var(--accent-secondary-rgb) / 0.58) !important;
+}
+
+[data-theme="cove"] .exhibition-caption-year,
+[data-theme="cove"] .gallery-scroll-category,
+[data-theme="cove"] .gallery-scroll-counter,
+[data-theme="cove"] .gallery-collection-count,
+[data-theme="cove"] .gallery-collection-cta {
+  color: var(--accent-light) !important;
+}
+
+[data-theme="cove"] .ew-sidebar-btn:hover {
+  background: rgb(var(--accent-primary-rgb) / 0.06);
+  border-left-color: rgb(var(--accent-secondary-rgb) / 0.45);
+}
+
+[data-theme="cove"] .ew-sidebar-btn.active {
+  border-left-color: var(--accent-secondary);
+  background: rgb(var(--accent-secondary-rgb) / 0.08);
+}
+
+/* ── CONNECT HUB ────────────────────────────────────────────────────── */
+[data-theme="cove"] .connect-hub {
+  background:
+    radial-gradient(circle at 78% 0%, rgb(var(--accent-primary-rgb) / 0.08), transparent 32%),
+    var(--accent-dark);
+}
+
+/* Gate 5 visual test: old Connect mid-Gold maps to Lavender in Cove. */
 [data-theme="cove"] .ch-eyebrow,
 [data-theme="cove"] .ch-section-label,
 [data-theme="cove"] .ch-hero-title em,
@@ -128,17 +190,12 @@
 [data-theme="cove"] .ch-amazon-cta,
 [data-theme="cove"] .ch-row-arrow,
 [data-theme="cove"] .ch-btn-outline {
-  color: var(--accent-emphasis);
+  color: var(--accent-secondary);
 }
 
 [data-theme="cove"] .ch-btn-outline {
-  border-color: rgb(var(--accent-secondary-rgb) / 0.42);
+  border-color: rgb(var(--accent-secondary-rgb) / 0.44);
 }
 
-[data-theme="cove"] .connect-hub {
-  background:
-    radial-gradient(circle at 78% 0%, rgb(var(--accent-primary-rgb) / 0.09), transparent 30%),
-    linear-gradient(180deg, rgb(var(--accent-dark-rgb) / 0.62), #050505 62%);
-}
-
-/* Music/category semantics remain fixed globally. Do not recolor them here. */
+/* Music/category semantics remain separate from theme decoration.
+   Gate 3A's permanent Music hex is still a separate decision. */
