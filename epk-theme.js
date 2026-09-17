@@ -1,10 +1,10 @@
 /* PorfolioID public-profile theme runtime.
    During token conversion this provides non-persistent visual test harnesses:
-   ?theme=wine and ?theme=cove switch the page without touching profile data.
+   ?theme=wine, ?theme=cove, and ?theme=sage switch the page without touching profile data.
    Normal URLs remain Gold until the approved profile theme field is wired later.
 */
 (function () {
-  const allowedPreviewThemes = new Set(['gold', 'wine', 'cove']);
+  const allowedPreviewThemes = new Set(['gold', 'wine', 'cove', 'sage']);
   const legacyGoldPattern = /(var\(--gold\)|#c9a84c|201\s*,\s*168\s*,\s*76)/i;
   const legacyProfessionalPattern = /(#8fb8d0|143\s*,\s*184\s*,\s*208|123\s*,\s*155\s*,\s*175)/i;
 
@@ -121,6 +121,7 @@
     loadOverrideStylesheet('/epk-theme-shell.css?v=20260917-1', 'porfolio-theme-shell');
     loadOverrideStylesheet('/epk-theme-wine-review.css?v=20260917-1', 'porfolio-theme-wine-review');
     loadOverrideStylesheet('/epk-theme-cove-review.css?v=20260917-1', 'porfolio-theme-cove-review');
+    loadOverrideStylesheet('/epk-theme-sage-review.css?v=20260917-1', 'porfolio-theme-sage-review');
 
     classifyGeneratedMarkup(document.body);
 
