@@ -180,7 +180,7 @@ function renderCh3Card(card) {
           <div class="ch3-card" data-ch3-tag="${card.tag}" onclick="filterCreditsByCategory('${card.tag}')" style="cursor:pointer">
             ${media}
             <div class="ch3-body">
-              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--gold);width:13px;height:13px"><path d="${iconPath}"/></svg></div>
+              <div class="ch3-icon"><svg viewBox="0 0 24 24" style="fill:var(--accent-icon);width:13px;height:13px"><path d="${iconPath}"/></svg></div>
               <h3 class="ch3-title">${card.title || ''}</h3>
               <p class="ch3-desc">${card.description || ''}</p>
             </div>
@@ -325,10 +325,10 @@ function buildEPK(epk) {
   const platformBg = {
     instagram:'rgba(225,48,108,0.15)', facebook:'rgba(24,119,242,0.15)',
     tiktok:'rgba(1,1,1,0.9)', linkedin:'rgba(10,102,194,0.15)',
-    website:'rgba(201,168,76,0.15)', spotify:'rgba(29,185,84,0.15)',
+    website:'rgb(var(--accent-primary-rgb) / 0.15)', spotify:'rgba(29,185,84,0.15)',
     appleMusic:'rgba(252,60,68,0.15)', youtube:'rgba(255,0,0,0.12)',
     soundcloud:'rgba(255,85,0,0.15)', tidal:'rgba(0,0,0,0.8)',
-    bandcamp:'rgba(29,160,195,0.15)', booking:'rgba(201,168,76,0.15)',
+    bandcamp:'rgba(29,160,195,0.15)', booking:'rgb(var(--accent-primary-rgb) / 0.15)',
     amazon:'#232F3E', threads:'rgba(0,0,0,0.85)', x:'rgba(0,0,0,0.85)',
     snapchat:'rgba(255,252,0,0.15)', pinterest:'rgba(230,0,35,0.15)',
     reddit:'rgba(255,69,0,0.15)', discord:'rgba(88,101,242,0.15)',
@@ -462,7 +462,7 @@ function buildEPK(epk) {
         <span class="ch-pcard-cta">View Portfolio →</span>
       </a>`
     : `<a class="ch-pcard ch-pcard--primary ch-pcard--empty" style="pointer-events:none">
-        <span class="ch-pcard-icon" style="background:rgba(201,168,76,0.2)">
+        <span class="ch-pcard-icon" style="background:rgb(var(--accent-primary-rgb) / 0.2)">
           <svg viewBox="0 0 24 24" style="fill:rgba(255,255,255,0.35);width:26px;height:26px">${getSvgPath('website')}</svg>
         </span>
         <span class="ch-pcard-body">
@@ -565,7 +565,7 @@ function buildEPK(epk) {
         ${followColHTML}
       </div>
       <p class="ch-footer-note">
-        <svg viewBox="0 0 24 24" style="fill:rgba(201,168,76,0.4);width:12px;height:12px;flex-shrink:0"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+        <svg viewBox="0 0 24 24" style="fill:rgb(var(--accent-icon-rgb) / 0.4);width:12px;height:12px;flex-shrink:0"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
         All platforms are official.
       </p>
     </div>
@@ -632,8 +632,8 @@ function buildEPK(epk) {
   // cards saved before this system (resumeUrl/url only) keep working unchanged.)
   const buildResumeCard = (r, idx) => {
     const isMusicResume = (r.label||'').includes('Marketing') || (r.title||'').includes('Marketing') || (r.label||'').includes('Artist');
-    const rc = isMusicResume ? 'var(--gold)' : '#8FB8D0';
-    const rbg = isMusicResume ? 'rgba(201,168,76,' : 'rgba(123,155,175,';
+    const rc = isMusicResume ? 'var(--category-music)' : 'var(--category-professional)';
+    const rbg = isMusicResume ? 'rgb(var(--category-music-rgb) / ' : 'rgb(var(--category-professional-rgb) / ';
     const cardTypeLabels = { executive_resume: 'Executive Resume', biography: 'Biography', other: 'Other' };
     const displayLabel = cardTypeLabels[r.cardType] || r.label || 'Resume';
     const pdfUrl = r.pdfUrl || r.resumeUrl || r.url || '';
@@ -656,7 +656,7 @@ function buildEPK(epk) {
       ${r.skills?.length ? `<div class="resume-card-skills">${r.skills.map(s => `<span class="resume-skill-tag" style="border-color:${rc}4D;background:${rc}0D">${s}</span>`).join('')}</div>` : ''}
       ${r.desc ? `<div class="resume-card-desc">${r.desc}</div>` : ''}
       ${buttonRowHTML ? `<div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:auto;padding-top:1.25rem">${buttonRowHTML}</div>` : ''}
-      ${r.footerText ? `<div style="margin-top:0.85rem;padding-top:0.75rem;border-top:1px solid rgba(201,168,76,0.15);font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.08em;line-height:1.5;opacity:0.7">${r.footerText}</div>` : ''}
+      ${r.footerText ? `<div style="margin-top:0.85rem;padding-top:0.75rem;border-top:1px solid rgb(var(--accent-primary-rgb) / 0.15);font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.08em;line-height:1.5;opacity:0.7">${r.footerText}</div>` : ''}
     </div>`;
   };
 
@@ -678,7 +678,7 @@ function buildEPK(epk) {
       <div id="bioShort" data-editable data-editable-key="shortBio" data-editable-type="body" style="outline:none">${shortBioHTML}</div>
       ${hasMoreBio ? `
       <div id="bioFull" style="display:none;margin-top:0.5em">${bioParagraphs}</div>
-      <button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1rem;transition:all 0.2s">Read Full Bio +</button>` : ''}
+      <button onclick="toggleBio()" id="bioToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent-text);background:none;border:1px solid rgb(var(--accent-primary-rgb) / 0.3);padding:0.4rem 0.9rem;cursor:pointer;margin-top:1rem;transition:all 0.2s">Read Full Bio +</button>` : ''}
     </div>`;
 
   const bioFullContent = '';
@@ -736,11 +736,11 @@ function buildEPK(epk) {
     const hasPhotos = c.photos && c.photos.length > 0;
     const hasDetail = c.fullDesc || hasPhotos || c.mediaLink || c.videoUrl;
     const isMusic = musicCreditNames.includes(c.company || c.artist);
-    const accentColor = isMusic ? 'var(--gold)' : '#8FB8D0';
+    const accentColor = isMusic ? 'var(--category-music)' : 'var(--category-professional)';
     const cardTypeLabel = isMusic ? 'MUSIC & ENTERTAINMENT' : 'PROFESSIONAL';
-    const categoryBadge = c.category ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.08);color:var(--gray);padding:0.15rem 0.5rem;margin-right:0.4rem">${c.category}</span>` : '';
-    const verifiedBadge = c.verified ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(100,200,100,0.1);color:#7ec97e;padding:0.15rem 0.5rem">✦ VERIFIED</span>` : '';
-    const pinnedBadge = c.pinned ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(201,168,76,0.12);color:var(--gold);padding:0.15rem 0.5rem">📌 FEATURED</span>` : '';
+    const categoryBadge = c.category ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgb(var(--accent-primary-rgb) / 0.08);color:var(--gray);padding:0.15rem 0.5rem;margin-right:0.4rem">${c.category}</span>` : '';
+    const verifiedBadge = c.verified ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgb(var(--status-verified-rgb) / 0.1);color:var(--status-verified);padding:0.15rem 0.5rem">✦ VERIFIED</span>` : '';
+    const pinnedBadge = c.pinned ? `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;background:rgb(var(--status-featured-rgb) / 0.12);color:var(--status-featured);padding:0.15rem 0.5rem">📌 FEATURED</span>` : '';
     const badgesRow = (categoryBadge || verifiedBadge || pinnedBadge) ? `<div style="margin-bottom:0.5rem;display:flex;gap:0.3rem;flex-wrap:wrap">${pinnedBadge}${verifiedBadge}${categoryBadge}</div>` : '';
     const collaboratorsRow = c.collaborators?.length ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);margin-top:0.3rem;letter-spacing:0.08em">w/ ${c.collaborators.join(', ')}</div>` : '';
     const ownerArrows = `<div class="owner-overlay" style="flex-direction:column;gap:0.2rem"><button class="owner-action-btn owner-up" onclick="event.stopPropagation();moveCreditCard(${i},-1)">&#9650;</button><button class="owner-action-btn owner-down" onclick="event.stopPropagation();moveCreditCard(${i},1)">&#9660;</button></div>`;
@@ -766,8 +766,8 @@ function buildEPK(epk) {
   const tracksHTML = visibleTracks.map((t, i) => {
     const isMP3 = t.link && (t.link.includes('.mp3') || t.link.includes('cloudinary') || t.link.includes('.wav') || t.link.includes('.ogg'));
     const linkHTML = t.link ? (isMP3
-      ? `<audio controls style="width:100%;height:32px;margin-top:0.5rem;opacity:0.8;accent-color:var(--gold)" src="${t.link}"></audio>`
-      : `<a href="${t.link}" target="_blank" style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold);letter-spacing:0.1em">Listen →</a>`)
+      ? `<audio controls style="width:100%;height:32px;margin-top:0.5rem;opacity:0.8;accent-color:var(--category-music)" src="${t.link}"></audio>`
+      : `<a href="${t.link}" target="_blank" style="font-family:var(--font-mono);font-size:0.6rem;color:var(--category-music);letter-spacing:0.1em">Listen →</a>`)
       : '';
     return `
     <div class="track-item">
@@ -983,12 +983,12 @@ function buildEPK(epk) {
   // Category pill colors
   function getCatColor(cat) {
     const c = (cat || '').toLowerCase();
-    if (c.includes('professional') || c.includes('resume')) return {bg:'rgba(201,168,76,0.15)',color:'#C9A84C',border:'rgba(201,168,76,0.4)'};
-    if (c.includes('education') || c.includes('diploma')) return {bg:'rgba(139,92,246,0.15)',color:'#a78bfa',border:'rgba(139,92,246,0.4)'};
-    if (c.includes('certif')) return {bg:'rgba(20,184,166,0.15)',color:'#2dd4bf',border:'rgba(20,184,166,0.4)'};
-    if (c.includes('award') || c.includes('honor')) return {bg:'rgba(251,191,36,0.15)',color:'#fbbf24',border:'rgba(251,191,36,0.4)'};
-    if (c.includes('press')) return {bg:'rgba(59,130,246,0.15)',color:'#60a5fa',border:'rgba(59,130,246,0.4)'};
-    if (c.includes('contract')) return {bg:'rgba(239,68,68,0.15)',color:'#f87171',border:'rgba(239,68,68,0.4)'};
+    if (c.includes('professional') || c.includes('resume')) return {bg:'rgb(var(--category-professional-rgb) / 0.15)',color:'var(--category-professional)',border:'rgb(var(--category-professional-rgb) / 0.4)'};
+    if (c.includes('education') || c.includes('diploma')) return {bg:'rgb(var(--category-education-rgb) / 0.15)',color:'var(--category-education)',border:'rgb(var(--category-education-rgb) / 0.4)'};
+    if (c.includes('certif')) return {bg:'rgb(var(--category-certification-rgb) / 0.15)',color:'var(--category-certification)',border:'rgb(var(--category-certification-rgb) / 0.4)'};
+    if (c.includes('award') || c.includes('honor')) return {bg:'rgb(var(--category-award-rgb) / 0.15)',color:'var(--category-award)',border:'rgb(var(--category-award-rgb) / 0.4)'};
+    if (c.includes('press')) return {bg:'rgb(var(--category-press-rgb) / 0.15)',color:'var(--category-press)',border:'rgb(var(--category-press-rgb) / 0.4)'};
+    if (c.includes('contract')) return {bg:'rgb(var(--category-contract-rgb) / 0.15)',color:'var(--category-contract)',border:'rgb(var(--category-contract-rgb) / 0.4)'};
     return {bg:'rgba(255,255,255,0.06)',color:'#888',border:'rgba(255,255,255,0.15)'};
   }
 
@@ -996,7 +996,7 @@ function buildEPK(epk) {
   function getAssetSVG(a) {
     const t = (a.title||'').toLowerCase();
     const c = (a.category||'').toLowerCase();
-    const gold = 'rgba(201,168,76,0.9)';
+    const gold = 'var(--accent-icon)';
     if (t.includes('resume') || c.includes('professional')) return '<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="6" y="3" width="20" height="26" rx="2" stroke="'+gold+'" stroke-width="1.5"/><line x1="10" y1="9" x2="22" y2="9" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="13" x2="22" y2="13" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="17" x2="18" y2="17" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="23" r="2" stroke="'+gold+'" stroke-width="1.5"/><line x1="16" y1="22" x2="22" y2="22" stroke="'+gold+'" stroke-width="1" stroke-linecap="round"/><line x1="16" y1="24" x2="20" y2="24" stroke="'+gold+'" stroke-width="1" stroke-linecap="round"/></svg>';
     if (t.includes('diploma') || t.includes('degree') || c.includes('education')) return '<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 6L2 13l14 7 14-7-14-7z" stroke="'+gold+'" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 15.5V22c0 2.5 4.5 5 10 5s10-2.5 10-5v-6.5" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/><line x1="28" y1="13" x2="28" y2="21" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/><circle cx="28" cy="22.5" r="1.5" fill="'+gold+'"/></svg>';
     if (t.includes('president') || t.includes('list') || (t.includes('certif') && c.includes('education'))) return '<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="5" y="4" width="22" height="18" rx="2" stroke="'+gold+'" stroke-width="1.5"/><path d="M10 28l6-5 6 5" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="13" r="4" stroke="'+gold+'" stroke-width="1.5"/><line x1="11" y1="9" x2="11" y2="9" stroke="'+gold+'" stroke-width="1.5" stroke-linecap="round"/></svg>';
@@ -1045,21 +1045,21 @@ function buildEPK(epk) {
   // Unlocked with a real file: opens the actual asset directly.
   // Unlocked with no file: nothing to preview, so nothing renders.
   function makePreviewBtn(a, i) {
-    if (assetsLocked) return '<button onclick="requestAssetViaConnect()" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.5);background:rgba(201,168,76,0.08);color:var(--gold);padding:0.45rem 0.9rem;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.background=\'rgba(201,168,76,0.18)\'" onmouseout="this.style.background=\'rgba(201,168,76,0.08)\'">👁 Preview</button>';
-    if (a.url) return '<a href="'+a.url+'" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.5);background:rgba(201,168,76,0.08);color:var(--gold);padding:0.45rem 0.9rem;transition:all 0.2s;text-decoration:none;white-space:nowrap" onmouseover="this.style.background=\'rgba(201,168,76,0.18)\'" onmouseout="this.style.background=\'rgba(201,168,76,0.08)\'">👁 Preview</a>';
+    if (assetsLocked) return '<button onclick="requestAssetViaConnect()" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgb(var(--accent-primary-rgb) / 0.5);background:rgb(var(--accent-primary-rgb) / 0.08);color:var(--accent-text);padding:0.45rem 0.9rem;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.background=\'rgb(var(--accent-primary-rgb) / 0.18)\'" onmouseout="this.style.background=\'rgb(var(--accent-primary-rgb) / 0.08)\'">👁 Preview</button>';
+    if (a.url) return '<a href="'+a.url+'" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgb(var(--accent-primary-rgb) / 0.5);background:rgb(var(--accent-primary-rgb) / 0.08);color:var(--accent-text);padding:0.45rem 0.9rem;transition:all 0.2s;text-decoration:none;white-space:nowrap" onmouseover="this.style.background=\'rgb(var(--accent-primary-rgb) / 0.18)\'" onmouseout="this.style.background=\'rgb(var(--accent-primary-rgb) / 0.08)\'">👁 Preview</a>';
     return '';
   }
 
   function makeAccessBtn(a, i) {
-    if (assetsLocked) return '<button onclick="requestAssetViaConnect()" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.35);background:none;color:var(--white);padding:0.45rem 0.9rem;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.borderColor=\'rgba(201,168,76,0.8)\'" onmouseout="this.style.borderColor=\'rgba(201,168,76,0.35)\'">🔒 Request Access</button>';
-    if (a.url) return '<a href="'+a.url+'" target="_blank" onclick="trackAssetDownload('+i+')" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,168,76,0.5);background:var(--gold);color:var(--black);padding:0.45rem 0.9rem;transition:all 0.2s;text-decoration:none;white-space:nowrap">↓ Download</a>';
+    if (assetsLocked) return '<button onclick="requestAssetViaConnect()" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgb(var(--accent-primary-rgb) / 0.35);background:none;color:var(--white);padding:0.45rem 0.9rem;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.borderColor=\'rgb(var(--accent-primary-rgb) / 0.8)\'" onmouseout="this.style.borderColor=\'rgb(var(--accent-primary-rgb) / 0.35)\'">🔒 Request Access</button>';
+    if (a.url) return '<a href="'+a.url+'" target="_blank" onclick="trackAssetDownload('+i+')" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgb(var(--accent-primary-rgb) / 0.5);background:var(--accent-solid);color:var(--black);padding:0.45rem 0.9rem;transition:all 0.2s;text-decoration:none;white-space:nowrap">↓ Download</a>';
     return '';
   }
 
   // ── CARDS layout ────────────────────────────────────────────────────────────
   let assetsHTML = '';
   if (assetsLayout === 'cards') {
-    assetsHTML = '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(201,168,76,0.1)">';
+    assetsHTML = '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgb(var(--accent-primary-rgb) / 0.1)">';
     visibleAssets.forEach(function(a, i) {
       const svg = getAssetSVG(a);
       const cat = getCatColor(a.category);
@@ -1068,8 +1068,8 @@ function buildEPK(epk) {
       const isFeat = a.featured || i === 0;
       assetsHTML += '<div style="background:#0E0E0E;padding:1.75rem 1.5rem;display:flex;flex-direction:column;gap:0;position:relative;transition:background 0.2s;min-height:280px" onmouseover="this.style.background=\'#141414\'" onmouseout="this.style.background=\'#0E0E0E\'">'
         + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.25rem">'
-        + (isFeat ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.15rem 0.5rem">⭐ FEATURED</span>' : '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;background:rgba(255,255,255,0.04);color:var(--gray);border:1px solid rgba(255,255,255,0.08);padding:0.15rem 0.5rem">🔒 PRIVATE</span>')
-        + (a.verified ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgba(126,201,126,0.1);color:#7ec97e;border:1px solid rgba(126,201,126,0.25);padding:0.15rem 0.5rem">✓ VERIFIED</span>' : '')
+        + (isFeat ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;background:rgb(var(--status-featured-rgb) / 0.15);color:var(--status-featured);border:1px solid rgb(var(--status-featured-rgb) / 0.3);padding:0.15rem 0.5rem">⭐ FEATURED</span>' : '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;background:rgba(255,255,255,0.04);color:var(--gray);border:1px solid rgba(255,255,255,0.08);padding:0.15rem 0.5rem">🔒 PRIVATE</span>')
+        + (a.verified ? '<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.08em;background:rgb(var(--status-verified-rgb) / 0.1);color:var(--status-verified);border:1px solid rgb(var(--status-verified-rgb) / 0.25);padding:0.15rem 0.5rem">✓ VERIFIED</span>' : '')
         + '</div>'
         + '<div style="margin-bottom:1rem">' + svg + '</div>'
         + '<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.75rem;display:inline-block;margin-bottom:0.75rem;background:'+cat.bg+';color:'+cat.color+';border:1px solid '+cat.border+'">' + (a.category||'') + '</div>'
@@ -1077,7 +1077,7 @@ function buildEPK(epk) {
         + (sub ? '<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);line-height:1.5;margin-bottom:1rem">' + sub + (year ? ' • ' + year : '') + '</div>' : '<div style="margin-bottom:1rem"></div>')
         + '<div style="display:flex;gap:0.5rem;margin-top:auto;padding-top:1rem">' + makePreviewBtn(a,i) + makeAccessBtn(a,i) + '</div>'
         + (year ? '<div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--gray);opacity:0.6">📅 Issued: ' + year + '</div>' : '')
-        + (isFeat ? '<div style="position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold)"></div>' : '')
+        + (isFeat ? '<div style="position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--accent-solid)"></div>' : '')
         + '</div>';
     });
     assetsHTML += '</div>';
@@ -1085,7 +1085,7 @@ function buildEPK(epk) {
   // ── LIST layout ──────────────────────────────────────────────────────────────
   } else if (assetsLayout === 'list') {
     assetsHTML = '<table style="width:100%;border-collapse:collapse">'
-      + '<thead><tr style="border-bottom:1px solid rgba(201,168,76,0.2)">'
+      + '<thead><tr style="border-bottom:1px solid rgb(var(--accent-primary-rgb) / 0.2)">'
       + '<th style="text-align:left;padding:0.75rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gray);font-weight:400">DOCUMENT</th>'
       + '<th style="text-align:left;padding:0.75rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gray);font-weight:400">CATEGORY</th>'
       + '<th style="text-align:left;padding:0.75rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gray);font-weight:400">DETAILS</th>'
@@ -1099,14 +1099,14 @@ function buildEPK(epk) {
       const year = getAssetYear(a);
       const details = getAssetDetails(a);
       const isFeat = a.featured || i === 0;
-      assetsHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.2s;position:relative" onmouseover="this.style.background=\'rgba(201,168,76,0.03)\'" onmouseout="this.style.background=\'\'\'">'
+      assetsHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.2s;position:relative" onmouseover="this.style.background=\'rgb(var(--accent-primary-rgb) / 0.03)\'" onmouseout="this.style.background=\'\'\'">'
         + '<td style="padding:1rem 1rem">'
         + '<div style="display:flex;align-items:center;gap:0.85rem">'
-        + '<div style="flex-shrink:0;width:44px;height:44px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);display:flex;align-items:center;justify-content:center">' + svg.replace('width="32" height="32"','width="22" height="22"') + '</div>'
+        + '<div style="flex-shrink:0;width:44px;height:44px;background:rgb(var(--accent-primary-rgb) / 0.06);border:1px solid rgb(var(--accent-primary-rgb) / 0.15);display:flex;align-items:center;justify-content:center">' + svg.replace('width="32" height="32"','width="22" height="22"') + '</div>'
         + '<div>'
         + '<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.2rem">'
         + '<span style="font-family:var(--font-display);font-size:0.95rem;color:var(--white)">' + a.title + '</span>'
-        + (isFeat ? '<span style="font-family:var(--font-mono);font-size:0.45rem;background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.1rem 0.4rem">⭐ FEATURED</span>' : '')
+        + (isFeat ? '<span style="font-family:var(--font-mono);font-size:0.45rem;background:rgb(var(--status-featured-rgb) / 0.12);color:var(--status-featured);border:1px solid rgb(var(--accent-primary-rgb) / 0.3);padding:0.1rem 0.4rem">⭐ FEATURED</span>' : '')
         + '</div>'
         + (sub ? '<div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray)">' + sub + '</div>' : '')
         + '</div></div></td>'
@@ -1134,7 +1134,7 @@ function buildEPK(epk) {
       const cat = getCatColor(a.category);
       const sub = getAssetSubtitle(a);
       const year = getAssetYear(a);
-      assetsHTML += '<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);padding:1.4rem 1.1rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.4rem;transition:border-color 0.2s,background 0.2s" onmouseover="this.style.borderColor=\'rgba(201,168,76,0.4)\';this.style.background=\'rgba(201,168,76,0.03)\'" onmouseout="this.style.borderColor=\'rgba(201,168,76,0.1)\';this.style.background=\'rgba(255,255,255,0.02)\'">'
+      assetsHTML += '<div style="background:rgba(255,255,255,0.02);border:1px solid rgb(var(--accent-primary-rgb) / 0.1);padding:1.4rem 1.1rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.4rem;transition:border-color 0.2s,background 0.2s" onmouseover="this.style.borderColor=\'rgb(var(--accent-primary-rgb) / 0.4)\';this.style.background=\'rgb(var(--accent-primary-rgb) / 0.03)\'" onmouseout="this.style.borderColor=\'rgb(var(--accent-primary-rgb) / 0.1)\';this.style.background=\'rgba(255,255,255,0.02)\'">'
         + '<div style="margin-bottom:0.5rem">' + svg.replace('width="32" height="32"','width="28" height="28"') + '</div>'
         + '<span style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.12em;padding:0.15rem 0.45rem;background:'+cat.bg+';color:'+cat.color+';border:1px solid '+cat.border+'">' + (a.category||'') + '</span>'
         + '<div style="font-family:var(--font-display);font-size:0.9rem;color:var(--white);line-height:1.3">' + a.title + '</div>'
@@ -1147,12 +1147,12 @@ function buildEPK(epk) {
   // ── TABLE layout ─────────────────────────────────────────────────────────────
   } else {
     assetsHTML = '<table style="width:100%;border-collapse:collapse">'
-      + '<thead><tr style="border-bottom:2px solid rgba(201,168,76,0.25)">'
-      + '<th style="text-align:left;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);font-weight:400;width:35%">DOCUMENT ↕</th>'
-      + '<th style="text-align:left;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);font-weight:400;width:16%">CATEGORY ↕</th>'
-      + '<th style="text-align:left;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);font-weight:400">DESCRIPTION</th>'
-      + '<th style="text-align:left;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);font-weight:400;width:120px">LAST UPDATED ↕</th>'
-      + '<th style="text-align:right;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--gold);font-weight:400;width:220px">ACCESS</th>'
+      + '<thead><tr style="border-bottom:2px solid rgb(var(--accent-primary-rgb) / 0.25)">'
+      + '<th style="text-align:left;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--accent-text);font-weight:400;width:35%">DOCUMENT ↕</th>'
+      + '<th style="text-align:left;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--accent-text);font-weight:400;width:16%">CATEGORY ↕</th>'
+      + '<th style="text-align:left;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--accent-text);font-weight:400">DESCRIPTION</th>'
+      + '<th style="text-align:left;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--accent-text);font-weight:400;width:120px">LAST UPDATED ↕</th>'
+      + '<th style="text-align:right;padding:0.85rem 1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.15em;color:var(--accent-text);font-weight:400;width:220px">ACCESS</th>'
       + '</tr></thead><tbody>';
     visibleAssets.forEach(function(a, i) {
       const svg = getAssetSVG(a);
@@ -1161,12 +1161,12 @@ function buildEPK(epk) {
       const year = getAssetYear(a);
       const details = getAssetDetails(a);
       const isFeat = a.featured || i === 0;
-      assetsHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.2s" onmouseover="this.style.background=\'rgba(201,168,76,0.04)\'" onmouseout="this.style.background=\'\'\'">'
+      assetsHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.2s" onmouseover="this.style.background=\'rgb(var(--accent-primary-rgb) / 0.04)\'" onmouseout="this.style.background=\'\'\'">'
         + '<td style="padding:0.9rem 1rem;' + (isFeat?'border-left:2px solid var(--gold);':'' ) + '">'
         + '<div style="display:flex;align-items:center;gap:0.75rem">'
-        + '<div style="flex-shrink:0;width:40px;height:40px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);display:flex;align-items:center;justify-content:center">' + svg.replace('width="32" height="32"','width="20" height="20"') + '</div>'
+        + '<div style="flex-shrink:0;width:40px;height:40px;background:rgb(var(--accent-primary-rgb) / 0.06);border:1px solid rgb(var(--accent-primary-rgb) / 0.15);display:flex;align-items:center;justify-content:center">' + svg.replace('width="32" height="32"','width="20" height="20"') + '</div>'
         + '<div><div style="font-family:var(--font-display);font-size:1rem;color:var(--white);display:flex;align-items:center;gap:0.4rem">' + a.title
-        + (isFeat ? ' <span style="font-family:var(--font-mono);font-size:0.45rem;background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.1rem 0.35rem">⭐ Featured</span>' : '')
+        + (isFeat ? ' <span style="font-family:var(--font-mono);font-size:0.45rem;background:rgb(var(--status-featured-rgb) / 0.12);color:var(--status-featured);border:1px solid rgb(var(--accent-primary-rgb) / 0.3);padding:0.1rem 0.35rem">⭐ Featured</span>' : '')
         + '</div>'
         + (sub ? '<div style="font-family:var(--font-mono);font-size:0.52rem;color:var(--gray);margin-top:0.2rem">' + sub + '</div>' : '')
         + '</div></div></td>'
@@ -1194,9 +1194,9 @@ function buildEPK(epk) {
   const bookingCategories = epk.bookingCategories || [];
   const availabilityLabels = { available:'✅ Available for Bookings', limited:'⚡ Limited Availability', touring:'🎤 Currently on Tour', selective:'🎯 Selective Projects Only', unavailable:'❌ Not Currently Available' };
   const categoryLabels = { live:'Live Performances', studio:'Studio Sessions', features:'Features / Collabs', touring:'Touring', hosting:'Hosting / MC', ar:'A&R Consulting', creative:'Creative Direction', media:'Media / Press', marketing:'Marketing / PR', professional:'Professional', government:'Government', entrepreneur:'Entrepreneur', technical:'Technical', administration:'Administration', crm:'CRM', sales:'Sales', personalassistant:'Personal Assistant', executiveassistant:'Executive Assistant', virtualassistant:'Virtual Assistant', arcoordinator:'A&R Coordinator', artistmanager:'Artist Manager', tourcoordinator:'Tour Coordinator', productioncoordinator:'Production Coordinator', marketingcoordinator:'Marketing Coordinator', socialmediamanager:'Social Media Manager', brandpartnerships:'Brand Partnerships', compliancespecialist:'Compliance Specialist', governmentliaison:'Government Liaison', adminsupport:'Administrative Support', projectcoordinator:'Project Coordinator', translator:'Bilingual Translator / Interpreter', customersuccess:'Customer Success Rep', talentscout:'Talent Scout', consultant:'Consultant', jobhunter:'Job Hunter / Open to Work', armedforces:'Armed Forces', other:'Other' };
-  const availBadge = bookingAvailability ? `<div style="display:inline-block;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);color:var(--gold);padding:0.4rem 1rem;margin-bottom:1.5rem">${availabilityLabels[bookingAvailability]||''}</div>` : '';
+  const availBadge = bookingAvailability ? `<div style="display:inline-block;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;background:rgb(var(--accent-primary-rgb) / 0.08);border:1px solid rgb(var(--accent-primary-rgb) / 0.2);color:var(--accent-text);padding:0.4rem 1rem;margin-bottom:1.5rem">${availabilityLabels[bookingAvailability]||''}</div>` : '';
   const regionBadge = bookingRegion ? `<div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray);letter-spacing:0.1em;margin-bottom:1rem">📍 ${bookingRegion}</div>` : '';
-  const catBadges = bookingCategories.length ? `<div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:2rem">${bookingCategories.map(c => `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(201,168,76,0.2);color:var(--gray);padding:0.25rem 0.6rem">${categoryLabels[c]||c}</span>`).join('')}</div>` : '';
+  const catBadges = bookingCategories.length ? `<div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:2rem">${bookingCategories.map(c => `<span style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgb(var(--accent-primary-rgb) / 0.2);color:var(--gray);padding:0.25rem 0.6rem">${categoryLabels[c]||c}</span>`).join('')}</div>` : '';
   // Inquiry type dropdown options — built from the categories the client actually selected.
   // Falls back to a generic list only if they haven't picked any (so the form never ships empty).
   // "Other" is always appended (unless already present) so visitors can specify a role that isn't listed.
@@ -1249,7 +1249,7 @@ function buildEPK(epk) {
 
         <div class="hero-presence-bar" onclick="const c=document.getElementById('connect');if(!c)return;const open=c.style.display==='block';c.style.display=open?'none':'block';this.querySelector('.hero-presence-explore').textContent=open?'Explore →':'Close ←';if(!open){setTimeout(()=>{const top=c.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top,behavior:'smooth'});},50);}" style="cursor:pointer">
           <p class="hero-presence-eyebrow">
-              <svg viewBox="0 0 24 24" style="fill:var(--gold);width:12px;height:12px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+              <svg viewBox="0 0 24 24" style="fill:var(--accent-icon);width:12px;height:12px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
               Connect
             </p>
           <h3 class="hero-presence-title">My Digital Presence &nbsp;<span class="hero-presence-explore">Explore →</span></h3>
@@ -1324,7 +1324,7 @@ function buildEPK(epk) {
 
         <!-- THE RECORD — hidden by default, revealed on demand -->
         ${epk.credits?.length ? `
-        <div id="credits" style="display:none;margin-top:3rem;padding-top:2.5rem;border-top:1px solid rgba(201,168,76,0.15)">
+        <div id="credits" style="display:none;margin-top:3rem;padding-top:2.5rem;border-top:1px solid rgb(var(--accent-primary-rgb) / 0.15)">
           <!-- PROFESSIONAL RESUME — first item revealed inside the expandable Credits
                container. buildResumeCard() markup, styling, and the resumeEnabled
                gating are unchanged from before - only the insertion point moved,
@@ -1332,7 +1332,7 @@ function buildEPK(epk) {
                so it now inherits the same hidden-until-expanded show/hide behavior
                as the Credits cards (toggled by filterCreditsByCategory). -->
           ${(epk.resumeEnabled !== false && resumeCards.length) ? `
-          <div class="ch3-header" style="margin-top:5rem;padding-top:2.5rem;border-top:1px solid rgba(201,168,76,0.1)">
+          <div class="ch3-header" style="margin-top:5rem;padding-top:2.5rem;border-top:1px solid rgb(var(--accent-primary-rgb) / 0.1)">
             <span class="ch3-label">Professional Profile</span>
             <div class="ch3-title-row">
               <h2 class="section-title" style="margin:0">Professional Documents</h2>
@@ -1345,7 +1345,7 @@ function buildEPK(epk) {
           <div class="credits-grid" id="creditsGrid">${creditsHTML}</div>
           ${visibleCredits.length > 4 ? `
           <div style="text-align:center;margin-top:1rem">
-            <button onclick="toggleAllCredits()" id="creditsToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.6rem 1.5rem;cursor:pointer;transition:all 0.2s">View All ${visibleCredits.length} Credits +</button>
+            <button onclick="toggleAllCredits()" id="creditsToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent-text);background:none;border:1px solid rgb(var(--accent-primary-rgb) / 0.3);padding:0.6rem 1.5rem;cursor:pointer;transition:all 0.2s">View All ${visibleCredits.length} Credits +</button>
           </div>` : ''}
         </div>` : ''}
       </div>
@@ -1414,7 +1414,7 @@ function buildEPK(epk) {
                Owner Preview tool. Do not remove this block. Re-enable by changing display:none to display:flex. -->
           <div style="display:none;gap:0.75rem;align-items:center;flex-shrink:0">
             <div style="position:relative">
-              <select id="galleryLayoutSelect" onchange="setGalleryLayout(this.value)" style="appearance:none;-webkit-appearance:none;background:var(--dark-3);border:1px solid rgba(201,168,76,0.3);color:var(--text);font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 2rem 0.5rem 0.85rem;cursor:pointer;outline:none">
+              <select id="galleryLayoutSelect" onchange="setGalleryLayout(this.value)" style="appearance:none;-webkit-appearance:none;background:var(--dark-3);border:1px solid rgb(var(--accent-primary-rgb) / 0.3);color:var(--text);font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 2rem 0.5rem 0.85rem;cursor:pointer;outline:none">
                 <option value="marquee">▶ Auto Scroll</option>
                 <option value="scroll">⟷ Manual Scroll</option>
                 <option value="wall">▦ Wall</option>
@@ -1424,7 +1424,7 @@ function buildEPK(epk) {
                 <option value="timeline">⏱ Timeline</option>
                 <option value="table">☰ Table</option>
               </select>
-              <span style="position:absolute;right:0.6rem;top:50%;transform:translateY(-50%);color:var(--gold);pointer-events:none;font-size:0.6rem">▾</span>
+              <span style="position:absolute;right:0.6rem;top:50%;transform:translateY(-50%);color:var(--accent-text);pointer-events:none;font-size:0.6rem">▾</span>
             </div>
           </div>
         </div>
@@ -1477,14 +1477,14 @@ function buildEPK(epk) {
     <div class="collapsible-section" id="awards">
       <div class="collapsible-header" onclick="toggleSection('awardsBody', this)">
         <div class="collapsible-header-left">
-          <div class="collapsible-icon" style="border-color:rgba(123,155,175,0.35);color:#8FB8D0;background:rgba(123,155,175,0.06)">✦</div>
+          <div class="collapsible-icon" style="border-color:rgb(var(--category-professional-rgb) / 0.35);color:var(--category-professional);background:rgb(var(--category-professional-rgb) / 0.06)">✦</div>
           <div>
-            <div class="collapsible-header-label" style="color:#8FB8D0">Recognition</div>
+            <div class="collapsible-header-label" style="color:var(--category-professional)">Recognition</div>
             <div class="collapsible-header-title">Awards, Degrees & Credentials</div>
             <div class="collapsible-header-meta">${(epk.awards||[]).length} entr${(epk.awards||[]).length !== 1 ? 'ies' : 'y'} · ${(epk.awards||[]).filter(a=>a.verified).length} verified</div>
           </div>
         </div>
-        <div class="collapsible-toggle" style="color:#8FB8D0"><span class="toggle-label">Expand</span> ＋</div>
+        <div class="collapsible-toggle" style="color:var(--category-professional)"><span class="toggle-label">Expand</span> ＋</div>
       </div>
       <div class="collapsible-body" id="awardsBody">
         <div class="collapsible-body-inner awards-inner">
@@ -1496,12 +1496,12 @@ function buildEPK(epk) {
               const typeLabel = typeLabels[a.type] || 'Award';
               const hasDetails = a.desc || a.proofLink || a.certUrl || (a.photos||[]).length;
               const isMusicAward = ['award','nomination'].includes(a.type);
-              const awColor = isMusicAward ? 'var(--gold)' : '#8FB8D0';
+              const awColor = isMusicAward ? 'var(--category-music)' : 'var(--category-professional)';
               return `<div class="award-card ${hasDetails ? 'award-card-clickable' : ''}" ${hasDetails ? `onclick="openAwardModal(${idx})"` : ''} style="border-top:2px solid ${awColor}">
                 <span class="award-card-icon">${icon}</span>
                 <div class="award-card-type" style="color:${awColor}">${typeLabel} ${a.year ? '· ' + a.year : ''}</div>
                 <div class="award-card-badges">
-                  ${a.verified ? `<span class="award-badge award-badge-verified" style="background:${awColor}1A;color:${awColor};border-color:${awColor}33">✓ Verified</span>` : ''}
+                  ${a.verified ? `<span class="award-badge award-badge-verified" style="background:rgb(var(--status-verified-rgb) / 0.10);color:var(--status-verified);border-color:rgb(var(--status-verified-rgb) / 0.20)">✓ Verified</span>` : ''}
                   ${a.category ? `<span class="award-badge award-badge-category">${a.category}</span>` : ''}
                 </div>
                 <div class="award-card-title">${a.title}</div>
@@ -1559,21 +1559,21 @@ function buildEPK(epk) {
         <div>
           <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Your Name</label>
           <input type="text" name="name" required placeholder="Full Name"
-            style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box"
-            onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'">
+            style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgb(var(--accent-primary-rgb) / 0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box"
+            onfocus="this.style.borderColor='rgb(var(--accent-primary-rgb) / 0.5)'" onblur="this.style.borderColor='rgb(var(--accent-primary-rgb) / 0.2)'">
         </div>
         <div>
           <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Your Email</label>
           <input type="email" name="email" required placeholder="email@example.com"
-            style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box"
-            onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'">
+            style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgb(var(--accent-primary-rgb) / 0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box"
+            onfocus="this.style.borderColor='rgb(var(--accent-primary-rgb) / 0.5)'" onblur="this.style.borderColor='rgb(var(--accent-primary-rgb) / 0.2)'">
         </div>
       </div>
       <div style="margin-bottom:1rem">
         <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Inquiry Type</label>
         <select name="booking-type" id="inquiryTypeSelect"
           onchange="document.getElementById('inquiryTypeOtherWrap').style.display = this.value === 'Other' ? 'block' : 'none'; document.getElementById('inquiryTypeOther').required = this.value === 'Other';"
-          style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;appearance:none">
+          style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgb(var(--accent-primary-rgb) / 0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;appearance:none">
           <option value="">— Select Type —</option>
           ${inquiryTypeOptionsHTML}
         </select>
@@ -1581,23 +1581,24 @@ function buildEPK(epk) {
       <div id="inquiryTypeOtherWrap" style="display:none;margin-bottom:1rem">
         <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Please Specify</label>
         <input type="text" name="booking-type-other" id="inquiryTypeOther" placeholder="e.g. Personal Assistant, Coordinator, Website Administrator"
-          style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box"
-          onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'">
+          style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgb(var(--accent-primary-rgb) / 0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;box-sizing:border-box"
+          onfocus="this.style.borderColor='rgb(var(--accent-primary-rgb) / 0.5)'" onblur="this.style.borderColor='rgb(var(--accent-primary-rgb) / 0.2)'">
       </div>
       <div style="margin-bottom:1.5rem">
         <label style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:0.4rem">Message</label>
         <textarea name="message" required rows="4" placeholder="Tell me about your project, event date, and any other details..."
-          style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;resize:vertical;box-sizing:border-box"
-          onfocus="this.style.borderColor='rgba(201,168,76,0.5)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'"></textarea>
+          style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgb(var(--accent-primary-rgb) / 0.2);color:var(--white);padding:0.75rem;font-family:var(--font-body);font-size:0.9rem;outline:none;resize:vertical;box-sizing:border-box"
+          onfocus="this.style.borderColor='rgb(var(--accent-primary-rgb) / 0.5)'" onblur="this.style.borderColor='rgb(var(--accent-primary-rgb) / 0.2)'"></textarea>
       </div>
+      <!-- GATE 5 — #d7b84f remains literal pending Gold/Wine visual review. -->
       <button type="submit"
         style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;background:#d7b84f;color:#050505;border:none;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;cursor:pointer;transition:opacity 0.18s"
         onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">✉ Send Inquiry</button>
-      <div id="bookingSuccess" style="display:none;margin-top:1rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--gold);text-align:center;padding:1rem;border:1px solid rgba(201,168,76,0.2)">
+      <div id="bookingSuccess" style="display:none;margin-top:1rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--status-success);text-align:center;padding:1rem;border:1px solid rgb(var(--status-success-rgb) / 0.2)">
         ✓ Your inquiry has been sent. We'll be in touch soon.
       </div>
     </form>
-    ${bookingPhone ? `<p style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);margin-top:1.5rem">Prefer to call? <a href="tel:${bookingPhone}" style="color:var(--gold)">${bookingPhone}</a></p>` : ''}
+    ${bookingPhone ? `<p style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gray);margin-top:1.5rem">Prefer to call? <a href="tel:${bookingPhone}" style="color:var(--accent-text)">${bookingPhone}</a></p>` : ''}
   ` : '';
 
   // Apply section order and visibility from epk data
@@ -3044,14 +3045,14 @@ if (slug) {
       try {
         buildEPK(data.epk);
       } catch(err) {
-        document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray);font-size:0.8rem">Error: ' + err.message + '<br><br><a href="/" style="color:var(--gold)">Return home →</a></div>';
+        document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray);font-size:0.8rem">Error: ' + err.message + '<br><br><a href="/" style="color:var(--accent-text)">Return home →</a></div>';
       }
     } else {
       const epk = getEPKData(slug);
       if (epk) {
         buildEPK(epk);
       } else {
-        document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">Portfolio not found. <a href="/" style="color:var(--gold)">Return home →</a></div>';
+        document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">Portfolio not found. <a href="/" style="color:var(--accent-text)">Return home →</a></div>';
       }
     }
   })
@@ -3060,7 +3061,7 @@ if (slug) {
     if (epk) {
       buildEPK(epk);
     } else {
-      document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">Fetch error: ' + err.message + '<br><a href="/" style="color:var(--gold)">Return home →</a></div>';
+      document.getElementById('epkContent').innerHTML = '<div style="padding:8rem 3rem;text-align:center;font-family:var(--font-mono);color:var(--gray)">Fetch error: ' + err.message + '<br><a href="/" style="color:var(--accent-text)">Return home →</a></div>';
     }
   });
 } else {
@@ -3381,7 +3382,7 @@ function filterCreditsByCategory(tag) {
       const showingText = _currentLang === 'es' ? 'Mostrando:' : 'Showing:';
       const viewAllText = _currentLang === 'es' ? 'Ver Récord Completo →' : 'View Complete Record →';
       const closeText = _currentLang === 'es' ? 'Cerrar –' : 'Close –';
-      banner.innerHTML = `${showingText} <strong style="color:var(--gold)">${labels[canonicalTag] || canonicalTag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">${viewAllText}</a> &nbsp;<a href="javascript:void(0)" onclick="toggleAllCredits()" style="color:var(--gray);text-decoration:underline">${closeText}</a>`;
+      banner.innerHTML = `${showingText} <strong style="color:var(--accent-text)">${labels[canonicalTag] || canonicalTag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">${viewAllText}</a> &nbsp;<a href="javascript:void(0)" onclick="toggleAllCredits()" style="color:var(--gray);text-decoration:underline">${closeText}</a>`;
       banner.style.display = 'block';
     } else {
       banner.style.display = 'none';
@@ -3518,11 +3519,11 @@ function openAwardModal(idx) {
   const typeLabel = typeLabels[a.type] || 'Award';
 
   document.getElementById('awardModalContent').innerHTML = `
-    <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">${typeLabel} ${a.year ? '· ' + a.year : ''}</div>
+    <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-text);margin-bottom:0.5rem">${typeLabel} ${a.year ? '· ' + a.year : ''}</div>
     <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
       <span style="font-size:2rem">${icon}</span>
       <div>
-        ${a.verified ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgba(201,168,76,0.15);color:var(--gold);padding:0.15rem 0.5rem;letter-spacing:0.1em;text-transform:uppercase">✓ VERIFIED</span>' : ''}
+        ${a.verified ? '<span style="font-family:var(--font-mono);font-size:0.5rem;background:rgb(var(--status-verified-rgb) / 0.15);color:var(--status-verified);padding:0.15rem 0.5rem;letter-spacing:0.1em;text-transform:uppercase">✓ VERIFIED</span>' : ''}
         <h2 style="font-family:var(--font-display);font-size:1.4rem;color:var(--white);margin:0.25rem 0 0">${a.title}</h2>
       </div>
     </div>
@@ -3531,7 +3532,7 @@ function openAwardModal(idx) {
     ${a.desc ? `<p style="font-size:0.9rem;color:var(--gray-light);line-height:1.75;margin-bottom:1.25rem">${a.desc}</p>` : ''}
     ${(a.photos||[]).length ? `
       <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.25rem">
-        ${(a.photos||[]).map(p=>{const url=typeof p==='string'?p:p.url; const cap=typeof p==='string'?'':p.caption||''; return `<div style="width:calc(50% - 0.25rem);position:relative"><img src="${url}" onclick="openLightbox('${url}')" style="width:100%;aspect-ratio:4/3;object-fit:cover;cursor:pointer;border:1px solid rgba(201,168,76,0.15);transition:opacity 0.2s;display:block" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" onerror="this.style.display='none'">${cap?`<div style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.08em;color:rgba(255,255,255,0.6);padding:0.3rem 0.25rem">${cap}</div>`:''}</div>`;}).join('')}
+        ${(a.photos||[]).map(p=>{const url=typeof p==='string'?p:p.url; const cap=typeof p==='string'?'':p.caption||''; return `<div style="width:calc(50% - 0.25rem);position:relative"><img src="${url}" onclick="openLightbox('${url}')" style="width:100%;aspect-ratio:4/3;object-fit:cover;cursor:pointer;border:1px solid rgb(var(--accent-primary-rgb) / 0.15);transition:opacity 0.2s;display:block" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" onerror="this.style.display='none'">${cap?`<div style="font-family:var(--font-mono);font-size:0.48rem;letter-spacing:0.08em;color:rgba(255,255,255,0.6);padding:0.3rem 0.25rem">${cap}</div>`:''}</div>`;}).join('')}
       </div>` : ''}
     <div style="display:flex;flex-direction:column;gap:0.5rem">
       ${a.certUrl ? (() => {
@@ -3543,11 +3544,11 @@ function openAwardModal(idx) {
           const imgUrl = pubId
             ? 'https://res.cloudinary.com/djj8xe3gx/image/upload/f_jpg,q_85' + rotation + '/' + pubId + '.pdf'
             : a.certUrl;
-          return '<div style="margin-bottom:1rem"><img src="' + imgUrl + '" style="width:100%;border:1px solid rgba(201,168,76,0.2);display:block;cursor:pointer" onclick="openLightbox(\'' + imgUrl + '\')" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"><a href="' + a.certUrl + '" target="_blank" style="display:none;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;background:rgba(201,168,76,0.05)">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--gold)">→</span></a></div>';
+          return '<div style="margin-bottom:1rem"><img src="' + imgUrl + '" style="width:100%;border:1px solid rgb(var(--accent-primary-rgb) / 0.2);display:block;cursor:pointer" onclick="openLightbox(\'' + imgUrl + '\')" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"><a href="' + a.certUrl + '" target="_blank" style="display:none;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgb(var(--accent-primary-rgb) / 0.2);padding:0.75rem 1rem;background:rgb(var(--accent-primary-rgb) / 0.05)">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--accent-text)">→</span></a></div>';
         }
-        return '<a href="' + pdfViewerUrl(a.certUrl) + '" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;background:rgba(201,168,76,0.05);transition:all 0.2s" onmouseover="this.style.background=\'rgba(201,168,76,0.1)\'" onmouseout="this.style.background=\'rgba(201,168,76,0.05)\'">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--gold)">→</span></a>';
+        return '<a href="' + pdfViewerUrl(a.certUrl) + '" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgb(var(--accent-primary-rgb) / 0.2);padding:0.75rem 1rem;background:rgb(var(--accent-primary-rgb) / 0.05);transition:all 0.2s" onmouseover="this.style.background=\'rgb(var(--accent-primary-rgb) / 0.1)\'" onmouseout="this.style.background=\'rgb(var(--accent-primary-rgb) / 0.05)\'">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--accent-text)">→</span></a>';
       })() : ''}
-      ${a.proofLink ? `<a href="${pdfViewerUrl(a.proofLink)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.15);padding:0.75rem 1rem;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.05)'" onmouseout="this.style.background=\'\'\'">✦ <span>View Verification</span> <span style="margin-left:auto">→</span></a>` : ''}
+      ${a.proofLink ? `<a href="${pdfViewerUrl(a.proofLink)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent-text);text-decoration:none;border:1px solid rgb(var(--accent-primary-rgb) / 0.15);padding:0.75rem 1rem;transition:all 0.2s" onmouseover="this.style.background='rgb(var(--accent-primary-rgb) / 0.05)'" onmouseout="this.style.background=\'\'\'">✦ <span>View Verification</span> <span style="margin-left:auto">→</span></a>` : ''}
     </div>`;
 
   const overlay = document.getElementById('awardModalOverlay');
@@ -3724,13 +3725,13 @@ function openCreditModal(i) {
   if (totalMedia > 0) {
     if (hasCampaignLink) {
       unifiedHTML += `<div style="margin:0 0 0.75rem">
-        <a href="${campaignLink}" target="_blank" style="display:inline-flex;align-items:center;gap:0.75rem;text-decoration:none;border:1px solid #C9A84C;padding:0.6rem 1.25rem;background:rgba(201,168,76,0.08);transition:background 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.18)'" onmouseout="this.style.background='rgba(201,168,76,0.08)'">
+        <a href="${campaignLink}" target="_blank" style="display:inline-flex;align-items:center;gap:0.75rem;text-decoration:none;border:1px solid #C9A84C;padding:0.6rem 1.25rem;background:rgb(var(--accent-primary-rgb) / 0.08);transition:background 0.2s" onmouseover="this.style.background='rgb(var(--accent-primary-rgb) / 0.18)'" onmouseout="this.style.background='rgb(var(--accent-primary-rgb) / 0.08)'">
           <span style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:#F5F3EE;letter-spacing:0.01em">View Campaign</span>
           <span style="font-family:var(--font-display);font-size:1.3rem;font-style:italic;font-weight:700;color:#C9A84C">Portfolio</span>
           <span style="font-family:var(--font-mono);font-size:0.85rem;color:#4A9EFF;text-decoration:underline;letter-spacing:0.02em">${campaignLink} →</span>
         </a>
       </div>`;
-      unifiedHTML += `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;opacity:0.7;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.75rem">Inside the Campaign <span style="flex:1;height:1px;background:rgba(201,168,76,0.2)"></span></div>`;
+      unifiedHTML += `<div style="font-family:var(--font-mono);font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;opacity:0.7;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.75rem">Inside the Campaign <span style="flex:1;height:1px;background:rgb(var(--accent-primary-rgb) / 0.2)"></span></div>`;
     }
     // Layout toggle — only show if there are both videos and photos
     if (mediaLayout === 'grid') {
@@ -3823,7 +3824,7 @@ function openCreditModal(i) {
               ${label ? `<div class="credit-media-label">${label}</div>` : ''}
             </div>`;
           } else if (m.type === 'doc' || m.url.includes('.pdf')) {
-            unifiedHTML += `<a href="${pdfViewerUrl(m.url)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;margin-bottom:0.75rem;background:rgba(201,168,76,0.05)">📄 ${m.label || 'View Document'} →</a>`;
+            unifiedHTML += `<a href="${pdfViewerUrl(m.url)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;color:var(--white);text-decoration:none;border:1px solid rgb(var(--accent-primary-rgb) / 0.2);padding:0.75rem 1rem;margin-bottom:0.75rem;background:rgb(var(--accent-primary-rgb) / 0.05)">📄 ${m.label || 'View Document'} →</a>`;
           }
         }
       });
@@ -3911,7 +3912,7 @@ function openCreditModal(i) {
             unifiedHTML += `<video controls style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:contain;margin-bottom:1rem" src="${m.url}" ${posterAttr}></video>`;
           } else if (m.type === 'doc' || m.url.includes('.pdf') || m.url.includes('.doc')) {
             const label = m.label || 'View Document';
-            unifiedHTML += `<a href="${pdfViewerUrl(m.url)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1.25rem;margin-bottom:0.75rem;background:rgba(201,168,76,0.05);transition:all 0.3s">📄 ${label} →</a>`;
+            unifiedHTML += `<a href="${pdfViewerUrl(m.url)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgb(var(--accent-primary-rgb) / 0.2);padding:0.75rem 1.25rem;margin-bottom:0.75rem;background:rgb(var(--accent-primary-rgb) / 0.05);transition:all 0.3s">📄 ${label} →</a>`;
           } else {
             const ytId2 = m.url.split('v=')[1]?.split('&')[0] || m.url.split('youtu.be/')[1]?.split('?')[0];
             if (ytId2) {
@@ -3939,20 +3940,20 @@ function openCreditModal(i) {
   // Press & Archive section
   const pressItems = c.press || [];
   document.getElementById('creditModalPress').innerHTML = pressItems.length ? `
-    <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(201,168,76,0.12)">
-      <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem">
+    <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgb(var(--category-press-rgb) / 0.12)">
+      <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--category-press);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem">
         Press & Archive
-        <span style="flex:1;height:1px;background:linear-gradient(to right,rgba(201,168,76,0.2),transparent)"></span>
+        <span style="flex:1;height:1px;background:linear-gradient(to right,rgb(var(--category-press-rgb) / 0.2),transparent)"></span>
       </div>
       ${pressItems.map(p => `
         <div style="padding:1rem 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;gap:0.4rem">
           <div style="display:flex;align-items:baseline;gap:0.75rem;flex-wrap:wrap">
             <span style="font-family:var(--font-mono);font-size:0.7rem;font-weight:700;letter-spacing:0.05em;color:var(--white);text-transform:uppercase">${p.publication}</span>
             ${p.location ? `<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">${p.location}</span>` : ''}
-            ${p.year ? `<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gold);opacity:0.7">· ${p.year}</span>` : ''}
+            ${p.year ? `<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--category-press);opacity:0.7">· ${p.year}</span>` : ''}
           </div>
           ${p.summary ? `<p style="font-size:0.82rem;color:var(--gray-light);line-height:1.65;font-style:italic;margin:0">${p.summary}</p>` : ''}
-          ${p.url ? `<a href="https://docs.google.com/viewer?url=${encodeURIComponent(p.url)}" target="_blank" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:0.35rem;margin-top:0.25rem;opacity:0.8;transition:opacity 0.2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">View Archive →</a>` : ''}
+          ${p.url ? `<a href="https://docs.google.com/viewer?url=${encodeURIComponent(p.url)}" target="_blank" style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--category-press);text-decoration:none;display:inline-flex;align-items:center;gap:0.35rem;margin-top:0.25rem;opacity:0.8;transition:opacity 0.2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">View Archive →</a>` : ''}
         </div>`).join('')}
     </div>` : '';
 
@@ -4007,7 +4008,7 @@ function openVideoPlayer(src, thumb) {
   }
   const closeBtn = document.createElement('button');
   closeBtn.textContent = '✕';
-  closeBtn.style.cssText = 'position:absolute;top:-2.5rem;right:0;background:none;border:1px solid rgba(201,168,76,0.4);color:var(--gold);font-size:0.9rem;width:32px;height:32px;cursor:pointer;z-index:1';
+  closeBtn.style.cssText = 'position:absolute;top:-2.5rem;right:0;background:none;border:1px solid rgb(var(--accent-primary-rgb) / 0.4);color:var(--accent-text);font-size:0.9rem;width:32px;height:32px;cursor:pointer;z-index:1';
   closeBtn.onclick = () => overlay.remove();
   inner.appendChild(closeBtn);
   overlay.appendChild(inner);
@@ -4038,7 +4039,7 @@ function toggleLang(lang) {
 
   const btnEN = document.getElementById('langEN');
   const btnES = document.getElementById('langES');
-  const activeStyle = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.4);padding:0.3rem 0.6rem;cursor:pointer;transition:all 0.2s';
+  const activeStyle = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;background:rgb(var(--accent-primary-rgb) / 0.15);color:var(--accent-text);border:1px solid rgb(var(--accent-primary-rgb) / 0.4);padding:0.3rem 0.6rem;cursor:pointer;transition:all 0.2s';
   const inactiveStyle = 'font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;background:none;color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.15);padding:0.3rem 0.6rem;cursor:pointer;transition:all 0.2s';
 
   if (btnEN) btnEN.style.cssText = lang === 'en' ? activeStyle : inactiveStyle;
@@ -4378,7 +4379,7 @@ async function saveInlineEdits() {
 function showEditToast(msg) {
   const t = document.createElement('div');
   t.textContent = msg;
-  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(10,10,10,0.92);color:var(--gold);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;padding:0.6rem 1.25rem;border:1px solid rgba(201,168,76,0.3);z-index:9999;pointer-events:none;transition:opacity 0.3s';
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(10,10,10,0.92);color:var(--edit-feedback-color);font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;padding:0.6rem 1.25rem;border:1px solid rgb(var(--edit-feedback-rgb) / 0.3);z-index:9999;pointer-events:none;transition:opacity 0.3s';
   document.body.appendChild(t);
   setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 2500);
 }
