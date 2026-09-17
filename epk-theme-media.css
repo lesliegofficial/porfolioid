@@ -1,0 +1,239 @@
+/* PorfolioID media/gallery theme overrides
+   Converts settled theme-decoration roles only.
+   Category semantics, platform-brand colors, and open Gate 3A/Gate 5 values
+   remain outside this file unless explicitly noted.
+*/
+
+/* ── VIDEO UI ── */
+.video-toggle-btn {
+  color: var(--accent-text);
+  border-color: rgb(var(--accent-border-rgb) / 0.30);
+}
+.video-toggle-btn:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+  border-color: rgb(var(--accent-border-rgb) / 0.50);
+}
+.vcard-media {
+  border-color: rgb(var(--accent-border-rgb) / 0.10);
+}
+.vcard:hover .vcard-media {
+  border-color: rgb(var(--accent-border-rgb) / 0.40);
+}
+.vcard-play {
+  border-color: var(--accent-border);
+  color: var(--accent-text);
+}
+.vcard:hover .vcard-play {
+  background: var(--accent-emphasis);
+  color: var(--black);
+}
+.vcard-badge {
+  color: var(--accent-text);
+}
+.vcard-badge-featured {
+  background: var(--status-featured);
+  color: var(--black);
+}
+.vcard-body {
+  border-top-color: rgb(var(--accent-border-rgb) / 0.10);
+}
+
+/* ── GALLERY CATEGORY / NAVIGATION UI ── */
+.gallery-cat-bar {
+  border-bottom-color: rgb(var(--accent-border-rgb) / 0.08);
+}
+.gallery-cat-btn:hover {
+  border-color: rgb(var(--accent-border-rgb) / 0.35);
+}
+.gallery-cat-btn.active {
+  border-color: var(--accent-border);
+  color: var(--accent-text);
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+}
+.gallery-cat-count {
+  color: var(--accent-text);
+}
+.gallery-grid-pag-btn {
+  border-color: rgb(var(--accent-border-rgb) / 0.25);
+}
+.gallery-grid-pag-btn:hover,
+.gallery-grid-pag-btn.active {
+  border-color: var(--accent-border);
+  color: var(--accent-text);
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+}
+
+/* ── GALLERY COLLECTIONS ── */
+.gallery-collection-count,
+.gallery-collection-cta {
+  color: var(--accent-text);
+}
+.gallery-collection-lb-inner {
+  border-color: rgb(var(--accent-border-rgb) / 0.20);
+}
+.gallery-collection-lb-close {
+  border-color: rgb(var(--accent-border-rgb) / 0.30);
+  color: var(--accent-text);
+}
+.gallery-collection-lb-close:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.15);
+}
+.gallery-collection-lb-title {
+  color: var(--accent-text);
+  border-bottom-color: rgb(var(--accent-border-rgb) / 0.20);
+}
+.gallery-collection-lb-item {
+  border-color: rgb(var(--accent-border-rgb) / 0.10);
+}
+
+/* ── GALLERY MAGAZINE ── */
+.gallery-magazine-hero {
+  border-color: rgb(var(--accent-border-rgb) / 0.20);
+}
+.gallery-magazine-badge {
+  color: var(--accent-text);
+}
+.gallery-magazine-item-meta {
+  color: rgb(var(--accent-text-rgb) / 0.85);
+}
+.gallery-magazine-item {
+  border-color: rgb(var(--accent-border-rgb) / 0.12);
+}
+.gallery-magazine-item:hover {
+  border-color: rgb(var(--accent-border-rgb) / 0.45);
+}
+
+/* ── GALLERY SCROLL ── */
+.gallery-scroll-drag,
+.gallery-scroll-category,
+.gallery-scroll-counter {
+  color: var(--accent-text);
+}
+.gallery-scroll-star {
+  color: var(--status-featured);
+  text-shadow: 0 0 8px rgb(var(--accent-emphasis-rgb) / 0.50);
+}
+.gallery-scroll-meta {
+  color: rgb(var(--accent-text-rgb) / 0.85);
+}
+.gallery-scroll-bottom {
+  border-top-color: rgb(var(--accent-border-rgb) / 0.15);
+}
+.gallery-scroll-arrow-btn {
+  border-color: rgb(var(--accent-border-rgb) / 0.35);
+  color: var(--accent-text);
+}
+.gallery-scroll-arrow-btn:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.15);
+  border-color: var(--accent-border);
+}
+.gallery-scroll-item {
+  border-color: rgb(var(--accent-border-rgb) / 0.12);
+}
+.gallery-scroll-item:first-child {
+  border-color: var(--accent-border);
+}
+.gallery-scroll-item:hover {
+  border-color: rgb(var(--accent-border-rgb) / 0.45);
+}
+
+/* ── GALLERY TIMELINE ── */
+.gallery-timeline-year::before {
+  background: rgb(var(--accent-border-rgb) / 0.20);
+}
+.gallery-timeline-dot {
+  border-color: rgb(var(--accent-border-rgb) / 0.40);
+}
+.gallery-timeline-dot.active {
+  background: var(--accent-emphasis);
+  border-color: var(--accent-border);
+  box-shadow: 0 0 12px rgb(var(--accent-emphasis-rgb) / 0.50);
+}
+.gallery-timeline-year-header:hover .gallery-timeline-dot {
+  border-color: var(--accent-border);
+}
+.gallery-timeline-year-label {
+  color: var(--accent-text);
+}
+.gallery-timeline-toggle {
+  color: rgb(var(--accent-text-rgb) / 0.50);
+}
+
+/* ── GALLERY TABLE ── */
+.gallery-table-search {
+  border-color: rgb(var(--accent-border-rgb) / 0.20);
+}
+.gallery-table-search:focus {
+  border-color: rgb(var(--accent-border-rgb) / 0.50);
+}
+.gallery-table thead th {
+  color: var(--accent-text);
+  border-bottom-color: rgb(var(--accent-border-rgb) / 0.20);
+}
+.gallery-table-sort-icon {
+  color: rgb(var(--accent-text-rgb) / 0.50);
+}
+.gallery-table tbody tr:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.04);
+}
+.gallery-table td:not(:first-child) {
+  color: rgb(var(--accent-text-rgb) / 0.85);
+}
+
+/* ── EXHIBITION FUNCTIONAL ACCENTS ──
+   Warm museum-light/reflection layers remain untouched for first visual pass.
+   Only navigation/metadata and functional framing are tokenized here.
+*/
+.exhibition-caption-year {
+  color: var(--accent-text);
+}
+.exhibition-arrow {
+  border-color: rgb(var(--accent-border-rgb) / 0.22);
+  color: var(--accent-text);
+}
+.exhibition-arrow:hover {
+  border-color: rgb(var(--accent-border-rgb) / 0.60);
+}
+.exhibition-wrap {
+  scrollbar-color: rgb(var(--accent-border-rgb) / 0.30) transparent;
+}
+.exhibition-wrap::-webkit-scrollbar-thumb {
+  background: rgb(var(--accent-border-rgb) / 0.25);
+}
+
+/* ── CREDIT MODAL MEDIA UI ── */
+.credit-media-toggle-btn {
+  border-color: rgb(var(--accent-border-rgb) / 0.20);
+}
+.credit-media-toggle-btn:hover {
+  border-color: rgb(var(--accent-border-rgb) / 0.40);
+}
+.credit-media-toggle-btn.active {
+  border-color: var(--accent-border);
+  color: var(--accent-text);
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+}
+.credit-media-cell {
+  border-color: rgb(var(--accent-border-rgb) / 0.12);
+}
+.credit-media-cell-video:hover {
+  border-color: rgb(var(--accent-border-rgb) / 0.45);
+}
+.credit-media-play {
+  border-color: rgb(var(--accent-border-rgb) / 0.70);
+  color: var(--accent-text);
+}
+.credit-media-cell-video:hover .credit-media-play {
+  background: rgb(var(--accent-emphasis-rgb) / 0.90);
+  color: #000;
+}
+.credit-media-cell-doc a,
+.credit-media-cell-link a {
+  color: var(--accent-text);
+}
+.credit-media-cell-link a {
+  border-color: rgb(var(--accent-border-rgb) / 0.30);
+}
+.credit-media-cell-link a:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+}
