@@ -19,4 +19,15 @@
     applyPorfolioTheme(previewTheme);
     document.documentElement.dataset.themePreview = 'true';
   }
+
+  /* Load the isolated media/gallery override after legacy + core theme CSS so
+     the conversion remains independently revertible during visual review. */
+  window.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('link[data-porfolio-theme-media]')) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/epk-theme-media.css?v=20260917-1';
+    link.dataset.porfolioThemeMedia = 'true';
+    document.head.appendChild(link);
+  });
 })();
