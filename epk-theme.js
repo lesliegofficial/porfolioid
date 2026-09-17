@@ -117,6 +117,7 @@
        remain independently revertible during Gold/Wine visual review. */
     loadOverrideStylesheet('/epk-theme-media.css?v=20260917-1', 'porfolio-theme-media');
     loadOverrideStylesheet('/epk-theme-generated.css?v=20260917-1', 'porfolio-theme-generated');
+    loadOverrideStylesheet('/epk-theme-connect.css?v=20260917-1', 'porfolio-theme-connect');
 
     classifyGeneratedMarkup(document.body);
 
