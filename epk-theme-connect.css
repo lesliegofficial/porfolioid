@@ -65,6 +65,19 @@
   box-shadow: 0 4px 16px rgb(var(--accent-surface-rgb) / 0.10);
 }
 
+/* Website and Booking are PorfolioID/profile surfaces, not external-brand
+   colors. Their featured-card icon shells follow the chosen profile theme. */
+.ch-pcard--primary .ch-pcard-icon,
+.ch-pcard[onclick*="openInquiryModal"] .ch-pcard-icon {
+  background: var(--accent-primary) !important;
+}
+
+/* The fifth presence dot is the profile/website accent; the first four remain
+   external platform colors (Instagram/Spotify/YouTube/LinkedIn). */
+.hero-presence-dot:nth-child(5) {
+  background: var(--accent-primary) !important;
+}
+
 /* Amazon's icon/background remains brand-owned; only the surrounding
    PorfolioID card framing follows the selected profile theme. */
 .ch-amazon-banner {
