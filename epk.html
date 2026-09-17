@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="gold">
 <head>
 <script
   src="https://js.sentry-cdn.com/35947cf71d8837f6400d73a0272919a6.min.js"
@@ -26,6 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/epk.css?v=20260811-2">
+<link rel="stylesheet" href="/epk-theme.css?v=20260917-1">
 </head>
 <body>
 
@@ -41,8 +42,8 @@
 
 
 <!-- INLINE EDIT TOOLBAR -->
-<div id="inlineEditBar" style="display:none;position:fixed;top:0;left:0;right:0;z-index:8000;background:rgba(10,10,10,0.97);border-bottom:1px solid rgba(201,168,76,0.3);padding:0.6rem 1.5rem;display:none;align-items:center;gap:1rem;flex-wrap:wrap">
-  <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase">✏ Edit Mode</span>
+<div id="inlineEditBar" style="display:none;position:fixed;top:0;left:0;right:0;z-index:8000;background:rgba(10,10,10,0.97);border-bottom:1px solid rgb(var(--product-control-accent-rgb) / 0.3);padding:0.6rem 1.5rem;display:none;align-items:center;gap:1rem;flex-wrap:wrap">
+  <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.2em;color:var(--edit-feedback-color);text-transform:uppercase">✏ Edit Mode</span>
   <div style="width:1px;height:20px;background:rgba(255,255,255,0.1)"></div>
   <div style="display:flex;align-items:center;gap:0.5rem">
     <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:rgba(255,255,255,0.4);text-transform:uppercase">Font Size</span>
@@ -56,17 +57,17 @@
     </select>
   </div>
   <label style="display:flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:rgba(255,255,255,0.5);cursor:pointer">
-    <input type="checkbox" id="applyToAll" style="accent-color:var(--gold)"> Apply to all text
+    <input type="checkbox" id="applyToAll" style="accent-color:var(--edit-feedback-color)"> Apply to all text
   </label>
   <div style="width:1px;height:20px;background:rgba(255,255,255,0.1)"></div>
   <div style="display:flex;align-items:center;gap:0.5rem">
     <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;color:rgba(255,255,255,0.4);text-transform:uppercase">Bio Width</span>
-    <input type="range" id="bioWidthSlider" min="200" max="600" value="380" step="10" oninput="adjustBioWidth(this.value)" style="width:100px;accent-color:var(--gold)">
-    <span id="bioWidthVal" style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold);min-width:35px">380px</span>
+    <input type="range" id="bioWidthSlider" min="200" max="600" value="380" step="10" oninput="adjustBioWidth(this.value)" style="width:100px;accent-color:var(--edit-feedback-color)">
+    <span id="bioWidthVal" style="font-family:var(--font-mono);font-size:0.6rem;color:var(--edit-feedback-color);min-width:35px">380px</span>
   </div>
   <div style="width:1px;height:20px;background:rgba(255,255,255,0.1)"></div>
   <div style="display:flex;gap:0.5rem;margin-left:auto">
-    <button onclick="saveInlineEdits()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;background:var(--gold);color:#000;border:none;padding:0.4rem 1rem;cursor:pointer;font-weight:600">✓ Save Changes</button>
+    <button onclick="saveInlineEdits()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;background:var(--edit-feedback-color);color:#000;border:none;padding:0.4rem 1rem;cursor:pointer;font-weight:600">✓ Save Changes</button>
     <button onclick="toggleEditMode()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;background:none;color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.15);padding:0.4rem 0.75rem;cursor:pointer">✕ Exit</button>
   </div>
 </div>
@@ -141,7 +142,7 @@
 <!-- Owner Bar -->
 <div class="owner-bar">
   <span class="owner-bar-label">✦ Owner Mode — Hover items to reorder</span>
-  <a href="/dashboard.html" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:0.4rem 0.9rem;transition:all 0.2s">Dashboard →</a>
+  <a href="/dashboard.html" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--owner-control-color);text-decoration:none;border:1px solid rgb(var(--product-control-accent-rgb) / 0.3);padding:0.4rem 0.9rem;transition:all 0.2s">Dashboard →</a>
 </div>
 
 </body>
