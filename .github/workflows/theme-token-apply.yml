@@ -22,6 +22,16 @@ jobs:
         run: |
           sed -i 's/if css.count("#d7b84f") != gate5_css_before:/if css.count("#d7b84f") != gate5_css_before + 1:/' scripts/theme_token_conversion.py
           sed -i 's/if js.count("#d7b84f") != gate5_js_before:/if js.count("#d7b84f") != gate5_js_before + 1:/' scripts/theme_token_conversion.py
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('scripts/theme_token_conversion.py')
+          s = p.read_text()
+          marker = '# ---------------------------------------------------------------------------\n# SAFETY CHECKS\n# ---------------------------------------------------------------------------'
+          addition = '''# Remaining fixed Professional Blue path: Awards / Degrees & Credentials section header.\njs = js.replace("rgba(123,155,175,", "rgb(var(--category-professional-rgb) / ")\njs = js.replace("#8FB8D0", "var(--category-professional)")\n\n'''
+          if marker not in s:
+              raise SystemExit('Safety marker not found')
+          p.write_text(s.replace(marker, addition + marker, 1))
+          PY
           python scripts/theme_token_conversion.py
       - name: Commit converted files
         run: |
