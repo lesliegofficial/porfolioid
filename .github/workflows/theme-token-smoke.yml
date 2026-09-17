@@ -1,0 +1,13 @@
+name: Theme token smoke test
+
+on:
+  push:
+    branches: [theme-token-conversion]
+    paths:
+      - .github/workflows/theme-token-smoke.yml
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "theme token workflow is valid"
