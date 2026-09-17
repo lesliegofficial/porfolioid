@@ -1,0 +1,144 @@
+/* PorfolioID Cove visual review — "Midnight Cove"
+   Chosen from the user's reference swatches as a cohesive dark-profile palette.
+
+   Midnight Navy #061222 = atmosphere/depth
+   Cove Blue     #30A0E0 = primary accent
+   Soft Aqua     #B8E3E9 = readable/light accent
+   Warm Sand     #FFC872 = selective contrast/emphasis
+
+   Fixed category, status, external platform-brand, and product-control colors
+   remain outside this theme mapping.
+*/
+
+[data-theme="cove"] {
+  --accent-primary: #30A0E0;
+  --accent-primary-rgb: 48 160 224;
+  --accent-light: #B8E3E9;
+  --accent-light-rgb: 184 227 233;
+  --accent-dark: #061222;
+  --accent-dark-rgb: 6 18 34;
+  --accent-secondary: #FFC872;
+  --accent-secondary-rgb: 255 200 114;
+
+  --accent-text: var(--accent-light);
+  --accent-text-rgb: var(--accent-light-rgb);
+  --accent-emphasis: var(--accent-secondary);
+  --accent-emphasis-rgb: var(--accent-secondary-rgb);
+  --accent-icon: var(--accent-light);
+  --accent-icon-rgb: var(--accent-light-rgb);
+  --accent-border: var(--accent-primary);
+  --accent-border-rgb: var(--accent-primary-rgb);
+  --accent-surface: var(--accent-primary);
+  --accent-surface-rgb: var(--accent-primary-rgb);
+}
+
+/* Deep navy provides the atmosphere; blue is used as light, controlled glow. */
+[data-theme="cove"] .hero-content {
+  background:
+    radial-gradient(circle at 26% 22%, rgb(var(--accent-primary-rgb) / 0.16), transparent 40%),
+    linear-gradient(110deg, rgb(var(--accent-dark-rgb) / 0.88), rgba(8,8,8,0.20) 68%);
+}
+
+/* Warm sand is a signature accent, not the default text color. */
+[data-theme="cove"] .hero-name em {
+  color: var(--accent-emphasis);
+}
+
+[data-theme="cove"] .hero-role-item {
+  background: linear-gradient(145deg, rgb(var(--accent-dark-rgb) / 0.86), rgb(var(--accent-primary-rgb) / 0.075));
+  border-color: rgb(var(--accent-primary-rgb) / 0.40);
+  box-shadow: inset 0 0 0 1px rgb(var(--accent-light-rgb) / 0.035);
+}
+
+[data-theme="cove"] .hero-role-icon {
+  fill: var(--accent-light);
+}
+
+[data-theme="cove"] .hero-roles-row,
+[data-theme="cove"] .hero-stats-row,
+[data-theme="cove"] .hero-presence-bar {
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.20);
+}
+
+[data-theme="cove"] .hero-stats-row {
+  background: linear-gradient(90deg, rgb(var(--accent-dark-rgb) / 0.55), transparent 62%);
+}
+
+[data-theme="cove"] .hero-presence-bar {
+  background: linear-gradient(90deg, rgb(var(--accent-primary-rgb) / 0.055), transparent 70%);
+}
+
+[data-theme="cove"] .hero-presence-eyebrow {
+  color: var(--accent-light);
+}
+
+[data-theme="cove"] .hero-presence-explore,
+[data-theme="cove"] .hero-cta-primary,
+[data-theme="cove"] .ch-btn-gold {
+  color: var(--accent-emphasis);
+  border-color: var(--accent-emphasis);
+}
+
+[data-theme="cove"] .hero-presence-explore:hover,
+[data-theme="cove"] .hero-cta-primary:hover,
+[data-theme="cove"] .ch-btn-gold:hover {
+  background: rgb(var(--accent-secondary-rgb) / 0.09);
+  box-shadow: 0 0 14px rgb(var(--accent-secondary-rgb) / 0.20);
+}
+
+/* Carry a restrained midnight-blue field through later sections. */
+[data-theme="cove"] .career-profile-section,
+[data-theme="cove"] .works-section {
+  background-image: linear-gradient(
+    180deg,
+    rgb(var(--accent-dark-rgb) / 0.42),
+    transparent 280px
+  );
+}
+
+[data-theme="cove"] .work-card,
+[data-theme="cove"] .resume-card,
+[data-theme="cove"] .asset-card,
+[data-theme="cove"] .award-card {
+  box-shadow: inset 0 0 0 1px rgb(var(--accent-primary-rgb) / 0.045);
+}
+
+[data-theme="cove"] .ch3-label,
+[data-theme="cove"] .works-label,
+[data-theme="cove"] .collapsible-header-label,
+[data-theme="cove"] .booking-note,
+[data-theme="cove"] .identity-block-label,
+[data-theme="cove"] .timeline-year {
+  color: var(--accent-light);
+}
+
+[data-theme="cove"] .ch3-icon,
+[data-theme="cove"] .collapsible-icon {
+  border-color: rgb(var(--accent-primary-rgb) / 0.38);
+}
+
+/* Gate 5 visual test for Cove: the old Connect mid-Gold is replaced by the
+   theme's intentional warm-sand contrast so it does not look like leftover Gold. */
+[data-theme="cove"] .ch-eyebrow,
+[data-theme="cove"] .ch-section-label,
+[data-theme="cove"] .ch-hero-title em,
+[data-theme="cove"] .ch-pcard-cat,
+[data-theme="cove"] .ch-pcard-cta,
+[data-theme="cove"] .ch-amazon-cat,
+[data-theme="cove"] .ch-amazon-cta,
+[data-theme="cove"] .ch-row-arrow,
+[data-theme="cove"] .ch-btn-outline {
+  color: var(--accent-emphasis);
+}
+
+[data-theme="cove"] .ch-btn-outline {
+  border-color: rgb(var(--accent-secondary-rgb) / 0.42);
+}
+
+[data-theme="cove"] .connect-hub {
+  background:
+    radial-gradient(circle at 78% 0%, rgb(var(--accent-primary-rgb) / 0.09), transparent 30%),
+    linear-gradient(180deg, rgb(var(--accent-dark-rgb) / 0.62), #050505 62%);
+}
+
+/* Music/category semantics remain fixed globally. Do not recolor them here. */
