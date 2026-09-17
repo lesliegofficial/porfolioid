@@ -355,6 +355,159 @@ nav {
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
+   Phase 3 conversion: professional records + media records.
+   Generic record chrome follows the theme; music-only track UI stays on the
+   fixed category-music semantic so Gate 3A can be tested honestly.
+   ────────────────────────────────────────────────────────────────────────── */
+
+.resume-card {
+  border-color: rgb(var(--accent-surface-rgb) / 0.15);
+}
+
+.resume-card:hover {
+  border-color: rgb(var(--accent-surface-rgb) / 0.35);
+}
+
+.resume-card-label,
+.credit-years,
+.credit-role,
+.credit-expand-hint,
+.credit-modal-meta,
+.credit-modal-desc strong,
+.asset-btn,
+.award-proof-link {
+  color: var(--accent-text);
+}
+
+.resume-skill-tag {
+  background: rgb(var(--accent-surface-rgb) / 0.06);
+  border-color: rgb(var(--accent-surface-rgb) / 0.15);
+}
+
+.resume-card-btn {
+  color: var(--accent-text);
+  border-color: rgb(var(--accent-border-rgb) / 0.30);
+}
+
+.resume-card-btn:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+  border-color: var(--accent-border);
+}
+
+.credit-years {
+  border-color: rgb(var(--accent-surface-rgb) / 0.30);
+}
+
+.credit-modal {
+  border-color: rgb(var(--accent-surface-rgb) / 0.20);
+}
+
+.credit-modal-close:hover {
+  border-color: var(--accent-border);
+}
+
+.modal-font-btn:hover {
+  border-color: var(--accent-border);
+  color: var(--accent-text);
+}
+
+.credit-modal-photo {
+  border-color: rgb(var(--accent-surface-rgb) / 0.10);
+}
+
+.award-card {
+  border-color: rgb(var(--accent-surface-rgb) / 0.10);
+}
+
+.award-card:hover,
+.award-card-clickable:hover {
+  border-color: rgb(var(--accent-surface-rgb) / 0.30);
+}
+
+.award-card-type {
+  color: var(--accent-text);
+}
+
+.award-cert-link:hover {
+  color: var(--accent-text);
+}
+
+.asset-card {
+  border-color: rgb(var(--accent-surface-rgb) / 0.08);
+}
+
+.asset-card:hover {
+  border-color: rgb(var(--accent-surface-rgb) / 0.25);
+}
+
+/* Track UI is category-semantic, not theme decoration. */
+.track-item {
+  border-bottom-color: rgb(var(--category-music-rgb) / 0.06);
+}
+
+.track-item:hover {
+  background: rgb(var(--category-music-rgb) / 0.02);
+}
+
+.track-tag {
+  background: rgb(var(--category-music-rgb) / 0.12);
+  color: var(--category-music);
+}
+
+.track-meta span,
+.track-info > a {
+  color: var(--category-music) !important;
+}
+
+.track-info audio {
+  accent-color: var(--category-music) !important;
+}
+
+.credit-media-toggle-btn {
+  border-color: rgb(var(--accent-surface-rgb) / 0.20);
+}
+
+.credit-media-toggle-btn:hover {
+  border-color: rgb(var(--accent-border-rgb) / 0.40);
+}
+
+.credit-media-toggle-btn.active {
+  border-color: var(--accent-border);
+  color: var(--accent-text);
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+}
+
+.credit-media-cell {
+  border-color: rgb(var(--accent-surface-rgb) / 0.12);
+}
+
+.credit-media-cell-video:hover {
+  border-color: rgb(var(--accent-border-rgb) / 0.45);
+}
+
+.credit-media-cell-video:hover .credit-media-play {
+  background: rgb(var(--accent-surface-rgb) / 0.90);
+}
+
+.credit-media-play {
+  border-color: rgb(var(--accent-border-rgb) / 0.70);
+  color: var(--accent-text);
+}
+
+.credit-media-cell-doc a,
+.credit-media-cell-link a {
+  color: var(--accent-text);
+}
+
+.credit-media-cell-link a {
+  border-color: rgb(var(--accent-border-rgb) / 0.30);
+}
+
+.credit-media-cell-link a:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
    Platform-brand / product-control overrides
    These stay fixed when a profile owner changes the public theme.
    ────────────────────────────────────────────────────────────────────────── */
