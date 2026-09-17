@@ -1,0 +1,33 @@
+name: Apply theme token conversion
+
+on:
+  push:
+    branches: [theme-token-conversion]
+    paths:
+      - .github/workflows/theme-token-apply.yml
+      - scripts/theme_token_conversion.py
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: theme-token-conversion
+          fetch-depth: 0
+      - name: Apply audited conversion
+        run: python scripts/theme_token_conversion.py
+      - name: Commit converted files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add epk.css epk.js
+          if git diff --cached --quiet; then
+            echo "No conversion changes to commit"
+            exit 0
+          fi
+          git commit -m "Implement audited theme token architecture"
+          git push origin HEAD:theme-token-conversion
