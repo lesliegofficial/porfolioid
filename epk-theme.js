@@ -1,10 +1,10 @@
 /* PorfolioID public-profile theme runtime.
-   During token conversion this provides a non-persistent visual test harness:
-   ?theme=wine switches the page to Wine without touching profile data.
+   During token conversion this provides non-persistent visual test harnesses:
+   ?theme=wine and ?theme=cove switch the page without touching profile data.
    Normal URLs remain Gold until the approved profile theme field is wired later.
 */
 (function () {
-  const allowedPreviewThemes = new Set(['gold', 'wine']);
+  const allowedPreviewThemes = new Set(['gold', 'wine', 'cove']);
   const legacyGoldPattern = /(var\(--gold\)|#c9a84c|201\s*,\s*168\s*,\s*76)/i;
   const legacyProfessionalPattern = /(#8fb8d0|143\s*,\s*184\s*,\s*208|123\s*,\s*155\s*,\s*175)/i;
 
@@ -114,12 +114,13 @@
 
   window.addEventListener('DOMContentLoaded', function () {
     /* Load isolated migration layers after legacy + core theme CSS so they
-       remain independently revertible during Gold/Wine visual review. */
+       remain independently revertible during visual review. */
     loadOverrideStylesheet('/epk-theme-media.css?v=20260917-1', 'porfolio-theme-media');
     loadOverrideStylesheet('/epk-theme-generated.css?v=20260917-1', 'porfolio-theme-generated');
     loadOverrideStylesheet('/epk-theme-connect.css?v=20260917-1', 'porfolio-theme-connect');
     loadOverrideStylesheet('/epk-theme-shell.css?v=20260917-1', 'porfolio-theme-shell');
     loadOverrideStylesheet('/epk-theme-wine-review.css?v=20260917-1', 'porfolio-theme-wine-review');
+    loadOverrideStylesheet('/epk-theme-cove-review.css?v=20260917-1', 'porfolio-theme-cove-review');
 
     classifyGeneratedMarkup(document.body);
 
