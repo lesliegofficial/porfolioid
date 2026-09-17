@@ -1,0 +1,353 @@
+name: Controlled theme token conversion
+
+on:
+  push:
+    branches:
+      - theme-token-conversion
+    paths:
+      - .github/workflows/theme-token-conversion.yml
+
+permissions:
+  contents: write
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: theme-token-conversion
+          fetch-depth: 0
+
+      - name: Apply audited token conversion
+        shell: bash
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          import re
+
+          css_path = Path('epk.css')
+          js_path = Path('epk.js')
+          css = css_path.read_text()
+          js = js_path.read_text()
+
+          gate5_css_before = css.count('#d7b84f')
+          gate5_js_before = js.count('#d7b84f')
+
+          def must_replace(text, old, new, label, minimum=1):
+              count = text.count(old)
+              if count < minimum:
+                  raise RuntimeError(f'{label}: expected at least {minimum} occurrence(s), found {count}')
+              return text.replace(old, new)
+
+          def rewrite_block(text, selector, replacements):
+              pattern = re.compile(r'(' + re.escape(selector) + r'\s*\{)(.*?)(\})', re.S)
+              match = pattern.search(text)
+              if not match:
+                  raise RuntimeError(f'CSS block not found: {selector}')
+              body = match.group(2)
+              for old, new in replacements:
+                  body = body.replace(old, new)
+              return text[:match.start()] + match.group(1) + body + match.group(3) + text[match.end():]
+
+          def rewrite_region(text, start_marker, end_marker, replacements):
+              start = text.find(start_marker)
+              if start < 0:
+                  raise RuntimeError(f'Region start not found: {start_marker}')
+              end = text.find(end_marker, start + len(start_marker))
+              if end < 0:
+                  raise RuntimeError(f'Region end not found: {end_marker}')
+              region = text[start:end]
+              for old, new in replacements:
+                  region = region.replace(old, new)
+              return text[:start] + region + text[end:]
+
+          # ------------------------------------------------------------------
+          # CSS FOUNDATION — locked raw palettes, aliases, categories, status,
+          # product-control semantics. Legacy Gold stays fixed as a safety net
+          # for any intentionally unconverted/open usage.
+          # ------------------------------------------------------------------
+          old_gold_line = '    --gold: #C9A84C; --gold-light: #E8C97A; --gold-dark: #8B6914;\n'
+          new_tokens = '''    /* THEME RAW TOKENS */
+    --accent-primary: #C9A84C; --accent-primary-rgb: 201 168 76;
+    --accent-light: #E8C97A; --accent-light-rgb: 232 201 122;
+    --accent-dark: #8B6914; --accent-dark-rgb: 139 105 20;
+    --accent-secondary: #4A7FA5; --accent-secondary-rgb: 74 127 165;
+
+    /* THEME SEMANTIC ROLES */
+    --accent-text: var(--accent-primary); --accent-text-rgb: var(--accent-primary-rgb);
+    --accent-emphasis: var(--accent-light); --accent-emphasis-rgb: var(--accent-light-rgb);
+    --accent-icon: var(--accent-primary); --accent-icon-rgb: var(--accent-primary-rgb);
+    --accent-border: var(--accent-primary); --accent-border-rgb: var(--accent-primary-rgb);
+    --accent-border-subtle: var(--accent-primary); --accent-border-subtle-rgb: var(--accent-primary-rgb);
+    --accent-surface: var(--accent-primary); --accent-surface-rgb: var(--accent-primary-rgb);
+    --accent-solid: var(--accent-primary); --accent-solid-rgb: var(--accent-primary-rgb);
+
+    /* GLOBAL SEMANTIC STATUS */
+    --semantic-positive: #7EC97E; --semantic-positive-rgb: 126 201 126;
+    --status-verified: var(--semantic-positive); --status-verified-rgb: var(--semantic-positive-rgb);
+    --status-success: var(--semantic-positive); --status-success-rgb: var(--semantic-positive-rgb);
+    --status-featured: var(--accent-emphasis); --status-featured-rgb: var(--accent-emphasis-rgb);
+
+    /* FIXED CONTENT CATEGORIES */
+    /* GATE 3A: Music value is provisional pending Gold + Wine visual review. */
+    --category-music: #C9A84C; --category-music-rgb: 201 168 76;
+    --category-professional: #8FB8D0; --category-professional-rgb: 143 184 208;
+    --category-education: #A78BFA; --category-education-rgb: 167 139 250;
+    --category-certification: #2DD4BF; --category-certification-rgb: 45 212 191;
+    --category-award: #FBBF24; --category-award-rgb: 251 191 36;
+    --category-press: #60A5FA; --category-press-rgb: 96 165 250;
+    --category-contract: #F87171; --category-contract-rgb: 248 113 113;
+
+    /* PORFOLIOID PRODUCT / EDITOR CONTROLS — NOT USER-THEME OWNED */
+    --product-control-color: #C9A84C; --product-control-rgb: 201 168 76;
+    --owner-control-color: var(--product-control-color); --owner-control-rgb: var(--product-control-rgb);
+    --edit-feedback-color: var(--product-control-color); --edit-feedback-rgb: var(--product-control-rgb);
+
+    /* LEGACY FIXED GOLD — intentionally not theme-linked. */
+    --gold: #C9A84C; --gold-light: #E8C97A; --gold-dark: #8B6914;
+'''
+          css = must_replace(css, old_gold_line, new_tokens, 'CSS root Gold declaration', 1)
+
+          theme_blocks = '''
+
+  /* USER-SELECTABLE THEME PALETTES */
+  [data-theme="gold"] {
+    --accent-primary: #C9A84C; --accent-primary-rgb: 201 168 76;
+    --accent-light: #E8C97A; --accent-light-rgb: 232 201 122;
+    --accent-dark: #8B6914; --accent-dark-rgb: 139 105 20;
+    --accent-secondary: #4A7FA5; --accent-secondary-rgb: 74 127 165;
+  }
+  [data-theme="wine"] {
+    --accent-primary: #610C27; --accent-primary-rgb: 97 12 39;
+    --accent-light: #E3C1B4; --accent-light-rgb: 227 193 180;
+    --accent-dark: #3D0817; --accent-dark-rgb: 61 8 23;
+    --accent-secondary: #5B6B54; --accent-secondary-rgb: 91 107 84;
+    --accent-text: var(--accent-light); --accent-text-rgb: var(--accent-light-rgb);
+    --accent-emphasis: var(--accent-light); --accent-emphasis-rgb: var(--accent-light-rgb);
+    --accent-icon: var(--accent-light); --accent-icon-rgb: var(--accent-light-rgb);
+    --accent-border: var(--accent-light); --accent-border-rgb: var(--accent-light-rgb);
+    --accent-border-subtle: var(--accent-primary); --accent-border-subtle-rgb: var(--accent-primary-rgb);
+    --accent-surface: var(--accent-primary); --accent-surface-rgb: var(--accent-primary-rgb);
+    --accent-solid: var(--accent-light); --accent-solid-rgb: var(--accent-light-rgb);
+  }
+  [data-theme="cove"] {
+    --accent-primary: #30A0E0; --accent-primary-rgb: 48 160 224;
+    --accent-light: #7CC4EC; --accent-light-rgb: 124 196 236;
+    --accent-dark: #006BBB; --accent-dark-rgb: 0 107 187;
+    --accent-secondary: #FFC872; --accent-secondary-rgb: 255 200 114;
+  }
+  [data-theme="sage"] {
+    --accent-primary: #8DB580; --accent-primary-rgb: 141 181 128;
+    --accent-light: #C2CFB2; --accent-light-rgb: 194 207 178;
+    --accent-dark: #4F6B47; --accent-dark-rgb: 79 107 71;
+    --accent-secondary: #4B4A67; --accent-secondary-rgb: 75 74 103;
+  }
+'''
+          css = must_replace(css, '  }\n  html { scroll-behavior: smooth; }', '  }' + theme_blocks + '\n  html { scroll-behavior: smooth; }', 'Theme palette insertion', 1)
+
+          # ------------------------------------------------------------------
+          # CSS THEME DECORATION. Property-aware text/icon mapping happens
+          # before generic RGB conversion so Wine text never inherits dark
+          # Wine Primary by accident.
+          # ------------------------------------------------------------------
+          css = re.sub(r'color:\s*rgba\(201,168,76,([^)]+)\)', r'color: rgb(var(--accent-text-rgb) / \1)', css)
+          css = re.sub(r'fill:\s*rgba\(201,168,76,([^)]+)\)', r'fill: rgb(var(--accent-icon-rgb) / \1)', css)
+          css = css.replace('rgba(201,168,76,', 'rgb(var(--accent-primary-rgb) / ')
+          css = css.replace('rgba(232,201,122,', 'rgb(var(--accent-light-rgb) / ')
+          css = css.replace('rgba(198,158,69,0.06)', 'rgb(var(--accent-primary-rgb) / 0.06)')
+          css = css.replace('var(--gold-light)', 'var(--accent-emphasis)')
+          css = re.sub(r'color:\s*var\(--gold\)', 'color: var(--accent-text)', css)
+          css = re.sub(r'fill:\s*var\(--gold\)', 'fill: var(--accent-icon)', css)
+          css = re.sub(r'background(?:-color)?:\s*var\(--gold\)', lambda m: m.group(0).split(':')[0] + ': var(--accent-solid)', css)
+          css = re.sub(r'accent-color:\s*var\(--gold\)', 'accent-color: var(--accent-primary)', css)
+          css = re.sub(r'(border(?:-(?:top|right|bottom|left))?(?:-color)?\s*:\s*[^;]*?)var\(--gold\)', lambda m: m.group(1) + 'var(--accent-border)', css)
+          css = css.replace('var(--hpi-c, var(--gold))', 'var(--hpi-c, var(--accent-border))')
+
+          # Fixed Music category region — intentionally independent of theme.
+          css = rewrite_region(css, '  /* MUSIC */', '  /* VIDEOS', [
+              ('var(--accent-text)', 'var(--category-music)'),
+              ('var(--accent-icon)', 'var(--category-music)'),
+              ('var(--accent-border)', 'var(--category-music)'),
+              ('var(--accent-solid)', 'var(--category-music)'),
+              ('var(--accent-primary-rgb)', 'var(--category-music-rgb)'),
+              ('var(--accent-primary)', 'var(--category-music)'),
+          ])
+          css = css.replace('  /* MUSIC */', '  /* GATE 3A — Music category color is fixed by architecture; exact hex remains provisional. */\n  /* MUSIC */', 1)
+
+          # Product/editor controls must remain fixed, never user-theme owned.
+          css = rewrite_region(css, '  /* OWNER CONTROLS */', '  @media (max-width: 768px)', [
+              ('var(--accent-text)', 'var(--owner-control-color)'),
+              ('var(--accent-border)', 'var(--owner-control-color)'),
+              ('var(--accent-solid)', 'var(--owner-control-color)'),
+              ('var(--accent-primary-rgb)', 'var(--owner-control-rgb)'),
+              ('var(--accent-primary)', 'var(--owner-control-color)'),
+          ])
+          for selector in ['.nav-edit-btn', '.nav-edit-btn:hover', 'body.edit-mode .nav-edit-btn', 'body.edit-mode [data-editable]:hover', '.edit-field-label', '.unsaved-dot']:
+              css = rewrite_block(css, selector, [
+                  ('var(--accent-text)', 'var(--edit-feedback-color)'),
+                  ('var(--accent-border)', 'var(--edit-feedback-color)'),
+                  ('var(--accent-solid)', 'var(--edit-feedback-color)'),
+                  ('var(--accent-primary-rgb)', 'var(--edit-feedback-rgb)'),
+                  ('var(--accent-primary)', 'var(--edit-feedback-color)'),
+              ])
+
+          # Fixed status semantics.
+          css = rewrite_block(css, '.identity-verified', [
+              ('var(--accent-text)', 'var(--status-verified)'),
+              ('var(--accent-primary-rgb)', 'var(--status-verified-rgb)'),
+          ])
+          css = rewrite_block(css, '.award-badge-verified', [
+              ('var(--accent-text)', 'var(--status-verified)'),
+              ('var(--accent-primary-rgb)', 'var(--status-verified-rgb)'),
+          ])
+          css = rewrite_block(css, '.vcard-badge-featured', [
+              ('var(--accent-text)', 'var(--status-featured)'),
+              ('var(--accent-solid)', 'var(--status-featured)'),
+              ('var(--accent-primary-rgb)', 'var(--status-featured-rgb)'),
+          ])
+
+          # Gate 5 stays literal until the Gold/Wine render review.
+          css = css.replace('  /* ── CONNECT HUB', '  /* GATE 5 — #d7b84f remains literal pending Gold/Wine visual review. */\n  /* ── CONNECT HUB', 1)
+
+          # ------------------------------------------------------------------
+          # JS — settle category/status/product semantics first, then convert
+          # remaining generic Gold decoration to theme aliases.
+          # ------------------------------------------------------------------
+          js = must_replace(js,
+              "const rc = isMusicResume ? 'var(--gold)' : '#8FB8D0';\n    const rbg = isMusicResume ? 'rgba(201,168,76,' : 'rgba(123,155,175,';",
+              "const rc = isMusicResume ? 'var(--category-music)' : 'var(--category-professional)';\n    const rbg = isMusicResume ? 'rgb(var(--category-music-rgb) / ' : 'rgb(var(--category-professional-rgb) / ';",
+              'Resume category colors')
+
+          js = must_replace(js,
+              "const accentColor = isMusic ? 'var(--gold)' : '#8FB8D0';",
+              "const accentColor = isMusic ? 'var(--category-music)' : 'var(--category-professional)';",
+              'Credit category colors')
+
+          js = must_replace(js,
+              "const awColor = isMusicAward ? 'var(--gold)' : '#8FB8D0';",
+              "const awColor = isMusicAward ? 'var(--category-music)' : 'var(--category-professional)';",
+              'Award category colors')
+
+          js = must_replace(js,
+              "const gold = 'rgba(201,168,76,0.9)';",
+              "const gold = 'var(--accent-icon)';",
+              'Asset SVG decorative color')
+
+          category_lines = {
+              "if (c.includes('professional') || c.includes('resume')) return {bg:'rgba(201,168,76,0.15)',color:'#C9A84C',border:'rgba(201,168,76,0.4)'};": "if (c.includes('professional') || c.includes('resume')) return {bg:'rgb(var(--category-professional-rgb) / 0.15)',color:'var(--category-professional)',border:'rgb(var(--category-professional-rgb) / 0.4)'};",
+              "if (c.includes('education') || c.includes('diploma')) return {bg:'rgba(139,92,246,0.15)',color:'#a78bfa',border:'rgba(139,92,246,0.4)'};": "if (c.includes('education') || c.includes('diploma')) return {bg:'rgb(var(--category-education-rgb) / 0.15)',color:'var(--category-education)',border:'rgb(var(--category-education-rgb) / 0.4)'};",
+              "if (c.includes('certif')) return {bg:'rgba(20,184,166,0.15)',color:'#2dd4bf',border:'rgba(20,184,166,0.4)'};": "if (c.includes('certif')) return {bg:'rgb(var(--category-certification-rgb) / 0.15)',color:'var(--category-certification)',border:'rgb(var(--category-certification-rgb) / 0.4)'};",
+              "if (c.includes('award') || c.includes('honor')) return {bg:'rgba(251,191,36,0.15)',color:'#fbbf24',border:'rgba(251,191,36,0.4)'};": "if (c.includes('award') || c.includes('honor')) return {bg:'rgb(var(--category-award-rgb) / 0.15)',color:'var(--category-award)',border:'rgb(var(--category-award-rgb) / 0.4)'};",
+              "if (c.includes('press')) return {bg:'rgba(59,130,246,0.15)',color:'#60a5fa',border:'rgba(59,130,246,0.4)'};": "if (c.includes('press')) return {bg:'rgb(var(--category-press-rgb) / 0.15)',color:'var(--category-press)',border:'rgb(var(--category-press-rgb) / 0.4)'};",
+              "if (c.includes('contract')) return {bg:'rgba(239,68,68,0.15)',color:'#f87171',border:'rgba(239,68,68,0.4)'};": "if (c.includes('contract')) return {bg:'rgb(var(--category-contract-rgb) / 0.15)',color:'var(--category-contract)',border:'rgb(var(--category-contract-rgb) / 0.4)'};",
+          }
+          for old, new in category_lines.items():
+              js = must_replace(js, old, new, 'Asset category tokenization')
+
+          # Explicit status rows before generic decoration conversion.
+          js = must_replace(js,
+              'background:rgba(100,200,100,0.1);color:#7ec97e;',
+              'background:rgb(var(--status-verified-rgb) / 0.1);color:var(--status-verified);',
+              'Credit Verified status')
+          js = must_replace(js,
+              'background:rgba(126,201,126,0.1);color:#7ec97e;border:1px solid rgba(126,201,126,0.25);',
+              'background:rgb(var(--status-verified-rgb) / 0.1);color:var(--status-verified);border:1px solid rgb(var(--status-verified-rgb) / 0.25);',
+              'Asset Verified status')
+
+          # Featured/Pinned is theme-relative through its semantic state token.
+          js = js.replace('background:rgba(201,168,76,0.12);color:var(--gold);', 'background:rgb(var(--status-featured-rgb) / 0.12);color:var(--status-featured);')
+          js = js.replace('background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3);', 'background:rgb(var(--status-featured-rgb) / 0.15);color:var(--status-featured);border:1px solid rgb(var(--status-featured-rgb) / 0.3);')
+
+          # Award verification must not inherit category color.
+          js = js.replace('background:${awColor}1A;color:${awColor};border-color:${awColor}33', 'background:rgb(var(--status-verified-rgb) / 0.10);color:var(--status-verified);border-color:rgb(var(--status-verified-rgb) / 0.20)')
+          js = js.replace('background:rgba(201,168,76,0.15);color:var(--gold);padding:0.15rem 0.5rem;letter-spacing:0.1em;text-transform:uppercase">✓ VERIFIED', 'background:rgb(var(--status-verified-rgb) / 0.15);color:var(--status-verified);padding:0.15rem 0.5rem;letter-spacing:0.1em;text-transform:uppercase">✓ VERIFIED')
+
+          # Inquiry success is globally semantic, not theme decoration.
+          js = js.replace('color:var(--gold);text-align:center;padding:1rem;border:1px solid rgba(201,168,76,0.2)\">\n        ✓ Your inquiry has been sent.', 'color:var(--status-success);text-align:center;padding:1rem;border:1px solid rgb(var(--status-success-rgb) / 0.2)\">\n        ✓ Your inquiry has been sent.')
+
+          # Music track controls use fixed category semantics (Gate 3A value provisional).
+          js = js.replace('accent-color:var(--gold)', 'accent-color:var(--category-music)')
+          js = js.replace('font-size:0.6rem;color:var(--gold);letter-spacing:0.1em\">Listen →', 'font-size:0.6rem;color:var(--category-music);letter-spacing:0.1em\">Listen →')
+
+          # Generic theme decoration conversion.
+          js = re.sub(r'color:rgba\(201,168,76,([^)]+)\)', r'color:rgb(var(--accent-text-rgb) / \1)', js)
+          js = re.sub(r'fill:rgba\(201,168,76,([^)]+)\)', r'fill:rgb(var(--accent-icon-rgb) / \1)', js)
+          js = js.replace('rgba(201,168,76,', 'rgb(var(--accent-primary-rgb) / ')
+          js = js.replace('rgba(232,201,122,', 'rgb(var(--accent-light-rgb) / ')
+          js = js.replace('var(--gold-light)', 'var(--accent-emphasis)')
+          js = re.sub(r'color:var\(--gold\)', 'color:var(--accent-text)', js)
+          js = re.sub(r'fill:var\(--gold\)', 'fill:var(--accent-icon)', js)
+          js = re.sub(r'background:var\(--gold\)', 'background:var(--accent-solid)', js)
+          js = re.sub(r'border:1px solid var\(--gold\)', 'border:1px solid var(--accent-border)', js)
+
+          # Reassert semantic category/status tokens after generic conversion.
+          js = js.replace("const rc = isMusicResume ? 'var(--category-music)' : 'var(--category-professional)';", "const rc = isMusicResume ? 'var(--category-music)' : 'var(--category-professional)';")
+          js = js.replace("const accentColor = isMusic ? 'var(--category-music)' : 'var(--category-professional)';", "const accentColor = isMusic ? 'var(--category-music)' : 'var(--category-professional)';")
+          js = js.replace("const awColor = isMusicAward ? 'var(--category-music)' : 'var(--category-professional)';", "const awColor = isMusicAward ? 'var(--category-music)' : 'var(--category-professional)';")
+
+          # Press/archive is a fixed content category, not profile decoration.
+          press_start = js.find('  // Press & Archive section')
+          press_end = js.find("  document.getElementById('creditModalOverlay').classList.add('open');", press_start)
+          if press_start >= 0 and press_end > press_start:
+              press_region = js[press_start:press_end]
+              press_region = press_region.replace('var(--accent-text)', 'var(--category-press)')
+              press_region = press_region.replace('var(--accent-primary-rgb)', 'var(--category-press-rgb)')
+              js = js[:press_start] + press_region + js[press_end:]
+          else:
+              raise RuntimeError('Press/archive region not found')
+
+          # Editor toast is PorfolioID product feedback, not the profile theme.
+          toast_start = js.find('function showEditToast(msg)')
+          toast_end = js.find('\n}', toast_start)
+          if toast_start >= 0 and toast_end > toast_start:
+              toast_end += 2
+              toast = js[toast_start:toast_end]
+              toast = toast.replace('var(--accent-text)', 'var(--edit-feedback-color)')
+              toast = toast.replace('var(--accent-primary-rgb)', 'var(--edit-feedback-rgb)')
+              js = js[:toast_start] + toast + js[toast_end:]
+          else:
+              raise RuntimeError('showEditToast region not found')
+
+          # Gate 5: leave literal #d7b84f untouched and make the open decision explicit.
+          js = js.replace('      <button type="submit"\n        style="width:100%', '      <!-- GATE 5 — #d7b84f remains literal pending Gold/Wine visual review. -->\n      <button type="submit"\n        style="width:100%', 1)
+
+          # ------------------------------------------------------------------
+          # SAFETY CHECKS
+          # ------------------------------------------------------------------
+          if css.count('#d7b84f') != gate5_css_before:
+              raise RuntimeError('Gate 5 CSS literal count changed unexpectedly')
+          if js.count('#d7b84f') != gate5_js_before:
+              raise RuntimeError('Gate 5 JS literal count changed unexpectedly')
+          for needle in ['--status-verified:', '--status-success:', '--status-featured:', '--category-professional: #8FB8D0', '[data-theme="wine"]']:
+              if needle not in css:
+                  raise RuntimeError(f'Missing required token: {needle}')
+          if "color:'#C9A84C'" in js and "getCatColor" in js:
+              raise RuntimeError('Professional asset category still contains legacy Gold literal')
+          if 'rgba(123,155,175,' in js:
+              raise RuntimeError('Legacy professional background RGB remains')
+          if 'rgba(201,168,76,' in css or 'rgba(201,168,76,' in js:
+              raise RuntimeError('Un-tokenized exact Gold rgba remains')
+
+          css_path.write_text(css)
+          js_path.write_text(js)
+
+          print('Conversion complete')
+          print('CSS residual var(--gold):', css.count('var(--gold)'))
+          print('JS residual var(--gold):', js.count('var(--gold)'))
+          print('CSS Gate 5 #d7b84f:', css.count('#d7b84f'))
+          print('JS Gate 5 #d7b84f:', js.count('#d7b84f'))
+          PY
+
+      - name: Commit conversion
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add epk.css epk.js
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Implement audited theme token architecture"
+          git push origin HEAD:theme-token-conversion
