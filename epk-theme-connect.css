@@ -1,0 +1,92 @@
+/* PorfolioID Connect Hub theme overrides
+   Converts confirmed theme-decoration Gold while intentionally preserving
+   Gate 5's literal #d7b84f text treatment for Gold/Wine visual review.
+   External platform-brand colors (Instagram, Spotify, Amazon, etc.) remain fixed.
+*/
+
+.connect-hub {
+  background:
+    radial-gradient(circle at 80% 0%, rgb(var(--accent-surface-rgb) / 0.07), transparent 28%),
+    #050505;
+  border-top-color: rgb(var(--accent-border-rgb) / 0.15);
+}
+
+/* Gate 5: do NOT override #d7b84f on .ch-eyebrow, .ch-section-label,
+   .ch-hero-title em, .ch-pcard-cat/.ch-pcard-cta, Amazon labels/CTA,
+   .ch-row-arrow, or .ch-btn-outline text yet. */
+.ch-eyebrow-line {
+  background: rgb(var(--accent-border-rgb) / 0.50);
+}
+.ch-section-label {
+  border-bottom-color: rgb(var(--accent-border-rgb) / 0.12);
+}
+.ch-section-label::after {
+  background: linear-gradient(to right, rgb(var(--accent-border-rgb) / 0.12), transparent);
+}
+
+.ch-hero {
+  border-color: rgb(var(--accent-border-rgb) / 0.15);
+}
+.ch-hero-divider {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgb(var(--accent-border-rgb) / 0.25) 30%,
+    rgb(var(--accent-border-rgb) / 0.25) 70%,
+    transparent
+  );
+}
+
+.ch-btn-gold {
+  border-color: var(--accent-border);
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+  box-shadow: 0 0 0 rgb(var(--accent-surface-rgb) / 0);
+  animation: theme-explore-pulse 2.5s ease-in-out infinite;
+}
+.ch-btn-gold:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.18);
+  box-shadow: 0 0 12px rgb(var(--accent-surface-rgb) / 0.40);
+  animation: none;
+}
+
+.ch-btn-outline {
+  border-color: rgb(var(--accent-border-rgb) / 0.45);
+}
+.ch-btn-outline:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.06);
+}
+
+.ch-pcard::before {
+  background: radial-gradient(circle at top left, rgb(var(--accent-surface-rgb) / 0.06), transparent 50%);
+}
+.ch-pcard--primary,
+.ch-pcard:hover {
+  border-color: rgb(var(--accent-border-rgb) / 0.50);
+  box-shadow: 0 4px 16px rgb(var(--accent-surface-rgb) / 0.10);
+}
+
+/* Amazon's icon/background remains brand-owned; only the surrounding
+   PorfolioID card framing follows the selected profile theme. */
+.ch-amazon-banner {
+  border-color: rgb(var(--accent-border-rgb) / 0.15);
+}
+.ch-amazon-banner:hover {
+  border-color: rgb(var(--accent-border-rgb) / 0.45);
+}
+
+/* Per-platform left rails/icons remain brand-specific through --ch-pc. */
+.ch-row:hover {
+  border-color: rgb(var(--accent-border-rgb) / 0.35);
+}
+
+.ch-follow-sq:hover {
+  border-color: rgb(var(--accent-border-rgb) / 0.40);
+}
+
+.ch-footer-note svg {
+  fill: rgb(var(--accent-icon-rgb) / 0.40) !important;
+}
+
+footer {
+  border-top-color: rgb(var(--accent-border-rgb) / 0.08);
+}
