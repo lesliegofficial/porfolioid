@@ -118,6 +118,7 @@
     loadOverrideStylesheet('/epk-theme-media.css?v=20260917-1', 'porfolio-theme-media');
     loadOverrideStylesheet('/epk-theme-generated.css?v=20260917-1', 'porfolio-theme-generated');
     loadOverrideStylesheet('/epk-theme-connect.css?v=20260917-1', 'porfolio-theme-connect');
+    loadOverrideStylesheet('/epk-theme-shell.css?v=20260917-1', 'porfolio-theme-shell');
 
     classifyGeneratedMarkup(document.body);
 
