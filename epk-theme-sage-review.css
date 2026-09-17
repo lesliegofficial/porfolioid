@@ -1,12 +1,9 @@
 /* PorfolioID Sage visual review — "Sage on Black"
-   User review: the Sage accents work, but the full slate background makes
-   the profile feel visually empty. This pass restores PorfolioID's original
-   near-black atmosphere and keeps Sage as the personality/accent system.
-
-   Near Black    #080808 = page base
-   Sage          #8DB580 = primary theme accent
-   Soft Sage     #C2CFB2 = readable/light accent
-   Dusty Stone   #BFAFAF = contrasting secondary/emphasis
+   Refined from visual review:
+   - PorfolioID near-black remains the page base
+   - Sage green is the dominant visible accent
+   - Soft Sage supports readable secondary details
+   - Warm neutral remains subordinate and is not used as the hero signature
 
    No Gold is used as Sage public-theme decoration.
    Fixed category, status, external platform-brand, and product-control colors
@@ -14,7 +11,6 @@
 */
 
 [data-theme="sage"] {
-  /* Restore the original PorfolioID dark base instead of tinting the whole page. */
   --black: #080808;
 
   --accent-primary: #8DB580;
@@ -23,13 +19,13 @@
   --accent-light-rgb: 194 207 178;
   --accent-dark: #0F1B27;
   --accent-dark-rgb: 15 27 39;
-  --accent-secondary: #BFAFAF;
-  --accent-secondary-rgb: 191 175 175;
+  --accent-secondary: #DDD1C7;
+  --accent-secondary-rgb: 221 209 199;
 
   --accent-text: var(--accent-light);
   --accent-text-rgb: var(--accent-light-rgb);
-  --accent-emphasis: var(--accent-secondary);
-  --accent-emphasis-rgb: var(--accent-secondary-rgb);
+  --accent-emphasis: var(--accent-primary);
+  --accent-emphasis-rgb: var(--accent-primary-rgb);
   --accent-icon: var(--accent-light);
   --accent-icon-rgb: var(--accent-light-rgb);
   --accent-border: var(--accent-primary);
@@ -38,7 +34,7 @@
   --accent-surface-rgb: var(--accent-primary-rgb);
 }
 
-/* ── RESTORE PORFOLIOID'S DENSER DARK ATMOSPHERE ─────────────────── */
+/* ── PORFOLIOID NEAR-BLACK BASE ───────────────────────────────────── */
 [data-theme="sage"] body,
 [data-theme="sage"] #epkContent,
 [data-theme="sage"] .hero,
@@ -50,30 +46,35 @@
 
 [data-theme="sage"] nav {
   background: rgba(8,8,8,0.94);
-  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.15);
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.18);
 }
 
-/* Keep the image fade visually integrated with the original near-black page. */
+[data-theme="sage"] .nav-logo span,
+[data-theme="sage"] .nav-links a:hover {
+  color: var(--accent-primary);
+}
+
 [data-theme="sage"] .hero-image-panel::after {
   background:
     linear-gradient(to right, transparent 40%, #080808 100%),
     linear-gradient(to bottom, transparent 60%, #080808 100%);
 }
 
-/* Sage appears as a controlled light field, not a full background color. */
 [data-theme="sage"] .hero-content {
   background:
-    radial-gradient(circle at 22% 18%, rgb(var(--accent-primary-rgb) / 0.085), transparent 38%),
-    linear-gradient(110deg, rgba(8,8,8,0.98), rgba(8,8,8,0.94) 70%);
+    radial-gradient(circle at 22% 18%, rgb(var(--accent-primary-rgb) / 0.07), transparent 38%),
+    linear-gradient(110deg, rgba(8,8,8,0.985), rgba(8,8,8,0.95) 70%);
 }
 
+/* Signature name treatment: Leslie stays neutral, Ann Guerra carries Sage. */
 [data-theme="sage"] .hero-name em {
-  color: var(--accent-secondary);
+  color: var(--accent-primary);
 }
 
+/* Role cards: subtle green framing with readable soft-sage icons. */
 [data-theme="sage"] .hero-role-item {
-  background: rgb(var(--accent-primary-rgb) / 0.045);
-  border-color: rgb(var(--accent-primary-rgb) / 0.34);
+  background: rgb(var(--accent-primary-rgb) / 0.04);
+  border-color: rgb(var(--accent-primary-rgb) / 0.42);
   box-shadow: inset 0 0 0 1px rgb(var(--accent-light-rgb) / 0.025);
 }
 
@@ -85,35 +86,37 @@
 [data-theme="sage"] .hero-stats-row,
 [data-theme="sage"] .hero-presence-bar {
   background: transparent;
-  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.18);
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.20);
 }
 
-[data-theme="sage"] .hero-presence-eyebrow {
-  color: var(--accent-light);
+[data-theme="sage"] .hero-presence-eyebrow,
+[data-theme="sage"] .hero-stat-item--gold .hero-stat-n,
+[data-theme="sage"] .hcl-arrow {
+  color: var(--accent-primary);
 }
 
 [data-theme="sage"] .hero-presence-explore,
 [data-theme="sage"] .hero-cta-primary,
 [data-theme="sage"] .ch-btn-gold {
-  color: var(--accent-secondary);
-  border-color: var(--accent-secondary);
+  color: var(--accent-light);
+  border-color: var(--accent-primary);
 }
 
 [data-theme="sage"] .hero-presence-explore:hover,
 [data-theme="sage"] .hero-cta-primary:hover,
 [data-theme="sage"] .ch-btn-gold:hover {
-  background: rgb(var(--accent-primary-rgb) / 0.075);
-  box-shadow: 0 0 12px rgb(var(--accent-primary-rgb) / 0.18);
+  background: rgb(var(--accent-primary-rgb) / 0.085);
+  box-shadow: 0 0 14px rgb(var(--accent-primary-rgb) / 0.24);
 }
 
-/* Subtle section-local atmosphere adds depth without flooding empty space. */
+/* Keep later sections dense; add only restrained green atmosphere. */
 [data-theme="sage"] .career-profile-section,
 [data-theme="sage"] .works-section,
 [data-theme="sage"] .gallery-section {
   background-image: linear-gradient(
     180deg,
-    rgb(var(--accent-primary-rgb) / 0.028),
-    transparent 220px
+    rgb(var(--accent-primary-rgb) / 0.02),
+    transparent 200px
   );
 }
 
@@ -126,7 +129,7 @@
   box-shadow: inset 0 0 0 1px rgb(var(--accent-primary-rgb) / 0.035);
 }
 
-/* ── REMOVE LEGACY GOLD FROM PUBLIC THEME DECORATION ─────────────── */
+/* ── GREEN-FORWARD PUBLIC THEME ACCENTS ───────────────────────────── */
 [data-theme="sage"] .section-label,
 [data-theme="sage"] .video-list-meta,
 [data-theme="sage"] .ew-sidebar-section-label,
@@ -137,25 +140,26 @@
 [data-theme="sage"] .booking-note,
 [data-theme="sage"] .identity-block-label,
 [data-theme="sage"] .timeline-year {
-  color: var(--accent-secondary) !important;
+  color: var(--accent-primary) !important;
 }
 
 [data-theme="sage"] .section-label::after {
-  background: linear-gradient(to right, rgb(var(--accent-primary-rgb) / 0.34), transparent) !important;
+  background: linear-gradient(to right, rgb(var(--accent-primary-rgb) / 0.45), transparent) !important;
 }
 
 [data-theme="sage"] #bioToggleBtn {
-  color: var(--accent-secondary) !important;
-  border-color: rgb(var(--accent-primary-rgb) / 0.40) !important;
+  color: var(--accent-light) !important;
+  border-color: rgb(var(--accent-primary-rgb) / 0.52) !important;
 }
 
 [data-theme="sage"] #bioToggleBtn:hover {
-  background: rgb(var(--accent-primary-rgb) / 0.07) !important;
+  background: rgb(var(--accent-primary-rgb) / 0.08) !important;
+  box-shadow: 0 0 10px rgb(var(--accent-primary-rgb) / 0.16);
 }
 
 [data-theme="sage"] #bioShort p:first-child::first-letter,
 [data-theme="sage"] .career-bio-text p:first-of-type::first-letter {
-  color: var(--accent-secondary) !important;
+  color: var(--accent-primary) !important;
 }
 
 [data-theme="sage"] .ch3-icon svg {
@@ -164,12 +168,32 @@
 
 [data-theme="sage"] .ch3-icon,
 [data-theme="sage"] .collapsible-icon {
-  border-color: rgb(var(--accent-primary-rgb) / 0.34);
+  border-color: rgb(var(--accent-primary-rgb) / 0.45);
 }
 
-/* Gallery/exhibition framing stays Sage without tinting the museum room. */
-[data-theme="sage"] .exhibition-frame {
-  border-color: rgb(var(--accent-primary-rgb) / 0.55) !important;
+/* ── PHOTOS / EXHIBITION ──────────────────────────────────────────── */
+[data-theme="sage"] .gallery-section .section-label {
+  color: var(--accent-primary) !important;
+}
+
+[data-theme="sage"] .exhibition-frame,
+[data-theme="sage"] .gallery-scroll-item,
+[data-theme="sage"] .gallery-magazine-hero,
+[data-theme="sage"] .gallery-collection-lb-inner {
+  border-color: rgb(var(--accent-primary-rgb) / 0.58) !important;
+}
+
+[data-theme="sage"] .exhibition-arrow,
+[data-theme="sage"] .gallery-scroll-arrow-btn {
+  color: var(--accent-light) !important;
+  border-color: rgb(var(--accent-primary-rgb) / 0.52) !important;
+}
+
+[data-theme="sage"] .exhibition-arrow:hover,
+[data-theme="sage"] .gallery-scroll-arrow-btn:hover {
+  background: rgb(var(--accent-primary-rgb) / 0.08) !important;
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 12px rgb(var(--accent-primary-rgb) / 0.20);
 }
 
 [data-theme="sage"] .exhibition-caption-year,
@@ -182,18 +206,18 @@
 
 [data-theme="sage"] .ew-sidebar-btn:hover {
   background: rgb(var(--accent-primary-rgb) / 0.05);
-  border-left-color: rgb(var(--accent-primary-rgb) / 0.42);
+  border-left-color: rgb(var(--accent-primary-rgb) / 0.48);
 }
 
 [data-theme="sage"] .ew-sidebar-btn.active {
   border-left-color: var(--accent-primary);
-  background: rgb(var(--accent-primary-rgb) / 0.07);
+  background: rgb(var(--accent-primary-rgb) / 0.075);
 }
 
 /* ── CONNECT HUB ─────────────────────────────────────────────────── */
 [data-theme="sage"] .connect-hub {
   background:
-    radial-gradient(circle at 78% 0%, rgb(var(--accent-primary-rgb) / 0.05), transparent 28%),
+    radial-gradient(circle at 78% 0%, rgb(var(--accent-primary-rgb) / 0.045), transparent 28%),
     #080808;
 }
 
@@ -206,11 +230,21 @@
 [data-theme="sage"] .ch-amazon-cta,
 [data-theme="sage"] .ch-row-arrow,
 [data-theme="sage"] .ch-btn-outline {
-  color: var(--accent-secondary);
+  color: var(--accent-primary) !important;
+}
+
+[data-theme="sage"] .ch-eyebrow-line,
+[data-theme="sage"] .ch-section-label::after {
+  background: linear-gradient(to right, rgb(var(--accent-primary-rgb) / 0.52), transparent) !important;
 }
 
 [data-theme="sage"] .ch-btn-outline {
-  border-color: rgb(var(--accent-primary-rgb) / 0.40);
+  border-color: rgb(var(--accent-primary-rgb) / 0.48) !important;
 }
 
-/* Music/category semantics remain fixed globally and are not recolored here. */
+[data-theme="sage"] .ch-btn-outline:hover {
+  background: rgb(var(--accent-primary-rgb) / 0.08) !important;
+}
+
+/* Fixed category/status/product-control semantics remain separate.
+   This file changes public Sage theme decoration only. */
