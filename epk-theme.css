@@ -179,6 +179,182 @@ nav {
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
+   Phase 2 conversion: highlights, Creative Works, audio, collapsibles,
+   booking, and identity metadata.
+   ────────────────────────────────────────────────────────────────────────── */
+
+.ch3-header {
+  border-bottom-color: rgb(var(--accent-surface-rgb) / 0.12);
+}
+
+.ch3-label,
+.works-label,
+.work-card-cta,
+.collapsible-header-label,
+.collapsible-toggle,
+.booking-note,
+.identity-block-label,
+.identity-featured-role,
+.identity-rep-role,
+.timeline-year {
+  color: var(--accent-text);
+}
+
+.ch3-grid {
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+}
+
+.ch3-icon {
+  background: rgb(var(--accent-surface-rgb) / 0.10);
+  border-color: rgb(var(--accent-surface-rgb) / 0.25);
+}
+
+.ch3-icon svg {
+  fill: var(--accent-icon) !important;
+}
+
+.ch3-viewcomplete {
+  border-color: var(--accent-border);
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+}
+
+.ch3-viewcomplete:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.18);
+}
+
+.work-card {
+  border-color: rgb(var(--accent-surface-rgb) / 0.12);
+}
+
+.work-card:hover {
+  border-color: rgb(var(--accent-surface-rgb) / 0.40);
+  box-shadow:
+    0 22px 56px rgba(0,0,0,0.5),
+    0 0 0 1px rgb(var(--accent-surface-rgb) / 0.15),
+    0 0 40px rgb(var(--accent-surface-rgb) / 0.16);
+}
+
+.work-card-status {
+  color: var(--accent-emphasis);
+  border-color: rgb(var(--accent-border-rgb) / 0.40);
+  box-shadow: 0 0 12px rgb(var(--accent-surface-rgb) / 0.18);
+}
+
+.work-card:hover .work-card-status {
+  border-color: rgb(var(--accent-border-rgb) / 0.65);
+  box-shadow: 0 0 20px rgb(var(--accent-surface-rgb) / 0.32);
+  animation: theme-work-badge-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes theme-work-badge-pulse {
+  0%, 100% { box-shadow: 0 0 16px rgb(var(--accent-surface-rgb) / 0.24); }
+  50% { box-shadow: 0 0 26px rgb(var(--accent-surface-rgb) / 0.40); }
+}
+
+.work-card-status::after {
+  background: linear-gradient(
+    110deg,
+    transparent,
+    rgb(var(--accent-emphasis-rgb) / 0.45),
+    transparent
+  );
+}
+
+.work-card-meta {
+  color: rgb(var(--accent-text-rgb) / 0.42);
+}
+
+.work-player {
+  background: rgb(var(--accent-surface-rgb) / 0.05);
+  border-color: rgb(var(--accent-surface-rgb) / 0.18);
+}
+
+.wp-playbtn {
+  border-color: var(--accent-border);
+  background: rgb(var(--accent-surface-rgb) / 0.10);
+  color: var(--accent-text);
+}
+
+.wp-playbtn:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.22);
+  box-shadow: 0 0 14px rgb(var(--accent-surface-rgb) / 0.25);
+}
+
+.wp-playbtn svg,
+.wp-vol-icon:hover {
+  fill: var(--accent-emphasis);
+}
+
+.wp-bar {
+  background: rgb(var(--accent-surface-rgb) / 0.26);
+}
+
+.wp-waveform:hover .wp-bar {
+  background: rgb(var(--accent-surface-rgb) / 0.40);
+}
+
+.wp-progress-fill {
+  background: linear-gradient(
+    to right,
+    rgb(var(--accent-surface-rgb) / 0) 0%,
+    rgb(var(--accent-surface-rgb) / 0.18) 100%
+  );
+}
+
+.wp-progress-fill::before {
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--accent-emphasis) 0,
+    var(--accent-emphasis) 1.5px,
+    transparent 1.5px,
+    transparent 3px
+  );
+}
+
+.wp-vol-icon {
+  fill: rgb(var(--accent-icon-rgb) / 0.60);
+}
+
+.wp-vol-slider {
+  accent-color: var(--accent-border);
+  background: rgb(var(--accent-surface-rgb) / 0.25);
+}
+
+.collapsible-icon {
+  border-color: rgb(var(--accent-surface-rgb) / 0.25);
+  color: var(--accent-icon);
+  background: rgb(var(--accent-surface-rgb) / 0.04);
+}
+
+.collapsible-header:hover .collapsible-icon {
+  border-color: rgb(var(--accent-border-rgb) / 0.50);
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+}
+
+.booking-title em {
+  color: var(--accent-emphasis);
+}
+
+.identity-block {
+  border-left-color: rgb(var(--accent-surface-rgb) / 0.30);
+}
+
+.identity-tag {
+  border-color: rgb(var(--accent-surface-rgb) / 0.30);
+}
+
+/* Verified is a fixed truth/trust status, never a profile-theme accent. */
+.identity-verified,
+.award-badge-verified {
+  color: var(--status-verified) !important;
+}
+
+.award-badge-verified {
+  background: rgb(var(--semantic-positive-rgb) / 0.12) !important;
+  border-color: rgb(var(--semantic-positive-rgb) / 0.25) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
    Platform-brand / product-control overrides
    These stay fixed when a profile owner changes the public theme.
    ────────────────────────────────────────────────────────────────────────── */
