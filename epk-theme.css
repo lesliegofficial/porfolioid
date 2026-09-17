@@ -89,3 +89,155 @@
   --accent-surface: var(--accent-primary);
   --accent-surface-rgb: var(--accent-primary-rgb);
 }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Phase 1 conversion: navigation + hero
+   These are confirmed theme-decoration surfaces from the audit.
+   Legacy declarations remain in epk.css during migration; this file is the
+   semantic override layer so Gold stays visually equivalent while Wine can
+   be evaluated without a blind legacy-file rewrite.
+   ────────────────────────────────────────────────────────────────────────── */
+
+nav {
+  border-bottom-color: rgb(var(--accent-surface-rgb) / 0.12);
+}
+
+.nav-logo span,
+.nav-links a:hover {
+  color: var(--accent-text);
+}
+
+.hero-name em {
+  color: var(--accent-emphasis);
+}
+
+.hero-roles-row,
+.hero-stats-row,
+.hero-presence-bar {
+  border-bottom-color: rgb(var(--accent-surface-rgb) / 0.12);
+}
+
+.hero-role-item {
+  background: rgb(var(--accent-surface-rgb) / 0.05);
+  border-color: rgb(var(--accent-surface-rgb) / 0.15);
+}
+
+.hero-role-icon {
+  fill: var(--accent-icon);
+}
+
+.hero-stat-item--gold .hero-stat-n,
+.hcl-arrow,
+.hero-presence-eyebrow {
+  color: var(--accent-text);
+}
+
+.hero-presence-explore {
+  color: var(--accent-text);
+  border-color: var(--accent-border);
+  box-shadow: 0 0 0 rgb(var(--accent-surface-rgb) / 0);
+  animation: theme-explore-pulse 2.5s ease-in-out infinite;
+}
+
+.hero-presence-bar:hover .hero-presence-explore {
+  background: rgb(var(--accent-surface-rgb) / 0.15);
+  box-shadow: 0 0 12px rgb(var(--accent-surface-rgb) / 0.4);
+  animation: none;
+}
+
+@keyframes theme-explore-pulse {
+  0%, 100% {
+    box-shadow: 0 0 4px 1px rgb(var(--accent-surface-rgb) / 0.6);
+    border-color: rgb(var(--accent-border-rgb) / 0.6);
+  }
+  50% {
+    box-shadow: 0 0 14px 4px rgb(var(--accent-surface-rgb) / 0.9);
+    border-color: var(--accent-border);
+    color: #fff;
+  }
+}
+
+.hero-presence-icon:hover {
+  border-color: var(--hpi-c, var(--accent-icon));
+}
+
+.hero-cta-primary {
+  border-color: var(--accent-border);
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+  box-shadow: 0 0 0 rgb(var(--accent-surface-rgb) / 0);
+  animation: theme-explore-pulse 2.5s ease-in-out infinite;
+}
+
+.hero-cta-primary:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.18);
+  box-shadow: 0 0 12px rgb(var(--accent-surface-rgb) / 0.4);
+  animation: none;
+}
+
+.hero-cta-primary svg {
+  fill: var(--accent-icon);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Platform-brand / product-control overrides
+   These stay fixed when a profile owner changes the public theme.
+   ────────────────────────────────────────────────────────────────────────── */
+
+.nav-edit-btn {
+  color: var(--owner-control-color);
+  border-color: rgb(var(--product-control-accent-rgb) / 0.6);
+}
+
+.nav-edit-btn:hover {
+  background: rgb(var(--product-control-accent-rgb) / 0.12);
+  border-color: var(--owner-control-color);
+}
+
+.owner-bar {
+  border-top-color: rgb(var(--product-control-accent-rgb) / 0.2);
+}
+
+.owner-bar-label,
+.owner-move-btn {
+  color: var(--owner-control-color);
+}
+
+.owner-move-btn {
+  background: rgb(var(--product-control-accent-rgb) / 0.1);
+  border-color: rgb(var(--product-control-accent-rgb) / 0.3);
+}
+
+.owner-move-btn:hover {
+  background: rgb(var(--product-control-accent-rgb) / 0.2);
+}
+
+.owner-up {
+  background: rgb(var(--product-control-accent-rgb) / 0.8);
+}
+
+.owner-down {
+  background: rgb(var(--product-control-accent-rgb) / 0.6);
+}
+
+.owner-up:hover,
+.owner-down:hover {
+  background: var(--owner-control-color);
+}
+
+body.edit-mode .nav-edit-btn {
+  background: var(--edit-feedback-color) !important;
+  color: #000 !important;
+}
+
+body.edit-mode [data-editable]:hover {
+  outline-color: rgb(var(--product-control-accent-rgb) / 0.5);
+  background: rgb(var(--product-control-accent-rgb) / 0.05);
+}
+
+.edit-field-label {
+  color: var(--edit-feedback-color);
+}
+
+.unsaved-dot {
+  background: var(--edit-feedback-color);
+}
