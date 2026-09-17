@@ -1,0 +1,62 @@
+/* Wine visual-review refinement
+   Uses only the already approved Wine palette plus existing PorfolioID neutrals.
+   No new literal colors are introduced.
+
+   First visual review showed Wine Light dominating the hero and reading as
+   blush/rose. This layer moves theme identity into larger atmospheric surfaces
+   while reserving Wine Light for smaller readable/functional accents.
+*/
+
+[data-theme="wine"] .hero-content {
+  background:
+    radial-gradient(circle at 28% 24%, rgb(var(--accent-primary-rgb) / 0.20), transparent 42%),
+    linear-gradient(110deg, rgb(var(--accent-primary-rgb) / 0.12), transparent 66%);
+}
+
+/* The oversized surname should not make the entire theme read as blush. */
+[data-theme="wine"] .hero-name em {
+  color: var(--white);
+}
+
+/* Deep Wine carries atmosphere in decorative card surfaces. */
+[data-theme="wine"] .hero-role-item {
+  background: rgb(var(--accent-primary-rgb) / 0.16);
+  border-color: rgb(var(--accent-primary-rgb) / 0.45);
+  box-shadow: inset 0 0 0 1px rgb(var(--accent-primary-rgb) / 0.08);
+}
+
+/* Icons remain Wine Light because they are functional/meaningful marks. */
+[data-theme="wine"] .hero-role-icon {
+  fill: var(--accent-light);
+}
+
+[data-theme="wine"] .hero-stats-row {
+  background: linear-gradient(90deg, rgb(var(--accent-primary-rgb) / 0.10), transparent 58%);
+}
+
+[data-theme="wine"] .hero-presence-bar {
+  background: linear-gradient(90deg, rgb(var(--accent-primary-rgb) / 0.15), transparent 68%);
+}
+
+[data-theme="wine"] .hero-presence-eyebrow,
+[data-theme="wine"] .hero-presence-explore {
+  color: var(--accent-light);
+}
+
+/* Carry the same deep-Wine atmosphere into the next visible section without
+   recoloring fixed category/status semantics. */
+[data-theme="wine"] .career-profile-section,
+[data-theme="wine"] .works-section {
+  background-image: linear-gradient(
+    180deg,
+    rgb(var(--accent-primary-rgb) / 0.055),
+    transparent 240px
+  );
+}
+
+[data-theme="wine"] .work-card,
+[data-theme="wine"] .resume-card,
+[data-theme="wine"] .asset-card,
+[data-theme="wine"] .award-card {
+  box-shadow: inset 0 0 0 1px rgb(var(--accent-primary-rgb) / 0.035);
+}
