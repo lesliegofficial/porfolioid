@@ -1,0 +1,194 @@
+/* PorfolioID Sage visual review — "Sage Stone"
+   Alternative direction built from the user's supplied swatches.
+
+   Deep Charcoal #0F1B27 = page atmosphere/base
+   Sage          #8DB580 = primary theme accent
+   Soft Sage     #C2CFB2 = readable/light accent
+   Dusty Stone   #BFAFAF = contrasting secondary/emphasis
+
+   No Gold is used as Sage theme decoration.
+   Fixed category, status, external platform-brand, and product-control colors
+   remain architecturally separate.
+*/
+
+[data-theme="sage"] {
+  /* Make legacy var(--black) surfaces inherit the Sage base consistently. */
+  --black: #0F1B27;
+
+  --accent-primary: #8DB580;
+  --accent-primary-rgb: 141 181 128;
+  --accent-light: #C2CFB2;
+  --accent-light-rgb: 194 207 178;
+  --accent-dark: #0F1B27;
+  --accent-dark-rgb: 15 27 39;
+  --accent-secondary: #BFAFAF;
+  --accent-secondary-rgb: 191 175 175;
+
+  --accent-text: var(--accent-light);
+  --accent-text-rgb: var(--accent-light-rgb);
+  --accent-emphasis: var(--accent-secondary);
+  --accent-emphasis-rgb: var(--accent-secondary-rgb);
+  --accent-icon: var(--accent-light);
+  --accent-icon-rgb: var(--accent-light-rgb);
+  --accent-border: var(--accent-primary);
+  --accent-border-rgb: var(--accent-primary-rgb);
+  --accent-surface: var(--accent-primary);
+  --accent-surface-rgb: var(--accent-primary-rgb);
+}
+
+/* ── CONSISTENT PAGE ATMOSPHERE ─────────────────────────────────────── */
+[data-theme="sage"] body,
+[data-theme="sage"] #epkContent,
+[data-theme="sage"] .hero,
+[data-theme="sage"] .career-profile-section,
+[data-theme="sage"] .gallery-section,
+[data-theme="sage"] .exhibition-outer {
+  background-color: var(--accent-dark) !important;
+}
+
+[data-theme="sage"] nav {
+  background: rgb(var(--accent-dark-rgb) / 0.95);
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.18);
+}
+
+[data-theme="sage"] .hero-image-panel::after {
+  background:
+    linear-gradient(to right, transparent 40%, rgb(var(--accent-dark-rgb)) 100%),
+    linear-gradient(to bottom, transparent 60%, rgb(var(--accent-dark-rgb)) 100%);
+}
+
+[data-theme="sage"] .hero-content {
+  background:
+    radial-gradient(circle at 27% 20%, rgb(var(--accent-primary-rgb) / 0.12), transparent 43%),
+    linear-gradient(110deg, rgb(var(--accent-dark-rgb) / 0.98), rgb(var(--accent-dark-rgb) / 0.84) 68%);
+}
+
+/* Dusty Stone is the visible contrast color; Sage carries structure. */
+[data-theme="sage"] .hero-name em {
+  color: var(--accent-secondary);
+}
+
+[data-theme="sage"] .hero-role-item {
+  background: rgb(var(--accent-primary-rgb) / 0.055);
+  border-color: rgb(var(--accent-primary-rgb) / 0.36);
+  box-shadow: inset 0 0 0 1px rgb(var(--accent-light-rgb) / 0.035);
+}
+
+[data-theme="sage"] .hero-role-icon {
+  fill: var(--accent-light);
+}
+
+[data-theme="sage"] .hero-roles-row,
+[data-theme="sage"] .hero-stats-row,
+[data-theme="sage"] .hero-presence-bar {
+  background: transparent;
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.20);
+}
+
+[data-theme="sage"] .hero-presence-eyebrow {
+  color: var(--accent-light);
+}
+
+[data-theme="sage"] .hero-presence-explore,
+[data-theme="sage"] .hero-cta-primary,
+[data-theme="sage"] .ch-btn-gold {
+  color: var(--accent-secondary);
+  border-color: var(--accent-secondary);
+}
+
+[data-theme="sage"] .hero-presence-explore:hover,
+[data-theme="sage"] .hero-cta-primary:hover,
+[data-theme="sage"] .ch-btn-gold:hover {
+  background: rgb(var(--accent-secondary-rgb) / 0.09);
+  box-shadow: 0 0 14px rgb(var(--accent-secondary-rgb) / 0.22);
+}
+
+/* ── REMOVE LEGACY GOLD FROM PUBLIC THEME DECORATION ───────────────── */
+[data-theme="sage"] .section-label,
+[data-theme="sage"] .video-list-meta,
+[data-theme="sage"] .ew-sidebar-section-label,
+[data-theme="sage"] .ew-sidebar-btn.active,
+[data-theme="sage"] .ch3-label,
+[data-theme="sage"] .works-label,
+[data-theme="sage"] .collapsible-header-label,
+[data-theme="sage"] .booking-note,
+[data-theme="sage"] .identity-block-label,
+[data-theme="sage"] .timeline-year {
+  color: var(--accent-secondary) !important;
+}
+
+[data-theme="sage"] .section-label::after {
+  background: linear-gradient(to right, rgb(var(--accent-secondary-rgb) / 0.40), transparent) !important;
+}
+
+[data-theme="sage"] #bioToggleBtn {
+  color: var(--accent-secondary) !important;
+  border-color: rgb(var(--accent-secondary-rgb) / 0.40) !important;
+}
+
+[data-theme="sage"] #bioToggleBtn:hover {
+  background: rgb(var(--accent-secondary-rgb) / 0.08) !important;
+}
+
+[data-theme="sage"] #bioShort p:first-child::first-letter,
+[data-theme="sage"] .career-bio-text p:first-of-type::first-letter {
+  color: var(--accent-secondary) !important;
+}
+
+[data-theme="sage"] .ch3-icon svg {
+  fill: var(--accent-light) !important;
+}
+
+[data-theme="sage"] .ch3-icon,
+[data-theme="sage"] .collapsible-icon {
+  border-color: rgb(var(--accent-primary-rgb) / 0.38);
+}
+
+/* Gallery/exhibition framing follows Sage Stone instead of Gold. */
+[data-theme="sage"] .exhibition-frame {
+  border-color: rgb(var(--accent-primary-rgb) / 0.58) !important;
+}
+
+[data-theme="sage"] .exhibition-caption-year,
+[data-theme="sage"] .gallery-scroll-category,
+[data-theme="sage"] .gallery-scroll-counter,
+[data-theme="sage"] .gallery-collection-count,
+[data-theme="sage"] .gallery-collection-cta {
+  color: var(--accent-light) !important;
+}
+
+[data-theme="sage"] .ew-sidebar-btn:hover {
+  background: rgb(var(--accent-primary-rgb) / 0.06);
+  border-left-color: rgb(var(--accent-secondary-rgb) / 0.42);
+}
+
+[data-theme="sage"] .ew-sidebar-btn.active {
+  border-left-color: var(--accent-secondary);
+  background: rgb(var(--accent-secondary-rgb) / 0.08);
+}
+
+/* ── CONNECT HUB ────────────────────────────────────────────────────── */
+[data-theme="sage"] .connect-hub {
+  background:
+    radial-gradient(circle at 78% 0%, rgb(var(--accent-primary-rgb) / 0.075), transparent 32%),
+    var(--accent-dark);
+}
+
+/* Gate 5 visual test: old Connect mid-Gold maps to Dusty Stone here. */
+[data-theme="sage"] .ch-eyebrow,
+[data-theme="sage"] .ch-section-label,
+[data-theme="sage"] .ch-hero-title em,
+[data-theme="sage"] .ch-pcard-cat,
+[data-theme="sage"] .ch-pcard-cta,
+[data-theme="sage"] .ch-amazon-cat,
+[data-theme="sage"] .ch-amazon-cta,
+[data-theme="sage"] .ch-row-arrow,
+[data-theme="sage"] .ch-btn-outline {
+  color: var(--accent-secondary);
+}
+
+[data-theme="sage"] .ch-btn-outline {
+  border-color: rgb(var(--accent-secondary-rgb) / 0.42);
+}
+
+/* Music/category semantics remain fixed globally and are not recolored here. */
