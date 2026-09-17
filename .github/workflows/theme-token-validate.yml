@@ -1,0 +1,126 @@
+name: Validate theme token conversion
+
+on:
+  push:
+    branches: [theme-token-conversion]
+    paths:
+      - .github/workflows/theme-token-validate.yml
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: theme-token-conversion
+          fetch-depth: 0
+      - name: Fix duplicate PB blocks and validate semantics
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('epk.css')
+          css = p.read_text()
+
+          def replace_blocks(text, selector, replacements):
+              pattern = re.compile(r'(' + re.escape(selector) + r'\s*\{)(.*?)(\})', re.S)
+              count = 0
+              def repl(m):
+                  nonlocal count
+                  count += 1
+                  body = m.group(2)
+                  for old, new in replacements:
+                      body = body.replace(old, new)
+                  return m.group(1) + body + m.group(3)
+              text = pattern.sub(repl, text)
+              if count == 0:
+                  raise RuntimeError(f'No blocks found for {selector}')
+              return text, count
+
+          # Every duplicated OWNER CONTROLS region is product UI, never profile-theme UI.
+          owner_pattern = re.compile(r'(\/\* OWNER CONTROLS \*\/.*?)(?=\n\s*@media \(max-width: 768px\))', re.S)
+          owner_count = 0
+          def owner_repl(m):
+              global owner_count
+              region = m.group(1)
+              region = region.replace('var(--accent-text)', 'var(--owner-control-color)')
+              region = region.replace('var(--accent-border)', 'var(--owner-control-color)')
+              region = region.replace('var(--accent-solid)', 'var(--owner-control-color)')
+              region = region.replace('var(--accent-primary-rgb)', 'var(--owner-control-rgb)')
+              region = region.replace('var(--accent-primary)', 'var(--owner-control-color)')
+              return region
+          css, n = owner_pattern.subn(owner_repl, css)
+          if n < 2:
+              raise RuntimeError(f'Expected duplicate OWNER CONTROLS regions, found {n}')
+
+          # All edit-mode feedback copies are PorfolioID product feedback.
+          for selector in [
+              'body.edit-mode .nav-edit-btn',
+              'body.edit-mode [data-editable]:hover',
+              'body.edit-mode [data-editable]:focus',
+              '.edit-field-label',
+              '.unsaved-dot',
+          ]:
+              css, _ = replace_blocks(css, selector, [
+                  ('var(--accent-text)', 'var(--edit-feedback-color)'),
+                  ('var(--accent-border)', 'var(--edit-feedback-color)'),
+                  ('var(--accent-solid)', 'var(--edit-feedback-color)'),
+                  ('var(--accent-primary-rgb)', 'var(--edit-feedback-rgb)'),
+                  ('var(--accent-primary)', 'var(--edit-feedback-color)'),
+              ])
+
+          p.write_text(css)
+
+          # Semantic assertions after duplicate fix.
+          if re.search(r'/\* OWNER CONTROLS \*/.*?var\(--accent-(?:text|border|solid|primary)', css, re.S):
+              raise RuntimeError('Theme accent leaked into an OWNER CONTROLS region')
+          for selector in ['body.edit-mode .nav-edit-btn', 'body.edit-mode [data-editable]:hover', 'body.edit-mode [data-editable]:focus', '.edit-field-label', '.unsaved-dot']:
+              for m in re.finditer(re.escape(selector) + r'\s*\{(.*?)\}', css, re.S):
+                  if 'var(--accent-' in m.group(1):
+                      raise RuntimeError(f'Theme accent leaked into edit feedback: {selector}')
+
+          js = Path('epk.js').read_text()
+          required = [
+              '--category-professional', '--category-music', '--status-verified',
+              '--status-success', '--status-featured'
+          ]
+          for token in required:
+              if token not in css and token not in js:
+                  raise RuntimeError(f'Missing semantic token {token}')
+          if 'rgba(201,168,76,' in css or 'rgba(201,168,76,' in js:
+              raise RuntimeError('Raw Gold rgba remains')
+          if 'var(--gold)' in css or 'var(--gold)' in js:
+              raise RuntimeError('Active legacy var(--gold) remains')
+          if 'rgba(123,155,175,' in js or '#8FB8D0' in js:
+              raise RuntimeError('Untokenized Professional Blue remains in JS')
+          print('Semantic/PB validation passed')
+          PY
+          node --check epk.js
+          python - <<'PY'
+          from pathlib import Path
+          css = Path('epk.css').read_text()
+          # Coarse syntax sanity: converted CSS should have balanced braces.
+          if css.count('{') != css.count('}'):
+              raise SystemExit(f'CSS brace imbalance: {css.count("{")} vs {css.count("}")}')
+          bad = ['rgb(var(--accent-primary-rgb) / )', 'rgb(var(--accent-text-rgb) / )', 'rgb(var(--accent-icon-rgb) / )']
+          for s in bad:
+              if s in css:
+                  raise SystemExit(f'Invalid empty alpha expression: {s}')
+          print('CSS structural validation passed')
+          PY
+      - name: Commit PB duplicate fix if needed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add epk.css
+          if git diff --cached --quiet; then
+            echo "No PB fix needed"
+            exit 0
+          fi
+          git commit -m "Fix duplicate product-control theme leakage"
+          git push origin HEAD:theme-token-conversion
