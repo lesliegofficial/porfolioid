@@ -1,0 +1,91 @@
+/* PorfolioID theme token foundation
+   Architecture approved September 2026.
+   Theme decoration, content categories, statuses, and product controls
+   intentionally live in separate token namespaces.
+
+   GATE 3A: --category-music is provisional until Gold + Wine visual review.
+   GATE 5: Connect Hub #d7b84f remains literal in legacy source until visual review.
+*/
+
+:root,
+[data-theme="gold"] {
+  /* Raw theme palette — Gold */
+  --accent-primary: #C9A84C;
+  --accent-primary-rgb: 201 168 76;
+  --accent-light: #E8C97A;
+  --accent-light-rgb: 232 201 122;
+  --accent-dark: #8B6914;
+  --accent-dark-rgb: 139 105 20;
+  --accent-secondary: #4A7FA5;
+  --accent-secondary-rgb: 74 127 165;
+
+  /* Semantic theme roles */
+  --accent-text: var(--accent-primary);
+  --accent-text-rgb: var(--accent-primary-rgb);
+  --accent-emphasis: var(--accent-light);
+  --accent-emphasis-rgb: var(--accent-light-rgb);
+  --accent-icon: var(--accent-primary);
+  --accent-icon-rgb: var(--accent-primary-rgb);
+  --accent-border: var(--accent-primary);
+  --accent-border-rgb: var(--accent-primary-rgb);
+  --accent-surface: var(--accent-primary);
+  --accent-surface-rgb: var(--accent-primary-rgb);
+
+  /* Fixed content-category semantics */
+  --category-music: #C9A84C; /* GATE 3A — provisional */
+  --category-music-rgb: 201 168 76;
+  --category-professional: #8FB8D0;
+  --category-professional-rgb: 143 184 208;
+  --category-education: #A78BFA;
+  --category-education-rgb: 167 139 250;
+  --category-certification: #2DD4BF;
+  --category-certification-rgb: 45 212 191;
+  --category-award: #FBBF24;
+  --category-award-rgb: 251 191 36;
+  --category-press: #60A5FA;
+  --category-press-rgb: 96 165 250;
+  --category-contract: #F87171;
+  --category-contract-rgb: 248 113 113;
+
+  /* Fixed semantic statuses */
+  --semantic-positive: #7EC97E;
+  --semantic-positive-rgb: 126 201 126;
+  --status-verified: var(--semantic-positive);
+  --status-success: var(--semantic-positive);
+
+  /* Featured is semantic, but deliberately delegates to theme presentation. */
+  --status-featured: var(--accent-emphasis);
+
+  /* PorfolioID product-control language — independent from profile theme. */
+  --product-control-accent: #C9A84C;
+  --product-control-accent-rgb: 201 168 76;
+  --owner-control-color: var(--product-control-accent);
+  --edit-feedback-color: var(--product-control-accent);
+}
+
+[data-theme="wine"] {
+  /* Raw theme palette — Wine */
+  --accent-primary: #610C27;
+  --accent-primary-rgb: 97 12 39;
+  --accent-light: #E3C1B4;
+  --accent-light-rgb: 227 193 180;
+  --accent-dark: #3D0817;
+  --accent-dark-rgb: 61 8 23;
+  --accent-secondary: #5B6B54;
+  --accent-secondary-rgb: 91 107 84;
+
+  /* Gate 1 locked policy:
+     Light handles readable text, emphasis, icons, and functional borders.
+     Primary handles atmospheric/surface tinting.
+  */
+  --accent-text: var(--accent-light);
+  --accent-text-rgb: var(--accent-light-rgb);
+  --accent-emphasis: var(--accent-light);
+  --accent-emphasis-rgb: var(--accent-light-rgb);
+  --accent-icon: var(--accent-light);
+  --accent-icon-rgb: var(--accent-light-rgb);
+  --accent-border: var(--accent-light);
+  --accent-border-rgb: var(--accent-light-rgb);
+  --accent-surface: var(--accent-primary);
+  --accent-surface-rgb: var(--accent-primary-rgb);
+}
