@@ -206,7 +206,7 @@
 /* ── DEEP PURPLE ─────────────────────────────────────────────────────
    Screenshot-inspired palette:
    deep purple #3A3068, emerald #55B67A, dusty lavender #87819B,
-   soft white #F4FBF8. Muted rich purple #75639A is used for visible
+   crisp white #FFFFFF. Muted rich purple #75639A is used for visible
    large-format emphasis where the base #3A3068 would be too dark. */
 [data-theme="plum"] {
   --black: #0D0D0F;
@@ -214,9 +214,9 @@
   --dark-2: #17171E;
   --dark-3: #1D1B28;
   --dark-4: #262238;
-  --gray: #9793A0;
-  --gray-light: #D0CBD7;
-  --white: #F4FBF8;
+  --gray: #AAA6B2;
+  --gray-light: #E3E0E8;
+  --white: #FFFFFF;
 
   --accent-primary: #3A3068;
   --accent-primary-rgb: 58 48 104;
@@ -475,7 +475,7 @@
 [data-theme="plum"] .ch-btn-gold,
 [data-theme="plum"] .ch-btn-outline {
   border-color:#75639A !important;
-  color:#F4FBF8 !important;
+  color:#FFFFFF !important;
   box-shadow:0 0 8px rgb(58 48 104 / 0.28) !important;
   text-shadow:none !important;
 }
@@ -824,7 +824,7 @@
 }
 [data-theme="plum"] #music audio::-webkit-media-controls-current-time-display,
 [data-theme="plum"] #music audio::-webkit-media-controls-time-remaining-display {
-  color:#F4FBF8 !important;
+  color:#FFFFFF !important;
 }
 [data-theme="plum"] #music audio::-webkit-media-controls-play-button,
 [data-theme="plum"] #music audio::-webkit-media-controls-mute-button {
@@ -841,4 +841,85 @@
 }
 [data-theme="plum"] .collapsible-section {
   border-top-color:rgb(85 182 122 / 0.08) !important;
+}
+
+
+/* ── DEEP PURPLE + EMERALD: CRISP TYPE PASS ─────────────────────────
+   Purple surfaces can visually soften off-white/alpha text. Primary
+   readable content is therefore true white; secondary copy remains
+   neutral but brighter than the base legacy grays. */
+[data-theme="plum"] {
+  color:#FFFFFF;
+}
+
+[data-theme="plum"] .hero-name,
+[data-theme="plum"] .hero-stat-n,
+[data-theme="plum"] .hero-presence-title,
+[data-theme="plum"] .section-title,
+[data-theme="plum"] .ch3-title,
+[data-theme="plum"] .ch3-heading,
+[data-theme="plum"] .resume-card-title,
+[data-theme="plum"] .credit-company,
+[data-theme="plum"] .award-card-title,
+[data-theme="plum"] .asset-title,
+[data-theme="plum"] .work-card-title,
+[data-theme="plum"] .track-title,
+[data-theme="plum"] .vcard-title,
+[data-theme="plum"] .video-list-title,
+[data-theme="plum"] .booking-title,
+[data-theme="plum"] .ch-hero-title,
+[data-theme="plum"] .ch-pcard-title,
+[data-theme="plum"] .ch-row-title,
+[data-theme="plum"] .career-bio-text p,
+[data-theme="plum"] #bioFull p,
+[data-theme="plum"] #bioShort p {
+  color:#FFFFFF !important;
+  opacity:1 !important;
+  text-shadow:none !important;
+}
+
+/* Keep the intentionally Purple short-bio drop cap after whitening body copy. */
+[data-theme="plum"] #bioShort p:first-child::first-letter {
+  color:#75639A !important;
+}
+[data-theme="plum"] #bioFull p::first-letter {
+  color:#FFFFFF !important;
+}
+
+/* Secondary content: brighter neutral, never translucent white. */
+[data-theme="plum"] .hero-bio p,
+[data-theme="plum"] .resume-card-subtitle,
+[data-theme="plum"] .resume-card-desc,
+[data-theme="plum"] .award-card-org,
+[data-theme="plum"] .award-card-desc,
+[data-theme="plum"] .credit-desc,
+[data-theme="plum"] .asset-desc,
+[data-theme="plum"] .track-artist,
+[data-theme="plum"] .track-desc,
+[data-theme="plum"] .vcard-desc,
+[data-theme="plum"] .video-list-desc,
+[data-theme="plum"] .ch3-desc,
+[data-theme="plum"] .ch-hero-sub,
+[data-theme="plum"] .ch-pcard-desc,
+[data-theme="plum"] .ch-row-meta {
+  color:#C9C6CF !important;
+  opacity:1 !important;
+}
+
+/* Original Works had legacy rgba whites that looked washed out on Purple. */
+[data-theme="plum"] .work-card-desc {
+  color:#C9C6CF !important;
+  opacity:1 !important;
+}
+[data-theme="plum"] .work-card-title {
+  color:#FFFFFF !important;
+}
+
+/* Main section subtitles deserve a cleaner, slightly brighter neutral. */
+[data-theme="plum"] .section-subtitle,
+[data-theme="plum"] .gallery-subtitle,
+[data-theme="plum"] .video-section-subtitle,
+[data-theme="plum"] .works-subtitle {
+  color:#C9C6CF !important;
+  opacity:1 !important;
 }
