@@ -1243,3 +1243,73 @@
 [data-theme="midnight"] .collapsible-section {
   border-top-color:rgb(124 196 236 / 0.08) !important;
 }
+
+
+/* ── MIDNIGHT: UNIFIED EXPLORE-STYLE ACTION CONTROLS ──────────────── */
+[data-theme="midnight"] .hero-presence-explore,
+[data-theme="midnight"] #bioToggleBtn,
+[data-theme="midnight"] .ch3-viewcomplete,
+[data-theme="midnight"] .video-toggle-btn {
+  color:#FFFFFF !important;
+  border:1px solid #387FC8 !important;
+  background:
+    linear-gradient(180deg, rgb(56 127 200 / 0.13), rgb(56 127 200 / 0.045)) !important;
+  box-shadow:
+    inset 0 0 0 1px rgb(184 227 233 / 0.04),
+    0 0 8px rgb(56 127 200 / 0.24),
+    0 0 18px rgb(56 127 200 / 0.10) !important;
+  text-shadow:0 0 8px rgb(184 227 233 / 0.12) !important;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease !important;
+}
+
+[data-theme="midnight"] .hero-presence-explore:hover,
+[data-theme="midnight"] #bioToggleBtn:hover,
+[data-theme="midnight"] .ch3-viewcomplete:hover,
+[data-theme="midnight"] .video-toggle-btn:hover {
+  color:#FFFFFF !important;
+  border-color:#55B8F2 !important;
+  background:
+    linear-gradient(180deg, rgb(56 127 200 / 0.22), rgb(56 127 200 / 0.08)) !important;
+  box-shadow:
+    inset 0 0 0 1px rgb(184 227 233 / 0.08),
+    0 0 10px rgb(56 127 200 / 0.42),
+    0 0 24px rgb(56 127 200 / 0.18) !important;
+  transform:translateY(-1px);
+}
+
+[data-theme="midnight"] .hero-presence-explore:focus-visible,
+[data-theme="midnight"] #bioToggleBtn:focus-visible,
+[data-theme="midnight"] .ch3-viewcomplete:focus-visible,
+[data-theme="midnight"] .video-toggle-btn:focus-visible {
+  outline:2px solid #B8E3E9;
+  outline-offset:3px;
+}
+
+/* Preserve each control's established typography while sharing the effect. */
+[data-theme="midnight"] .hero-presence-explore {
+  font-family:var(--font-display);
+  font-style:italic;
+}
+[data-theme="midnight"] #bioToggleBtn,
+[data-theme="midnight"] .video-toggle-btn {
+  font-family:var(--font-mono);
+}
+[data-theme="midnight"] .ch3-viewcomplete {
+  font-family:var(--font-display);
+}
+
+/* Original Works: raise readable copy above the blue card atmosphere. */
+[data-theme="midnight"] .work-card-desc {
+  color:#EAF2F8 !important;
+  opacity:1 !important;
+}
+[data-theme="midnight"] .work-card-title {
+  color:#FFFFFF !important;
+}
+[data-theme="midnight"] .work-card-meta {
+  color:#7CC4EC !important;
+}
