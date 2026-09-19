@@ -2163,3 +2163,207 @@
   text-transform:none !important;
 }
 
+/* ── MIDNIGHT: CONNECT-LED GLOBAL VISUAL SYSTEM — 2026-09-19 ─────────────────────────────────────────
+   The approved Connect Hub is the visual reference for Midnight:
+   deep near-black navy, restrained aqua structure, white display type,
+   muted supporting copy, subtle hover lift, glow reserved for CTAs.
+   Layouts/content remain unchanged. */
+
+/* Shared Midnight chapter surfaces */
+[data-theme="midnight"] .career-profile-section,
+[data-theme="midnight"] .works-section,
+[data-theme="midnight"] .gallery-section,
+[data-theme="midnight"] .exhibition-outer,
+[data-theme="midnight"] .credits-section,
+[data-theme="midnight"] .resume-section,
+[data-theme="midnight"] .awards-section,
+[data-theme="midnight"] .assets-section,
+[data-theme="midnight"] .booking-section,
+[data-theme="midnight"] .collapsible-section {
+  background:#07101A !important;
+}
+
+[data-theme="midnight"] .works-section,
+[data-theme="midnight"] .gallery-section,
+[data-theme="midnight"] .credits-section,
+[data-theme="midnight"] .resume-section,
+[data-theme="midnight"] .awards-section,
+[data-theme="midnight"] .assets-section,
+[data-theme="midnight"] .booking-section,
+[data-theme="midnight"] .collapsible-section {
+  border-top:1px solid rgb(124 196 236 / 0.08) !important;
+}
+
+/* Editorial labels + rules: same quiet aqua language as Connect */
+[data-theme="midnight"] .section-label,
+[data-theme="midnight"] .works-label,
+[data-theme="midnight"] #galleryEyebrow,
+[data-theme="midnight"] .ch3-label,
+[data-theme="midnight"] .collapsible-header-label,
+[data-theme="midnight"] .video-list-category,
+[data-theme="midnight"] .video-list-meta,
+[data-theme="midnight"] .resume-card-label,
+[data-theme="midnight"] .credit-role,
+[data-theme="midnight"] .asset-btn,
+[data-theme="midnight"] .award-proof-link,
+[data-theme="midnight"] .award-cert-link {
+  color:#B8E3E9 !important;
+}
+
+[data-theme="midnight"] .section-label::after,
+[data-theme="midnight"] .ch-eyebrow-line,
+[data-theme="midnight"] .ch-section-label::after {
+  background:linear-gradient(to right,rgb(124 196 236 / 0.30),transparent) !important;
+}
+
+/* Common card surface: Connect-style near-black instead of blue blocks */
+[data-theme="midnight"] .resume-card,
+[data-theme="midnight"] .credit-card,
+[data-theme="midnight"] .asset-card {
+  background:#0B1016 !important;
+  border:1px solid rgb(124 196 236 / 0.09) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.018),
+    0 10px 26px rgba(0,0,0,0.16) !important;
+}
+
+[data-theme="midnight"] .resume-card:hover,
+[data-theme="midnight"] .credit-card:hover,
+[data-theme="midnight"] .asset-card:hover {
+  background:#0D141C !important;
+  border-color:rgb(124 196 236 / 0.28) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.026),
+    0 14px 34px rgba(0,0,0,0.24) !important;
+}
+
+/* Career Highlight cards keep the approved bright outer frame,
+   but their interiors now share the Connect card tone. */
+[data-theme="midnight"] .ch3-card {
+  background:linear-gradient(180deg,#0C1219 0%,#091017 100%) !important;
+}
+
+/* Original Works keeps its approved electric outer frame;
+   interior is toned back to Connect's darker editorial surface. */
+[data-theme="midnight"] .work-card {
+  background:
+    radial-gradient(circle at 76% 28%,rgb(56 127 200 / 0.055),transparent 22rem),
+    #0A1017 !important;
+}
+
+/* Video — dark card media with a quiet aqua edge, no blue-box feel */
+[data-theme="midnight"] .vcard {
+  background:transparent !important;
+}
+[data-theme="midnight"] .vcard-media {
+  background:#05080C !important;
+  border:1px solid rgb(124 196 236 / 0.10) !important;
+  box-shadow:0 10px 24px rgba(0,0,0,0.18) !important;
+}
+[data-theme="midnight"] .vcard:hover .vcard-media {
+  border-color:rgb(124 196 236 / 0.32) !important;
+  box-shadow:0 14px 30px rgba(0,0,0,0.26) !important;
+}
+[data-theme="midnight"] .vcard-body {
+  border-top:1px solid rgb(124 196 236 / 0.08) !important;
+}
+
+/* Music — Connect-like rows: dark surface, fine separators, aqua metadata */
+[data-theme="midnight"] .music-tracks {
+  border-top:1px solid rgb(124 196 236 / 0.10) !important;
+}
+[data-theme="midnight"] .track-item {
+  border-bottom:1px solid rgb(124 196 236 / 0.07) !important;
+  background:#090E14 !important;
+  padding-left:1rem !important;
+  padding-right:1rem !important;
+}
+[data-theme="midnight"] .track-item:hover {
+  background:#0C131B !important;
+}
+[data-theme="midnight"] .track-tag,
+[data-theme="midnight"] .track-meta span {
+  color:#B8E3E9 !important;
+}
+[data-theme="midnight"] .track-tag {
+  background:rgb(124 196 236 / 0.055) !important;
+  border:1px solid rgb(124 196 236 / 0.12) !important;
+}
+
+/* Awards — preserve the approved borderless treatment, enrich the surface */
+[data-theme="midnight"] .award-card {
+  background:
+    radial-gradient(circle at 80% 10%,rgb(56 127 200 / 0.075),transparent 18rem),
+    linear-gradient(155deg,#0D141C 0%,#090E14 100%) !important;
+  border:0 !important;
+}
+[data-theme="midnight"] .award-card:hover {
+  background:
+    radial-gradient(circle at 80% 10%,rgb(56 127 200 / 0.11),transparent 18rem),
+    linear-gradient(155deg,#101923 0%,#0A1017 100%) !important;
+}
+
+/* Photos — keep imagery dominant; surrounding chrome follows Connect */
+[data-theme="midnight"] .gallery-col,
+[data-theme="midnight"] .exhibition-frame {
+  background:#070B10 !important;
+}
+[data-theme="midnight"] .gallery-caption {
+  background:linear-gradient(to top,rgba(5,8,12,0.88),transparent) !important;
+}
+
+/* Supporting text consistently muted, never washed out */
+[data-theme="midnight"] .section-subtitle,
+[data-theme="midnight"] .works-tagline,
+[data-theme="midnight"] .video-shell-subtitle,
+[data-theme="midnight"] .track-artist,
+[data-theme="midnight"] .track-desc,
+[data-theme="midnight"] .resume-card-subtitle,
+[data-theme="midnight"] .resume-card-desc,
+[data-theme="midnight"] .credit-desc,
+[data-theme="midnight"] .asset-desc,
+[data-theme="midnight"] .award-card-org,
+[data-theme="midnight"] .award-card-desc {
+  color:#9EACBA !important;
+}
+
+/* Secondary action buttons follow the Connect Inquiries button language */
+[data-theme="midnight"] .resume-card-btn,
+[data-theme="midnight"] .booking-ctas a,
+[data-theme="midnight"] .asset-btn {
+  border:1px solid rgb(47 141 218 / 0.72) !important;
+  background:linear-gradient(180deg,#101C2A 0%,#0A131E 100%) !important;
+  color:#FFFFFF !important;
+  box-shadow:
+    inset 0 0 0 1px rgb(184 227 233 / 0.035),
+    0 0 10px rgb(48 160 224 / 0.12) !important;
+}
+[data-theme="midnight"] .resume-card-btn:hover,
+[data-theme="midnight"] .booking-ctas a:hover,
+[data-theme="midnight"] .asset-btn:hover {
+  border-color:#7CC4EC !important;
+  background:linear-gradient(180deg,#142538 0%,#0B1725 100%) !important;
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.06),
+    0 0 16px rgb(48 160 224 / 0.30) !important;
+}
+
+/* Keep the bright glow hierarchy intentional:
+   Connect/Explore/Read Bio/View Record/View Videos remain the hero actions.
+   Smaller cards use only subtle hover lift. */
+[data-theme="midnight"] .resume-card,
+[data-theme="midnight"] .asset-card,
+[data-theme="midnight"] .vcard,
+[data-theme="midnight"] .award-card {
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease !important;
+}
+[data-theme="midnight"] .resume-card:hover,
+[data-theme="midnight"] .asset-card:hover,
+[data-theme="midnight"] .award-card:hover {
+  transform:translateY(-2px) !important;
+}
+
