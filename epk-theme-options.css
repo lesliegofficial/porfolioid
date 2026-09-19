@@ -2980,3 +2980,75 @@
   }
 }
 
+/* ── MIDNIGHT: FINAL BIO-HIGHLIGHTS + WORKS EDGE TRIM — 2026-09-19 ───────────────────────────────
+   1) Career Record Highlights begins directly under biography.
+   2) Original Works text panels no longer stretch above/below content. */
+@media (min-width:901px) {
+
+  /* BIO → CAREER RECORD HIGHLIGHTS: remove the dead vertical band */
+  [data-theme="midnight"] .career-stacked-bio {
+    min-height:0 !important;
+    margin-bottom:0 !important;
+    padding:0.85rem 1.5rem 0.35rem !important;
+  }
+
+  [data-theme="midnight"] .career-stacked-bio > div:first-child {
+    height:525px !important;
+    min-height:525px !important;
+  }
+
+  [data-theme="midnight"] .ch3-header {
+    margin-top:0 !important;
+    padding-top:0.55rem !important;
+    margin-bottom:0.75rem !important;
+  }
+
+  /* ORIGINAL WORKS: trim the top/bottom 'edges' of the dark text panels */
+  [data-theme="midnight"] .works-grid {
+    align-items:center !important;
+  }
+
+  [data-theme="midnight"] .work-card,
+  [data-theme="midnight"] .work-card:nth-child(even) {
+    min-height:0 !important;
+    height:auto !important;
+    align-items:center !important;
+    background:transparent !important;
+  }
+
+  [data-theme="midnight"] .work-card-cover {
+    height:auto !important;
+    min-height:0 !important;
+    aspect-ratio:1 / 1 !important;
+    align-self:center !important;
+    background:transparent !important;
+  }
+
+  [data-theme="midnight"] .work-card-cover img {
+    width:100% !important;
+    height:100% !important;
+    min-height:0 !important;
+    max-height:none !important;
+    aspect-ratio:1 / 1 !important;
+    object-fit:contain !important;
+  }
+
+  [data-theme="midnight"] .work-card-body {
+    align-self:center !important;
+    height:auto !important;
+    min-height:0 !important;
+    padding:1.15rem 1.35rem !important;
+    background:#0C0C0C !important;
+    align-content:center !important;
+  }
+
+  [data-theme="midnight"] .works-wrap {
+    padding-top:0.65rem !important;
+    padding-bottom:0.65rem !important;
+  }
+
+  [data-theme="midnight"] .works-header {
+    margin-bottom:0.8rem !important;
+  }
+}
+
