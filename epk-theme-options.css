@@ -1688,7 +1688,7 @@
 [data-theme="midnight"] .collapsible-section {
   background:
     linear-gradient(90deg,#07101A 0%,#09131F 48%,#07101A 100%) !important;
-  border-top:1px solid rgb(124 196 236 / 0.10) !important;
+  border-top:0 !important;
 }
 [data-theme="midnight"] .collapsible-header {
   max-width:1280px !important;
