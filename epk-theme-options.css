@@ -2587,3 +2587,30 @@
   }
 }
 
+/* ── MIDNIGHT: TRANSPARENT HERO ON UNIFIED BACKGROUND — 2026-09-19 ───────────────────────────────
+   The uploaded hero portrait is transparent. Do not paint a separate
+   image-panel background or fade/mask behind it; let the portrait rest
+   directly on the same Midnight canvas as the hero copy. */
+[data-theme="midnight"] .hero,
+[data-theme="midnight"] .hero-image-panel,
+[data-theme="midnight"] .hero-content {
+  background:#05080D !important;
+  background-image:none !important;
+}
+
+[data-theme="midnight"] .hero-image-panel::before,
+[data-theme="midnight"] .hero-image-panel::after {
+  content:none !important;
+  display:none !important;
+  background:none !important;
+  background-image:none !important;
+}
+
+[data-theme="midnight"] .hero-img {
+  background:transparent !important;
+  -webkit-mask-image:none !important;
+  mask-image:none !important;
+  filter:none !important;
+  mix-blend-mode:normal !important;
+}
+
