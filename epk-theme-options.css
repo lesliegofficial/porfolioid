@@ -2030,3 +2030,119 @@
   }
 }
 
+/* ── MIDNIGHT: GOLD-REFERENCE BIO LAYOUT — 2026-09-19 ───────────────────────────────
+   Match the compact Gold biography composition while preserving
+   Midnight color treatment and the approved transparent side-pose image. */
+@media (min-width:901px) {
+  [data-theme="midnight"] .career-profile-section {
+    padding:0 !important;
+    background:#07101A !important;
+  }
+
+  [data-theme="midnight"] .ch3-wrap {
+    max-width:1440px !important;
+    margin:0 auto !important;
+    padding:0 3.5rem 2rem !important;
+  }
+
+  [data-theme="midnight"] .career-stacked-bio {
+    min-height:610px !important;
+    display:grid !important;
+    grid-template-columns:360px minmax(0,1fr) !important;
+    gap:2.75rem !important;
+    align-items:center !important;
+    margin:0 !important;
+    padding:2.25rem 1.5rem 1.9rem !important;
+    border-bottom:1px solid rgb(124 196 236 / 0.12) !important;
+    background:#07101A !important;
+  }
+
+  [data-theme="midnight"] .career-stacked-bio > div:first-child {
+    order:1 !important;
+    position:relative !important;
+    min-height:550px !important;
+    height:550px !important;
+    overflow:visible !important;
+    background:
+      url("/assets/midnight-bio-sidepose.webp?v=2")
+      48% bottom / auto 82% no-repeat !important;
+  }
+
+  [data-theme="midnight"] .career-stacked-bio > div:first-child::after {
+    display:none !important;
+    content:none !important;
+  }
+
+  [data-theme="midnight"] .career-stacked-bio .career-portrait {
+    opacity:0 !important;
+    min-height:0 !important;
+    height:0 !important;
+    filter:none !important;
+  }
+
+  [data-theme="midnight"] .career-bio-text {
+    order:2 !important;
+    align-self:center !important;
+    margin:0 !important;
+    padding:0 !important;
+    transform:none !important;
+    max-width:none !important;
+  }
+
+  [data-theme="midnight"] .career-bio-text::before {
+    display:none !important;
+    content:none !important;
+  }
+
+  [data-theme="midnight"] .career-bio-text p,
+  [data-theme="midnight"] .career-bio-text p:first-child {
+    max-width:930px !important;
+    margin:0 0 1.15rem !important;
+    font-family:var(--font-body) !important;
+    font-size:1.08rem !important;
+    line-height:1.72 !important;
+    font-weight:400 !important;
+    color:#FFFFFF !important;
+  }
+
+  [data-theme="midnight"] #bioShort p:first-child::first-letter {
+    font-family:var(--font-display) !important;
+    font-size:4.9rem !important;
+    line-height:0.78 !important;
+    float:left !important;
+    margin:0.08em 0.12em 0 0 !important;
+    color:#387FC8 !important;
+  }
+
+  [data-theme="midnight"] #bioToggleBtn {
+    margin-top:1rem !important;
+    padding:0.58rem 1.15rem !important;
+    font-family:var(--font-mono) !important;
+    font-size:0.58rem !important;
+    letter-spacing:0.18em !important;
+    text-transform:uppercase !important;
+    color:#FFFFFF !important;
+    background:transparent !important;
+    border:1px solid rgb(124 196 236 / 0.55) !important;
+    box-shadow:0 0 12px rgb(56 127 200 / 0.16) !important;
+  }
+}
+
+@media (min-width:901px) and (max-width:1180px) {
+  [data-theme="midnight"] .career-stacked-bio {
+    grid-template-columns:300px minmax(0,1fr) !important;
+    gap:2rem !important;
+    min-height:560px !important;
+  }
+  [data-theme="midnight"] .career-stacked-bio > div:first-child {
+    height:500px !important;
+    min-height:500px !important;
+    background-size:auto 79% !important;
+  }
+  [data-theme="midnight"] .career-bio-text p,
+  [data-theme="midnight"] .career-bio-text p:first-child {
+    font-size:1rem !important;
+    line-height:1.65 !important;
+  }
+}
+
