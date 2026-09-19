@@ -3052,3 +3052,13 @@
   }
 }
 
+
+
+/* ── MIDNIGHT: CAREER HIGHLIGHTS DIRECTLY BELOW BIO — 2026-09-19 ──
+   Pull only the Career Record Highlights block upward to close the space
+   created by the taller portrait column. Card styling and contents stay intact. */
+@media (min-width:901px) {
+  [data-theme="midnight"] .career-stacked-bio + .ch3-header {
+    margin-top:-12rem !important;
+  }
+}
