@@ -2001,7 +2001,7 @@
 [data-theme="midnight"] .career-stacked-bio > div:first-child > div:first-child {
   background:
     url("/assets/midnight-bio-sidepose.webp?v=1")
-    center bottom / auto 88% no-repeat !important;
+    72% bottom / auto 78% no-repeat !important;
 }
 [data-theme="midnight"] .career-stacked-bio .career-portrait {
   opacity:0 !important;
