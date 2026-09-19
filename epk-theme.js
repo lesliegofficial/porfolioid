@@ -120,7 +120,7 @@
     loadOverrideStylesheet('/epk-theme-connect.css?v=20260917-1', 'porfolio-theme-connect');
     loadOverrideStylesheet('/epk-theme-shell.css?v=20260917-1', 'porfolio-theme-shell');
     loadOverrideStylesheet('/epk-theme-sage-review.css?v=20260919-1', 'porfolio-theme-sage-review');
-    loadOverrideStylesheet('/epk-theme-options.css?v=20260919-28', 'porfolio-theme-options');
+    loadOverrideStylesheet('/epk-theme-options.css?v=20260919-33', 'porfolio-theme-options');
 
     classifyGeneratedMarkup(document.body);
 
