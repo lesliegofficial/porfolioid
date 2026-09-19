@@ -1980,3 +1980,14 @@
     0 0 28px rgb(56 127 200 / 0.21),
     0 22px 56px rgba(0,0,0,0.36) !important;
 }
+
+
+/* MIDNIGHT — Read Full Bio typography matches the approved Explore button */
+[data-theme="midnight"] #bioToggleBtn {
+  font-family:var(--font-display) !important;
+  font-style:italic !important;
+  font-weight:700 !important;
+  font-size:0.95rem !important;
+  letter-spacing:0.02em !important;
+  text-transform:none !important;
+}
