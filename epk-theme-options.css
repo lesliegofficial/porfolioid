@@ -2927,3 +2927,19 @@
   }
 }
 
+/* ── MIDNIGHT: ORIGINAL WORKS FRAMELESS — 2026-09-19 ───────────────────────────────
+   Remove the cyan box/frame around Original Works cards. */
+[data-theme="midnight"] .work-card,
+[data-theme="midnight"] .work-card:hover {
+  border:none !important;
+  outline:none !important;
+  box-shadow:none !important;
+}
+
+[data-theme="midnight"] .work-card-cover,
+[data-theme="midnight"] .work-card-cover img {
+  border:none !important;
+  outline:none !important;
+  box-shadow:none !important;
+}
+
