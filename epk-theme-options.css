@@ -1956,11 +1956,8 @@
 
 /* CAREER RECORD HIGHLIGHTS — frame the exact full six-card strip. */
 [data-theme="midnight"] .ch3-grid {
-  border:1px solid #2F9FEF !important;
-  box-shadow:
-    0 0 8px rgb(47 159 239 / 0.42),
-    0 0 24px rgb(56 127 200 / 0.18),
-    inset 0 0 12px rgb(47 159 239 / 0.035) !important;
+  border:0 !important;
+  box-shadow:none !important;
   overflow:hidden !important;
 }
 
@@ -3071,7 +3068,7 @@
 
 [data-theme="midnight"] .ch3-wrap > .ch3-grid {
   order:2 !important;
-  padding-top:4px !important;
+  padding-top:0 !important;
 }
 
 [data-theme="midnight"] .ch3-wrap > .ch3-grid + div:not(#credits) {
