@@ -3071,6 +3071,7 @@
 
 [data-theme="midnight"] .ch3-wrap > .ch3-grid {
   order:2 !important;
+  padding-top:4px !important;
 }
 
 [data-theme="midnight"] .ch3-wrap > .ch3-grid + div:not(#credits) {
