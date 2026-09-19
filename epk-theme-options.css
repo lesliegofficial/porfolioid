@@ -1372,7 +1372,7 @@
 }
 [data-theme="midnight"] .hero-content {
   justify-content:center !important;
-  padding:7rem clamp(2.25rem,5vw,5.5rem) 1.75rem clamp(2rem,4vw,4.25rem) !important;
+  padding:7.5rem clamp(2.25rem,5vw,5.5rem) 1.25rem clamp(2rem,4vw,4.25rem) !important;
   background:
     radial-gradient(circle at 22% 32%,rgb(56 127 200 / 0.19),transparent 34%),
     radial-gradient(circle at 78% 68%,rgb(124 196 236 / 0.05),transparent 30%),
