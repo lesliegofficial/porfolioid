@@ -3063,6 +3063,12 @@
   order:1 !important;
 }
 
+@media (min-width:901px) {
+  [data-theme="midnight"] .ch3-wrap > .ch3-header {
+    margin-top:8rem !important;
+  }
+}
+
 [data-theme="midnight"] .ch3-wrap > .ch3-grid {
   order:2 !important;
 }
