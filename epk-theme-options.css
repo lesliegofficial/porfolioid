@@ -778,3 +778,56 @@
   background:rgb(85 182 122 / 0.08) !important;
   box-shadow:0 0 10px rgb(85 182 122 / 0.18) !important;
 }
+
+
+/* ── DEEP PURPLE: INVERTED CREDENTIAL CARDS ─────────────────────────
+   For Awards / Degrees / Credentials only:
+   Emerald becomes the card atmosphere; Purple becomes the edge/label system.
+*/
+[data-theme="plum"] #awards .award-card {
+  background:
+    linear-gradient(145deg, rgb(85 182 122 / 0.15), rgb(85 182 122 / 0.06)) !important;
+  border-color:rgb(117 99 154 / 0.34) !important;
+  border-top-color:#75639A !important;
+  box-shadow:inset 0 0 0 1px rgb(85 182 122 / 0.035) !important;
+}
+
+[data-theme="plum"] #awards .award-card:hover {
+  border-color:rgb(117 99 154 / 0.58) !important;
+  border-top-color:#836DC9 !important;
+  background:
+    linear-gradient(145deg, rgb(85 182 122 / 0.19), rgb(85 182 122 / 0.075)) !important;
+}
+
+[data-theme="plum"] #awards .award-card-type,
+[data-theme="plum"] #awards .award-cert-link,
+[data-theme="plum"] #awards .award-card > div[style*="text-transform:uppercase"][style*="color:"] {
+  color:#836DC9 !important;
+}
+
+[data-theme="plum"] #awards .award-card-title {
+  color:#F4FBF8 !important;
+}
+
+[data-theme="plum"] #awards .award-card-org {
+  color:rgba(244,251,248,0.62) !important;
+}
+
+/* Alternate credential/asset renderer gets the same inversion. */
+[data-theme="plum"] #assets .asset-card {
+  background:
+    linear-gradient(145deg, rgb(85 182 122 / 0.15), rgb(85 182 122 / 0.06)) !important;
+  border-color:rgb(117 99 154 / 0.34) !important;
+  border-top-color:#75639A !important;
+}
+
+[data-theme="plum"] #assets .asset-card:hover {
+  border-color:rgb(117 99 154 / 0.58) !important;
+  border-top-color:#836DC9 !important;
+}
+
+[data-theme="plum"] #assets .asset-btn,
+[data-theme="plum"] #assets .asset-type,
+[data-theme="plum"] #assets .asset-category {
+  color:#836DC9 !important;
+}
