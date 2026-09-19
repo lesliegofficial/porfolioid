@@ -1340,3 +1340,432 @@
 [data-theme="midnight"] .work-card-meta {
   color:#7CC4EC !important;
 }
+
+
+/* ── MIDNIGHT: CINEMATIC EDITORIAL LAYOUT ───────────────────────────
+   Layout pass based on the approved Midnight reference.
+   Scoped to Midnight only; content/data remain unchanged.
+*/
+[data-theme="midnight"] #epkContent {
+  background:
+    radial-gradient(circle at 75% 9%, rgb(56 127 200 / 0.10), transparent 26rem),
+    linear-gradient(180deg,#080B10 0%,#07101A 54%,#080B10 100%) !important;
+}
+
+/* HERO — dense split composition instead of tall legacy stack */
+[data-theme="midnight"] .hero {
+  min-height:560px;
+  max-height:680px;
+  grid-template-columns:43% 57%;
+  border-bottom:1px solid rgb(124 196 236 / 0.14);
+  background:#07101A !important;
+}
+[data-theme="midnight"] .hero-image-panel {
+  min-height:560px !important;
+  max-height:680px;
+}
+[data-theme="midnight"] .hero-image-panel::after {
+  background:
+    linear-gradient(to right,transparent 52%,#07101A 100%),
+    linear-gradient(to bottom,transparent 66%,#07101A 100%),
+    linear-gradient(145deg,rgb(56 127 200 / 0.10),transparent 55%) !important;
+}
+[data-theme="midnight"] .hero-content {
+  justify-content:center !important;
+  padding:5.5rem clamp(2.25rem,5vw,5.5rem) 3.25rem clamp(2rem,4vw,4.25rem) !important;
+  background:
+    radial-gradient(circle at 22% 32%,rgb(56 127 200 / 0.19),transparent 34%),
+    radial-gradient(circle at 78% 68%,rgb(124 196 236 / 0.05),transparent 30%),
+    #07101A !important;
+}
+[data-theme="midnight"] .hero-name {
+  font-size:clamp(4.2rem,6.2vw,7rem) !important;
+  line-height:0.83 !important;
+  margin-bottom:1.5rem !important;
+}
+[data-theme="midnight"] .hero-name em {
+  color:#387FC8 !important;
+}
+[data-theme="midnight"] .hero-roles-row {
+  gap:0.65rem 1.1rem !important;
+  margin:0 0 1.15rem !important;
+  padding:0 0 1.1rem !important;
+  border-bottom-color:rgb(124 196 236 / 0.15) !important;
+}
+[data-theme="midnight"] .hero-role-item {
+  min-width:0 !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  flex-direction:row !important;
+  gap:0.38rem !important;
+}
+[data-theme="midnight"] .hero-role-icon {
+  width:12px !important;
+  height:12px !important;
+  fill:#7CC4EC !important;
+}
+[data-theme="midnight"] .hero-role-item span {
+  font-size:0.49rem !important;
+  letter-spacing:0.18em !important;
+  color:#C7D7E6 !important;
+  line-height:1.2 !important;
+}
+[data-theme="midnight"] .hero-stats-row {
+  margin-bottom:1rem !important;
+  padding-bottom:1rem !important;
+  border-bottom-color:rgb(124 196 236 / 0.13) !important;
+}
+[data-theme="midnight"] .hero-stat-n {
+  font-size:1.55rem !important;
+}
+[data-theme="midnight"] .hero-presence-bar {
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+}
+[data-theme="midnight"] .hero-presence-top-row {
+  margin-bottom:0.25rem !important;
+}
+[data-theme="midnight"] .hero-presence-title {
+  font-size:clamp(1.85rem,2.4vw,2.7rem) !important;
+  margin:0.15rem 0 0.4rem !important;
+}
+[data-theme="midnight"] .hero-presence-meta {
+  color:#B8C7D6 !important;
+}
+[data-theme="midnight"] .hero-presence-dots,
+[data-theme="midnight"] .hero-presence-icons,
+[data-theme="midnight"] .hero-bio {
+  display:none !important;
+}
+
+/* CONNECT — when opened, read as one deliberate editorial band */
+[data-theme="midnight"] #connect {
+  border-top:1px solid rgb(124 196 236 / 0.12);
+  border-bottom:1px solid rgb(124 196 236 / 0.12);
+  background:
+    radial-gradient(circle at 16% 18%,rgb(56 127 200 / 0.10),transparent 24rem),
+    #08111B !important;
+}
+[data-theme="midnight"] .connect-hub {
+  max-width:1280px;
+  margin:0 auto;
+  padding:2.25rem clamp(1.5rem,4vw,3.5rem) 2.5rem !important;
+  background:transparent !important;
+}
+
+/* BIOGRAPHY — image-right cinematic band like reference */
+[data-theme="midnight"] .career-profile-section {
+  padding:0 !important;
+  background:
+    linear-gradient(90deg,#09131F 0%,#08101A 46%,#07101A 100%) !important;
+}
+[data-theme="midnight"] .ch3-wrap {
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding:0 clamp(1.5rem,4vw,3.5rem) 2.75rem !important;
+}
+[data-theme="midnight"] .career-stacked-bio {
+  min-height:420px;
+  grid-template-columns:minmax(0,0.92fr) minmax(360px,1.08fr) !important;
+  gap:0 !important;
+  align-items:stretch !important;
+  margin:0 calc(clamp(1.5rem,4vw,3.5rem) * -1) 2.5rem !important;
+  padding:0 !important;
+  border-bottom:1px solid rgb(124 196 236 / 0.13) !important;
+  background:
+    radial-gradient(circle at 20% 40%,rgb(56 127 200 / 0.10),transparent 28rem),
+    #09131F;
+}
+[data-theme="midnight"] .career-stacked-bio > div:first-child {
+  order:2;
+  position:relative;
+  min-height:420px;
+  overflow:hidden;
+}
+[data-theme="midnight"] .career-stacked-bio > div:first-child::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(to right,#09131F 0%,transparent 22%),
+    linear-gradient(to top,#09131F 0%,transparent 28%),
+    rgb(56 127 200 / 0.12);
+  pointer-events:none;
+}
+[data-theme="midnight"] .career-portrait {
+  min-height:420px !important;
+  height:100% !important;
+  filter:grayscale(100%) contrast(1.08) brightness(0.68) sepia(0.12) hue-rotate(165deg) saturate(1.15) !important;
+}
+[data-theme="midnight"] .career-bio-text {
+  order:1;
+  margin:0 !important;
+  padding:3.4rem clamp(2rem,4vw,4.25rem) 3rem clamp(1.5rem,4vw,3.5rem) !important;
+  align-self:center;
+}
+[data-theme="midnight"] .career-bio-text::before {
+  content:"ABOUT";
+  display:block;
+  font-family:var(--font-mono);
+  font-size:0.62rem;
+  letter-spacing:0.28em;
+  color:#7CC4EC;
+  margin-bottom:0.9rem;
+}
+[data-theme="midnight"] .career-bio-text p {
+  max-width:640px;
+  line-height:1.72 !important;
+}
+[data-theme="midnight"] .career-bio-text p:first-child {
+  font-family:var(--font-display);
+  font-size:clamp(1.55rem,2.4vw,2.35rem) !important;
+  line-height:1.28 !important;
+  margin-bottom:1.2rem !important;
+}
+
+/* CAREER HIGHLIGHTS — cohesive strip, not an island in empty black */
+[data-theme="midnight"] .ch3-header {
+  margin:0 0 1rem !important;
+  padding:0.3rem 0 0.8rem !important;
+}
+[data-theme="midnight"] .ch3-grid {
+  gap:1px !important;
+  background:rgb(124 196 236 / 0.08) !important;
+  box-shadow:0 18px 45px rgba(0,0,0,0.24);
+}
+[data-theme="midnight"] .ch3-card {
+  background:linear-gradient(180deg,#0D1825 0%,#09121D 100%) !important;
+}
+[data-theme="midnight"] .ch3-img {
+  aspect-ratio:4/5 !important;
+}
+[data-theme="midnight"] .ch3-body {
+  padding:0.85rem 0.8rem 1rem !important;
+}
+[data-theme="midnight"] #viewCompleteRecordCaption {
+  max-width:760px;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  color:#C8D4DF !important;
+}
+
+/* ORIGINAL WORKS — wide feature stories, like the reference music band */
+[data-theme="midnight"] .works-section {
+  border-top:1px solid rgb(124 196 236 / 0.10);
+  border-bottom:1px solid rgb(124 196 236 / 0.10);
+  background:
+    radial-gradient(circle at 82% 20%,rgb(56 127 200 / 0.11),transparent 26rem),
+    #07101A !important;
+}
+[data-theme="midnight"] .works-wrap {
+  max-width:1180px !important;
+  padding:3rem clamp(1.5rem,4vw,3rem) 3.25rem !important;
+}
+[data-theme="midnight"] .works-header {
+  margin-bottom:1.5rem !important;
+}
+[data-theme="midnight"] .works-grid {
+  grid-template-columns:1fr !important;
+  gap:1.25rem !important;
+}
+[data-theme="midnight"] .work-card {
+  display:grid !important;
+  grid-template-columns:minmax(300px,0.88fr) minmax(0,1.12fr) !important;
+  min-height:360px;
+  border:1px solid rgb(124 196 236 / 0.12) !important;
+  background:
+    radial-gradient(circle at 72% 30%,rgb(56 127 200 / 0.13),transparent 24rem),
+    linear-gradient(110deg,#0B1724 0%,#09131F 62%,#07101A 100%) !important;
+  box-shadow:0 18px 48px rgba(0,0,0,0.28) !important;
+}
+[data-theme="midnight"] .work-card:nth-child(even) {
+  grid-template-columns:minmax(0,1.12fr) minmax(300px,0.88fr) !important;
+}
+[data-theme="midnight"] .work-card:nth-child(even) .work-card-cover {
+  order:2;
+}
+[data-theme="midnight"] .work-card-cover {
+  max-width:none !important;
+  height:100% !important;
+  aspect-ratio:auto !important;
+  margin:0 !important;
+}
+[data-theme="midnight"] .work-card-cover img {
+  height:100% !important;
+  min-height:360px;
+  object-fit:cover !important;
+}
+[data-theme="midnight"] .work-card-body {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:2.5rem clamp(1.75rem,3.5vw,3.5rem) !important;
+}
+[data-theme="midnight"] .work-card-title {
+  font-size:clamp(1.8rem,2.8vw,3rem) !important;
+}
+[data-theme="midnight"] .work-card-desc {
+  max-width:620px;
+}
+
+/* PHOTOS — tighter gallery band */
+[data-theme="midnight"] .gallery-section {
+  padding:0 !important;
+  border-bottom:1px solid rgb(124 196 236 / 0.10);
+  background:
+    linear-gradient(180deg,#09131F 0%,#07101A 100%) !important;
+}
+[data-theme="midnight"] .gallery-inner {
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding:3rem clamp(1.5rem,4vw,3.5rem) 3.25rem !important;
+}
+[data-theme="midnight"] #galleryTitleBlock {
+  max-width:720px;
+}
+[data-theme="midnight"] #galleryContent {
+  margin-top:0.5rem;
+}
+
+/* VIDEO — reference composition: intro left, 3 media cards right */
+[data-theme="midnight"] #videos {
+  background:
+    radial-gradient(circle at 72% 30%,rgb(56 127 200 / 0.10),transparent 26rem),
+    #08111B !important;
+  border-bottom:1px solid rgb(124 196 236 / 0.10);
+}
+[data-theme="midnight"] .video-shell {
+  max-width:1280px !important;
+  padding:3rem clamp(1.5rem,4vw,3.5rem) 3.25rem !important;
+  display:grid !important;
+  grid-template-columns:minmax(250px,0.34fr) minmax(0,0.66fr);
+  grid-template-areas:
+    "label media"
+    "header media"
+    "expanded expanded";
+  column-gap:3rem;
+  align-items:center;
+}
+[data-theme="midnight"] .video-shell > .section-label {
+  grid-area:label;
+  align-self:end;
+  margin-bottom:0.65rem !important;
+}
+[data-theme="midnight"] .video-shell-header {
+  grid-area:header;
+  display:block !important;
+  margin:0 !important;
+  align-self:start;
+}
+[data-theme="midnight"] .video-shell-header .section-title {
+  font-size:clamp(2rem,3.2vw,3.2rem) !important;
+}
+[data-theme="midnight"] .video-shell-subtitle {
+  color:#C3D0DD !important;
+  margin:0.7rem 0 1.4rem !important;
+}
+[data-theme="midnight"] .video-toggle-btn {
+  margin-top:0.3rem;
+}
+[data-theme="midnight"] #videosFeatured {
+  grid-area:media;
+}
+[data-theme="midnight"] #videosAll {
+  grid-area:expanded;
+  margin-top:2rem;
+}
+[data-theme="midnight"] #videosFeatured .videos-grid {
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:0.7rem !important;
+}
+[data-theme="midnight"] .vcard-title {
+  font-size:0.95rem !important;
+}
+
+/* MUSIC + AWARDS — compact horizontal chapter bands */
+[data-theme="midnight"] .collapsible-section {
+  background:
+    linear-gradient(90deg,#07101A 0%,#09131F 48%,#07101A 100%) !important;
+  border-top:1px solid rgb(124 196 236 / 0.10) !important;
+}
+[data-theme="midnight"] .collapsible-header {
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding:2.1rem clamp(1.5rem,4vw,3.5rem) !important;
+}
+[data-theme="midnight"] .collapsible-header-title {
+  font-family:var(--font-display) !important;
+  font-size:clamp(1.8rem,3vw,2.8rem) !important;
+  line-height:1.05 !important;
+  color:#FFFFFF !important;
+}
+[data-theme="midnight"] .collapsible-body-inner {
+  max-width:1180px !important;
+  padding-bottom:2.5rem !important;
+}
+[data-theme="midnight"] .awards-inner {
+  max-width:1050px !important;
+  margin:0 auto !important;
+  padding:0 2rem 2.75rem !important;
+}
+[data-theme="midnight"] .awards-grid {
+  gap:1rem !important;
+}
+
+/* Professional docs / expanded credits should feel part of the same page */
+[data-theme="midnight"] .career-stacked-cards,
+[data-theme="midnight"] .credits-grid {
+  gap:1rem !important;
+}
+
+/* Stop legacy divider spacing from reintroducing huge black gaps. */
+[data-theme="midnight"] .divider {
+  height:0 !important;
+  margin:0 !important;
+  background:none !important;
+}
+
+/* Mobile: return to straightforward vertical stacking. */
+@media (max-width:900px) {
+  [data-theme="midnight"] .hero {
+    max-height:none;
+    grid-template-columns:1fr;
+  }
+  [data-theme="midnight"] .hero-image-panel {
+    min-height:0 !important;
+    max-height:420px;
+  }
+  [data-theme="midnight"] .hero-content {
+    padding:2.5rem 1.5rem 2.75rem !important;
+  }
+  [data-theme="midnight"] .career-stacked-bio {
+    grid-template-columns:1fr !important;
+    margin:0 -1.5rem 2rem !important;
+  }
+  [data-theme="midnight"] .career-stacked-bio > div:first-child {
+    order:1;
+    min-height:320px;
+  }
+  [data-theme="midnight"] .career-bio-text {
+    order:2;
+    padding:2.25rem 1.5rem !important;
+  }
+  [data-theme="midnight"] .work-card,
+  [data-theme="midnight"] .work-card:nth-child(even) {
+    grid-template-columns:1fr !important;
+  }
+  [data-theme="midnight"] .work-card:nth-child(even) .work-card-cover {
+    order:0;
+  }
+  [data-theme="midnight"] .video-shell {
+    display:block !important;
+  }
+  [data-theme="midnight"] #videosFeatured {
+    margin-top:1.5rem;
+  }
+  [data-theme="midnight"] #videosFeatured .videos-grid {
+    grid-template-columns:1fr !important;
+  }
+}
