@@ -778,3 +778,64 @@
   background:rgb(85 182 122 / 0.08) !important;
   box-shadow:0 0 10px rgb(85 182 122 / 0.18) !important;
 }
+
+
+/* ── DEEP PURPLE + EMERALD: FINAL AUDIT POLISH ───────────────────── */
+
+/* Professional Documents: explicitly override legacy inline Professional Blue. */
+[data-theme="plum"] .career-stacked-cards .resume-card {
+  border-top-color:#55B67A !important;
+  border-left-color:rgb(85 182 122 / 0.18) !important;
+  border-right-color:rgb(85 182 122 / 0.18) !important;
+  border-bottom-color:rgb(85 182 122 / 0.18) !important;
+}
+[data-theme="plum"] .career-stacked-cards .resume-card-label,
+[data-theme="plum"] .career-stacked-cards .resume-card-btn {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .career-stacked-cards .resume-card-btn,
+[data-theme="plum"] .career-stacked-cards .resume-skill-tag {
+  border-color:rgb(85 182 122 / 0.36) !important;
+}
+[data-theme="plum"] .career-stacked-cards .resume-skill-tag {
+  background:rgb(85 182 122 / 0.055) !important;
+}
+[data-theme="plum"] .career-stacked-cards .resume-card-btn:hover {
+  background:rgb(85 182 122 / 0.085) !important;
+  border-color:#55B67A !important;
+}
+
+/* Music track browser audio controls: match the dark palette where WebKit/Chromium
+   expose native media-control parts; harmlessly falls back elsewhere. */
+[data-theme="plum"] #music audio {
+  color-scheme:dark;
+  accent-color:#55B67A !important;
+  background:#17171E !important;
+  border:1px solid rgb(85 182 122 / 0.22);
+  border-radius:2px;
+  opacity:0.96 !important;
+}
+[data-theme="plum"] #music audio::-webkit-media-controls-enclosure,
+[data-theme="plum"] #music audio::-webkit-media-controls-panel {
+  background-color:#17171E !important;
+}
+[data-theme="plum"] #music audio::-webkit-media-controls-current-time-display,
+[data-theme="plum"] #music audio::-webkit-media-controls-time-remaining-display {
+  color:#F4FBF8 !important;
+}
+[data-theme="plum"] #music audio::-webkit-media-controls-play-button,
+[data-theme="plum"] #music audio::-webkit-media-controls-mute-button {
+  filter:invert(64%) sepia(32%) saturate(748%) hue-rotate(93deg) brightness(92%) contrast(88%);
+}
+[data-theme="plum"] #music audio::-webkit-media-controls-timeline,
+[data-theme="plum"] #music audio::-webkit-media-controls-volume-slider {
+  filter:invert(64%) sepia(32%) saturate(748%) hue-rotate(93deg) brightness(92%) contrast(88%);
+}
+
+/* Subtle Emerald section rhythm without adding more large green fields. */
+[data-theme="plum"] .divider {
+  background:linear-gradient(to right, transparent, rgb(85 182 122 / 0.16), transparent) !important;
+}
+[data-theme="plum"] .collapsible-section {
+  border-top-color:rgb(85 182 122 / 0.08) !important;
+}
