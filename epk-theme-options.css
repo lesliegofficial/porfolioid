@@ -3095,3 +3095,10 @@
     transform-origin:center bottom !important;
   }
 }
+
+
+/* ── BLUE ZONE: RESTORE TOP BIO COPY ────────────────────────────────────────
+   Keep the three introductory paragraphs visible beneath Digital Presence. */
+[data-theme="midnight"] .hero-bio {
+  display:block !important;
+}
