@@ -3051,4 +3051,23 @@
     margin-bottom:0.8rem !important;
   }
 }
+/* ── BLUE ZONE: BIO BEFORE CAREER RECORD HIGHLIGHTS ──────────────────────────
+   Keep the biography as one complete document-flow section. The Career Profile
+   heading and six-card record begin only after the portrait, biography copy,
+   and Read Full Bio control have finished. */
+[data-theme="midnight"] .career-stacked-bio {
+  position:relative !important;
+  float:none !important;
+  width:100% !important;
+}
 
+[data-theme="midnight"] .career-stacked-bio + .ch3-header {
+  display:flex !important;
+  position:relative !important;
+  inset:auto !important;
+  clear:both !important;
+  width:100% !important;
+  transform:none !important;
+  z-index:1 !important;
+  margin-top:1.25rem !important;
+}
