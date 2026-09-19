@@ -1907,3 +1907,15 @@
     padding-top:2.2rem !important;
   }
 }
+
+
+/* Midnight biography vertical composition — lift the entire copy block
+   into the upper third of the image band. */
+@media (min-width:901px) {
+  [data-theme="midnight"] .career-bio-text {
+    align-self:start !important;
+    margin-top:0 !important;
+    padding-top:2rem !important;
+    transform:translateY(-150px) !important;
+  }
+}
