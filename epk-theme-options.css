@@ -1885,3 +1885,15 @@
   background:#07101A !important;
   background-image:none !important;
 }
+
+
+/* Midnight hero portrait alignment + clean lower edge. */
+@media (min-width:901px) {
+  [data-theme="midnight"] .hero-img {
+    transform:scale(1.035) translateY(8px) !important;
+    transform-origin:center bottom !important;
+  }
+}
+[data-theme="midnight"] .hero {
+  border-bottom:0 !important;
+}
