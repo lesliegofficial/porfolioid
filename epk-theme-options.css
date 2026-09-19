@@ -2367,3 +2367,202 @@
   transform:translateY(-2px) !important;
 }
 
+/* ── MIDNIGHT: CONNECT MASTER PASS V2 — 2026-09-19 ─────────────────────────────────────────
+   Make the Connect Hub the unmistakable visual reference:
+   near-black editorial canvas + restrained cool-blue accents.
+   Blue is no longer the dominant section background. */
+
+/* GLOBAL CANVAS — visibly darker than the previous Midnight pass */
+[data-theme="midnight"],
+[data-theme="midnight"] body,
+[data-theme="midnight"] #epkContent {
+  background:#05080D !important;
+}
+
+/* PRIMARY PAGE SECTIONS */
+[data-theme="midnight"] .hero,
+[data-theme="midnight"] .hero-content,
+[data-theme="midnight"] .career-profile-section,
+[data-theme="midnight"] .works-section,
+[data-theme="midnight"] .gallery-section,
+[data-theme="midnight"] .exhibition-outer,
+[data-theme="midnight"] .credits-section,
+[data-theme="midnight"] .resume-section,
+[data-theme="midnight"] .awards-section,
+[data-theme="midnight"] .assets-section,
+[data-theme="midnight"] .booking-section,
+[data-theme="midnight"] .collapsible-section {
+  background:#05080D !important;
+  background-image:none !important;
+}
+
+/* CONNECT remains the model, but use the same canvas so the page reads as one system */
+[data-theme="midnight"] #connect {
+  background:
+    radial-gradient(circle at 16% 18%,rgb(56 127 200 / 0.055),transparent 24rem),
+    #05080D !important;
+}
+
+/* HERO — preserve portrait depth but remove the large blue wash */
+[data-theme="midnight"] .hero-image-panel {
+  background:
+    radial-gradient(circle at 50% 34%,#10263B 0%,#08131F 48%,#05080D 100%) !important;
+}
+[data-theme="midnight"] .hero-content {
+  background:
+    radial-gradient(circle at 18% 18%,rgb(56 127 200 / 0.055),transparent 25rem),
+    #05080D !important;
+}
+
+/* BIOGRAPHY — same black/navy canvas as Connect; image stays intact */
+[data-theme="midnight"] .career-stacked-bio,
+[data-theme="midnight"] .career-stacked-bio > div:first-child {
+  background:#05080D !important;
+  background-image:none !important;
+}
+[data-theme="midnight"] .career-stacked-bio {
+  border-bottom-color:rgb(124 196 236 / 0.10) !important;
+}
+
+/* CAREER / CREDITS / ASSETS CARDS — literal Connect-card family */
+[data-theme="midnight"] .ch3-card,
+[data-theme="midnight"] .resume-card,
+[data-theme="midnight"] .credit-card,
+[data-theme="midnight"] .asset-card {
+  background:#0C0C0C !important;
+  background-image:none !important;
+  border-color:rgb(255 255 255 / 0.055) !important;
+  box-shadow:none !important;
+}
+[data-theme="midnight"] .resume-card:hover,
+[data-theme="midnight"] .credit-card:hover,
+[data-theme="midnight"] .asset-card:hover {
+  background:#101010 !important;
+  border-color:rgb(124 196 236 / 0.32) !important;
+  box-shadow:0 6px 20px rgba(0,0,0,0.26) !important;
+}
+
+/* Career Record Highlights keeps the already-approved outer blue frame */
+[data-theme="midnight"] .ch3-grid {
+  background:#05080D !important;
+}
+
+/* ORIGINAL WORKS — keep approved frame, switch the inside from blue to Connect black */
+[data-theme="midnight"] .work-card {
+  background:
+    radial-gradient(circle at 76% 26%,rgb(56 127 200 / 0.045),transparent 20rem),
+    #0C0C0C !important;
+}
+[data-theme="midnight"] .work-card-body {
+  background:transparent !important;
+}
+[data-theme="midnight"] .work-player {
+  background:#080B0F !important;
+  border-color:rgb(124 196 236 / 0.16) !important;
+}
+
+/* VIDEO — cards should read like Connect tiles */
+[data-theme="midnight"] .vcard-media {
+  background:#070707 !important;
+  border-color:rgb(255 255 255 / 0.055) !important;
+}
+[data-theme="midnight"] .vcard-body {
+  background:#0C0C0C !important;
+  padding:0.9rem 0.9rem 1rem !important;
+  border-top:1px solid rgb(124 196 236 / 0.08) !important;
+}
+[data-theme="midnight"] .vcard:hover .vcard-media,
+[data-theme="midnight"] .vcard:hover .vcard-body {
+  border-color:rgb(124 196 236 / 0.30) !important;
+}
+
+/* MUSIC — literal Connect row treatment */
+[data-theme="midnight"] .music-tracks {
+  border-top-color:rgb(124 196 236 / 0.09) !important;
+}
+[data-theme="midnight"] .track-item {
+  background:#0C0C0C !important;
+  border:1px solid rgb(255 255 255 / 0.045) !important;
+  margin-bottom:4px !important;
+}
+[data-theme="midnight"] .track-item:hover {
+  background:#101010 !important;
+  border-color:rgb(124 196 236 / 0.26) !important;
+}
+
+/* AWARDS — richer near-black editorial panels, not blue slabs */
+[data-theme="midnight"] .award-card {
+  background:
+    radial-gradient(circle at 84% 12%,rgb(56 127 200 / 0.045),transparent 15rem),
+    #0C0C0C !important;
+}
+[data-theme="midnight"] .award-card:hover {
+  background:
+    radial-gradient(circle at 84% 12%,rgb(56 127 200 / 0.075),transparent 15rem),
+    #101010 !important;
+}
+
+/* PHOTOS — surrounding chrome goes black; photos remain the color source */
+[data-theme="midnight"] .gallery-inner,
+[data-theme="midnight"] .exhibition-inner,
+[data-theme="midnight"] .gallery-col {
+  background:#05080D !important;
+}
+[data-theme="midnight"] .gallery-col {
+  border-color:rgb(124 196 236 / 0.18) !important;
+}
+
+/* COLLAPSIBLE MUSIC/AWARDS BANDS — remove the old obvious blue gradient */
+[data-theme="midnight"] .collapsible-section {
+  background:#05080D !important;
+}
+[data-theme="midnight"] .collapsible-header {
+  border-bottom:1px solid rgb(124 196 236 / 0.055) !important;
+}
+
+/* CTA / BUTTON FAMILY — same luminous hierarchy as Connect Inquiries */
+[data-theme="midnight"] .hero-presence-explore,
+[data-theme="midnight"] #bioToggleBtn,
+[data-theme="midnight"] .ch3-viewcomplete,
+[data-theme="midnight"] .video-toggle-btn,
+[data-theme="midnight"] .resume-card-btn {
+  background:#0B1017 !important;
+}
+
+/* Typography hierarchy copied from Connect */
+[data-theme="midnight"] .section-title,
+[data-theme="midnight"] .ch3-heading,
+[data-theme="midnight"] .works-title,
+[data-theme="midnight"] .collapsible-header-title,
+[data-theme="midnight"] .booking-title {
+  color:#F7F7F5 !important;
+}
+[data-theme="midnight"] .section-label,
+[data-theme="midnight"] .ch3-label,
+[data-theme="midnight"] .works-label,
+[data-theme="midnight"] .collapsible-header-label,
+[data-theme="midnight"] #galleryEyebrow {
+  color:#B8E3E9 !important;
+}
+[data-theme="midnight"] .section-subtitle,
+[data-theme="midnight"] .works-tagline,
+[data-theme="midnight"] .video-shell-subtitle,
+[data-theme="midnight"] .resume-card-subtitle,
+[data-theme="midnight"] .resume-card-desc,
+[data-theme="midnight"] .credit-desc,
+[data-theme="midnight"] .asset-desc,
+[data-theme="midnight"] .award-card-org,
+[data-theme="midnight"] .award-card-desc {
+  color:#7F8B97 !important;
+}
+
+/* Fine rules across the page — understated, like Connect */
+[data-theme="midnight"] .hero-roles-row,
+[data-theme="midnight"] .hero-stats-row,
+[data-theme="midnight"] .hero-presence-bar,
+[data-theme="midnight"] .section-header,
+[data-theme="midnight"] .works-header,
+[data-theme="midnight"] .video-shell-header {
+  border-color:rgb(124 196 236 / 0.09) !important;
+}
+
