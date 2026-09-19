@@ -9,7 +9,7 @@
    Fixed platform-brand and status semantics remain outside these palette rules.
 */
 
-/* ── SAGE LIGHT ───────────────────────────────────────────────────────── */
+/* ── EMERALD LIGHT ───────────────────────────────────────────────────────── */
 [data-theme="sage-light"] {
   --black: #F7F7F2;
   --dark: #F2F2EC;
@@ -20,26 +20,27 @@
   --gray-light: #343832;
   --white: #111111;
 
-  --accent-primary: #4F6B47;
-  --accent-primary-rgb: 79 107 71;
-  --accent-light: #8DB580;
-  --accent-light-rgb: 141 181 128;
+  --accent-primary: #55B67A;
+  --accent-primary-rgb: 85 182 122;
+  --accent-light: #75C896;
+  --accent-light-rgb: 117 200 150;
   --accent-dark: #F7F7F2;
   --accent-dark-rgb: 247 247 242;
-  --accent-secondary: #C2CFB2;
-  --accent-secondary-rgb: 194 207 178;
+  --accent-secondary: #87819B;
+  --accent-secondary-rgb: 135 129 155;
 
-  /* Deep sage is the readable accent on white. */
-  --accent-text: var(--accent-primary);
-  --accent-text-rgb: var(--accent-primary-rgb);
+  /* Screenshot emerald is the identity color. A deeper emerald is used
+     only for small text where white-background contrast requires it. */
+  --accent-text: #2E7248;
+  --accent-text-rgb: 46 114 72;
   --accent-emphasis: var(--accent-primary);
   --accent-emphasis-rgb: var(--accent-primary-rgb);
-  --accent-icon: var(--accent-primary);
-  --accent-icon-rgb: var(--accent-primary-rgb);
+  --accent-icon: #2E7248;
+  --accent-icon-rgb: 46 114 72;
   --accent-border: var(--accent-primary);
   --accent-border-rgb: var(--accent-primary-rgb);
-  --accent-surface: var(--accent-light);
-  --accent-surface-rgb: var(--accent-light-rgb);
+  --accent-surface: var(--accent-primary);
+  --accent-surface-rgb: var(--accent-primary-rgb);
 }
 
 [data-theme="sage-light"] body,
@@ -265,7 +266,7 @@
 }
 
 
-/* ── SAGE LIGHT: CLEAN EDITORIAL PASS ─────────────────────────────── */
+/* ── EMERALD LIGHT: CLEAN EDITORIAL PASS ─────────────────────────────── */
 [data-theme="sage-light"] .hero-name,
 [data-theme="sage-light"] .section-title,
 [data-theme="sage-light"] .ch3-heading,
@@ -276,7 +277,7 @@
 }
 
 [data-theme="sage-light"] .hero-name em {
-  color:#4F6B47 !important;
+  color:#55B67A !important;
 }
 
 [data-theme="sage-light"] .hero-presence-explore,
