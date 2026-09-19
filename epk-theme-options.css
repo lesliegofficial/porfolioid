@@ -3086,3 +3086,12 @@
 [data-theme="midnight"] .ch3-wrap > #credits {
   order:5 !important;
 }
+/* ── BLUE ZONE: PORTRAIT HEADROOM ────────────────────────────────────────────
+   Lower the supplied portrait without resizing or altering the image so the
+   top of the hair no longer touches the navigation divider. */
+@media (min-width:901px) {
+  [data-theme="midnight"] .hero-img {
+    transform:scale(0.92) translateY(7rem) !important;
+    transform-origin:center bottom !important;
+  }
+}
