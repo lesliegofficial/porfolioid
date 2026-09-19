@@ -4261,9 +4261,9 @@ const PORTFOLIO_THEMES = {
     swatches: ['#080808','#8DB580','#C2CFB2','#F5F3EE']
   },
   'sage-light': {
-    label: 'Sage Light',
-    description: 'Clean editorial white with crisp black type and restrained sage accents.',
-    swatches: ['#F7F7F2','#111111','#4F6B47','#8DB580']
+    label: 'Emerald Light',
+    description: 'Clean editorial white with crisp black type and bright emerald accents.',
+    swatches: ['#F7F7F2','#111111','#55B67A','#87819B']
   },
   midnight: {
     label: 'Midnight Blue',
