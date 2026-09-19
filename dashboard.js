@@ -4262,18 +4262,18 @@ const PORTFOLIO_THEMES = {
   },
   'sage-light': {
     label: 'Sage Light',
-    description: 'Clean warm white with black text and deep sage accents.',
+    description: 'Clean editorial white with crisp black type and restrained sage accents.',
     swatches: ['#F7F7F2','#111111','#4F6B47','#8DB580']
   },
   midnight: {
     label: 'Midnight Blue',
-    description: 'Deep midnight with confident blue and soft aqua accents.',
+    description: 'Deep midnight with confident blue and clean aqua accents.',
     swatches: ['#080B10','#387FC8','#B8E3E9','#F5F7FA']
   },
   plum: {
-    label: 'Plum Lavender',
-    description: 'Near-black with elegant lavender and muted plum depth.',
-    swatches: ['#0D0D0F','#B298E7','#4B4A67','#F5F3EE']
+    label: 'Deep Purple',
+    description: 'Near-black with rich purple, emerald contrast, and soft white.',
+    swatches: ['#0D0D0F','#3A3068','#55B67A','#F4FBF8']
   }
 };
 
