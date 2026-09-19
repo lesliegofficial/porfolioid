@@ -206,8 +206,8 @@
 /* ── DEEP PURPLE ─────────────────────────────────────────────────────
    Screenshot-inspired palette:
    deep purple #3A3068, emerald #55B67A, dusty lavender #87819B,
-   soft white #F4FBF8. Rich purple #836DC9 is used for visible emphasis
-   where the base #3A3068 would be too dark on the near-black canvas. */
+   soft white #F4FBF8. Muted rich purple #75639A is used for visible
+   large-format emphasis where the base #3A3068 would be too dark. */
 [data-theme="plum"] {
   --black: #0D0D0F;
   --dark: #111116;
@@ -220,8 +220,8 @@
 
   --accent-primary: #3A3068;
   --accent-primary-rgb: 58 48 104;
-  --accent-light: #836DC9;
-  --accent-light-rgb: 131 109 201;
+  --accent-light: #75639A;
+  --accent-light-rgb: 117 99 154;
   --accent-dark: #0D0D0F;
   --accent-dark-rgb: 13 13 15;
   --accent-secondary: #55B67A;
@@ -440,4 +440,61 @@
 [data-theme="plum"] .gallery-collection-count,
 [data-theme="plum"] .gallery-collection-cta {
   color:var(--accent-text) !important;
+}
+
+
+/* Deep Purple refinement — muted, richer, less neon */
+[data-theme="plum"] .hero-name em {
+  color:#75639A !important;
+  text-shadow:none !important;
+}
+
+[data-theme="plum"] .hero-role-item {
+  border-color:rgb(58 48 104 / 0.58) !important;
+  background:rgb(58 48 104 / 0.07) !important;
+  box-shadow:none !important;
+}
+
+[data-theme="plum"] .hero-role-icon,
+[data-theme="plum"] .ch3-icon svg,
+[data-theme="plum"] .hero-presence-eyebrow svg {
+  fill:#55B67A !important;
+}
+
+[data-theme="plum"] .hero-presence-eyebrow,
+[data-theme="plum"] .ch-eyebrow,
+[data-theme="plum"] .ch-section-label {
+  color:#55B67A !important;
+}
+
+[data-theme="plum"] .hero-presence-explore,
+[data-theme="plum"] .hero-cta-primary,
+[data-theme="plum"] .ch-btn-gold,
+[data-theme="plum"] .ch-btn-outline {
+  border-color:#75639A !important;
+  color:#F4FBF8 !important;
+  box-shadow:0 0 8px rgb(58 48 104 / 0.28) !important;
+  text-shadow:none !important;
+}
+
+[data-theme="plum"] .hero-presence-explore:hover,
+[data-theme="plum"] .hero-cta-primary:hover,
+[data-theme="plum"] .ch-btn-gold:hover,
+[data-theme="plum"] .ch-btn-outline:hover {
+  background:rgb(58 48 104 / 0.16) !important;
+  box-shadow:0 0 10px rgb(58 48 104 / 0.32) !important;
+}
+
+[data-theme="plum"] .section-label,
+[data-theme="plum"] #galleryEyebrow,
+[data-theme="plum"] .video-list-meta,
+[data-theme="plum"] .works-label,
+[data-theme="plum"] .collapsible-header-label {
+  color:#87819B !important;
+}
+
+[data-theme="plum"] .hero-content {
+  background:
+    radial-gradient(circle at 24% 18%, rgb(58 48 104 / 0.10), transparent 42%),
+    #0D0D0F !important;
 }
