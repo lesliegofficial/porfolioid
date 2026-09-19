@@ -189,6 +189,11 @@ function renderCh3Card(card) {
 
 function buildEPK(epk) {
   window._epkData = epk;
+  /* Saved profile theme applies automatically. A ?theme= preview remains
+     intentionally higher priority so dashboard previews never mutate data. */
+  if (!document.documentElement.dataset.themePreview && typeof window.applyPorfolioTheme === 'function') {
+    window.applyPorfolioTheme(epk.theme || 'gold');
+  }
   window._epkData.awards = epk.awards || [];
   const nameParts = (epk.name || 'Artist Name').split(' ');
   const firstName = nameParts[0];
