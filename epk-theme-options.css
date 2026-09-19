@@ -2671,3 +2671,113 @@
   }
 }
 
+/* ── MIDNIGHT: ORIGINAL WORKS INTERIOR REFINEMENT — 2026-09-19 ───────────────────────────────
+   Refine the inside of the two-up Original Works cards so both cards
+   share the same visual rhythm and controls line up cleanly. */
+@media (min-width:901px) {
+  [data-theme="midnight"] .works-wrap {
+    max-width:1360px !important;
+  }
+
+  [data-theme="midnight"] .work-card,
+  [data-theme="midnight"] .work-card:nth-child(even) {
+    grid-template-columns:minmax(205px,0.78fr) minmax(0,1.22fr) !important;
+    min-height:372px !important;
+  }
+
+  [data-theme="midnight"] .work-card-cover img {
+    min-height:372px !important;
+  }
+
+  [data-theme="midnight"] .work-card-body {
+    display:grid !important;
+    grid-template-rows:
+      auto
+      auto
+      minmax(4.5rem,auto)
+      minmax(4.6rem,auto)
+      auto
+      1fr !important;
+    align-content:start !important;
+    min-width:0 !important;
+    padding:1.65rem 1.55rem 1.45rem !important;
+  }
+
+  [data-theme="midnight"] .work-card-meta {
+    margin:0 0 0.55rem !important;
+    font-size:0.48rem !important;
+    line-height:1.3 !important;
+    letter-spacing:0.10em !important;
+  }
+
+  [data-theme="midnight"] .work-card-status {
+    margin:0 0 0.85rem !important;
+    padding:0.28rem 0.58rem !important;
+    font-size:0.46rem !important;
+  }
+
+  [data-theme="midnight"] .work-card-title {
+    margin:0 0 0.6rem !important;
+    font-size:clamp(1.45rem,1.7vw,1.85rem) !important;
+    line-height:1.08 !important;
+    align-self:start !important;
+  }
+
+  [data-theme="midnight"] .work-card-desc {
+    margin:0 !important;
+    max-width:100% !important;
+    font-size:0.57rem !important;
+    line-height:1.58 !important;
+    align-self:start !important;
+  }
+
+  [data-theme="midnight"] .work-player {
+    width:100% !important;
+    margin:0.9rem 0 0 !important;
+    padding:0.52rem 0.62rem !important;
+    gap:0.58rem !important;
+    box-sizing:border-box !important;
+  }
+
+  [data-theme="midnight"] .work-player .wp-main {
+    min-width:0 !important;
+  }
+
+  [data-theme="midnight"] .work-player .wp-volume {
+    flex:0 0 auto !important;
+  }
+
+  [data-theme="midnight"] .work-player .wp-vol-slider {
+    width:52px !important;
+  }
+
+  [data-theme="midnight"] .work-card-cta-row {
+    align-self:end !important;
+    margin-top:1rem !important;
+    padding-top:0.25rem !important;
+  }
+
+  [data-theme="midnight"] .work-card-cta {
+    font-size:0.77rem !important;
+  }
+}
+
+@media (min-width:901px) and (max-width:1180px) {
+  [data-theme="midnight"] .work-card,
+  [data-theme="midnight"] .work-card:nth-child(even) {
+    grid-template-columns:minmax(185px,0.74fr) minmax(0,1.26fr) !important;
+  }
+
+  [data-theme="midnight"] .work-card-body {
+    padding:1.4rem 1.25rem 1.3rem !important;
+  }
+
+  [data-theme="midnight"] .work-card-title {
+    font-size:1.4rem !important;
+  }
+
+  [data-theme="midnight"] .work-player .wp-vol-slider {
+    width:42px !important;
+  }
+}
+
