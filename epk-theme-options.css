@@ -3060,5 +3060,20 @@
 @media (min-width:901px) {
   [data-theme="midnight"] .career-stacked-bio + .ch3-header {
     margin-top:-12rem !important;
+    position:relative;
+    z-index:4;
+  }
+
+  [data-theme="midnight"] .career-stacked-bio + .ch3-header::before {
+    content:"";
+    position:absolute;
+    inset:-0.55rem 0 -0.75rem;
+    z-index:-1;
+    background:#05080D;
+  }
+
+  [data-theme="midnight"] .career-stacked-bio + .ch3-header + .ch3-grid {
+    position:relative;
+    z-index:4;
   }
 }
