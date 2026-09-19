@@ -152,9 +152,9 @@
   --dark-2: #101722;
   --dark-3: #151F2C;
   --dark-4: #1C2938;
-  --gray: #8D99A8;
-  --gray-light: #C5CDD7;
-  --white: #F5F7FA;
+  --gray: #9AA7B7;
+  --gray-light: #D8E2EC;
+  --white: #FFFFFF;
 
   --accent-primary: #387FC8;
   --accent-primary-rgb: 56 127 200;
@@ -928,4 +928,318 @@
 /* Purple biography toggle: keep the control styling, but make the label crisp white. */
 [data-theme="plum"] #bioToggleBtn {
   color:#FFFFFF !important;
+}
+
+
+/* ── MIDNIGHT BLUE: FULL SECTION REFINEMENT ─────────────────────────
+   Blue = identity / depth
+   Aqua = labels / controls / interaction
+   White = crisp primary readable content
+*/
+
+/* 1. Biography controls + crisp white hierarchy */
+[data-theme="midnight"] #bioToggleBtn {
+  color:#FFFFFF !important;
+  border-color:rgb(124 196 236 / 0.58) !important;
+  text-shadow:none !important;
+}
+[data-theme="midnight"] #bioToggleBtn:hover {
+  color:#FFFFFF !important;
+  background:rgb(124 196 236 / 0.08) !important;
+  border-color:#7CC4EC !important;
+  box-shadow:0 0 10px rgb(56 127 200 / 0.18) !important;
+}
+
+[data-theme="midnight"] .hero-name,
+[data-theme="midnight"] .hero-stat-n,
+[data-theme="midnight"] .hero-presence-title,
+[data-theme="midnight"] .section-title,
+[data-theme="midnight"] .ch3-title,
+[data-theme="midnight"] .ch3-heading,
+[data-theme="midnight"] .resume-card-title,
+[data-theme="midnight"] .credit-company,
+[data-theme="midnight"] .award-card-title,
+[data-theme="midnight"] .asset-title,
+[data-theme="midnight"] .work-card-title,
+[data-theme="midnight"] .track-title,
+[data-theme="midnight"] .vcard-title,
+[data-theme="midnight"] .video-list-title,
+[data-theme="midnight"] .booking-title,
+[data-theme="midnight"] .career-bio-text p,
+[data-theme="midnight"] #bioFull p,
+[data-theme="midnight"] #bioShort p {
+  color:#FFFFFF !important;
+  opacity:1 !important;
+  text-shadow:none !important;
+}
+
+[data-theme="midnight"] #bioShort p:first-child::first-letter {
+  color:#387FC8 !important;
+}
+[data-theme="midnight"] #bioFull p::first-letter {
+  color:#FFFFFF !important;
+}
+
+[data-theme="midnight"] .hero-bio p,
+[data-theme="midnight"] .resume-card-subtitle,
+[data-theme="midnight"] .resume-card-desc,
+[data-theme="midnight"] .award-card-org,
+[data-theme="midnight"] .award-card-desc,
+[data-theme="midnight"] .credit-desc,
+[data-theme="midnight"] .asset-desc,
+[data-theme="midnight"] .track-artist,
+[data-theme="midnight"] .track-desc,
+[data-theme="midnight"] .vcard-desc,
+[data-theme="midnight"] .video-list-desc,
+[data-theme="midnight"] .ch3-desc,
+[data-theme="midnight"] .section-subtitle,
+[data-theme="midnight"] .gallery-subtitle,
+[data-theme="midnight"] .video-section-subtitle,
+[data-theme="midnight"] .works-subtitle {
+  color:#C9D4E0 !important;
+  opacity:1 !important;
+}
+
+/* Editorial labels use Aqua consistently. */
+[data-theme="midnight"] .section-label,
+[data-theme="midnight"] #galleryEyebrow,
+[data-theme="midnight"] .ch3-label,
+[data-theme="midnight"] .works-label,
+[data-theme="midnight"] .collapsible-header-label,
+[data-theme="midnight"] .booking-note,
+[data-theme="midnight"] .identity-block-label,
+[data-theme="midnight"] .video-list-category,
+[data-theme="midnight"] .video-list-meta {
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] .section-label::after {
+  background:linear-gradient(to right, rgb(124 196 236 / 0.58), transparent) !important;
+}
+
+/* 2. Video: remove legacy Gold/yellow from visitor-facing metadata. */
+[data-theme="midnight"] .vcard-badge,
+[data-theme="midnight"] .vcard-meta span,
+[data-theme="midnight"] .video-list-category,
+[data-theme="midnight"] .video-list-meta,
+[data-theme="midnight"] .video-toggle-btn {
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] .video-toggle-btn {
+  border-color:rgb(124 196 236 / 0.44) !important;
+}
+[data-theme="midnight"] .video-toggle-btn:hover {
+  background:rgb(124 196 236 / 0.07) !important;
+  border-color:#7CC4EC !important;
+}
+[data-theme="midnight"] .vcard-media,
+[data-theme="midnight"] .video-list-thumb img,
+[data-theme="midnight"] .video-list-thumb video {
+  border-color:rgb(124 196 236 / 0.18) !important;
+}
+[data-theme="midnight"] .vcard:hover .vcard-media {
+  border-color:rgb(124 196 236 / 0.50) !important;
+}
+[data-theme="midnight"] .vcard-play,
+[data-theme="midnight"] .video-list-thumb .video-play {
+  border-color:#7CC4EC !important;
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] .vcard:hover .vcard-play {
+  background:#7CC4EC !important;
+  color:#080B10 !important;
+}
+
+/* 3 + 4. Music: replace Gold labels with Aqua and integrate native controls. */
+[data-theme="midnight"] #music .collapsible-header-label,
+[data-theme="midnight"] #music .collapsible-toggle {
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] #music .collapsible-icon {
+  color:#7CC4EC !important;
+  border-color:rgb(124 196 236 / 0.46) !important;
+  background:rgb(56 127 200 / 0.06) !important;
+}
+[data-theme="midnight"] .track-tag {
+  color:#7CC4EC !important;
+  background:rgb(124 196 236 / 0.09) !important;
+  border:1px solid rgb(124 196 236 / 0.24) !important;
+}
+[data-theme="midnight"] .track-meta span,
+[data-theme="midnight"] .track-role {
+  color:#A9D8F0 !important;
+}
+[data-theme="midnight"] .music-tracks {
+  border-top-color:rgb(124 196 236 / 0.18) !important;
+}
+[data-theme="midnight"] .track-item {
+  border-bottom-color:rgb(124 196 236 / 0.09) !important;
+}
+[data-theme="midnight"] .track-item:hover {
+  background:linear-gradient(90deg, rgb(56 127 200 / 0.055), rgb(124 196 236 / 0.018)) !important;
+  box-shadow:inset 2px 0 0 #7CC4EC !important;
+}
+[data-theme="midnight"] #music audio {
+  color-scheme:dark;
+  accent-color:#7CC4EC !important;
+  background:#0D1723 !important;
+  border:1px solid rgb(124 196 236 / 0.20);
+  border-radius:2px;
+  opacity:0.97 !important;
+}
+[data-theme="midnight"] #music audio::-webkit-media-controls-enclosure,
+[data-theme="midnight"] #music audio::-webkit-media-controls-panel {
+  background-color:#0D1723 !important;
+}
+[data-theme="midnight"] #music audio::-webkit-media-controls-current-time-display,
+[data-theme="midnight"] #music audio::-webkit-media-controls-time-remaining-display {
+  color:#FFFFFF !important;
+}
+[data-theme="midnight"] #music audio::-webkit-media-controls-play-button,
+[data-theme="midnight"] #music audio::-webkit-media-controls-mute-button,
+[data-theme="midnight"] #music audio::-webkit-media-controls-timeline,
+[data-theme="midnight"] #music audio::-webkit-media-controls-volume-slider {
+  filter:invert(78%) sepia(23%) saturate(720%) hue-rotate(166deg) brightness(96%) contrast(92%);
+}
+
+/* Original Works: keep rich navy depth; Aqua owns media interaction. */
+[data-theme="midnight"] .work-card {
+  background:linear-gradient(145deg,#101A28 0%,#0C1420 100%) !important;
+  border-color:rgb(56 127 200 / 0.24) !important;
+}
+[data-theme="midnight"] .work-card:hover {
+  border-color:rgb(124 196 236 / 0.48) !important;
+  box-shadow:0 22px 56px rgba(0,0,0,0.46), 0 0 0 1px rgb(124 196 236 / 0.08) !important;
+}
+[data-theme="midnight"] .work-card-status,
+[data-theme="midnight"] .work-card-cta,
+[data-theme="midnight"] .work-card-meta {
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] .work-card-status {
+  border-color:rgb(124 196 236 / 0.42) !important;
+  background:rgb(124 196 236 / 0.055) !important;
+  box-shadow:none !important;
+}
+[data-theme="midnight"] .work-player {
+  background:rgb(124 196 236 / 0.035) !important;
+  border-color:rgb(124 196 236 / 0.24) !important;
+}
+[data-theme="midnight"] .wp-playbtn {
+  color:#7CC4EC !important;
+  border-color:#7CC4EC !important;
+  background:rgb(124 196 236 / 0.08) !important;
+  box-shadow:none !important;
+}
+[data-theme="midnight"] .wp-playbtn svg {
+  fill:#7CC4EC !important;
+}
+[data-theme="midnight"] .wp-bar {
+  background:rgb(124 196 236 / 0.30) !important;
+}
+[data-theme="midnight"] .wp-progress-fill::before {
+  background-image:repeating-linear-gradient(to right,#7CC4EC 0,#7CC4EC 1.5px,transparent 1.5px,transparent 3px) !important;
+}
+[data-theme="midnight"] .wp-vol-slider {
+  accent-color:#7CC4EC !important;
+}
+
+/* Photos: controlled Aqua edge over dark-blue depth. */
+[data-theme="midnight"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
+  border:1px solid rgb(124 196 236 / 0.42) !important;
+  box-shadow:
+    3px 4px 0 0 rgb(56 127 200 / 0.16),
+    0 8px 18px -3px rgb(56 127 200 / 0.22),
+    0 14px 30px rgba(0,0,0,0.44) !important;
+}
+[data-theme="midnight"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-hero .exhibition-frame {
+  border-color:rgb(124 196 236 / 0.72) !important;
+}
+[data-theme="midnight"] .exhibition-arrow,
+[data-theme="midnight"] .gallery-scroll-arrow-btn,
+[data-theme="midnight"] .exhibition-caption-year,
+[data-theme="midnight"] .gallery-scroll-category,
+[data-theme="midnight"] .gallery-scroll-counter,
+[data-theme="midnight"] .gallery-collection-count,
+[data-theme="midnight"] .gallery-collection-cta {
+  color:#7CC4EC !important;
+}
+
+/* 5. Awards / Degrees / Credentials: richer navy surfaces, Aqua structure. */
+[data-theme="midnight"] #awards .collapsible-header-label,
+[data-theme="midnight"] #awards .collapsible-toggle {
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] #awards .collapsible-icon {
+  color:#7CC4EC !important;
+  border-color:rgb(124 196 236 / 0.48) !important;
+  background:linear-gradient(145deg,rgb(56 127 200 / 0.11),rgb(124 196 236 / 0.035)) !important;
+}
+[data-theme="midnight"] .award-card {
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 85% 10%, rgb(56 127 200 / 0.18), transparent 34%),
+    linear-gradient(145deg,#13263B 0%,#0C1725 58%,#09121D 100%) !important;
+  border:1px solid rgb(124 196 236 / 0.24) !important;
+  border-top:2px solid #7CC4EC !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.025),
+    0 12px 30px rgba(0,0,0,0.28) !important;
+}
+[data-theme="midnight"] .award-card::after {
+  content:"";
+  position:absolute;
+  inset:auto -18% -36% 34%;
+  height:70%;
+  border:1px solid rgb(124 196 236 / 0.08);
+  border-radius:50%;
+  pointer-events:none;
+}
+[data-theme="midnight"] .award-card:hover {
+  border-color:rgb(124 196 236 / 0.52) !important;
+  border-top-color:#B8E3E9 !important;
+  transform:translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.04),
+    0 18px 40px rgba(0,0,0,0.36),
+    0 0 18px rgb(56 127 200 / 0.09) !important;
+}
+[data-theme="midnight"] .award-card-type,
+[data-theme="midnight"] .award-cert-link,
+[data-theme="midnight"] .award-card > div[style*="text-transform:uppercase"][style*="color:"] {
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] .award-card-title {
+  color:#FFFFFF !important;
+}
+[data-theme="midnight"] .award-card-org {
+  color:#B9C7D6 !important;
+}
+
+/* Professional Documents: turn legacy Professional Blue into the Midnight Aqua system. */
+[data-theme="midnight"] .career-stacked-cards .resume-card {
+  background:linear-gradient(145deg,#111E2D 0%,#0B1521 100%) !important;
+  border-top-color:#7CC4EC !important;
+  border-left-color:rgb(124 196 236 / 0.18) !important;
+  border-right-color:rgb(124 196 236 / 0.18) !important;
+  border-bottom-color:rgb(124 196 236 / 0.18) !important;
+}
+[data-theme="midnight"] .career-stacked-cards .resume-card-label,
+[data-theme="midnight"] .career-stacked-cards .resume-card-btn {
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] .career-stacked-cards .resume-card-btn,
+[data-theme="midnight"] .career-stacked-cards .resume-skill-tag {
+  border-color:rgb(124 196 236 / 0.34) !important;
+}
+[data-theme="midnight"] .career-stacked-cards .resume-skill-tag {
+  background:rgb(124 196 236 / 0.045) !important;
+}
+
+/* Subtle section rhythm */
+[data-theme="midnight"] .divider {
+  background:linear-gradient(to right,transparent,rgb(124 196 236 / 0.14),transparent) !important;
+}
+[data-theme="midnight"] .collapsible-section {
+  border-top-color:rgb(124 196 236 / 0.08) !important;
 }
