@@ -1987,7 +1987,10 @@
   font-family:var(--font-display) !important;
   font-style:italic !important;
   font-weight:700 !important;
-  font-size:0.95rem !important;
-  letter-spacing:0.02em !important;
+  font-size:0.80rem !important;
+  letter-spacing:0.01em !important;
   text-transform:none !important;
+  padding:0.62rem 1.18rem !important;
+  min-height:auto !important;
+  line-height:1.1 !important;
 }
