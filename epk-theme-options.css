@@ -2152,3 +2152,14 @@
   }
 }
 
+/* ── MIDNIGHT: FINAL READ FULL BIO FONT LOCK — 2026-09-19 ───────────────────────────────
+   Preserve the approved Explore-style serif italic typography.
+   This intentionally comes last so later layout rules cannot revert it. */
+[data-theme="midnight"] #bioToggleBtn {
+  font-family:var(--font-display) !important;
+  font-style:italic !important;
+  font-weight:700 !important;
+  letter-spacing:0.01em !important;
+  text-transform:none !important;
+}
+
