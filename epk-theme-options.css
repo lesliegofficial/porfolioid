@@ -923,3 +923,9 @@
   color:#C9C6CF !important;
   opacity:1 !important;
 }
+
+
+/* Purple biography toggle: keep the control styling, but make the label crisp white. */
+[data-theme="plum"] #bioToggleBtn {
+  color:#FFFFFF !important;
+}
