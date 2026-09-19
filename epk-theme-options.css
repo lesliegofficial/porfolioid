@@ -1876,3 +1876,12 @@
   display:none !important;
   background:none !important;
 }
+
+
+/* Midnight hero: one continuous dark surface across portrait + content. */
+[data-theme="midnight"] .hero,
+[data-theme="midnight"] .hero-image-panel,
+[data-theme="midnight"] .hero-content {
+  background:#07101A !important;
+  background-image:none !important;
+}
