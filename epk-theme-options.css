@@ -1919,3 +1919,64 @@
     transform:translateY(35px) !important;
   }
 }
+
+
+/* ── MIDNIGHT: APPROVED SECTION POLISH — 2026-09-19 ────────────────
+   1) Biography = one continuous darkest-blue surface.
+   2) Performance image stays visibly present, with only restrained edge fades.
+   3) Career Record Highlights receives the approved electric-blue frame/glow.
+   4) Both Original Works cards receive the same frame/glow language.
+*/
+
+/* ABOUT / BIOGRAPHY — one single darkest Midnight surface */
+[data-theme="midnight"] .career-profile-section,
+[data-theme="midnight"] .career-stacked-bio,
+[data-theme="midnight"] .career-stacked-bio > div:first-child {
+  background:#06111C !important;
+  background-image:none !important;
+}
+
+/* Keep the performance image clear instead of drowning it in the blue field. */
+[data-theme="midnight"] .career-portrait {
+  opacity:1 !important;
+  filter:
+    grayscale(58%)
+    sepia(5%)
+    hue-rotate(158deg)
+    saturate(112%)
+    brightness(0.90)
+    contrast(1.10) !important;
+}
+[data-theme="midnight"] .career-stacked-bio > div:first-child::after {
+  background:
+    linear-gradient(to right,#06111C 0%,transparent 15%),
+    linear-gradient(to top,#06111C 0%,transparent 12%) !important;
+  opacity:0.62 !important;
+}
+
+/* CAREER RECORD HIGHLIGHTS — frame the exact full six-card strip. */
+[data-theme="midnight"] .ch3-grid {
+  border:1px solid #2F9FEF !important;
+  box-shadow:
+    0 0 8px rgb(47 159 239 / 0.42),
+    0 0 24px rgb(56 127 200 / 0.18),
+    inset 0 0 12px rgb(47 159 239 / 0.035) !important;
+  overflow:hidden !important;
+}
+
+/* ORIGINAL WORKS — repeat the same controlled electric-blue edge treatment
+   on each complete story card, not on individual internal controls. */
+[data-theme="midnight"] .work-card {
+  border:1px solid #2F9FEF !important;
+  box-shadow:
+    0 0 8px rgb(47 159 239 / 0.34),
+    0 0 22px rgb(56 127 200 / 0.15),
+    0 18px 48px rgba(0,0,0,0.30) !important;
+}
+[data-theme="midnight"] .work-card:hover {
+  border-color:#58B8F4 !important;
+  box-shadow:
+    0 0 10px rgb(88 184 244 / 0.46),
+    0 0 28px rgb(56 127 200 / 0.21),
+    0 22px 56px rgba(0,0,0,0.36) !important;
+}
