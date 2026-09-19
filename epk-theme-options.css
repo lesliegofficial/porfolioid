@@ -1920,3 +1920,12 @@
     linear-gradient(to right, rgb(7 16 26 / 0.01) 0%, transparent 62%, rgb(7 16 26 / 0.08) 82%, #07101A 100%),
     linear-gradient(to bottom, transparent 78%, rgb(7 16 26 / 0.08) 90%, #07101A 100%) !important;
 }
+
+
+/* Midnight portrait final color-integrity reset.
+   Prevent the earlier backdrop-tint layer from recoloring the verified cutout. */
+[data-theme="midnight"] .hero-image-panel::before {
+  mix-blend-mode:normal !important;
+  filter:none !important;
+  background-color:transparent !important;
+}
