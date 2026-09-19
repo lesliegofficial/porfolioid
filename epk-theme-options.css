@@ -3051,23 +3051,38 @@
     margin-bottom:0.8rem !important;
   }
 }
-/* ── BLUE ZONE: BIO BEFORE CAREER RECORD HIGHLIGHTS ──────────────────────────
-   Keep the biography as one complete document-flow section. The Career Profile
-   heading and six-card record begin only after the portrait, biography copy,
-   and Read Full Bio control have finished. */
-[data-theme="midnight"] .career-stacked-bio {
+/* ── BLUE ZONE: CAREER RECORD HIGHLIGHTS BEFORE BIO ──────────────────────────
+   Blue Zone has its own section sequence. Keep the six-card Career Profile
+   together first, then place the separate biography band beneath it. */
+[data-theme="midnight"] .ch3-wrap {
+  display:flex !important;
+  flex-direction:column !important;
+}
+
+[data-theme="midnight"] .ch3-wrap > .ch3-header {
+  order:1 !important;
+}
+
+[data-theme="midnight"] .ch3-wrap > .ch3-grid {
+  order:2 !important;
+}
+
+[data-theme="midnight"] .ch3-wrap > .ch3-grid + div:not(#credits) {
+  order:3 !important;
+}
+
+[data-theme="midnight"] .ch3-wrap > .career-stacked-bio,
+[data-theme="midnight"] .ch3-wrap > .career-sidebyside,
+[data-theme="midnight"] .ch3-wrap > .career-threecol {
+  order:4 !important;
   position:relative !important;
   float:none !important;
   width:100% !important;
+  margin-top:2.5rem !important;
+  border-top:1px solid rgb(124 196 236 / 0.10) !important;
+  border-bottom:0 !important;
 }
 
-[data-theme="midnight"] .career-stacked-bio + .ch3-header {
-  display:flex !important;
-  position:relative !important;
-  inset:auto !important;
-  clear:both !important;
-  width:100% !important;
-  transform:none !important;
-  z-index:1 !important;
-  margin-top:1.25rem !important;
+[data-theme="midnight"] .ch3-wrap > #credits {
+  order:5 !important;
 }
