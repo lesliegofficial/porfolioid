@@ -3091,7 +3091,7 @@
    top of the hair no longer touches the navigation divider. */
 @media (min-width:901px) {
   [data-theme="midnight"] .hero-img {
-    transform:scale(0.92) translateY(3.5rem) !important;
+    transform:scale(0.92) translateY(0.5rem) !important;
     transform-origin:center bottom !important;
   }
 }
