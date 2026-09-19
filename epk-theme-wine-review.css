@@ -1,0 +1,148 @@
+/* Wine visual-review refinement — cohesive palette pass
+   Reference palette used as one restrained system:
+   Near-black #050505 = base
+   Wine #610C27 = atmosphere / surfaces
+   Taupe #AC9C8D = quiet structure / secondary labels
+   Blush #E3C1B4 = selective emphasis / actions / icons
+   Soft Stone #DDD9CE = subtle high-contrast structure
+   Warm Ivory #EFECE9 = major readable display text
+
+   Preview-only mapping. This is intentionally focused on visual hierarchy,
+   not on expanding the permanent token set before approval.
+*/
+
+[data-theme="wine"] {
+  --accent-secondary: #AC9C8D;
+  --accent-secondary-rgb: 172 156 141;
+
+  --wine-stone: #DDD9CE;
+  --wine-stone-rgb: 221 217 206;
+  --wine-ivory: #EFECE9;
+  --wine-ivory-rgb: 239 236 233;
+
+  --accent-text: var(--wine-ivory);
+  --accent-text-rgb: var(--wine-ivory-rgb);
+  --accent-emphasis: var(--accent-light);
+  --accent-emphasis-rgb: var(--accent-light-rgb);
+  --accent-icon: var(--accent-light);
+  --accent-icon-rgb: var(--accent-light-rgb);
+  --accent-border: var(--accent-secondary);
+  --accent-border-rgb: var(--accent-secondary-rgb);
+  --accent-surface: var(--accent-primary);
+  --accent-surface-rgb: var(--accent-primary-rgb);
+}
+
+/* Main Wine identity: broad atmosphere, not opaque rectangular blocks. */
+[data-theme="wine"] .hero-content {
+  background:
+    radial-gradient(circle at 22% 22%, rgb(var(--accent-primary-rgb) / 0.25), transparent 38%),
+    radial-gradient(circle at 55% 78%, rgb(var(--accent-primary-rgb) / 0.10), transparent 46%),
+    linear-gradient(110deg, rgb(var(--accent-primary-rgb) / 0.10), transparent 70%);
+}
+
+/* Display hierarchy: Leslie stays ivory; surname gets the signature blush. */
+[data-theme="wine"] .hero-name {
+  color: var(--wine-ivory);
+}
+[data-theme="wine"] .hero-name em {
+  color: var(--accent-emphasis);
+}
+
+/* Role cards: Wine field + quiet taupe structure + blush icon. */
+[data-theme="wine"] .hero-role-item {
+  background: rgb(var(--accent-primary-rgb) / 0.13);
+  border-color: rgb(var(--accent-secondary-rgb) / 0.32);
+  box-shadow: inset 0 0 0 1px rgb(var(--accent-primary-rgb) / 0.07);
+}
+[data-theme="wine"] .hero-role-icon {
+  fill: var(--accent-emphasis);
+}
+
+/* Structural rules use Taupe; large text remains neutral/ivory. */
+[data-theme="wine"] .hero-roles-row,
+[data-theme="wine"] .hero-stats-row,
+[data-theme="wine"] .hero-presence-bar {
+  border-bottom-color: rgb(var(--accent-secondary-rgb) / 0.18);
+}
+
+/* Reduce the blocky look from the previous preview. */
+[data-theme="wine"] .hero-stats-row {
+  background: linear-gradient(90deg, rgb(var(--accent-primary-rgb) / 0.055), transparent 60%);
+}
+[data-theme="wine"] .hero-presence-bar {
+  background: linear-gradient(90deg, rgb(var(--accent-primary-rgb) / 0.085), transparent 70%);
+}
+
+[data-theme="wine"] .hero-stat-n,
+[data-theme="wine"] .hero-presence-title {
+  color: var(--wine-ivory);
+}
+
+/* Quiet information = Taupe. Action/emphasis = Blush. */
+[data-theme="wine"] .hero-presence-eyebrow,
+[data-theme="wine"] .ch3-label,
+[data-theme="wine"] .works-label,
+[data-theme="wine"] .collapsible-header-label,
+[data-theme="wine"] .booking-note,
+[data-theme="wine"] .identity-block-label,
+[data-theme="wine"] .timeline-year {
+  color: var(--accent-secondary);
+}
+
+[data-theme="wine"] .hero-presence-explore,
+[data-theme="wine"] .hero-cta-primary,
+[data-theme="wine"] .ch-btn-gold {
+  color: var(--accent-emphasis);
+  border-color: var(--accent-emphasis);
+}
+[data-theme="wine"] .hero-presence-explore:hover,
+[data-theme="wine"] .hero-cta-primary:hover,
+[data-theme="wine"] .ch-btn-gold:hover {
+  background: rgb(var(--accent-primary-rgb) / 0.22);
+  box-shadow: 0 0 14px rgb(var(--accent-emphasis-rgb) / 0.20);
+}
+
+[data-theme="wine"] .ch3-icon,
+[data-theme="wine"] .collapsible-icon {
+  border-color: rgb(var(--accent-secondary-rgb) / 0.34);
+}
+
+/* Carry the Wine field gently into later sections without tinting body copy. */
+[data-theme="wine"] .career-profile-section,
+[data-theme="wine"] .works-section {
+  background-image: linear-gradient(
+    180deg,
+    rgb(var(--accent-primary-rgb) / 0.045),
+    transparent 250px
+  );
+}
+
+[data-theme="wine"] .work-card,
+[data-theme="wine"] .resume-card,
+[data-theme="wine"] .asset-card,
+[data-theme="wine"] .award-card {
+  box-shadow: inset 0 0 0 1px rgb(var(--accent-primary-rgb) / 0.035);
+}
+
+/* Gate 5 visual test: the Connect Hub mid-Gold is deliberately mapped into
+   the Wine palette for this preview so it can be judged as a cohesive theme.
+   External platform-brand colors remain untouched. */
+[data-theme="wine"] .ch-eyebrow,
+[data-theme="wine"] .ch-section-label,
+[data-theme="wine"] .ch-pcard-cat,
+[data-theme="wine"] .ch-row-arrow {
+  color: var(--accent-secondary);
+}
+
+[data-theme="wine"] .ch-hero-title em,
+[data-theme="wine"] .ch-pcard-cta,
+[data-theme="wine"] .ch-btn-outline {
+  color: var(--accent-emphasis);
+}
+
+[data-theme="wine"] .ch-btn-outline {
+  border-color: rgb(var(--accent-emphasis-rgb) / 0.42);
+}
+
+/* Keep Music category Gold fixed for Gate 3A. Owner/editor product controls
+   also remain on their fixed PorfolioID product color by design. */

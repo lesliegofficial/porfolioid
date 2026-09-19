@@ -1,0 +1,1982 @@
+/* PorfolioID final palette options — September 2026
+   Dashboard choices:
+   1. Original Gold (core epk-theme.css)
+   2. Sage Dark (epk-theme-sage-review.css)
+   3. Sage Light
+   4. Midnight Blue
+   5. Plum Lavender
+
+   Fixed platform-brand and status semantics remain outside these palette rules.
+*/
+
+/* ── EMERALD LIGHT ───────────────────────────────────────────────────────── */
+[data-theme="sage-light"] {
+  --black: #F7F7F2;
+  --dark: #F2F2EC;
+  --dark-2: #FFFFFF;
+  --dark-3: #F0F1EA;
+  --dark-4: #E4E7DE;
+  --gray: #676B63;
+  --gray-light: #343832;
+  --white: #111111;
+
+  --accent-primary: #55B67A;
+  --accent-primary-rgb: 85 182 122;
+  --accent-light: #75C896;
+  --accent-light-rgb: 117 200 150;
+  --accent-dark: #F7F7F2;
+  --accent-dark-rgb: 247 247 242;
+  --accent-secondary: #87819B;
+  --accent-secondary-rgb: 135 129 155;
+
+  /* Screenshot emerald is the identity color. A deeper emerald is used
+     only for small text where white-background contrast requires it. */
+  --accent-text: #2E7248;
+  --accent-text-rgb: 46 114 72;
+  --accent-emphasis: var(--accent-primary);
+  --accent-emphasis-rgb: var(--accent-primary-rgb);
+  --accent-icon: #2E7248;
+  --accent-icon-rgb: 46 114 72;
+  --accent-border: var(--accent-primary);
+  --accent-border-rgb: var(--accent-primary-rgb);
+  --accent-surface: var(--accent-primary);
+  --accent-surface-rgb: var(--accent-primary-rgb);
+}
+
+[data-theme="sage-light"] body,
+[data-theme="sage-light"] #epkContent,
+[data-theme="sage-light"] .hero,
+[data-theme="sage-light"] .career-profile-section,
+[data-theme="sage-light"] .gallery-section,
+[data-theme="sage-light"] .exhibition-outer,
+[data-theme="sage-light"] .works-section {
+  background-color: var(--black) !important;
+  color: var(--white);
+}
+
+[data-theme="sage-light"] nav {
+  background: rgba(247,247,242,0.96);
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.22);
+}
+
+[data-theme="sage-light"] .nav-links a { color: rgba(17,17,17,0.72); }
+[data-theme="sage-light"] .nav-logo,
+[data-theme="sage-light"] .hero-name,
+[data-theme="sage-light"] .hero-stat-n,
+[data-theme="sage-light"] .hero-presence-title,
+[data-theme="sage-light"] .section-title,
+[data-theme="sage-light"] .ch3-title,
+[data-theme="sage-light"] .work-card-title,
+[data-theme="sage-light"] .resume-card-title,
+[data-theme="sage-light"] .credit-company,
+[data-theme="sage-light"] .award-card-title,
+[data-theme="sage-light"] .asset-title,
+[data-theme="sage-light"] .booking-title {
+  color: #111111;
+}
+
+[data-theme="sage-light"] .hero-image-panel::after {
+  /* Keep only a narrow edge blend so the portrait remains crisp. */
+  background: linear-gradient(to right, transparent 82%, #F7F7F2 100%);
+}
+
+[data-theme="sage-light"] .hero-content {
+  background: #F7F7F2;
+}
+
+[data-theme="sage-light"] .hero-role-item,
+[data-theme="sage-light"] .ch3-card,
+[data-theme="sage-light"] .work-card,
+[data-theme="sage-light"] .resume-card,
+[data-theme="sage-light"] .credit-card,
+[data-theme="sage-light"] .award-card,
+[data-theme="sage-light"] .asset-card {
+  background-color: #FFFFFF !important;
+  border-color: rgb(var(--accent-primary-rgb) / 0.24) !important;
+  box-shadow: none;
+}
+
+[data-theme="sage-light"] .hero-role-item span,
+[data-theme="sage-light"] .hero-bio p,
+[data-theme="sage-light"] .hero-presence-meta,
+[data-theme="sage-light"] .hero-stat-l,
+[data-theme="sage-light"] .ch3-desc,
+[data-theme="sage-light"] .award-card-org,
+[data-theme="sage-light"] .credit-desc,
+[data-theme="sage-light"] .asset-desc {
+  color: #5D625A !important;
+}
+
+[data-theme="sage-light"] .hero-roles-row,
+[data-theme="sage-light"] .hero-stats-row,
+[data-theme="sage-light"] .hero-presence-bar,
+[data-theme="sage-light"] .ch3-header {
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.18);
+}
+
+[data-theme="sage-light"] .connect-hub {
+  background: #F7F7F2 !important;
+  color: #111111;
+}
+
+[data-theme="sage-light"] .ch-hero,
+[data-theme="sage-light"] .ch-pcard,
+[data-theme="sage-light"] .ch-amazon-card,
+[data-theme="sage-light"] .ch-row {
+  background: #FFFFFF !important;
+  border-color: rgb(var(--accent-primary-rgb) / 0.20) !important;
+}
+
+[data-theme="sage-light"] .ch-hero-title,
+[data-theme="sage-light"] .ch-pcard-title,
+[data-theme="sage-light"] .ch-row-title {
+  color: #111111 !important;
+}
+
+[data-theme="sage-light"] .ch-hero-sub,
+[data-theme="sage-light"] .ch-pcard-desc,
+[data-theme="sage-light"] .ch-row-meta {
+  color: #676B63 !important;
+}
+
+[data-theme="sage-light"] footer {
+  background: #F2F2EC;
+  border-top-color: rgb(var(--accent-primary-rgb) / 0.18);
+  color: #676B63;
+}
+
+/* ── MIDNIGHT BLUE ─────────────────────────────────────────────────── */
+[data-theme="midnight"] {
+  --black: #080B10;
+  --dark: #0B1017;
+  --dark-2: #101722;
+  --dark-3: #151F2C;
+  --dark-4: #1C2938;
+  --gray: #9AA7B7;
+  --gray-light: #D8E2EC;
+  --white: #FFFFFF;
+
+  --accent-primary: #387FC8;
+  --accent-primary-rgb: 56 127 200;
+  --accent-light: #B8E3E9;
+  --accent-light-rgb: 184 227 233;
+  --accent-dark: #080B10;
+  --accent-dark-rgb: 8 11 16;
+  --accent-secondary: #B8E3E9;
+  --accent-secondary-rgb: 184 227 233;
+
+  --accent-text: var(--accent-light);
+  --accent-text-rgb: var(--accent-light-rgb);
+  --accent-emphasis: var(--accent-primary);
+  --accent-emphasis-rgb: var(--accent-primary-rgb);
+  --accent-icon: var(--accent-light);
+  --accent-icon-rgb: var(--accent-light-rgb);
+  --accent-border: var(--accent-primary);
+  --accent-border-rgb: var(--accent-primary-rgb);
+  --accent-surface: var(--accent-primary);
+  --accent-surface-rgb: var(--accent-primary-rgb);
+}
+
+[data-theme="midnight"] body,
+[data-theme="midnight"] #epkContent,
+[data-theme="midnight"] .hero,
+[data-theme="midnight"] .career-profile-section,
+[data-theme="midnight"] .gallery-section,
+[data-theme="midnight"] .exhibition-outer {
+  background-color: var(--black) !important;
+}
+
+[data-theme="midnight"] nav {
+  background: rgba(8,11,16,0.95);
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.22);
+}
+
+[data-theme="midnight"] .hero-image-panel::after {
+  background:
+    linear-gradient(to right, transparent 40%, #080B10 100%),
+    linear-gradient(to bottom, transparent 60%, #080B10 100%);
+}
+
+[data-theme="midnight"] .hero-content {
+  background:
+    radial-gradient(circle at 24% 18%, rgb(var(--accent-primary-rgb) / 0.11), transparent 40%),
+    #080B10;
+}
+
+/* ── DEEP PURPLE ─────────────────────────────────────────────────────
+   Screenshot-inspired palette:
+   deep purple #3A3068, emerald #55B67A, dusty lavender #87819B,
+   crisp white #FFFFFF. Muted rich purple #75639A is used for visible
+   large-format emphasis where the base #3A3068 would be too dark. */
+[data-theme="plum"] {
+  --black: #0D0D0F;
+  --dark: #111116;
+  --dark-2: #17171E;
+  --dark-3: #1D1B28;
+  --dark-4: #262238;
+  --gray: #AAA6B2;
+  --gray-light: #E3E0E8;
+  --white: #FFFFFF;
+
+  --accent-primary: #3A3068;
+  --accent-primary-rgb: 58 48 104;
+  --accent-light: #75639A;
+  --accent-light-rgb: 117 99 154;
+  --accent-dark: #0D0D0F;
+  --accent-dark-rgb: 13 13 15;
+  --accent-secondary: #55B67A;
+  --accent-secondary-rgb: 85 182 122;
+
+  --accent-text: var(--accent-light);
+  --accent-text-rgb: var(--accent-light-rgb);
+  --accent-emphasis: var(--accent-light);
+  --accent-emphasis-rgb: var(--accent-light-rgb);
+  --accent-icon: var(--accent-secondary);
+  --accent-icon-rgb: var(--accent-secondary-rgb);
+  --accent-border: var(--accent-light);
+  --accent-border-rgb: var(--accent-light-rgb);
+  --accent-surface: var(--accent-primary);
+  --accent-surface-rgb: var(--accent-primary-rgb);
+}
+
+[data-theme="plum"] body,
+[data-theme="plum"] #epkContent,
+[data-theme="plum"] .hero,
+[data-theme="plum"] .career-profile-section,
+[data-theme="plum"] .gallery-section,
+[data-theme="plum"] .exhibition-outer {
+  background-color: var(--black) !important;
+}
+
+[data-theme="plum"] nav {
+  background: rgba(13,13,15,0.95);
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.19);
+}
+
+[data-theme="plum"] .hero-image-panel::after {
+  background:
+    linear-gradient(to right, transparent 40%, #0D0D0F 100%),
+    linear-gradient(to bottom, transparent 60%, #0D0D0F 100%);
+}
+
+[data-theme="plum"] .hero-content {
+  background:
+    radial-gradient(circle at 24% 18%, rgb(var(--accent-primary-rgb) / 0.14), transparent 42%),
+    #0D0D0F;
+}
+
+
+/* ── EMERALD LIGHT: CLEAN EDITORIAL PASS ─────────────────────────────── */
+[data-theme="sage-light"] .hero-name,
+[data-theme="sage-light"] .section-title,
+[data-theme="sage-light"] .ch3-heading,
+[data-theme="sage-light"] .works-title,
+[data-theme="sage-light"] .booking-title {
+  color:#0D0D0D !important;
+  text-shadow:none !important;
+}
+
+[data-theme="sage-light"] .hero-name em {
+  color:#55B67A !important;
+}
+
+[data-theme="sage-light"] .hero-presence-explore,
+[data-theme="sage-light"] .hero-cta-primary,
+[data-theme="sage-light"] .ch-btn-gold,
+[data-theme="sage-light"] .wp-playbtn,
+[data-theme="sage-light"] #bioToggleBtn {
+  animation:none !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+}
+
+[data-theme="sage-light"] .hero-presence-explore:hover,
+[data-theme="sage-light"] .hero-cta-primary:hover,
+[data-theme="sage-light"] .ch-btn-gold:hover,
+[data-theme="sage-light"] .wp-playbtn:hover,
+[data-theme="sage-light"] #bioToggleBtn:hover {
+  box-shadow:none !important;
+  background:rgb(var(--accent-primary-rgb) / 0.07) !important;
+}
+
+[data-theme="sage-light"] .career-profile-section,
+[data-theme="sage-light"] .works-section,
+[data-theme="sage-light"] .gallery-section {
+  background-image:none !important;
+}
+
+[data-theme="sage-light"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
+  border-color:rgb(var(--accent-primary-rgb) / 0.42) !important;
+  box-shadow:0 10px 26px rgba(20,30,18,0.08) !important;
+}
+[data-theme="sage-light"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-inner .exhibition-frame {
+  border-color:rgb(var(--accent-primary-rgb) / 0.55) !important;
+  box-shadow:0 12px 30px rgba(20,30,18,0.10) !important;
+}
+[data-theme="sage-light"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-hero .exhibition-frame {
+  border-color:var(--accent-primary) !important;
+  box-shadow:0 16px 36px rgba(20,30,18,0.13) !important;
+}
+[data-theme="sage-light"] .exhibition-frame-reflection,
+[data-theme="sage-light"] .exhibition-floor {
+  opacity:0.12 !important;
+}
+
+/* ── DARK ALTERNATE THEMES: REMOVE LEGACY GOLD DECORATION ──────────
+   Category-music Gold and PorfolioID owner/editor chrome remain fixed.
+   These selectors are visitor-facing theme decoration only. */
+[data-theme="midnight"] .hero-presence-eyebrow,
+[data-theme="midnight"] .section-label,
+[data-theme="midnight"] #galleryEyebrow,
+[data-theme="midnight"] .video-list-meta,
+[data-theme="midnight"] .ch3-label,
+[data-theme="midnight"] .works-label,
+[data-theme="midnight"] .collapsible-header-label,
+[data-theme="midnight"] .booking-note,
+[data-theme="midnight"] .identity-block-label,
+[data-theme="midnight"] .timeline-year,
+[data-theme="plum"] .hero-presence-eyebrow,
+[data-theme="plum"] .section-label,
+[data-theme="plum"] #galleryEyebrow,
+[data-theme="plum"] .video-list-meta,
+[data-theme="plum"] .ch3-label,
+[data-theme="plum"] .works-label,
+[data-theme="plum"] .collapsible-header-label,
+[data-theme="plum"] .booking-note,
+[data-theme="plum"] .identity-block-label,
+[data-theme="plum"] .timeline-year {
+  color:var(--accent-text) !important;
+}
+
+[data-theme="midnight"] .hero-presence-eyebrow svg,
+[data-theme="midnight"] .ch3-icon svg,
+[data-theme="plum"] .hero-presence-eyebrow svg {
+  fill:var(--accent-icon) !important;
+}
+[data-theme="plum"] .ch3-icon svg {
+  fill:var(--accent-secondary) !important;
+}
+
+[data-theme="midnight"] #bioToggleBtn,
+[data-theme="plum"] #bioToggleBtn {
+  color:var(--accent-text) !important;
+  border-color:rgb(var(--accent-border-rgb) / 0.52) !important;
+}
+
+[data-theme="midnight"] #bioShort p:first-child::first-letter,
+[data-theme="plum"] #bioShort p:first-child::first-letter {
+  color:var(--accent-emphasis) !important;
+}
+
+/* Expanded biography paragraphs should read as normal body copy. */
+[data-theme="plum"] #bioFull p::first-letter {
+  color:var(--white) !important;
+}
+
+/* Connect Hub's old mid-Gold was decoration, not platform brand. */
+[data-theme="midnight"] .ch-eyebrow,
+[data-theme="midnight"] .ch-section-label,
+[data-theme="midnight"] .ch-hero-title em,
+[data-theme="midnight"] .ch-pcard-cat,
+[data-theme="midnight"] .ch-pcard-cta,
+[data-theme="midnight"] .ch-amazon-cat,
+[data-theme="midnight"] .ch-amazon-cta,
+[data-theme="midnight"] .ch-row-arrow,
+[data-theme="midnight"] .ch-btn-outline,
+[data-theme="plum"] .ch-eyebrow,
+[data-theme="plum"] .ch-section-label,
+[data-theme="plum"] .ch-hero-title em,
+[data-theme="plum"] .ch-pcard-cat,
+[data-theme="plum"] .ch-pcard-cta,
+[data-theme="plum"] .ch-amazon-cat,
+[data-theme="plum"] .ch-amazon-cta,
+[data-theme="plum"] .ch-row-arrow,
+[data-theme="plum"] .ch-btn-outline {
+  color:var(--accent-text) !important;
+}
+
+[data-theme="plum"] .hero-name em {
+  color:var(--accent-light) !important;
+}
+[data-theme="plum"] .hero-role-icon,
+[data-theme="plum"] .ch3-icon svg {
+  fill:var(--accent-secondary) !important;
+}
+
+/* Photos / exhibition: replace legacy Gold framing with the theme accent. */
+[data-theme="midnight"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame,
+[data-theme="plum"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
+  border-color:rgb(var(--accent-border-rgb) / 0.58) !important;
+  box-shadow:
+    3px 4px 0 0 rgb(var(--accent-border-rgb) / 0.18),
+    0 8px 14px -3px rgb(var(--accent-border-rgb) / 0.22),
+    0 14px 30px rgba(0,0,0,0.42) !important;
+}
+[data-theme="midnight"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-hero .exhibition-frame,
+[data-theme="plum"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-hero .exhibition-frame {
+  border-color:var(--accent-border) !important;
+  box-shadow:
+    5px 6px 0 0 rgb(var(--accent-border-rgb) / 0.28),
+    0 18px 30px -2px rgb(var(--accent-border-rgb) / 0.34),
+    0 20px 34px rgba(0,0,0,0.62) !important;
+}
+[data-theme="midnight"] .exhibition-fan-panel .exhibition-frame-reflection,
+[data-theme="plum"] .exhibition-fan-panel .exhibition-frame-reflection {
+  background:
+    linear-gradient(to bottom, rgb(var(--accent-border-rgb) / 0.20) 0%, rgb(var(--accent-surface-rgb) / 0.10) 18%, transparent 84%) !important;
+}
+[data-theme="midnight"] .exhibition-arrow,
+[data-theme="midnight"] .gallery-scroll-arrow-btn,
+[data-theme="plum"] .exhibition-arrow,
+[data-theme="plum"] .gallery-scroll-arrow-btn {
+  color:var(--accent-text) !important;
+  border-color:rgb(var(--accent-border-rgb) / 0.55) !important;
+}
+[data-theme="midnight"] .exhibition-caption-year,
+[data-theme="midnight"] .gallery-scroll-category,
+[data-theme="midnight"] .gallery-scroll-counter,
+[data-theme="midnight"] .gallery-collection-count,
+[data-theme="midnight"] .gallery-collection-cta,
+[data-theme="plum"] .exhibition-caption-year,
+[data-theme="plum"] .gallery-scroll-category,
+[data-theme="plum"] .gallery-scroll-counter,
+[data-theme="plum"] .gallery-collection-count,
+[data-theme="plum"] .gallery-collection-cta {
+  color:var(--accent-text) !important;
+}
+
+
+/* Deep Purple refinement — muted, richer, less neon */
+[data-theme="plum"] .hero-name em {
+  color:#75639A !important;
+  text-shadow:none !important;
+}
+
+[data-theme="plum"] .hero-role-item {
+  border-color:rgb(58 48 104 / 0.58) !important;
+  background:rgb(58 48 104 / 0.07) !important;
+  box-shadow:none !important;
+}
+
+[data-theme="plum"] .hero-role-icon,
+[data-theme="plum"] .ch3-icon svg,
+[data-theme="plum"] .hero-presence-eyebrow svg {
+  fill:#55B67A !important;
+}
+
+[data-theme="plum"] .hero-presence-eyebrow,
+[data-theme="plum"] .ch-eyebrow,
+[data-theme="plum"] .ch-section-label {
+  color:#55B67A !important;
+}
+
+[data-theme="plum"] .hero-presence-explore,
+[data-theme="plum"] .hero-cta-primary,
+[data-theme="plum"] .ch-btn-gold,
+[data-theme="plum"] .ch-btn-outline {
+  border-color:#75639A !important;
+  color:#FFFFFF !important;
+  box-shadow:0 0 8px rgb(58 48 104 / 0.28) !important;
+  text-shadow:none !important;
+}
+
+[data-theme="plum"] .hero-presence-explore:hover,
+[data-theme="plum"] .hero-cta-primary:hover,
+[data-theme="plum"] .ch-btn-gold:hover,
+[data-theme="plum"] .ch-btn-outline:hover {
+  background:rgb(58 48 104 / 0.16) !important;
+  box-shadow:0 0 10px rgb(58 48 104 / 0.32) !important;
+}
+
+[data-theme="plum"] .section-label,
+[data-theme="plum"] #galleryEyebrow,
+[data-theme="plum"] .video-list-meta,
+[data-theme="plum"] .works-label,
+[data-theme="plum"] .collapsible-header-label {
+  color:#87819B !important;
+}
+
+[data-theme="plum"] .hero-content {
+  background:
+    radial-gradient(circle at 24% 18%, rgb(58 48 104 / 0.10), transparent 42%),
+    #0D0D0F !important;
+}
+
+
+/* ── DEEP PURPLE + EMERALD: FULL VISUAL HIERARCHY PASS ──────────────
+   Purple = identity / atmosphere
+   Emerald = labels / controls / borders / interaction
+   White = primary readable content
+*/
+
+/* Editorial labels: CAREER PROFILE, PHOTOS, VIDEO, MUSIC, RECOGNITION, etc. */
+[data-theme="plum"] .section-label,
+[data-theme="plum"] #galleryEyebrow,
+[data-theme="plum"] .ch3-label,
+[data-theme="plum"] .works-label,
+[data-theme="plum"] .video-list-category,
+[data-theme="plum"] .video-list-meta,
+[data-theme="plum"] .collapsible-header-label,
+[data-theme="plum"] .booking-note,
+[data-theme="plum"] .identity-block-label,
+[data-theme="plum"] .timeline-year,
+[data-theme="plum"] .work-card-meta {
+  color:#55B67A !important;
+}
+
+[data-theme="plum"] .section-label::after {
+  background:linear-gradient(to right, rgb(85 182 122 / 0.58), transparent) !important;
+}
+
+/* Career highlights and professional documents: replace Professional Blue
+   presentation with Emerald inside this palette. */
+[data-theme="plum"] .ch3-header {
+  border-bottom-color:rgb(85 182 122 / 0.22) !important;
+}
+[data-theme="plum"] .ch3-icon {
+  border-color:rgb(85 182 122 / 0.48) !important;
+  background:rgb(85 182 122 / 0.07) !important;
+}
+[data-theme="plum"] .ch3-icon svg {
+  fill:#55B67A !important;
+}
+
+[data-theme="plum"] .semantic-category-professional {
+  border-top-color:#55B67A !important;
+}
+[data-theme="plum"] .semantic-category-professional .semantic-category-label,
+[data-theme="plum"] .semantic-category-professional .resume-card-label,
+[data-theme="plum"] .semantic-category-professional .resume-card-btn,
+[data-theme="plum"] .semantic-category-professional .award-card-type {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .semantic-category-professional .resume-card-btn,
+[data-theme="plum"] .semantic-category-professional .resume-skill-tag {
+  border-color:rgb(85 182 122 / 0.34) !important;
+}
+[data-theme="plum"] .semantic-category-professional .resume-skill-tag {
+  background:rgb(85 182 122 / 0.055) !important;
+}
+
+[data-theme="plum"] .resume-card {
+  border-color:rgb(85 182 122 / 0.20) !important;
+}
+[data-theme="plum"] .resume-card:hover {
+  border-color:rgb(85 182 122 / 0.52) !important;
+}
+[data-theme="plum"] .resume-card-label,
+[data-theme="plum"] .resume-card-btn {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .resume-card-btn {
+  border-color:rgb(85 182 122 / 0.40) !important;
+}
+[data-theme="plum"] .resume-card-btn:hover {
+  background:rgb(85 182 122 / 0.08) !important;
+  border-color:#55B67A !important;
+}
+
+/* Original Works: keep purple cards, make player/interaction layer Emerald. */
+[data-theme="plum"] .work-card {
+  border-color:rgb(117 99 154 / 0.26) !important;
+  background:#17171E !important;
+}
+[data-theme="plum"] .work-card:hover {
+  border-color:rgb(85 182 122 / 0.48) !important;
+  box-shadow:0 22px 56px rgba(0,0,0,0.48), 0 0 0 1px rgb(85 182 122 / 0.10) !important;
+}
+[data-theme="plum"] .work-card-status {
+  color:#55B67A !important;
+  border-color:rgb(85 182 122 / 0.46) !important;
+  background:rgb(85 182 122 / 0.065) !important;
+  box-shadow:none !important;
+}
+[data-theme="plum"] .work-card-status::after {
+  background:linear-gradient(110deg, transparent, rgb(85 182 122 / 0.35), transparent) !important;
+}
+[data-theme="plum"] .work-card-cta {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .work-player {
+  background:rgb(85 182 122 / 0.045) !important;
+  border-color:rgb(85 182 122 / 0.30) !important;
+}
+[data-theme="plum"] .wp-playbtn {
+  border-color:#55B67A !important;
+  color:#55B67A !important;
+  background:rgb(85 182 122 / 0.09) !important;
+  box-shadow:none !important;
+}
+[data-theme="plum"] .wp-playbtn:hover {
+  background:rgb(85 182 122 / 0.18) !important;
+  box-shadow:0 0 10px rgb(85 182 122 / 0.20) !important;
+}
+[data-theme="plum"] .wp-playbtn svg {
+  fill:#55B67A !important;
+}
+[data-theme="plum"] .wp-bar {
+  background:rgb(85 182 122 / 0.28) !important;
+}
+[data-theme="plum"] .wp-waveform:hover .wp-bar {
+  background:rgb(85 182 122 / 0.46) !important;
+}
+[data-theme="plum"] .wp-progress-fill {
+  background:linear-gradient(to right, rgb(85 182 122 / 0) 0%, rgb(85 182 122 / 0.20) 100%) !important;
+}
+[data-theme="plum"] .wp-progress-fill::before {
+  background-image:repeating-linear-gradient(to right, #55B67A 0, #55B67A 1.5px, transparent 1.5px, transparent 3px) !important;
+}
+[data-theme="plum"] .wp-vol-icon {
+  fill:rgb(85 182 122 / 0.78) !important;
+}
+[data-theme="plum"] .wp-vol-icon:hover {
+  fill:#55B67A !important;
+}
+[data-theme="plum"] .wp-vol-slider {
+  accent-color:#55B67A !important;
+  background:rgb(85 182 122 / 0.28) !important;
+}
+
+/* Photos: Purple depth remains in the shadow/reflection, with a very thin
+   Emerald edge so the framing reads as intentionally Purple + Green. */
+[data-theme="plum"] .gallery-section .section-label,
+[data-theme="plum"] #galleryEyebrow {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
+  border:1px solid rgb(85 182 122 / 0.48) !important;
+  box-shadow:
+    3px 4px 0 0 rgb(58 48 104 / 0.20),
+    0 8px 14px -3px rgb(58 48 104 / 0.26),
+    0 14px 30px rgba(0,0,0,0.42) !important;
+}
+[data-theme="plum"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-hero .exhibition-frame {
+  border:1px solid rgb(85 182 122 / 0.68) !important;
+  box-shadow:
+    5px 6px 0 0 rgb(58 48 104 / 0.26),
+    0 18px 30px -2px rgb(58 48 104 / 0.34),
+    0 20px 34px rgba(0,0,0,0.62) !important;
+}
+[data-theme="plum"] .exhibition-arrow,
+[data-theme="plum"] .gallery-scroll-arrow-btn,
+[data-theme="plum"] .exhibition-caption-year,
+[data-theme="plum"] .gallery-scroll-category,
+[data-theme="plum"] .gallery-scroll-counter,
+[data-theme="plum"] .gallery-collection-count,
+[data-theme="plum"] .gallery-collection-cta {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .exhibition-arrow,
+[data-theme="plum"] .gallery-scroll-arrow-btn {
+  border-color:rgb(85 182 122 / 0.52) !important;
+}
+
+/* Video: small category labels and video interaction become Emerald. */
+[data-theme="plum"] .video-toggle-btn {
+  color:#55B67A !important;
+  border-color:rgb(85 182 122 / 0.42) !important;
+}
+[data-theme="plum"] .video-toggle-btn:hover {
+  background:rgb(85 182 122 / 0.07) !important;
+  border-color:#55B67A !important;
+}
+[data-theme="plum"] .vcard-media,
+[data-theme="plum"] .video-list-thumb img,
+[data-theme="plum"] .video-list-thumb video {
+  border-color:rgb(85 182 122 / 0.18) !important;
+}
+[data-theme="plum"] .vcard:hover .vcard-media {
+  border-color:rgb(85 182 122 / 0.50) !important;
+}
+[data-theme="plum"] .vcard-play,
+[data-theme="plum"] .video-list-thumb .video-play {
+  border-color:#55B67A !important;
+  color:#55B67A !important;
+}
+[data-theme="plum"] .vcard:hover .vcard-play {
+  background:#55B67A !important;
+  color:#0D0D0F !important;
+}
+[data-theme="plum"] .vcard-badge,
+[data-theme="plum"] .vcard-meta span,
+[data-theme="plum"] .video-list-category,
+[data-theme="plum"] .video-list-meta {
+  color:#55B67A !important;
+}
+
+/* Music: LIVE CREDIT and small song metadata become Emerald. */
+[data-theme="plum"] #music .collapsible-header-label,
+[data-theme="plum"] #music .collapsible-toggle {
+  color:#55B67A !important;
+}
+[data-theme="plum"] #music .collapsible-icon {
+  color:#55B67A !important;
+  border-color:rgb(85 182 122 / 0.42) !important;
+  background:rgb(85 182 122 / 0.05) !important;
+}
+[data-theme="plum"] .track-tag {
+  color:#55B67A !important;
+  background:rgb(85 182 122 / 0.10) !important;
+}
+[data-theme="plum"] .track-meta span {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .music-tracks {
+  border-top-color:rgb(85 182 122 / 0.16) !important;
+}
+[data-theme="plum"] .track-item {
+  border-bottom-color:rgb(85 182 122 / 0.08) !important;
+}
+[data-theme="plum"] .track-item:hover {
+  background:rgb(85 182 122 / 0.025) !important;
+}
+
+/* Awards / Degrees / Credentials: replace Professional Blue with Emerald. */
+[data-theme="plum"] #awards .collapsible-header-label,
+[data-theme="plum"] #awards .collapsible-toggle {
+  color:#55B67A !important;
+}
+[data-theme="plum"] #awards .collapsible-icon {
+  color:#55B67A !important;
+  border-color:rgb(85 182 122 / 0.42) !important;
+  background:rgb(85 182 122 / 0.05) !important;
+}
+[data-theme="plum"] .award-card {
+  border-color:rgb(85 182 122 / 0.20) !important;
+  border-top-color:#55B67A !important;
+}
+[data-theme="plum"] .award-card:hover {
+  border-color:rgb(85 182 122 / 0.48) !important;
+}
+[data-theme="plum"] .award-card-type,
+[data-theme="plum"] .award-card > div[style*="text-transform:uppercase"][style*="color:"] {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .award-cert-link {
+  color:#55B67A !important;
+}
+
+/* Alternate credentials/assets renderer receives the same treatment. */
+[data-theme="plum"] #assets .asset-card,
+[data-theme="plum"] .asset-card {
+  border-color:rgb(85 182 122 / 0.22) !important;
+  border-top-color:#55B67A !important;
+}
+[data-theme="plum"] #assets .asset-btn {
+  color:#55B67A !important;
+}
+
+/* Small interaction details that flatter this palette without competing
+   with the Purple surname or major headings. */
+[data-theme="plum"] .hcl-arrow,
+[data-theme="plum"] .ch-row-arrow,
+[data-theme="plum"] .ch-pcard-cta,
+[data-theme="plum"] .ch-amazon-cta {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .hero-presence-explore {
+  border-color:rgb(85 182 122 / 0.55) !important;
+}
+[data-theme="plum"] .hero-presence-explore:hover {
+  background:rgb(85 182 122 / 0.08) !important;
+  box-shadow:0 0 10px rgb(85 182 122 / 0.18) !important;
+}
+
+
+/* ── DEEP PURPLE + EMERALD: FINAL AUDIT POLISH ───────────────────── */
+
+/* Professional Documents: explicitly override legacy inline Professional Blue. */
+[data-theme="plum"] .career-stacked-cards .resume-card {
+  border-top-color:#55B67A !important;
+  border-left-color:rgb(85 182 122 / 0.18) !important;
+  border-right-color:rgb(85 182 122 / 0.18) !important;
+  border-bottom-color:rgb(85 182 122 / 0.18) !important;
+}
+[data-theme="plum"] .career-stacked-cards .resume-card-label,
+[data-theme="plum"] .career-stacked-cards .resume-card-btn {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .career-stacked-cards .resume-card-btn,
+[data-theme="plum"] .career-stacked-cards .resume-skill-tag {
+  border-color:rgb(85 182 122 / 0.36) !important;
+}
+[data-theme="plum"] .career-stacked-cards .resume-skill-tag {
+  background:rgb(85 182 122 / 0.055) !important;
+}
+[data-theme="plum"] .career-stacked-cards .resume-card-btn:hover {
+  background:rgb(85 182 122 / 0.085) !important;
+  border-color:#55B67A !important;
+}
+
+/* Music track browser audio controls: match the dark palette where WebKit/Chromium
+   expose native media-control parts; harmlessly falls back elsewhere. */
+[data-theme="plum"] #music audio {
+  color-scheme:dark;
+  accent-color:#55B67A !important;
+  background:#17171E !important;
+  border:1px solid rgb(85 182 122 / 0.22);
+  border-radius:2px;
+  opacity:0.96 !important;
+}
+[data-theme="plum"] #music audio::-webkit-media-controls-enclosure,
+[data-theme="plum"] #music audio::-webkit-media-controls-panel {
+  background-color:#17171E !important;
+}
+[data-theme="plum"] #music audio::-webkit-media-controls-current-time-display,
+[data-theme="plum"] #music audio::-webkit-media-controls-time-remaining-display {
+  color:#FFFFFF !important;
+}
+[data-theme="plum"] #music audio::-webkit-media-controls-play-button,
+[data-theme="plum"] #music audio::-webkit-media-controls-mute-button {
+  filter:invert(64%) sepia(32%) saturate(748%) hue-rotate(93deg) brightness(92%) contrast(88%);
+}
+[data-theme="plum"] #music audio::-webkit-media-controls-timeline,
+[data-theme="plum"] #music audio::-webkit-media-controls-volume-slider {
+  filter:invert(64%) sepia(32%) saturate(748%) hue-rotate(93deg) brightness(92%) contrast(88%);
+}
+
+/* Subtle Emerald section rhythm without adding more large green fields. */
+[data-theme="plum"] .divider {
+  background:linear-gradient(to right, transparent, rgb(85 182 122 / 0.16), transparent) !important;
+}
+[data-theme="plum"] .collapsible-section {
+  border-top-color:rgb(85 182 122 / 0.08) !important;
+}
+
+
+/* ── DEEP PURPLE + EMERALD: CRISP TYPE PASS ─────────────────────────
+   Purple surfaces can visually soften off-white/alpha text. Primary
+   readable content is therefore true white; secondary copy remains
+   neutral but brighter than the base legacy grays. */
+[data-theme="plum"] {
+  color:#FFFFFF;
+}
+
+[data-theme="plum"] .hero-name,
+[data-theme="plum"] .hero-stat-n,
+[data-theme="plum"] .hero-presence-title,
+[data-theme="plum"] .section-title,
+[data-theme="plum"] .ch3-title,
+[data-theme="plum"] .ch3-heading,
+[data-theme="plum"] .resume-card-title,
+[data-theme="plum"] .credit-company,
+[data-theme="plum"] .award-card-title,
+[data-theme="plum"] .asset-title,
+[data-theme="plum"] .work-card-title,
+[data-theme="plum"] .track-title,
+[data-theme="plum"] .vcard-title,
+[data-theme="plum"] .video-list-title,
+[data-theme="plum"] .booking-title,
+[data-theme="plum"] .ch-hero-title,
+[data-theme="plum"] .ch-pcard-title,
+[data-theme="plum"] .ch-row-title,
+[data-theme="plum"] .career-bio-text p,
+[data-theme="plum"] #bioFull p,
+[data-theme="plum"] #bioShort p {
+  color:#FFFFFF !important;
+  opacity:1 !important;
+  text-shadow:none !important;
+}
+
+/* Keep the intentionally Purple short-bio drop cap after whitening body copy. */
+[data-theme="plum"] #bioShort p:first-child::first-letter {
+  color:#75639A !important;
+}
+[data-theme="plum"] #bioFull p::first-letter {
+  color:#FFFFFF !important;
+}
+
+/* Secondary content: brighter neutral, never translucent white. */
+[data-theme="plum"] .hero-bio p,
+[data-theme="plum"] .resume-card-subtitle,
+[data-theme="plum"] .resume-card-desc,
+[data-theme="plum"] .award-card-org,
+[data-theme="plum"] .award-card-desc,
+[data-theme="plum"] .credit-desc,
+[data-theme="plum"] .asset-desc,
+[data-theme="plum"] .track-artist,
+[data-theme="plum"] .track-desc,
+[data-theme="plum"] .vcard-desc,
+[data-theme="plum"] .video-list-desc,
+[data-theme="plum"] .ch3-desc,
+[data-theme="plum"] .ch-hero-sub,
+[data-theme="plum"] .ch-pcard-desc,
+[data-theme="plum"] .ch-row-meta {
+  color:#C9C6CF !important;
+  opacity:1 !important;
+}
+
+/* Original Works had legacy rgba whites that looked washed out on Purple. */
+[data-theme="plum"] .work-card-desc {
+  color:#C9C6CF !important;
+  opacity:1 !important;
+}
+[data-theme="plum"] .work-card-title {
+  color:#FFFFFF !important;
+}
+
+/* Main section subtitles deserve a cleaner, slightly brighter neutral. */
+[data-theme="plum"] .section-subtitle,
+[data-theme="plum"] .gallery-subtitle,
+[data-theme="plum"] .video-section-subtitle,
+[data-theme="plum"] .works-subtitle {
+  color:#C9C6CF !important;
+  opacity:1 !important;
+}
+
+
+/* Purple biography toggle: keep the control styling, but make the label crisp white. */
+[data-theme="plum"] #bioToggleBtn {
+  color:#FFFFFF !important;
+}
+
+
+/* ── MIDNIGHT BLUE: FULL SECTION REFINEMENT ─────────────────────────
+   Blue = identity / depth
+   Aqua = labels / controls / interaction
+   White = crisp primary readable content
+*/
+
+/* 1. Biography controls + crisp white hierarchy */
+[data-theme="midnight"] #bioToggleBtn {
+  color:#FFFFFF !important;
+  border-color:rgb(124 196 236 / 0.58) !important;
+  text-shadow:none !important;
+}
+[data-theme="midnight"] #bioToggleBtn:hover {
+  color:#FFFFFF !important;
+  background:rgb(124 196 236 / 0.08) !important;
+  border-color:#7CC4EC !important;
+  box-shadow:0 0 10px rgb(56 127 200 / 0.18) !important;
+}
+
+[data-theme="midnight"] .hero-name,
+[data-theme="midnight"] .hero-stat-n,
+[data-theme="midnight"] .hero-presence-title,
+[data-theme="midnight"] .section-title,
+[data-theme="midnight"] .ch3-title,
+[data-theme="midnight"] .ch3-heading,
+[data-theme="midnight"] .resume-card-title,
+[data-theme="midnight"] .credit-company,
+[data-theme="midnight"] .award-card-title,
+[data-theme="midnight"] .asset-title,
+[data-theme="midnight"] .work-card-title,
+[data-theme="midnight"] .track-title,
+[data-theme="midnight"] .vcard-title,
+[data-theme="midnight"] .video-list-title,
+[data-theme="midnight"] .booking-title,
+[data-theme="midnight"] .career-bio-text p,
+[data-theme="midnight"] #bioFull p,
+[data-theme="midnight"] #bioShort p {
+  color:#FFFFFF !important;
+  opacity:1 !important;
+  text-shadow:none !important;
+}
+
+[data-theme="midnight"] #bioShort p:first-child::first-letter {
+  color:#387FC8 !important;
+}
+[data-theme="midnight"] #bioFull p::first-letter {
+  color:#FFFFFF !important;
+}
+
+[data-theme="midnight"] .hero-bio p,
+[data-theme="midnight"] .resume-card-subtitle,
+[data-theme="midnight"] .resume-card-desc,
+[data-theme="midnight"] .award-card-org,
+[data-theme="midnight"] .award-card-desc,
+[data-theme="midnight"] .credit-desc,
+[data-theme="midnight"] .asset-desc,
+[data-theme="midnight"] .track-artist,
+[data-theme="midnight"] .track-desc,
+[data-theme="midnight"] .vcard-desc,
+[data-theme="midnight"] .video-list-desc,
+[data-theme="midnight"] .ch3-desc,
+[data-theme="midnight"] .section-subtitle,
+[data-theme="midnight"] .gallery-subtitle,
+[data-theme="midnight"] .video-section-subtitle,
+[data-theme="midnight"] .works-subtitle {
+  color:#C9D4E0 !important;
+  opacity:1 !important;
+}
+
+/* Editorial labels use Aqua consistently. */
+[data-theme="midnight"] .section-label,
+[data-theme="midnight"] #galleryEyebrow,
+[data-theme="midnight"] .ch3-label,
+[data-theme="midnight"] .works-label,
+[data-theme="midnight"] .collapsible-header-label,
+[data-theme="midnight"] .booking-note,
+[data-theme="midnight"] .identity-block-label,
+[data-theme="midnight"] .video-list-category,
+[data-theme="midnight"] .video-list-meta {
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] .section-label::after {
+  background:linear-gradient(to right, rgb(124 196 236 / 0.58), transparent) !important;
+}
+
+/* 2. Video: remove legacy Gold/yellow from visitor-facing metadata. */
+[data-theme="midnight"] .vcard-badge,
+[data-theme="midnight"] .vcard-meta span,
+[data-theme="midnight"] .video-list-category,
+[data-theme="midnight"] .video-list-meta,
+[data-theme="midnight"] .video-toggle-btn {
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] .video-toggle-btn {
+  border-color:rgb(124 196 236 / 0.44) !important;
+}
+[data-theme="midnight"] .video-toggle-btn:hover {
+  background:rgb(124 196 236 / 0.07) !important;
+  border-color:#7CC4EC !important;
+}
+[data-theme="midnight"] .vcard-media,
+[data-theme="midnight"] .video-list-thumb img,
+[data-theme="midnight"] .video-list-thumb video {
+  border-color:rgb(124 196 236 / 0.18) !important;
+}
+[data-theme="midnight"] .vcard:hover .vcard-media {
+  border-color:rgb(124 196 236 / 0.50) !important;
+}
+[data-theme="midnight"] .vcard-play,
+[data-theme="midnight"] .video-list-thumb .video-play {
+  border-color:#7CC4EC !important;
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] .vcard:hover .vcard-play {
+  background:#7CC4EC !important;
+  color:#080B10 !important;
+}
+
+/* 3 + 4. Music: replace Gold labels with Aqua and integrate native controls. */
+[data-theme="midnight"] #music .collapsible-header-label,
+[data-theme="midnight"] #music .collapsible-toggle {
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] #music .collapsible-icon {
+  color:#7CC4EC !important;
+  border-color:rgb(124 196 236 / 0.46) !important;
+  background:rgb(56 127 200 / 0.06) !important;
+}
+[data-theme="midnight"] .track-tag {
+  color:#7CC4EC !important;
+  background:rgb(124 196 236 / 0.09) !important;
+  border:1px solid rgb(124 196 236 / 0.24) !important;
+}
+[data-theme="midnight"] .track-meta span,
+[data-theme="midnight"] .track-role {
+  color:#A9D8F0 !important;
+}
+[data-theme="midnight"] .music-tracks {
+  border-top-color:rgb(124 196 236 / 0.18) !important;
+}
+[data-theme="midnight"] .track-item {
+  border-bottom-color:rgb(124 196 236 / 0.09) !important;
+}
+[data-theme="midnight"] .track-item:hover {
+  background:linear-gradient(90deg, rgb(56 127 200 / 0.055), rgb(124 196 236 / 0.018)) !important;
+  box-shadow:inset 2px 0 0 #7CC4EC !important;
+}
+[data-theme="midnight"] #music audio {
+  color-scheme:dark;
+  accent-color:#7CC4EC !important;
+  background:#0D1723 !important;
+  border:1px solid rgb(124 196 236 / 0.20);
+  border-radius:2px;
+  opacity:0.97 !important;
+}
+[data-theme="midnight"] #music audio::-webkit-media-controls-enclosure,
+[data-theme="midnight"] #music audio::-webkit-media-controls-panel {
+  background-color:#0D1723 !important;
+}
+[data-theme="midnight"] #music audio::-webkit-media-controls-current-time-display,
+[data-theme="midnight"] #music audio::-webkit-media-controls-time-remaining-display {
+  color:#FFFFFF !important;
+}
+[data-theme="midnight"] #music audio::-webkit-media-controls-play-button,
+[data-theme="midnight"] #music audio::-webkit-media-controls-mute-button,
+[data-theme="midnight"] #music audio::-webkit-media-controls-timeline,
+[data-theme="midnight"] #music audio::-webkit-media-controls-volume-slider {
+  filter:invert(78%) sepia(23%) saturate(720%) hue-rotate(166deg) brightness(96%) contrast(92%);
+}
+
+/* Original Works: keep rich navy depth; Aqua owns media interaction. */
+[data-theme="midnight"] .work-card {
+  background:linear-gradient(145deg,#101A28 0%,#0C1420 100%) !important;
+  border-color:rgb(56 127 200 / 0.24) !important;
+}
+[data-theme="midnight"] .work-card:hover {
+  border-color:rgb(124 196 236 / 0.48) !important;
+  box-shadow:0 22px 56px rgba(0,0,0,0.46), 0 0 0 1px rgb(124 196 236 / 0.08) !important;
+}
+[data-theme="midnight"] .work-card-status,
+[data-theme="midnight"] .work-card-cta,
+[data-theme="midnight"] .work-card-meta {
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] .work-card-status {
+  border-color:rgb(124 196 236 / 0.42) !important;
+  background:rgb(124 196 236 / 0.055) !important;
+  box-shadow:none !important;
+}
+[data-theme="midnight"] .work-player {
+  background:rgb(124 196 236 / 0.035) !important;
+  border-color:rgb(124 196 236 / 0.24) !important;
+}
+[data-theme="midnight"] .wp-playbtn {
+  color:#7CC4EC !important;
+  border-color:#7CC4EC !important;
+  background:rgb(124 196 236 / 0.08) !important;
+  box-shadow:none !important;
+}
+[data-theme="midnight"] .wp-playbtn svg {
+  fill:#7CC4EC !important;
+}
+[data-theme="midnight"] .wp-bar {
+  background:rgb(124 196 236 / 0.30) !important;
+}
+[data-theme="midnight"] .wp-progress-fill::before {
+  background-image:repeating-linear-gradient(to right,#7CC4EC 0,#7CC4EC 1.5px,transparent 1.5px,transparent 3px) !important;
+}
+[data-theme="midnight"] .wp-vol-slider {
+  accent-color:#7CC4EC !important;
+}
+
+/* Photos: controlled Aqua edge over dark-blue depth. */
+[data-theme="midnight"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
+  border:1px solid rgb(124 196 236 / 0.42) !important;
+  box-shadow:
+    3px 4px 0 0 rgb(56 127 200 / 0.16),
+    0 8px 18px -3px rgb(56 127 200 / 0.22),
+    0 14px 30px rgba(0,0,0,0.44) !important;
+}
+[data-theme="midnight"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-hero .exhibition-frame {
+  border-color:rgb(124 196 236 / 0.72) !important;
+}
+[data-theme="midnight"] .exhibition-arrow,
+[data-theme="midnight"] .gallery-scroll-arrow-btn,
+[data-theme="midnight"] .exhibition-caption-year,
+[data-theme="midnight"] .gallery-scroll-category,
+[data-theme="midnight"] .gallery-scroll-counter,
+[data-theme="midnight"] .gallery-collection-count,
+[data-theme="midnight"] .gallery-collection-cta {
+  color:#7CC4EC !important;
+}
+
+/* 5. Awards / Degrees / Credentials: richer navy surfaces, Aqua structure. */
+[data-theme="midnight"] #awards .collapsible-header-label,
+[data-theme="midnight"] #awards .collapsible-toggle {
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] #awards .collapsible-icon {
+  color:#7CC4EC !important;
+  border-color:rgb(124 196 236 / 0.48) !important;
+  background:linear-gradient(145deg,rgb(56 127 200 / 0.11),rgb(124 196 236 / 0.035)) !important;
+}
+[data-theme="midnight"] .award-card {
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 85% 10%, rgb(56 127 200 / 0.18), transparent 34%),
+    linear-gradient(145deg,#13263B 0%,#0C1725 58%,#09121D 100%) !important;
+  border:1px solid rgb(124 196 236 / 0.24) !important;
+  border-top:2px solid #7CC4EC !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.025),
+    0 12px 30px rgba(0,0,0,0.28) !important;
+}
+[data-theme="midnight"] .award-card::after {
+  content:"";
+  position:absolute;
+  inset:auto -18% -36% 34%;
+  height:70%;
+  border:1px solid rgb(124 196 236 / 0.08);
+  border-radius:50%;
+  pointer-events:none;
+}
+[data-theme="midnight"] .award-card:hover {
+  border-color:rgb(124 196 236 / 0.52) !important;
+  border-top-color:#B8E3E9 !important;
+  transform:translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.04),
+    0 18px 40px rgba(0,0,0,0.36),
+    0 0 18px rgb(56 127 200 / 0.09) !important;
+}
+[data-theme="midnight"] .award-card-type,
+[data-theme="midnight"] .award-cert-link,
+[data-theme="midnight"] .award-card > div[style*="text-transform:uppercase"][style*="color:"] {
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] .award-card-title {
+  color:#FFFFFF !important;
+}
+[data-theme="midnight"] .award-card-org {
+  color:#B9C7D6 !important;
+}
+
+/* Professional Documents: turn legacy Professional Blue into the Midnight Aqua system. */
+[data-theme="midnight"] .career-stacked-cards .resume-card {
+  background:linear-gradient(145deg,#111E2D 0%,#0B1521 100%) !important;
+  border-top-color:#7CC4EC !important;
+  border-left-color:rgb(124 196 236 / 0.18) !important;
+  border-right-color:rgb(124 196 236 / 0.18) !important;
+  border-bottom-color:rgb(124 196 236 / 0.18) !important;
+}
+[data-theme="midnight"] .career-stacked-cards .resume-card-label,
+[data-theme="midnight"] .career-stacked-cards .resume-card-btn {
+  color:#7CC4EC !important;
+}
+[data-theme="midnight"] .career-stacked-cards .resume-card-btn,
+[data-theme="midnight"] .career-stacked-cards .resume-skill-tag {
+  border-color:rgb(124 196 236 / 0.34) !important;
+}
+[data-theme="midnight"] .career-stacked-cards .resume-skill-tag {
+  background:rgb(124 196 236 / 0.045) !important;
+}
+
+/* Subtle section rhythm */
+[data-theme="midnight"] .divider {
+  background:linear-gradient(to right,transparent,rgb(124 196 236 / 0.14),transparent) !important;
+}
+[data-theme="midnight"] .collapsible-section {
+  border-top-color:rgb(124 196 236 / 0.08) !important;
+}
+
+
+
+/* ── MIDNIGHT: LUMINOUS ACTION SYSTEM ─────────────────────────────── */
+@keyframes midnight-action-pulse {
+  0%, 100% {
+    border-color:#2F8DDA;
+    box-shadow:
+      inset 0 0 0 1px rgb(184 227 233 / 0.05),
+      0 0 4px rgb(48 160 224 / 0.58),
+      0 0 12px rgb(48 160 224 / 0.28),
+      0 0 24px rgb(56 127 200 / 0.13);
+  }
+  50% {
+    border-color:#7CC4EC;
+    box-shadow:
+      inset 0 0 0 1px rgb(184 227 233 / 0.12),
+      0 0 7px rgb(124 196 236 / 0.88),
+      0 0 20px rgb(48 160 224 / 0.50),
+      0 0 36px rgb(56 127 200 / 0.24);
+  }
+}
+
+[data-theme="midnight"] .hero-presence-explore,
+[data-theme="midnight"] #bioToggleBtn,
+[data-theme="midnight"] .ch3-viewcomplete,
+[data-theme="midnight"] .video-toggle-btn {
+  position:relative;
+  isolation:isolate;
+  color:#FFFFFF !important;
+  border:1px solid #2F8DDA !important;
+  background:
+    radial-gradient(circle at 50% 0%, rgb(124 196 236 / 0.09), transparent 58%),
+    linear-gradient(180deg,#101C2A 0%,#0A131E 100%) !important;
+  box-shadow:
+    inset 0 0 0 1px rgb(184 227 233 / 0.05),
+    0 0 4px rgb(48 160 224 / 0.58),
+    0 0 12px rgb(48 160 224 / 0.28),
+    0 0 24px rgb(56 127 200 / 0.13) !important;
+  text-shadow:0 0 10px rgb(184 227 233 / 0.20) !important;
+  animation:midnight-action-pulse 2.6s ease-in-out infinite !important;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease !important;
+}
+
+[data-theme="midnight"] .hero-presence-explore:hover,
+[data-theme="midnight"] #bioToggleBtn:hover,
+[data-theme="midnight"] .ch3-viewcomplete:hover,
+[data-theme="midnight"] .video-toggle-btn:hover {
+  animation:none !important;
+  color:#FFFFFF !important;
+  border-color:#B8E3E9 !important;
+  background:
+    radial-gradient(circle at 50% 0%, rgb(184 227 233 / 0.16), transparent 62%),
+    linear-gradient(180deg,#142538 0%,#0B1725 100%) !important;
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.08),
+    0 0 8px rgb(184 227 233 / 0.92),
+    0 0 22px rgb(48 160 224 / 0.62),
+    0 0 42px rgb(56 127 200 / 0.30) !important;
+  transform:translateY(-1px);
+}
+
+[data-theme="midnight"] .hero-presence-explore:focus-visible,
+[data-theme="midnight"] #bioToggleBtn:focus-visible,
+[data-theme="midnight"] .ch3-viewcomplete:focus-visible,
+[data-theme="midnight"] .video-toggle-btn:focus-visible {
+  outline:2px solid #FFFFFF;
+  outline-offset:4px;
+}
+
+[data-theme="midnight"] .hero-presence-explore {
+  font-family:var(--font-display);
+  font-style:italic;
+}
+[data-theme="midnight"] #bioToggleBtn,
+[data-theme="midnight"] .video-toggle-btn {
+  font-family:var(--font-mono);
+}
+[data-theme="midnight"] .ch3-viewcomplete {
+  font-family:var(--font-display);
+}
+
+/* Original Works: raise readable copy above the blue card atmosphere. */
+[data-theme="midnight"] .work-card-desc {
+  color:#EAF2F8 !important;
+  opacity:1 !important;
+}
+[data-theme="midnight"] .work-card-title {
+  color:#FFFFFF !important;
+}
+[data-theme="midnight"] .work-card-meta {
+  color:#7CC4EC !important;
+}
+
+
+/* ── MIDNIGHT: CINEMATIC EDITORIAL LAYOUT ───────────────────────────
+   Layout pass based on the approved Midnight reference.
+   Scoped to Midnight only; content/data remain unchanged.
+*/
+[data-theme="midnight"] #epkContent {
+  background:
+    radial-gradient(circle at 75% 9%, rgb(56 127 200 / 0.10), transparent 26rem),
+    linear-gradient(180deg,#080B10 0%,#07101A 54%,#080B10 100%) !important;
+}
+
+/* HERO — dense split composition instead of tall legacy stack */
+[data-theme="midnight"] .hero {
+  min-height:560px;
+  max-height:680px;
+  grid-template-columns:43% 57%;
+  border-bottom:1px solid rgb(124 196 236 / 0.14);
+  background:#07101A !important;
+}
+[data-theme="midnight"] .hero-image-panel {
+  min-height:560px !important;
+  max-height:680px;
+}
+[data-theme="midnight"] .hero-image-panel::after {
+  background:
+    linear-gradient(to right,transparent 52%,#07101A 100%),
+    linear-gradient(to bottom,transparent 66%,#07101A 100%),
+    linear-gradient(145deg,rgb(56 127 200 / 0.10),transparent 55%) !important;
+}
+[data-theme="midnight"] .hero-content {
+  justify-content:center !important;
+  padding:5.5rem clamp(2.25rem,5vw,5.5rem) 3.25rem clamp(2rem,4vw,4.25rem) !important;
+  background:
+    radial-gradient(circle at 22% 32%,rgb(56 127 200 / 0.19),transparent 34%),
+    radial-gradient(circle at 78% 68%,rgb(124 196 236 / 0.05),transparent 30%),
+    #07101A !important;
+}
+[data-theme="midnight"] .hero-name {
+  font-size:clamp(4.2rem,6.2vw,7rem) !important;
+  line-height:0.83 !important;
+  margin-bottom:1.5rem !important;
+}
+[data-theme="midnight"] .hero-name em {
+  color:#387FC8 !important;
+}
+[data-theme="midnight"] .hero-roles-row {
+  gap:0.65rem 1.1rem !important;
+  margin:0 0 1.15rem !important;
+  padding:0 0 1.1rem !important;
+  border-bottom-color:rgb(124 196 236 / 0.15) !important;
+}
+[data-theme="midnight"] .hero-role-item {
+  min-width:0 !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  flex-direction:row !important;
+  gap:0.38rem !important;
+}
+[data-theme="midnight"] .hero-role-icon {
+  width:12px !important;
+  height:12px !important;
+  fill:#7CC4EC !important;
+}
+[data-theme="midnight"] .hero-role-item span {
+  font-size:0.49rem !important;
+  letter-spacing:0.18em !important;
+  color:#C7D7E6 !important;
+  line-height:1.2 !important;
+}
+[data-theme="midnight"] .hero-stats-row {
+  margin-bottom:1rem !important;
+  padding-bottom:1rem !important;
+  border-bottom-color:rgb(124 196 236 / 0.13) !important;
+}
+[data-theme="midnight"] .hero-stat-n {
+  font-size:1.55rem !important;
+}
+[data-theme="midnight"] .hero-presence-bar {
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+}
+[data-theme="midnight"] .hero-presence-top-row {
+  margin-bottom:0.25rem !important;
+}
+[data-theme="midnight"] .hero-presence-title {
+  font-size:clamp(1.85rem,2.4vw,2.7rem) !important;
+  margin:0.15rem 0 0.4rem !important;
+}
+[data-theme="midnight"] .hero-presence-meta {
+  color:#B8C7D6 !important;
+}
+[data-theme="midnight"] .hero-presence-dots,
+[data-theme="midnight"] .hero-presence-icons,
+[data-theme="midnight"] .hero-bio {
+  display:none !important;
+}
+
+/* CONNECT — when opened, read as one deliberate editorial band */
+[data-theme="midnight"] #connect {
+  border-top:1px solid rgb(124 196 236 / 0.12);
+  border-bottom:1px solid rgb(124 196 236 / 0.12);
+  background:
+    radial-gradient(circle at 16% 18%,rgb(56 127 200 / 0.10),transparent 24rem),
+    #08111B !important;
+}
+[data-theme="midnight"] .connect-hub {
+  max-width:1280px;
+  margin:0 auto;
+  padding:2.25rem clamp(1.5rem,4vw,3.5rem) 2.5rem !important;
+  background:transparent !important;
+}
+
+/* BIOGRAPHY — image-right cinematic band like reference */
+[data-theme="midnight"] .career-profile-section {
+  padding:0 !important;
+  background:
+    linear-gradient(90deg,#09131F 0%,#08101A 46%,#07101A 100%) !important;
+}
+[data-theme="midnight"] .ch3-wrap {
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding:0 clamp(1.5rem,4vw,3.5rem) 2.75rem !important;
+}
+[data-theme="midnight"] .career-stacked-bio {
+  min-height:420px;
+  grid-template-columns:minmax(0,0.92fr) minmax(360px,1.08fr) !important;
+  gap:0 !important;
+  align-items:stretch !important;
+  margin:0 calc(clamp(1.5rem,4vw,3.5rem) * -1) 2.5rem !important;
+  padding:0 !important;
+  border-bottom:1px solid rgb(124 196 236 / 0.13) !important;
+  background:
+    radial-gradient(circle at 20% 40%,rgb(56 127 200 / 0.10),transparent 28rem),
+    #09131F;
+}
+[data-theme="midnight"] .career-stacked-bio > div:first-child {
+  order:2;
+  position:relative;
+  min-height:420px;
+  overflow:hidden;
+}
+[data-theme="midnight"] .career-stacked-bio > div:first-child::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(to right,#09131F 0%,transparent 22%),
+    linear-gradient(to top,#09131F 0%,transparent 28%),
+    rgb(56 127 200 / 0.12);
+  pointer-events:none;
+}
+[data-theme="midnight"] .career-portrait {
+  min-height:420px !important;
+  height:100% !important;
+  filter:grayscale(100%) contrast(1.08) brightness(0.68) sepia(0.12) hue-rotate(165deg) saturate(1.15) !important;
+}
+[data-theme="midnight"] .career-bio-text {
+  order:1;
+  margin:0 !important;
+  padding:3.4rem clamp(2rem,4vw,4.25rem) 3rem clamp(1.5rem,4vw,3.5rem) !important;
+  align-self:center;
+}
+[data-theme="midnight"] .career-bio-text::before {
+  content:"ABOUT";
+  display:block;
+  font-family:var(--font-mono);
+  font-size:0.62rem;
+  letter-spacing:0.28em;
+  color:#7CC4EC;
+  margin-bottom:0.9rem;
+}
+[data-theme="midnight"] .career-bio-text p {
+  max-width:640px;
+  line-height:1.72 !important;
+}
+[data-theme="midnight"] .career-bio-text p:first-child {
+  font-family:var(--font-display);
+  font-size:clamp(1.55rem,2.4vw,2.35rem) !important;
+  line-height:1.28 !important;
+  margin-bottom:1.2rem !important;
+}
+
+/* CAREER HIGHLIGHTS — cohesive strip, not an island in empty black */
+[data-theme="midnight"] .ch3-header {
+  margin:0 0 1rem !important;
+  padding:0.3rem 0 0.8rem !important;
+}
+[data-theme="midnight"] .ch3-grid {
+  gap:1px !important;
+  background:rgb(124 196 236 / 0.08) !important;
+  box-shadow:0 18px 45px rgba(0,0,0,0.24);
+}
+[data-theme="midnight"] .ch3-card {
+  background:linear-gradient(180deg,#0D1825 0%,#09121D 100%) !important;
+}
+[data-theme="midnight"] .ch3-img {
+  aspect-ratio:4/5 !important;
+}
+[data-theme="midnight"] .ch3-body {
+  padding:0.85rem 0.8rem 1rem !important;
+}
+[data-theme="midnight"] #viewCompleteRecordCaption {
+  max-width:760px;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  color:#C8D4DF !important;
+}
+
+/* ORIGINAL WORKS — wide feature stories, like the reference music band */
+[data-theme="midnight"] .works-section {
+  border-top:1px solid rgb(124 196 236 / 0.10);
+  border-bottom:1px solid rgb(124 196 236 / 0.10);
+  background:
+    radial-gradient(circle at 82% 20%,rgb(56 127 200 / 0.11),transparent 26rem),
+    #07101A !important;
+}
+[data-theme="midnight"] .works-wrap {
+  max-width:1180px !important;
+  padding:3rem clamp(1.5rem,4vw,3rem) 3.25rem !important;
+}
+[data-theme="midnight"] .works-header {
+  margin-bottom:1.5rem !important;
+}
+[data-theme="midnight"] .works-grid {
+  grid-template-columns:1fr !important;
+  gap:1.25rem !important;
+}
+[data-theme="midnight"] .work-card {
+  display:grid !important;
+  grid-template-columns:minmax(300px,0.88fr) minmax(0,1.12fr) !important;
+  min-height:360px;
+  border:1px solid rgb(124 196 236 / 0.12) !important;
+  background:
+    radial-gradient(circle at 72% 30%,rgb(56 127 200 / 0.13),transparent 24rem),
+    linear-gradient(110deg,#0B1724 0%,#09131F 62%,#07101A 100%) !important;
+  box-shadow:0 18px 48px rgba(0,0,0,0.28) !important;
+}
+[data-theme="midnight"] .work-card:nth-child(even) {
+  grid-template-columns:minmax(0,1.12fr) minmax(300px,0.88fr) !important;
+}
+[data-theme="midnight"] .work-card:nth-child(even) .work-card-cover {
+  order:2;
+}
+[data-theme="midnight"] .work-card-cover {
+  max-width:none !important;
+  height:100% !important;
+  aspect-ratio:auto !important;
+  margin:0 !important;
+}
+[data-theme="midnight"] .work-card-cover img {
+  height:100% !important;
+  min-height:360px;
+  object-fit:cover !important;
+}
+[data-theme="midnight"] .work-card-body {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:2.5rem clamp(1.75rem,3.5vw,3.5rem) !important;
+}
+[data-theme="midnight"] .work-card-title {
+  font-size:clamp(1.8rem,2.8vw,3rem) !important;
+}
+[data-theme="midnight"] .work-card-desc {
+  max-width:620px;
+}
+
+/* PHOTOS — tighter gallery band */
+[data-theme="midnight"] .gallery-section {
+  padding:0 !important;
+  border-bottom:1px solid rgb(124 196 236 / 0.10);
+  background:
+    linear-gradient(180deg,#09131F 0%,#07101A 100%) !important;
+}
+[data-theme="midnight"] .gallery-inner {
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding:3rem clamp(1.5rem,4vw,3.5rem) 3.25rem !important;
+}
+[data-theme="midnight"] #galleryTitleBlock {
+  max-width:720px;
+}
+[data-theme="midnight"] #galleryContent {
+  margin-top:0.5rem;
+}
+
+/* VIDEO — reference composition: intro left, 3 media cards right */
+[data-theme="midnight"] #videos {
+  background:
+    radial-gradient(circle at 72% 30%,rgb(56 127 200 / 0.10),transparent 26rem),
+    #08111B !important;
+  border-bottom:1px solid rgb(124 196 236 / 0.10);
+}
+[data-theme="midnight"] .video-shell {
+  max-width:1280px !important;
+  padding:3rem clamp(1.5rem,4vw,3.5rem) 3.25rem !important;
+  display:grid !important;
+  grid-template-columns:minmax(250px,0.34fr) minmax(0,0.66fr);
+  grid-template-areas:
+    "label media"
+    "header media"
+    "expanded expanded";
+  column-gap:3rem;
+  align-items:center;
+}
+[data-theme="midnight"] .video-shell > .section-label {
+  grid-area:label;
+  align-self:end;
+  margin-bottom:0.65rem !important;
+}
+[data-theme="midnight"] .video-shell-header {
+  grid-area:header;
+  display:block !important;
+  margin:0 !important;
+  align-self:start;
+}
+[data-theme="midnight"] .video-shell-header .section-title {
+  font-size:clamp(2rem,3.2vw,3.2rem) !important;
+}
+[data-theme="midnight"] .video-shell-subtitle {
+  color:#C3D0DD !important;
+  margin:0.7rem 0 1.4rem !important;
+}
+[data-theme="midnight"] .video-toggle-btn {
+  margin-top:0.3rem;
+}
+[data-theme="midnight"] #videosFeatured {
+  grid-area:media;
+}
+[data-theme="midnight"] #videosAll {
+  grid-area:expanded;
+  margin-top:2rem;
+}
+[data-theme="midnight"] #videosFeatured .videos-grid {
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:0.7rem !important;
+}
+[data-theme="midnight"] .vcard-title {
+  font-size:0.95rem !important;
+}
+
+/* MUSIC + AWARDS — compact horizontal chapter bands */
+[data-theme="midnight"] .collapsible-section {
+  background:
+    linear-gradient(90deg,#07101A 0%,#09131F 48%,#07101A 100%) !important;
+  border-top:1px solid rgb(124 196 236 / 0.10) !important;
+}
+[data-theme="midnight"] .collapsible-header {
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding:2.1rem clamp(1.5rem,4vw,3.5rem) !important;
+}
+[data-theme="midnight"] .collapsible-header-title {
+  font-family:var(--font-display) !important;
+  font-size:clamp(1.8rem,3vw,2.8rem) !important;
+  line-height:1.05 !important;
+  color:#FFFFFF !important;
+}
+[data-theme="midnight"] .collapsible-body-inner {
+  max-width:1180px !important;
+  padding-bottom:2.5rem !important;
+}
+[data-theme="midnight"] .awards-inner {
+  max-width:1050px !important;
+  margin:0 auto !important;
+  padding:0 2rem 2.75rem !important;
+}
+[data-theme="midnight"] .awards-grid {
+  gap:1rem !important;
+}
+
+/* Professional docs / expanded credits should feel part of the same page */
+[data-theme="midnight"] .career-stacked-cards,
+[data-theme="midnight"] .credits-grid {
+  gap:1rem !important;
+}
+
+/* Stop legacy divider spacing from reintroducing huge black gaps. */
+[data-theme="midnight"] .divider {
+  height:0 !important;
+  margin:0 !important;
+  background:none !important;
+}
+
+/* Mobile: return to straightforward vertical stacking. */
+@media (max-width:900px) {
+  [data-theme="midnight"] .hero {
+    max-height:none;
+    grid-template-columns:1fr;
+  }
+  [data-theme="midnight"] .hero-image-panel {
+    min-height:0 !important;
+    max-height:420px;
+  }
+  [data-theme="midnight"] .hero-content {
+    padding:2.5rem 1.5rem 2.75rem !important;
+  }
+  [data-theme="midnight"] .career-stacked-bio {
+    grid-template-columns:1fr !important;
+    margin:0 -1.5rem 2rem !important;
+  }
+  [data-theme="midnight"] .career-stacked-bio > div:first-child {
+    order:1;
+    min-height:320px;
+  }
+  [data-theme="midnight"] .career-bio-text {
+    order:2;
+    padding:2.25rem 1.5rem !important;
+  }
+  [data-theme="midnight"] .work-card,
+  [data-theme="midnight"] .work-card:nth-child(even) {
+    grid-template-columns:1fr !important;
+  }
+  [data-theme="midnight"] .work-card:nth-child(even) .work-card-cover {
+    order:0;
+  }
+  [data-theme="midnight"] .video-shell {
+    display:block !important;
+  }
+  [data-theme="midnight"] #videosFeatured {
+    margin-top:1.5rem;
+  }
+  [data-theme="midnight"] #videosFeatured .videos-grid {
+    grid-template-columns:1fr !important;
+  }
+}
+
+
+/* ── MIDNIGHT: BIO IMAGE + BORDERLESS AWARDS FINAL POLISH ─────────── */
+
+/* Cool the biography portrait so the warm studio background does not
+   fight the Midnight palette. This intentionally gives the whole image
+   a restrained editorial blue tone, matching the approved reference. */
+[data-theme="midnight"] .career-stacked-bio > div:first-child {
+  background:
+    radial-gradient(circle at 70% 35%, rgb(124 196 236 / 0.14), transparent 34%),
+    linear-gradient(145deg,#102439 0%,#07101A 72%) !important;
+}
+[data-theme="midnight"] .career-portrait {
+  filter:
+    grayscale(82%)
+    sepia(10%)
+    hue-rotate(158deg)
+    saturate(118%)
+    brightness(0.72)
+    contrast(1.12) !important;
+  opacity:0.96;
+}
+[data-theme="midnight"] .career-stacked-bio > div:first-child::after {
+  background:
+    linear-gradient(to right,#09131F 0%,transparent 24%),
+    linear-gradient(to top,#09131F 0%,transparent 24%),
+    linear-gradient(145deg,rgb(56 127 200 / 0.20),rgb(7 16 26 / 0.04) 46%,rgb(7 16 26 / 0.18) 100%) !important;
+  mix-blend-mode:normal;
+}
+
+/* Keep the richer Midnight award surfaces, but remove the visible
+   outlines/top rules. Separation comes from tonal depth and shadow. */
+[data-theme="midnight"] .award-card {
+  border:0 !important;
+  border-top:0 !important;
+  outline:0 !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.025),
+    0 14px 34px rgba(0,0,0,0.30) !important;
+}
+[data-theme="midnight"] .award-card::after {
+  opacity:0.34;
+  border-color:rgb(124 196 236 / 0.05) !important;
+}
+[data-theme="midnight"] .award-card:hover {
+  border:0 !important;
+  border-top:0 !important;
+  outline:0 !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.035),
+    0 20px 44px rgba(0,0,0,0.38),
+    0 0 22px rgb(56 127 200 / 0.08) !important;
+}
+
+/* Remove the visible blue framing from the awards grid itself too. */
+[data-theme="midnight"] #awards .awards-grid,
+[data-theme="midnight"] #awards .awards-inner {
+  border:0 !important;
+  outline:0 !important;
+}
+
+/* ── MIDNIGHT: HERO PORTRAIT ────────────────────────────────────────
+   Use the profile's own uploaded transparent portrait exactly as supplied.
+   Midnight only provides the background surface behind it. */
+[data-theme="midnight"] .hero-image-panel {
+  position:relative !important;
+  overflow:hidden !important;
+  background:
+    radial-gradient(circle at 50% 34%, #173551 0%, #0A1B2D 50%, #06111C 100%) !important;
+}
+[data-theme="midnight"] .hero-img {
+  position:relative !important;
+  z-index:1 !important;
+  opacity:1 !important;
+  mix-blend-mode:normal !important;
+
+  /* Keep the portrait crisp while softly dissolving the lower canvas edge
+     into the Midnight background. */
+  -webkit-mask-image:linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 80%,
+    rgba(0,0,0,0.98) 84%,
+    rgba(0,0,0,0.82) 89%,
+    rgba(0,0,0,0.45) 95%,
+    transparent 100%
+  ) !important;
+  mask-image:linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 80%,
+    rgba(0,0,0,0.98) 84%,
+    rgba(0,0,0,0.82) 89%,
+    rgba(0,0,0,0.45) 95%,
+    transparent 100%
+  ) !important;
+
+  /* A very restrained cool edge lift helps dark hair separate from
+     the navy surface without creating a visible glow. */
+  filter:drop-shadow(0 0 14px rgb(63 151 217 / 0.10)) !important;
+}
+[data-theme="midnight"] .hero-image-panel::before,
+[data-theme="midnight"] .hero-image-panel::after {
+  content:none !important;
+  display:none !important;
+  background:none !important;
+}
+
+
+/* Midnight hero: one continuous dark surface across portrait + content. */
+[data-theme="midnight"] .hero,
+[data-theme="midnight"] .hero-image-panel,
+[data-theme="midnight"] .hero-content {
+  background:#07101A !important;
+  background-image:none !important;
+}
+
+
+/* Midnight hero portrait alignment + clean lower edge. */
+@media (min-width:901px) {
+  [data-theme="midnight"] .hero-img {
+    transform:scale(1.035) translateY(8px) !important;
+    transform-origin:center bottom !important;
+  }
+}
+[data-theme="midnight"] .hero {
+  border-bottom:0 !important;
+}
+
+
+/* Midnight biography: top-align copy with the cinematic image instead of
+   vertically centering it in the taller biography band. */
+@media (min-width:901px) {
+  [data-theme="midnight"] .career-bio-text {
+    align-self:start !important;
+    padding-top:2.2rem !important;
+  }
+}
+
+
+/* Midnight biography vertical composition — lift the entire copy block
+   into the upper third of the image band. */
+@media (min-width:901px) {
+  [data-theme="midnight"] .career-bio-text {
+    align-self:start !important;
+    margin-top:0 !important;
+    padding-top:2rem !important;
+    transform:translateY(35px) !important;
+  }
+}
+
+
+/* ── MIDNIGHT: APPROVED SECTION POLISH — 2026-09-19 ────────────────
+   1) Biography = one continuous darkest-blue surface.
+   2) Performance image stays visibly present, with only restrained edge fades.
+   3) Career Record Highlights receives the approved electric-blue frame/glow.
+   4) Both Original Works cards receive the same frame/glow language.
+*/
+
+/* ABOUT / BIOGRAPHY — one single darkest Midnight surface */
+[data-theme="midnight"] .career-profile-section,
+[data-theme="midnight"] .career-stacked-bio,
+[data-theme="midnight"] .career-stacked-bio > div:first-child {
+  background:#06111C !important;
+  background-image:none !important;
+}
+
+/* Keep the performance image clear instead of drowning it in the blue field. */
+[data-theme="midnight"] .career-portrait {
+  opacity:1 !important;
+  filter:
+    grayscale(58%)
+    sepia(5%)
+    hue-rotate(158deg)
+    saturate(112%)
+    brightness(0.90)
+    contrast(1.10) !important;
+}
+[data-theme="midnight"] .career-stacked-bio > div:first-child::after {
+  background:
+    linear-gradient(to right,#06111C 0%,transparent 15%),
+    linear-gradient(to top,#06111C 0%,transparent 12%) !important;
+  opacity:0.62 !important;
+}
+
+/* CAREER RECORD HIGHLIGHTS — frame the exact full six-card strip. */
+[data-theme="midnight"] .ch3-grid {
+  border:1px solid #2F9FEF !important;
+  box-shadow:
+    0 0 8px rgb(47 159 239 / 0.42),
+    0 0 24px rgb(56 127 200 / 0.18),
+    inset 0 0 12px rgb(47 159 239 / 0.035) !important;
+  overflow:hidden !important;
+}
+
+/* ORIGINAL WORKS — repeat the same controlled electric-blue edge treatment
+   on each complete story card, not on individual internal controls. */
+[data-theme="midnight"] .work-card {
+  border:1px solid #2F9FEF !important;
+  box-shadow:
+    0 0 8px rgb(47 159 239 / 0.34),
+    0 0 22px rgb(56 127 200 / 0.15),
+    0 18px 48px rgba(0,0,0,0.30) !important;
+}
+[data-theme="midnight"] .work-card:hover {
+  border-color:#58B8F4 !important;
+  box-shadow:
+    0 0 10px rgb(88 184 244 / 0.46),
+    0 0 28px rgb(56 127 200 / 0.21),
+    0 22px 56px rgba(0,0,0,0.36) !important;
+}

@@ -125,6 +125,9 @@
       <button class="nav-item" onclick="showPanel('careertype')">
         <span class="nav-item-icon">⚡</span><span>Career Type</span>
       </button>
+      <button class="nav-item" onclick="showPanel('appearance')">
+        <span class="nav-item-icon">◐</span><span>Appearance</span>
+      </button>
       <button class="nav-item" onclick="showPanel('sections')">
         <span class="nav-item-icon">⠿</span><span>Section Order</span>
       </button>
@@ -1403,6 +1406,21 @@
         <strong style="color:var(--gold)">Hybrid selected.</strong> Your portfolio will show both creative and professional sections.
       </div>
       <button onclick="saveCareerType()" style="margin-top:2rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;background:var(--gold);color:#000;border:none;padding:0.75rem 2rem;cursor:pointer;font-weight:600">✓ Save Career Type</button>
+    </div>
+
+    <!-- APPEARANCE PANEL -->
+    <div class="panel" id="panel-appearance">
+      <button onclick="showPanel('hero')" class="panel-back-btn">← Back to Career Profile</button>
+      <h1 class="panel-title">Portfolio <em>Appearance</em></h1>
+      <p class="panel-sub">Choose one complete color combination for this profile. Colors are coordinated as a set so the portfolio stays consistent and readable.</p>
+
+      <div id="appearanceThemeGrid" class="theme-choice-grid"></div>
+
+      <div class="theme-choice-actions">
+        <button class="btn-save" onclick="saveAppearanceTheme()">✓ Save Appearance</button>
+        <button class="btn-cancel" onclick="previewAppearanceTheme()">Preview Selected Theme ↗</button>
+      </div>
+      <p class="field-hint" style="margin-top:0.85rem">Preview opens your public profile in a new tab without changing the saved selection. Saving applies the palette to this profile automatically.</p>
     </div>
 
     <!-- SECTIONS PANEL -->

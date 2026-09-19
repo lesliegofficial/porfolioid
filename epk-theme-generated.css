@@ -1,0 +1,93 @@
+/* PorfolioID generated-markup semantic bridge
+   Temporary migration layer for inline styles emitted by legacy epk.js.
+   These rules use semantic tokens now; once visual behavior is approved they
+   can be folded into epk.js/classes without changing the token architecture.
+*/
+
+/* Fixed category identity */
+.semantic-category-professional {
+  border-top-color: var(--category-professional) !important;
+}
+.semantic-category-professional .semantic-category-label,
+.semantic-category-professional .resume-card-label,
+.semantic-category-professional .resume-card-btn,
+.semantic-category-professional .award-card-type {
+  color: var(--category-professional) !important;
+}
+.semantic-category-professional .resume-card-btn,
+.semantic-category-professional .resume-skill-tag {
+  border-color: rgb(var(--category-professional-rgb) / 0.30) !important;
+}
+.semantic-category-professional .resume-skill-tag {
+  background: rgb(var(--category-professional-rgb) / 0.05) !important;
+}
+
+.semantic-category-music {
+  border-top-color: var(--category-music) !important;
+}
+.semantic-category-music .semantic-category-label,
+.semantic-category-music .resume-card-label,
+.semantic-category-music .resume-card-btn,
+.semantic-category-music .award-card-type {
+  color: var(--category-music) !important;
+}
+.semantic-category-music .resume-card-btn,
+.semantic-category-music .resume-skill-tag {
+  border-color: rgb(var(--category-music-rgb) / 0.30) !important;
+}
+.semantic-category-music .resume-skill-tag {
+  background: rgb(var(--category-music-rgb) / 0.05) !important;
+}
+
+/* Fixed trust/outcome states */
+.semantic-status-verified {
+  color: var(--status-verified) !important;
+  background: rgb(var(--semantic-positive-rgb) / 0.10) !important;
+  border-color: rgb(var(--semantic-positive-rgb) / 0.25) !important;
+}
+
+#bookingSuccess {
+  color: var(--status-success) !important;
+  border-color: rgb(var(--semantic-positive-rgb) / 0.25) !important;
+  background: rgb(var(--semantic-positive-rgb) / 0.06) !important;
+}
+
+/* Featured is semantic but deliberately theme-relative. */
+.semantic-status-featured {
+  color: var(--status-featured) !important;
+  background: rgb(var(--accent-emphasis-rgb) / 0.12) !important;
+  border-color: rgb(var(--accent-emphasis-rgb) / 0.30) !important;
+}
+
+/* Assets already carry explicit category text; normalize their pill colors
+   to the fixed global category system instead of the profile theme. */
+.semantic-asset-category-professional {
+  color: var(--category-professional) !important;
+  background: rgb(var(--category-professional-rgb) / 0.15) !important;
+  border-color: rgb(var(--category-professional-rgb) / 0.40) !important;
+}
+.semantic-asset-category-education {
+  color: var(--category-education) !important;
+  background: rgb(var(--category-education-rgb) / 0.15) !important;
+  border-color: rgb(var(--category-education-rgb) / 0.40) !important;
+}
+.semantic-asset-category-certification {
+  color: var(--category-certification) !important;
+  background: rgb(var(--category-certification-rgb) / 0.15) !important;
+  border-color: rgb(var(--category-certification-rgb) / 0.40) !important;
+}
+.semantic-asset-category-award {
+  color: var(--category-award) !important;
+  background: rgb(var(--category-award-rgb) / 0.15) !important;
+  border-color: rgb(var(--category-award-rgb) / 0.40) !important;
+}
+.semantic-asset-category-press {
+  color: var(--category-press) !important;
+  background: rgb(var(--category-press-rgb) / 0.15) !important;
+  border-color: rgb(var(--category-press-rgb) / 0.40) !important;
+}
+.semantic-asset-category-contract {
+  color: var(--category-contract) !important;
+  background: rgb(var(--category-contract-rgb) / 0.15) !important;
+  border-color: rgb(var(--category-contract-rgb) / 0.40) !important;
+}
