@@ -498,3 +498,283 @@
     radial-gradient(circle at 24% 18%, rgb(58 48 104 / 0.10), transparent 42%),
     #0D0D0F !important;
 }
+
+
+/* ── DEEP PURPLE + EMERALD: FULL VISUAL HIERARCHY PASS ──────────────
+   Purple = identity / atmosphere
+   Emerald = labels / controls / borders / interaction
+   White = primary readable content
+*/
+
+/* Editorial labels: CAREER PROFILE, PHOTOS, VIDEO, MUSIC, RECOGNITION, etc. */
+[data-theme="plum"] .section-label,
+[data-theme="plum"] #galleryEyebrow,
+[data-theme="plum"] .ch3-label,
+[data-theme="plum"] .works-label,
+[data-theme="plum"] .video-list-category,
+[data-theme="plum"] .video-list-meta,
+[data-theme="plum"] .collapsible-header-label,
+[data-theme="plum"] .booking-note,
+[data-theme="plum"] .identity-block-label,
+[data-theme="plum"] .timeline-year,
+[data-theme="plum"] .work-card-meta {
+  color:#55B67A !important;
+}
+
+[data-theme="plum"] .section-label::after {
+  background:linear-gradient(to right, rgb(85 182 122 / 0.58), transparent) !important;
+}
+
+/* Career highlights and professional documents: replace Professional Blue
+   presentation with Emerald inside this palette. */
+[data-theme="plum"] .ch3-header {
+  border-bottom-color:rgb(85 182 122 / 0.22) !important;
+}
+[data-theme="plum"] .ch3-icon {
+  border-color:rgb(85 182 122 / 0.48) !important;
+  background:rgb(85 182 122 / 0.07) !important;
+}
+[data-theme="plum"] .ch3-icon svg {
+  fill:#55B67A !important;
+}
+
+[data-theme="plum"] .semantic-category-professional {
+  border-top-color:#55B67A !important;
+}
+[data-theme="plum"] .semantic-category-professional .semantic-category-label,
+[data-theme="plum"] .semantic-category-professional .resume-card-label,
+[data-theme="plum"] .semantic-category-professional .resume-card-btn,
+[data-theme="plum"] .semantic-category-professional .award-card-type {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .semantic-category-professional .resume-card-btn,
+[data-theme="plum"] .semantic-category-professional .resume-skill-tag {
+  border-color:rgb(85 182 122 / 0.34) !important;
+}
+[data-theme="plum"] .semantic-category-professional .resume-skill-tag {
+  background:rgb(85 182 122 / 0.055) !important;
+}
+
+[data-theme="plum"] .resume-card {
+  border-color:rgb(85 182 122 / 0.20) !important;
+}
+[data-theme="plum"] .resume-card:hover {
+  border-color:rgb(85 182 122 / 0.52) !important;
+}
+[data-theme="plum"] .resume-card-label,
+[data-theme="plum"] .resume-card-btn {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .resume-card-btn {
+  border-color:rgb(85 182 122 / 0.40) !important;
+}
+[data-theme="plum"] .resume-card-btn:hover {
+  background:rgb(85 182 122 / 0.08) !important;
+  border-color:#55B67A !important;
+}
+
+/* Original Works: keep purple cards, make player/interaction layer Emerald. */
+[data-theme="plum"] .work-card {
+  border-color:rgb(117 99 154 / 0.26) !important;
+  background:#17171E !important;
+}
+[data-theme="plum"] .work-card:hover {
+  border-color:rgb(85 182 122 / 0.48) !important;
+  box-shadow:0 22px 56px rgba(0,0,0,0.48), 0 0 0 1px rgb(85 182 122 / 0.10) !important;
+}
+[data-theme="plum"] .work-card-status {
+  color:#55B67A !important;
+  border-color:rgb(85 182 122 / 0.46) !important;
+  background:rgb(85 182 122 / 0.065) !important;
+  box-shadow:none !important;
+}
+[data-theme="plum"] .work-card-status::after {
+  background:linear-gradient(110deg, transparent, rgb(85 182 122 / 0.35), transparent) !important;
+}
+[data-theme="plum"] .work-card-cta {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .work-player {
+  background:rgb(85 182 122 / 0.045) !important;
+  border-color:rgb(85 182 122 / 0.30) !important;
+}
+[data-theme="plum"] .wp-playbtn {
+  border-color:#55B67A !important;
+  color:#55B67A !important;
+  background:rgb(85 182 122 / 0.09) !important;
+  box-shadow:none !important;
+}
+[data-theme="plum"] .wp-playbtn:hover {
+  background:rgb(85 182 122 / 0.18) !important;
+  box-shadow:0 0 10px rgb(85 182 122 / 0.20) !important;
+}
+[data-theme="plum"] .wp-playbtn svg {
+  fill:#55B67A !important;
+}
+[data-theme="plum"] .wp-bar {
+  background:rgb(85 182 122 / 0.28) !important;
+}
+[data-theme="plum"] .wp-waveform:hover .wp-bar {
+  background:rgb(85 182 122 / 0.46) !important;
+}
+[data-theme="plum"] .wp-progress-fill {
+  background:linear-gradient(to right, rgb(85 182 122 / 0) 0%, rgb(85 182 122 / 0.20) 100%) !important;
+}
+[data-theme="plum"] .wp-progress-fill::before {
+  background-image:repeating-linear-gradient(to right, #55B67A 0, #55B67A 1.5px, transparent 1.5px, transparent 3px) !important;
+}
+[data-theme="plum"] .wp-vol-icon {
+  fill:rgb(85 182 122 / 0.78) !important;
+}
+[data-theme="plum"] .wp-vol-icon:hover {
+  fill:#55B67A !important;
+}
+[data-theme="plum"] .wp-vol-slider {
+  accent-color:#55B67A !important;
+  background:rgb(85 182 122 / 0.28) !important;
+}
+
+/* Photos: Purple depth remains in the shadow/reflection, with a very thin
+   Emerald edge so the framing reads as intentionally Purple + Green. */
+[data-theme="plum"] .gallery-section .section-label,
+[data-theme="plum"] #galleryEyebrow {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
+  border:1px solid rgb(85 182 122 / 0.48) !important;
+  box-shadow:
+    3px 4px 0 0 rgb(58 48 104 / 0.20),
+    0 8px 14px -3px rgb(58 48 104 / 0.26),
+    0 14px 30px rgba(0,0,0,0.42) !important;
+}
+[data-theme="plum"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-hero .exhibition-frame {
+  border:1px solid rgb(85 182 122 / 0.68) !important;
+  box-shadow:
+    5px 6px 0 0 rgb(58 48 104 / 0.26),
+    0 18px 30px -2px rgb(58 48 104 / 0.34),
+    0 20px 34px rgba(0,0,0,0.62) !important;
+}
+[data-theme="plum"] .exhibition-arrow,
+[data-theme="plum"] .gallery-scroll-arrow-btn,
+[data-theme="plum"] .exhibition-caption-year,
+[data-theme="plum"] .gallery-scroll-category,
+[data-theme="plum"] .gallery-scroll-counter,
+[data-theme="plum"] .gallery-collection-count,
+[data-theme="plum"] .gallery-collection-cta {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .exhibition-arrow,
+[data-theme="plum"] .gallery-scroll-arrow-btn {
+  border-color:rgb(85 182 122 / 0.52) !important;
+}
+
+/* Video: small category labels and video interaction become Emerald. */
+[data-theme="plum"] .video-toggle-btn {
+  color:#55B67A !important;
+  border-color:rgb(85 182 122 / 0.42) !important;
+}
+[data-theme="plum"] .video-toggle-btn:hover {
+  background:rgb(85 182 122 / 0.07) !important;
+  border-color:#55B67A !important;
+}
+[data-theme="plum"] .vcard-media,
+[data-theme="plum"] .video-list-thumb img,
+[data-theme="plum"] .video-list-thumb video {
+  border-color:rgb(85 182 122 / 0.18) !important;
+}
+[data-theme="plum"] .vcard:hover .vcard-media {
+  border-color:rgb(85 182 122 / 0.50) !important;
+}
+[data-theme="plum"] .vcard-play,
+[data-theme="plum"] .video-list-thumb .video-play {
+  border-color:#55B67A !important;
+  color:#55B67A !important;
+}
+[data-theme="plum"] .vcard:hover .vcard-play {
+  background:#55B67A !important;
+  color:#0D0D0F !important;
+}
+[data-theme="plum"] .vcard-badge,
+[data-theme="plum"] .vcard-meta span,
+[data-theme="plum"] .video-list-category,
+[data-theme="plum"] .video-list-meta {
+  color:#55B67A !important;
+}
+
+/* Music: LIVE CREDIT and small song metadata become Emerald. */
+[data-theme="plum"] #music .collapsible-header-label,
+[data-theme="plum"] #music .collapsible-toggle {
+  color:#55B67A !important;
+}
+[data-theme="plum"] #music .collapsible-icon {
+  color:#55B67A !important;
+  border-color:rgb(85 182 122 / 0.42) !important;
+  background:rgb(85 182 122 / 0.05) !important;
+}
+[data-theme="plum"] .track-tag {
+  color:#55B67A !important;
+  background:rgb(85 182 122 / 0.10) !important;
+}
+[data-theme="plum"] .track-meta span {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .music-tracks {
+  border-top-color:rgb(85 182 122 / 0.16) !important;
+}
+[data-theme="plum"] .track-item {
+  border-bottom-color:rgb(85 182 122 / 0.08) !important;
+}
+[data-theme="plum"] .track-item:hover {
+  background:rgb(85 182 122 / 0.025) !important;
+}
+
+/* Awards / Degrees / Credentials: replace Professional Blue with Emerald. */
+[data-theme="plum"] #awards .collapsible-header-label,
+[data-theme="plum"] #awards .collapsible-toggle {
+  color:#55B67A !important;
+}
+[data-theme="plum"] #awards .collapsible-icon {
+  color:#55B67A !important;
+  border-color:rgb(85 182 122 / 0.42) !important;
+  background:rgb(85 182 122 / 0.05) !important;
+}
+[data-theme="plum"] .award-card {
+  border-color:rgb(85 182 122 / 0.20) !important;
+  border-top-color:#55B67A !important;
+}
+[data-theme="plum"] .award-card:hover {
+  border-color:rgb(85 182 122 / 0.48) !important;
+}
+[data-theme="plum"] .award-card-type,
+[data-theme="plum"] .award-card > div[style*="text-transform:uppercase"][style*="color:"] {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .award-cert-link {
+  color:#55B67A !important;
+}
+
+/* Alternate credentials/assets renderer receives the same treatment. */
+[data-theme="plum"] #assets .asset-card,
+[data-theme="plum"] .asset-card {
+  border-color:rgb(85 182 122 / 0.22) !important;
+  border-top-color:#55B67A !important;
+}
+[data-theme="plum"] #assets .asset-btn {
+  color:#55B67A !important;
+}
+
+/* Small interaction details that flatter this palette without competing
+   with the Purple surname or major headings. */
+[data-theme="plum"] .hcl-arrow,
+[data-theme="plum"] .ch-row-arrow,
+[data-theme="plum"] .ch-pcard-cta,
+[data-theme="plum"] .ch-amazon-cta {
+  color:#55B67A !important;
+}
+[data-theme="plum"] .hero-presence-explore {
+  border-color:rgb(85 182 122 / 0.55) !important;
+}
+[data-theme="plum"] .hero-presence-explore:hover {
+  background:rgb(85 182 122 / 0.08) !important;
+  box-shadow:0 0 10px rgb(85 182 122 / 0.18) !important;
+}
