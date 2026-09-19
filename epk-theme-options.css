@@ -75,15 +75,12 @@
 }
 
 [data-theme="sage-light"] .hero-image-panel::after {
-  background:
-    linear-gradient(to right, transparent 42%, #F7F7F2 100%),
-    linear-gradient(to bottom, transparent 66%, #F7F7F2 100%);
+  /* Keep only a narrow edge blend so the portrait remains crisp. */
+  background: linear-gradient(to right, transparent 82%, #F7F7F2 100%);
 }
 
 [data-theme="sage-light"] .hero-content {
-  background:
-    radial-gradient(circle at 22% 18%, rgb(var(--accent-light-rgb) / 0.10), transparent 38%),
-    #F7F7F2;
+  background: #F7F7F2;
 }
 
 [data-theme="sage-light"] .hero-role-item,
@@ -95,7 +92,7 @@
 [data-theme="sage-light"] .asset-card {
   background-color: #FFFFFF !important;
   border-color: rgb(var(--accent-primary-rgb) / 0.24) !important;
-  box-shadow: 0 8px 24px rgba(25,35,22,0.035);
+  box-shadow: none;
 }
 
 [data-theme="sage-light"] .hero-role-item span,
@@ -117,9 +114,7 @@
 }
 
 [data-theme="sage-light"] .connect-hub {
-  background:
-    radial-gradient(circle at 78% 0%, rgb(var(--accent-light-rgb) / 0.11), transparent 31%),
-    #F7F7F2 !important;
+  background: #F7F7F2 !important;
   color: #111111;
 }
 
@@ -207,36 +202,40 @@
     #080B10;
 }
 
-/* ── PLUM LAVENDER ────────────────────────────────────────────────── */
+/* ── DEEP PURPLE ─────────────────────────────────────────────────────
+   Screenshot-inspired palette:
+   deep purple #3A3068, emerald #55B67A, dusty lavender #87819B,
+   soft white #F4FBF8. A brighter related purple is used only where
+   normal-size text needs stronger dark-background contrast. */
 [data-theme="plum"] {
   --black: #0D0D0F;
   --dark: #111116;
   --dark-2: #17171E;
-  --dark-3: #1D1C27;
-  --dark-4: #252332;
-  --gray: #96929E;
-  --gray-light: #CAC4D2;
-  --white: #F5F3EE;
+  --dark-3: #1D1B28;
+  --dark-4: #262238;
+  --gray: #9793A0;
+  --gray-light: #D0CBD7;
+  --white: #F4FBF8;
 
-  --accent-primary: #B298E7;
-  --accent-primary-rgb: 178 152 231;
-  --accent-light: #F5F3EE;
-  --accent-light-rgb: 245 243 238;
+  --accent-primary: #3A3068;
+  --accent-primary-rgb: 58 48 104;
+  --accent-light: #8F7ACF;
+  --accent-light-rgb: 143 122 207;
   --accent-dark: #0D0D0F;
   --accent-dark-rgb: 13 13 15;
-  --accent-secondary: #4B4A67;
-  --accent-secondary-rgb: 75 74 103;
+  --accent-secondary: #55B67A;
+  --accent-secondary-rgb: 85 182 122;
 
-  --accent-text: var(--accent-primary);
-  --accent-text-rgb: var(--accent-primary-rgb);
-  --accent-emphasis: var(--accent-primary);
-  --accent-emphasis-rgb: var(--accent-primary-rgb);
-  --accent-icon: var(--accent-primary);
-  --accent-icon-rgb: var(--accent-primary-rgb);
-  --accent-border: var(--accent-primary);
-  --accent-border-rgb: var(--accent-primary-rgb);
-  --accent-surface: var(--accent-secondary);
-  --accent-surface-rgb: var(--accent-secondary-rgb);
+  --accent-text: var(--accent-light);
+  --accent-text-rgb: var(--accent-light-rgb);
+  --accent-emphasis: var(--accent-light);
+  --accent-emphasis-rgb: var(--accent-light-rgb);
+  --accent-icon: var(--accent-secondary);
+  --accent-icon-rgb: var(--accent-secondary-rgb);
+  --accent-border: var(--accent-light);
+  --accent-border-rgb: var(--accent-light-rgb);
+  --accent-surface: var(--accent-primary);
+  --accent-surface-rgb: var(--accent-primary-rgb);
 }
 
 [data-theme="plum"] body,
@@ -261,6 +260,183 @@
 
 [data-theme="plum"] .hero-content {
   background:
-    radial-gradient(circle at 24% 18%, rgb(var(--accent-primary-rgb) / 0.085), transparent 40%),
+    radial-gradient(circle at 24% 18%, rgb(var(--accent-primary-rgb) / 0.14), transparent 42%),
     #0D0D0F;
+}
+
+
+/* ── SAGE LIGHT: CLEAN EDITORIAL PASS ─────────────────────────────── */
+[data-theme="sage-light"] .hero-name,
+[data-theme="sage-light"] .section-title,
+[data-theme="sage-light"] .ch3-heading,
+[data-theme="sage-light"] .works-title,
+[data-theme="sage-light"] .booking-title {
+  color:#0D0D0D !important;
+  text-shadow:none !important;
+}
+
+[data-theme="sage-light"] .hero-name em {
+  color:#4F6B47 !important;
+}
+
+[data-theme="sage-light"] .hero-presence-explore,
+[data-theme="sage-light"] .hero-cta-primary,
+[data-theme="sage-light"] .ch-btn-gold,
+[data-theme="sage-light"] .wp-playbtn,
+[data-theme="sage-light"] #bioToggleBtn {
+  animation:none !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+}
+
+[data-theme="sage-light"] .hero-presence-explore:hover,
+[data-theme="sage-light"] .hero-cta-primary:hover,
+[data-theme="sage-light"] .ch-btn-gold:hover,
+[data-theme="sage-light"] .wp-playbtn:hover,
+[data-theme="sage-light"] #bioToggleBtn:hover {
+  box-shadow:none !important;
+  background:rgb(var(--accent-primary-rgb) / 0.07) !important;
+}
+
+[data-theme="sage-light"] .career-profile-section,
+[data-theme="sage-light"] .works-section,
+[data-theme="sage-light"] .gallery-section {
+  background-image:none !important;
+}
+
+[data-theme="sage-light"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
+  border-color:rgb(var(--accent-primary-rgb) / 0.42) !important;
+  box-shadow:0 10px 26px rgba(20,30,18,0.08) !important;
+}
+[data-theme="sage-light"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-inner .exhibition-frame {
+  border-color:rgb(var(--accent-primary-rgb) / 0.55) !important;
+  box-shadow:0 12px 30px rgba(20,30,18,0.10) !important;
+}
+[data-theme="sage-light"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-hero .exhibition-frame {
+  border-color:var(--accent-primary) !important;
+  box-shadow:0 16px 36px rgba(20,30,18,0.13) !important;
+}
+[data-theme="sage-light"] .exhibition-frame-reflection,
+[data-theme="sage-light"] .exhibition-floor {
+  opacity:0.12 !important;
+}
+
+/* ── DARK ALTERNATE THEMES: REMOVE LEGACY GOLD DECORATION ──────────
+   Category-music Gold and PorfolioID owner/editor chrome remain fixed.
+   These selectors are visitor-facing theme decoration only. */
+[data-theme="midnight"] .hero-presence-eyebrow,
+[data-theme="midnight"] .section-label,
+[data-theme="midnight"] #galleryEyebrow,
+[data-theme="midnight"] .video-list-meta,
+[data-theme="midnight"] .ch3-label,
+[data-theme="midnight"] .works-label,
+[data-theme="midnight"] .collapsible-header-label,
+[data-theme="midnight"] .booking-note,
+[data-theme="midnight"] .identity-block-label,
+[data-theme="midnight"] .timeline-year,
+[data-theme="plum"] .hero-presence-eyebrow,
+[data-theme="plum"] .section-label,
+[data-theme="plum"] #galleryEyebrow,
+[data-theme="plum"] .video-list-meta,
+[data-theme="plum"] .ch3-label,
+[data-theme="plum"] .works-label,
+[data-theme="plum"] .collapsible-header-label,
+[data-theme="plum"] .booking-note,
+[data-theme="plum"] .identity-block-label,
+[data-theme="plum"] .timeline-year {
+  color:var(--accent-text) !important;
+}
+
+[data-theme="midnight"] .hero-presence-eyebrow svg,
+[data-theme="midnight"] .ch3-icon svg,
+[data-theme="plum"] .hero-presence-eyebrow svg {
+  fill:var(--accent-icon) !important;
+}
+[data-theme="plum"] .ch3-icon svg {
+  fill:var(--accent-secondary) !important;
+}
+
+[data-theme="midnight"] #bioToggleBtn,
+[data-theme="plum"] #bioToggleBtn {
+  color:var(--accent-text) !important;
+  border-color:rgb(var(--accent-border-rgb) / 0.52) !important;
+}
+
+[data-theme="midnight"] #bioShort p:first-child::first-letter,
+[data-theme="midnight"] .career-bio-text p:first-of-type::first-letter,
+[data-theme="plum"] #bioShort p:first-child::first-letter,
+[data-theme="plum"] .career-bio-text p:first-of-type::first-letter {
+  color:var(--accent-emphasis) !important;
+}
+
+/* Connect Hub's old mid-Gold was decoration, not platform brand. */
+[data-theme="midnight"] .ch-eyebrow,
+[data-theme="midnight"] .ch-section-label,
+[data-theme="midnight"] .ch-hero-title em,
+[data-theme="midnight"] .ch-pcard-cat,
+[data-theme="midnight"] .ch-pcard-cta,
+[data-theme="midnight"] .ch-amazon-cat,
+[data-theme="midnight"] .ch-amazon-cta,
+[data-theme="midnight"] .ch-row-arrow,
+[data-theme="midnight"] .ch-btn-outline,
+[data-theme="plum"] .ch-eyebrow,
+[data-theme="plum"] .ch-section-label,
+[data-theme="plum"] .ch-hero-title em,
+[data-theme="plum"] .ch-pcard-cat,
+[data-theme="plum"] .ch-pcard-cta,
+[data-theme="plum"] .ch-amazon-cat,
+[data-theme="plum"] .ch-amazon-cta,
+[data-theme="plum"] .ch-row-arrow,
+[data-theme="plum"] .ch-btn-outline {
+  color:var(--accent-text) !important;
+}
+
+[data-theme="plum"] .hero-name em {
+  color:var(--accent-light) !important;
+}
+[data-theme="plum"] .hero-role-icon,
+[data-theme="plum"] .ch3-icon svg {
+  fill:var(--accent-secondary) !important;
+}
+
+/* Photos / exhibition: replace legacy Gold framing with the theme accent. */
+[data-theme="midnight"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame,
+[data-theme="plum"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
+  border-color:rgb(var(--accent-border-rgb) / 0.58) !important;
+  box-shadow:
+    3px 4px 0 0 rgb(var(--accent-border-rgb) / 0.18),
+    0 8px 14px -3px rgb(var(--accent-border-rgb) / 0.22),
+    0 14px 30px rgba(0,0,0,0.42) !important;
+}
+[data-theme="midnight"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-hero .exhibition-frame,
+[data-theme="plum"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-hero .exhibition-frame {
+  border-color:var(--accent-border) !important;
+  box-shadow:
+    5px 6px 0 0 rgb(var(--accent-border-rgb) / 0.28),
+    0 18px 30px -2px rgb(var(--accent-border-rgb) / 0.34),
+    0 20px 34px rgba(0,0,0,0.62) !important;
+}
+[data-theme="midnight"] .exhibition-fan-panel .exhibition-frame-reflection,
+[data-theme="plum"] .exhibition-fan-panel .exhibition-frame-reflection {
+  background:
+    linear-gradient(to bottom, rgb(var(--accent-border-rgb) / 0.20) 0%, rgb(var(--accent-surface-rgb) / 0.10) 18%, transparent 84%) !important;
+}
+[data-theme="midnight"] .exhibition-arrow,
+[data-theme="midnight"] .gallery-scroll-arrow-btn,
+[data-theme="plum"] .exhibition-arrow,
+[data-theme="plum"] .gallery-scroll-arrow-btn {
+  color:var(--accent-text) !important;
+  border-color:rgb(var(--accent-border-rgb) / 0.55) !important;
+}
+[data-theme="midnight"] .exhibition-caption-year,
+[data-theme="midnight"] .gallery-scroll-category,
+[data-theme="midnight"] .gallery-scroll-counter,
+[data-theme="midnight"] .gallery-collection-count,
+[data-theme="midnight"] .gallery-collection-cta,
+[data-theme="plum"] .exhibition-caption-year,
+[data-theme="plum"] .gallery-scroll-category,
+[data-theme="plum"] .gallery-scroll-counter,
+[data-theme="plum"] .gallery-collection-count,
+[data-theme="plum"] .gallery-collection-cta {
+  color:var(--accent-text) !important;
 }
