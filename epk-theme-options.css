@@ -1995,41 +1995,6 @@
   line-height:1.1 !important;
 }
 
-/* ── MIDNIGHT: APPROVED SIDE-POSE BIO PORTRAIT — 2026-09-19 ─────────────
-   Use the approved transparent side-pose portrait only in Midnight.
-   Other themes and the stored profile image remain untouched. */
-[data-theme="midnight"] .career-stacked-bio > div:first-child > div:first-child {
-  background:
-    url("/assets/midnight-bio-sidepose.webp?v=1")
-    72% bottom / auto 78% no-repeat !important;
-}
-[data-theme="midnight"] .career-stacked-bio .career-portrait {
-  opacity:0 !important;
-  filter:none !important;
-}
-[data-theme="midnight"] .career-stacked-bio > div:first-child::after {
-  background:none !important;
-  opacity:0 !important;
-}
-
-/* Pull the biography typography back so image and copy balance. */
-@media (min-width:901px) {
-  [data-theme="midnight"] .career-bio-text {
-    padding-top:1.65rem !important;
-    transform:translateY(20px) !important;
-  }
-  [data-theme="midnight"] .career-bio-text p:first-child {
-    max-width:590px !important;
-    font-size:clamp(1.35rem,1.9vw,1.95rem) !important;
-    line-height:1.30 !important;
-  }
-}
-@media (max-width:900px) {
-  [data-theme="midnight"] .career-stacked-bio > div:first-child > div:first-child {
-    background-size:auto 92% !important;
-  }
-}
-
 /* ── MIDNIGHT: GOLD-REFERENCE BIO LAYOUT — 2026-09-19 ───────────────────────────────
    Match the compact Gold biography composition while preserving
    Midnight color treatment and the approved transparent side-pose image. */
@@ -2062,10 +2027,8 @@
     position:relative !important;
     min-height:550px !important;
     height:550px !important;
-    overflow:visible !important;
-    background:
-      url("/assets/midnight-bio-sidepose.webp?v=2")
-      48% bottom / auto 82% no-repeat !important;
+    overflow:hidden !important;
+    background:none !important;
   }
 
   [data-theme="midnight"] .career-stacked-bio > div:first-child::after {
@@ -2074,9 +2037,13 @@
   }
 
   [data-theme="midnight"] .career-stacked-bio .career-portrait {
-    opacity:0 !important;
+    display:block !important;
+    opacity:1 !important;
     min-height:0 !important;
-    height:0 !important;
+    height:100% !important;
+    width:100% !important;
+    object-fit:contain !important;
+    object-position:center bottom !important;
     filter:none !important;
   }
 
