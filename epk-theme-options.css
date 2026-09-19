@@ -2146,3 +2146,42 @@
   }
 }
 
+/* ── MIDNIGHT: USE STORED BIO IMAGE ONLY — 2026-09-19 ───────────────────────────────
+   The profile already contains the approved transparent portrait.
+   Disable all Midnight-injected duplicate artwork and render only
+   the stored profile image inside the compact Gold-reference layout. */
+[data-theme="midnight"] .career-stacked-bio > div:first-child,
+[data-theme="midnight"] .career-stacked-bio > div:first-child > div:first-child {
+  background-image:none !important;
+  background:none !important;
+}
+
+[data-theme="midnight"] .career-stacked-bio .career-portrait {
+  display:block !important;
+  opacity:1 !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  object-fit:contain !important;
+  object-position:center bottom !important;
+  transform:none !important;
+  margin:0 !important;
+  filter:none !important;
+}
+
+@media (min-width:901px) {
+  [data-theme="midnight"] .career-stacked-bio > div:first-child {
+    display:flex !important;
+    align-items:flex-end !important;
+    justify-content:center !important;
+    overflow:hidden !important;
+  }
+  [data-theme="midnight"] .career-stacked-bio > div:first-child > div:first-child {
+    width:100% !important;
+    height:100% !important;
+    display:flex !important;
+    align-items:flex-end !important;
+    justify-content:center !important;
+  }
+}
+
