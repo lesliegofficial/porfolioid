@@ -2943,3 +2943,40 @@
   box-shadow:none !important;
 }
 
+/* ── MIDNIGHT: ORIGINAL WORKS VERTICAL CROP — 2026-09-19 ───────────────────────────────
+   Tighten the Original Works band vertically so the section hugs
+   the approved heading/cards instead of leaving large top/bottom gaps. */
+[data-theme="midnight"] .works-section {
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+}
+
+[data-theme="midnight"] .works-wrap {
+  padding-top:1.25rem !important;
+  padding-bottom:1.25rem !important;
+}
+
+[data-theme="midnight"] .works-header {
+  margin-top:0 !important;
+  margin-bottom:1.1rem !important;
+}
+
+[data-theme="midnight"] .works-grid {
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+}
+
+@media (min-width:901px) {
+  [data-theme="midnight"] .works-wrap {
+    padding-top:1.1rem !important;
+    padding-bottom:1.15rem !important;
+  }
+}
+
+@media (max-width:900px) {
+  [data-theme="midnight"] .works-wrap {
+    padding-top:1rem !important;
+    padding-bottom:1rem !important;
+  }
+}
+
