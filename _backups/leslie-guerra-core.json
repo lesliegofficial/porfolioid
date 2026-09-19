@@ -1688,7 +1688,7 @@
   "bookingLabel": "Inquiries",
   "bookingPhone": "",
   "careerLayout": "stacked",
-  "heroImageFit": "contain",
+  "heroImageFit": "cover",
   "sectionOrder": [
     "bio",
     "credits",
