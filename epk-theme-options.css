@@ -1,0 +1,266 @@
+/* PorfolioID final palette options — September 2026
+   Dashboard choices:
+   1. Original Gold (core epk-theme.css)
+   2. Sage Dark (epk-theme-sage-review.css)
+   3. Sage Light
+   4. Midnight Blue
+   5. Plum Lavender
+
+   Fixed platform-brand and status semantics remain outside these palette rules.
+*/
+
+/* ── SAGE LIGHT ───────────────────────────────────────────────────────── */
+[data-theme="sage-light"] {
+  --black: #F7F7F2;
+  --dark: #F2F2EC;
+  --dark-2: #FFFFFF;
+  --dark-3: #F0F1EA;
+  --dark-4: #E4E7DE;
+  --gray: #676B63;
+  --gray-light: #343832;
+  --white: #111111;
+
+  --accent-primary: #4F6B47;
+  --accent-primary-rgb: 79 107 71;
+  --accent-light: #8DB580;
+  --accent-light-rgb: 141 181 128;
+  --accent-dark: #F7F7F2;
+  --accent-dark-rgb: 247 247 242;
+  --accent-secondary: #C2CFB2;
+  --accent-secondary-rgb: 194 207 178;
+
+  /* Deep sage is the readable accent on white. */
+  --accent-text: var(--accent-primary);
+  --accent-text-rgb: var(--accent-primary-rgb);
+  --accent-emphasis: var(--accent-primary);
+  --accent-emphasis-rgb: var(--accent-primary-rgb);
+  --accent-icon: var(--accent-primary);
+  --accent-icon-rgb: var(--accent-primary-rgb);
+  --accent-border: var(--accent-primary);
+  --accent-border-rgb: var(--accent-primary-rgb);
+  --accent-surface: var(--accent-light);
+  --accent-surface-rgb: var(--accent-light-rgb);
+}
+
+[data-theme="sage-light"] body,
+[data-theme="sage-light"] #epkContent,
+[data-theme="sage-light"] .hero,
+[data-theme="sage-light"] .career-profile-section,
+[data-theme="sage-light"] .gallery-section,
+[data-theme="sage-light"] .exhibition-outer,
+[data-theme="sage-light"] .works-section {
+  background-color: var(--black) !important;
+  color: var(--white);
+}
+
+[data-theme="sage-light"] nav {
+  background: rgba(247,247,242,0.96);
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.22);
+}
+
+[data-theme="sage-light"] .nav-links a { color: rgba(17,17,17,0.72); }
+[data-theme="sage-light"] .nav-logo,
+[data-theme="sage-light"] .hero-name,
+[data-theme="sage-light"] .hero-stat-n,
+[data-theme="sage-light"] .hero-presence-title,
+[data-theme="sage-light"] .section-title,
+[data-theme="sage-light"] .ch3-title,
+[data-theme="sage-light"] .work-card-title,
+[data-theme="sage-light"] .resume-card-title,
+[data-theme="sage-light"] .credit-company,
+[data-theme="sage-light"] .award-card-title,
+[data-theme="sage-light"] .asset-title,
+[data-theme="sage-light"] .booking-title {
+  color: #111111;
+}
+
+[data-theme="sage-light"] .hero-image-panel::after {
+  background:
+    linear-gradient(to right, transparent 42%, #F7F7F2 100%),
+    linear-gradient(to bottom, transparent 66%, #F7F7F2 100%);
+}
+
+[data-theme="sage-light"] .hero-content {
+  background:
+    radial-gradient(circle at 22% 18%, rgb(var(--accent-light-rgb) / 0.10), transparent 38%),
+    #F7F7F2;
+}
+
+[data-theme="sage-light"] .hero-role-item,
+[data-theme="sage-light"] .ch3-card,
+[data-theme="sage-light"] .work-card,
+[data-theme="sage-light"] .resume-card,
+[data-theme="sage-light"] .credit-card,
+[data-theme="sage-light"] .award-card,
+[data-theme="sage-light"] .asset-card {
+  background-color: #FFFFFF !important;
+  border-color: rgb(var(--accent-primary-rgb) / 0.24) !important;
+  box-shadow: 0 8px 24px rgba(25,35,22,0.035);
+}
+
+[data-theme="sage-light"] .hero-role-item span,
+[data-theme="sage-light"] .hero-bio p,
+[data-theme="sage-light"] .hero-presence-meta,
+[data-theme="sage-light"] .hero-stat-l,
+[data-theme="sage-light"] .ch3-desc,
+[data-theme="sage-light"] .award-card-org,
+[data-theme="sage-light"] .credit-desc,
+[data-theme="sage-light"] .asset-desc {
+  color: #5D625A !important;
+}
+
+[data-theme="sage-light"] .hero-roles-row,
+[data-theme="sage-light"] .hero-stats-row,
+[data-theme="sage-light"] .hero-presence-bar,
+[data-theme="sage-light"] .ch3-header {
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.18);
+}
+
+[data-theme="sage-light"] .connect-hub {
+  background:
+    radial-gradient(circle at 78% 0%, rgb(var(--accent-light-rgb) / 0.11), transparent 31%),
+    #F7F7F2 !important;
+  color: #111111;
+}
+
+[data-theme="sage-light"] .ch-hero,
+[data-theme="sage-light"] .ch-pcard,
+[data-theme="sage-light"] .ch-amazon-card,
+[data-theme="sage-light"] .ch-row {
+  background: #FFFFFF !important;
+  border-color: rgb(var(--accent-primary-rgb) / 0.20) !important;
+}
+
+[data-theme="sage-light"] .ch-hero-title,
+[data-theme="sage-light"] .ch-pcard-title,
+[data-theme="sage-light"] .ch-row-title {
+  color: #111111 !important;
+}
+
+[data-theme="sage-light"] .ch-hero-sub,
+[data-theme="sage-light"] .ch-pcard-desc,
+[data-theme="sage-light"] .ch-row-meta {
+  color: #676B63 !important;
+}
+
+[data-theme="sage-light"] footer {
+  background: #F2F2EC;
+  border-top-color: rgb(var(--accent-primary-rgb) / 0.18);
+  color: #676B63;
+}
+
+/* ── MIDNIGHT BLUE ─────────────────────────────────────────────────── */
+[data-theme="midnight"] {
+  --black: #080B10;
+  --dark: #0B1017;
+  --dark-2: #101722;
+  --dark-3: #151F2C;
+  --dark-4: #1C2938;
+  --gray: #8D99A8;
+  --gray-light: #C5CDD7;
+  --white: #F5F7FA;
+
+  --accent-primary: #387FC8;
+  --accent-primary-rgb: 56 127 200;
+  --accent-light: #B8E3E9;
+  --accent-light-rgb: 184 227 233;
+  --accent-dark: #080B10;
+  --accent-dark-rgb: 8 11 16;
+  --accent-secondary: #B8E3E9;
+  --accent-secondary-rgb: 184 227 233;
+
+  --accent-text: var(--accent-light);
+  --accent-text-rgb: var(--accent-light-rgb);
+  --accent-emphasis: var(--accent-primary);
+  --accent-emphasis-rgb: var(--accent-primary-rgb);
+  --accent-icon: var(--accent-light);
+  --accent-icon-rgb: var(--accent-light-rgb);
+  --accent-border: var(--accent-primary);
+  --accent-border-rgb: var(--accent-primary-rgb);
+  --accent-surface: var(--accent-primary);
+  --accent-surface-rgb: var(--accent-primary-rgb);
+}
+
+[data-theme="midnight"] body,
+[data-theme="midnight"] #epkContent,
+[data-theme="midnight"] .hero,
+[data-theme="midnight"] .career-profile-section,
+[data-theme="midnight"] .gallery-section,
+[data-theme="midnight"] .exhibition-outer {
+  background-color: var(--black) !important;
+}
+
+[data-theme="midnight"] nav {
+  background: rgba(8,11,16,0.95);
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.22);
+}
+
+[data-theme="midnight"] .hero-image-panel::after {
+  background:
+    linear-gradient(to right, transparent 40%, #080B10 100%),
+    linear-gradient(to bottom, transparent 60%, #080B10 100%);
+}
+
+[data-theme="midnight"] .hero-content {
+  background:
+    radial-gradient(circle at 24% 18%, rgb(var(--accent-primary-rgb) / 0.11), transparent 40%),
+    #080B10;
+}
+
+/* ── PLUM LAVENDER ────────────────────────────────────────────────── */
+[data-theme="plum"] {
+  --black: #0D0D0F;
+  --dark: #111116;
+  --dark-2: #17171E;
+  --dark-3: #1D1C27;
+  --dark-4: #252332;
+  --gray: #96929E;
+  --gray-light: #CAC4D2;
+  --white: #F5F3EE;
+
+  --accent-primary: #B298E7;
+  --accent-primary-rgb: 178 152 231;
+  --accent-light: #F5F3EE;
+  --accent-light-rgb: 245 243 238;
+  --accent-dark: #0D0D0F;
+  --accent-dark-rgb: 13 13 15;
+  --accent-secondary: #4B4A67;
+  --accent-secondary-rgb: 75 74 103;
+
+  --accent-text: var(--accent-primary);
+  --accent-text-rgb: var(--accent-primary-rgb);
+  --accent-emphasis: var(--accent-primary);
+  --accent-emphasis-rgb: var(--accent-primary-rgb);
+  --accent-icon: var(--accent-primary);
+  --accent-icon-rgb: var(--accent-primary-rgb);
+  --accent-border: var(--accent-primary);
+  --accent-border-rgb: var(--accent-primary-rgb);
+  --accent-surface: var(--accent-secondary);
+  --accent-surface-rgb: var(--accent-secondary-rgb);
+}
+
+[data-theme="plum"] body,
+[data-theme="plum"] #epkContent,
+[data-theme="plum"] .hero,
+[data-theme="plum"] .career-profile-section,
+[data-theme="plum"] .gallery-section,
+[data-theme="plum"] .exhibition-outer {
+  background-color: var(--black) !important;
+}
+
+[data-theme="plum"] nav {
+  background: rgba(13,13,15,0.95);
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.19);
+}
+
+[data-theme="plum"] .hero-image-panel::after {
+  background:
+    linear-gradient(to right, transparent 40%, #0D0D0F 100%),
+    linear-gradient(to bottom, transparent 60%, #0D0D0F 100%);
+}
+
+[data-theme="plum"] .hero-content {
+  background:
+    radial-gradient(circle at 24% 18%, rgb(var(--accent-primary-rgb) / 0.085), transparent 40%),
+    #0D0D0F;
+}
