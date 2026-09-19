@@ -1897,3 +1897,13 @@
 [data-theme="midnight"] .hero {
   border-bottom:0 !important;
 }
+
+
+/* Midnight biography: top-align copy with the cinematic image instead of
+   vertically centering it in the taller biography band. */
+@media (min-width:901px) {
+  [data-theme="midnight"] .career-bio-text {
+    align-self:start !important;
+    padding-top:2.2rem !important;
+  }
+}
