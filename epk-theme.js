@@ -8,44 +8,9 @@
   const legacyGoldPattern = /(var\(--gold\)|#c9a84c|201\s*,\s*168\s*,\s*76)/i;
   const legacyProfessionalPattern = /(#8fb8d0|143\s*,\s*184\s*,\s*208|123\s*,\s*155\s*,\s*175)/i;
 
-  let midnightPortraitPromise = null;
-
-  function loadMidnightPortraitAsset() {
-    if (document.documentElement.dataset.midnightPortraitReady === 'true') return Promise.resolve(true);
-    if (midnightPortraitPromise) return midnightPortraitPromise;
-
-    midnightPortraitPromise = fetch('/assets/portrait-midnight-cutout.b64.txt?v=20260919-1', { cache: 'force-cache' })
-      .then(response => {
-        if (!response.ok) throw new Error('Midnight portrait asset failed to load');
-        return response.text();
-      })
-      .then(encoded => {
-        const data = encoded.trim();
-        if (!data.startsWith('UklGR') || data.length < 20000) {
-          throw new Error('Midnight portrait asset is incomplete');
-        }
-        document.documentElement.style.setProperty(
-          '--midnight-portrait-image',
-          `url("data:image/webp;base64,${data}")`
-        );
-        document.documentElement.dataset.midnightPortraitReady = 'true';
-        return true;
-      })
-      .catch(error => {
-        console.warn('[PorfolioID] Midnight portrait fallback active:', error);
-        delete document.documentElement.dataset.midnightPortraitReady;
-        return false;
-      });
-
-    return midnightPortraitPromise;
-  }
-
   function applyPorfolioTheme(theme) {
     if (!allowedPreviewThemes.has(theme)) return false;
     document.documentElement.dataset.theme = theme;
-    if (theme === 'midnight') {
-      loadMidnightPortraitAsset();
-    }
     return true;
   }
 
@@ -155,7 +120,7 @@
     loadOverrideStylesheet('/epk-theme-connect.css?v=20260917-1', 'porfolio-theme-connect');
     loadOverrideStylesheet('/epk-theme-shell.css?v=20260917-1', 'porfolio-theme-shell');
     loadOverrideStylesheet('/epk-theme-sage-review.css?v=20260919-1', 'porfolio-theme-sage-review');
-    loadOverrideStylesheet('/epk-theme-options.css?v=20260919-18', 'porfolio-theme-options');
+    loadOverrideStylesheet('/epk-theme-options.css?v=20260919-19', 'porfolio-theme-options');
 
     classifyGeneratedMarkup(document.body);
 
