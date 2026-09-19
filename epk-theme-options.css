@@ -1843,8 +1843,32 @@
   position:relative !important;
   z-index:1 !important;
   opacity:1 !important;
-  filter:none !important;
   mix-blend-mode:normal !important;
+
+  /* Keep the portrait crisp while softly dissolving the lower canvas edge
+     into the Midnight background. */
+  -webkit-mask-image:linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 80%,
+    rgba(0,0,0,0.98) 84%,
+    rgba(0,0,0,0.82) 89%,
+    rgba(0,0,0,0.45) 95%,
+    transparent 100%
+  ) !important;
+  mask-image:linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 80%,
+    rgba(0,0,0,0.98) 84%,
+    rgba(0,0,0,0.82) 89%,
+    rgba(0,0,0,0.45) 95%,
+    transparent 100%
+  ) !important;
+
+  /* A very restrained cool edge lift helps dark hair separate from
+     the navy surface without creating a visible glow. */
+  filter:drop-shadow(0 0 14px rgb(63 151 217 / 0.10)) !important;
 }
 [data-theme="midnight"] .hero-image-panel::before,
 [data-theme="midnight"] .hero-image-panel::after {
