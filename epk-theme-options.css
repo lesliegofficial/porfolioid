@@ -364,10 +364,13 @@
 }
 
 [data-theme="midnight"] #bioShort p:first-child::first-letter,
-[data-theme="midnight"] .career-bio-text p:first-of-type::first-letter,
-[data-theme="plum"] #bioShort p:first-child::first-letter,
-[data-theme="plum"] .career-bio-text p:first-of-type::first-letter {
+[data-theme="plum"] #bioShort p:first-child::first-letter {
   color:var(--accent-emphasis) !important;
+}
+
+/* Expanded biography paragraphs should read as normal body copy. */
+[data-theme="plum"] #bioFull p::first-letter {
+  color:var(--white) !important;
 }
 
 /* Connect Hub's old mid-Gold was decoration, not platform brand. */
