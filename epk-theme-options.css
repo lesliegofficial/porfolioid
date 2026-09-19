@@ -2895,3 +2895,35 @@
   }
 }
 
+/* ── MIDNIGHT: ORIGINAL WORKS FULL COVER ART — 2026-09-19 ───────────────────────────────
+   Album covers are square artwork. Never crop them to fill the tall
+   card column: preserve the complete cover, including all title text. */
+@media (min-width:901px) {
+  [data-theme="midnight"] .work-card-cover {
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    width:100% !important;
+    height:100% !important;
+    min-height:0 !important;
+    max-width:none !important;
+    overflow:hidden !important;
+    background:#05080D !important;
+  }
+
+  [data-theme="midnight"] .work-card-cover img {
+    width:100% !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:100% !important;
+    aspect-ratio:1 / 1 !important;
+    object-fit:contain !important;
+    object-position:center center !important;
+    transform:none !important;
+  }
+
+  [data-theme="midnight"] .work-card:hover .work-card-cover img {
+    transform:none !important;
+  }
+}
+
