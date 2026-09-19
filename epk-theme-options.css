@@ -2566,3 +2566,24 @@
   border-color:rgb(124 196 236 / 0.09) !important;
 }
 
+/* ── MIDNIGHT: HERO HEADROOM FINAL — 2026-09-19 ───────────────────────────────
+   Create real headroom above the portrait instead of only translating
+   an edge-to-edge cover image. Desktop Midnight only. */
+@media (min-width:901px) {
+  [data-theme="midnight"] .hero-image-panel {
+    display:flex !important;
+    align-items:flex-end !important;
+    justify-content:center !important;
+    overflow:hidden !important;
+  }
+
+  [data-theme="midnight"] .hero-img {
+    width:100% !important;
+    height:100% !important;
+    object-fit:contain !important;
+    object-position:center bottom !important;
+    transform:scale(0.92) translateY(10px) !important;
+    transform-origin:center bottom !important;
+  }
+}
+
