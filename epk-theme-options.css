@@ -1631,9 +1631,8 @@
 
 /* VIDEO — reference composition: intro left, 3 media cards right */
 [data-theme="midnight"] #videos {
-  background:
-    radial-gradient(circle at 72% 30%,rgb(56 127 200 / 0.10),transparent 26rem),
-    #08111B !important;
+  background:#05080D !important;
+  background-image:none !important;
   border-bottom:1px solid rgb(124 196 236 / 0.10);
 }
 [data-theme="midnight"] .video-shell {
@@ -3217,12 +3216,12 @@
 /* Side navigation gets a compact, premium double-rim treatment inspired by
    illuminated glass controls. The glow stays local to each button. */
 [data-theme="midnight"] .exhibition-arrow {
-  width:52px !important;
-  height:52px !important;
+  width:42px !important;
+  height:42px !important;
   isolation:isolate;
   overflow:visible;
   color:#D9F7FF !important;
-  font-size:1.15rem !important;
+  font-size:1rem !important;
   font-weight:600;
   opacity:0.98 !important;
   border:1px solid rgb(108 211 255 / 0.82) !important;
@@ -3232,10 +3231,10 @@
     rgb(4 10 17 / 0.96) !important;
   box-shadow:
     0 0 0 2px rgb(3 9 16 / 0.94),
-    0 0 0 4px rgb(47 159 239 / 0.42),
-    0 0 16px rgb(73 188 244 / 0.48),
-    0 0 34px rgb(47 159 239 / 0.24),
-    inset 0 0 19px rgb(89 199 250 / 0.13) !important;
+    0 0 0 3px rgb(47 159 239 / 0.42),
+    0 0 12px rgb(73 188 244 / 0.44),
+    0 0 24px rgb(47 159 239 / 0.20),
+    inset 0 0 15px rgb(89 199 250 / 0.13) !important;
   text-shadow:0 0 8px rgb(217 247 255 / 0.95),0 0 16px rgb(73 188 244 / 0.62);
   backdrop-filter:blur(10px);
   transition:transform 0.24s ease,box-shadow 0.24s ease,border-color 0.24s ease,background 0.24s ease !important;
@@ -3244,7 +3243,7 @@
 [data-theme="midnight"] .exhibition-arrow::before {
   content:"";
   position:absolute;
-  inset:4px;
+  inset:3px;
   z-index:0;
   border-radius:50%;
   border-top:1px solid rgb(224 249 255 / 0.58);
@@ -3258,8 +3257,8 @@
   position:absolute;
   left:14%;
   right:14%;
-  top:calc(100% + 7px);
-  height:11px;
+  top:calc(100% + 5px);
+  height:8px;
   z-index:0;
   background:radial-gradient(ellipse at center top,rgb(73 188 244 / 0.32),transparent 72%);
   filter:blur(4px);
@@ -3276,10 +3275,10 @@
     rgb(5 13 22 / 0.98) !important;
   box-shadow:
     0 0 0 2px rgb(3 9 16 / 0.96),
-    0 0 0 4px rgb(108 211 255 / 0.72),
-    0 0 22px rgb(73 188 244 / 0.68),
-    0 0 44px rgb(47 159 239 / 0.34),
-    inset 0 0 22px rgb(124 196 236 / 0.20) !important;
+    0 0 0 3px rgb(108 211 255 / 0.72),
+    0 0 17px rgb(73 188 244 / 0.64),
+    0 0 32px rgb(47 159 239 / 0.30),
+    inset 0 0 18px rgb(124 196 236 / 0.20) !important;
   transform:translateY(-50%) scale(1.045) !important;
 }
 
