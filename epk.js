@@ -603,8 +603,22 @@ function buildEPK(epk) {
   // scope, and isn't needed for correct behavior today.
   const heroImgPos = epk.bioImagePosition !== undefined ? `center ${epk.bioImagePosition}%` : 'center 0%';
   const heroZoom = epk.bioImageZoom || 100;
-  const heroFit = epk.bioImageFit || 'cover';
-  const heroZoomStyle = heroZoom !== 100 ? `transform:scale(${heroZoom/100});transform-origin:center top;` : '';
+  const heroCropTop = epk.bioImageCropTop || 0;
+  const savedHeroFit = epk.bioImageFit || 'cover';
+
+  // GOLD portrait parity with the dashboard preview:
+  // A crop/reframe or non-default zoom is an intentional Fill Frame edit.
+  // Older records can still carry bioImageFit="contain" from a prior
+  // "Fit Full Image" click even though the dashboard preview switches back
+  // to cover while cropping/zooming. That mismatch made transparent portrait
+  // images sit at the bottom of the live hero. Keep alternate themes untouched.
+  const heroFit = epk.theme === 'gold' && (heroCropTop > 0 || heroZoom !== 100)
+    ? 'cover'
+    : savedHeroFit;
+  const heroZoomOrigin = epk.theme === 'gold' ? 'center center' : 'center top';
+  const heroZoomStyle = heroZoom !== 100
+    ? `transform:scale(${heroZoom/100});transform-origin:${heroZoomOrigin};`
+    : '';
   const heroImgHTML = epk.bioImage
     ? `<img class="hero-img" src="${epk.bioImage}" alt="${epk.name}" style="object-fit:${heroFit};object-position:${heroImgPos};${heroZoomStyle}" onerror="this.parentElement.innerHTML='<div class=hero-placeholder><div class=hero-placeholder-icon>🎤</div></div>'">`
     : `<div class="hero-placeholder"><div class="hero-placeholder-icon">🎤</div></div>`;
