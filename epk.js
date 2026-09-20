@@ -200,38 +200,89 @@ function buildEPK(epk) {
   const lastName = nameParts.slice(1).join(' ');
   const bookingLabel = epk.bookingLabel || 'Inquiries';
 
-  // Build nav
+  // Build navigation from the same canonical section model used by the
+  // dashboard. Career Profile is the fixed opening experience; every other
+  // visitor-facing section follows sectionOrder + sectionVisibility.
   const navLinks = document.getElementById('navLinks');
   navLinks.innerHTML = '';
   const ALL_SECTIONS = [
-    { id: 'bio', label: 'Career Profile' },
-    { id: 'credits', label: 'Credits' },
-    { id: 'works', label: 'Works' },
-    { id: 'photos', label: 'Photos' },
-    { id: 'videos', label: 'Video' },
-    { id: 'music', label: 'Music' },
-    { id: 'awards', label: 'Awards' },
-    { id: 'assets', label: 'Assets' },
-    { id: 'connect', label: 'Connect' },
+    { id: 'bio',       label: 'Biography' },
+    { id: 'documents', label: 'Documents' },
+    { id: 'credits',   label: 'Credits' },
+    { id: 'photos',    label: 'Photos' },
+    { id: 'videos',    label: 'Video' },
+    { id: 'music',     label: 'Music' },
+    { id: 'works',     label: 'Works' },
+    { id: 'awards',    label: 'Awards' },
+    { id: 'assets',    label: 'Assets' },
+    { id: 'connect',   label: 'Connect' },
   ];
-  const savedOrder = epk.sectionOrder || ALL_SECTIONS.map(s => s.id);
-  // Self-heal: any section in ALL_SECTIONS not yet present in a saved sectionOrder (e.g. newly added sections like 'works') gets appended at the end, so existing saved data doesn't hide new nav items.
-  const sectionOrder = savedOrder.concat(ALL_SECTIONS.map(s => s.id).filter(id => !savedOrder.includes(id)));
-  const sectionVisibility = epk.sectionVisibility || {};
 
-  // QR mode can override which sections are visible via ?sections= param
+  const normalizePublicSectionOrder = savedOrder => {
+    const aliases = {
+      'career': null,
+      'career-profile': null,
+      'professional': 'documents',
+      'professional-documents': 'documents',
+      'resume': 'documents',
+      'resumes': 'documents'
+    };
+    const known = new Set(ALL_SECTIONS.map(s => s.id));
+    const normalized = [];
+    const seen = new Set();
+
+    (Array.isArray(savedOrder) ? savedOrder : []).forEach(rawId => {
+      const mapped = Object.prototype.hasOwnProperty.call(aliases, rawId) ? aliases[rawId] : rawId;
+      if (!mapped || !known.has(mapped) || seen.has(mapped)) return;
+      seen.add(mapped);
+      normalized.push(mapped);
+    });
+
+    if (!seen.has('documents')) {
+      const bioIndex = normalized.indexOf('bio');
+      normalized.splice(bioIndex >= 0 ? bioIndex + 1 : 0, 0, 'documents');
+      seen.add('documents');
+    }
+    if (!seen.has('works')) {
+      const musicIndex = normalized.indexOf('music');
+      const awardsIndex = normalized.indexOf('awards');
+      const insertAt = musicIndex >= 0 ? musicIndex + 1 : (awardsIndex >= 0 ? awardsIndex : normalized.length);
+      normalized.splice(insertAt, 0, 'works');
+      seen.add('works');
+    }
+
+    ALL_SECTIONS.forEach(section => {
+      if (!seen.has(section.id)) {
+        normalized.push(section.id);
+        seen.add(section.id);
+      }
+    });
+    return normalized;
+  };
+
+  const sectionOrder = normalizePublicSectionOrder(epk.sectionOrder);
+  const sectionVisibility = epk.sectionVisibility || {};
+  // Normalize in memory so subsequent owner actions and saves use the same model.
+  epk.sectionOrder = [...sectionOrder];
+
+  // QR mode can override which variable sections are visible via ?sections=.
+  // Career Profile remains the fixed identity header in every share mode.
   const urlParams = new URLSearchParams(window.location.search);
   const qrSections = urlParams.get('sections');
   const qrAllowed = qrSections ? new Set(qrSections.split(',')) : null;
+
+  navLinks.innerHTML = '<li><a href="#career-profile">Career Profile</a></li>';
 
   const sections = sectionOrder
     .map(id => ALL_SECTIONS.find(s => s.id === id))
     .filter(s => {
       if (!s) return false;
       if (sectionVisibility[s.id] === false) return false;
-      if (qrAllowed && !qrAllowed.has(s.id)) return false; // QR override
+      if (s.id === 'documents' && epk.resumeEnabled === false) return false;
+      if (qrAllowed && !qrAllowed.has(s.id)) return false;
       return true;
     });
+
   sections.forEach(s => {
     navLinks.innerHTML += `<li><a href="#${s.id}" onclick="expandSection('${s.id}')">${s.label}</a></li>`;
   });
@@ -1213,10 +1264,11 @@ function buildEPK(epk) {
 
   document.getElementById('epkContent').innerHTML = `
     <!-- HERO v3 — 2-col editorial -->
-    <div class="hero">
+    <div class="hero" id="career-profile">
       <div class="hero-image-panel">${heroImgHTML}</div>
       <div class="hero-content">
 
+        <div class="hero-section-label">Career Profile</div>
         <h1 class="hero-name">${firstName} <em>${lastName}</em></h1>
 
         <div class="hero-roles-row">
@@ -1252,7 +1304,7 @@ function buildEPK(epk) {
           }
         </div>
 
-        <div class="hero-presence-bar" onclick="const c=document.getElementById('connect');if(!c)return;const open=c.style.display==='block';c.style.display=open?'none':'block';this.querySelector('.hero-presence-explore').textContent=open?'Explore →':'Close ←';if(!open){setTimeout(()=>{const top=c.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top,behavior:'smooth'});},50);}" style="cursor:pointer">
+        <div class="hero-presence-bar" onclick="expandSection('connect')" style="cursor:pointer">
           <p class="hero-presence-eyebrow">
               <svg viewBox="0 0 24 24" style="fill:var(--gold);width:12px;height:12px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
               Connect
@@ -1300,18 +1352,9 @@ function buildEPK(epk) {
       </div>
     </div>
 
-    <!-- CONNECT PANEL -->
-    <div id="connect" style="display:none">${connectSectionHTML}</div>
-
-    <!-- CAREER HIGHLIGHTS -->
-    <section class="career-profile-section" id="bio">
+    <!-- CAREER PROFILE — fixed opening chapter -->
+    <section class="career-profile-section" id="career-highlights" data-fixed-portfolio-section="true">
       <div class="ch3-wrap">
-        <!-- CAREER PROFILE / BIOGRAPHY — previously built as careerProfileHTML
-             but never inserted anywhere (dead code); now rendered here as the
-             lead content of the always-visible #bio section, ahead of the
-             Career Record Highlights cards. No collapsible wrapper — this
-             section requires no click-to-expand interaction. -->
-        ${careerProfileHTML}
         <div class="ch3-header">
           <span class="ch3-label" id="ch3Eyebrow">Career Profile</span>
           <div class="ch3-title-row">
@@ -1326,36 +1369,60 @@ function buildEPK(epk) {
           <p id="viewCompleteRecordCaption" style="font-family:var(--font-display);font-size:1.05rem;font-style:italic;color:rgba(245,243,238,0.65);margin-bottom:1.1rem;letter-spacing:0.01em">Every credit, role, and collaboration in one place — sortable by category, with full details behind each entry.</p>
           <a href="#credits" onclick="filterCreditsByCategory('')" id="viewCompleteRecordBtn" class="ch3-viewcomplete">View Complete Record →</a>
         </div>
+      </div>
+    </section>
+    <div class="divider" id="career-profile-end"></div>
 
-        <!-- THE RECORD — hidden by default, revealed on demand -->
-        ${epk.credits?.length ? `
-        <div id="credits" style="display:none;margin-top:3rem;padding-top:2.5rem;border-top:1px solid rgba(201,168,76,0.15)">
-          <!-- PROFESSIONAL RESUME — first item revealed inside the expandable Credits
-               container. buildResumeCard() markup, styling, and the resumeEnabled
-               gating are unchanged from before - only the insertion point moved,
-               from a standalone visible block above "View Complete Record" to here,
-               so it now inherits the same hidden-until-expanded show/hide behavior
-               as the Credits cards (toggled by filterCreditsByCategory). -->
-          ${(epk.resumeEnabled !== false && resumeCards.length) ? `
-          <div class="ch3-header" style="margin-top:5rem;padding-top:2.5rem;border-top:1px solid rgba(201,168,76,0.1)">
-            <span class="ch3-label">Professional Profile</span>
-            <div class="ch3-title-row">
-              <h2 class="section-title" style="margin:0">Professional Documents</h2>
-            </div>
+    <!-- BIOGRAPHY -->
+    <section class="career-profile-section portfolio-content-section" id="bio" data-portfolio-section="bio">
+      <div class="ch3-wrap">
+        <div class="ch3-header">
+          <span class="ch3-label">Career Story</span>
+          <div class="ch3-title-row">
+            <h2 class="section-title" style="margin:0">Biography</h2>
           </div>
-          <div class="career-stacked-cards">
-            ${resumeCards.map(buildResumeCard).join('')}
-          </div>` : ''}
-          <div id="creditsFilterBanner" style="display:none;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.08em;color:var(--gray-light);margin-bottom:1rem"></div>
-          <div class="credits-grid" id="creditsGrid">${creditsHTML}</div>
-          ${visibleCredits.length > 4 ? `
-          <div style="text-align:center;margin-top:1rem">
-            <button onclick="toggleAllCredits()" id="creditsToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.6rem 1.5rem;cursor:pointer;transition:all 0.2s">View All ${visibleCredits.length} Credits +</button>
-          </div>` : ''}
-        </div>` : ''}
+        </div>
+        ${careerProfileHTML}
       </div>
     </section>
     <div class="divider"></div>
+
+    <!-- PROFESSIONAL DOCUMENTS -->
+    ${(epk.resumeEnabled !== false && resumeCards.length) ? `
+    <section class="career-profile-section portfolio-content-section" id="documents" data-portfolio-section="documents">
+      <div class="ch3-wrap">
+        <div class="ch3-header">
+          <span class="ch3-label">Professional Profile</span>
+          <div class="ch3-title-row">
+            <h2 class="section-title" style="margin:0">Professional Documents</h2>
+          </div>
+        </div>
+        <div class="career-stacked-cards">
+          ${resumeCards.map(buildResumeCard).join('')}
+        </div>
+      </div>
+    </section>
+    <div class="divider"></div>` : ''}
+
+    <!-- CREDITS -->
+    ${epk.credits?.length ? `
+    <section class="career-profile-section portfolio-content-section" id="credits" data-portfolio-section="credits">
+      <div class="ch3-wrap">
+        <div class="ch3-header">
+          <span class="ch3-label">Career Record</span>
+          <div class="ch3-title-row">
+            <h2 class="section-title" style="margin:0">Credits &amp; Collaborations</h2>
+          </div>
+        </div>
+        <div id="creditsFilterBanner" style="display:none;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.08em;color:var(--gray-light);margin-bottom:1rem"></div>
+        <div class="credits-grid" id="creditsGrid">${creditsHTML}</div>
+        ${visibleCredits.length > 4 ? `
+        <div style="text-align:center;margin-top:1rem">
+          <button onclick="toggleAllCredits()" id="creditsToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.6rem 1.5rem;cursor:pointer;transition:all 0.2s">View All ${visibleCredits.length} Credits +</button>
+        </div>` : ''}
+      </div>
+    </section>
+    <div class="divider"></div>` : ''}
 
     <!-- CREATIVE WORKS -->
     ${(epk.works || []).filter(w => w.visible !== false).length ? `
@@ -1542,6 +1609,9 @@ function buildEPK(epk) {
       </div>
     </div>` : ''}
 
+
+    <!-- CONNECT -->
+    ${connectSectionHTML ? `<div id="connect" class="portfolio-content-section" data-portfolio-section="connect">${connectSectionHTML}</div>` : ''}
 
     <!-- BOOKING/INQUIRY (now rendered as a modal, triggered from the Connect card) -->
     <div id="booking" style="display:none"></div>
@@ -3154,11 +3224,40 @@ function adjustModalFont(dir) {
 
 // Section order and visibility
 function applySectionOrderAndVisibility(epk) {
-  const DEFAULT_ORDER = ['connect','bio','photos','videos','music','awards','assets','booking'];
-  const order = (epk.sectionOrder || DEFAULT_ORDER).filter(id => id !== 'credits');
-  const visibility = epk.sectionVisibility || {};
+  const DEFAULT_ORDER = ['bio','documents','credits','photos','videos','music','works','awards','assets','connect'];
+  const known = new Set(DEFAULT_ORDER);
+  const order = [];
+  const seen = new Set();
 
-  // QR mode section override
+  (Array.isArray(epk.sectionOrder) ? epk.sectionOrder : []).forEach(id => {
+    const mapped = id === 'professional' || id === 'professional-documents' || id === 'resume' || id === 'resumes'
+      ? 'documents'
+      : id;
+    if (!known.has(mapped) || seen.has(mapped)) return;
+    seen.add(mapped);
+    order.push(mapped);
+  });
+
+  if (!seen.has('documents')) {
+    const bioIndex = order.indexOf('bio');
+    order.splice(bioIndex >= 0 ? bioIndex + 1 : 0, 0, 'documents');
+    seen.add('documents');
+  }
+  if (!seen.has('works')) {
+    const musicIndex = order.indexOf('music');
+    const awardsIndex = order.indexOf('awards');
+    order.splice(musicIndex >= 0 ? musicIndex + 1 : (awardsIndex >= 0 ? awardsIndex : order.length), 0, 'works');
+    seen.add('works');
+  }
+  DEFAULT_ORDER.forEach(id => {
+    if (!seen.has(id)) {
+      order.push(id);
+      seen.add(id);
+    }
+  });
+  epk.sectionOrder = [...order];
+
+  const visibility = epk.sectionVisibility || {};
   const urlParams = new URLSearchParams(window.location.search);
   const qrSections = urlParams.get('sections');
   const qrAllowed = qrSections ? new Set(qrSections.split(',')) : null;
@@ -3166,67 +3265,63 @@ function applySectionOrderAndVisibility(epk) {
   const container = document.getElementById('epkContent');
   if (!container) return;
 
-  // Hide/show sections based on visibility + QR override
+  const isSectionVisible = id => {
+    if (visibility[id] === false) return false;
+    if (id === 'documents' && epk.resumeEnabled === false) return false;
+    if (qrAllowed && !qrAllowed.has(id)) return false;
+    return true;
+  };
+
   DEFAULT_ORDER.forEach(id => {
-    if (id === 'connect') return;
     const el = document.getElementById(id);
     if (!el) return;
-    const isVisible = visibility[id] !== false && (!qrAllowed || qrAllowed.has(id));
-    el.style.display = isVisible ? '' : 'none';
+    el.style.display = isSectionVisible(id) ? '' : 'none';
   });
 
-  // Reorder sections in DOM based on sectionOrder
-  // Find the divider after hero as the insertion point
-  const hero = container.querySelector('.hero');
-  if (!hero) return;
-  let insertAfter = hero.nextElementSibling; // usually a divider or first section
+  // Career Profile is fixed: Hero + Career Record Highlights always remain
+  // first. All owner-reorderable content begins after this fixed boundary.
+  const fixedEnd = document.getElementById('career-profile-end');
+  const fixedHighlights = document.getElementById('career-highlights');
+  const hero = document.getElementById('career-profile') || container.querySelector('.hero');
+  let anchor = fixedEnd || fixedHighlights || hero;
+  if (!anchor) return;
 
-  // Pin connect div right after hero before reordering other sections
-  const connectEl = document.getElementById('connect');
-  if (connectEl) hero.insertAdjacentElement('afterend', connectEl);
+  const musicAwardsPair = container.querySelector('.music-awards-pair');
 
-  let anchor = connectEl || hero;
   order.forEach(id => {
-    if (id === 'connect') return;
     const el = document.getElementById(id);
     if (!el) return;
+
     const nextSib = el.nextElementSibling;
     anchor.insertAdjacentElement('afterend', el);
     anchor = el;
+
+    // Most sections own a divider directly after them. Keep that divider
+    // attached to the section while the section is moved.
     if (nextSib && nextSib.classList && nextSib.classList.contains('divider')) {
       anchor.insertAdjacentElement('afterend', nextSib);
       anchor = nextSib;
     }
-    // Works is fixed (not user-reorderable) but must be re-pinned right after bio,
-    // since reordering bio's siblings would otherwise strand it wherever the DOM mutations left it.
-    if (id === 'bio') {
-      const worksEl = document.getElementById('works');
-      if (worksEl) {
-        const worksNextSib = worksEl.nextElementSibling;
-        anchor.insertAdjacentElement('afterend', worksEl);
-        anchor = worksEl;
-        if (worksNextSib && worksNextSib.classList && worksNextSib.classList.contains('divider')) {
-          anchor.insertAdjacentElement('afterend', worksNextSib);
-          anchor = worksNextSib;
-        }
-      }
-    }
   });
 
-  // Blue Zone treats Music and Awards as one two-column chapter. Section
-  // ordering above intentionally moves individual sections, so pair them
-  // again only after that ordering pass has finished. Other styles keep the
-  // existing independent, full-width section behavior.
-  if (document.documentElement.dataset.theme === 'midnight') {
-    const pair = container.querySelector('.music-awards-pair');
-    const pairedSections = [
-      document.getElementById('music'),
-      document.getElementById('awards')
-    ].filter(Boolean).sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+  // Blue Zone may present Music + Awards as a two-column chapter, but only
+  // when the owner actually places those two sections next to each other.
+  // Section Order remains authoritative; moving another section between them
+  // automatically disables the pairing instead of overriding the owner's order.
+  if (musicAwardsPair) {
+    const musicEl = document.getElementById('music');
+    const awardsEl = document.getElementById('awards');
+    const mi = order.indexOf('music');
+    const ai = order.indexOf('awards');
+    const areAdjacent = musicEl && awardsEl && Math.abs(mi - ai) === 1;
+    const bothVisible = isSectionVisible('music') && isSectionVisible('awards');
 
-    if (pair && pairedSections.length) {
-      pairedSections[0].parentNode.insertBefore(pair, pairedSections[0]);
-      pairedSections.forEach(section => pair.appendChild(section));
+    if (document.documentElement.dataset.theme === 'midnight' && areAdjacent && bothVisible) {
+      const orderedPair = mi < ai ? [musicEl, awardsEl] : [awardsEl, musicEl];
+      orderedPair[0].parentNode.insertBefore(musicAwardsPair, orderedPair[0]);
+      orderedPair.forEach(section => musicAwardsPair.appendChild(section));
+    } else if (!musicAwardsPair.children.length) {
+      musicAwardsPair.remove();
     }
   }
 }
@@ -3343,21 +3438,24 @@ function toggleAllCredits() {
   const grid = document.getElementById('creditsGrid');
   const btn = document.getElementById('creditsToggleBtn');
   const banner = document.getElementById('creditsFilterBanner');
-  if (!grid || !btn || !container) return;
+  if (!grid || !container) return;
 
-  // Fully close — re-hide the whole Record section back to its initial state
-  container.style.display = 'none';
-  grid.classList.remove('credits-expanded');
-  grid.querySelectorAll('.credit-card').forEach(card => { card.style.display = ''; });
-  if (banner) banner.style.display = 'none';
-  const total = grid.querySelectorAll('.credit-card').length;
-  btn.textContent = _currentLang === 'es' ? `Ver los ${total} Créditos +` : `View All ${total} Credits +`;
-  btn.style.display = '';
+  const isExpanded = grid.classList.contains('credits-expanded');
 
-  // Scroll back up to the Career Highlights cards so the page doesn't leave the user staring at empty space
-  const wrap = document.querySelector('.ch3-wrap');
-  if (wrap) {
-    setTimeout(() => { wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
+  if (isExpanded) {
+    grid.classList.remove('credits-expanded');
+    grid.querySelectorAll('.credit-card').forEach(card => { card.style.display = ''; });
+    if (banner) banner.style.display = 'none';
+    if (btn) {
+      const total = grid.querySelectorAll('.credit-card').length;
+      btn.textContent = _currentLang === 'es' ? `Ver los ${total} Créditos +` : `View All ${total} Credits +`;
+    }
+    setTimeout(() => { container.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
+  } else {
+    grid.classList.add('credits-expanded');
+    grid.querySelectorAll('.credit-card').forEach(card => { card.style.display = ''; });
+    if (banner) banner.style.display = 'none';
+    if (btn) btn.textContent = _currentLang === 'es' ? 'Mostrar menos –' : 'Show Fewer –';
   }
 }
 
@@ -3378,13 +3476,16 @@ function filterCreditsByCategory(tag) {
   const grid = document.getElementById('creditsGrid');
   const btn = document.getElementById('creditsToggleBtn');
   const banner = document.getElementById('creditsFilterBanner');
-  if (!grid) return;
+  if (!grid || !container) return;
 
-  if (container) container.style.display = 'block'; // reveal on demand — hidden until a card/button is clicked
-  grid.classList.add('credits-expanded'); // bypass the nth-child collapse so filtered results aren't hidden
+  // Credits is now a real always-present portfolio section. Filtering only
+  // changes which cards are shown; it no longer reveals/hides the section.
+  grid.classList.add('credits-expanded');
   if (btn) {
-    btn.style.display = ''; // Close button stays visible whether filtered or showing everything
-    btn.textContent = _currentLang === 'es' ? 'Cerrar –' : 'Close –';
+    btn.style.display = '';
+    btn.textContent = canonicalTag
+      ? (_currentLang === 'es' ? 'Limpiar filtro –' : 'Clear Filter –')
+      : (_currentLang === 'es' ? 'Mostrar menos –' : 'Show Fewer –');
   }
 
   const cards = grid.querySelectorAll('.credit-card');
@@ -3403,24 +3504,16 @@ function filterCreditsByCategory(tag) {
         ? { liveperformance:'Presentaciones en Vivo', recordingartist:'Artista de Grabación', creativeprofessional:'Profesional Creativa', marketingpr:'Mercadeo y Relaciones Públicas', industryoperations:'Operaciones de la Industria', founderbuilder:'Fundadora y Creadora' }
         : { liveperformance:'Live Performance', recordingartist:'Recording Artist', creativeprofessional:'Creative Professional', marketingpr:'Marketing & PR', industryoperations:'Industry Operations', founderbuilder:'Founder & Builder' };
       const showingText = _currentLang === 'es' ? 'Mostrando:' : 'Showing:';
-      const viewAllText = _currentLang === 'es' ? 'Ver Récord Completo →' : 'View Complete Record →';
-      const closeText = _currentLang === 'es' ? 'Cerrar –' : 'Close –';
-      banner.innerHTML = `${showingText} <strong style="color:var(--gold)">${labels[canonicalTag] || canonicalTag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">${viewAllText}</a> &nbsp;<a href="javascript:void(0)" onclick="toggleAllCredits()" style="color:var(--gray);text-decoration:underline">${closeText}</a>`;
+      const viewAllText = _currentLang === 'es' ? 'Ver todos los créditos →' : 'View all credits →';
+      banner.innerHTML = `${showingText} <strong style="color:var(--gold)">${labels[canonicalTag] || canonicalTag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">${viewAllText}</a>`;
       banner.style.display = 'block';
     } else {
       banner.style.display = 'none';
     }
   }
 
-  // Scroll target: when a category tag is passed (highlight card click), scroll to the
-  // creditsGrid itself (Career Record section) — NOT the #credits container top which
-  // would land on Professional Documents first.
-  const scrollTarget = canonicalTag
-    ? document.getElementById('creditsGrid')   // → Career Record cards directly
-    : document.getElementById('credits');       // → top of expanded section (View Complete Record)
-  if (scrollTarget) {
-    setTimeout(() => { scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
-  }
+  const scrollTarget = canonicalTag ? grid : container;
+  setTimeout(() => { scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
 }
 
 
@@ -3484,52 +3577,37 @@ function toggleSection(bodyId, header) {
 }
 
 function expandSection(sectionId) {
-  // Credits now lives hidden inside the Career Highlights block until requested
   if (sectionId === 'credits') {
     filterCreditsByCategory('');
     return;
   }
-  // Works is a plain always-visible section — just smooth-scroll to it
-  if (sectionId === 'works') {
-    const el = document.getElementById('works');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    return;
-  }
-  // Connect uses a simple display:none toggle on #connect, not the collapsible-body pattern
-  if (sectionId === 'connect') {
-    const c = document.getElementById('connect');
-    if (!c) return;
-    const isOpen = c.style.display === 'block';
-    c.style.display = isOpen ? 'none' : 'block';
-    const bar = document.querySelector('.hero-presence-bar');
-    if (bar) {
-      const exploreSpan = bar.querySelector('.hero-presence-explore');
-      if (exploreSpan) exploreSpan.textContent = isOpen ? 'Explore →' : 'Close ←';
-    }
-    if (!isOpen) {
-      setTimeout(() => {
-        const top = c.getBoundingClientRect().top + window.scrollY - 80;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }, 50);
-    }
-    return;
-  }
-  // Map section IDs to their body IDs
+
   const bodyMap = { music:'musicBody', awards:'awardsBody', assets:'assetsBody' };
   const bodyId = bodyMap[sectionId];
-  if (!bodyId) return;
-  const body = document.getElementById(bodyId);
-  if (!body) return;
-  // Open it if not already open
-  if (!body.classList.contains('open')) {
-    body.classList.add('open');
-    const header = body.previousElementSibling;
-    if (header) {
-      const toggle = header.querySelector('.collapsible-toggle');
-      if (toggle) toggle.innerHTML = '<span class="toggle-label">Collapse</span> －';
+
+  if (bodyId) {
+    const body = document.getElementById(bodyId);
+    const section = document.getElementById(sectionId);
+    if (!body || !section) return;
+
+    if (!body.classList.contains('open')) {
+      body.classList.add('open');
+      const header = body.previousElementSibling;
+      if (header) {
+        const toggle = header.querySelector('.collapsible-toggle');
+        if (toggle) toggle.innerHTML = '<span class="toggle-label">Collapse</span> －';
+      }
     }
+    setTimeout(() => { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
+    return;
   }
+
+  // Biography, Professional Documents, Photos, Video, Original Works and
+  // Connect are normal visible sections: navigation simply scrolls to them.
+  const el = document.getElementById(sectionId);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
 
 // Award Modal
 function openAwardModal(idx) {

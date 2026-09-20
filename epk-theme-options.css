@@ -3032,47 +3032,40 @@
     margin-bottom:0.8rem !important;
   }
 }
-/* ── BLUE ZONE: CAREER RECORD HIGHLIGHTS BEFORE BIO ──────────────────────────
-   Blue Zone has its own section sequence. Keep the six-card Career Profile
-   together first, then place the separate biography band beneath it. */
-[data-theme="midnight"] .ch3-wrap {
-  display:flex !important;
-  flex-direction:column !important;
-}
-
-[data-theme="midnight"] .ch3-wrap > .ch3-header {
-  order:1 !important;
+/* ── BLUE ZONE: CANONICAL CAREER SECTIONS ─────────────────────────────
+   Career Profile, Biography, Professional Documents, and Credits are now
+   separate top-level sections. The old flex-order shim that rearranged all
+   content inside one .ch3-wrap is intentionally removed so every section
+   keeps its own heading/content order. */
+[data-theme="midnight"] #career-highlights .ch3-wrap,
+[data-theme="midnight"] #bio .ch3-wrap,
+[data-theme="midnight"] #documents .ch3-wrap,
+[data-theme="midnight"] #credits .ch3-wrap {
+  display:block !important;
 }
 
 @media (min-width:901px) {
-  [data-theme="midnight"] .ch3-wrap > .ch3-header {
+  [data-theme="midnight"] #career-highlights .ch3-header,
+  [data-theme="midnight"] #bio .ch3-header,
+  [data-theme="midnight"] #documents .ch3-header,
+  [data-theme="midnight"] #credits .ch3-header {
     margin-top:3rem !important;
   }
 }
 
-[data-theme="midnight"] .ch3-wrap > .ch3-grid {
-  order:2 !important;
+[data-theme="midnight"] #career-highlights .ch3-grid {
   padding-top:0 !important;
 }
 
-[data-theme="midnight"] .ch3-wrap > .ch3-grid + div:not(#credits) {
-  order:3 !important;
-}
-
-[data-theme="midnight"] .ch3-wrap > .career-stacked-bio,
-[data-theme="midnight"] .ch3-wrap > .career-sidebyside,
-[data-theme="midnight"] .ch3-wrap > .career-threecol {
-  order:4 !important;
+[data-theme="midnight"] #bio .career-stacked-bio,
+[data-theme="midnight"] #bio .career-sidebyside,
+[data-theme="midnight"] #bio .career-threecol {
   position:relative !important;
   float:none !important;
   width:100% !important;
-  margin-top:2.5rem !important;
+  margin-top:1.25rem !important;
   border-top:1px solid rgb(124 196 236 / 0.10) !important;
   border-bottom:0 !important;
-}
-
-[data-theme="midnight"] .ch3-wrap > #credits {
-  order:5 !important;
 }
 
 /* ── BLUE ZONE: RESTORE TOP BIO COPY ────────────────────────────────────────

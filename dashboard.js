@@ -949,53 +949,109 @@ function showPanel(name) {
 }
 
 // ── SECTION ORDER & VISIBILITY ──
+const FIXED_PORTFOLIO_SECTION = {
+  id: 'career-profile',
+  label: 'Career Profile',
+  icon: '✦'
+};
+
+// Canonical visitor-facing portfolio sections.
+// Career Profile is intentionally excluded because it is the fixed opening
+// identity experience and must always remain first.
 const DEFAULT_SECTIONS = [
-  { id: 'bio',     label: 'Career Profile', icon: '✦' },
-  { id: 'credits', label: 'Credits',        icon: '🏆' },
-  { id: 'photos',  label: 'Photos',         icon: '📸' },
-  { id: 'videos',  label: 'Video',          icon: '🎬' },
-  { id: 'music',   label: 'Music',          icon: '🎵' },
-  { id: 'awards',  label: 'Awards',         icon: '🏅' },
-  { id: 'assets',  label: 'Assets',         icon: '📦' },
-  { id: 'connect', label: 'Connect Hub',    icon: '◎' },
+  { id: 'bio',       label: 'Biography',              icon: '👤' },
+  { id: 'documents', label: 'Professional Documents', icon: '📋' },
+  { id: 'credits',   label: 'Credits',                icon: '🏆' },
+  { id: 'photos',    label: 'Photos',                 icon: '📸' },
+  { id: 'videos',    label: 'Video',                  icon: '🎬' },
+  { id: 'music',     label: 'Music',                  icon: '🎵' },
+  { id: 'works',     label: 'Original Works',         icon: '✦' },
+  { id: 'awards',    label: 'Awards',                 icon: '🏅' },
+  { id: 'assets',    label: 'Assets',                 icon: '📦' },
+  { id: 'connect',   label: 'Connect',                icon: '◎' },
 ];
+
+function normalizeSectionOrder(savedOrder) {
+  const aliases = {
+    'career': null,
+    'career-profile': null,
+    'professional': 'documents',
+    'professional-documents': 'documents',
+    'resume': 'documents',
+    'resumes': 'documents'
+  };
+  const known = new Set(DEFAULT_SECTIONS.map(s => s.id));
+  const normalized = [];
+  const seen = new Set();
+
+  (Array.isArray(savedOrder) ? savedOrder : []).forEach(rawId => {
+    const mapped = Object.prototype.hasOwnProperty.call(aliases, rawId) ? aliases[rawId] : rawId;
+    if (!mapped || !known.has(mapped) || seen.has(mapped)) return;
+    seen.add(mapped);
+    normalized.push(mapped);
+  });
+
+  // These two sections existed in the dashboard before Section Order knew
+  // about them. Insert them in the same logical positions as the dashboard
+  // without resetting any order the owner may already have customized.
+  if (!seen.has('documents')) {
+    const bioIndex = normalized.indexOf('bio');
+    normalized.splice(bioIndex >= 0 ? bioIndex + 1 : 0, 0, 'documents');
+    seen.add('documents');
+  }
+  if (!seen.has('works')) {
+    const musicIndex = normalized.indexOf('music');
+    const awardsIndex = normalized.indexOf('awards');
+    const insertAt = musicIndex >= 0 ? musicIndex + 1 : (awardsIndex >= 0 ? awardsIndex : normalized.length);
+    normalized.splice(insertAt, 0, 'works');
+    seen.add('works');
+  }
+
+  DEFAULT_SECTIONS.forEach(section => {
+    if (!seen.has(section.id)) {
+      normalized.push(section.id);
+      seen.add(section.id);
+    }
+  });
+
+  return normalized;
+}
 
 function initSectionsPanel() {
   const epk = window._epkData || window.epk || {};
-  const order = epk.sectionOrder || DEFAULT_SECTIONS.map(s => s.id);
+  const order = normalizeSectionOrder(epk.sectionOrder);
   const visibility = epk.sectionVisibility || {};
   const list = document.getElementById('sectionsOrderList');
   if (!list) return;
 
-  // Build ordered list — preserve every saved section ID, including ones
-  // not present in DEFAULT_SECTIONS (e.g. future or legacy sections),
-  // instead of silently dropping them via .filter(Boolean). Known IDs get
-  // their canonical label/icon; unknown IDs get a safe fallback label so
-  // they stay visible in the editor and are never lost on the next save.
-  // Duplicate IDs are removed safely (first occurrence wins).
-  const seen = new Set();
-  const ordered = [];
-  order.forEach(id => {
-    if (seen.has(id)) return;
-    seen.add(id);
-    const known = DEFAULT_SECTIONS.find(s => s.id === id);
-    ordered.push(known || { id, label: id.charAt(0).toUpperCase() + id.slice(1), icon: '•' });
-  });
-  // Append any default sections missing from the saved order (e.g. newly
-  // introduced sections) exactly once each.
-  DEFAULT_SECTIONS.forEach(s => {
-    if (!seen.has(s.id)) { ordered.push(s); seen.add(s.id); }
-  });
+  // Keep normalized section data in memory immediately so the owner sees
+  // and saves the same canonical model that the public portfolio uses.
+  epk.sectionOrder = [...order];
+  window._epkData = epk;
+  if (typeof window.epk !== 'undefined') window.epk = epk;
 
-  list.innerHTML = ordered.map((s, i) => {
-    const visible = visibility[s.id] !== false;
+  const ordered = order.map(id => DEFAULT_SECTIONS.find(s => s.id === id)).filter(Boolean);
+
+  const fixedRow = `
+    <div class="section-order-fixed" data-id="${FIXED_PORTFOLIO_SECTION.id}"
+      style="display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;margin-bottom:0.5rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.15);border-left:3px solid var(--gold)">
+      <span style="width:28px;text-align:center;color:rgba(255,255,255,0.28);font-family:var(--font-mono);font-size:0.72rem">◆</span>
+      <span style="font-size:1.1rem">${FIXED_PORTFOLIO_SECTION.icon}</span>
+      <span style="font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--white);flex:1">${FIXED_PORTFOLIO_SECTION.label}</span>
+      <span style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);border:1px solid rgba(255,255,255,0.12);padding:0.4rem 0.7rem">Fixed at top</span>
+    </div>`;
+
+  list.innerHTML = fixedRow + ordered.map((s, i) => {
+    const visible = s.id === 'documents'
+      ? (visibility[s.id] !== false && epk.resumeEnabled !== false)
+      : visibility[s.id] !== false;
     return `
     <div class="section-order-item" draggable="false" data-id="${s.id}" data-index="${i}"
       style="display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;margin-bottom:0.5rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.15);cursor:grab;border-left:3px solid ${visible ? 'var(--gold)' : 'rgba(255,255,255,0.1)'}">
       <span class="section-drag-handle" draggable="false" tabindex="0" role="button" aria-label="Drag to reorder ${s.label}" title="Drag to reorder" style="color:rgba(255,255,255,0.3);font-size:1.2rem;cursor:grab;letter-spacing:-2px;touch-action:none;user-select:none;-webkit-user-select:none">⠿⠿</span>
       <span style="font-size:1.1rem">${s.icon}</span>
       <span style="font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--white);flex:1">${s.label}</span>
-      <button onclick="toggleSectionVisibility('${s.id}', this)" 
+      <button onclick="toggleSectionVisibility('${s.id}', this)"
         style="background:none;border:1px solid rgba(255,255,255,0.15);color:${visible ? 'var(--gold)' : 'rgba(255,255,255,0.3)'};padding:0.35rem 0.75rem;cursor:pointer;font-size:0.85rem;transition:all 0.2s"
         title="${visible ? 'Hide section' : 'Show section'}">
         ${visible ? '👁 Visible' : '🚫 Hidden'}
@@ -1003,21 +1059,32 @@ function initSectionsPanel() {
     </div>`;
   }).join('');
 
-  // Add drag-and-drop
   initDragDrop();
 }
 
 function toggleSectionVisibility(id, btn) {
   const epk = window._epkData || {};
   if (!epk.sectionVisibility) epk.sectionVisibility = {};
-  const current = epk.sectionVisibility[id] !== false;
-  epk.sectionVisibility[id] = !current;
+
+  const current = id === 'documents'
+    ? (epk.sectionVisibility[id] !== false && epk.resumeEnabled !== false)
+    : epk.sectionVisibility[id] !== false;
+  const next = !current;
+
+  epk.sectionVisibility[id] = next;
+  if (id === 'documents') {
+    epk.resumeEnabled = next;
+    const resumeToggle = document.getElementById('resumeToggle');
+    if (resumeToggle) resumeToggle.checked = next;
+  }
+
   window._epkData = epk;
-  // Update button
+  if (typeof window.epk !== 'undefined') window.epk = epk;
+
   const item = btn.closest('.section-order-item');
-  btn.textContent = !current ? '👁 Visible' : '🚫 Hidden';
-  btn.style.color = !current ? 'var(--gold)' : 'rgba(255,255,255,0.3)';
-  item.style.borderLeftColor = !current ? 'var(--gold)' : 'rgba(255,255,255,0.1)';
+  btn.textContent = next ? '👁 Visible' : '🚫 Hidden';
+  btn.style.color = next ? 'var(--gold)' : 'rgba(255,255,255,0.3)';
+  item.style.borderLeftColor = next ? 'var(--gold)' : 'rgba(255,255,255,0.1)';
 }
 
 function initDragDrop() {
