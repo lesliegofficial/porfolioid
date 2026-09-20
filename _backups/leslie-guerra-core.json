@@ -1684,7 +1684,7 @@
   "assetsLayout": "cards",
   "assetsLocked": false,
   "availability": "Available for tours & studio sessions",
-  "bioImageZoom": 124,
+  "bioImageZoom": 100,
   "bookingEmail": "leslie@porfolioid.com",
   "bookingLabel": "Inquiries",
   "bookingPhone": "",
@@ -1724,8 +1724,8 @@
   "resumeEnabled": true,
   "bookingEnabled": true,
   "bookingTagline": "",
-  "bioImageCropTop": 60,
-  "bioImagePosition": 100,
+  "bioImageCropTop": 0,
+  "bioImagePosition": 0,
   "careerHighlights": [
     {
       "id": "default-recordingartist",
