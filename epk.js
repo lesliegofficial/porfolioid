@@ -1264,7 +1264,7 @@ function buildEPK(epk) {
 
   document.getElementById('epkContent').innerHTML = `
     <!-- HERO v3 — 2-col editorial -->
-    <div class="hero">
+    <div class="hero" id="career-profile">
       <div class="hero-image-panel">${heroImgHTML}</div>
       <div class="hero-content">
 
@@ -1303,7 +1303,7 @@ function buildEPK(epk) {
           }
         </div>
 
-        <div class="hero-presence-bar" onclick="const c=document.getElementById('connect');if(!c)return;const open=c.style.display==='block';c.style.display=open?'none':'block';this.querySelector('.hero-presence-explore').textContent=open?'Explore →':'Close ←';if(!open){setTimeout(()=>{const top=c.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top,behavior:'smooth'});},50);}" style="cursor:pointer">
+        <div class="hero-presence-bar" onclick="expandSection('connect')" style="cursor:pointer">
           <p class="hero-presence-eyebrow">
               <svg viewBox="0 0 24 24" style="fill:var(--gold);width:12px;height:12px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
               Connect
@@ -1351,18 +1351,9 @@ function buildEPK(epk) {
       </div>
     </div>
 
-    <!-- CONNECT PANEL -->
-    <div id="connect" style="display:none">${connectSectionHTML}</div>
-
-    <!-- CAREER HIGHLIGHTS -->
-    <section class="career-profile-section" id="bio">
+    <!-- CAREER PROFILE — fixed opening chapter -->
+    <section class="career-profile-section" id="career-highlights" data-fixed-portfolio-section="true">
       <div class="ch3-wrap">
-        <!-- CAREER PROFILE / BIOGRAPHY — previously built as careerProfileHTML
-             but never inserted anywhere (dead code); now rendered here as the
-             lead content of the always-visible #bio section, ahead of the
-             Career Record Highlights cards. No collapsible wrapper — this
-             section requires no click-to-expand interaction. -->
-        ${careerProfileHTML}
         <div class="ch3-header">
           <span class="ch3-label" id="ch3Eyebrow">Career Profile</span>
           <div class="ch3-title-row">
@@ -1377,36 +1368,60 @@ function buildEPK(epk) {
           <p id="viewCompleteRecordCaption" style="font-family:var(--font-display);font-size:1.05rem;font-style:italic;color:rgba(245,243,238,0.65);margin-bottom:1.1rem;letter-spacing:0.01em">Every credit, role, and collaboration in one place — sortable by category, with full details behind each entry.</p>
           <a href="#credits" onclick="filterCreditsByCategory('')" id="viewCompleteRecordBtn" class="ch3-viewcomplete">View Complete Record →</a>
         </div>
+      </div>
+    </section>
+    <div class="divider" id="career-profile-end"></div>
 
-        <!-- THE RECORD — hidden by default, revealed on demand -->
-        ${epk.credits?.length ? `
-        <div id="credits" style="display:none;margin-top:3rem;padding-top:2.5rem;border-top:1px solid rgba(201,168,76,0.15)">
-          <!-- PROFESSIONAL RESUME — first item revealed inside the expandable Credits
-               container. buildResumeCard() markup, styling, and the resumeEnabled
-               gating are unchanged from before - only the insertion point moved,
-               from a standalone visible block above "View Complete Record" to here,
-               so it now inherits the same hidden-until-expanded show/hide behavior
-               as the Credits cards (toggled by filterCreditsByCategory). -->
-          ${(epk.resumeEnabled !== false && resumeCards.length) ? `
-          <div class="ch3-header" style="margin-top:5rem;padding-top:2.5rem;border-top:1px solid rgba(201,168,76,0.1)">
-            <span class="ch3-label">Professional Profile</span>
-            <div class="ch3-title-row">
-              <h2 class="section-title" style="margin:0">Professional Documents</h2>
-            </div>
+    <!-- BIOGRAPHY -->
+    <section class="career-profile-section portfolio-content-section" id="bio" data-portfolio-section="bio">
+      <div class="ch3-wrap">
+        <div class="ch3-header">
+          <span class="ch3-label">Career Story</span>
+          <div class="ch3-title-row">
+            <h2 class="section-title" style="margin:0">Biography</h2>
           </div>
-          <div class="career-stacked-cards">
-            ${resumeCards.map(buildResumeCard).join('')}
-          </div>` : ''}
-          <div id="creditsFilterBanner" style="display:none;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.08em;color:var(--gray-light);margin-bottom:1rem"></div>
-          <div class="credits-grid" id="creditsGrid">${creditsHTML}</div>
-          ${visibleCredits.length > 4 ? `
-          <div style="text-align:center;margin-top:1rem">
-            <button onclick="toggleAllCredits()" id="creditsToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.6rem 1.5rem;cursor:pointer;transition:all 0.2s">View All ${visibleCredits.length} Credits +</button>
-          </div>` : ''}
-        </div>` : ''}
+        </div>
+        ${careerProfileHTML}
       </div>
     </section>
     <div class="divider"></div>
+
+    <!-- PROFESSIONAL DOCUMENTS -->
+    ${(epk.resumeEnabled !== false && resumeCards.length) ? `
+    <section class="career-profile-section portfolio-content-section" id="documents" data-portfolio-section="documents">
+      <div class="ch3-wrap">
+        <div class="ch3-header">
+          <span class="ch3-label">Professional Profile</span>
+          <div class="ch3-title-row">
+            <h2 class="section-title" style="margin:0">Professional Documents</h2>
+          </div>
+        </div>
+        <div class="career-stacked-cards">
+          ${resumeCards.map(buildResumeCard).join('')}
+        </div>
+      </div>
+    </section>
+    <div class="divider"></div>` : ''}
+
+    <!-- CREDITS -->
+    ${epk.credits?.length ? `
+    <section class="career-profile-section portfolio-content-section" id="credits" data-portfolio-section="credits">
+      <div class="ch3-wrap">
+        <div class="ch3-header">
+          <span class="ch3-label">Career Record</span>
+          <div class="ch3-title-row">
+            <h2 class="section-title" style="margin:0">Credits &amp; Collaborations</h2>
+          </div>
+        </div>
+        <div id="creditsFilterBanner" style="display:none;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.08em;color:var(--gray-light);margin-bottom:1rem"></div>
+        <div class="credits-grid" id="creditsGrid">${creditsHTML}</div>
+        ${visibleCredits.length > 4 ? `
+        <div style="text-align:center;margin-top:1rem">
+          <button onclick="toggleAllCredits()" id="creditsToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.6rem 1.5rem;cursor:pointer;transition:all 0.2s">View All ${visibleCredits.length} Credits +</button>
+        </div>` : ''}
+      </div>
+    </section>
+    <div class="divider"></div>` : ''}
 
     <!-- CREATIVE WORKS -->
     ${(epk.works || []).filter(w => w.visible !== false).length ? `
@@ -1593,6 +1608,9 @@ function buildEPK(epk) {
       </div>
     </div>` : ''}
 
+
+    <!-- CONNECT -->
+    ${connectSectionHTML ? `<div id="connect" class="portfolio-content-section" data-portfolio-section="connect">${connectSectionHTML}</div>` : ''}
 
     <!-- BOOKING/INQUIRY (now rendered as a modal, triggered from the Connect card) -->
     <div id="booking" style="display:none"></div>
