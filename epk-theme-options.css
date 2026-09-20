@@ -3125,12 +3125,36 @@
   }
 
   [data-theme="midnight"] .music-awards-pair > .collapsible-section {
-    min-width:0;
-    margin:0 !important;
+    display:contents !important;
   }
 
-  [data-theme="midnight"] .music-awards-pair > .collapsible-section:only-child {
+  [data-theme="midnight"] .music-awards-pair > #music > .collapsible-header {
+    grid-column:1;
+    grid-row:1;
+  }
+
+  [data-theme="midnight"] .music-awards-pair > #awards > .collapsible-header {
+    grid-column:2;
+    grid-row:1;
+  }
+
+  [data-theme="midnight"] .music-awards-pair > #music > .collapsible-body {
     grid-column:1 / -1;
+    grid-row:2;
+  }
+
+  [data-theme="midnight"] .music-awards-pair > #awards > .collapsible-body {
+    grid-column:1 / -1;
+    grid-row:3;
+  }
+
+  [data-theme="midnight"] .music-awards-pair > .collapsible-section:only-child > .collapsible-header {
+    grid-column:1 / -1;
+  }
+
+  [data-theme="midnight"] .music-awards-pair > .collapsible-section:only-child > .collapsible-body {
+    grid-column:1 / -1;
+    grid-row:2;
   }
 
   [data-theme="midnight"] .music-awards-pair .collapsible-header {
@@ -3140,6 +3164,21 @@
 
   [data-theme="midnight"] .music-awards-pair .collapsible-header-title {
     font-size:clamp(1.65rem,2.35vw,2.45rem) !important;
+  }
+
+  [data-theme="midnight"] .music-awards-pair .collapsible-body {
+    width:100%;
+    min-width:0;
+    background:#05080D !important;
+  }
+
+  [data-theme="midnight"] .music-awards-pair .collapsible-body-inner,
+  [data-theme="midnight"] .music-awards-pair #awards .awards-inner {
+    width:100%;
+    max-width:1280px !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    box-sizing:border-box;
   }
 }
 
