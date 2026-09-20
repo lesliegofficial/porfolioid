@@ -1428,3 +1428,173 @@
     padding:.45rem !important;
   }
 }
+
+
+/* ── GREEN DISTRICT REFINEMENT PASS 03 ─────────────────────────────── */
+/* Career Record: preserve the complete image instead of forcing editorial crops. */
+[data-theme="district"] #career-highlights .ch3-card.gd-even .ch3-img {
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:16/9 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  background:#0A0D0B !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-even .ch3-img img,
+[data-theme="district"] #career-highlights .ch3-card.gd-even .ch3-img video {
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  background:#0A0D0B !important;
+}
+
+/* Biography + Executive Resume + About card: one continuous profile suite. */
+[data-theme="district"] #documents.gd-profile-documents .gd-profile-suite {
+  border:1px solid rgb(85 182 122 / .22);
+  border-radius:12px;
+  overflow:hidden;
+  background:#101411;
+}
+[data-theme="district"] #documents.gd-profile-documents .gd-bio-documents-profile {
+  margin:0 !important;
+  border-bottom:1px solid rgb(85 182 122 / .18);
+}
+[data-theme="district"] #documents.gd-profile-documents .gd-bio-documents-profile .career-stacked-bio,
+[data-theme="district"] #documents.gd-profile-documents .gd-bio-documents-profile .career-sidebyside-left {
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+}
+[data-theme="district"] #documents.gd-profile-documents .career-stacked-cards {
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:0 !important;
+  background:transparent !important;
+}
+[data-theme="district"] #documents.gd-profile-documents .career-stacked-cards .resume-card {
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  padding:1.75rem !important;
+  box-shadow:none !important;
+}
+[data-theme="district"] #documents.gd-profile-documents .career-stacked-cards .resume-card + .resume-card {
+  border-left:1px solid rgb(85 182 122 / .18) !important;
+}
+
+/* Video: one wide feature, then a compact horizontal filmstrip. */
+[data-theme="district"] #videosFeatured {
+  display:block !important;
+}
+[data-theme="district"] #videosFeatured > .video-hero {
+  display:grid !important;
+  grid-template-columns:minmax(0,1.85fr) minmax(280px,.68fr) !important;
+  width:100% !important;
+  min-height:0 !important;
+}
+[data-theme="district"] #videosFeatured .video-hero-media {
+  width:100% !important;
+  min-width:0 !important;
+  aspect-ratio:16/9 !important;
+}
+[data-theme="district"] #videosFeatured .video-hero-info {
+  min-width:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  padding:1.5rem 1.6rem !important;
+}
+[data-theme="district"] #videosFeatured > .videos-subsection {
+  display:block !important;
+  width:100% !important;
+  margin:1rem 0 0 !important;
+  padding:0 !important;
+}
+[data-theme="district"] #videosFeatured .video-carousel-wrap {
+  display:block !important;
+  width:100% !important;
+}
+[data-theme="district"] #videosFeatured .video-carousel {
+  display:flex !important;
+  gap:.8rem !important;
+  width:100% !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  padding:.1rem 0 .55rem !important;
+  scroll-snap-type:x proximity;
+  scrollbar-width:thin;
+  scrollbar-color:rgb(85 182 122 / .45) transparent;
+}
+[data-theme="district"] #videosFeatured .videos-collection-thumb {
+  flex:0 0 clamp(210px,21vw,285px) !important;
+  width:auto !important;
+  min-height:0 !important;
+  aspect-ratio:16/9 !important;
+  scroll-snap-align:start;
+  display:block !important;
+  background:#070907 !important;
+}
+[data-theme="district"] #videosFeatured .videos-collection-thumb img {
+  width:100% !important;
+  height:100% !important;
+  aspect-ratio:16/9 !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  background:#070907 !important;
+}
+
+/* Connect should visibly read as a real section, not just closing copy. */
+[data-theme="district"] #connect {
+  min-height:460px !important;
+}
+[data-theme="district"] #connect > .gd-number-label {
+  padding-top:2.6rem !important;
+}
+[data-theme="district"] .gd-connect-summary {
+  padding:0 2.5rem 7.5rem !important;
+}
+[data-theme="district"] .gd-connect-eyebrow {
+  margin:0 0 .65rem;
+  font-family:var(--font-mono);
+  font-size:.56rem;
+  font-weight:600;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:#55B67A;
+}
+[data-theme="district"] .gd-connect-copy {
+  max-width:900px !important;
+  margin-bottom:1rem !important;
+}
+[data-theme="district"] .gd-connect-actions {
+  position:relative;
+  z-index:3;
+  min-height:40px;
+}
+
+/* Clean up older responsive rules from the first Green District draft. */
+@media (max-width:1100px) {
+  [data-theme="district"] #career-highlights .ch3-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+  [data-theme="district"] #videosFeatured > .video-hero {
+    grid-template-columns:minmax(0,1.55fr) minmax(250px,.72fr) !important;
+  }
+}
+@media (max-width:800px) {
+  [data-theme="district"] #documents.gd-profile-documents .career-stacked-cards {
+    grid-template-columns:1fr !important;
+  }
+  [data-theme="district"] #documents.gd-profile-documents .career-stacked-cards .resume-card + .resume-card {
+    border-left:0 !important;
+    border-top:1px solid rgb(85 182 122 / .18) !important;
+  }
+  [data-theme="district"] #videosFeatured > .video-hero {
+    display:block !important;
+  }
+  [data-theme="district"] #videosFeatured .videos-collection-thumb {
+    flex-basis:78vw !important;
+  }
+}
