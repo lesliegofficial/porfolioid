@@ -7,7 +7,7 @@
 <title>Dashboard — PorfolioID</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/dashboard.css">
+<link rel="stylesheet" href="/dashboard.css?v=20260920-1">
 </head>
 <body>
 
@@ -1411,16 +1411,16 @@
     <!-- APPEARANCE PANEL -->
     <div class="panel" id="panel-appearance">
       <button onclick="showPanel('hero')" class="panel-back-btn">← Back to Career Profile</button>
-      <h1 class="panel-title">Portfolio <em>Appearance</em></h1>
-      <p class="panel-sub">Choose one complete color combination for this profile. Colors are coordinated as a set so the portfolio stays consistent and readable.</p>
+      <h1 class="panel-title">porfolioID <em>Style</em></h1>
+      <p class="panel-sub">Choose a complete design for this profile. Golden remains the original default. Blue Zone is an optional second style with its own layout, spacing, and presentation.</p>
 
       <div id="appearanceThemeGrid" class="theme-choice-grid"></div>
 
       <div class="theme-choice-actions">
-        <button class="btn-save" onclick="saveAppearanceTheme()">✓ Save Appearance</button>
-        <button class="btn-cancel" onclick="previewAppearanceTheme()">Preview Selected Theme ↗</button>
+        <button class="btn-save" onclick="saveAppearanceTheme()">✓ Save Style</button>
+        <button class="btn-cancel" onclick="previewAppearanceTheme()">Preview Selected Style ↗</button>
       </div>
-      <p class="field-hint" style="margin-top:0.85rem">Preview opens your public profile in a new tab without changing the saved selection. Saving applies the palette to this profile automatically.</p>
+      <p class="field-hint" style="margin-top:0.85rem">Preview opens your public profile in a new tab without changing the saved style. Saving applies the selected design only to this profile.</p>
     </div>
 
     <!-- SECTIONS PANEL -->
@@ -2083,6 +2083,6 @@
 
 <div class="save-banner" id="saveBanner">✓ Saved</div>
 
-<script src="/dashboard.js?v=20260811-3" defer></script>
+<script src="/dashboard.js?v=20260920-1" defer></script>
 </body>
 </html>
