@@ -1051,6 +1051,12 @@ function initSectionsPanel() {
       <span class="section-drag-handle" draggable="false" tabindex="0" role="button" aria-label="Drag to reorder ${s.label}" title="Drag to reorder" style="color:rgba(255,255,255,0.3);font-size:1.2rem;cursor:grab;letter-spacing:-2px;touch-action:none;user-select:none;-webkit-user-select:none">⠿⠿</span>
       <span style="font-size:1.1rem">${s.icon}</span>
       <span style="font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--white);flex:1">${s.label}</span>
+      <div class="section-order-buttons" style="display:flex;gap:0.35rem;align-items:center">
+        <button type="button" onclick="moveSectionBy('${s.id}', -1)" title="Move ${s.label} up" aria-label="Move ${s.label} up"
+          style="background:none;border:1px solid rgba(255,255,255,0.15);color:var(--gray-light);width:32px;height:32px;cursor:pointer;font-family:var(--font-mono);font-size:0.7rem">▲</button>
+        <button type="button" onclick="moveSectionBy('${s.id}', 1)" title="Move ${s.label} down" aria-label="Move ${s.label} down"
+          style="background:none;border:1px solid rgba(255,255,255,0.15);color:var(--gray-light);width:32px;height:32px;cursor:pointer;font-family:var(--font-mono);font-size:0.7rem">▼</button>
+      </div>
       <button onclick="toggleSectionVisibility('${s.id}', this)"
         style="background:none;border:1px solid rgba(255,255,255,0.15);color:${visible ? 'var(--gold)' : 'rgba(255,255,255,0.3)'};padding:0.35rem 0.75rem;cursor:pointer;font-size:0.85rem;transition:all 0.2s"
         title="${visible ? 'Hide section' : 'Show section'}">
@@ -1087,6 +1093,47 @@ function toggleSectionVisibility(id, btn) {
   item.style.borderLeftColor = next ? 'var(--gold)' : 'rgba(255,255,255,0.1)';
 }
 
+function syncSectionOrderFromDOM() {
+  const list = document.getElementById('sectionsOrderList');
+  if (!list) return;
+  const newOrder = [...list.querySelectorAll('.section-order-item')].map(el => el.dataset.id);
+  if (!window._epkData) window._epkData = {};
+  window._epkData.sectionOrder = newOrder;
+  if (typeof epk !== 'undefined' && epk) epk.sectionOrder = [...newOrder];
+}
+
+function moveSectionBy(id, direction) {
+  const list = document.getElementById('sectionsOrderList');
+  if (!list || (direction !== -1 && direction !== 1)) return;
+
+  const items = [...list.querySelectorAll('.section-order-item')];
+  const index = items.findIndex(item => item.dataset.id === id);
+  if (index < 0) return;
+
+  const targetIndex = index + direction;
+  if (targetIndex < 0 || targetIndex >= items.length) return;
+
+  const item = items[index];
+  const target = items[targetIndex];
+
+  if (direction < 0) {
+    list.insertBefore(item, target);
+  } else {
+    target.insertAdjacentElement('afterend', item);
+  }
+
+  syncSectionOrderFromDOM();
+
+  item.animate(
+    [
+      { transform: 'translateX(0)', backgroundColor: 'var(--dark-2)' },
+      { transform: 'translateX(4px)', backgroundColor: 'rgba(201,168,76,0.08)' },
+      { transform: 'translateX(0)', backgroundColor: 'var(--dark-2)' }
+    ],
+    { duration: 220, easing: 'ease-out' }
+  );
+}
+
 function initDragDrop() {
   const list = document.getElementById('sectionsOrderList');
   if (!list) return;
@@ -1106,12 +1153,7 @@ function initDragDrop() {
   }
 
   function updateOrder() {
-    const newOrder = getItems().map(el => el.dataset.id);
-    if (!window._epkData) window._epkData = {};
-    window._epkData.sectionOrder = newOrder;
-    // Keep the module-level profile object in sync too, so switching panels
-    // or profiles before saving cannot silently restore the old order.
-    if (typeof epk !== 'undefined' && epk) epk.sectionOrder = [...newOrder];
+    syncSectionOrderFromDOM();
   }
 
   function setDraggingVisual(item, dragging) {
@@ -1151,10 +1193,6 @@ function initDragDrop() {
   function finishPointerDrag(e) {
     if (!dragSrc || activePointerId === null || e.pointerId !== activePointerId) return;
 
-    if (activeHandle && activeHandle.hasPointerCapture && activeHandle.hasPointerCapture(activePointerId)) {
-      try { activeHandle.releasePointerCapture(activePointerId); } catch (_) {}
-    }
-
     setDraggingVisual(dragSrc, false);
     updateOrder();
 
@@ -1180,23 +1218,22 @@ function initDragDrop() {
     activePointerId = e.pointerId;
     activeHandle = handle;
 
-    if (handle.setPointerCapture) {
-      try { handle.setPointerCapture(activePointerId); } catch (_) {}
-    }
-
     setDraggingVisual(item, true);
     document.body.style.userSelect = 'none';
     document.body.style.cursor = 'grabbing';
   });
 
-  list.addEventListener('pointermove', e => {
+  // Track movement on window instead of only the list/handle. This avoids
+  // trackpad/browser edge cases where pointer capture or element boundaries
+  // suppress movement events before the card can be reordered.
+  window.addEventListener('pointermove', e => {
     if (!dragSrc || activePointerId === null || e.pointerId !== activePointerId) return;
-    e.preventDefault();
+    if (e.cancelable) e.preventDefault();
     moveDraggedItem(e.clientY);
-  });
+  }, { passive: false });
 
-  list.addEventListener('pointerup', finishPointerDrag);
-  list.addEventListener('pointercancel', finishPointerDrag);
+  window.addEventListener('pointerup', finishPointerDrag);
+  window.addEventListener('pointercancel', finishPointerDrag);
 
   // Keyboard fallback: focus the handle and use ↑ / ↓ to reorder.
   list.addEventListener('keydown', e => {
