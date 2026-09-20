@@ -1456,6 +1456,7 @@ function buildEPK(epk) {
     </section>
     <div class="divider"></div>` : ''}
 
+    <div class="music-awards-pair">
     <!-- MUSIC -->
     ${epk.tracks?.length ? `
     <div class="collapsible-section" id="music">
@@ -1518,6 +1519,7 @@ function buildEPK(epk) {
         </div>
       </div>
     </div>` : ''}
+    </div>
 
     <!-- ASSETS -->
     ${epk.assets?.filter(a => a.visible !== false && a.category !== 'Resume').length ? `
