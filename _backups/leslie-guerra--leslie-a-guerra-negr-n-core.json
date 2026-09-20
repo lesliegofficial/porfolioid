@@ -1,0 +1,57 @@
+{
+  "name": "Leslie Ann Guerra",
+  "slug": "leslie-guerra--leslie-a-guerra-negr-n",
+  "profileName": "Leslie A Guerra Negrón",
+  "profileType": "corporate",
+  "assetsLocked": true,
+  "assetsLayout": "cards",
+  "socials": {
+    "instagram": [],
+    "facebook": []
+  },
+  "identityBlock": {
+    "availabilityBadges": [],
+    "industryRoles": [],
+    "languages": [],
+    "timeline": [],
+    "availabilityEnabled": false,
+    "rolesEnabled": false,
+    "featuredEnabled": false,
+    "featuredCreditIdx": "",
+    "verifiedEnabled": false,
+    "verificationStatus": "",
+    "languagesEnabled": false,
+    "repEnabled": false,
+    "repName": "",
+    "repRole": "",
+    "repContact": "",
+    "timelineEnabled": false
+  },
+  "heroImage": "",
+  "heroImagePosition": 27,
+  "heroImageZoom": 97,
+  "heroImageCropTop": 1,
+  "heroImageFit": "cover",
+  "stats": [
+    {
+      "number": "25+",
+      "label": "Years Active"
+    },
+    {
+      "number": "500+",
+      "label": "Live Shows"
+    },
+    {
+      "number": "5",
+      "label": "Continents"
+    }
+  ],
+  "bioFull": "",
+  "shortBio": "",
+  "location": "",
+  "availability": "",
+  "bioImage": "",
+  "bioImagePosition": 100,
+  "bioImageCropTop": 60,
+  "bioImageZoom": 99
+}
