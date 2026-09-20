@@ -3144,7 +3144,7 @@
 }
 
 /* ── BLUE ZONE: CLEAN, BORDERLESS PHOTOGRAPHY ───────────────────────────────
-   Remove the Aqua frame, glow and reflected edge from every gallery layout.
+   Remove the Aqua frame from every gallery layout while preserving depth.
    A neutral black shadow keeps overlapping exhibition photos readable. */
 [data-theme="midnight"] .gallery-col,
 [data-theme="midnight"] .gallery-scroll-item,
@@ -3162,14 +3162,84 @@
   box-shadow:0 16px 30px rgba(0,0,0,0.48) !important;
 }
 
-[data-theme="midnight"] .exhibition-frame-reflection,
-[data-theme="midnight"] .exhibition-floor {
-  display:none !important;
-}
-
 [data-theme="midnight"] .gallery-scroll-item:first-child,
 [data-theme="midnight"] .gallery-scroll-item:hover,
 [data-theme="midnight"] .gallery-grid-item:hover,
 [data-theme="midnight"] .gallery-collection-card:hover {
   border-color:transparent !important;
+}
+
+/* Restore the mirrored photographs and give the gallery floor a restrained
+   Blue Zone wash. The light lives below the images; it is not a frame. */
+[data-theme="midnight"] .gallery-section {
+  position:relative;
+  isolation:isolate;
+  background:
+    radial-gradient(ellipse 72% 28% at 50% 100%,rgb(56 127 200 / 0.17) 0%,rgb(36 86 132 / 0.075) 38%,transparent 76%),
+    #05080D !important;
+}
+
+[data-theme="midnight"] .gallery-inner,
+[data-theme="midnight"] .exhibition-outer {
+  background-color:transparent !important;
+  background-image:none !important;
+}
+
+@media (min-width:701px) {
+  [data-theme="midnight"] .exhibition-frame-reflection,
+  [data-theme="midnight"] .exhibition-floor {
+    display:block !important;
+  }
+
+  [data-theme="midnight"] .exhibition-floor {
+    opacity:0.72;
+    background:
+      radial-gradient(ellipse 22% 4% at 50% 2%,rgb(184 227 233 / 0.34),transparent 72%),
+      radial-gradient(ellipse 78% 100% at 50% 0%,rgb(56 127 200 / 0.18) 0%,rgb(31 72 112 / 0.075) 42%,transparent 86%) !important;
+  }
+}
+
+/* Side navigation gets its own luminous control treatment now that the
+   photographs themselves are intentionally borderless. */
+[data-theme="midnight"] .exhibition-arrow {
+  width:46px !important;
+  height:46px !important;
+  color:#B8E3E9 !important;
+  opacity:0.9 !important;
+  border:1px solid rgb(124 196 236 / 0.42) !important;
+  background:
+    radial-gradient(circle at 50% 42%,rgb(124 196 236 / 0.16),transparent 62%),
+    rgb(5 10 16 / 0.90) !important;
+  box-shadow:
+    0 0 0 5px rgb(56 127 200 / 0.045),
+    0 0 24px rgb(56 127 200 / 0.20),
+    inset 0 0 15px rgb(124 196 236 / 0.07) !important;
+  text-shadow:0 0 10px rgb(184 227 233 / 0.62);
+  backdrop-filter:blur(8px);
+}
+
+[data-theme="midnight"] .exhibition-arrow:hover {
+  color:#FFFFFF !important;
+  opacity:1 !important;
+  border-color:rgb(184 227 233 / 0.78) !important;
+  background:
+    radial-gradient(circle at 50% 42%,rgb(124 196 236 / 0.25),transparent 66%),
+    rgb(7 14 22 / 0.96) !important;
+  box-shadow:
+    0 0 0 6px rgb(56 127 200 / 0.07),
+    0 0 32px rgb(56 127 200 / 0.34),
+    inset 0 0 18px rgb(184 227 233 / 0.10) !important;
+}
+
+[data-theme="midnight"] .gallery-scroll-arrow-btn {
+  color:#B8E3E9 !important;
+  border-color:rgb(124 196 236 / 0.42) !important;
+  background:rgb(5 10 16 / 0.90) !important;
+  box-shadow:0 0 22px rgb(56 127 200 / 0.18),inset 0 0 14px rgb(124 196 236 / 0.06) !important;
+}
+
+[data-theme="midnight"] .gallery-scroll-arrow-btn:hover {
+  color:#FFFFFF !important;
+  border-color:rgb(184 227 233 / 0.76) !important;
+  box-shadow:0 0 28px rgb(56 127 200 / 0.30),inset 0 0 16px rgb(184 227 233 / 0.09) !important;
 }
