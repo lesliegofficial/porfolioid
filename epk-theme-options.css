@@ -3169,14 +3169,12 @@
   border-color:transparent !important;
 }
 
-/* Restore the mirrored photographs and give the gallery floor a restrained
-   Blue Zone wash. The light lives below the images; it is not a frame. */
+/* Restore only the mirrored photographs. Keep the gallery floor clean so the
+   reflection reads as depth rather than a broad fog effect. */
 [data-theme="midnight"] .gallery-section {
   position:relative;
   isolation:isolate;
-  background:
-    radial-gradient(ellipse 72% 28% at 50% 100%,rgb(56 127 200 / 0.17) 0%,rgb(36 86 132 / 0.075) 38%,transparent 76%),
-    #05080D !important;
+  background:#05080D !important;
 }
 
 [data-theme="midnight"] .gallery-inner,
@@ -3186,16 +3184,12 @@
 }
 
 @media (min-width:701px) {
-  [data-theme="midnight"] .exhibition-frame-reflection,
-  [data-theme="midnight"] .exhibition-floor {
+  [data-theme="midnight"] .exhibition-frame-reflection {
     display:block !important;
   }
 
   [data-theme="midnight"] .exhibition-floor {
-    opacity:0.72;
-    background:
-      radial-gradient(ellipse 22% 4% at 50% 2%,rgb(184 227 233 / 0.34),transparent 72%),
-      radial-gradient(ellipse 78% 100% at 50% 0%,rgb(56 127 200 / 0.18) 0%,rgb(31 72 112 / 0.075) 42%,transparent 86%) !important;
+    display:none !important;
   }
 }
 
