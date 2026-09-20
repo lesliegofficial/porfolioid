@@ -1427,9 +1427,12 @@
     <div class="panel" id="panel-sections">
       <button onclick="showPanel('hero')" style="display:inline-flex;align-items:center;gap:0.4rem;background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);padding:0;margin-bottom:1rem;transition:color 0.2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gray)'">← Back to Career Profile</button>
       <h1 class="panel-title">Section <em>Order & Visibility</em></h1>
-      <p class="panel-sub">Career Profile stays first. Drag sections or use the ▲ ▼ controls to reorder them. Toggle the eye to show or hide each section.</p>
+      <p class="panel-sub">Career Profile stays first. Drag sections or use the ▲ ▼ controls to arrange the dashboard plan. Career Record Highlights is now its own movable section.</p>
+      <div style="margin-top:1rem;padding:0.8rem 1rem;border:1px solid rgba(201,168,76,0.18);background:rgba(201,168,76,0.04);font-family:var(--font-mono);font-size:0.58rem;line-height:1.6;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray-light)">
+        Dashboard planning only — these controls will not change the live portfolio while we finish the dashboard structure.
+      </div>
       <div id="sectionsOrderList" style="margin-top:2rem"></div>
-      <button onclick="saveSectionSettings()" style="margin-top:2rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;background:var(--gold);color:#000;border:none;padding:0.75rem 2rem;cursor:pointer;font-weight:600">✓ Save Section Settings</button>
+      <button onclick="saveSectionSettings()" style="margin-top:2rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;background:var(--gold);color:#000;border:none;padding:0.75rem 2rem;cursor:pointer;font-weight:600">✓ Save Dashboard Order</button>
     </div>
 
     <div class="panel" id="panel-qr">
@@ -2083,6 +2086,6 @@
 
 <div class="save-banner" id="saveBanner">✓ Saved</div>
 
-<script src="/dashboard.js?v=20260920-4" defer></script>
+<script src="/dashboard.js?v=20260920-5" defer></script>
 </body>
 </html>
