@@ -3129,6 +3129,10 @@
     margin:0 !important;
   }
 
+  [data-theme="midnight"] .music-awards-pair > .collapsible-section:only-child {
+    grid-column:1 / -1;
+  }
+
   [data-theme="midnight"] .music-awards-pair .collapsible-header {
     min-height:190px;
     padding:2rem clamp(1.35rem,2.6vw,2.5rem) !important;
