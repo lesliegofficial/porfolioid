@@ -1168,3 +1168,263 @@
     padding-right:1.25rem !important;
   }
 }
+
+
+/* ── GREEN DISTRICT REFINEMENT PASS 02 ─────────────────────────────── */
+/* 1. Career Record: six equal cards, 3 × 2 on desktop. */
+[data-theme="district"] #career-highlights .ch3-grid {
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  grid-auto-rows:1fr !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-even {
+  grid-column:auto !important;
+  grid-row:auto !important;
+  min-height:300px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  border-color:rgb(85 182 122 / .18) !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-even .ch3-img {
+  display:block !important;
+  height:145px !important;
+  min-height:145px !important;
+  background:#0A0D0B !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-even .ch3-img img,
+[data-theme="district"] #career-highlights .ch3-card.gd-even .ch3-img video {
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-even .ch3-body {
+  display:flex !important;
+  flex-direction:column !important;
+  flex:1 !important;
+  padding:1rem 1.05rem 1.15rem !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-even .ch3-desc {
+  margin-top:auto;
+}
+
+/* 2. Biography + Professional Documents become one district. */
+[data-theme="district"] #bio {
+  display:none !important;
+}
+[data-theme="district"] #documents.gd-profile-documents {
+  display:block !important;
+  background:#090B0A !important;
+}
+[data-theme="district"] #documents.gd-profile-documents .ch3-wrap {
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding:0 2.5rem 3.8rem !important;
+}
+[data-theme="district"] #documents.gd-profile-documents .ch3-header {
+  margin:0 0 1.25rem !important;
+  padding:0 !important;
+  border:0 !important;
+}
+[data-theme="district"] #documents.gd-profile-documents .gd-number-label {
+  width:100%;
+  padding-top:3.4rem;
+  margin-bottom:.65rem;
+}
+[data-theme="district"] .gd-bio-documents-profile {
+  margin-bottom:1rem;
+}
+[data-theme="district"] .gd-bio-documents-profile .career-stacked-bio,
+[data-theme="district"] .gd-bio-documents-profile .career-sidebyside-left {
+  display:grid !important;
+  grid-template-columns:minmax(260px,.72fr) minmax(0,1.28fr) !important;
+  min-height:330px;
+  background:#101411 !important;
+  border:1px solid rgb(85 182 122 / .18) !important;
+  border-radius:10px;
+  overflow:hidden;
+}
+[data-theme="district"] .gd-bio-documents-profile .career-sidebyside {
+  display:block !important;
+}
+[data-theme="district"] .gd-bio-documents-profile .career-portrait {
+  width:100% !important;
+  height:100% !important;
+  min-height:330px !important;
+  object-fit:cover !important;
+}
+[data-theme="district"] .gd-bio-documents-profile .career-bio-text {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:2rem 2.2rem !important;
+}
+[data-theme="district"] #documents.gd-profile-documents .career-stacked-cards {
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:1rem !important;
+}
+[data-theme="district"] #documents.gd-profile-documents .resume-card {
+  min-height:100%;
+}
+
+/* 3. Video: larger featured performance; supporting thumbnails show entire artwork. */
+[data-theme="district"] #videosFeatured {
+  grid-template-columns:minmax(0,2.25fr) minmax(220px,.62fr) !important;
+  gap:1.15rem !important;
+}
+[data-theme="district"] #videosFeatured > .video-hero {
+  min-width:0;
+}
+[data-theme="district"] #videosFeatured .video-hero-media {
+  aspect-ratio:16/9 !important;
+}
+[data-theme="district"] #videosFeatured > .videos-subsection {
+  min-width:0;
+}
+[data-theme="district"] #videosFeatured .video-carousel {
+  gap:.82rem !important;
+}
+[data-theme="district"] #videosFeatured .videos-collection-thumb {
+  display:block !important;
+  min-height:0 !important;
+  padding:0 !important;
+  background:#0A0D0B !important;
+  border:1px solid rgb(85 182 122 / .16) !important;
+  overflow:hidden !important;
+}
+[data-theme="district"] #videosFeatured .videos-collection-thumb img {
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  aspect-ratio:16/9 !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  background:#050705 !important;
+}
+[data-theme="district"] #videosFeatured .videos-collection-thumb .video-play {
+  width:30px !important;
+  height:30px !important;
+  font-size:.7rem !important;
+  right:.55rem !important;
+  left:auto !important;
+  top:.55rem !important;
+  transform:none !important;
+}
+
+/* 4. Original Works: preserve the entire cover and restore Enter the Story. */
+[data-theme="district"] .work-card {
+  grid-template-columns:150px minmax(0,1fr) !important;
+  min-height:190px !important;
+  align-items:stretch !important;
+}
+[data-theme="district"] .work-card-cover {
+  width:150px !important;
+  height:100% !important;
+  min-height:190px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  background:#090B0A !important;
+  padding:.65rem !important;
+  box-sizing:border-box !important;
+}
+[data-theme="district"] .work-card-cover img {
+  width:100% !important;
+  height:100% !important;
+  max-height:176px !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+[data-theme="district"] .work-card-body {
+  justify-content:flex-start !important;
+  padding:1rem 1.1rem !important;
+}
+[data-theme="district"] .work-card-cta-row {
+  display:flex !important;
+  align-items:center;
+  margin-top:.72rem !important;
+}
+[data-theme="district"] .work-card-cta {
+  display:inline-flex !important;
+  align-items:center;
+  gap:.45rem;
+  color:#55B67A !important;
+  border-bottom:1px solid rgb(85 182 122 / .42);
+  font-family:var(--font-mono);
+  font-size:.52rem;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  text-decoration:none;
+  padding-bottom:.16rem;
+}
+[data-theme="district"] .work-card-cta:hover {
+  color:#B4DAC2 !important;
+  border-color:#B4DAC2;
+}
+
+/* 5. Awards: restore the platform's normal Expand / Collapse interaction. */
+[data-theme="district"] #awards .collapsible-toggle {
+  display:flex !important;
+}
+[data-theme="district"] #awards .collapsible-body {
+  max-height:0 !important;
+  opacity:0 !important;
+  overflow:hidden !important;
+  transition:max-height .45s ease,opacity .3s ease !important;
+}
+[data-theme="district"] #awards .collapsible-body.open {
+  max-height:5000px !important;
+  opacity:1 !important;
+  overflow:visible !important;
+}
+[data-theme="district"] #awards .collapsible-header {
+  cursor:pointer;
+}
+
+/* 6. Connect: retain a strong final district after the merged profile section. */
+[data-theme="district"] #connect {
+  min-height:420px;
+}
+[data-theme="district"] .gd-connect-summary {
+  padding-top:.5rem;
+  padding-bottom:5.5rem;
+}
+
+@media (max-width:1100px) {
+  [data-theme="district"] #career-highlights .ch3-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+  [data-theme="district"] #videosFeatured {
+    grid-template-columns:minmax(0,1.75fr) minmax(205px,.7fr) !important;
+  }
+}
+
+@media (max-width:800px) {
+  [data-theme="district"] #career-highlights .ch3-grid {
+    grid-template-columns:1fr !important;
+  }
+  [data-theme="district"] #career-highlights .ch3-card.gd-even {
+    min-height:0 !important;
+  }
+  [data-theme="district"] .gd-bio-documents-profile .career-stacked-bio,
+  [data-theme="district"] .gd-bio-documents-profile .career-sidebyside-left {
+    grid-template-columns:1fr !important;
+  }
+  [data-theme="district"] #documents.gd-profile-documents .career-stacked-cards {
+    grid-template-columns:1fr !important;
+  }
+  [data-theme="district"] #videosFeatured {
+    display:block !important;
+  }
+  [data-theme="district"] #videosFeatured > .videos-subsection {
+    margin-top:1rem !important;
+  }
+  [data-theme="district"] .work-card {
+    grid-template-columns:112px minmax(0,1fr) !important;
+    min-height:170px !important;
+  }
+  [data-theme="district"] .work-card-cover {
+    width:112px !important;
+    min-height:170px !important;
+    padding:.45rem !important;
+  }
+}
