@@ -250,6 +250,18 @@
       documentsWrap.prepend(suite);
     }
 
+    const bioToggle = merged.querySelector('#bioToggleBtn');
+    const bioFull = merged.querySelector('#bioFull');
+    if (bioToggle) {
+      const syncBioButton = () => {
+        const expanded = bioFull && bioFull.style.display !== 'none';
+        bioToggle.textContent = expanded ? 'Close Biography ↑' : 'Read Full Biography →';
+        bioToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      };
+      syncBioButton();
+      bioToggle.addEventListener('click', () => requestAnimationFrame(syncBioButton));
+    }
+
     bio.style.display = 'none';
     const bioDivider = bio.nextElementSibling;
     if (bioDivider?.classList.contains('divider')) bioDivider.style.display = 'none';
