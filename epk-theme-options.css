@@ -3106,3 +3106,66 @@
 [data-theme="midnight"] .hero-bio {
   display:block !important;
 }
+
+/* ── BLUE ZONE: MUSIC + AWARDS TWO-COLUMN CHAPTER ───────────────────────────
+   The wrapper is layout-neutral for every other style. Blue Zone promotes
+   the two related collapsible chapters into equal desktop columns while
+   retaining the existing vertical flow on smaller screens. */
+.music-awards-pair {
+  display:contents;
+}
+
+@media (min-width:901px) {
+  [data-theme="midnight"] .music-awards-pair {
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    align-items:start;
+    gap:1px;
+    background:rgb(255 255 255 / 0.06);
+  }
+
+  [data-theme="midnight"] .music-awards-pair > .collapsible-section {
+    min-width:0;
+    margin:0 !important;
+  }
+
+  [data-theme="midnight"] .music-awards-pair .collapsible-header {
+    min-height:190px;
+    padding:2rem clamp(1.35rem,2.6vw,2.5rem) !important;
+  }
+
+  [data-theme="midnight"] .music-awards-pair .collapsible-header-title {
+    font-size:clamp(1.65rem,2.35vw,2.45rem) !important;
+  }
+}
+
+/* ── BLUE ZONE: CLEAN, BORDERLESS PHOTOGRAPHY ───────────────────────────────
+   Remove the Aqua frame, glow and reflected edge from every gallery layout.
+   A neutral black shadow keeps overlapping exhibition photos readable. */
+[data-theme="midnight"] .gallery-col,
+[data-theme="midnight"] .gallery-scroll-item,
+[data-theme="midnight"] .gallery-grid-item,
+[data-theme="midnight"] .gallery-collection-card,
+[data-theme="midnight"] .gallery-collection-lb-item,
+[data-theme="midnight"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
+  border:0 !important;
+  outline:0 !important;
+}
+
+[data-theme="midnight"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame,
+[data-theme="midnight"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-inner .exhibition-frame,
+[data-theme="midnight"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-hero .exhibition-frame {
+  box-shadow:0 16px 30px rgba(0,0,0,0.48) !important;
+}
+
+[data-theme="midnight"] .exhibition-frame-reflection,
+[data-theme="midnight"] .exhibition-floor {
+  display:none !important;
+}
+
+[data-theme="midnight"] .gallery-scroll-item:first-child,
+[data-theme="midnight"] .gallery-scroll-item:hover,
+[data-theme="midnight"] .gallery-grid-item:hover,
+[data-theme="midnight"] .gallery-collection-card:hover {
+  border-color:transparent !important;
+}
