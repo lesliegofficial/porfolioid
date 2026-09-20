@@ -1168,3 +1168,324 @@
     padding-right:1.25rem !important;
   }
 }
+
+
+/* ── GREEN DISTRICT REFINEMENT PASS 02 ───────────────────────────────
+   User-reviewed production refinements:
+   1) six equal Career Record cards
+   2) Biography merged into Professional Documents
+   3) larger featured video + uncropped support thumbnails
+   4) full Original Works artwork + restored Enter the Story
+   5) Recognition restores native collapse behavior
+   ------------------------------------------------------------------- */
+
+/* 1 — Career Record: all six roles equal */
+[data-theme="district"] #career-highlights .ch3-grid {
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  grid-auto-rows:1fr !important;
+  align-items:stretch !important;
+}
+[data-theme="district"] #career-highlights .ch3-card,
+[data-theme="district"] #career-highlights .ch3-card.gd-featured,
+[data-theme="district"] #career-highlights .ch3-card.gd-support,
+[data-theme="district"] #career-highlights .ch3-card.gd-founder,
+[data-theme="district"] #career-highlights .ch3-card.gd-equal {
+  grid-column:auto !important;
+  grid-row:auto !important;
+  min-height:0 !important;
+  height:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  border-color:rgb(85 182 122 / .22) !important;
+}
+[data-theme="district"] #career-highlights .ch3-card:hover {
+  border-color:rgb(85 182 122 / .52) !important;
+}
+[data-theme="district"] #career-highlights .ch3-card .ch3-img,
+[data-theme="district"] #career-highlights .ch3-card.gd-featured .ch3-img,
+[data-theme="district"] #career-highlights .ch3-card.gd-support .ch3-img,
+[data-theme="district"] #career-highlights .ch3-card.gd-founder .ch3-img {
+  display:block !important;
+  height:148px !important;
+  min-height:148px !important;
+  width:100% !important;
+  overflow:hidden !important;
+  background:#0A0D0B !important;
+}
+[data-theme="district"] #career-highlights .ch3-card .ch3-img img,
+[data-theme="district"] #career-highlights .ch3-card .ch3-img video {
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+}
+[data-theme="district"] #career-highlights .ch3-card .ch3-body,
+[data-theme="district"] #career-highlights .ch3-card.gd-featured .ch3-body,
+[data-theme="district"] #career-highlights .ch3-card.gd-founder .ch3-body {
+  display:block !important;
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  padding:1.05rem 1.1rem 1.2rem !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-founder .ch3-icon,
+[data-theme="district"] #career-highlights .ch3-card.gd-founder .ch3-title,
+[data-theme="district"] #career-highlights .ch3-card.gd-founder .ch3-desc {
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+
+/* 2 — Biography + Professional Documents become one district */
+[data-theme="district"] #bio {
+  display:none !important;
+}
+[data-theme="district"] #documents.gd-profile-documents {
+  display:block !important;
+  background:#090B0A !important;
+  border-top:1px solid rgb(85 182 122 / .11);
+}
+[data-theme="district"] #documents.gd-profile-documents .ch3-wrap {
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding:0 2.5rem 3.6rem !important;
+}
+[data-theme="district"] #documents.gd-profile-documents > .ch3-wrap > .gd-number-label {
+  width:100% !important;
+  padding-top:3.4rem !important;
+  margin-bottom:.65rem !important;
+}
+[data-theme="district"] #documents.gd-profile-documents .ch3-header {
+  margin:0 0 1.35rem !important;
+  padding:0 !important;
+  border:0 !important;
+}
+[data-theme="district"] #documents.gd-profile-documents .ch3-label {
+  color:#55B67A !important;
+}
+[data-theme="district"] #documents.gd-profile-documents .section-title {
+  font-size:clamp(2.05rem,3.8vw,3.35rem) !important;
+  line-height:1 !important;
+}
+[data-theme="district"] .gd-profile-docs-grid {
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);
+  gap:1rem;
+  align-items:stretch;
+}
+[data-theme="district"] .gd-profile-docs-bio,
+[data-theme="district"] .gd-profile-docs-cards {
+  min-width:0;
+}
+[data-theme="district"] .gd-profile-docs-bio .career-stacked-bio,
+[data-theme="district"] .gd-profile-docs-bio .career-sidebyside,
+[data-theme="district"] .gd-profile-docs-bio .career-threecol {
+  height:100%;
+  min-height:100%;
+  background:#101411 !important;
+  border:1px solid rgb(85 182 122 / .18) !important;
+  border-radius:10px !important;
+  overflow:hidden !important;
+  box-shadow:none !important;
+}
+[data-theme="district"] .gd-profile-docs-bio .career-stacked-bio {
+  display:grid !important;
+  grid-template-columns:minmax(190px,.72fr) minmax(0,1.28fr) !important;
+}
+[data-theme="district"] .gd-profile-docs-bio .career-portrait {
+  width:100% !important;
+  height:100% !important;
+  min-height:430px !important;
+  object-fit:cover !important;
+}
+[data-theme="district"] .gd-profile-docs-bio .career-bio-text {
+  padding:1.8rem !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+}
+[data-theme="district"] .gd-profile-docs-cards .career-stacked-cards {
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  gap:1rem !important;
+  height:100%;
+}
+[data-theme="district"] .gd-profile-docs-cards .resume-card {
+  min-height:0 !important;
+  height:100% !important;
+  padding:1.55rem !important;
+  border:1px solid rgb(85 182 122 / .18) !important;
+  border-top:1px solid rgb(85 182 122 / .42) !important;
+  border-radius:10px !important;
+  background:#101411 !important;
+}
+
+/* 3 — Video: featured performance dominates; support art remains intact */
+[data-theme="district"] #videosFeatured {
+  grid-template-columns:minmax(0,2.75fr) minmax(235px,.65fr) !important;
+  gap:1rem !important;
+}
+[data-theme="district"] #videosFeatured > .video-hero {
+  min-width:0;
+}
+[data-theme="district"] #videosFeatured .videos-collection-thumb {
+  display:block !important;
+  position:relative !important;
+  min-height:0 !important;
+  width:100% !important;
+  aspect-ratio:16 / 9 !important;
+  border-radius:8px !important;
+  background:#050705 !important;
+  overflow:hidden !important;
+}
+[data-theme="district"] #videosFeatured .videos-collection-thumb img,
+[data-theme="district"] #videosFeatured .videos-collection-thumb .vcard-thumb {
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  background:#050705 !important;
+}
+[data-theme="district"] #videosFeatured .videos-collection-thumb .video-play {
+  position:absolute !important;
+  inset:50% auto auto 50% !important;
+  transform:translate(-50%,-50%) !important;
+}
+[data-theme="district"] #videosFeatured > .videos-subsection {
+  min-width:0;
+}
+[data-theme="district"] #videosFeatured .video-carousel {
+  gap:.7rem !important;
+}
+
+/* 4 — Original Works: never crop cover art; restore story CTA */
+[data-theme="district"] .work-card {
+  grid-template-columns:150px minmax(0,1fr) !important;
+}
+[data-theme="district"] .work-card-cover {
+  width:150px !important;
+  min-height:150px !important;
+  height:100% !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:.65rem !important;
+  box-sizing:border-box !important;
+  background:#0A0D0B !important;
+}
+[data-theme="district"] .work-card-cover img {
+  width:100% !important;
+  height:100% !important;
+  max-height:190px !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+[data-theme="district"] .work-card-body {
+  padding:1rem 1.15rem 1.05rem !important;
+}
+[data-theme="district"] .work-card-cta-row {
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  margin-top:.75rem !important;
+}
+[data-theme="district"] .work-card-cta {
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:.55rem !important;
+  color:#B4DAC2 !important;
+  border:1px solid rgb(85 182 122 / .42) !important;
+  border-radius:999px !important;
+  padding:.5rem .8rem !important;
+  font-family:var(--font-mono) !important;
+  font-size:.5rem !important;
+  letter-spacing:.11em !important;
+  text-transform:uppercase !important;
+  text-decoration:none !important;
+  background:transparent !important;
+}
+[data-theme="district"] .work-card-cta:hover {
+  color:#071009 !important;
+  background:#55B67A !important;
+  border-color:#55B67A !important;
+}
+[data-theme="district"] .work-card-cta-arrow {
+  color:inherit !important;
+}
+
+/* 5 — Recognition: same native expandable behavior as Music */
+[data-theme="district"] #awards .collapsible-toggle {
+  display:block !important;
+  color:#55B67A !important;
+}
+[data-theme="district"] #awards .collapsible-body {
+  max-height:0 !important;
+  opacity:0 !important;
+  overflow:hidden !important;
+  transition:max-height .5s ease,opacity .35s ease !important;
+}
+[data-theme="district"] #awards .collapsible-body.open {
+  max-height:5000px !important;
+  opacity:1 !important;
+  overflow:visible !important;
+}
+[data-theme="district"] #awards .collapsible-header {
+  cursor:pointer !important;
+}
+[data-theme="district"] #awards .awards-grid {
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+}
+
+/* refinement responsive */
+@media (max-width:1100px) {
+  [data-theme="district"] #career-highlights .ch3-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+  [data-theme="district"] .gd-profile-docs-grid {
+    grid-template-columns:1fr !important;
+  }
+  [data-theme="district"] .gd-profile-docs-cards .career-stacked-cards {
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+  [data-theme="district"] #videosFeatured {
+    grid-template-columns:minmax(0,2.1fr) minmax(220px,.75fr) !important;
+  }
+}
+
+@media (max-width:800px) {
+  [data-theme="district"] #career-highlights .ch3-grid {
+    grid-template-columns:1fr !important;
+  }
+  [data-theme="district"] #career-highlights .ch3-card .ch3-img {
+    height:180px !important;
+    min-height:180px !important;
+  }
+  [data-theme="district"] #documents.gd-profile-documents .ch3-wrap {
+    padding-left:1.25rem !important;
+    padding-right:1.25rem !important;
+  }
+  [data-theme="district"] .gd-profile-docs-bio .career-stacked-bio {
+    grid-template-columns:1fr !important;
+  }
+  [data-theme="district"] .gd-profile-docs-bio .career-portrait {
+    min-height:320px !important;
+    height:320px !important;
+  }
+  [data-theme="district"] .gd-profile-docs-cards .career-stacked-cards {
+    grid-template-columns:1fr !important;
+  }
+  [data-theme="district"] #videosFeatured {
+    display:block !important;
+  }
+  [data-theme="district"] #videosFeatured > .videos-subsection {
+    margin-top:1rem !important;
+  }
+  [data-theme="district"] .work-card {
+    grid-template-columns:112px minmax(0,1fr) !important;
+  }
+  [data-theme="district"] .work-card-cover {
+    width:112px !important;
+    min-height:130px !important;
+    padding:.45rem !important;
+  }
+  [data-theme="district"] #awards .awards-grid {
+    grid-template-columns:1fr !important;
+  }
+}
