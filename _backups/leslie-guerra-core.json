@@ -1725,7 +1725,7 @@
   "bookingEnabled": true,
   "bookingTagline": "",
   "bioImageCropTop": 0,
-  "bioImagePosition": 55,
+  "bioImagePosition": 64,
   "careerHighlights": [
     {
       "id": "default-recordingartist",
