@@ -1886,8 +1886,8 @@
   "bookingAutoResponse": "Thank you for your inquiry. I will respond in less than 48 hours.",
   "bookingAvailability": "selective",
   "dashboardSectionOrder": [
-    "career-highlights",
     "bio",
+    "career-highlights",
     "documents",
     "credits",
     "photos",
