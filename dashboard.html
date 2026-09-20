@@ -1427,7 +1427,7 @@
     <div class="panel" id="panel-sections">
       <button onclick="showPanel('hero')" style="display:inline-flex;align-items:center;gap:0.4rem;background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);padding:0;margin-bottom:1rem;transition:color 0.2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gray)'">← Back to Career Profile</button>
       <h1 class="panel-title">Section <em>Order & Visibility</em></h1>
-      <p class="panel-sub">Drag to reorder sections. Toggle the eye to show or hide each section on your portfolio.</p>
+      <p class="panel-sub">Career Profile stays first. Drag the remaining portfolio sections to reorder them, and toggle the eye to show or hide each section.</p>
       <div id="sectionsOrderList" style="margin-top:2rem"></div>
       <button onclick="saveSectionSettings()" style="margin-top:2rem;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;background:var(--gold);color:#000;border:none;padding:0.75rem 2rem;cursor:pointer;font-weight:600">✓ Save Section Settings</button>
     </div>
@@ -1815,7 +1815,7 @@
       <div style="display:flex;align-items:center;gap:1rem;background:var(--dark-2);padding:1rem 1.25rem;border:1px solid rgba(201,168,76,0.15);margin-bottom:1.5rem">
         <label class="field-label" style="margin:0;flex:1">Show Professional Profile Section on Portfolio</label>
         <label style="position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0">
-          <input type="checkbox" id="resumeToggle" onchange="epk.resumeEnabled=this.checked;persistUser();showSaveBanner()" style="opacity:0;width:0;height:0" checked>
+          <input type="checkbox" id="resumeToggle" onchange="epk.resumeEnabled=this.checked;epk.sectionVisibility=epk.sectionVisibility||{};epk.sectionVisibility.documents=this.checked;window._epkData=epk;persistUser();showSaveBanner()" style="opacity:0;width:0;height:0" checked>
           <span style="position:absolute;cursor:pointer;inset:0;background:var(--dark-4);border:1px solid rgba(201,168,76,0.2);transition:0.3s;border-radius:24px" id="resumeToggleSlider"></span>
         </label>
       </div>
