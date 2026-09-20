@@ -1887,14 +1887,8 @@
 }
 
 
-/* Midnight hero portrait alignment + clean lower edge. Keep the dashboard's
-   saved inline transform available for portrait zoom. */
-@media (min-width:901px) {
-  [data-theme="midnight"] .hero-img {
-    top:28px !important;
-    transform-origin:center top !important;
-  }
-}
+/* Midnight portrait framing is controlled by the dashboard's Fill/Fit,
+   Crop, Vertical Position, and Zoom settings. */
 [data-theme="midnight"] .hero {
   border-bottom:0 !important;
 }
@@ -2564,9 +2558,9 @@
   border-color:rgb(124 196 236 / 0.09) !important;
 }
 
-/* ── MIDNIGHT: HERO HEADROOM FINAL — 2026-09-19 ───────────────────────────────
-   Use a contained image canvas for real portrait headroom. Portrait scaling
-   remains controlled by the dashboard's saved inline transform. */
+/* ── MIDNIGHT: HERO IMAGE CANVAS ──────────────────────────────────────────────
+   Keep the portrait canvas full-size while allowing the dashboard's saved
+   object-fit, object-position, and transform values to control the image. */
 @media (min-width:901px) {
   [data-theme="midnight"] .hero-image-panel {
     display:flex !important;
@@ -2578,9 +2572,6 @@
   [data-theme="midnight"] .hero-img {
     width:100% !important;
     height:100% !important;
-    object-fit:contain !important;
-    object-position:center bottom !important;
-    transform-origin:center top !important;
   }
 }
 
@@ -3090,16 +3081,6 @@
 [data-theme="midnight"] .ch3-wrap > #credits {
   order:5 !important;
 }
-/* ── BLUE ZONE: PORTRAIT HEADROOM ────────────────────────────────────────────
-   Lower the portrait without overriding the transform/zoom saved by the
-   dashboard, so Blue Zone and Golden honor the same portrait-size control. */
-@media (min-width:901px) {
-  [data-theme="midnight"] .hero-img {
-    top:0.5rem !important;
-    transform-origin:center top !important;
-  }
-}
-
 
 /* ── BLUE ZONE: RESTORE TOP BIO COPY ────────────────────────────────────────
    Keep the three introductory paragraphs visible beneath Digital Presence. */
