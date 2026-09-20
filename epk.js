@@ -3223,11 +3223,40 @@ function adjustModalFont(dir) {
 
 // Section order and visibility
 function applySectionOrderAndVisibility(epk) {
-  const DEFAULT_ORDER = ['connect','bio','photos','videos','music','awards','assets','booking'];
-  const order = (epk.sectionOrder || DEFAULT_ORDER).filter(id => id !== 'credits');
-  const visibility = epk.sectionVisibility || {};
+  const DEFAULT_ORDER = ['bio','documents','credits','photos','videos','music','works','awards','assets','connect'];
+  const known = new Set(DEFAULT_ORDER);
+  const order = [];
+  const seen = new Set();
 
-  // QR mode section override
+  (Array.isArray(epk.sectionOrder) ? epk.sectionOrder : []).forEach(id => {
+    const mapped = id === 'professional' || id === 'professional-documents' || id === 'resume' || id === 'resumes'
+      ? 'documents'
+      : id;
+    if (!known.has(mapped) || seen.has(mapped)) return;
+    seen.add(mapped);
+    order.push(mapped);
+  });
+
+  if (!seen.has('documents')) {
+    const bioIndex = order.indexOf('bio');
+    order.splice(bioIndex >= 0 ? bioIndex + 1 : 0, 0, 'documents');
+    seen.add('documents');
+  }
+  if (!seen.has('works')) {
+    const musicIndex = order.indexOf('music');
+    const awardsIndex = order.indexOf('awards');
+    order.splice(musicIndex >= 0 ? musicIndex + 1 : (awardsIndex >= 0 ? awardsIndex : order.length), 0, 'works');
+    seen.add('works');
+  }
+  DEFAULT_ORDER.forEach(id => {
+    if (!seen.has(id)) {
+      order.push(id);
+      seen.add(id);
+    }
+  });
+  epk.sectionOrder = [...order];
+
+  const visibility = epk.sectionVisibility || {};
   const urlParams = new URLSearchParams(window.location.search);
   const qrSections = urlParams.get('sections');
   const qrAllowed = qrSections ? new Set(qrSections.split(',')) : null;
@@ -3235,67 +3264,63 @@ function applySectionOrderAndVisibility(epk) {
   const container = document.getElementById('epkContent');
   if (!container) return;
 
-  // Hide/show sections based on visibility + QR override
+  const isSectionVisible = id => {
+    if (visibility[id] === false) return false;
+    if (id === 'documents' && epk.resumeEnabled === false) return false;
+    if (qrAllowed && !qrAllowed.has(id)) return false;
+    return true;
+  };
+
   DEFAULT_ORDER.forEach(id => {
-    if (id === 'connect') return;
     const el = document.getElementById(id);
     if (!el) return;
-    const isVisible = visibility[id] !== false && (!qrAllowed || qrAllowed.has(id));
-    el.style.display = isVisible ? '' : 'none';
+    el.style.display = isSectionVisible(id) ? '' : 'none';
   });
 
-  // Reorder sections in DOM based on sectionOrder
-  // Find the divider after hero as the insertion point
-  const hero = container.querySelector('.hero');
-  if (!hero) return;
-  let insertAfter = hero.nextElementSibling; // usually a divider or first section
+  // Career Profile is fixed: Hero + Career Record Highlights always remain
+  // first. All owner-reorderable content begins after this fixed boundary.
+  const fixedEnd = document.getElementById('career-profile-end');
+  const fixedHighlights = document.getElementById('career-highlights');
+  const hero = document.getElementById('career-profile') || container.querySelector('.hero');
+  let anchor = fixedEnd || fixedHighlights || hero;
+  if (!anchor) return;
 
-  // Pin connect div right after hero before reordering other sections
-  const connectEl = document.getElementById('connect');
-  if (connectEl) hero.insertAdjacentElement('afterend', connectEl);
+  const musicAwardsPair = container.querySelector('.music-awards-pair');
 
-  let anchor = connectEl || hero;
   order.forEach(id => {
-    if (id === 'connect') return;
     const el = document.getElementById(id);
     if (!el) return;
+
     const nextSib = el.nextElementSibling;
     anchor.insertAdjacentElement('afterend', el);
     anchor = el;
+
+    // Most sections own a divider directly after them. Keep that divider
+    // attached to the section while the section is moved.
     if (nextSib && nextSib.classList && nextSib.classList.contains('divider')) {
       anchor.insertAdjacentElement('afterend', nextSib);
       anchor = nextSib;
     }
-    // Works is fixed (not user-reorderable) but must be re-pinned right after bio,
-    // since reordering bio's siblings would otherwise strand it wherever the DOM mutations left it.
-    if (id === 'bio') {
-      const worksEl = document.getElementById('works');
-      if (worksEl) {
-        const worksNextSib = worksEl.nextElementSibling;
-        anchor.insertAdjacentElement('afterend', worksEl);
-        anchor = worksEl;
-        if (worksNextSib && worksNextSib.classList && worksNextSib.classList.contains('divider')) {
-          anchor.insertAdjacentElement('afterend', worksNextSib);
-          anchor = worksNextSib;
-        }
-      }
-    }
   });
 
-  // Blue Zone treats Music and Awards as one two-column chapter. Section
-  // ordering above intentionally moves individual sections, so pair them
-  // again only after that ordering pass has finished. Other styles keep the
-  // existing independent, full-width section behavior.
-  if (document.documentElement.dataset.theme === 'midnight') {
-    const pair = container.querySelector('.music-awards-pair');
-    const pairedSections = [
-      document.getElementById('music'),
-      document.getElementById('awards')
-    ].filter(Boolean).sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+  // Blue Zone may present Music + Awards as a two-column chapter, but only
+  // when the owner actually places those two sections next to each other.
+  // Section Order remains authoritative; moving another section between them
+  // automatically disables the pairing instead of overriding the owner's order.
+  if (musicAwardsPair) {
+    const musicEl = document.getElementById('music');
+    const awardsEl = document.getElementById('awards');
+    const mi = order.indexOf('music');
+    const ai = order.indexOf('awards');
+    const areAdjacent = musicEl && awardsEl && Math.abs(mi - ai) === 1;
+    const bothVisible = isSectionVisible('music') && isSectionVisible('awards');
 
-    if (pair && pairedSections.length) {
-      pairedSections[0].parentNode.insertBefore(pair, pairedSections[0]);
-      pairedSections.forEach(section => pair.appendChild(section));
+    if (document.documentElement.dataset.theme === 'midnight' && areAdjacent && bothVisible) {
+      const orderedPair = mi < ai ? [musicEl, awardsEl] : [awardsEl, musicEl];
+      orderedPair[0].parentNode.insertBefore(musicAwardsPair, orderedPair[0]);
+      orderedPair.forEach(section => musicAwardsPair.appendChild(section));
+    } else if (!musicAwardsPair.children.length) {
+      musicAwardsPair.remove();
     }
   }
 }
