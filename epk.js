@@ -200,38 +200,89 @@ function buildEPK(epk) {
   const lastName = nameParts.slice(1).join(' ');
   const bookingLabel = epk.bookingLabel || 'Inquiries';
 
-  // Build nav
+  // Build navigation from the same canonical section model used by the
+  // dashboard. Career Profile is the fixed opening experience; every other
+  // visitor-facing section follows sectionOrder + sectionVisibility.
   const navLinks = document.getElementById('navLinks');
   navLinks.innerHTML = '';
   const ALL_SECTIONS = [
-    { id: 'bio', label: 'Career Profile' },
-    { id: 'credits', label: 'Credits' },
-    { id: 'works', label: 'Works' },
-    { id: 'photos', label: 'Photos' },
-    { id: 'videos', label: 'Video' },
-    { id: 'music', label: 'Music' },
-    { id: 'awards', label: 'Awards' },
-    { id: 'assets', label: 'Assets' },
-    { id: 'connect', label: 'Connect' },
+    { id: 'bio',       label: 'Biography' },
+    { id: 'documents', label: 'Professional Documents' },
+    { id: 'credits',   label: 'Credits' },
+    { id: 'photos',    label: 'Photos' },
+    { id: 'videos',    label: 'Video' },
+    { id: 'music',     label: 'Music' },
+    { id: 'works',     label: 'Original Works' },
+    { id: 'awards',    label: 'Awards' },
+    { id: 'assets',    label: 'Assets' },
+    { id: 'connect',   label: 'Connect' },
   ];
-  const savedOrder = epk.sectionOrder || ALL_SECTIONS.map(s => s.id);
-  // Self-heal: any section in ALL_SECTIONS not yet present in a saved sectionOrder (e.g. newly added sections like 'works') gets appended at the end, so existing saved data doesn't hide new nav items.
-  const sectionOrder = savedOrder.concat(ALL_SECTIONS.map(s => s.id).filter(id => !savedOrder.includes(id)));
-  const sectionVisibility = epk.sectionVisibility || {};
 
-  // QR mode can override which sections are visible via ?sections= param
+  const normalizePublicSectionOrder = savedOrder => {
+    const aliases = {
+      'career': null,
+      'career-profile': null,
+      'professional': 'documents',
+      'professional-documents': 'documents',
+      'resume': 'documents',
+      'resumes': 'documents'
+    };
+    const known = new Set(ALL_SECTIONS.map(s => s.id));
+    const normalized = [];
+    const seen = new Set();
+
+    (Array.isArray(savedOrder) ? savedOrder : []).forEach(rawId => {
+      const mapped = Object.prototype.hasOwnProperty.call(aliases, rawId) ? aliases[rawId] : rawId;
+      if (!mapped || !known.has(mapped) || seen.has(mapped)) return;
+      seen.add(mapped);
+      normalized.push(mapped);
+    });
+
+    if (!seen.has('documents')) {
+      const bioIndex = normalized.indexOf('bio');
+      normalized.splice(bioIndex >= 0 ? bioIndex + 1 : 0, 0, 'documents');
+      seen.add('documents');
+    }
+    if (!seen.has('works')) {
+      const musicIndex = normalized.indexOf('music');
+      const awardsIndex = normalized.indexOf('awards');
+      const insertAt = musicIndex >= 0 ? musicIndex + 1 : (awardsIndex >= 0 ? awardsIndex : normalized.length);
+      normalized.splice(insertAt, 0, 'works');
+      seen.add('works');
+    }
+
+    ALL_SECTIONS.forEach(section => {
+      if (!seen.has(section.id)) {
+        normalized.push(section.id);
+        seen.add(section.id);
+      }
+    });
+    return normalized;
+  };
+
+  const sectionOrder = normalizePublicSectionOrder(epk.sectionOrder);
+  const sectionVisibility = epk.sectionVisibility || {};
+  // Normalize in memory so subsequent owner actions and saves use the same model.
+  epk.sectionOrder = [...sectionOrder];
+
+  // QR mode can override which variable sections are visible via ?sections=.
+  // Career Profile remains the fixed identity header in every share mode.
   const urlParams = new URLSearchParams(window.location.search);
   const qrSections = urlParams.get('sections');
   const qrAllowed = qrSections ? new Set(qrSections.split(',')) : null;
+
+  navLinks.innerHTML = '<li><a href="#career-profile">Career Profile</a></li>';
 
   const sections = sectionOrder
     .map(id => ALL_SECTIONS.find(s => s.id === id))
     .filter(s => {
       if (!s) return false;
       if (sectionVisibility[s.id] === false) return false;
-      if (qrAllowed && !qrAllowed.has(s.id)) return false; // QR override
+      if (s.id === 'documents' && epk.resumeEnabled === false) return false;
+      if (qrAllowed && !qrAllowed.has(s.id)) return false;
       return true;
     });
+
   sections.forEach(s => {
     navLinks.innerHTML += `<li><a href="#${s.id}" onclick="expandSection('${s.id}')">${s.label}</a></li>`;
   });
