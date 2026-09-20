@@ -1887,15 +1887,15 @@
   "bookingAvailability": "selective",
   "dashboardSectionOrder": [
     "career-highlights",
+    "awards",
+    "assets",
     "bio",
     "documents",
     "credits",
     "photos",
     "videos",
     "works",
-    "awards",
     "music",
-    "assets",
     "connect"
   ],
   "dashboardSectionVisibility": {}
