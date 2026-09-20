@@ -1,0 +1,39 @@
+/* PorfolioID public-profile shell theme overrides
+   Uses only the approved existing theme tokens. No new literal colors.
+   Owner/editor controls remain on fixed product-control semantics.
+*/
+
+/* Generic visitor-facing modal framing follows the selected profile theme. */
+#awardModalOverlay > div,
+#inquiryModalOverlay > div,
+#shareModal > div {
+  border-color: rgb(var(--accent-border-rgb) / 0.20) !important;
+}
+
+/* Share modal is public profile UI, so its accent follows the profile theme. */
+#shareModal > div > div[style*="text-transform:uppercase"] {
+  color: var(--accent-text) !important;
+}
+
+#modalCopyBtn {
+  background: rgb(var(--accent-surface-rgb) / 0.10) !important;
+  border-color: rgb(var(--accent-border-rgb) / 0.30) !important;
+  color: var(--accent-text) !important;
+}
+
+#shareModal button[onclick="downloadEPKQR()"] {
+  background: var(--accent-emphasis) !important;
+}
+
+/* Credit modal is public profile UI; its internal CSS is already mostly
+   converted in epk-theme.css. This keeps the shell boundary consistent. */
+.credit-modal {
+  border-color: rgb(var(--accent-border-rgb) / 0.20);
+}
+
+/* Lightbox itself remains neutral black; it is not a theme surface. */
+
+/* Public footer divider follows theme decoration. */
+footer {
+  border-top-color: rgb(var(--accent-border-rgb) / 0.08);
+}

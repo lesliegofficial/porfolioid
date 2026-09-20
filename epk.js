@@ -189,6 +189,11 @@ function renderCh3Card(card) {
 
 function buildEPK(epk) {
   window._epkData = epk;
+  /* Saved profile theme applies automatically. A ?theme= preview remains
+     intentionally higher priority so dashboard previews never mutate data. */
+  if (!document.documentElement.dataset.themePreview && typeof window.applyPorfolioTheme === 'function') {
+    window.applyPorfolioTheme(epk.theme || 'gold');
+  }
   window._epkData.awards = epk.awards || [];
   const nameParts = (epk.name || 'Artist Name').split(' ');
   const firstName = nameParts[0];
@@ -1451,6 +1456,7 @@ function buildEPK(epk) {
     </section>
     <div class="divider"></div>` : ''}
 
+    <div class="music-awards-pair">
     <!-- MUSIC -->
     ${epk.tracks?.length ? `
     <div class="collapsible-section" id="music">
@@ -1513,6 +1519,7 @@ function buildEPK(epk) {
         </div>
       </div>
     </div>` : ''}
+    </div>
 
     <!-- ASSETS -->
     ${epk.assets?.filter(a => a.visible !== false && a.category !== 'Resume').length ? `
@@ -3205,6 +3212,23 @@ function applySectionOrderAndVisibility(epk) {
       }
     }
   });
+
+  // Blue Zone treats Music and Awards as one two-column chapter. Section
+  // ordering above intentionally moves individual sections, so pair them
+  // again only after that ordering pass has finished. Other styles keep the
+  // existing independent, full-width section behavior.
+  if (document.documentElement.dataset.theme === 'midnight') {
+    const pair = container.querySelector('.music-awards-pair');
+    const pairedSections = [
+      document.getElementById('music'),
+      document.getElementById('awards')
+    ].filter(Boolean).sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+
+    if (pair && pairedSections.length) {
+      pairedSections[0].parentNode.insertBefore(pair, pairedSections[0]);
+      pairedSections.forEach(section => pair.appendChild(section));
+    }
+  }
 }
 
 // ══════════════════════════════════════════════

@@ -625,7 +625,7 @@ function createEmptyEPK(slug, name) {
     bio: '', location: '', availability: '', credentials: [],
     credits: [], tracks: [], videos: [], photos: [], assets: [],
     bookingEmail: '', bookingPhone: '', bookingTagline: '', bookingNote: '',
-    bookingEnabled: true, heroImage: '', bioImage: '', socials: {}, awards: []
+    bookingEnabled: true, heroImage: '', bioImage: '', socials: {}, awards: [], theme: 'gold'
   };
 }
 
@@ -816,7 +816,7 @@ async function persistUser() {
   currentUser.epk = epk;
   try {
     const session = JSON.parse(localStorage.getItem('porfolioid_session') || '{}');
-    const slug = session.slug || epk.slug;
+    const slug = activeProfileSlug || epk.slug || session.slug;
     if (!slug) return;
 
     // Separate large paginated arrays from core profile data
@@ -938,6 +938,7 @@ function showPanel(name) {
   if (name === 'qr') setTimeout(initQRPanel, 100);
   if (name === 'sections') setTimeout(initSectionsPanel, 100);
   if (name === 'careertype') setTimeout(initCareerTypePanel, 100);
+  if (name === 'appearance') setTimeout(loadAppearanceSettings, 50);
   if (name === 'bio') setTimeout(loadSpanish, 300);
   if (name === 'analytics') setTimeout(() => loadAnalytics(currentAnalyticsDays || 30), 100);
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -4247,6 +4248,67 @@ async function saveCareerType() {
   persistUser();
   showToast('Career type saved ✓');
 }
+// ── APPEARANCE — COMPLETE PORFOLIO STYLES ────────────────────────
+const PORTFOLIO_THEMES = {
+  gold: {
+    label: 'Golden',
+    badge: 'Default',
+    previewClass: 'golden',
+    description: 'The original porfolioID design in signature black, gold, ivory, and professional blue.'
+  },
+  midnight: {
+    label: 'Blue Zone',
+    badge: 'Style 02',
+    previewClass: 'blue-zone',
+    description: 'A complete editorial blue design with its own hero composition, section flow, spacing, and presentation.'
+  }
+};
+
+let selectedAppearanceTheme = 'gold';
+
+function loadAppearanceSettings() {
+  const saved = epk && PORTFOLIO_THEMES[epk.theme] ? epk.theme : 'gold';
+  selectedAppearanceTheme = saved;
+  renderAppearanceThemes();
+}
+
+function renderAppearanceThemes() {
+  const grid = document.getElementById('appearanceThemeGrid');
+  if (!grid) return;
+  grid.innerHTML = Object.entries(PORTFOLIO_THEMES).map(([key, theme]) => {
+    const selected = key === selectedAppearanceTheme;
+    return `<button type="button" class="theme-choice-card ${selected ? 'selected' : ''}" onclick="selectAppearanceTheme('${key}')" aria-pressed="${selected}">
+      <div class="style-choice-preview style-choice-preview--${theme.previewClass}" aria-hidden="true">
+        <span class="style-preview-image"></span>
+        <span class="style-preview-copy"><i></i><i></i><i></i></span>
+        <span class="style-preview-strip"><i></i><i></i><i></i></span>
+      </div>
+      <div class="theme-choice-heading"><div class="theme-choice-name">${theme.label}</div><span class="theme-choice-badge">${theme.badge}</span></div>
+      <div class="theme-choice-desc">${theme.description}</div>
+      <div class="theme-choice-check">${selected ? '✓ Current Style' : ''}</div>
+    </button>`;
+  }).join('');
+}
+
+function selectAppearanceTheme(theme) {
+  if (!PORTFOLIO_THEMES[theme]) return;
+  selectedAppearanceTheme = theme;
+  renderAppearanceThemes();
+}
+
+function previewAppearanceTheme() {
+  const slug = activeProfileSlug || epk?.slug;
+  if (!slug) return;
+  window.open(`/${encodeURIComponent(slug)}?theme=${encodeURIComponent(selectedAppearanceTheme)}`, '_blank', 'noopener');
+}
+
+async function saveAppearanceTheme() {
+  if (!PORTFOLIO_THEMES[selectedAppearanceTheme]) return;
+  epk.theme = selectedAppearanceTheme;
+  await persistUser();
+  showSaveBanner('Style saved');
+}
+
 // ── PHASE 7 — MULTIPLE PROFESSIONAL PROFILES ──────────────────────
 
 const PROFILE_TYPE_META = {

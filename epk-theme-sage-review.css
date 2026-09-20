@@ -1,0 +1,310 @@
+/* PorfolioID Sage visual review — Sage on Black */
+
+[data-theme="sage"] {
+  --black: #080808;
+  --accent-primary: #8DB580;
+  --accent-primary-rgb: 141 181 128;
+  --accent-light: #C2CFB2;
+  --accent-light-rgb: 194 207 178;
+  --accent-dark: #0F1B27;
+  --accent-dark-rgb: 15 27 39;
+  --accent-secondary: #DDD1C7;
+  --accent-secondary-rgb: 221 209 199;
+
+  --accent-text: var(--accent-light);
+  --accent-text-rgb: var(--accent-light-rgb);
+  --accent-emphasis: var(--accent-primary);
+  --accent-emphasis-rgb: var(--accent-primary-rgb);
+  --accent-icon: var(--accent-light);
+  --accent-icon-rgb: var(--accent-light-rgb);
+  --accent-border: var(--accent-primary);
+  --accent-border-rgb: var(--accent-primary-rgb);
+  --accent-surface: var(--accent-primary);
+  --accent-surface-rgb: var(--accent-primary-rgb);
+}
+
+/* Near-black base */
+[data-theme="sage"] body,
+[data-theme="sage"] #epkContent,
+[data-theme="sage"] .hero,
+[data-theme="sage"] .career-profile-section,
+[data-theme="sage"] .gallery-section,
+[data-theme="sage"] .exhibition-outer {
+  background-color: var(--black) !important;
+}
+
+[data-theme="sage"] nav {
+  background: rgba(8,8,8,0.94);
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.18);
+}
+
+[data-theme="sage"] .nav-logo span,
+[data-theme="sage"] .nav-links a:hover {
+  color: var(--accent-primary);
+}
+
+[data-theme="sage"] .hero-image-panel::after {
+  background:
+    linear-gradient(to right, transparent 40%, #080808 100%),
+    linear-gradient(to bottom, transparent 60%, #080808 100%);
+}
+
+[data-theme="sage"] .hero-content {
+  background:
+    radial-gradient(circle at 22% 18%, rgb(var(--accent-primary-rgb) / 0.07), transparent 38%),
+    linear-gradient(110deg, rgba(8,8,8,0.985), rgba(8,8,8,0.95) 70%);
+}
+
+/* Leslie neutral; Ann Guerra Sage */
+[data-theme="sage"] .hero-name em {
+  color: var(--accent-primary) !important;
+}
+
+/* Hero role cards */
+[data-theme="sage"] .hero-role-item {
+  background: rgb(var(--accent-primary-rgb) / 0.04);
+  border-color: rgb(var(--accent-primary-rgb) / 0.42);
+  box-shadow: inset 0 0 0 1px rgb(var(--accent-light-rgb) / 0.025);
+}
+[data-theme="sage"] .hero-role-icon { fill: var(--accent-light); }
+[data-theme="sage"] .hero-roles-row,
+[data-theme="sage"] .hero-stats-row,
+[data-theme="sage"] .hero-presence-bar {
+  background: transparent;
+  border-bottom-color: rgb(var(--accent-primary-rgb) / 0.20);
+}
+[data-theme="sage"] .hero-presence-eyebrow,
+[data-theme="sage"] .hero-stat-item--gold .hero-stat-n,
+[data-theme="sage"] .hcl-arrow { color: var(--accent-primary); }
+[data-theme="sage"] .hero-presence-explore,
+[data-theme="sage"] .hero-cta-primary,
+[data-theme="sage"] .ch-btn-gold {
+  color: var(--accent-light);
+  border-color: var(--accent-primary);
+}
+[data-theme="sage"] .hero-presence-explore:hover,
+[data-theme="sage"] .hero-cta-primary:hover,
+[data-theme="sage"] .ch-btn-gold:hover {
+  background: rgb(var(--accent-primary-rgb) / 0.085);
+  box-shadow: 0 0 14px rgb(var(--accent-primary-rgb) / 0.24);
+}
+
+/* Subtle section atmosphere */
+[data-theme="sage"] .career-profile-section,
+[data-theme="sage"] .works-section,
+[data-theme="sage"] .gallery-section {
+  background-image: linear-gradient(180deg, rgb(var(--accent-primary-rgb) / 0.02), transparent 200px);
+}
+[data-theme="sage"] .ch3-card,
+[data-theme="sage"] .work-card,
+[data-theme="sage"] .resume-card,
+[data-theme="sage"] .award-card,
+[data-theme="sage"] .asset-card {
+  background-color: #0C0C0C;
+  box-shadow: inset 0 0 0 1px rgb(var(--accent-primary-rgb) / 0.035);
+}
+
+/* Public Sage labels */
+[data-theme="sage"] .section-label,
+[data-theme="sage"] #galleryEyebrow,
+[data-theme="sage"] .video-list-meta,
+[data-theme="sage"] .ew-sidebar-section-label,
+[data-theme="sage"] .ew-sidebar-btn.active,
+[data-theme="sage"] .ch3-label,
+[data-theme="sage"] .works-label,
+[data-theme="sage"] .collapsible-header-label,
+[data-theme="sage"] .booking-note,
+[data-theme="sage"] .identity-block-label,
+[data-theme="sage"] .timeline-year {
+  color: var(--accent-primary) !important;
+}
+[data-theme="sage"] .section-label::after {
+  background: linear-gradient(to right, rgb(var(--accent-primary-rgb) / 0.45), transparent) !important;
+}
+
+/* Bio accents */
+[data-theme="sage"] #bioToggleBtn {
+  color: var(--accent-light) !important;
+  border-color: rgb(var(--accent-primary-rgb) / 0.52) !important;
+}
+[data-theme="sage"] #bioToggleBtn:hover {
+  background: rgb(var(--accent-primary-rgb) / 0.08) !important;
+  box-shadow: 0 0 10px rgb(var(--accent-primary-rgb) / 0.16);
+}
+[data-theme="sage"] #bioShort p:first-child::first-letter,
+[data-theme="sage"] .career-bio-text p:first-of-type::first-letter {
+  color: var(--accent-primary) !important;
+}
+
+/* Career highlight accents */
+[data-theme="sage"] .ch3-icon svg { fill: var(--accent-light) !important; }
+[data-theme="sage"] .ch3-icon,
+[data-theme="sage"] .collapsible-icon {
+  border-color: rgb(var(--accent-primary-rgb) / 0.45) !important;
+}
+
+/* ------------------------------------------------------------------
+   PHOTOS / EXHIBITION — ALL PUBLIC GOLD TREATMENTS BECOME SAGE GREEN
+   ------------------------------------------------------------------ */
+[data-theme="sage"] .gallery-section .section-label,
+[data-theme="sage"] #galleryEyebrow {
+  color: var(--accent-primary) !important;
+}
+
+[data-theme="sage"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
+  border-color: rgb(var(--accent-primary-rgb) / 0.62) !important;
+  box-shadow:
+    3px 4px 0 0 rgb(var(--accent-primary-rgb) / 0.24),
+    0 8px 12px -3px rgb(var(--accent-primary-rgb) / 0.28),
+    -3px 0 8px -5px rgb(var(--accent-primary-rgb) / 0.12),
+    3px 0 8px -5px rgb(var(--accent-primary-rgb) / 0.12),
+    0 10px 20px rgba(0,0,0,0.4),
+    0 32px 60px rgba(0,0,0,0.35) !important;
+}
+
+[data-theme="sage"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-inner .exhibition-frame {
+  border-color: rgb(var(--accent-primary-rgb) / 0.76) !important;
+  box-shadow:
+    4px 5px 0 0 rgb(var(--accent-light-rgb) / 0.28),
+    0 9px 14px -3px rgb(var(--accent-primary-rgb) / 0.34),
+    -4px 0 10px -5px rgb(var(--accent-primary-rgb) / 0.15),
+    4px 0 10px -5px rgb(var(--accent-primary-rgb) / 0.15),
+    0 11px 22px rgba(0,0,0,0.4),
+    0 34px 64px rgba(0,0,0,0.35) !important;
+}
+
+[data-theme="sage"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-hero .exhibition-frame {
+  border-color: var(--accent-primary) !important;
+  box-shadow:
+    6px 7px 0 0 rgb(var(--accent-light-rgb) / 0.42),
+    0 3px 0 0 rgb(var(--accent-light-rgb) / 0.28),
+    0 20px 26px 0 rgba(0,0,0,0.82),
+    0 18px 30px -2px rgb(var(--accent-primary-rgb) / 0.52),
+    -6px 0 16px -5px rgb(var(--accent-primary-rgb) / 0.24),
+    6px 0 16px -5px rgb(var(--accent-primary-rgb) / 0.24) !important;
+}
+
+[data-theme="sage"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame-reflection {
+  background:
+    radial-gradient(ellipse 18% 2% at 50% 0.3%, rgb(var(--accent-light-rgb) / 0.42), transparent 88%),
+    linear-gradient(to bottom, rgb(var(--accent-light-rgb) / 0.18) 0%, rgb(var(--accent-primary-rgb) / 0.14) 12%, rgb(var(--accent-primary-rgb) / 0.06) 40%, transparent 86%) !important;
+}
+[data-theme="sage"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-inner .exhibition-frame-reflection {
+  background:
+    radial-gradient(ellipse 20% 2.5% at 50% 0.4%, rgb(var(--accent-light-rgb) / 0.55), transparent 88%),
+    linear-gradient(to bottom, rgb(var(--accent-light-rgb) / 0.22) 0%, rgb(var(--accent-primary-rgb) / 0.18) 12%, rgb(var(--accent-primary-rgb) / 0.08) 42%, transparent 86%) !important;
+}
+[data-theme="sage"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-hero .exhibition-frame-reflection {
+  background:
+    radial-gradient(ellipse 22% 3% at 50% 0.5%, rgb(var(--accent-light-rgb) / 0.72), transparent 88%),
+    linear-gradient(to bottom, rgb(var(--accent-light-rgb) / 0.30) 0%, rgb(var(--accent-primary-rgb) / 0.24) 10%, rgb(var(--accent-primary-rgb) / 0.10) 40%, transparent 86%) !important;
+}
+
+[data-theme="sage"] .exhibition-arrow,
+[data-theme="sage"] .gallery-scroll-arrow-btn {
+  color: var(--accent-light) !important;
+  border-color: rgb(var(--accent-primary-rgb) / 0.58) !important;
+}
+[data-theme="sage"] .exhibition-arrow:hover,
+[data-theme="sage"] .gallery-scroll-arrow-btn:hover {
+  background: rgb(var(--accent-primary-rgb) / 0.08) !important;
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 12px rgb(var(--accent-primary-rgb) / 0.20) !important;
+}
+[data-theme="sage"] .gallery-scroll-item,
+[data-theme="sage"] .gallery-magazine-hero,
+[data-theme="sage"] .gallery-collection-card,
+[data-theme="sage"] .gallery-collection-lb-inner {
+  border-color: rgb(var(--accent-primary-rgb) / 0.46) !important;
+}
+[data-theme="sage"] .gallery-scroll-item:first-child,
+[data-theme="sage"] .gallery-scroll-item:hover,
+[data-theme="sage"] .gallery-collection-card:hover {
+  border-color: var(--accent-primary) !important;
+}
+[data-theme="sage"] .exhibition-caption-year,
+[data-theme="sage"] .gallery-scroll-category,
+[data-theme="sage"] .gallery-scroll-counter,
+[data-theme="sage"] .gallery-collection-count,
+[data-theme="sage"] .gallery-collection-cta {
+  color: var(--accent-light) !important;
+}
+
+/* ------------------------------------------------------------------
+   AWARDS / DEGREES / CREDENTIALS — BLUE/GOLD ACCENTS BECOME SAGE GREEN
+   ------------------------------------------------------------------ */
+[data-theme="sage"] #awards .collapsible-icon,
+[data-theme="sage"] #awards .collapsible-header-label,
+[data-theme="sage"] #awards .collapsible-toggle {
+  color: var(--accent-primary) !important;
+  border-color: rgb(var(--accent-primary-rgb) / 0.48) !important;
+}
+[data-theme="sage"] #awards .collapsible-icon {
+  background: rgb(var(--accent-primary-rgb) / 0.06) !important;
+}
+[data-theme="sage"] .award-card {
+  border-top-color: var(--accent-primary) !important;
+  border-color: rgb(var(--accent-primary-rgb) / 0.32) !important;
+}
+[data-theme="sage"] .award-card-type {
+  color: var(--accent-primary) !important;
+}
+[data-theme="sage"] .award-card > div[style*="text-transform:uppercase"][style*="color:"] {
+  color: var(--accent-primary) !important;
+}
+[data-theme="sage"] .award-cert-link,
+[data-theme="sage"] .award-card-clickable:hover .award-card-type {
+  color: var(--accent-primary) !important;
+}
+
+/* If these credential records render through Assets, keep that public treatment green too. */
+[data-theme="sage"] #assets .asset-card,
+[data-theme="sage"] .asset-card {
+  border-color: rgb(var(--accent-primary-rgb) / 0.30) !important;
+  border-top-color: var(--accent-primary) !important;
+}
+[data-theme="sage"] #assets .asset-card:hover,
+[data-theme="sage"] .asset-card-hover:hover {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 8px 30px rgb(var(--accent-primary-rgb) / 0.16) !important;
+}
+[data-theme="sage"] #assets .asset-btn {
+  color: var(--accent-primary) !important;
+}
+
+/* Sidebar / section controls */
+[data-theme="sage"] .ew-sidebar-btn:hover {
+  background: rgb(var(--accent-primary-rgb) / 0.05);
+  border-left-color: rgb(var(--accent-primary-rgb) / 0.48);
+}
+[data-theme="sage"] .ew-sidebar-btn.active {
+  color: var(--accent-primary) !important;
+  border-left-color: var(--accent-primary);
+  background: rgb(var(--accent-primary-rgb) / 0.075);
+}
+
+/* Connect Hub */
+[data-theme="sage"] .connect-hub {
+  background: radial-gradient(circle at 78% 0%, rgb(var(--accent-primary-rgb) / 0.045), transparent 28%), #080808;
+}
+[data-theme="sage"] .ch-eyebrow,
+[data-theme="sage"] .ch-section-label,
+[data-theme="sage"] .ch-hero-title em,
+[data-theme="sage"] .ch-pcard-cat,
+[data-theme="sage"] .ch-pcard-cta,
+[data-theme="sage"] .ch-amazon-cat,
+[data-theme="sage"] .ch-amazon-cta,
+[data-theme="sage"] .ch-row-arrow,
+[data-theme="sage"] .ch-btn-outline {
+  color: var(--accent-primary) !important;
+}
+[data-theme="sage"] .ch-eyebrow-line,
+[data-theme="sage"] .ch-section-label::after {
+  background: linear-gradient(to right, rgb(var(--accent-primary-rgb) / 0.52), transparent) !important;
+}
+[data-theme="sage"] .ch-btn-outline {
+  border-color: rgb(var(--accent-primary-rgb) / 0.48) !important;
+}
+[data-theme="sage"] .ch-btn-outline:hover {
+  background: rgb(var(--accent-primary-rgb) / 0.08) !important;
+}

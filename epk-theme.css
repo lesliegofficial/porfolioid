@@ -1,0 +1,572 @@
+/* PorfolioID theme token foundation
+   Architecture approved September 2026.
+   Theme decoration, content categories, statuses, and product controls
+   intentionally live in separate token namespaces.
+
+   GATE 3A: --category-music is provisional until Gold + Wine visual review.
+   GATE 5: Connect Hub #d7b84f remains literal in legacy source until visual review.
+*/
+
+:root,
+[data-theme="gold"] {
+  /* Raw theme palette — Gold */
+  --accent-primary: #C9A84C;
+  --accent-primary-rgb: 201 168 76;
+  --accent-light: #E8C97A;
+  --accent-light-rgb: 232 201 122;
+  --accent-dark: #8B6914;
+  --accent-dark-rgb: 139 105 20;
+  --accent-secondary: #4A7FA5;
+  --accent-secondary-rgb: 74 127 165;
+
+  /* Semantic theme roles */
+  --accent-text: var(--accent-primary);
+  --accent-text-rgb: var(--accent-primary-rgb);
+  --accent-emphasis: var(--accent-light);
+  --accent-emphasis-rgb: var(--accent-light-rgb);
+  --accent-icon: var(--accent-primary);
+  --accent-icon-rgb: var(--accent-primary-rgb);
+  --accent-border: var(--accent-primary);
+  --accent-border-rgb: var(--accent-primary-rgb);
+  --accent-surface: var(--accent-primary);
+  --accent-surface-rgb: var(--accent-primary-rgb);
+
+  /* Fixed content-category semantics */
+  --category-music: #C9A84C; /* GATE 3A — provisional */
+  --category-music-rgb: 201 168 76;
+  --category-professional: #8FB8D0;
+  --category-professional-rgb: 143 184 208;
+  --category-education: #A78BFA;
+  --category-education-rgb: 167 139 250;
+  --category-certification: #2DD4BF;
+  --category-certification-rgb: 45 212 191;
+  --category-award: #FBBF24;
+  --category-award-rgb: 251 191 36;
+  --category-press: #60A5FA;
+  --category-press-rgb: 96 165 250;
+  --category-contract: #F87171;
+  --category-contract-rgb: 248 113 113;
+
+  /* Fixed semantic statuses */
+  --semantic-positive: #7EC97E;
+  --semantic-positive-rgb: 126 201 126;
+  --status-verified: var(--semantic-positive);
+  --status-success: var(--semantic-positive);
+
+  /* Featured is semantic, but deliberately delegates to theme presentation. */
+  --status-featured: var(--accent-emphasis);
+
+  /* PorfolioID product-control language — independent from profile theme. */
+  --product-control-accent: #C9A84C;
+  --product-control-accent-rgb: 201 168 76;
+  --owner-control-color: var(--product-control-accent);
+  --edit-feedback-color: var(--product-control-accent);
+}
+
+[data-theme="wine"] {
+  /* Raw theme palette — Wine */
+  --accent-primary: #610C27;
+  --accent-primary-rgb: 97 12 39;
+  --accent-light: #E3C1B4;
+  --accent-light-rgb: 227 193 180;
+  --accent-dark: #3D0817;
+  --accent-dark-rgb: 61 8 23;
+  --accent-secondary: #5B6B54;
+  --accent-secondary-rgb: 91 107 84;
+
+  /* Gate 1 locked policy:
+     Light handles readable text, emphasis, icons, and functional borders.
+     Primary handles atmospheric/surface tinting.
+  */
+  --accent-text: var(--accent-light);
+  --accent-text-rgb: var(--accent-light-rgb);
+  --accent-emphasis: var(--accent-light);
+  --accent-emphasis-rgb: var(--accent-light-rgb);
+  --accent-icon: var(--accent-light);
+  --accent-icon-rgb: var(--accent-light-rgb);
+  --accent-border: var(--accent-light);
+  --accent-border-rgb: var(--accent-light-rgb);
+  --accent-surface: var(--accent-primary);
+  --accent-surface-rgb: var(--accent-primary-rgb);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Phase 1 conversion: navigation + hero
+   These are confirmed theme-decoration surfaces from the audit.
+   Legacy declarations remain in epk.css during migration; this file is the
+   semantic override layer so Gold stays visually equivalent while Wine can
+   be evaluated without a blind legacy-file rewrite.
+   ────────────────────────────────────────────────────────────────────────── */
+
+nav {
+  border-bottom-color: rgb(var(--accent-surface-rgb) / 0.12);
+}
+
+.nav-logo span,
+.nav-links a:hover {
+  color: var(--accent-text);
+}
+
+.hero-name em {
+  color: var(--accent-emphasis);
+}
+
+.hero-roles-row,
+.hero-stats-row,
+.hero-presence-bar {
+  border-bottom-color: rgb(var(--accent-surface-rgb) / 0.12);
+}
+
+.hero-role-item {
+  background: rgb(var(--accent-surface-rgb) / 0.05);
+  border-color: rgb(var(--accent-surface-rgb) / 0.15);
+}
+
+.hero-role-icon {
+  fill: var(--accent-icon);
+}
+
+.hero-stat-item--gold .hero-stat-n,
+.hcl-arrow,
+.hero-presence-eyebrow {
+  color: var(--accent-text);
+}
+
+.hero-presence-explore {
+  color: var(--accent-text);
+  border-color: var(--accent-border);
+  box-shadow: 0 0 0 rgb(var(--accent-surface-rgb) / 0);
+  animation: theme-explore-pulse 2.5s ease-in-out infinite;
+}
+
+.hero-presence-bar:hover .hero-presence-explore {
+  background: rgb(var(--accent-surface-rgb) / 0.15);
+  box-shadow: 0 0 12px rgb(var(--accent-surface-rgb) / 0.4);
+  animation: none;
+}
+
+@keyframes theme-explore-pulse {
+  0%, 100% {
+    box-shadow: 0 0 4px 1px rgb(var(--accent-surface-rgb) / 0.6);
+    border-color: rgb(var(--accent-border-rgb) / 0.6);
+  }
+  50% {
+    box-shadow: 0 0 14px 4px rgb(var(--accent-surface-rgb) / 0.9);
+    border-color: var(--accent-border);
+    color: #fff;
+  }
+}
+
+.hero-presence-icon:hover {
+  border-color: var(--hpi-c, var(--accent-icon));
+}
+
+.hero-cta-primary {
+  border-color: var(--accent-border);
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+  box-shadow: 0 0 0 rgb(var(--accent-surface-rgb) / 0);
+  animation: theme-explore-pulse 2.5s ease-in-out infinite;
+}
+
+.hero-cta-primary:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.18);
+  box-shadow: 0 0 12px rgb(var(--accent-surface-rgb) / 0.4);
+  animation: none;
+}
+
+.hero-cta-primary svg {
+  fill: var(--accent-icon);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Phase 2 conversion: highlights, Creative Works, audio, collapsibles,
+   booking, and identity metadata.
+   ────────────────────────────────────────────────────────────────────────── */
+
+.ch3-header {
+  border-bottom-color: rgb(var(--accent-surface-rgb) / 0.12);
+}
+
+.ch3-label,
+.works-label,
+.work-card-cta,
+.collapsible-header-label,
+.collapsible-toggle,
+.booking-note,
+.identity-block-label,
+.identity-featured-role,
+.identity-rep-role,
+.timeline-year {
+  color: var(--accent-text);
+}
+
+.ch3-grid {
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+}
+
+.ch3-icon {
+  background: rgb(var(--accent-surface-rgb) / 0.10);
+  border-color: rgb(var(--accent-surface-rgb) / 0.25);
+}
+
+.ch3-icon svg {
+  fill: var(--accent-icon) !important;
+}
+
+.ch3-viewcomplete {
+  border-color: var(--accent-border);
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+}
+
+.ch3-viewcomplete:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.18);
+}
+
+.work-card {
+  border-color: rgb(var(--accent-surface-rgb) / 0.12);
+}
+
+.work-card:hover {
+  border-color: rgb(var(--accent-surface-rgb) / 0.40);
+  box-shadow:
+    0 22px 56px rgba(0,0,0,0.5),
+    0 0 0 1px rgb(var(--accent-surface-rgb) / 0.15),
+    0 0 40px rgb(var(--accent-surface-rgb) / 0.16);
+}
+
+.work-card-status {
+  color: var(--accent-emphasis);
+  border-color: rgb(var(--accent-border-rgb) / 0.40);
+  box-shadow: 0 0 12px rgb(var(--accent-surface-rgb) / 0.18);
+}
+
+.work-card:hover .work-card-status {
+  border-color: rgb(var(--accent-border-rgb) / 0.65);
+  box-shadow: 0 0 20px rgb(var(--accent-surface-rgb) / 0.32);
+  animation: theme-work-badge-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes theme-work-badge-pulse {
+  0%, 100% { box-shadow: 0 0 16px rgb(var(--accent-surface-rgb) / 0.24); }
+  50% { box-shadow: 0 0 26px rgb(var(--accent-surface-rgb) / 0.40); }
+}
+
+.work-card-status::after {
+  background: linear-gradient(
+    110deg,
+    transparent,
+    rgb(var(--accent-emphasis-rgb) / 0.45),
+    transparent
+  );
+}
+
+.work-card-meta {
+  color: rgb(var(--accent-text-rgb) / 0.42);
+}
+
+.work-player {
+  background: rgb(var(--accent-surface-rgb) / 0.05);
+  border-color: rgb(var(--accent-surface-rgb) / 0.18);
+}
+
+.wp-playbtn {
+  border-color: var(--accent-border);
+  background: rgb(var(--accent-surface-rgb) / 0.10);
+  color: var(--accent-text);
+}
+
+.wp-playbtn:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.22);
+  box-shadow: 0 0 14px rgb(var(--accent-surface-rgb) / 0.25);
+}
+
+.wp-playbtn svg,
+.wp-vol-icon:hover {
+  fill: var(--accent-emphasis);
+}
+
+.wp-bar {
+  background: rgb(var(--accent-surface-rgb) / 0.26);
+}
+
+.wp-waveform:hover .wp-bar {
+  background: rgb(var(--accent-surface-rgb) / 0.40);
+}
+
+.wp-progress-fill {
+  background: linear-gradient(
+    to right,
+    rgb(var(--accent-surface-rgb) / 0) 0%,
+    rgb(var(--accent-surface-rgb) / 0.18) 100%
+  );
+}
+
+.wp-progress-fill::before {
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--accent-emphasis) 0,
+    var(--accent-emphasis) 1.5px,
+    transparent 1.5px,
+    transparent 3px
+  );
+}
+
+.wp-vol-icon {
+  fill: rgb(var(--accent-icon-rgb) / 0.60);
+}
+
+.wp-vol-slider {
+  accent-color: var(--accent-border);
+  background: rgb(var(--accent-surface-rgb) / 0.25);
+}
+
+.collapsible-icon {
+  border-color: rgb(var(--accent-surface-rgb) / 0.25);
+  color: var(--accent-icon);
+  background: rgb(var(--accent-surface-rgb) / 0.04);
+}
+
+.collapsible-header:hover .collapsible-icon {
+  border-color: rgb(var(--accent-border-rgb) / 0.50);
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+}
+
+.booking-title em {
+  color: var(--accent-emphasis);
+}
+
+.identity-block {
+  border-left-color: rgb(var(--accent-surface-rgb) / 0.30);
+}
+
+.identity-tag {
+  border-color: rgb(var(--accent-surface-rgb) / 0.30);
+}
+
+/* Verified is a fixed truth/trust status, never a profile-theme accent. */
+.identity-verified,
+.award-badge-verified {
+  color: var(--status-verified) !important;
+}
+
+.award-badge-verified {
+  background: rgb(var(--semantic-positive-rgb) / 0.12) !important;
+  border-color: rgb(var(--semantic-positive-rgb) / 0.25) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Phase 3 conversion: professional records + media records.
+   Generic record chrome follows the theme; music-only track UI stays on the
+   fixed category-music semantic so Gate 3A can be tested honestly.
+   ────────────────────────────────────────────────────────────────────────── */
+
+.resume-card {
+  border-color: rgb(var(--accent-surface-rgb) / 0.15);
+}
+
+.resume-card:hover {
+  border-color: rgb(var(--accent-surface-rgb) / 0.35);
+}
+
+.resume-card-label,
+.credit-years,
+.credit-role,
+.credit-expand-hint,
+.credit-modal-meta,
+.credit-modal-desc strong,
+.asset-btn,
+.award-proof-link {
+  color: var(--accent-text);
+}
+
+.resume-skill-tag {
+  background: rgb(var(--accent-surface-rgb) / 0.06);
+  border-color: rgb(var(--accent-surface-rgb) / 0.15);
+}
+
+.resume-card-btn {
+  color: var(--accent-text);
+  border-color: rgb(var(--accent-border-rgb) / 0.30);
+}
+
+.resume-card-btn:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+  border-color: var(--accent-border);
+}
+
+.credit-years {
+  border-color: rgb(var(--accent-surface-rgb) / 0.30);
+}
+
+.credit-modal {
+  border-color: rgb(var(--accent-surface-rgb) / 0.20);
+}
+
+.credit-modal-close:hover {
+  border-color: var(--accent-border);
+}
+
+.modal-font-btn:hover {
+  border-color: var(--accent-border);
+  color: var(--accent-text);
+}
+
+.credit-modal-photo {
+  border-color: rgb(var(--accent-surface-rgb) / 0.10);
+}
+
+.award-card {
+  border-color: rgb(var(--accent-surface-rgb) / 0.10);
+}
+
+.award-card:hover,
+.award-card-clickable:hover {
+  border-color: rgb(var(--accent-surface-rgb) / 0.30);
+}
+
+.award-card-type {
+  color: var(--accent-text);
+}
+
+.award-cert-link:hover {
+  color: var(--accent-text);
+}
+
+.asset-card {
+  border-color: rgb(var(--accent-surface-rgb) / 0.08);
+}
+
+.asset-card:hover {
+  border-color: rgb(var(--accent-surface-rgb) / 0.25);
+}
+
+/* Track UI is category-semantic, not theme decoration. */
+.track-item {
+  border-bottom-color: rgb(var(--category-music-rgb) / 0.06);
+}
+
+.track-item:hover {
+  background: rgb(var(--category-music-rgb) / 0.02);
+}
+
+.track-tag {
+  background: rgb(var(--category-music-rgb) / 0.12);
+  color: var(--category-music);
+}
+
+.track-meta span,
+.track-info > a {
+  color: var(--category-music) !important;
+}
+
+.track-info audio {
+  accent-color: var(--category-music) !important;
+}
+
+.credit-media-toggle-btn {
+  border-color: rgb(var(--accent-surface-rgb) / 0.20);
+}
+
+.credit-media-toggle-btn:hover {
+  border-color: rgb(var(--accent-border-rgb) / 0.40);
+}
+
+.credit-media-toggle-btn.active {
+  border-color: var(--accent-border);
+  color: var(--accent-text);
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+}
+
+.credit-media-cell {
+  border-color: rgb(var(--accent-surface-rgb) / 0.12);
+}
+
+.credit-media-cell-video:hover {
+  border-color: rgb(var(--accent-border-rgb) / 0.45);
+}
+
+.credit-media-cell-video:hover .credit-media-play {
+  background: rgb(var(--accent-surface-rgb) / 0.90);
+}
+
+.credit-media-play {
+  border-color: rgb(var(--accent-border-rgb) / 0.70);
+  color: var(--accent-text);
+}
+
+.credit-media-cell-doc a,
+.credit-media-cell-link a {
+  color: var(--accent-text);
+}
+
+.credit-media-cell-link a {
+  border-color: rgb(var(--accent-border-rgb) / 0.30);
+}
+
+.credit-media-cell-link a:hover {
+  background: rgb(var(--accent-surface-rgb) / 0.08);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Platform-brand / product-control overrides
+   These stay fixed when a profile owner changes the public theme.
+   ────────────────────────────────────────────────────────────────────────── */
+
+.nav-edit-btn {
+  color: var(--owner-control-color);
+  border-color: rgb(var(--product-control-accent-rgb) / 0.6);
+}
+
+.nav-edit-btn:hover {
+  background: rgb(var(--product-control-accent-rgb) / 0.12);
+  border-color: var(--owner-control-color);
+}
+
+.owner-bar {
+  border-top-color: rgb(var(--product-control-accent-rgb) / 0.2);
+}
+
+.owner-bar-label,
+.owner-move-btn {
+  color: var(--owner-control-color);
+}
+
+.owner-move-btn {
+  background: rgb(var(--product-control-accent-rgb) / 0.1);
+  border-color: rgb(var(--product-control-accent-rgb) / 0.3);
+}
+
+.owner-move-btn:hover {
+  background: rgb(var(--product-control-accent-rgb) / 0.2);
+}
+
+.owner-up {
+  background: rgb(var(--product-control-accent-rgb) / 0.8);
+}
+
+.owner-down {
+  background: rgb(var(--product-control-accent-rgb) / 0.6);
+}
+
+.owner-up:hover,
+.owner-down:hover {
+  background: var(--owner-control-color);
+}
+
+body.edit-mode .nav-edit-btn {
+  background: var(--edit-feedback-color) !important;
+  color: #000 !important;
+}
+
+body.edit-mode [data-editable]:hover {
+  outline-color: rgb(var(--product-control-accent-rgb) / 0.5);
+  background: rgb(var(--product-control-accent-rgb) / 0.05);
+}
+
+.edit-field-label {
+  color: var(--edit-feedback-color);
+}
+
+.unsaved-dot {
+  background: var(--edit-feedback-color);
+}
