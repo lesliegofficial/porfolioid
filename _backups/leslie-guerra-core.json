@@ -1702,7 +1702,7 @@
   ],
   "bookingRegion": "Worldwide",
   "galleryLayout": "exhibition",
-  "heroImageZoom": 99,
+  "heroImageZoom": 98,
   "identityBlock": {
     "repName": "",
     "repRole": "",
@@ -1813,7 +1813,7 @@
     "virtualassistant",
     "translator"
   ],
-  "heroImagePosition": 1,
+  "heroImagePosition": 32,
   "sectionVisibility": {},
   "bookingAutoResponse": "Thank you for your inquiry. I will respond in less than 48 hours.",
   "bookingAvailability": "selective",
