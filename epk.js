@@ -3437,21 +3437,24 @@ function toggleAllCredits() {
   const grid = document.getElementById('creditsGrid');
   const btn = document.getElementById('creditsToggleBtn');
   const banner = document.getElementById('creditsFilterBanner');
-  if (!grid || !btn || !container) return;
+  if (!grid || !container) return;
 
-  // Fully close — re-hide the whole Record section back to its initial state
-  container.style.display = 'none';
-  grid.classList.remove('credits-expanded');
-  grid.querySelectorAll('.credit-card').forEach(card => { card.style.display = ''; });
-  if (banner) banner.style.display = 'none';
-  const total = grid.querySelectorAll('.credit-card').length;
-  btn.textContent = _currentLang === 'es' ? `Ver los ${total} Créditos +` : `View All ${total} Credits +`;
-  btn.style.display = '';
+  const isExpanded = grid.classList.contains('credits-expanded');
 
-  // Scroll back up to the Career Highlights cards so the page doesn't leave the user staring at empty space
-  const wrap = document.querySelector('.ch3-wrap');
-  if (wrap) {
-    setTimeout(() => { wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
+  if (isExpanded) {
+    grid.classList.remove('credits-expanded');
+    grid.querySelectorAll('.credit-card').forEach(card => { card.style.display = ''; });
+    if (banner) banner.style.display = 'none';
+    if (btn) {
+      const total = grid.querySelectorAll('.credit-card').length;
+      btn.textContent = _currentLang === 'es' ? `Ver los ${total} Créditos +` : `View All ${total} Credits +`;
+    }
+    setTimeout(() => { container.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
+  } else {
+    grid.classList.add('credits-expanded');
+    grid.querySelectorAll('.credit-card').forEach(card => { card.style.display = ''; });
+    if (banner) banner.style.display = 'none';
+    if (btn) btn.textContent = _currentLang === 'es' ? 'Mostrar menos –' : 'Show Fewer –';
   }
 }
 
@@ -3472,13 +3475,16 @@ function filterCreditsByCategory(tag) {
   const grid = document.getElementById('creditsGrid');
   const btn = document.getElementById('creditsToggleBtn');
   const banner = document.getElementById('creditsFilterBanner');
-  if (!grid) return;
+  if (!grid || !container) return;
 
-  if (container) container.style.display = 'block'; // reveal on demand — hidden until a card/button is clicked
-  grid.classList.add('credits-expanded'); // bypass the nth-child collapse so filtered results aren't hidden
+  // Credits is now a real always-present portfolio section. Filtering only
+  // changes which cards are shown; it no longer reveals/hides the section.
+  grid.classList.add('credits-expanded');
   if (btn) {
-    btn.style.display = ''; // Close button stays visible whether filtered or showing everything
-    btn.textContent = _currentLang === 'es' ? 'Cerrar –' : 'Close –';
+    btn.style.display = '';
+    btn.textContent = canonicalTag
+      ? (_currentLang === 'es' ? 'Limpiar filtro –' : 'Clear Filter –')
+      : (_currentLang === 'es' ? 'Mostrar menos –' : 'Show Fewer –');
   }
 
   const cards = grid.querySelectorAll('.credit-card');
@@ -3497,24 +3503,16 @@ function filterCreditsByCategory(tag) {
         ? { liveperformance:'Presentaciones en Vivo', recordingartist:'Artista de Grabación', creativeprofessional:'Profesional Creativa', marketingpr:'Mercadeo y Relaciones Públicas', industryoperations:'Operaciones de la Industria', founderbuilder:'Fundadora y Creadora' }
         : { liveperformance:'Live Performance', recordingartist:'Recording Artist', creativeprofessional:'Creative Professional', marketingpr:'Marketing & PR', industryoperations:'Industry Operations', founderbuilder:'Founder & Builder' };
       const showingText = _currentLang === 'es' ? 'Mostrando:' : 'Showing:';
-      const viewAllText = _currentLang === 'es' ? 'Ver Récord Completo →' : 'View Complete Record →';
-      const closeText = _currentLang === 'es' ? 'Cerrar –' : 'Close –';
-      banner.innerHTML = `${showingText} <strong style="color:var(--gold)">${labels[canonicalTag] || canonicalTag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">${viewAllText}</a> &nbsp;<a href="javascript:void(0)" onclick="toggleAllCredits()" style="color:var(--gray);text-decoration:underline">${closeText}</a>`;
+      const viewAllText = _currentLang === 'es' ? 'Ver todos los créditos →' : 'View all credits →';
+      banner.innerHTML = `${showingText} <strong style="color:var(--gold)">${labels[canonicalTag] || canonicalTag}</strong> &nbsp;<a href="javascript:void(0)" onclick="filterCreditsByCategory('')" style="color:var(--gray);text-decoration:underline">${viewAllText}</a>`;
       banner.style.display = 'block';
     } else {
       banner.style.display = 'none';
     }
   }
 
-  // Scroll target: when a category tag is passed (highlight card click), scroll to the
-  // creditsGrid itself (Career Record section) — NOT the #credits container top which
-  // would land on Professional Documents first.
-  const scrollTarget = canonicalTag
-    ? document.getElementById('creditsGrid')   // → Career Record cards directly
-    : document.getElementById('credits');       // → top of expanded section (View Complete Record)
-  if (scrollTarget) {
-    setTimeout(() => { scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
-  }
+  const scrollTarget = canonicalTag ? grid : container;
+  setTimeout(() => { scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
 }
 
 
@@ -3578,52 +3576,37 @@ function toggleSection(bodyId, header) {
 }
 
 function expandSection(sectionId) {
-  // Credits now lives hidden inside the Career Highlights block until requested
   if (sectionId === 'credits') {
     filterCreditsByCategory('');
     return;
   }
-  // Works is a plain always-visible section — just smooth-scroll to it
-  if (sectionId === 'works') {
-    const el = document.getElementById('works');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    return;
-  }
-  // Connect uses a simple display:none toggle on #connect, not the collapsible-body pattern
-  if (sectionId === 'connect') {
-    const c = document.getElementById('connect');
-    if (!c) return;
-    const isOpen = c.style.display === 'block';
-    c.style.display = isOpen ? 'none' : 'block';
-    const bar = document.querySelector('.hero-presence-bar');
-    if (bar) {
-      const exploreSpan = bar.querySelector('.hero-presence-explore');
-      if (exploreSpan) exploreSpan.textContent = isOpen ? 'Explore →' : 'Close ←';
-    }
-    if (!isOpen) {
-      setTimeout(() => {
-        const top = c.getBoundingClientRect().top + window.scrollY - 80;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }, 50);
-    }
-    return;
-  }
-  // Map section IDs to their body IDs
+
   const bodyMap = { music:'musicBody', awards:'awardsBody', assets:'assetsBody' };
   const bodyId = bodyMap[sectionId];
-  if (!bodyId) return;
-  const body = document.getElementById(bodyId);
-  if (!body) return;
-  // Open it if not already open
-  if (!body.classList.contains('open')) {
-    body.classList.add('open');
-    const header = body.previousElementSibling;
-    if (header) {
-      const toggle = header.querySelector('.collapsible-toggle');
-      if (toggle) toggle.innerHTML = '<span class="toggle-label">Collapse</span> －';
+
+  if (bodyId) {
+    const body = document.getElementById(bodyId);
+    const section = document.getElementById(sectionId);
+    if (!body || !section) return;
+
+    if (!body.classList.contains('open')) {
+      body.classList.add('open');
+      const header = body.previousElementSibling;
+      if (header) {
+        const toggle = header.querySelector('.collapsible-toggle');
+        if (toggle) toggle.innerHTML = '<span class="toggle-label">Collapse</span> －';
+      }
     }
+    setTimeout(() => { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
+    return;
   }
+
+  // Biography, Professional Documents, Photos, Video, Original Works and
+  // Connect are normal visible sections: navigation simply scrolls to them.
+  const el = document.getElementById(sectionId);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
 
 // Award Modal
 function openAwardModal(idx) {
