@@ -1724,8 +1724,8 @@
   "resumeEnabled": true,
   "bookingEnabled": true,
   "bookingTagline": "",
-  "bioImageCropTop": 6,
-  "bioImagePosition": 28,
+  "bioImageCropTop": 40,
+  "bioImagePosition": 40,
   "careerHighlights": [
     {
       "id": "default-recordingartist",
