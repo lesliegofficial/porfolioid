@@ -3144,7 +3144,8 @@
   }
 
   [data-theme="midnight"] .music-awards-pair .collapsible-header-title {
-    font-size:clamp(1.65rem,2.35vw,2.45rem) !important;
+    font-size:clamp(1.5rem,1.8vw,2.05rem) !important;
+    line-height:1.08 !important;
   }
 
   [data-theme="midnight"] .music-awards-pair .collapsible-body {
@@ -3213,36 +3214,73 @@
   }
 }
 
-/* Side navigation gets its own luminous control treatment now that the
-   photographs themselves are intentionally borderless. */
+/* Side navigation gets a compact, premium double-rim treatment inspired by
+   illuminated glass controls. The glow stays local to each button. */
 [data-theme="midnight"] .exhibition-arrow {
-  width:46px !important;
-  height:46px !important;
-  color:#B8E3E9 !important;
-  opacity:0.9 !important;
-  border:1px solid rgb(124 196 236 / 0.42) !important;
+  width:52px !important;
+  height:52px !important;
+  isolation:isolate;
+  overflow:visible;
+  color:#D9F7FF !important;
+  font-size:1.15rem !important;
+  font-weight:600;
+  opacity:0.98 !important;
+  border:1px solid rgb(108 211 255 / 0.82) !important;
   background:
-    radial-gradient(circle at 50% 42%,rgb(124 196 236 / 0.16),transparent 62%),
-    rgb(5 10 16 / 0.90) !important;
+    radial-gradient(circle at 34% 24%,rgb(235 251 255 / 0.16),transparent 22%),
+    radial-gradient(circle at 50% 50%,rgb(47 159 239 / 0.22),transparent 63%),
+    rgb(4 10 17 / 0.96) !important;
   box-shadow:
-    0 0 0 5px rgb(56 127 200 / 0.045),
-    0 0 24px rgb(56 127 200 / 0.20),
-    inset 0 0 15px rgb(124 196 236 / 0.07) !important;
-  text-shadow:0 0 10px rgb(184 227 233 / 0.62);
-  backdrop-filter:blur(8px);
+    0 0 0 2px rgb(3 9 16 / 0.94),
+    0 0 0 4px rgb(47 159 239 / 0.42),
+    0 0 16px rgb(73 188 244 / 0.48),
+    0 0 34px rgb(47 159 239 / 0.24),
+    inset 0 0 19px rgb(89 199 250 / 0.13) !important;
+  text-shadow:0 0 8px rgb(217 247 255 / 0.95),0 0 16px rgb(73 188 244 / 0.62);
+  backdrop-filter:blur(10px);
+  transition:transform 0.24s ease,box-shadow 0.24s ease,border-color 0.24s ease,background 0.24s ease !important;
+}
+
+[data-theme="midnight"] .exhibition-arrow::before {
+  content:"";
+  position:absolute;
+  inset:4px;
+  z-index:0;
+  border-radius:50%;
+  border-top:1px solid rgb(224 249 255 / 0.58);
+  border-bottom:1px solid rgb(47 159 239 / 0.24);
+  box-shadow:inset 0 0 10px rgb(124 196 236 / 0.09);
+  pointer-events:none;
+}
+
+[data-theme="midnight"] .exhibition-arrow::after {
+  content:"";
+  position:absolute;
+  left:14%;
+  right:14%;
+  top:calc(100% + 7px);
+  height:11px;
+  z-index:0;
+  background:radial-gradient(ellipse at center top,rgb(73 188 244 / 0.32),transparent 72%);
+  filter:blur(4px);
+  pointer-events:none;
 }
 
 [data-theme="midnight"] .exhibition-arrow:hover {
   color:#FFFFFF !important;
   opacity:1 !important;
-  border-color:rgb(184 227 233 / 0.78) !important;
+  border-color:rgb(201 243 255 / 0.96) !important;
   background:
-    radial-gradient(circle at 50% 42%,rgb(124 196 236 / 0.25),transparent 66%),
-    rgb(7 14 22 / 0.96) !important;
+    radial-gradient(circle at 34% 24%,rgb(255 255 255 / 0.22),transparent 23%),
+    radial-gradient(circle at 50% 50%,rgb(56 167 239 / 0.34),transparent 65%),
+    rgb(5 13 22 / 0.98) !important;
   box-shadow:
-    0 0 0 6px rgb(56 127 200 / 0.07),
-    0 0 32px rgb(56 127 200 / 0.34),
-    inset 0 0 18px rgb(184 227 233 / 0.10) !important;
+    0 0 0 2px rgb(3 9 16 / 0.96),
+    0 0 0 4px rgb(108 211 255 / 0.72),
+    0 0 22px rgb(73 188 244 / 0.68),
+    0 0 44px rgb(47 159 239 / 0.34),
+    inset 0 0 22px rgb(124 196 236 / 0.20) !important;
+  transform:translateY(-50%) scale(1.045) !important;
 }
 
 [data-theme="midnight"] .gallery-scroll-arrow-btn {
