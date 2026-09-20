@@ -2104,10 +2104,10 @@
   }
 }
 
-/* ── MIDNIGHT: USE STORED BIO IMAGE ONLY — 2026-09-19 ───────────────────────────────
-   The profile already contains the approved transparent portrait.
-   Disable all Midnight-injected duplicate artwork and render only
-   the stored profile image inside the compact Gold-reference layout. */
+/* ── MIDNIGHT: USE STORED FULL-BODY HERO IMAGE ONLY ──────────────────────────
+   Disable injected duplicate artwork and render the dashboard's Hero Image
+   beside the biography. Object fit, position, crop and transform deliberately
+   remain controlled by the saved dashboard settings. */
 [data-theme="midnight"] .career-stacked-bio > div:first-child,
 [data-theme="midnight"] .career-stacked-bio > div:first-child > div:first-child {
   background-image:none !important;
@@ -2120,10 +2120,6 @@
   width:100% !important;
   height:100% !important;
   min-height:0 !important;
-  object-fit:contain !important;
-  object-position:center bottom !important;
-  transform:none !important;
-  margin:0 !important;
   filter:none !important;
 }
 
