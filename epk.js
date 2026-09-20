@@ -843,7 +843,12 @@ function buildEPK(epk) {
   });
 
   const hasCategories = Object.keys(groupedVideos).length > 0;
-  const videoLayout = epk.videoLayout || 'grid';
+  // Green District has a fixed featured-video composition as part of the
+  // theme architecture. This is presentation-only and never changes the
+  // owner's saved Video Layout setting.
+  const videoLayout = document.documentElement.dataset.theme === 'district'
+    ? 'spotlight'
+    : (epk.videoLayout || 'grid');
 
   // Shared media builder for a hero/featured video (used by Cinematic and
   // Spotlight). Preserves all three playback mechanisms exactly.
