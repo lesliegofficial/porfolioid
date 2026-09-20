@@ -7,7 +7,7 @@
   const LABELS = {
     'career-highlights': 'Career Record',
     bio: 'Biography',
-    documents: 'Documents',
+    documents: 'Profile & Documents',
     credits: 'Credits',
     photos: 'Photos',
     videos: 'Video',
@@ -194,19 +194,57 @@
   function setupCareerRecord() {
     const section = document.getElementById('career-highlights');
     if (!section) return;
+    // Green District revision: all six Career Record cards carry equal visual
+    // weight. No featured tile and no compressed Founder strip.
     const cards = Array.from(section.querySelectorAll('.ch3-card'));
-    cards.forEach((card, index) => {
+    cards.forEach(card => {
       card.classList.remove('gd-featured', 'gd-support', 'gd-founder');
-      const tag = (card.dataset.ch3Tag || '').toLowerCase();
-      const title = (card.querySelector('.ch3-title')?.textContent || '').toLowerCase();
-      if (tag === 'founderbuilder' || title.includes('porfolioid')) {
-        card.classList.add('gd-founder');
-      } else if (index === 0) {
-        card.classList.add('gd-featured');
-      } else {
-        card.classList.add('gd-support');
-      }
+      card.classList.add('gd-even');
     });
+  }
+
+  function setupBioDocuments(epk) {
+    const bio = document.getElementById('bio');
+    const documents = document.getElementById('documents');
+    if (!bio || !documents || documents.dataset.greenBioMerged === 'true') return;
+
+    const visibility = epk.dashboardSectionVisibility || epk.sectionVisibility || {};
+    const combinedVisible = visibility.bio !== false || visibility.documents !== false;
+    if (!combinedVisible) {
+      bio.style.display = 'none';
+      documents.style.display = 'none';
+      return;
+    }
+
+    const bioWrap = bio.querySelector('.ch3-wrap');
+    const documentsWrap = documents.querySelector('.ch3-wrap');
+    const bioPanel = bioWrap?.querySelector('.career-stacked-bio, .career-sidebyside');
+    const documentsHeader = documentsWrap?.querySelector('.ch3-header');
+    if (!bioPanel || !documentsWrap) return;
+
+    documents.dataset.greenBioMerged = 'true';
+    documents.classList.add('gd-profile-documents');
+    documents.style.display = '';
+
+    if (documentsHeader) {
+      const label = documentsHeader.querySelector('.ch3-label');
+      const title = documentsHeader.querySelector('.section-title');
+      if (label) label.textContent = 'Professional Profile';
+      if (title) title.textContent = 'Biography & Professional Documents';
+    }
+
+    const merged = document.createElement('div');
+    merged.className = 'gd-bio-documents-profile';
+    merged.appendChild(bioPanel);
+    if (documentsHeader) {
+      documentsHeader.insertAdjacentElement('afterend', merged);
+    } else {
+      documentsWrap.prepend(merged);
+    }
+
+    bio.style.display = 'none';
+    const bioDivider = bio.nextElementSibling;
+    if (bioDivider?.classList.contains('divider')) bioDivider.style.display = 'none';
   }
 
   function setupVideo() {
@@ -235,11 +273,13 @@
     const awards = document.getElementById('awards');
     const body = document.getElementById('awardsBody');
     if (!awards || !body) return;
-    body.classList.add('open');
-    body.style.maxHeight = 'none';
-    body.style.opacity = '1';
+    // Restore the platform's normal reveal-on-demand behavior.
+    body.classList.remove('open');
+    body.style.removeProperty('max-height');
+    body.style.removeProperty('opacity');
+    body.style.removeProperty('overflow');
     const label = awards.querySelector('.toggle-label');
-    if (label) label.textContent = 'Open';
+    if (label) label.textContent = 'Expand';
   }
 
   function firstSocialUrl(socials, key) {
@@ -490,6 +530,7 @@
 
     setupHero(epk);
     setupCareerRecord();
+    setupBioDocuments(epk);
     setupVideo();
     setupAwards();
     setupConnect(epk);
