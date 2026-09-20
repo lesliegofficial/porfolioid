@@ -233,13 +233,21 @@
       if (title) title.textContent = 'Biography & Professional Documents';
     }
 
+    const cards = documentsWrap.querySelector('.career-stacked-cards');
+    const suite = document.createElement('div');
+    suite.className = 'gd-profile-suite';
+
     const merged = document.createElement('div');
     merged.className = 'gd-bio-documents-profile';
     merged.appendChild(bioPanel);
+    suite.appendChild(merged);
+
+    if (cards) suite.appendChild(cards);
+
     if (documentsHeader) {
-      documentsHeader.insertAdjacentElement('afterend', merged);
+      documentsHeader.insertAdjacentElement('afterend', suite);
     } else {
-      documentsWrap.prepend(merged);
+      documentsWrap.prepend(suite);
     }
 
     bio.style.display = 'none';
@@ -314,6 +322,11 @@
     const summary = document.createElement('div');
     summary.className = 'gd-connect-summary';
 
+    const eyebrow = document.createElement('div');
+    eyebrow.className = 'gd-connect-eyebrow';
+    eyebrow.textContent = 'Connect';
+    summary.appendChild(eyebrow);
+
     const title = document.createElement('h2');
     title.className = 'gd-connect-title';
     title.textContent = "Let's build what's next.";
@@ -365,12 +378,14 @@
       actions.appendChild(more);
     }
 
-    if (epk.bookingEnabled !== false && typeof window.openInquiryModal === 'function') {
+    if (epk.bookingEnabled !== false) {
       const inquiry = document.createElement('button');
       inquiry.type = 'button';
       inquiry.className = 'gd-inquiry-btn';
       inquiry.textContent = epk.bookingLabel ? `Send ${epk.bookingLabel} →` : 'Send an Inquiry →';
-      inquiry.addEventListener('click', () => window.openInquiryModal());
+      inquiry.addEventListener('click', () => {
+        if (typeof window.openInquiryModal === 'function') window.openInquiryModal();
+      });
       actions.appendChild(inquiry);
     }
 
