@@ -959,8 +959,9 @@ const FIXED_PORTFOLIO_SECTION = {
 // Career Profile is intentionally excluded because it is the fixed opening
 // identity experience and must always remain first.
 const DEFAULT_SECTIONS = [
-  { id: 'bio',       label: 'Biography',              icon: '👤' },
-  { id: 'documents', label: 'Professional Documents', icon: '📋' },
+  { id: 'bio',               label: 'Biography',                icon: '👤' },
+  { id: 'career-highlights', label: 'Career Record Highlights', icon: '✦' },
+  { id: 'documents',         label: 'Professional Documents',   icon: '📋' },
   { id: 'credits',   label: 'Credits',                icon: '🏆' },
   { id: 'photos',    label: 'Photos',                 icon: '📸' },
   { id: 'videos',    label: 'Video',                  icon: '🎬' },
@@ -994,9 +995,18 @@ function normalizeSectionOrder(savedOrder) {
   // These two sections existed in the dashboard before Section Order knew
   // about them. Insert them in the same logical positions as the dashboard
   // without resetting any order the owner may already have customized.
-  if (!seen.has('documents')) {
+  if (!seen.has('career-highlights')) {
     const bioIndex = normalized.indexOf('bio');
-    normalized.splice(bioIndex >= 0 ? bioIndex + 1 : 0, 0, 'documents');
+    normalized.splice(bioIndex >= 0 ? bioIndex + 1 : 0, 0, 'career-highlights');
+    seen.add('career-highlights');
+  }
+  if (!seen.has('documents')) {
+    const highlightsIndex = normalized.indexOf('career-highlights');
+    const bioIndex = normalized.indexOf('bio');
+    const insertAt = highlightsIndex >= 0
+      ? highlightsIndex + 1
+      : (bioIndex >= 0 ? bioIndex + 1 : 0);
+    normalized.splice(insertAt, 0, 'documents');
     seen.add('documents');
   }
   if (!seen.has('works')) {
@@ -1019,14 +1029,20 @@ function normalizeSectionOrder(savedOrder) {
 
 function initSectionsPanel() {
   const epk = window._epkData || window.epk || {};
-  const order = normalizeSectionOrder(epk.sectionOrder);
-  const visibility = epk.sectionVisibility || {};
+  // Dashboard-only planning state. This intentionally does NOT overwrite
+  // sectionOrder/sectionVisibility, so the public portfolio stays untouched
+  // while the dashboard structure is being finalized.
+  const order = normalizeSectionOrder(epk.dashboardSectionOrder || epk.sectionOrder);
+  const visibility = epk.dashboardSectionVisibility || epk.sectionVisibility || {};
   const list = document.getElementById('sectionsOrderList');
   if (!list) return;
 
-  // Keep normalized section data in memory immediately so the owner sees
-  // and saves the same canonical model that the public portfolio uses.
-  epk.sectionOrder = [...order];
+  // Keep only dashboard planning state in memory. Public sectionOrder stays
+  // exactly as-is until live-page work is intentionally done later.
+  epk.dashboardSectionOrder = [...order];
+  if (!epk.dashboardSectionVisibility) {
+    epk.dashboardSectionVisibility = { ...visibility };
+  }
   window._epkData = epk;
   if (typeof window.epk !== 'undefined') window.epk = epk;
 
@@ -1042,9 +1058,7 @@ function initSectionsPanel() {
     </div>`;
 
   list.innerHTML = fixedRow + ordered.map((s, i) => {
-    const visible = s.id === 'documents'
-      ? (visibility[s.id] !== false && epk.resumeEnabled !== false)
-      : visibility[s.id] !== false;
+    const visible = visibility[s.id] !== false;
     return `
     <div class="section-order-item" draggable="false" data-id="${s.id}" data-index="${i}"
       style="display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;margin-bottom:0.5rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.15);cursor:grab;border-left:3px solid ${visible ? 'var(--gold)' : 'rgba(255,255,255,0.1)'}">
@@ -1070,19 +1084,14 @@ function initSectionsPanel() {
 
 function toggleSectionVisibility(id, btn) {
   const epk = window._epkData || {};
-  if (!epk.sectionVisibility) epk.sectionVisibility = {};
+  if (!epk.dashboardSectionVisibility) {
+    epk.dashboardSectionVisibility = { ...(epk.sectionVisibility || {}) };
+  }
 
-  const current = id === 'documents'
-    ? (epk.sectionVisibility[id] !== false && epk.resumeEnabled !== false)
-    : epk.sectionVisibility[id] !== false;
+  const current = epk.dashboardSectionVisibility[id] !== false;
   const next = !current;
 
-  epk.sectionVisibility[id] = next;
-  if (id === 'documents') {
-    epk.resumeEnabled = next;
-    const resumeToggle = document.getElementById('resumeToggle');
-    if (resumeToggle) resumeToggle.checked = next;
-  }
+  epk.dashboardSectionVisibility[id] = next;
 
   window._epkData = epk;
   if (typeof window.epk !== 'undefined') window.epk = epk;
@@ -1098,8 +1107,8 @@ function syncSectionOrderFromDOM() {
   if (!list) return;
   const newOrder = [...list.querySelectorAll('.section-order-item')].map(el => el.dataset.id);
   if (!window._epkData) window._epkData = {};
-  window._epkData.sectionOrder = newOrder;
-  if (typeof epk !== 'undefined' && epk) epk.sectionOrder = [...newOrder];
+  window._epkData.dashboardSectionOrder = newOrder;
+  if (typeof epk !== 'undefined' && epk) epk.dashboardSectionOrder = [...newOrder];
 }
 
 function moveSectionBy(id, direction) {
@@ -1263,17 +1272,20 @@ function initDragDrop() {
 }
 
 async function saveSectionSettings() {
-  // Use both window._epkData and module-level epk, whichever is available
+  // Dashboard-only planner save. Do NOT write to public sectionOrder or
+  // sectionVisibility while we are fixing the dashboard model.
   const epkData = window._epkData || epk;
   if (!epkData) return;
-  // Read current order from DOM
+
   const items = document.querySelectorAll('.section-order-item');
-  epkData.sectionOrder = [...items].map(el => el.dataset.id);
-  // Sync visibility from current _epkData if available
-  if (window._epkData && window._epkData.sectionVisibility) {
-    epkData.sectionVisibility = window._epkData.sectionVisibility;
+  epkData.dashboardSectionOrder = [...items].map(el => el.dataset.id);
+
+  if (window._epkData && window._epkData.dashboardSectionVisibility) {
+    epkData.dashboardSectionVisibility = {
+      ...window._epkData.dashboardSectionVisibility
+    };
   }
-  // Keep both references in sync
+
   window._epkData = epkData;
 
   const slug = activeProfileSlug || epkData.slug || currentUser?.slug;
@@ -1285,7 +1297,7 @@ async function saveSectionSettings() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'save', slug, data: epkData })
     });
-    if (res.ok) showToast('Section order saved ✓');
+    if (res.ok) showToast('Dashboard section order saved ✓');
     else showToast('Save failed — try again');
   } catch(e) { showToast('Error saving — try again'); }
 }
