@@ -13,13 +13,22 @@ function getArchiveParamsFromURL() {
   const params = new URLSearchParams(window.location.search);
   let slug = params.get('slug');
   let work = params.get('work');
-  if (slug && work) return { slug, work };
+  const theme = params.get('theme');
+  if (slug && work) return { slug, work, theme };
   // Netlify's status-200 rewrite (/archive/:slug/:work -> archive.html?slug=:slug&work=:work) substitutes
   // the query string server-side only — window.location.search still reflects the original clean URL the
   // visitor's browser actually requested. Parse the real values straight out of the pathname instead.
   const match = window.location.pathname.match(/\/archive\/([^\/]+)\/([^\/]+)/);
-  if (match) return { slug: decodeURIComponent(match[1]), work: decodeURIComponent(match[2]) };
-  return { slug: null, work: null };
+  if (match) return { slug: decodeURIComponent(match[1]), work: decodeURIComponent(match[2]), theme };
+  return { slug: null, work: null, theme };
+}
+
+function archiveApplyTheme(epk, requestedTheme) {
+  const allowedThemes = ['gold', 'sage', 'sage-light', 'midnight', 'plum'];
+  const selectedTheme = allowedThemes.includes(requestedTheme)
+    ? requestedTheme
+    : (allowedThemes.includes(epk && epk.theme) ? epk.theme : 'gold');
+  document.documentElement.dataset.theme = selectedTheme;
 }
 
 // Reused from epk.js's status logic so Archive and homepage cards never disagree on a Work's status.
@@ -746,7 +755,7 @@ function buildArchiveRelated(w, allWorks, slug) {
   return `
     <div class="arc-related-grid">
       ${related.map(rw => `
-        <a class="arc-related-item" href="/archive/${archiveEscape(slug)}/${archiveEscape(rw.id)}">
+        <a class="arc-related-item" href="/archive/${archiveEscape(slug)}/${archiveEscape(rw.id)}?theme=${encodeURIComponent(document.documentElement.dataset.theme || 'gold')}">
           <img src="${archiveEscape(rw.heroImage || '')}" alt="${archiveEscape(rw.title)}">
           <div class="arc-related-title">${archiveEscape(rw.title)}</div>
         </a>`).join('')}
@@ -990,6 +999,7 @@ function toggleArchiveLang(lang) {
 }
 
 const archiveParams = getArchiveParamsFromURL();
+if (archiveParams.theme) archiveApplyTheme(null, archiveParams.theme);
 if (archiveParams.slug && archiveParams.work) {
   fetch('/api/epk', {
     method: 'POST',
@@ -1000,6 +1010,7 @@ if (archiveParams.slug && archiveParams.work) {
   .then(function(data) {
     if (data.success && data.epk) {
       try {
+        archiveApplyTheme(data.epk, archiveParams.theme);
         archiveLoadedEpk = data.epk;
         archiveLoadedWorkSlug = archiveParams.work;
         buildArchive(data.epk, archiveParams.work);
