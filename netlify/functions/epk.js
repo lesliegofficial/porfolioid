@@ -733,13 +733,51 @@ exports.handler = async (event) => {
 
         const res = await sbGet('user_profiles', `user_slug=eq.${userSlug}&order=created_at.asc`);
         if (!res.ok) return ok({ profiles: [] });
-        return ok({ profiles: res.data });
+
+        // Existing single-profile users may predate user_profiles. If they
+        // create an additional profile, that new row can be the only registry
+        // entry even though the original primary EPK still exists. Always
+        // include the original user slug as the primary profile so the
+        // dashboard switcher can never hide it.
+        const profiles = Array.isArray(res.data) ? [...res.data] : [];
+        const hasPrimary = profiles.some(p =>
+          p.profile_slug === userSlug || p.is_primary === true
+        );
+        if (!hasPrimary) {
+          profiles.unshift({
+            user_slug: userSlug,
+            profile_slug: userSlug,
+            profile_type: 'primary',
+            profile_name: 'Primary',
+            is_primary: true
+          });
+        }
+        return ok({ profiles });
       }
 
       // ── CREATE PROFILE ──
       if (action === 'createProfile') {
         const { userSlug, profileSlug, profileType, profileName } = body;
         if (!userSlug || !profileSlug) return err('userSlug and profileSlug required');
+
+        // Ensure the original professional profile is registered before
+        // adding a secondary profile. This keeps older single-profile
+        // accounts compatible with the multi-profile switcher.
+        if (USE_SUPABASE) {
+          const primaryRes = await sbGet(
+            'user_profiles',
+            `user_slug=eq.${userSlug}&profile_slug=eq.${userSlug}&select=profile_slug`
+          );
+          if (primaryRes.ok && primaryRes.data.length === 0) {
+            await sb('user_profiles', 'POST', {
+              user_slug: userSlug,
+              profile_slug: userSlug,
+              profile_type: 'primary',
+              profile_name: 'Primary',
+              is_primary: true
+            });
+          }
+        }
 
         // Check slug not taken
         const slugCheck = await sbGet('epk_profiles', `slug=eq.${profileSlug}&select=slug`);
