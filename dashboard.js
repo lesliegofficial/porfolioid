@@ -990,9 +990,9 @@ function initSectionsPanel() {
   list.innerHTML = ordered.map((s, i) => {
     const visible = visibility[s.id] !== false;
     return `
-    <div class="section-order-item" draggable="true" data-id="${s.id}" data-index="${i}"
+    <div class="section-order-item" draggable="false" data-id="${s.id}" data-index="${i}"
       style="display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;margin-bottom:0.5rem;background:var(--dark-2);border:1px solid rgba(201,168,76,0.15);cursor:grab;border-left:3px solid ${visible ? 'var(--gold)' : 'rgba(255,255,255,0.1)'}">
-      <span style="color:rgba(255,255,255,0.3);font-size:1.2rem;cursor:grab;letter-spacing:-2px">⠿⠿</span>
+      <span class="section-drag-handle" draggable="false" tabindex="0" role="button" aria-label="Drag to reorder ${s.label}" title="Drag to reorder" style="color:rgba(255,255,255,0.3);font-size:1.2rem;cursor:grab;letter-spacing:-2px;touch-action:none;user-select:none;-webkit-user-select:none">⠿⠿</span>
       <span style="font-size:1.1rem">${s.icon}</span>
       <span style="font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--white);flex:1">${s.label}</span>
       <button onclick="toggleSectionVisibility('${s.id}', this)" 
@@ -1023,68 +1023,138 @@ function toggleSectionVisibility(id, btn) {
 function initDragDrop() {
   const list = document.getElementById('sectionsOrderList');
   if (!list) return;
+
+  // initSectionsPanel() can run every time the owner opens this panel.
+  // Keep one delegated listener set on the persistent list element instead
+  // of stacking duplicate drag listeners on every visit.
+  if (list.dataset.dragDropReady === 'true') return;
+  list.dataset.dragDropReady = 'true';
+
   let dragSrc = null;
-  let placeholder = null;
+  let activePointerId = null;
+  let activeHandle = null;
 
-  function getItems() { return [...list.querySelectorAll('.section-order-item')]; }
-
-  function createPlaceholder() {
-    const ph = document.createElement('div');
-    ph.id = 'drag-placeholder';
-    ph.style.cssText = 'height:60px;margin-bottom:0.5rem;border:2px dashed var(--gold);background:rgba(201,168,76,0.05);border-radius:2px;transition:all 0.15s';
-    return ph;
-  }
-
-  function removePlaceholder() {
-    const ph = document.getElementById('drag-placeholder');
-    if (ph) ph.remove();
+  function getItems() {
+    return [...list.querySelectorAll('.section-order-item')];
   }
 
   function updateOrder() {
     const newOrder = getItems().map(el => el.dataset.id);
     if (!window._epkData) window._epkData = {};
     window._epkData.sectionOrder = newOrder;
+    // Keep the module-level profile object in sync too, so switching panels
+    // or profiles before saving cannot silently restore the old order.
+    if (typeof epk !== 'undefined' && epk) epk.sectionOrder = [...newOrder];
   }
 
-  list.addEventListener('dragstart', e => {
-    const item = e.target.closest('.section-order-item');
+  function setDraggingVisual(item, dragging) {
     if (!item) return;
-    dragSrc = item;
-    e.dataTransfer.effectAllowed = 'move';
-    setTimeout(() => { item.style.opacity = '0.4'; }, 0);
-    placeholder = createPlaceholder();
-  });
-
-  list.addEventListener('dragend', e => {
-    const item = e.target.closest('.section-order-item');
-    if (item) item.style.opacity = '1';
-    removePlaceholder();
-    dragSrc = null;
-  });
-
-  list.addEventListener('dragover', e => {
-    e.preventDefault();
-    if (!dragSrc || !placeholder) return;
-    const target = e.target.closest('.section-order-item');
-    if (!target || target === dragSrc) return;
-    const rect = target.getBoundingClientRect();
-    const midY = rect.top + rect.height / 2;
-    removePlaceholder();
-    if (e.clientY < midY) {
-      list.insertBefore(placeholder, target);
-    } else {
-      list.insertBefore(placeholder, target.nextSibling);
+    item.style.opacity = dragging ? '0.58' : '1';
+    item.style.transform = dragging ? 'scale(0.995)' : '';
+    item.style.boxShadow = dragging ? '0 8px 24px rgba(0,0,0,0.35)' : '';
+    item.style.zIndex = dragging ? '5' : '';
+    item.style.position = dragging ? 'relative' : '';
+    const handle = item.querySelector('.section-drag-handle');
+    if (handle) {
+      handle.style.cursor = dragging ? 'grabbing' : 'grab';
+      handle.setAttribute('aria-grabbed', dragging ? 'true' : 'false');
     }
+  }
+
+  function moveDraggedItem(clientY) {
+    if (!dragSrc) return;
+    const otherItems = getItems().filter(item => item !== dragSrc);
+    let before = null;
+
+    for (const item of otherItems) {
+      const rect = item.getBoundingClientRect();
+      if (clientY < rect.top + rect.height / 2) {
+        before = item;
+        break;
+      }
+    }
+
+    if (before) {
+      if (dragSrc.nextElementSibling !== before) list.insertBefore(dragSrc, before);
+    } else if (list.lastElementChild !== dragSrc) {
+      list.appendChild(dragSrc);
+    }
+  }
+
+  function finishPointerDrag(e) {
+    if (!dragSrc || activePointerId === null || e.pointerId !== activePointerId) return;
+
+    if (activeHandle && activeHandle.hasPointerCapture && activeHandle.hasPointerCapture(activePointerId)) {
+      try { activeHandle.releasePointerCapture(activePointerId); } catch (_) {}
+    }
+
+    setDraggingVisual(dragSrc, false);
+    updateOrder();
+
+    dragSrc = null;
+    activePointerId = null;
+    activeHandle = null;
+    document.body.style.userSelect = '';
+    document.body.style.cursor = '';
+  }
+
+  // Pointer Events are reliable on mouse, trackpad, pen, and touch. Using
+  // the visible handle avoids the inconsistent native HTML5 drag behavior
+  // that was preventing reordering on the dashboard.
+  list.addEventListener('pointerdown', e => {
+    const handle = e.target.closest('.section-drag-handle');
+    if (!handle || e.button !== 0) return;
+
+    const item = handle.closest('.section-order-item');
+    if (!item) return;
+
+    e.preventDefault();
+    dragSrc = item;
+    activePointerId = e.pointerId;
+    activeHandle = handle;
+
+    if (handle.setPointerCapture) {
+      try { handle.setPointerCapture(activePointerId); } catch (_) {}
+    }
+
+    setDraggingVisual(item, true);
+    document.body.style.userSelect = 'none';
+    document.body.style.cursor = 'grabbing';
   });
 
-  list.addEventListener('drop', e => {
+  list.addEventListener('pointermove', e => {
+    if (!dragSrc || activePointerId === null || e.pointerId !== activePointerId) return;
     e.preventDefault();
-    if (!dragSrc || !placeholder) return;
-    list.insertBefore(dragSrc, placeholder);
-    removePlaceholder();
-    dragSrc.style.opacity = '1';
-    updateOrder();
-    dragSrc = null;
+    moveDraggedItem(e.clientY);
+  });
+
+  list.addEventListener('pointerup', finishPointerDrag);
+  list.addEventListener('pointercancel', finishPointerDrag);
+
+  // Keyboard fallback: focus the handle and use ↑ / ↓ to reorder.
+  list.addEventListener('keydown', e => {
+    const handle = e.target.closest('.section-drag-handle');
+    if (!handle || (e.key !== 'ArrowUp' && e.key !== 'ArrowDown')) return;
+
+    const item = handle.closest('.section-order-item');
+    if (!item) return;
+    e.preventDefault();
+
+    if (e.key === 'ArrowUp') {
+      const previous = item.previousElementSibling;
+      if (previous && previous.classList.contains('section-order-item')) {
+        list.insertBefore(item, previous);
+        updateOrder();
+        handle.focus();
+      }
+    } else {
+      const next = item.nextElementSibling;
+      if (next && next.classList.contains('section-order-item')) {
+        list.insertBefore(item, next.nextElementSibling);
+        updateOrder();
+        handle.focus();
+      }
+    }
   });
 }
 
@@ -1102,7 +1172,7 @@ async function saveSectionSettings() {
   // Keep both references in sync
   window._epkData = epkData;
 
-  const slug = currentUser?.slug;
+  const slug = activeProfileSlug || epkData.slug || currentUser?.slug;
   if (!slug) { showToast('Could not find portfolio slug'); return; }
 
   try {
