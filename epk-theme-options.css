@@ -1887,11 +1887,12 @@
 }
 
 
-/* Midnight hero portrait alignment + clean lower edge. */
+/* Midnight hero portrait alignment + clean lower edge. Keep the dashboard's
+   saved inline transform available for portrait zoom. */
 @media (min-width:901px) {
   [data-theme="midnight"] .hero-img {
-    transform:scale(1.035) translateY(28px) !important;
-    transform-origin:center bottom !important;
+    top:28px !important;
+    transform-origin:center top !important;
   }
 }
 [data-theme="midnight"] .hero {
@@ -3091,12 +3092,12 @@
   order:5 !important;
 }
 /* ── BLUE ZONE: PORTRAIT HEADROOM ────────────────────────────────────────────
-   Lower the supplied portrait without resizing or altering the image so the
-   top of the hair no longer touches the navigation divider. */
+   Lower the portrait without overriding the transform/zoom saved by the
+   dashboard, so Blue Zone and Golden honor the same portrait-size control. */
 @media (min-width:901px) {
   [data-theme="midnight"] .hero-img {
-    transform:scale(0.92) translateY(0.5rem) !important;
-    transform-origin:center bottom !important;
+    top:0.5rem !important;
+    transform-origin:center top !important;
   }
 }
 
