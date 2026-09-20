@@ -1,0 +1,1170 @@
+/* porfolioID — Green District
+   Style 03. Editorial / architectural / structured.
+   Palette:
+   accent       #55B67A
+   accent-light #B4DAC2
+   accent-dark  #296540
+   This file is isolated behind [data-theme="district"] so Golden and Blue Zone remain untouched.
+*/
+
+[data-theme="district"] {
+  --black:#090B0A;
+  --dark:#0B0E0C;
+  --dark-2:#101411;
+  --dark-3:#141A16;
+  --dark-4:#1A221C;
+  --gray:#8E9791;
+  --gray-light:#C7CDC9;
+  --white:#F5F3EE;
+  --warm-white:#F5F3EE;
+
+  --accent-primary:#55B67A;
+  --accent-primary-rgb:85 182 122;
+  --accent-light:#B4DAC2;
+  --accent-light-rgb:180 218 194;
+  --accent-dark:#296540;
+  --accent-dark-rgb:41 101 64;
+  --accent-secondary:#B4DAC2;
+  --accent-secondary-rgb:180 218 194;
+
+  --accent-text:var(--accent-primary);
+  --accent-text-rgb:var(--accent-primary-rgb);
+  --accent-emphasis:var(--accent-primary);
+  --accent-emphasis-rgb:var(--accent-primary-rgb);
+  --accent-icon:var(--accent-primary);
+  --accent-icon-rgb:var(--accent-primary-rgb);
+  --accent-border:var(--accent-primary);
+  --accent-border-rgb:var(--accent-primary-rgb);
+  --accent-surface:var(--accent-dark);
+  --accent-surface-rgb:var(--accent-dark-rgb);
+
+  /* Legacy presentation aliases only. Product controls stay in the product token namespace. */
+  --gold:#55B67A;
+  --gold-light:#B4DAC2;
+  --gold-dark:#296540;
+}
+
+[data-theme="district"] body,
+[data-theme="district"] #epkContent,
+[data-theme="district"] .hero,
+[data-theme="district"] .career-profile-section,
+[data-theme="district"] .gallery-section,
+[data-theme="district"] .works-section,
+[data-theme="district"] #videos,
+[data-theme="district"] .collapsible-section,
+[data-theme="district"] #connect {
+  background:#090B0A !important;
+  color:#F5F3EE;
+}
+
+[data-theme="district"] body {
+  background:
+    radial-gradient(circle at 80% 10%, rgb(41 101 64 / 0.08), transparent 30%),
+    #090B0A !important;
+}
+
+[data-theme="district"] a { color:inherit; }
+
+/* ── SHELL / NAV ─────────────────────────────────────────────────────── */
+[data-theme="district"] nav {
+  min-height:72px;
+  padding:0 2.6rem 0 7.25rem !important;
+  background:rgb(9 11 10 / 0.96) !important;
+  border-bottom:1px solid rgb(85 182 122 / 0.18) !important;
+  backdrop-filter:blur(16px);
+}
+
+[data-theme="district"] .nav-logo {
+  color:#F5F3EE !important;
+  letter-spacing:-0.035em;
+}
+[data-theme="district"] .nav-logo span { color:#55B67A !important; }
+
+[data-theme="district"] .nav-links {
+  gap:1.15rem !important;
+  overflow-x:auto;
+  scrollbar-width:none;
+  white-space:nowrap;
+}
+[data-theme="district"] .nav-links::-webkit-scrollbar { display:none; }
+[data-theme="district"] .nav-links li { flex:0 0 auto; }
+[data-theme="district"] .nav-links a {
+  display:inline-flex;
+  align-items:center;
+  gap:0.38rem;
+  font-family:var(--font-mono);
+  font-size:0.51rem !important;
+  letter-spacing:0.13em !important;
+  color:rgb(245 243 238 / 0.66) !important;
+}
+[data-theme="district"] .nav-links a:hover,
+[data-theme="district"] .nav-links a.gd-nav-active {
+  color:#B4DAC2 !important;
+}
+[data-theme="district"] .gd-nav-num {
+  color:#55B67A;
+  font-weight:600;
+}
+[data-theme="district"] .nav-edit-btn {
+  background:#55B67A !important;
+  border-color:#55B67A !important;
+  color:#071009 !important;
+  box-shadow:none !important;
+}
+[data-theme="district"] #langEN,
+[data-theme="district"] #langES {
+  border-color:rgb(85 182 122 / 0.35) !important;
+  color:#B4DAC2 !important;
+  background:transparent !important;
+}
+[data-theme="district"] #langEN {
+  background:#55B67A !important;
+  color:#071009 !important;
+}
+
+/* ── SIGNATURE NUMBERED RAIL ─────────────────────────────────────────── */
+[data-theme="district"] #epkContent { margin-left:76px; }
+
+[data-theme="district"] .gd-rail {
+  position:fixed;
+  z-index:140;
+  left:0;
+  top:72px;
+  bottom:48px;
+  width:76px;
+  border-right:1px solid rgb(85 182 122 / 0.13);
+  background:linear-gradient(to bottom,rgb(9 11 10 / .98),rgb(9 11 10 / .92));
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:1.2rem 0.4rem;
+  box-sizing:border-box;
+}
+[data-theme="district"] .gd-rail-inner {
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:0.15rem;
+  overflow-y:auto;
+  scrollbar-width:none;
+}
+[data-theme="district"] .gd-rail-inner::-webkit-scrollbar { display:none; }
+[data-theme="district"] .gd-rail-link {
+  position:relative;
+  display:grid;
+  justify-items:center;
+  gap:0.12rem;
+  text-decoration:none;
+  padding:0.52rem 0.18rem 0.7rem;
+  color:rgb(245 243 238 / 0.52);
+  min-height:53px;
+}
+[data-theme="district"] .gd-rail-link::after {
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:0;
+  width:1px;
+  height:11px;
+  background:rgb(85 182 122 / 0.32);
+}
+[data-theme="district"] .gd-rail-link:last-child::after { display:none; }
+[data-theme="district"] .gd-rail-number {
+  font-family:var(--font-display);
+  font-size:0.82rem;
+  line-height:1;
+  color:#55B67A;
+}
+[data-theme="district"] .gd-rail-label {
+  font-family:var(--font-mono);
+  font-size:0.46rem;
+  line-height:1.15;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  text-align:center;
+  color:rgb(245 243 238 / 0.62);
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+  max-height:58px;
+}
+[data-theme="district"] .gd-rail-link:hover .gd-rail-label,
+[data-theme="district"] .gd-rail-link.gd-active .gd-rail-label {
+  color:#F5F3EE;
+}
+[data-theme="district"] .gd-rail-link.gd-active::before {
+  content:"";
+  position:absolute;
+  left:-0.4rem;
+  top:0.55rem;
+  bottom:0.72rem;
+  width:2px;
+  background:#55B67A;
+}
+
+/* ── GLOBAL SECTION LANGUAGE ─────────────────────────────────────────── */
+[data-theme="district"] .divider {
+  height:1px !important;
+  background:linear-gradient(to right,transparent,rgb(85 182 122 / .18),transparent) !important;
+  border:0 !important;
+}
+[data-theme="district"] .section-title,
+[data-theme="district"] .ch3-title,
+[data-theme="district"] .works-title,
+[data-theme="district"] .collapsible-header-title,
+[data-theme="district"] .booking-title {
+  color:#F5F3EE !important;
+}
+[data-theme="district"] .section-label,
+[data-theme="district"] .ch3-label,
+[data-theme="district"] .works-label,
+[data-theme="district"] .collapsible-header-label,
+[data-theme="district"] #galleryEyebrow {
+  color:#55B67A !important;
+}
+[data-theme="district"] .gd-number-label,
+[data-theme="district"] .gd-hero-kicker {
+  display:flex;
+  align-items:center;
+  gap:0.7rem;
+  font-family:var(--font-mono);
+  font-size:0.55rem;
+  letter-spacing:0.21em;
+  text-transform:uppercase;
+  color:#55B67A;
+  font-weight:600;
+}
+[data-theme="district"] .gd-number-label::after,
+[data-theme="district"] .gd-hero-kicker::after {
+  content:"";
+  height:1px;
+  width:min(155px,16vw);
+  background:linear-gradient(to right,rgb(85 182 122 / .62),transparent);
+}
+[data-theme="district"] .gd-number-label {
+  width:min(1280px,calc(100% - 5rem));
+  margin:0 auto 1.1rem;
+  padding-top:2.7rem;
+}
+
+/* ── HERO: ASYMMETRIC EDITORIAL DISTRICT ─────────────────────────────── */
+[data-theme="district"] .hero {
+  display:grid !important;
+  grid-template-columns:minmax(0,1.08fr) minmax(370px,.92fr) !important;
+  grid-template-areas:"content image";
+  min-height:690px;
+  overflow:hidden;
+  border-bottom:1px solid rgb(85 182 122 / .16);
+  background:
+    linear-gradient(118deg,rgb(41 101 64 / .08),transparent 33%),
+    #090B0A !important;
+}
+[data-theme="district"] .hero-content {
+  grid-area:content;
+  padding:5.9rem clamp(2rem,5vw,5.5rem) 4.4rem !important;
+  justify-content:center !important;
+  position:relative;
+  z-index:3;
+}
+[data-theme="district"] .hero-image-panel {
+  grid-area:image;
+  min-height:620px !important;
+  margin:2.4rem clamp(1.7rem,4vw,4.5rem) 2.4rem 0;
+  border:1px solid rgb(85 182 122 / .5);
+  border-radius:12px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 45%,rgb(41 101 64 / .22),transparent 55%),
+    #0B0E0C;
+  isolation:isolate;
+}
+[data-theme="district"] .hero-image-panel::before {
+  content:"";
+  position:absolute;
+  width:112%;
+  aspect-ratio:1;
+  border:1px solid rgb(85 182 122 / .25);
+  border-radius:50%;
+  left:-32%;
+  top:11%;
+  z-index:0;
+  pointer-events:none;
+}
+[data-theme="district"] .hero-image-panel::after {
+  background:linear-gradient(to top,#090B0A 0%,transparent 18%) !important;
+  z-index:1;
+  pointer-events:none;
+}
+[data-theme="district"] .hero-img {
+  position:relative;
+  z-index:1;
+  width:100%;
+  height:100%;
+  min-height:620px;
+  object-fit:contain !important;
+  object-position:center bottom !important;
+  filter:saturate(.98) contrast(1.02);
+}
+[data-theme="district"] .gd-hero-kicker {
+  order:0;
+  margin-bottom:1.15rem;
+}
+[data-theme="district"] .hero-name {
+  order:1;
+  font-size:clamp(3.8rem,6.4vw,7rem) !important;
+  line-height:.84 !important;
+  margin-bottom:1.4rem !important;
+  letter-spacing:-.045em !important;
+}
+[data-theme="district"] .hero-name em {
+  color:#55B67A !important;
+  text-shadow:none !important;
+}
+[data-theme="district"] .hero-roles-row {
+  order:2;
+  gap:.45rem !important;
+  margin:0 0 1.3rem !important;
+  padding:0 !important;
+  border:0 !important;
+}
+[data-theme="district"] .hero-role-item {
+  min-width:0 !important;
+  padding:.38rem .72rem !important;
+  flex-direction:row !important;
+  border:1px solid rgb(85 182 122 / .38) !important;
+  border-radius:999px;
+  background:transparent !important;
+  gap:.35rem !important;
+}
+[data-theme="district"] .hero-role-icon {
+  display:none !important;
+}
+[data-theme="district"] .hero-role-item span {
+  font-size:.48rem !important;
+  line-height:1.25 !important;
+  color:rgb(245 243 238 / .82) !important;
+}
+[data-theme="district"] .hero-bio {
+  order:3;
+  max-width:670px;
+  margin:0 0 1.45rem;
+  padding:0 !important;
+}
+[data-theme="district"] .hero-bio p {
+  font-family:var(--font-mono);
+  font-size:.67rem !important;
+  line-height:1.75 !important;
+  color:rgb(245 243 238 / .75) !important;
+  margin:0 !important;
+}
+[data-theme="district"] .hero-stats-row {
+  order:4;
+  border:0 !important;
+  margin:0 0 1.45rem !important;
+  padding:0 !important;
+}
+[data-theme="district"] .hero-stat-item {
+  padding:0 1.4rem 0 0 !important;
+  margin:0 1.4rem 0 0 !important;
+  border-right:1px solid rgb(85 182 122 / .25) !important;
+}
+[data-theme="district"] .hero-stat-n {
+  font-size:1.8rem !important;
+  color:#F5F3EE !important;
+}
+[data-theme="district"] .hero-stat-l {
+  color:#55B67A !important;
+  font-size:.44rem !important;
+}
+[data-theme="district"] .hero-presence-bar {
+  display:none !important;
+}
+[data-theme="district"] .gd-hero-actions {
+  order:5;
+  display:flex;
+  gap:.75rem;
+  align-items:center;
+  flex-wrap:wrap;
+}
+[data-theme="district"] .gd-cta {
+  min-height:43px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:.65rem;
+  padding:0 1.35rem;
+  border-radius:999px;
+  font-family:var(--font-mono);
+  font-size:.54rem;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  text-decoration:none;
+  transition:transform .2s ease,background .2s ease,border-color .2s ease,color .2s ease;
+}
+[data-theme="district"] .gd-cta:hover { transform:translateY(-2px); }
+[data-theme="district"] .gd-cta-primary {
+  background:#55B67A;
+  color:#071009;
+  border:1px solid #55B67A;
+  font-weight:700;
+}
+[data-theme="district"] .gd-cta-secondary {
+  color:#F5F3EE;
+  border:1px solid rgb(85 182 122 / .45);
+  background:transparent;
+}
+[data-theme="district"] .gd-cta-secondary:hover {
+  background:rgb(41 101 64 / .22);
+  border-color:#55B67A;
+}
+[data-theme="district"] .gd-hero-aside {
+  position:absolute;
+  z-index:4;
+  top:2rem;
+  right:1.25rem;
+  display:grid;
+  gap:.22rem;
+  pointer-events:none;
+}
+[data-theme="district"] .gd-hero-aside span {
+  font-family:var(--font-mono);
+  font-size:.48rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:#B4DAC2;
+  text-align:right;
+  text-shadow:0 1px 10px #000;
+}
+
+/* ── CAREER RECORD: ONE FEATURE + SUPPORT + FOUNDER STRIP ───────────── */
+[data-theme="district"] #career-highlights .ch3-wrap {
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding:0 2.5rem 3.5rem !important;
+}
+[data-theme="district"] #career-highlights .gd-number-label {
+  width:100%;
+  padding-top:3.4rem;
+  margin-bottom:.65rem;
+}
+[data-theme="district"] #career-highlights .ch3-header {
+  margin:0 0 1.6rem !important;
+  padding:0 !important;
+  border:0 !important;
+}
+[data-theme="district"] #career-highlights .ch3-label {
+  display:none !important;
+}
+[data-theme="district"] #career-highlights .section-title {
+  font-size:clamp(2rem,3.8vw,3.4rem) !important;
+  line-height:1 !important;
+}
+[data-theme="district"] #career-highlights .ch3-grid {
+  display:grid !important;
+  grid-template-columns:minmax(330px,1.18fr) repeat(2,minmax(0,1fr)) !important;
+  grid-auto-rows:minmax(155px,auto);
+  gap:.8rem !important;
+}
+[data-theme="district"] #career-highlights .ch3-card {
+  min-height:155px;
+  background:#101411 !important;
+  border:1px solid rgb(255 255 255 / .07) !important;
+  border-radius:10px !important;
+  box-shadow:none !important;
+  overflow:hidden;
+  transform:none !important;
+}
+[data-theme="district"] #career-highlights .ch3-card:hover {
+  border-color:rgb(85 182 122 / .45) !important;
+  background:#121814 !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-featured {
+  grid-column:1;
+  grid-row:1 / span 2;
+  min-height:330px;
+  border-color:rgb(85 182 122 / .72) !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-featured .ch3-img {
+  display:block !important;
+  height:210px !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-featured .ch3-img img,
+[data-theme="district"] #career-highlights .ch3-card.gd-featured .ch3-img video {
+  width:100%;
+  height:100%;
+  object-fit:cover !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-support .ch3-img {
+  display:none !important;
+}
+[data-theme="district"] #career-highlights .ch3-card .ch3-body {
+  padding:1.15rem !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-featured .ch3-body {
+  padding:1.25rem !important;
+}
+[data-theme="district"] #career-highlights .ch3-icon {
+  width:27px !important;
+  height:27px !important;
+  border:1px solid rgb(85 182 122 / .62) !important;
+  background:transparent !important;
+  border-radius:50%;
+  margin-bottom:.65rem !important;
+}
+[data-theme="district"] #career-highlights .ch3-icon svg { fill:#55B67A !important; }
+[data-theme="district"] #career-highlights .ch3-title {
+  font-size:1.05rem !important;
+  margin-bottom:.45rem !important;
+}
+[data-theme="district"] #career-highlights .ch3-desc {
+  font-family:var(--font-mono) !important;
+  font-size:.56rem !important;
+  line-height:1.58 !important;
+  color:rgb(245 243 238 / .58) !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-founder {
+  grid-column:1 / -1 !important;
+  grid-row:auto !important;
+  min-height:82px !important;
+  border-color:rgb(85 182 122 / .22) !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-founder .ch3-img {
+  display:none !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-founder .ch3-body {
+  min-height:82px;
+  display:grid !important;
+  grid-template-columns:auto minmax(150px,.55fr) minmax(260px,1.45fr);
+  align-items:center;
+  gap:1rem;
+  padding:1rem 1.25rem !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-founder .ch3-icon {
+  margin:0 !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-founder .ch3-title {
+  margin:0 !important;
+}
+[data-theme="district"] #career-highlights .ch3-card.gd-founder .ch3-desc {
+  margin:0 !important;
+}
+[data-theme="district"] #viewCompleteRecordCaption {
+  display:none !important;
+}
+[data-theme="district"] #viewCompleteRecordBtn {
+  margin-top:.45rem;
+  display:inline-flex;
+  font-family:var(--font-mono);
+  font-size:.54rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#55B67A !important;
+  border-bottom:1px solid rgb(85 182 122 / .38);
+}
+
+/* ── BIO / DOCUMENTS / CREDITS — SAME DISTRICT LANGUAGE ─────────────── */
+[data-theme="district"] #bio .ch3-wrap,
+[data-theme="district"] #documents .ch3-wrap,
+[data-theme="district"] #credits .ch3-wrap {
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding-left:2.5rem !important;
+  padding-right:2.5rem !important;
+}
+[data-theme="district"] #bio .career-stacked-bio,
+[data-theme="district"] #bio .career-sidebyside-left {
+  background:#101411;
+  border:1px solid rgb(85 182 122 / .16);
+  border-radius:10px;
+  overflow:hidden;
+}
+[data-theme="district"] #bio .career-stacked-bio {
+  grid-template-columns:minmax(320px,.9fr) minmax(0,1.1fr) !important;
+}
+[data-theme="district"] #bio .career-portrait {
+  width:100%;
+  height:100%;
+  min-height:390px;
+  object-fit:cover;
+}
+[data-theme="district"] #bio .career-bio-text {
+  padding:2.2rem !important;
+}
+[data-theme="district"] #bioToggleBtn,
+[data-theme="district"] .resume-card-btn,
+[data-theme="district"] .credit-expand-hint {
+  color:#55B67A !important;
+  border-color:rgb(85 182 122 / .4) !important;
+}
+[data-theme="district"] .resume-card,
+[data-theme="district"] .credit-card {
+  background:#101411 !important;
+  border-color:rgb(85 182 122 / .14) !important;
+  box-shadow:none !important;
+}
+
+/* ── PHOTOS: EXHIBITION WITH VISIBLE DIMMED SIDE FRAMES ─────────────── */
+[data-theme="district"] .gallery-section {
+  border-top:1px solid rgb(85 182 122 / .11);
+  border-bottom:1px solid rgb(85 182 122 / .11);
+}
+[data-theme="district"] .gallery-inner {
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding:0 2.5rem 3.6rem !important;
+}
+[data-theme="district"] .gallery-inner > .gd-number-label {
+  width:100%;
+  padding-top:3.4rem;
+  margin-bottom:.65rem;
+}
+[data-theme="district"] .exhibition-outer,
+[data-theme="district"] .gallery-inner {
+  background:transparent !important;
+}
+[data-theme="district"] .exhibition-fan-panel .exhibition-frame-outer .exhibition-frame {
+  border:1px solid rgb(41 101 64 / .65) !important;
+  background:#0D110E !important;
+  box-shadow:0 18px 42px rgb(0 0 0 / .42) !important;
+}
+[data-theme="district"] .exhibition-fan-panel .exhibition-frame-outer.exhibition-fan-hero .exhibition-frame {
+  border-color:#55B67A !important;
+  box-shadow:0 20px 54px rgb(0 0 0 / .5) !important;
+}
+[data-theme="district"] .exhibition-fan-panel .exhibition-frame-outer:not(.exhibition-fan-hero) {
+  opacity:.52 !important;
+  filter:saturate(.5) brightness(.58);
+  transition:opacity .25s ease,filter .25s ease;
+}
+[data-theme="district"] .exhibition-fan-panel .exhibition-frame-outer:not(.exhibition-fan-hero):hover {
+  opacity:.8 !important;
+  filter:saturate(.75) brightness(.75);
+}
+[data-theme="district"] .exhibition-arrow,
+[data-theme="district"] .gallery-scroll-arrow-btn {
+  color:#B4DAC2 !important;
+  border-color:rgb(85 182 122 / .58) !important;
+  background:#0A0E0B !important;
+  box-shadow:none !important;
+}
+[data-theme="district"] .exhibition-arrow:hover,
+[data-theme="district"] .gallery-scroll-arrow-btn:hover {
+  color:#071009 !important;
+  background:#55B67A !important;
+  border-color:#55B67A !important;
+}
+
+/* ── VIDEO: FEATURE + SUPPORTING COLLECTION ─────────────────────────── */
+[data-theme="district"] #videos .video-shell {
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding:0 2.5rem 3.8rem !important;
+}
+[data-theme="district"] #videos .video-shell > .gd-number-label {
+  width:100%;
+  padding-top:3.4rem;
+  margin-bottom:.65rem;
+}
+[data-theme="district"] #videos .section-label {
+  display:none !important;
+}
+[data-theme="district"] #videos .video-shell-header {
+  margin-bottom:1.4rem !important;
+  align-items:end !important;
+}
+[data-theme="district"] #videos .section-title {
+  font-size:clamp(2.1rem,4vw,3.6rem) !important;
+}
+[data-theme="district"] #videos .video-shell-subtitle {
+  font-family:var(--font-mono) !important;
+  font-size:.61rem !important;
+  color:rgb(245 243 238 / .58) !important;
+}
+[data-theme="district"] #videosFeatured {
+  display:grid;
+  grid-template-columns:minmax(0,1.65fr) minmax(280px,.75fr);
+  gap:1rem;
+  align-items:start;
+}
+[data-theme="district"] #videosFeatured > .video-hero {
+  grid-column:1;
+  display:block !important;
+  background:#101411 !important;
+  border:1px solid rgb(85 182 122 / .22);
+  border-radius:10px;
+  overflow:hidden;
+}
+[data-theme="district"] .video-hero-media {
+  aspect-ratio:16/9;
+  border:0 !important;
+  background:#050705 !important;
+}
+[data-theme="district"] .video-hero-info {
+  padding:1.1rem 1.2rem 1.25rem !important;
+}
+[data-theme="district"] .video-hero-eyebrow,
+[data-theme="district"] .video-hero-meta,
+[data-theme="district"] .video-hero-watch,
+[data-theme="district"] .videos-subheading {
+  color:#55B67A !important;
+}
+[data-theme="district"] .video-hero-title {
+  color:#F5F3EE !important;
+  font-size:1.45rem !important;
+}
+[data-theme="district"] .video-hero-desc {
+  color:rgb(245 243 238 / .58) !important;
+}
+[data-theme="district"] #videosFeatured > .videos-subsection {
+  grid-column:2;
+  margin:0 !important;
+  border:0 !important;
+  padding:0 !important;
+}
+[data-theme="district"] #videosFeatured .videos-subheading {
+  display:none !important;
+}
+[data-theme="district"] #videosFeatured .video-carousel-wrap {
+  display:block !important;
+}
+[data-theme="district"] #videosFeatured .video-carousel {
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  gap:.72rem !important;
+  overflow:visible !important;
+}
+[data-theme="district"] #videosFeatured .videos-collection-thumb {
+  display:grid !important;
+  grid-template-columns:118px 1fr;
+  min-height:78px;
+  border:1px solid rgb(255 255 255 / .07) !important;
+  border-radius:8px;
+  overflow:hidden;
+  background:#101411 !important;
+}
+[data-theme="district"] #videosFeatured .videos-collection-thumb img {
+  width:118px !important;
+  height:78px !important;
+  object-fit:cover !important;
+}
+[data-theme="district"] .video-carousel-arrow {
+  display:none !important;
+}
+[data-theme="district"] .vcard,
+[data-theme="district"] .video-list-item {
+  background:#101411 !important;
+  border-color:rgb(85 182 122 / .13) !important;
+  box-shadow:none !important;
+}
+[data-theme="district"] .vcard-play,
+[data-theme="district"] .video-play {
+  background:#55B67A !important;
+  color:#071009 !important;
+  box-shadow:none !important;
+}
+
+/* ── ORIGINAL WORKS: HORIZONTAL EDITORIAL ROWS ─────────────────────── */
+[data-theme="district"] .works-wrap {
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding:0 2.5rem 3.8rem !important;
+}
+[data-theme="district"] .works-wrap > .gd-number-label {
+  width:100%;
+  padding-top:3.4rem;
+  margin-bottom:.65rem;
+}
+[data-theme="district"] .works-label { display:none !important; }
+[data-theme="district"] .works-header { margin-bottom:1.35rem !important; }
+[data-theme="district"] .works-tagline {
+  color:rgb(245 243 238 / .62) !important;
+}
+[data-theme="district"] .works-grid {
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:.8rem !important;
+}
+[data-theme="district"] .work-card {
+  display:grid !important;
+  grid-template-columns:112px 1fr;
+  min-height:128px !important;
+  background:#101411 !important;
+  border:1px solid rgb(255 255 255 / .07) !important;
+  border-radius:10px !important;
+  box-shadow:none !important;
+  overflow:hidden;
+  transform:none !important;
+}
+[data-theme="district"] .work-card:hover {
+  border-color:rgb(85 182 122 / .42) !important;
+  box-shadow:none !important;
+}
+[data-theme="district"] .work-card-cover {
+  width:112px !important;
+  height:100% !important;
+  min-height:128px;
+  aspect-ratio:auto !important;
+  margin:0 !important;
+}
+[data-theme="district"] .work-card-cover img {
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+}
+[data-theme="district"] .work-card-body {
+  position:relative;
+  padding:1rem 1.1rem !important;
+  justify-content:center;
+}
+[data-theme="district"] .work-card-meta {
+  color:#55B67A !important;
+}
+[data-theme="district"] .work-card-status {
+  position:absolute !important;
+  top:.75rem;
+  right:.85rem;
+  margin:0 !important;
+  color:#B4DAC2 !important;
+  border-color:rgb(85 182 122 / .6) !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  animation:none !important;
+}
+[data-theme="district"] .work-card-status::after { display:none !important; }
+[data-theme="district"] .work-card-title {
+  font-size:1.15rem !important;
+  padding-right:5.3rem;
+}
+[data-theme="district"] .work-card-desc {
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+[data-theme="district"] .work-card-cta-row { display:none !important; }
+[data-theme="district"] .work-player {
+  margin-top:.65rem !important;
+  padding:.35rem .45rem !important;
+  background:transparent !important;
+  border-color:rgb(85 182 122 / .32) !important;
+}
+[data-theme="district"] .wp-playbtn {
+  border-color:#55B67A !important;
+  color:#071009 !important;
+  background:#55B67A !important;
+}
+[data-theme="district"] .wp-waveform,
+[data-theme="district"] .wp-progress-fill {
+  border-color:#55B67A !important;
+  background-color:#55B67A;
+}
+
+/* ── RECOGNITION / MUSIC / ASSETS ─────────────────────────────────── */
+[data-theme="district"] .collapsible-section {
+  border-top:1px solid rgb(85 182 122 / .13) !important;
+}
+[data-theme="district"] .collapsible-section > .gd-number-label {
+  max-width:1280px;
+  width:calc(100% - 5rem);
+  padding-top:3rem;
+  margin-bottom:.25rem;
+}
+[data-theme="district"] .collapsible-header {
+  max-width:1280px;
+  margin:0 auto;
+  padding:1.15rem 2.5rem 1.5rem !important;
+}
+[data-theme="district"] .collapsible-header-left { gap:1rem !important; }
+[data-theme="district"] .collapsible-icon {
+  width:36px !important;
+  height:36px !important;
+  border-radius:50%;
+  color:#55B67A !important;
+  border-color:rgb(85 182 122 / .45) !important;
+  background:transparent !important;
+}
+[data-theme="district"] .collapsible-header-label {
+  color:#55B67A !important;
+}
+[data-theme="district"] .collapsible-toggle {
+  color:#55B67A !important;
+}
+[data-theme="district"] #awards .collapsible-body {
+  max-height:none !important;
+  opacity:1 !important;
+  overflow:visible !important;
+}
+[data-theme="district"] #awards .collapsible-toggle {
+  display:none !important;
+}
+[data-theme="district"] #awards .awards-inner {
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding:0 2.5rem 3.5rem !important;
+}
+[data-theme="district"] #awards .awards-grid {
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:.8rem !important;
+}
+[data-theme="district"] #awards .award-card {
+  min-height:180px;
+  background:#101411 !important;
+  border:1px solid rgb(85 182 122 / .22) !important;
+  border-top:1px solid rgb(85 182 122 / .5) !important;
+  box-shadow:none !important;
+}
+[data-theme="district"] #awards .award-card-type,
+[data-theme="district"] #awards .award-card-icon {
+  color:#55B67A !important;
+}
+[data-theme="district"] #awards .award-card-title {
+  color:#F5F3EE !important;
+}
+[data-theme="district"] #music .music-tracks,
+[data-theme="district"] #assets .assets-grid {
+  border-color:rgb(85 182 122 / .15) !important;
+}
+
+/* ── CONNECT: CLEAN CLOSING DISTRICT ───────────────────────────────── */
+[data-theme="district"] #connect {
+  border-top:1px solid rgb(85 182 122 / .14);
+}
+[data-theme="district"] #connect > .gd-number-label {
+  max-width:1280px;
+  width:calc(100% - 5rem);
+  padding-top:3.4rem;
+  margin-bottom:.4rem;
+}
+[data-theme="district"] .gd-connect-summary {
+  max-width:1280px;
+  margin:0 auto;
+  padding:0 2.5rem 5rem;
+}
+[data-theme="district"] .gd-connect-title {
+  font-family:var(--font-display);
+  font-size:clamp(2.2rem,4.4vw,4rem);
+  line-height:.98;
+  color:#F5F3EE;
+  margin:0 0 .8rem;
+}
+[data-theme="district"] .gd-connect-copy {
+  max-width:650px;
+  font-family:var(--font-mono);
+  font-size:.62rem;
+  line-height:1.7;
+  color:rgb(245 243 238 / .58);
+  margin:0 0 1.35rem;
+}
+[data-theme="district"] .gd-connect-actions {
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  flex-wrap:wrap;
+}
+[data-theme="district"] .gd-social-link,
+[data-theme="district"] .gd-more-links {
+  width:36px;
+  height:36px;
+  border:1px solid rgb(85 182 122 / .45);
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  color:#B4DAC2;
+  background:transparent;
+  font-family:var(--font-mono);
+  font-size:.55rem;
+  cursor:pointer;
+}
+[data-theme="district"] .gd-social-link:hover,
+[data-theme="district"] .gd-more-links:hover {
+  background:rgb(41 101 64 / .28);
+  border-color:#55B67A;
+}
+[data-theme="district"] .gd-inquiry-btn {
+  min-height:38px;
+  border:0;
+  border-radius:999px;
+  padding:0 1.25rem;
+  background:#55B67A;
+  color:#071009;
+  font-family:var(--font-mono);
+  font-size:.52rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  font-weight:700;
+  cursor:pointer;
+}
+[data-theme="district"] #connect .connect-hub {
+  display:none;
+  max-width:1280px;
+  margin:0 auto 4rem;
+  border:1px solid rgb(85 182 122 / .14) !important;
+  background:#0D110E !important;
+}
+[data-theme="district"] #connect.gd-links-open .connect-hub {
+  display:block !important;
+}
+[data-theme="district"] #connect .ch-eyebrow,
+[data-theme="district"] #connect .ch-section-label,
+[data-theme="district"] #connect .ch-btn-outline,
+[data-theme="district"] #connect .ch-row-arrow {
+  color:#55B67A !important;
+}
+[data-theme="district"] #connect .ch-hero,
+[data-theme="district"] #connect .ch-pcard,
+[data-theme="district"] #connect .ch-row,
+[data-theme="district"] #connect .ch-follow-sq {
+  border-color:rgb(85 182 122 / .16) !important;
+  background:#101411 !important;
+}
+
+/* Footer */
+[data-theme="district"] footer {
+  margin-left:76px;
+  border-top-color:rgb(85 182 122 / .14) !important;
+  background:#090B0A;
+}
+[data-theme="district"] .footer-logo,
+[data-theme="district"] .footer-copy { color:rgb(245 243 238 / .42) !important; }
+
+/* Owner-only product controls stay product-gold and do not inherit the theme. */
+[data-theme="district"] .owner-bar,
+[data-theme="district"] #inlineEditBar {
+  border-color:rgb(var(--product-control-accent-rgb) / .28) !important;
+}
+[data-theme="district"] .owner-bar-label { color:var(--owner-control-color) !important; }
+
+/* ── RESPONSIVE ─────────────────────────────────────────────────────── */
+@media (max-width:1100px) {
+  [data-theme="district"] #epkContent,
+  [data-theme="district"] footer { margin-left:0; }
+  [data-theme="district"] .gd-rail { display:none; }
+  [data-theme="district"] nav {
+    padding-left:1.5rem !important;
+    padding-right:1.5rem !important;
+  }
+  [data-theme="district"] .hero {
+    grid-template-columns:minmax(0,1fr) minmax(320px,.8fr) !important;
+  }
+  [data-theme="district"] #career-highlights .ch3-grid {
+    grid-template-columns:minmax(300px,1.1fr) minmax(0,1fr) !important;
+  }
+  [data-theme="district"] #career-highlights .ch3-card.gd-featured {
+    grid-row:1 / span 2;
+  }
+  [data-theme="district"] #career-highlights .ch3-card.gd-founder {
+    grid-column:1 / -1 !important;
+  }
+  [data-theme="district"] #videosFeatured {
+    grid-template-columns:minmax(0,1.35fr) minmax(230px,.65fr);
+  }
+}
+
+@media (max-width:800px) {
+  [data-theme="district"] nav {
+    min-height:64px;
+    padding:0 1.1rem !important;
+  }
+  [data-theme="district"] .nav-links { display:none !important; }
+
+  [data-theme="district"] .hero {
+    grid-template-columns:1fr !important;
+    grid-template-areas:"content" "image";
+    min-height:0;
+  }
+  [data-theme="district"] .hero-content {
+    padding:3rem 1.25rem 2.25rem !important;
+  }
+  [data-theme="district"] .hero-image-panel {
+    min-height:420px !important;
+    height:420px;
+    margin:0 1.25rem 2.5rem;
+  }
+  [data-theme="district"] .hero-img {
+    min-height:420px;
+  }
+  [data-theme="district"] .hero-name {
+    font-size:clamp(3rem,15vw,5rem) !important;
+  }
+  [data-theme="district"] .gd-hero-aside { display:none; }
+  [data-theme="district"] .hero-role-item {
+    padding:.32rem .58rem !important;
+  }
+  [data-theme="district"] .hero-stat-item {
+    padding-right:.8rem !important;
+    margin-right:.8rem !important;
+  }
+
+  [data-theme="district"] .gd-number-label,
+  [data-theme="district"] #connect > .gd-number-label,
+  [data-theme="district"] .collapsible-section > .gd-number-label {
+    width:calc(100% - 2.5rem);
+    padding-top:2.3rem;
+  }
+
+  [data-theme="district"] #career-highlights .ch3-wrap,
+  [data-theme="district"] #bio .ch3-wrap,
+  [data-theme="district"] #documents .ch3-wrap,
+  [data-theme="district"] #credits .ch3-wrap,
+  [data-theme="district"] .gallery-inner,
+  [data-theme="district"] #videos .video-shell,
+  [data-theme="district"] .works-wrap,
+  [data-theme="district"] #awards .awards-inner,
+  [data-theme="district"] .gd-connect-summary {
+    padding-left:1.25rem !important;
+    padding-right:1.25rem !important;
+  }
+
+  [data-theme="district"] #career-highlights .ch3-grid {
+    grid-template-columns:1fr !important;
+  }
+  [data-theme="district"] #career-highlights .ch3-card.gd-featured,
+  [data-theme="district"] #career-highlights .ch3-card.gd-founder {
+    grid-column:1 !important;
+    grid-row:auto !important;
+  }
+  [data-theme="district"] #career-highlights .ch3-card.gd-founder .ch3-body {
+    grid-template-columns:auto 1fr;
+  }
+  [data-theme="district"] #career-highlights .ch3-card.gd-founder .ch3-desc {
+    grid-column:1 / -1;
+  }
+
+  [data-theme="district"] #bio .career-stacked-bio {
+    grid-template-columns:1fr !important;
+  }
+  [data-theme="district"] #bio .career-portrait {
+    min-height:320px;
+  }
+
+  [data-theme="district"] #videosFeatured {
+    display:block;
+  }
+  [data-theme="district"] #videosFeatured > .videos-subsection {
+    margin-top:.8rem !important;
+  }
+  [data-theme="district"] #videosFeatured .video-carousel {
+    grid-template-columns:1fr !important;
+  }
+
+  [data-theme="district"] .works-grid {
+    grid-template-columns:1fr !important;
+  }
+  [data-theme="district"] .work-card {
+    grid-template-columns:92px 1fr;
+  }
+  [data-theme="district"] .work-card-cover {
+    width:92px !important;
+    min-height:118px;
+  }
+  [data-theme="district"] #awards .awards-grid {
+    grid-template-columns:1fr !important;
+  }
+
+  [data-theme="district"] .collapsible-header {
+    padding-left:1.25rem !important;
+    padding-right:1.25rem !important;
+  }
+}

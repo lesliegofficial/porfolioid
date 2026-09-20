@@ -4,7 +4,7 @@
    Query-string theme preview still overrides the saved profile theme for review.
 */
 (function () {
-  const allowedPreviewThemes = new Set(['gold', 'sage', 'sage-light', 'midnight', 'plum']);
+  const allowedPreviewThemes = new Set(['gold', 'sage', 'sage-light', 'midnight', 'plum', 'district']);
   const legacyGoldPattern = /(var\(--gold\)|#c9a84c|201\s*,\s*168\s*,\s*76)/i;
   const legacyProfessionalPattern = /(#8fb8d0|143\s*,\s*184\s*,\s*208|123\s*,\s*155\s*,\s*175)/i;
 
@@ -29,6 +29,15 @@
     link.href = href;
     link.setAttribute(`data-${dataKey}`, 'true');
     document.head.appendChild(link);
+  }
+
+  function loadOverrideScript(src, dataKey) {
+    if (document.querySelector(`script[data-${dataKey}]`)) return;
+    const script = document.createElement('script');
+    script.src = src;
+    script.defer = true;
+    script.setAttribute(`data-${dataKey}`, 'true');
+    document.head.appendChild(script);
   }
 
   function legacyCategoryFromStyle(el) {
@@ -121,6 +130,8 @@
     loadOverrideStylesheet('/epk-theme-shell.css?v=20260917-1', 'porfolio-theme-shell');
     loadOverrideStylesheet('/epk-theme-sage-review.css?v=20260919-1', 'porfolio-theme-sage-review');
     loadOverrideStylesheet('/epk-theme-options.css?v=20260920-64', 'porfolio-theme-options');
+    loadOverrideStylesheet('/epk-green-district.css?v=20260920-1', 'porfolio-green-district');
+    loadOverrideScript('/epk-green-district.js?v=20260920-1', 'porfolio-green-district-runtime');
 
     classifyGeneratedMarkup(document.body);
 

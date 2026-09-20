@@ -4447,6 +4447,12 @@ const PORTFOLIO_THEMES = {
     badge: 'Style 02',
     previewClass: 'blue-zone',
     description: 'A complete editorial blue design with its own hero composition, section flow, spacing, and presentation.'
+  },
+  district: {
+    label: 'Green District',
+    badge: 'Style 03',
+    previewClass: 'green-district',
+    description: 'An editorial green identity with numbered wayfinding, asymmetric layouts, and structured career storytelling.'
   }
 };
 
