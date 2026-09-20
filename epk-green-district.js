@@ -341,7 +341,12 @@
   function sectionList() {
     return SECTION_IDS
       .map(id => document.getElementById(id))
-      .filter(el => el && visible(el));
+      .filter(el => el && visible(el))
+      .sort((a, b) => {
+        if (a === b) return 0;
+        const relation = a.compareDocumentPosition(b);
+        return relation & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+      });
   }
 
   function ensureNumberLabel(el, number, label) {
