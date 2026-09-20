@@ -4248,32 +4248,19 @@ async function saveCareerType() {
   persistUser();
   showToast('Career type saved ✓');
 }
-// ── APPEARANCE — FIXED WEBSITE PALETTES ──────────────────────────
+// ── APPEARANCE — COMPLETE PORFOLIO STYLES ────────────────────────
 const PORTFOLIO_THEMES = {
   gold: {
-    label: 'Original Gold',
-    description: 'Premium black, signature gold, professional blue, and warm white.',
-    swatches: ['#080808','#C9A84C','#8FB8D0','#F5F3EE']
-  },
-  sage: {
-    label: 'Sage Dark',
-    description: 'Near-black with refined sage green and soft sage details.',
-    swatches: ['#080808','#8DB580','#C2CFB2','#F5F3EE']
-  },
-  'sage-light': {
-    label: 'Emerald Light',
-    description: 'Clean editorial white with crisp black type and bright emerald accents.',
-    swatches: ['#F7F7F2','#111111','#55B67A','#87819B']
+    label: 'Golden',
+    badge: 'Default',
+    previewClass: 'golden',
+    description: 'The original porfolioID design in signature black, gold, ivory, and professional blue.'
   },
   midnight: {
-    label: 'Midnight Blue',
-    description: 'Deep midnight with confident blue and clean aqua accents.',
-    swatches: ['#080B10','#387FC8','#B8E3E9','#F5F7FA']
-  },
-  plum: {
-    label: 'Deep Purple',
-    description: 'Near-black with rich purple, emerald contrast, and soft white.',
-    swatches: ['#0D0D0F','#3A3068','#55B67A','#F4FBF8']
+    label: 'Blue Zone',
+    badge: 'Style 02',
+    previewClass: 'blue-zone',
+    description: 'A complete editorial blue design with its own hero composition, section flow, spacing, and presentation.'
   }
 };
 
@@ -4291,10 +4278,14 @@ function renderAppearanceThemes() {
   grid.innerHTML = Object.entries(PORTFOLIO_THEMES).map(([key, theme]) => {
     const selected = key === selectedAppearanceTheme;
     return `<button type="button" class="theme-choice-card ${selected ? 'selected' : ''}" onclick="selectAppearanceTheme('${key}')" aria-pressed="${selected}">
-      <div class="theme-choice-swatch">${theme.swatches.map(c => `<span style="background:${c}"></span>`).join('')}</div>
-      <div class="theme-choice-name">${theme.label}</div>
+      <div class="style-choice-preview style-choice-preview--${theme.previewClass}" aria-hidden="true">
+        <span class="style-preview-image"></span>
+        <span class="style-preview-copy"><i></i><i></i><i></i></span>
+        <span class="style-preview-strip"><i></i><i></i><i></i></span>
+      </div>
+      <div class="theme-choice-heading"><div class="theme-choice-name">${theme.label}</div><span class="theme-choice-badge">${theme.badge}</span></div>
       <div class="theme-choice-desc">${theme.description}</div>
-      <div class="theme-choice-check">${selected ? '✓ Selected' : ''}</div>
+      <div class="theme-choice-check">${selected ? '✓ Current Style' : ''}</div>
     </button>`;
   }).join('');
 }
@@ -4315,7 +4306,7 @@ async function saveAppearanceTheme() {
   if (!PORTFOLIO_THEMES[selectedAppearanceTheme]) return;
   epk.theme = selectedAppearanceTheme;
   await persistUser();
-  showSaveBanner('Appearance saved');
+  showSaveBanner('Style saved');
 }
 
 // ── PHASE 7 — MULTIPLE PROFESSIONAL PROFILES ──────────────────────
