@@ -207,12 +207,12 @@ function buildEPK(epk) {
   navLinks.innerHTML = '';
   const ALL_SECTIONS = [
     { id: 'bio',       label: 'Biography' },
-    { id: 'documents', label: 'Professional Documents' },
+    { id: 'documents', label: 'Documents' },
     { id: 'credits',   label: 'Credits' },
     { id: 'photos',    label: 'Photos' },
     { id: 'videos',    label: 'Video' },
     { id: 'music',     label: 'Music' },
-    { id: 'works',     label: 'Original Works' },
+    { id: 'works',     label: 'Works' },
     { id: 'awards',    label: 'Awards' },
     { id: 'assets',    label: 'Assets' },
     { id: 'connect',   label: 'Connect' },
@@ -1268,6 +1268,7 @@ function buildEPK(epk) {
       <div class="hero-image-panel">${heroImgHTML}</div>
       <div class="hero-content">
 
+        <div class="hero-section-label">Career Profile</div>
         <h1 class="hero-name">${firstName} <em>${lastName}</em></h1>
 
         <div class="hero-roles-row">
