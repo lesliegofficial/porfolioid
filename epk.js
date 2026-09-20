@@ -1303,15 +1303,17 @@ function buildEPK(epk) {
     <!-- CONNECT PANEL -->
     <div id="connect" style="display:none">${connectSectionHTML}</div>
 
-    <!-- CAREER HIGHLIGHTS -->
+    <!-- BIOGRAPHY -->
     <section class="career-profile-section" id="bio">
       <div class="ch3-wrap">
-        <!-- CAREER PROFILE / BIOGRAPHY — previously built as careerProfileHTML
-             but never inserted anywhere (dead code); now rendered here as the
-             lead content of the always-visible #bio section, ahead of the
-             Career Record Highlights cards. No collapsible wrapper — this
-             section requires no click-to-expand interaction. -->
         ${careerProfileHTML}
+      </div>
+    </section>
+    <div class="divider"></div>
+
+    <!-- CAREER RECORD HIGHLIGHTS -->
+    <section class="career-profile-section" id="career-highlights">
+      <div class="ch3-wrap">
         <div class="ch3-header">
           <span class="ch3-label" id="ch3Eyebrow">Career Profile</span>
           <div class="ch3-title-row">
@@ -1321,41 +1323,44 @@ function buildEPK(epk) {
         <div class="ch3-grid">
           ${getActiveCareerHighlights(epk).map(renderCh3Card).join('')}
         </div>
-
         <div style="text-align:center;margin-top:2rem">
           <p id="viewCompleteRecordCaption" style="font-family:var(--font-display);font-size:1.05rem;font-style:italic;color:rgba(245,243,238,0.65);margin-bottom:1.1rem;letter-spacing:0.01em">Every credit, role, and collaboration in one place — sortable by category, with full details behind each entry.</p>
           <a href="#credits" onclick="filterCreditsByCategory('')" id="viewCompleteRecordBtn" class="ch3-viewcomplete">View Complete Record →</a>
         </div>
-
-        <!-- THE RECORD — hidden by default, revealed on demand -->
-        ${epk.credits?.length ? `
-        <div id="credits" style="display:none;margin-top:3rem;padding-top:2.5rem;border-top:1px solid rgba(201,168,76,0.15)">
-          <!-- PROFESSIONAL RESUME — first item revealed inside the expandable Credits
-               container. buildResumeCard() markup, styling, and the resumeEnabled
-               gating are unchanged from before - only the insertion point moved,
-               from a standalone visible block above "View Complete Record" to here,
-               so it now inherits the same hidden-until-expanded show/hide behavior
-               as the Credits cards (toggled by filterCreditsByCategory). -->
-          ${(epk.resumeEnabled !== false && resumeCards.length) ? `
-          <div class="ch3-header" style="margin-top:5rem;padding-top:2.5rem;border-top:1px solid rgba(201,168,76,0.1)">
-            <span class="ch3-label">Professional Profile</span>
-            <div class="ch3-title-row">
-              <h2 class="section-title" style="margin:0">Professional Documents</h2>
-            </div>
-          </div>
-          <div class="career-stacked-cards">
-            ${resumeCards.map(buildResumeCard).join('')}
-          </div>` : ''}
-          <div id="creditsFilterBanner" style="display:none;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.08em;color:var(--gray-light);margin-bottom:1rem"></div>
-          <div class="credits-grid" id="creditsGrid">${creditsHTML}</div>
-          ${visibleCredits.length > 4 ? `
-          <div style="text-align:center;margin-top:1rem">
-            <button onclick="toggleAllCredits()" id="creditsToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.6rem 1.5rem;cursor:pointer;transition:all 0.2s">View All ${visibleCredits.length} Credits +</button>
-          </div>` : ''}
-        </div>` : ''}
       </div>
     </section>
     <div class="divider"></div>
+
+    <!-- PROFESSIONAL DOCUMENTS — preserve existing reveal-on-demand behavior -->
+    ${(epk.resumeEnabled !== false && resumeCards.length) ? `
+    <section class="career-profile-section" id="documents" style="display:none">
+      <div class="ch3-wrap">
+        <div class="ch3-header" style="margin-top:5rem;padding-top:2.5rem;border-top:1px solid rgba(201,168,76,0.1)">
+          <span class="ch3-label">Professional Profile</span>
+          <div class="ch3-title-row">
+            <h2 class="section-title" style="margin:0">Professional Documents</h2>
+          </div>
+        </div>
+        <div class="career-stacked-cards">
+          ${resumeCards.map(buildResumeCard).join('')}
+        </div>
+      </div>
+    </section>
+    <div class="divider" data-documents-divider style="display:none"></div>` : ''}
+
+    <!-- CREDITS — hidden by default, revealed on demand -->
+    ${epk.credits?.length ? `
+    <section class="career-profile-section" id="credits" style="display:none">
+      <div class="ch3-wrap" style="margin-top:3rem;padding-top:2.5rem;border-top:1px solid rgba(201,168,76,0.15)">
+        <div id="creditsFilterBanner" style="display:none;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.08em;color:var(--gray-light);margin-bottom:1rem"></div>
+        <div class="credits-grid" id="creditsGrid">${creditsHTML}</div>
+        ${visibleCredits.length > 4 ? `
+        <div style="text-align:center;margin-top:1rem">
+          <button onclick="toggleAllCredits()" id="creditsToggleBtn" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:none;border:1px solid rgba(201,168,76,0.3);padding:0.6rem 1.5rem;cursor:pointer;transition:all 0.2s">View All ${visibleCredits.length} Credits +</button>
+        </div>` : ''}
+      </div>
+    </section>
+    <div class="divider" data-credits-divider style="display:none"></div>` : ''}
 
     <!-- CREATIVE WORKS -->
     ${(epk.works || []).filter(w => w.visible !== false).length ? `
@@ -3154,79 +3159,105 @@ function adjustModalFont(dir) {
 
 // Section order and visibility
 function applySectionOrderAndVisibility(epk) {
-  const DEFAULT_ORDER = ['connect','bio','photos','videos','music','awards','assets','booking'];
-  const order = (epk.sectionOrder || DEFAULT_ORDER).filter(id => id !== 'credits');
-  const visibility = epk.sectionVisibility || {};
+  // Dashboard Section Order is now the authoritative live ordering layer.
+  // It only moves existing section containers; section styling/content and
+  // expand/collapse behavior remain owned by their existing code.
+  const DEFAULT_ORDER = [
+    'career-highlights','bio','documents','credits','photos',
+    'videos','music','works','awards','assets','connect'
+  ];
+  const rawOrder = epk.dashboardSectionOrder || epk.sectionOrder || DEFAULT_ORDER;
+  const known = new Set(DEFAULT_ORDER);
+  const order = [];
+  const seen = new Set();
 
-  // QR mode section override
+  rawOrder.forEach(id => {
+    if (!known.has(id) || seen.has(id)) return;
+    seen.add(id);
+    order.push(id);
+  });
+  DEFAULT_ORDER.forEach(id => {
+    if (!seen.has(id)) order.push(id);
+  });
+
+  const visibility = epk.dashboardSectionVisibility || epk.sectionVisibility || {};
+
   const urlParams = new URLSearchParams(window.location.search);
   const qrSections = urlParams.get('sections');
   const qrAllowed = qrSections ? new Set(qrSections.split(',')) : null;
 
   const container = document.getElementById('epkContent');
-  if (!container) return;
+  const hero = container && container.querySelector('.hero');
+  if (!container || !hero) return;
 
-  // Hide/show sections based on visibility + QR override
+  const canShow = id =>
+    visibility[id] !== false &&
+    (!qrAllowed || qrAllowed.has(id));
+
+  // Respect visibility without forcing reveal-on-demand sections open.
   DEFAULT_ORDER.forEach(id => {
-    if (id === 'connect') return;
     const el = document.getElementById(id);
     if (!el) return;
-    const isVisible = visibility[id] !== false && (!qrAllowed || qrAllowed.has(id));
-    el.style.display = isVisible ? '' : 'none';
+
+    if (!canShow(id)) {
+      el.style.display = 'none';
+      return;
+    }
+
+    // These sections intentionally start hidden and are revealed by their
+    // existing controls. Do not change that behavior merely because they
+    // are marked Visible in the dashboard.
+    if (id === 'documents' || id === 'credits' || id === 'connect') return;
+
+    el.style.display = '';
   });
 
-  // Reorder sections in DOM based on sectionOrder
-  // Find the divider after hero as the insertion point
-  const hero = container.querySelector('.hero');
-  if (!hero) return;
-  let insertAfter = hero.nextElementSibling; // usually a divider or first section
+  // Detach Music/Awards from the Blue Zone pairing wrapper before applying
+  // arbitrary ordering. They are re-paired below only when the saved order
+  // actually places them next to each other.
+  const pair = container.querySelector('.music-awards-pair');
+  if (pair) {
+    const pairParent = pair.parentNode;
+    ['music','awards'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.parentNode === pair) pairParent.insertBefore(el, pair);
+    });
+  }
 
-  // Pin connect div right after hero before reordering other sections
-  const connectEl = document.getElementById('connect');
-  if (connectEl) hero.insertAdjacentElement('afterend', connectEl);
-
-  let anchor = connectEl || hero;
+  let anchor = hero;
   order.forEach(id => {
-    if (id === 'connect') return;
     const el = document.getElementById(id);
     if (!el) return;
-    const nextSib = el.nextElementSibling;
+
+    const next = el.nextElementSibling;
     anchor.insertAdjacentElement('afterend', el);
     anchor = el;
-    if (nextSib && nextSib.classList && nextSib.classList.contains('divider')) {
-      anchor.insertAdjacentElement('afterend', nextSib);
-      anchor = nextSib;
-    }
-    // Works is fixed (not user-reorderable) but must be re-pinned right after bio,
-    // since reordering bio's siblings would otherwise strand it wherever the DOM mutations left it.
-    if (id === 'bio') {
-      const worksEl = document.getElementById('works');
-      if (worksEl) {
-        const worksNextSib = worksEl.nextElementSibling;
-        anchor.insertAdjacentElement('afterend', worksEl);
-        anchor = worksEl;
-        if (worksNextSib && worksNextSib.classList && worksNextSib.classList.contains('divider')) {
-          anchor.insertAdjacentElement('afterend', worksNextSib);
-          anchor = worksNextSib;
-        }
-      }
+
+    if (next && next.classList && next.classList.contains('divider')) {
+      anchor.insertAdjacentElement('afterend', next);
+      anchor = next;
     }
   });
 
-  // Blue Zone treats Music and Awards as one two-column chapter. Section
-  // ordering above intentionally moves individual sections, so pair them
-  // again only after that ordering pass has finished. Other styles keep the
-  // existing independent, full-width section behavior.
-  if (document.documentElement.dataset.theme === 'midnight') {
-    const pair = container.querySelector('.music-awards-pair');
-    const pairedSections = [
-      document.getElementById('music'),
-      document.getElementById('awards')
-    ].filter(Boolean).sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
-
-    if (pair && pairedSections.length) {
-      pairedSections[0].parentNode.insertBefore(pair, pairedSections[0]);
-      pairedSections.forEach(section => pair.appendChild(section));
+  // Preserve the special Blue Zone two-column Music/Awards treatment only
+  // when those two sections are adjacent in the owner's chosen order.
+  if (document.documentElement.dataset.theme === 'midnight' && pair) {
+    const mi = order.indexOf('music');
+    const ai = order.indexOf('awards');
+    const music = document.getElementById('music');
+    const awards = document.getElementById('awards');
+    if (music && awards && Math.abs(mi - ai) === 1) {
+      const first = mi < ai ? music : awards;
+      first.parentNode.insertBefore(pair, first);
+      if (mi < ai) {
+        pair.appendChild(music);
+        pair.appendChild(awards);
+      } else {
+        pair.appendChild(awards);
+        pair.appendChild(music);
+      }
+    } else if (!pair.children.length) {
+      pair.remove();
     }
   }
 }
@@ -3340,13 +3371,21 @@ function workPlayerMute(id) {
 // Credits collapse/expand
 function toggleAllCredits() {
   const container = document.getElementById('credits');
+  const documents = document.getElementById('documents');
   const grid = document.getElementById('creditsGrid');
   const btn = document.getElementById('creditsToggleBtn');
   const banner = document.getElementById('creditsFilterBanner');
   if (!grid || !btn || !container) return;
 
-  // Fully close — re-hide the whole Record section back to its initial state
+  // Preserve the existing reveal-on-demand behavior while allowing Documents
+  // and Credits to occupy independent ordered positions.
   container.style.display = 'none';
+  if (documents) documents.style.display = 'none';
+  const docDivider = document.querySelector('[data-documents-divider]');
+  const creditsDivider = document.querySelector('[data-credits-divider]');
+  if (docDivider) docDivider.style.display = 'none';
+  if (creditsDivider) creditsDivider.style.display = 'none';
+
   grid.classList.remove('credits-expanded');
   grid.querySelectorAll('.credit-card').forEach(card => { card.style.display = ''; });
   if (banner) banner.style.display = 'none';
@@ -3354,10 +3393,9 @@ function toggleAllCredits() {
   btn.textContent = _currentLang === 'es' ? `Ver los ${total} Créditos +` : `View All ${total} Credits +`;
   btn.style.display = '';
 
-  // Scroll back up to the Career Highlights cards so the page doesn't leave the user staring at empty space
-  const wrap = document.querySelector('.ch3-wrap');
-  if (wrap) {
-    setTimeout(() => { wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
+  const highlights = document.getElementById('career-highlights');
+  if (highlights) {
+    setTimeout(() => { highlights.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
   }
 }
 
@@ -3380,7 +3418,13 @@ function filterCreditsByCategory(tag) {
   const banner = document.getElementById('creditsFilterBanner');
   if (!grid) return;
 
-  if (container) container.style.display = 'block'; // reveal on demand — hidden until a card/button is clicked
+  if (container) container.style.display = 'block'; // reveal on demand
+  const documents = document.getElementById('documents');
+  if (documents) documents.style.display = 'block';
+  const docDivider = document.querySelector('[data-documents-divider]');
+  const creditsDivider = document.querySelector('[data-credits-divider]');
+  if (docDivider) docDivider.style.display = '';
+  if (creditsDivider) creditsDivider.style.display = '';
   grid.classList.add('credits-expanded'); // bypass the nth-child collapse so filtered results aren't hidden
   if (btn) {
     btn.style.display = ''; // Close button stays visible whether filtered or showing everything
