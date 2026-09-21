@@ -513,6 +513,7 @@
         if (typeof window.expandSection === 'function' && item.id !== 'profile') {
           try { window.expandSection(item.id); } catch (_) {}
         }
+        openGreenSection(item.id);
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
       inner.appendChild(link);
