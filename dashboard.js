@@ -401,14 +401,18 @@ function ch3TagOptionsHTML(selected) {
   return CH3_TAG_OPTIONS.map(o => `<option value="${o.value}" ${o.value === selected ? 'selected' : ''}>${o.label}</option>`).join('');
 }
 
-function ch3PreviewMediaHTML(url, size) {
+function ch3PreviewMediaHTML(url, size, card) {
   const s = size || '48px';
   if (!url) return `<div style="width:${s};height:${s};flex-shrink:0;background:var(--dark-4);border:1px solid rgba(201,168,76,0.15);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--gray)">no media</div>`;
+  const x = Number(card?.imageX ?? 50);
+  const y = Number(card?.imageY ?? 50);
+  const zoom = Number(card?.imageZoom ?? 100);
+  const frame = `object-position:${x}% ${y}%;transform:scale(${zoom/100});transform-origin:${x}% ${y}%;`;
   const isVideo = /\.(mp4|mov|webm)(\?|$)/i.test(url);
   if (isVideo) {
-    return `<video src="${url}" muted style="width:${s};height:${s};flex-shrink:0;object-fit:cover;border-radius:4px;border:1px solid rgba(201,168,76,0.15)"></video>`;
+    return `<div style="width:${s};height:${s};overflow:hidden;border-radius:4px;border:1px solid rgba(201,168,76,0.15);flex-shrink:0"><video src="${url}" muted autoplay loop playsinline style="width:100%;height:100%;object-fit:cover;${frame}"></video></div>`;
   }
-  return `<img src="${url}" style="width:${s};height:${s};flex-shrink:0;object-fit:cover;border-radius:4px;border:1px solid rgba(201,168,76,0.15)">`;
+  return `<div style="width:${s};height:${s};overflow:hidden;border-radius:4px;border:1px solid rgba(201,168,76,0.15);flex-shrink:0"><img src="${url}" style="width:100%;height:100%;object-fit:cover;${frame}"></div>`;
 }
 
 function renderCareerHighlightsEditor() {
@@ -420,7 +424,7 @@ function renderCareerHighlightsEditor() {
     if (!isEditing) {
       return `<div style="${rowStyle}">
         <div style="display:flex;align-items:center;gap:0.5rem">
-          ${ch3PreviewMediaHTML(card.image)}
+          ${ch3PreviewMediaHTML(card.image, '48px', card)}
           <span style="flex:1;font-size:0.85rem;color:var(--white)">${card.title || ''}</span>
           <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--gray)">${card.tag}</span>
           <button class="btn-card-action" onclick="ch3MoveCard(${i},-1)" ${i === 0 ? 'disabled' : ''} title="Move up">▲</button>
@@ -450,7 +454,7 @@ function renderCareerHighlightsEditor() {
       </div>
       <div class="field-group">
         <label class="field-label">Image / Video Preview</label>
-        <div id="ch3PreviewWrap_${i}">${ch3PreviewMediaHTML(card.image, '140px')}</div>
+        <div id="ch3PreviewWrap_${i}">${ch3PreviewMediaHTML(card.image, '140px', card)}</div>
       </div>
       <div class="field-group">
         <label class="field-label">Image URL</label>
@@ -460,6 +464,25 @@ function renderCareerHighlightsEditor() {
           <span style="font-size:0.75rem;color:var(--gray)">or paste a URL above</span>
         </div>
         <input type="file" id="ch3ImageFile_${i}" accept="image/*" style="display:none">
+        <div class="career-image-frame-controls">
+          <label class="field-label">Image framing</label>
+          <p class="field-hint">Adjust how this image sits inside the Career Record card. These controls are saved with this card.</p>
+          <div class="career-frame-control">
+            <span>Left</span>
+            <input type="range" id="ch3EditImageX_${i}" min="0" max="100" value="${card.imageX ?? 50}" oninput="ch3UpdatePreview(${i})">
+            <span>Right</span>
+          </div>
+          <div class="career-frame-control">
+            <span>Top</span>
+            <input type="range" id="ch3EditImageY_${i}" min="0" max="100" value="${card.imageY ?? 50}" oninput="ch3UpdatePreview(${i})">
+            <span>Bottom</span>
+          </div>
+          <div class="career-frame-control">
+            <span>Wide</span>
+            <input type="range" id="ch3EditImageZoom_${i}" min="70" max="180" value="${card.imageZoom ?? 100}" oninput="ch3UpdatePreview(${i})">
+            <span>Zoom</span>
+          </div>
+        </div>
       </div>
       <div class="field-row" style="display:flex;gap:0.5rem">
         <div class="field-group" style="flex:1">
@@ -483,7 +506,13 @@ function renderCareerHighlightsEditor() {
 function ch3UpdatePreview(idx) {
   const field = document.getElementById(`ch3EditImage_${idx}`);
   const wrap = document.getElementById(`ch3PreviewWrap_${idx}`);
-  if (field && wrap) wrap.innerHTML = ch3PreviewMediaHTML(field.value, '140px');
+  if (!field || !wrap) return;
+  const card = {
+    imageX: Number(document.getElementById(`ch3EditImageX_${idx}`)?.value ?? _ch3Draft[idx]?.imageX ?? 50),
+    imageY: Number(document.getElementById(`ch3EditImageY_${idx}`)?.value ?? _ch3Draft[idx]?.imageY ?? 50),
+    imageZoom: Number(document.getElementById(`ch3EditImageZoom_${idx}`)?.value ?? _ch3Draft[idx]?.imageZoom ?? 100)
+  };
+  wrap.innerHTML = ch3PreviewMediaHTML(field.value, '140px', card);
 }
 
 function ch3ToggleEdit(idx) { _ch3EditingIdx = idx; renderCareerHighlightsEditor(); }
@@ -497,6 +526,9 @@ function ch3SaveCardEdit(idx) {
   card.description = document.getElementById(`ch3EditDesc_${idx}`).value.trim();
   card.descriptionEs = document.getElementById(`ch3EditDescEs_${idx}`).value.trim();
   card.image = document.getElementById(`ch3EditImage_${idx}`).value.trim();
+  card.imageX = Number(document.getElementById(`ch3EditImageX_${idx}`)?.value ?? card.imageX ?? 50);
+  card.imageY = Number(document.getElementById(`ch3EditImageY_${idx}`)?.value ?? card.imageY ?? 50);
+  card.imageZoom = Number(document.getElementById(`ch3EditImageZoom_${idx}`)?.value ?? card.imageZoom ?? 100);
   card.icon = document.getElementById(`ch3EditIcon_${idx}`).value;
   card.tag = document.getElementById(`ch3EditTag_${idx}`).value;
   _ch3EditingIdx = -1;
@@ -758,6 +790,7 @@ function loadAllFields() {
   renderResumeCards();
   const resumeToggle = document.getElementById('resumeToggle');
   if (resumeToggle) resumeToggle.checked = epk.resumeEnabled !== false;
+  loadGreenDistrictSettings();
 }
 
 function saveAll() {
@@ -4462,6 +4495,7 @@ function loadAppearanceSettings() {
   const saved = epk && PORTFOLIO_THEMES[epk.theme] ? epk.theme : 'gold';
   selectedAppearanceTheme = saved;
   renderAppearanceThemes();
+  toggleGreenDistrictControls();
 }
 
 function renderAppearanceThemes() {
@@ -4486,6 +4520,7 @@ function selectAppearanceTheme(theme) {
   if (!PORTFOLIO_THEMES[theme]) return;
   selectedAppearanceTheme = theme;
   renderAppearanceThemes();
+  toggleGreenDistrictControls();
 }
 
 function previewAppearanceTheme() {
@@ -4497,8 +4532,61 @@ function previewAppearanceTheme() {
 async function saveAppearanceTheme() {
   if (!PORTFOLIO_THEMES[selectedAppearanceTheme]) return;
   epk.theme = selectedAppearanceTheme;
+  saveGreenDistrictSettings();
   await persistUser();
   showSaveBanner('Style saved');
+}
+
+
+function loadGreenDistrictSettings() {
+  const settings = epk?.greenDistrict || {};
+  const image = document.getElementById('districtHeroImage');
+  const script = document.getElementById('districtScriptText');
+  const x = document.getElementById('districtHeroX');
+  const y = document.getElementById('districtHeroY');
+  const zoom = document.getElementById('districtHeroZoom');
+  if (image) image.value = settings.heroImage || '';
+  if (script) script.value = settings.scriptText || 'Music\nPeople\nCulture\nImpact';
+  if (x) x.value = settings.heroImageX ?? 50;
+  if (y) y.value = settings.heroImageY ?? 50;
+  if (zoom) zoom.value = settings.heroImageZoom ?? 100;
+  updateDistrictHeroPreview();
+  toggleGreenDistrictControls();
+}
+
+function toggleGreenDistrictControls() {
+  const panel = document.getElementById('greenDistrictControls');
+  if (panel) panel.style.display = selectedAppearanceTheme === 'district' ? 'block' : 'none';
+}
+
+function updateDistrictHeroPreview() {
+  const wrap = document.getElementById('districtHeroPreview');
+  const img = document.getElementById('districtHeroPreviewImg');
+  if (!wrap || !img) return;
+  const url = document.getElementById('districtHeroImage')?.value.trim() || epk?.heroImage || '';
+  if (!url) { wrap.style.display = 'none'; return; }
+  const x = Number(document.getElementById('districtHeroX')?.value ?? 50);
+  const y = Number(document.getElementById('districtHeroY')?.value ?? 50);
+  const zoom = Number(document.getElementById('districtHeroZoom')?.value ?? 100);
+  wrap.style.display = 'block';
+  img.src = url;
+  img.style.objectPosition = `${x}% ${y}%`;
+  img.style.transform = `scale(${zoom/100})`;
+  img.style.transformOrigin = `${x}% ${y}%`;
+}
+
+function saveGreenDistrictSettings() {
+  const image = document.getElementById('districtHeroImage');
+  const script = document.getElementById('districtScriptText');
+  if (!image || !script) return;
+  epk.greenDistrict = {
+    ...(epk.greenDistrict || {}),
+    heroImage: image.value.trim(),
+    heroImageX: Number(document.getElementById('districtHeroX')?.value ?? 50),
+    heroImageY: Number(document.getElementById('districtHeroY')?.value ?? 50),
+    heroImageZoom: Number(document.getElementById('districtHeroZoom')?.value ?? 100),
+    scriptText: script.value.trim()
+  };
 }
 
 // ── PHASE 7 — MULTIPLE PROFESSIONAL PROFILES ──────────────────────
