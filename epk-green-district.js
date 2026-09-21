@@ -94,18 +94,20 @@
 
     hero.id = 'profile';
 
-    // Green District uses the dashboard's full-body/feature image in the hero,
-    // while the biography section receives the saved profile portrait.
+    // Green District can use its own hero art, while falling back to the
+    // profile-wide Full-Body Hero Image when no theme-specific override exists.
+    const district = epk.greenDistrict || {};
     const heroImg = hero.querySelector('.hero-img');
-    if (epk.heroImage && heroImg) {
-      applyImageFrame(
-        heroImg,
-        epk.heroImage,
-        epk.heroImagePosition,
-        epk.heroImageZoom,
-        epk.heroImageFit || 'contain',
-        'center center'
-      );
+    const districtHero = district.heroImage || epk.heroImage || '';
+    if (districtHero && heroImg) {
+      heroImg.src = districtHero;
+      const x = Number.isFinite(Number(district.heroImageX)) ? Number(district.heroImageX) : 50;
+      const y = Number.isFinite(Number(district.heroImageY)) ? Number(district.heroImageY) : 50;
+      const zoom = Number.isFinite(Number(district.heroImageZoom)) ? Number(district.heroImageZoom) : 100;
+      heroImg.style.setProperty('object-fit', 'contain', 'important');
+      heroImg.style.setProperty('object-position', `${x}% ${y}%`, 'important');
+      heroImg.style.setProperty('transform', zoom !== 100 ? `scale(${zoom / 100})` : 'none', 'important');
+      heroImg.style.setProperty('transform-origin', `${x}% ${y}%`, 'important');
     }
 
     const biographyPortrait = document.querySelector('#bio .career-portrait');
@@ -190,13 +192,15 @@
       }
     }
 
-    // Green District's light editorial signature: handwritten words float
-    // behind the real hero image as typography, not as part of the asset.
+    // Editable Green District editorial script. Owners can enter one word or
+    // short phrase per line in Appearance; defaults preserve the approved art.
     if (imagePanel && !imagePanel.querySelector('.gd-script-layer')) {
       const script = document.createElement('div');
       script.className = 'gd-script-layer';
       script.setAttribute('aria-hidden', 'true');
-      ['Music', 'People', 'Culture', 'Impact'].forEach(word => {
+      const scriptSource = String(district.scriptText || 'Music\nPeople\nCulture\nImpact');
+      const words = scriptSource.split(/\r?\n|\s*\|\s*/).map(v => v.trim()).filter(Boolean).slice(0, 6);
+      (words.length ? words : ['Music', 'People', 'Culture', 'Impact']).forEach(word => {
         const span = document.createElement('span');
         span.textContent = word;
         script.appendChild(span);
@@ -205,15 +209,28 @@
     }
   }
 
-  function setupCareerRecord() {
+  function setupCareerRecord(epk) {
     const section = document.getElementById('career-highlights');
     if (!section) return;
     // Green District revision: all six Career Record cards carry equal visual
     // weight. No featured tile and no compressed Founder strip.
     const cards = Array.from(section.querySelectorAll('.ch3-card'));
+    const savedCards = Array.isArray(epk?.careerHighlights) ? epk.careerHighlights : [];
     cards.forEach(card => {
       card.classList.remove('gd-featured', 'gd-support', 'gd-founder');
       card.classList.add('gd-even');
+
+      const saved = savedCards.find(item => item.tag === card.dataset.ch3Tag);
+      if (!saved) return;
+      const media = card.querySelector('.ch3-img img, .ch3-img video');
+      if (!media) return;
+      const x = Number(saved.imageX ?? 50);
+      const y = Number(saved.imageY ?? 50);
+      const zoom = Number(saved.imageZoom ?? 100);
+      media.style.setProperty('object-fit', 'cover', 'important');
+      media.style.setProperty('object-position', `${x}% ${y}%`, 'important');
+      media.style.setProperty('transform', zoom !== 100 ? `scale(${zoom / 100})` : 'none', 'important');
+      media.style.setProperty('transform-origin', `${x}% ${y}%`, 'important');
     });
   }
 
@@ -254,6 +271,13 @@
     const merged = document.createElement('div');
     merged.className = 'gd-bio-documents-profile';
     merged.appendChild(bioPanel);
+
+    const fullBioPanel = bioPanel.querySelector('#bioFull');
+    if (fullBioPanel) {
+      fullBioPanel.classList.add('gd-bio-full');
+      merged.appendChild(fullBioPanel);
+    }
+
     suite.appendChild(merged);
 
     if (cards) suite.appendChild(cards);
@@ -339,84 +363,17 @@
       return;
     }
 
-    // Green District treats Connect as a real closing district rather than a
-    // hero-only reveal panel.
     connect.style.display = '';
+    connect.classList.add('gd-connect-full');
+    connect.querySelector('.gd-connect-summary')?.remove();
 
-    if (connect.querySelector('.gd-connect-summary')) return;
-
-    const summary = document.createElement('div');
-    summary.className = 'gd-connect-summary';
-
-    const eyebrow = document.createElement('div');
-    eyebrow.className = 'gd-connect-eyebrow';
-    eyebrow.textContent = 'Connect';
-    summary.appendChild(eyebrow);
-
-    const title = document.createElement('h2');
-    title.className = 'gd-connect-title';
-    title.textContent = "Let's build what's next.";
-    summary.appendChild(title);
-
-    const sourceCopy = stripHtml(epk.bookingTagline || epk.shortBio || '');
-    if (sourceCopy) {
-      const copy = document.createElement('p');
-      copy.className = 'gd-connect-copy';
-      copy.textContent = sourceCopy;
-      summary.appendChild(copy);
-    }
-
-    const actions = document.createElement('div');
-    actions.className = 'gd-connect-actions';
-
-    const socialDefs = [
-      ['instagram', 'IG'],
-      ['youtube', 'YT'],
-      ['spotify', '♪'],
-      ['linkedin', 'in'],
-      ['website', '↗']
-    ];
-    const socials = epk.socials || {};
-    socialDefs.forEach(([key, label]) => {
-      const url = firstSocialUrl(socials, key);
-      if (!url) return;
-      const a = document.createElement('a');
-      a.className = 'gd-social-link';
-      a.href = url;
-      a.target = '_blank';
-      a.rel = 'noopener';
-      a.title = key;
-      a.textContent = label;
-      actions.appendChild(a);
-    });
-
+    // Green District now exposes the platform's real Connect Hub rather than
+    // replacing it with a decorative closing strip.
     const hub = connect.querySelector('.connect-hub');
     if (hub) {
-      const more = document.createElement('button');
-      more.type = 'button';
-      more.className = 'gd-more-links';
-      more.title = 'More links';
-      more.textContent = '+';
-      more.addEventListener('click', () => {
-        connect.classList.toggle('gd-links-open');
-        more.textContent = connect.classList.contains('gd-links-open') ? '−' : '+';
-      });
-      actions.appendChild(more);
+      hub.style.setProperty('display', 'block', 'important');
+      hub.setAttribute('aria-hidden', 'false');
     }
-
-    if (epk.bookingEnabled !== false) {
-      const inquiry = document.createElement('button');
-      inquiry.type = 'button';
-      inquiry.className = 'gd-inquiry-btn';
-      inquiry.textContent = epk.bookingLabel ? `Send ${epk.bookingLabel} →` : 'Send an Inquiry →';
-      inquiry.addEventListener('click', () => {
-        if (typeof window.openInquiryModal === 'function') window.openInquiryModal();
-      });
-      actions.appendChild(inquiry);
-    }
-
-    summary.appendChild(actions);
-    connect.insertBefore(summary, connect.firstChild);
   }
 
   function sectionList() {
@@ -570,7 +527,7 @@
     if (!epk || !hero) return false;
 
     setupHero(epk);
-    setupCareerRecord();
+    setupCareerRecord(epk);
     setupBioDocuments(epk);
     setupVideo();
     setupAwards();
