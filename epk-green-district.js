@@ -189,6 +189,20 @@
         imagePanel.appendChild(aside);
       }
     }
+
+    // Green District's light editorial signature: handwritten words float
+    // behind the real hero image as typography, not as part of the asset.
+    if (imagePanel && !imagePanel.querySelector('.gd-script-layer')) {
+      const script = document.createElement('div');
+      script.className = 'gd-script-layer';
+      script.setAttribute('aria-hidden', 'true');
+      ['Music', 'People', 'Culture', 'Impact'].forEach(word => {
+        const span = document.createElement('span');
+        span.textContent = word;
+        script.appendChild(span);
+      });
+      imagePanel.prepend(script);
+    }
   }
 
   function setupCareerRecord() {
