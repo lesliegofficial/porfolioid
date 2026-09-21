@@ -130,8 +130,8 @@
     loadOverrideStylesheet('/epk-theme-shell.css?v=20260917-1', 'porfolio-theme-shell');
     loadOverrideStylesheet('/epk-theme-sage-review.css?v=20260919-1', 'porfolio-theme-sage-review');
     loadOverrideStylesheet('/epk-theme-options.css?v=20260920-64', 'porfolio-theme-options');
-    loadOverrideStylesheet('/epk-green-district.css?v=20260920-4', 'porfolio-green-district');
-    loadOverrideScript('/epk-green-district.js?v=20260920-4', 'porfolio-green-district-runtime');
+    loadOverrideStylesheet('/epk-green-district.css?v=20260920-5', 'porfolio-green-district');
+    loadOverrideScript('/epk-green-district.js?v=20260920-5', 'porfolio-green-district-runtime');
 
     classifyGeneratedMarkup(document.body);
 
