@@ -212,25 +212,54 @@
   function setupCareerRecord(epk) {
     const section = document.getElementById('career-highlights');
     if (!section) return;
-    // Green District revision: all six Career Record cards carry equal visual
-    // weight. No featured tile and no compressed Founder strip.
+
+    // Automatic people-friendly framing. Saved dashboard framing always wins,
+    // but cards with no manual settings bias upward so faces are far less
+    // likely to be clipped by the short editorial crop.
+    const autoYByTag = {
+      recordingartist: 18,
+      liveperformance: 12,
+      industryoperations: 16,
+      creativeprofessional: 18,
+      marketingpr: 22,
+      founderbuilder: 16
+    };
+
     const cards = Array.from(section.querySelectorAll('.ch3-card'));
     const savedCards = Array.isArray(epk?.careerHighlights) ? epk.careerHighlights : [];
+
     cards.forEach(card => {
       card.classList.remove('gd-featured', 'gd-support', 'gd-founder');
       card.classList.add('gd-even');
 
-      const saved = savedCards.find(item => item.tag === card.dataset.ch3Tag);
-      if (!saved) return;
+      const saved = savedCards.find(item => item.tag === card.dataset.ch3Tag) || null;
       const media = card.querySelector('.ch3-img img, .ch3-img video');
       if (!media) return;
-      const x = Number(saved.imageX ?? 50);
-      const y = Number(saved.imageY ?? 50);
-      const zoom = Number(saved.imageZoom ?? 100);
-      media.style.setProperty('object-fit', 'cover', 'important');
-      media.style.setProperty('object-position', `${x}% ${y}%`, 'important');
-      media.style.setProperty('transform', zoom !== 100 ? `scale(${zoom / 100})` : 'none', 'important');
-      media.style.setProperty('transform-origin', `${x}% ${y}%`, 'important');
+
+      const hasManualX = saved && saved.imageX !== undefined && saved.imageX !== null;
+      const hasManualY = saved && saved.imageY !== undefined && saved.imageY !== null;
+      const hasManualZoom = saved && saved.imageZoom !== undefined && saved.imageZoom !== null;
+
+      const x = hasManualX ? Number(saved.imageX) : 50;
+      let y = hasManualY ? Number(saved.imageY) : (autoYByTag[card.dataset.ch3Tag] ?? 20);
+      const zoom = hasManualZoom ? Number(saved.imageZoom) : 100;
+
+      const apply = () => {
+        // Generic fallback for custom cards: landscape photos need less upward
+        // bias than portraits, while portrait/square photos favor the face area.
+        if (!hasManualY && media.tagName === 'IMG' && media.naturalWidth && media.naturalHeight && !autoYByTag[card.dataset.ch3Tag]) {
+          const ratio = media.naturalWidth / media.naturalHeight;
+          y = ratio > 1.55 ? 30 : ratio < .9 ? 18 : 22;
+        }
+        media.style.setProperty('object-fit', 'cover', 'important');
+        media.style.setProperty('object-position', `${x}% ${y}%`, 'important');
+        media.style.setProperty('transform', zoom !== 100 ? `scale(${zoom / 100})` : 'none', 'important');
+        media.style.setProperty('transform-origin', `${x}% ${y}%`, 'important');
+      };
+
+      apply();
+      if (media.tagName === 'IMG' && !media.complete) media.addEventListener('load', apply, { once: true });
+      if (media.tagName === 'VIDEO') media.addEventListener('loadedmetadata', apply, { once: true });
     });
   }
 
@@ -367,13 +396,41 @@
     connect.classList.add('gd-connect-full');
     connect.querySelector('.gd-connect-summary')?.remove();
 
-    // Green District now exposes the platform's real Connect Hub rather than
-    // replacing it with a decorative closing strip.
     const hub = connect.querySelector('.connect-hub');
-    if (hub) {
-      hub.style.setProperty('display', 'block', 'important');
-      hub.setAttribute('aria-hidden', 'false');
+    if (!hub) return;
+
+    let toggle = connect.querySelector('.gd-connect-toggle');
+    if (!toggle) {
+      toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'gd-connect-toggle';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.innerHTML = `
+        <span class="gd-connect-toggle-copy">
+          <span class="gd-connect-toggle-kicker">Connect</span>
+          <strong>Platforms, music, social media & inquiries</strong>
+        </span>
+        <span class="gd-connect-toggle-action">Explore Links +</span>`;
+      hub.insertAdjacentElement('beforebegin', toggle);
     }
+
+    const setOpen = (open) => {
+      connect.classList.toggle('gd-connect-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      hub.setAttribute('aria-hidden', open ? 'false' : 'true');
+      const action = toggle.querySelector('.gd-connect-toggle-action');
+      if (action) action.textContent = open ? 'Collapse −' : 'Explore Links +';
+    };
+
+    setOpen(false);
+    toggle.onclick = () => setOpen(!connect.classList.contains('gd-connect-open'));
+  }
+
+  function openGreenSection(id) {
+    if (id !== 'connect') return;
+    const connect = document.getElementById('connect');
+    const toggle = connect?.querySelector('.gd-connect-toggle');
+    if (connect && toggle && !connect.classList.contains('gd-connect-open')) toggle.click();
   }
 
   function sectionList() {
@@ -425,6 +482,7 @@
         if (typeof window.expandSection === 'function' && item.id !== 'profile') {
           try { window.expandSection(item.id); } catch (_) {}
         }
+        openGreenSection(item.id);
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
       li.appendChild(a);
