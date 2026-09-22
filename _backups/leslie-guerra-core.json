@@ -1709,7 +1709,7 @@
     "scriptText": "Music\nPeople\nCulture\nImpact",
     "heroImageZoom": 100
   },
-  "heroImageZoom": 112,
+  "heroImageZoom": 108,
   "identityBlock": {
     "repName": "",
     "repRole": "",
@@ -1820,7 +1820,7 @@
     "virtualassistant",
     "translator"
   ],
-  "heroImagePosition": 27,
+  "heroImagePosition": 56,
   "sectionVisibility": {},
   "bookingAutoResponse": "Thank you for your inquiry. I will respond in less than 48 hours.",
   "bookingAvailability": "selective",
