@@ -1807,7 +1807,7 @@
       "descriptionEs": "Fundadora y Arquitecta de Producto de PorfolioID e IDPressDrop — plataformas originales construidas desde el concepto hasta el despliegue."
     }
   ],
-  "heroImageCropTop": 1,
+  "heroImageCropTop": 4,
   "bookingCategories": [
     "professional",
     "administration",
@@ -1820,7 +1820,7 @@
     "virtualassistant",
     "translator"
   ],
-  "heroImagePosition": 98,
+  "heroImagePosition": 4,
   "sectionVisibility": {},
   "bookingAutoResponse": "Thank you for your inquiry. I will respond in less than 48 hours.",
   "bookingAvailability": "selective",
