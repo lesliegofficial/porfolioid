@@ -1820,7 +1820,7 @@
     "virtualassistant",
     "translator"
   ],
-  "heroImagePosition": 4,
+  "heroImagePosition": 52,
   "sectionVisibility": {},
   "bookingAutoResponse": "Thank you for your inquiry. I will respond in less than 48 hours.",
   "bookingAvailability": "selective",
