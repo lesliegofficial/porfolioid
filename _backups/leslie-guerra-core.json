@@ -20,7 +20,7 @@
       "number": "5"
     }
   ],
-  "theme": "district",
+  "theme": "midnight",
   "works": [
     {
       "id": "vals-demente",
@@ -1831,6 +1831,13 @@
     "awards"
   ],
   "dashboardSectionVisibility": {},
+  "greenDistrict": {
+    "heroImage": "",
+    "heroImageX": 50,
+    "heroImageY": 50,
+    "heroImageZoom": 100,
+    "scriptText": "Music\nPeople\nCulture\nImpact"
+  },
   "awards": [
     {
       "org": "Polk State College",
