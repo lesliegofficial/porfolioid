@@ -3294,3 +3294,108 @@
   border-color:rgb(184 227 233 / 0.76) !important;
   box-shadow:0 0 28px rgb(56 127 200 / 0.30),inset 0 0 16px rgb(184 227 233 / 0.09) !important;
 }
+
+/* ── FINAL 2026-09-24 MOBILE HERO + BIO ORDER + WORKS TRIM ──────────────────────────────────────────────────────
+   1) Mobile hero: show full portrait/head instead of cover-cropping it.
+   2) Midnight section order: biography first, highlights immediately below.
+   3) Original Works: remove excess vertical air around the chapter. */
+
+/* MOBILE HERO — applies to every theme, including the default Gold scheme. */
+@media (max-width:768px) {
+  .hero {
+    grid-template-columns:1fr !important;
+    min-height:0 !important;
+    overflow:visible !important;
+  }
+
+  .hero-image-panel {
+    width:100% !important;
+    height:auto !important;
+    aspect-ratio:4 / 5 !important;
+    max-height:none !important;
+    min-height:0 !important;
+    display:flex !important;
+    align-items:flex-start !important;
+    justify-content:center !important;
+    overflow:hidden !important;
+  }
+
+  .hero-img {
+    width:100% !important;
+    height:100% !important;
+    object-fit:contain !important;
+    object-position:center top !important;
+    transform:none !important;
+  }
+}
+
+@media (max-width:480px) {
+  .hero-image-panel {
+    max-height:none !important;
+    aspect-ratio:4 / 5 !important;
+  }
+}
+
+/* MIDNIGHT — biography first, Career Record Highlights directly beneath it. */
+[data-theme="midnight"] .ch3-wrap {
+  display:flex !important;
+  flex-direction:column !important;
+}
+
+[data-theme="midnight"] .ch3-wrap > .career-stacked-bio,
+[data-theme="midnight"] .ch3-wrap > .career-sidebyside,
+[data-theme="midnight"] .ch3-wrap > .career-threecol {
+  order:1 !important;
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+  border-top:0 !important;
+}
+
+[data-theme="midnight"] .ch3-wrap > .ch3-header {
+  order:2 !important;
+  margin-top:0 !important;
+  padding-top:0.6rem !important;
+}
+
+[data-theme="midnight"] .ch3-wrap > .ch3-grid {
+  order:3 !important;
+}
+
+[data-theme="midnight"] .ch3-wrap > .ch3-grid + div:not(#credits) {
+  order:4 !important;
+}
+
+[data-theme="midnight"] .ch3-wrap > #credits {
+  order:5 !important;
+}
+
+/* ORIGINAL WORKS — truly tighten the chapter edges, not the artwork. */
+[data-theme="midnight"] .works-section {
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+}
+
+[data-theme="midnight"] .works-wrap {
+  padding-top:0.55rem !important;
+  padding-bottom:0.55rem !important;
+}
+
+[data-theme="midnight"] .works-header {
+  margin-top:0 !important;
+  margin-bottom:0.65rem !important;
+}
+
+[data-theme="midnight"] .works-grid {
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+}
+
+@media (max-width:900px) {
+  [data-theme="midnight"] .works-wrap {
+    padding-top:0.5rem !important;
+    padding-bottom:0.5rem !important;
+  }
+}
+
