@@ -1682,7 +1682,7 @@
   ],
   "videoLayout": "spotlight",
   "assetsLayout": "cards",
-  "assetsLocked": true,
+  "assetsLocked": false,
   "availability": "Available for tours & studio sessions",
   "bioImageZoom": 99,
   "bookingEmail": "leslie@porfolioid.com",
