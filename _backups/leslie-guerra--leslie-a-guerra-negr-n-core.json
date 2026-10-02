@@ -31,7 +31,7 @@
   "availability": "",
   "bioImageZoom": 99,
   "heroImageFit": "cover",
-  "heroImageZoom": 97,
+  "heroImageZoom": 89,
   "identityBlock": {
     "repName": "",
     "repRole": "",
@@ -52,6 +52,6 @@
   },
   "bioImageCropTop": 60,
   "bioImagePosition": 100,
-  "heroImageCropTop": 1,
-  "heroImagePosition": 27
+  "heroImageCropTop": 4,
+  "heroImagePosition": 52
 }
