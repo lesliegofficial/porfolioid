@@ -3622,17 +3622,21 @@ function openAwardModal(idx) {
       </div>` : ''}
     <div style="display:flex;flex-direction:column;gap:0.5rem">
       ${a.certUrl ? (() => {
-        const isCloudinary = a.certUrl.includes('cloudinary.com');
-        if (isCloudinary) {
-          const rotation = a.certRotation ? ',a_' + a.certRotation : '';
-          const match = a.certUrl.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.\w+)?$/);
-          const pubId = match ? match[1] : null;
-          const imgUrl = pubId
-            ? 'https://res.cloudinary.com/djj8xe3gx/image/upload/f_jpg,q_85' + rotation + '/' + pubId + '.pdf'
-            : a.certUrl;
-          return '<div style="margin-bottom:1rem"><img src="' + imgUrl + '" style="width:100%;border:1px solid rgba(201,168,76,0.2);display:block;cursor:pointer" onclick="openLightbox(\'' + imgUrl + '\')" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"><a href="' + a.certUrl + '" target="_blank" style="display:none;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;background:rgba(201,168,76,0.05)">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--gold)">→</span></a></div>';
-        }
-        return '<a href="' + pdfViewerUrl(a.certUrl) + '" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);text-decoration:none;border:1px solid rgba(201,168,76,0.2);padding:0.75rem 1rem;background:rgba(201,168,76,0.05);transition:all 0.2s" onmouseover="this.style.background=\'rgba(201,168,76,0.1)\'" onmouseout="this.style.background=\'rgba(201,168,76,0.05)\'">📄 <span>View Certificate</span> <span style="margin-left:auto;color:var(--gold)">→</span></a>';
+        // Certificates stay inside the award panel; the original file remains available.
+        let certificateUrl;
+        try {
+          certificateUrl = new URL(a.certUrl, window.location.origin);
+          if (!['https:', 'http:'].includes(certificateUrl.protocol)) return '';
+        } catch { return ''; }
+        const safeUrl = certificateUrl.href.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const isPdf = /\.pdf$/i.test(certificateUrl.pathname);
+        const isImage = /\.(?:jpe?g|png|webp|gif)$/i.test(certificateUrl.pathname);
+        const preview = isPdf
+          ? '<iframe title="Certificate preview" src="' + safeUrl + '" style="width:100%;height:65vh;min-height:360px;border:1px solid rgba(201,168,76,0.2);background:#fff"></iframe>'
+          : isImage
+            ? '<img src="' + safeUrl + '" alt="Certificate" style="width:100%;height:auto;display:block;border:1px solid rgba(201,168,76,0.2)">'
+            : '';
+        return preview + '<a href="' + safeUrl + '" target="_blank" rel="noopener" style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold);padding:0.75rem 0">Open certificate separately →</a>';
       })() : ''}
       ${a.proofLink ? `<a href="${pdfViewerUrl(a.proofLink)}" target="_blank" style="display:flex;align-items:center;gap:0.75rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.15);padding:0.75rem 1rem;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.05)'" onmouseout="this.style.background=\'\'\'">✦ <span>View Verification</span> <span style="margin-left:auto">→</span></a>` : ''}
     </div>`;
