@@ -1,3 +1,4 @@
+const { requireOwner, authError } = require('./_shared/auth');
 // Netlify Function: upload-pdf
 // Receives a PDF file as base64, saves to GitHub repo, returns public URL
 // This ensures PDFs are always publicly accessible — Cloudinary raw files require auth
@@ -8,6 +9,7 @@ exports.handler = async (event) => {
   }
 
   try {
+    try { await requireOwner(event, JSON.parse(event.body || '{}').slug); } catch (error) { return authError(error); }
     const { fileData, fileName, folder } = JSON.parse(event.body);
     if (!fileData || !fileName) {
       return { statusCode: 400, body: JSON.stringify({ error: 'fileData and fileName required' }) };
@@ -23,6 +25,7 @@ exports.handler = async (event) => {
     // Sanitize filename — remove special chars, keep extension
     const safeName = fileName.replace(/[^a-zA-Z0-9._-]/g, '_').toLowerCase();
     const subFolder = folder || 'press';
+    if (!['press', 'assets', 'awards', 'pdfs/bio'].includes(subFolder)) return { statusCode: 400, body: JSON.stringify({ error: 'Invalid upload folder' }) };
     const filePath = `${subFolder}/${Date.now()}_${safeName}`;
 
     // Check if file already exists (get SHA for update)

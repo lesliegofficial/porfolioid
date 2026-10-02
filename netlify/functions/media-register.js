@@ -1,3 +1,4 @@
+const { requireOwner, authError } = require('./_shared/auth');
 // ============================================================
 // PorfolioID — media-register.js
 // AMS Asset Registration — Post-Upload Confirmation
@@ -75,6 +76,7 @@ async function computeStreamingSha256(r2Client, bucket, key) {
 
 exports.handler = async (event) => {
   const headers = {
+    'Cache-Control': 'no-store',
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -91,6 +93,8 @@ exports.handler = async (event) => {
   try { body = JSON.parse(event.body || '{}'); }
   catch { return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid JSON body' }) }; }
 
+  try { await requireOwner(event, body.slug); } catch (error) { return authError(error, headers); }
+
   const { storageKey, assetFamilyId, version, slug, category, descriptor, displayName, altText, tags, isPublic, mimeType, fileSize, clientSha256, fileName } = body;
 
   if (!storageKey || !slug || !category || !descriptor || !mimeType || !version || !fileSize) {
@@ -100,6 +104,10 @@ exports.handler = async (event) => {
     })};
   }
 
+  const { buildStorageKey } = require('./config/media-config');
+  const expectedKey = buildStorageKey({ slug, category, descriptor, version, ext: ALLOWED_TYPES[mimeType]?.ext });
+  // Presigns can cross midnight; validate the owner prefix and generated key shape.
+  if (!/^profiles\/[a-z0-9-]+\/[a-z]+\/[a-z0-9_-]+\.\w+$/.test(storageKey) || storageKey.replace(/_\d{8}(?=\.)/, '_DATE') !== expectedKey.replace(/_\d{8}(?=\.)/, '_DATE')) return { statusCode: 403, headers, body: JSON.stringify({ error: 'Storage key access denied' }) };
   const typeInfo = ALLOWED_TYPES[mimeType];
   if (!typeInfo) return { statusCode: 400, headers, body: JSON.stringify({ error: `Unsupported MIME type: ${mimeType}` }) };
   if (!VALID_CATEGORIES.has(category)) return { statusCode: 400, headers, body: JSON.stringify({ error: `Invalid category: ${category}` }) };

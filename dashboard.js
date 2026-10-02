@@ -1,3 +1,4 @@
+const fetch = window.PorfolioAuth.fetch;
 
 // ── R2 UPLOAD SYSTEM ─────────────────────────────────────────
 // Replaces Cloudinary. All new uploads go to Cloudflare R2
@@ -278,7 +279,7 @@ async function uploadPdfToGitHub(file, folder) {
         const res = await fetch('/api/upload-pdf', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fileData: base64, fileName: file.name, folder: folder || 'press' })
+          body: JSON.stringify({ fileData: base64, fileName: file.name, folder: folder || 'press', slug: activeProfileSlug || epk.slug })
         });
         const data = await res.json();
         if (data.url) {
@@ -602,6 +603,8 @@ let currentUser = null;
 let epk = null;
 
 async function init() {
+  const verifiedSession = await window.PorfolioAuth.requireSession();
+  if (!verifiedSession) return;
   // Check session
   const sessionStr = localStorage.getItem('porfolioid_session');
   if (!sessionStr) { window.location.href = '/login.html'; return; }
@@ -4263,9 +4266,8 @@ function removeTimelineMilestone(i) {
   saveIdentityBlock();
 }
 
-function logout() {
-  localStorage.removeItem('porfolioid_session');
-  window.location.href = '/login.html';
+async function logout() {
+  await window.PorfolioAuth.signOut();
 }
 
 init();

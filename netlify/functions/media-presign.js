@@ -1,3 +1,4 @@
+const { requireOwner, authError } = require('./_shared/auth');
 // ============================================================
 // PorfolioID — media-presign.js
 // AMS Pre-Signed Upload URL Generator
@@ -48,6 +49,7 @@ async function sbGet(path) {
 
 exports.handler = async (event) => {
   const headers = {
+    'Cache-Control': 'no-store',
     'Content-Type':                 'application/json',
     'Access-Control-Allow-Origin':  '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -63,6 +65,8 @@ exports.handler = async (event) => {
   let body;
   try { body = JSON.parse(event.body || '{}'); }
   catch { return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid JSON body' }) }; }
+
+  try { await requireOwner(event, body.slug); } catch (error) { return authError(error, headers); }
 
   const { fileName, mimeType, fileSize, sha256Hash, slug, category, descriptor, displayName, isPublic } = body;
 
