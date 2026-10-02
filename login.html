@@ -57,6 +57,7 @@
   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes spin { to { transform: rotate(360deg); } }
 </style>
+<script src="/auth-client.js"></script>
 </head>
 <body>
 <nav>
@@ -66,6 +67,16 @@
 <div class="auth-wrapper">
   <div class="auth-box">
 
+
+    <div id="recoveryPanel" style="display:none">
+      <h1 class="auth-title">Choose a new password</h1>
+      <form id="recoveryForm">
+        <label for="newPassword">New password</label>
+        <input id="newPassword" type="password" minlength="8" required autocomplete="new-password">
+        <button class="btn-submit" type="submit">Save password</button>
+        <p id="recoveryMessage" role="status"></p>
+      </form>
+    </div>
     <!-- LOGIN PANEL -->
     <div id="loginPanel">
       <div class="auth-eyebrow">Welcome back</div>
@@ -119,6 +130,28 @@
 </div>
 
 <script>
+// Supabase email callbacks carry a real session, including recovery links.
+const callback = new URLSearchParams(location.hash.slice(1));
+if (callback.get('access_token') && callback.get('refresh_token')) {
+  window.PorfolioAuth.store({ access_token: callback.get('access_token'), refresh_token: callback.get('refresh_token'), expires_in: Number(callback.get('expires_in') || 3600) });
+  history.replaceState(null, '', location.pathname);
+  if (callback.get('type') === 'recovery') {
+    document.getElementById('loginPanel').style.display = 'none';
+    document.getElementById('recoveryPanel').style.display = 'block';
+  } else {
+    window.PorfolioAuth.requireSession().then(session => { if (session) location.replace('/dashboard.html'); });
+  }
+}
+document.getElementById('recoveryForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const message = document.getElementById('recoveryMessage');
+  try {
+    const response = await window.PorfolioAuth.fetch('/api/epk', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'updatePassword', password: document.getElementById('newPassword').value }) });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error);
+    await window.PorfolioAuth.signOut();
+  } catch (error) { message.textContent = error.message || 'Could not update password'; }
+});
 // ── LOGIN ────────────────────────────────────────────────────────
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -159,7 +192,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     });
     const data = await res.json();
 
-    if (data.success) {
+    if (data.success && data.session) {
+      window.PorfolioAuth.store(data.session);
       localStorage.setItem('porfolioid_session', JSON.stringify({
         slug: data.user.slug,
         name: data.user.firstName + ' ' + data.user.lastName,
@@ -170,12 +204,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
       btn.style.background = '#7ec97e';
       setTimeout(() => { window.location.href = '/dashboard.html'; }, 400);
     } else {
-      const msg = data.error === 'User not found'
-        ? 'No account found with that email. <a href="/signup.html" style="color:inherit;text-decoration:underline">Create one →</a>'
-        : data.error === 'Invalid password'
-        ? 'Incorrect password. <span style="cursor:pointer;text-decoration:underline" onclick="showForgotPanel()">Forgot it?</span>'
-        : data.error || 'Sign in failed. Please try again.';
-      errorBanner.innerHTML = msg;
+      errorBanner.textContent = data.error || 'Sign in failed. Please try again.';
       errorBanner.style.display = 'block';
       btn.innerHTML = 'Sign In →';
       btn.disabled = false;
@@ -214,6 +243,7 @@ document.getElementById('forgotForm').addEventListener('submit', async function(
     });
     const data = await res.json();
 
+    if (!res.ok) throw new Error('Reset failed');
     // Always show success (security — don't reveal if email exists)
     successEl.textContent = `If an account exists for ${email}, a reset link has been sent. Check your inbox.`;
     successEl.style.display = 'block';

@@ -1,3 +1,4 @@
+const { requireAccount, requireOwner, authError } = require('./_shared/auth');
 // ============================================================
 // PorfolioID — media-audit.js
 // AMS Asset Integrity Auditor
@@ -41,6 +42,7 @@ async function computeStreamingSha256(r2Client, bucket, key) {
 
 exports.handler = async (event) => {
   const headers = {
+    'Cache-Control': 'no-store',
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -62,6 +64,8 @@ exports.handler = async (event) => {
     })};
   }
 
+  try { await requireAccount(event); } catch (error) { return authError(error, headers); }
+
   // Look up asset in Supabase
   let dbAsset;
   if (params.asset_id) {
@@ -77,6 +81,8 @@ exports.handler = async (event) => {
     }
     dbAsset = result.data[0];
   }
+
+  try { await requireOwner(event, dbAsset.slug); } catch (error) { return authError(error, headers); }
 
   const r2Client = getR2Client();
 

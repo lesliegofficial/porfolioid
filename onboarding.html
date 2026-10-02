@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-pending>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,6 +41,8 @@
   @media (max-width: 600px) { .types-grid { grid-template-columns: 1fr 1fr; } .title { font-size: 2rem; } }
   @media (max-width: 400px) { .types-grid { grid-template-columns: 1fr; } }
 </style>
+<script src="/auth-client.js"></script>
+<style>html[data-auth-pending] body { visibility: hidden; }</style>
 </head>
 <body>
 <nav>
@@ -113,6 +115,8 @@
 </div>
 
 <script>
+const fetch = window.PorfolioAuth.fetch;
+const authReady = window.PorfolioAuth.requireSession();
 let selectedTypes = [];
 
 function selectType(type) {
@@ -152,6 +156,7 @@ async function continueToOnboarding() {
 }
 
 async function continueTodashboard() {
+  if (!await authReady) return;
   const session = JSON.parse(localStorage.getItem('porfolioid_session') || 'null');
   if (!session?.slug) { window.location.href = '/dashboard.html'; return; }
 
@@ -175,7 +180,7 @@ async function continueTodashboard() {
     await fetch('/.netlify/functions/epk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: session.slug, data: epk })
+      body: JSON.stringify({ action: 'save', slug: session.slug, data: epk })
     });
 
     window.location.href = '/dashboard.html';
@@ -204,7 +209,7 @@ function getCareerLabels(type) {
 
 // Check if already has career type — redirect to dashboard
 const session = JSON.parse(localStorage.getItem('porfolioid_session') || 'null');
-if (!session) window.location.href = '/login.html';
+
 </script>
 </body>
 </html>

@@ -82,6 +82,9 @@ jobs:
           print('✅ Version strings present')
           "
 
+      - name: Verify authentication boundaries
+        run: node --test tests/auth.test.js
+
       - name: All checks passed
         run: |
           echo ""

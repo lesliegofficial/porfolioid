@@ -1,3 +1,4 @@
+const { authRequest, requireAccount, requireOwner, samePassword } = require('./_shared/auth');
 // PorfolioID — Netlify Function
 // Phase 6: Supabase backend with Netlify Blobs fallback
 
@@ -77,7 +78,8 @@ async function migrateFromBlobs(slug) {
 exports.handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Cache-Control': 'no-store',
     'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
     'Content-Type': 'application/json'
   };
@@ -262,80 +264,93 @@ exports.handler = async (event) => {
         return ok({ success: true, epk: coreData });
       }
 
-      // ── SIGNUP ──
+      // Supabase Auth owns credentials and issues verifiable sessions.
       if (action === 'signup') {
-        if (!USE_SUPABASE) {
-          const store = await getBlobs();
-          if (!store) return err('No storage', 500);
-          const existingSlug = await store.get(`user:${slug}`, { type: 'json' });
-          if (existingSlug) return err('Slug already taken', 409);
-          const emailCheck = await store.get(`email:${body.email}`, { type: 'json' });
-          if (emailCheck) return err('Email already registered', 409);
-          const newUser = { id: `user_${Date.now()}`, firstName: body.firstName, lastName: body.lastName, email: body.email, slug };
-          await store.set(`user:${slug}`, JSON.stringify(newUser));
-          await store.set(`email:${body.email}`, JSON.stringify({ slug }));
-          await store.set(`epk:${slug}`, JSON.stringify(body.epk || {}));
-          const { password: _p, ...safeUser } = newUser;
-          return ok({ success: true, user: safeUser });
-        }
-
-        // Supabase signup
-        const slugCheck = await sbGet('users', `slug=eq.${slug}&select=slug`);
-        if (slugCheck.ok && slugCheck.data.length > 0) return err('Slug already taken', 409);
-        const emailCheck = await sbGet('users', `email=eq.${encodeURIComponent(body.email)}&select=email`);
-        if (emailCheck.ok && emailCheck.data.length > 0) return err('Email already registered', 409);
-
-        const userRes = await sbUpsert('users', {
-          slug,
-          email: body.email,
-          password: body.password,
-          first_name: body.firstName,
-          last_name: body.lastName
-        });
-        if (!userRes.ok) return err('Signup failed: ' + JSON.stringify(userRes.data), 500);
-
-        const initEpk = body.epk || { name: `${body.firstName} ${body.lastName}`, slug };
-        await sbUpsert('epk_profiles', { slug, data: initEpk, updated_at: new Date().toISOString() });
-
-        // Migrate any existing blob data
-        await migrateFromBlobs(slug);
-
-        return ok({ success: true, user: { id: userRes.data[0]?.id, firstName: body.firstName, lastName: body.lastName, email: body.email, slug } });
+        if (!USE_SUPABASE) return err('Authentication unavailable', 503);
+        if (!/^[a-z0-9-]{1,60}$/.test(slug || '') || typeof body.email !== 'string' || !/^[^\s@,()]+@[^\s@,()]+\.[^\s@,()]+$/.test(body.email) || typeof body.password !== 'string' || body.password.length < 8) return err('Valid email, slug and password of at least 8 characters required');
+        const email = body.email.trim().toLowerCase();
+        const existing = await sbGet('users', `or=(slug.eq.${encodeURIComponent(slug)},email.eq.${encodeURIComponent(email)})&select=slug`);
+        const profile = await sbGet('epk_profiles', `slug=eq.${encodeURIComponent(slug)}&select=slug`);
+        if (!existing.ok || !profile.ok) return err('Account lookup unavailable', 503);
+        if (existing.data.length || profile.data.length) return err('Account or profile already exists. Sign in instead.', 409);
+        const signup = await authRequest('signup?redirect_to=https%3A%2F%2Fporfolioid.com%2Flogin.html', 'POST', { email, password: body.password });
+        if (!signup.ok || !(signup.data.id || signup.data.user?.id)) return err('Unable to create account. Please try signing in or resetting your password.', 400);
+        const userRes = await sbUpsert('users', { slug, email, password: 'supabase-auth:' + (signup.data.id || signup.data.user.id), first_name: body.firstName, last_name: body.lastName });
+        if (!userRes.ok) return err('Account created but profile setup failed. Contact support.', 503);
+        const initEpk = { ...(body.epk || {}), slug, name: `${body.firstName || ''} ${body.lastName || ''}`.trim() };
+        const saved = await sbUpsert('epk_profiles', { slug, data: initEpk, updated_at: new Date().toISOString() });
+        if (!saved.ok) return err('Account created but profile setup failed. Contact support.', 503);
+        return ok({ success: true, session: signup.data.access_token ? signup.data : null, confirmationRequired: !signup.data.access_token,
+          user: { slug, email, firstName: body.firstName, lastName: body.lastName } });
       }
 
-      // ── LOGIN ──
       if (action === 'login') {
-        if (!USE_SUPABASE) {
-          const store = await getBlobs();
-          if (!store) return err('No storage', 500);
-          const emailRecord = await store.get(`email:${body.email}`, { type: 'json' });
-          if (!emailRecord) return err('User not found', 404);
-          const existing = await store.get(`user:${emailRecord.slug}`, { type: 'json' });
-          if (!existing || existing.password !== body.password) return err('Invalid password', 401);
-          const { password: _p, ...safeUser } = existing;
-          return ok({ success: true, user: safeUser });
+        if (!USE_SUPABASE || typeof body.email !== 'string' || typeof body.password !== 'string') return err('Invalid email or password', 401);
+        const email = body.email.trim().toLowerCase();
+        let login = await authRequest('token?grant_type=password', 'POST', { email, password: body.password });
+        if (!login.ok && login.data.error_code === 'invalid_credentials') {
+          // One-time migration: credentials must match the existing account.
+          // Never claim an existing profile from sign-up metadata.
+          const legacy = await sbGet('users', `email=eq.${encodeURIComponent(email)}&select=slug,password`);
+          if (!legacy.ok) return err('Authentication unavailable', 503);
+          if (legacy.data.length === 1 && samePassword(legacy.data[0].password, body.password)) {
+            const created = await authRequest('admin/users', 'POST', { email, password: body.password, email_confirm: true });
+            if (created.ok) login = await authRequest('token?grant_type=password', 'POST', { email, password: body.password });
+          }
         }
+        if (!login.ok || !login.data.access_token) return err('Invalid email or password', 401);
+        const account = await requireAccount({ headers: { authorization: `Bearer ${login.data.access_token}` } });
+        const cleared = await sbUpdate('users', { slug: account.slug }, { password: 'supabase-auth:' + login.data.user.id });
+        if (!cleared.ok) return err('Account transition unavailable. Try again.', 503);
+        return ok({ success: true, session: login.data, user: { slug: account.slug, email: account.email, firstName: account.first_name || '', lastName: account.last_name || '' } });
+      }
 
-        // Supabase login
-        const userRes = await sbGet('users', `email=eq.${encodeURIComponent(body.email)}&select=*`);
-        if (!userRes.ok || !userRes.data.length) return err('User not found', 404);
-        const user = userRes.data[0];
-        if (user.password !== body.password) return err('Invalid password', 401);
+      if (action === 'refreshSession') {
+        if (typeof body.refreshToken !== 'string') return err('Sign in required', 401);
+        const refreshed = await authRequest('token?grant_type=refresh_token', 'POST', { refresh_token: body.refreshToken });
+        if (!refreshed.ok) return err('Sign in required', 401);
+        return ok({ success: true, session: refreshed.data });
+      }
 
-        // Load EPK — migrate from blobs if needed
-        let epkData = null;
-        const profileRes = await sbGet('epk_profiles', `slug=eq.${user.slug}&select=data`);
-        if (profileRes.ok && profileRes.data.length) {
-          epkData = profileRes.data[0].data;
+      if (action === 'requestPasswordReset') {
+        // Fixed trusted callback: never accept a browser-provided redirect.
+        const reset = await authRequest('recover?redirect_to=https%3A%2F%2Fporfolioid.com%2Flogin.html', 'POST', { email: body.email }, undefined);
+        if (!reset.ok && reset.status >= 500) return err('Email service unavailable', 503);
+        return ok({ success: true });
+      }
+
+      if (action === 'session') {
+        const account = await requireAccount(event);
+        return ok({ success: true, user: { slug: account.slug, email: account.email, firstName: account.first_name || '', lastName: account.last_name || '' } });
+      }
+      if (action === 'logout') {
+        await requireAccount(event);
+        const token = (event.headers.authorization || event.headers.Authorization).slice(7);
+        const result = await authRequest('logout', 'POST', undefined, token);
+        if (!result.ok) return err('Sign out failed', 503);
+        return ok({ success: true });
+      }
+      if (action === 'updatePassword') {
+        await requireAccount(event);
+        if (typeof body.password !== 'string' || body.password.length < 8) return err('Use at least 8 characters');
+        const token = (event.headers.authorization || event.headers.Authorization).slice(7);
+        const result = await authRequest('user', 'PUT', { password: body.password }, token);
+        if (!result.ok) return err('Could not update password', 400);
+        return ok({ success: true });
+      }
+
+      // Deny unknown write actions; validate identity AND ownership before using
+      // the server's service key (which bypasses RLS).
+      const protectedActions = ['save', 'saveSection', 'getAnalytics', 'listProfiles', 'createProfile', 'deleteProfile'];
+      if (action === 'migrate') return err('Migration endpoint disabled', 403);
+      if (protectedActions.includes(action)) {
+        if (['listProfiles', 'createProfile', 'deleteProfile'].includes(action)) {
+          const account = await requireAccount(event);
+          if (body.userSlug !== account.slug) return err('Profile access denied', 403);
+          if (action === 'deleteProfile') await requireOwner(event, body.profileSlug);
         } else {
-          epkData = await migrateFromBlobs(user.slug);
+          await requireOwner(event, slug);
         }
-
-        return ok({
-          success: true,
-          user: { id: user.id, firstName: user.first_name, lastName: user.last_name, email: user.email, slug: user.slug },
-          epk: epkData
-        });
       }
 
       // ── SAVE (full EPK) ──
@@ -758,6 +773,7 @@ exports.handler = async (event) => {
       // ── CREATE PROFILE ──
       if (action === 'createProfile') {
         const { userSlug, profileSlug, profileType, profileName } = body;
+        if (typeof profileSlug !== 'string' || !/^[a-z0-9-]{1,60}$/.test(profileSlug)) return err('Valid profile slug required');
         if (!userSlug || !profileSlug) return err('userSlug and profileSlug required');
 
         // Ensure the original professional profile is registered before
@@ -831,7 +847,7 @@ exports.handler = async (event) => {
     return err('Method not allowed', 405);
 
   } catch (e) {
-    console.error('EPK function error:', e);
-    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Server error', details: e.message }) };
+    if (!e.status) console.error('EPK function error:', e.message);
+    return { statusCode: e.status || 500, headers, body: JSON.stringify({ error: e.status ? e.message : 'Server error' }) };
   }
 };
