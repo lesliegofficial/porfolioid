@@ -8,16 +8,16 @@
   "bioES": "Sus créditos artísticos incluyen giras como vocalista de apoyo junto a los íconos del reggaetón Don Omar (2006–2015) y J Álvarez (2015–2020), presentándose ante audiencias en Estados Unidos, América Latina y Europa. También aparece en el lanzamiento en vivo King of Kings: En Directo, grabado durante la gira mundial King of Kings World Tour de Don Omar y publicado por Machete Music.\n\nGuerra inició su carrera discográfica como integrante de Las Nenas del Swing, participando en producciones y grabaciones como Rompe Corazones, Chicle Bomba, Desearía y Me Faltas Tú. A lo largo de su trayectoria en giras y espectáculos, también participó en producciones que incluyeron artistas como Wisin & Yandel, Arcángel, Daddy Yankee, Natti Natasha y Melina León.\n\nMás allá de los escenarios, Guerra ha ocupado posiciones de liderazgo, coordinación y operaciones dentro de la industria del entretenimiento. Se desempeñó como Coordinadora de A&R en Sony Music Latin, brindando apoyo a operaciones ejecutivas de A&R e iniciativas de desarrollo artístico. También coordinó operaciones artísticas y de manejo para Orfanato Music Group y Arrow Management, gestionó logística artística para Adam Torres Concerts y lideró iniciativas de mercadeo y relaciones públicas a través de NV Marketing & Public Relations.\n\nActualmente, Guerra combina su experiencia en interpretación, desarrollo artístico, operaciones, mercadeo y estrategia empresarial a través de proyectos creativos y empresariales, incluyendo PorfolioID, una plataforma profesional diseñada para ayudar a artistas, creadores y profesionales a presentar su trayectoria, logros y portafolio de manera moderna y organizada.",
   "stats": [
     {
-      "number": "25+",
-      "label": "Years Active"
+      "label": "Years Active",
+      "number": "25+"
     },
     {
-      "number": "500+",
-      "label": "Live Shows"
+      "label": "Live Shows",
+      "number": "500+"
     },
     {
-      "number": "5",
-      "label": "Continents"
+      "label": "Continents",
+      "number": "5"
     }
   ],
   "theme": "gold",
@@ -1858,7 +1858,7 @@
           "caption": "Graduation — Florida Technical College"
         }
       ],
-      "certUrl": "https://media.porfolioid.com/profiles/leslie-guerra/documents/p0npavwpllen9vfqceiq.ai"
+      "certUrl": "https://porfolioid.com/awards/1790465731066_ftc_diploma_compressed.pdf"
     },
     {
       "org": "Florida Technical College (NUC University)",
@@ -1875,7 +1875,7 @@
           "caption": "Graduation Ceremony — NUC University"
         }
       ],
-      "certUrl": "https://media.porfolioid.com/profiles/leslie-guerra/documents/zjz3grw21r7nqtwgajh8.pdf"
+      "certUrl": "https://porfolioid.com/awards/1790465783202_ftc_presidents_list_certificate.pdf"
     },
     {
       "org": "Google",
@@ -1884,7 +1884,7 @@
       "year": "2026",
       "title": "Google Analytics Certification",
       "photos": [],
-      "certUrl": "https://media.porfolioid.com/profiles/leslie-guerra/photos/awards-degrees/top8skjmwsx62zarq9h8.jpg",
+      "certUrl": "https://porfolioid.com/awards/1785793970229_google-analytics_certification.pdf",
       "category": "",
       "featured": false,
       "verified": false,
@@ -1898,7 +1898,7 @@
       "year": "2026",
       "title": "Business Analytics with Excel",
       "photos": [],
-      "certUrl": "https://raw.githubusercontent.com/lesliegofficial/porfolioid/main/awards/1782144146799_business_analytics_with_excel.jpeg",
+      "certUrl": "https://porfolioid.com/awards/1785793996550_excel-analytics_certificationpdf.pdf",
       "category": "",
       "featured": false,
       "verified": false,
